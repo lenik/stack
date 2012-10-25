@@ -36,6 +36,10 @@ public class AttendanceCriteria
                 equals("employee.id", employeeId));
     }
 
+    public static ICriteriaElement listRecordByEmployee(Long employeeId, int yearMonth) {
+        return and(equals("employee.id", employeeId), equals("yearMonth", yearMonth));
+    }
+
     public static CriteriaElement getAttType(boolean attendance) {
         return equals("attendance", attendance);
     }

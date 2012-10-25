@@ -30,6 +30,7 @@ import com.bee32.sem.salary.dto.SalaryElementDefDto;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 import com.bee32.sem.salary.salary.SalaryDefPreview;
 import com.bee32.sem.salary.util.ChineseCodec;
+import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class SalaryDefAdminBean
         extends SimpleEntityViewBean {
@@ -64,6 +65,7 @@ public class SalaryDefAdminBean
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(ISalaryVariableProvider.ARG_EMPLOYEE, employee);
+            map.put(ISalaryVariableProvider.ARG_YEARMONTH, SalaryDateUtil.convertToYearMonth(new Date()));
             final TextMap args = new TextMap(map);
 
             StandardEvaluationContext context = new StandardEvaluationContext();

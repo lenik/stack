@@ -1,4 +1,4 @@
-com.bee32.sem.salary.salary.AttendanceProvider
+com.bee32.sem.attendance.salary.AttendanceVariableProvider
 com.bee32.sem.salary.salary.BaseBonusVariableProvider
 com.bee32.sem.salary.salary.EmployeeVariableProvider
 com.bee32.sem.salary.salary.EventVariableProvider

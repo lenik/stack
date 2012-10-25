@@ -125,6 +125,7 @@ public class SalaryAdminBean
             map.put(ISalaryVariableProvider.ARG_EMPLOYEE, employee);
             map.put(ISalaryVariableProvider.ARG_BEGIN_DATE, rangePair.getFirst());
             map.put(ISalaryVariableProvider.ARG_END_DATE, rangePair.getSecond());
+            map.put(ISalaryVariableProvider.ARG_YEARMONTH, targetYear*100 + targetMonth);
             // TODO add other args
 
             final TextMap args = new TextMap(map);

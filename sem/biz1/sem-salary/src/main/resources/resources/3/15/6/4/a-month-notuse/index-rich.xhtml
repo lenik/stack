@@ -1,0 +1,151 @@
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="月出勤记录" />
+    <ui:param name="bean" value="${attendanceMAdmin}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
+
+    <ui:define name="styles">
+        <style type="text/css">
+            .ui-datepicker-calendar {
+            }
+        </style>
+
+    </ui:define>
+
+    <ui:define name="toolbarContexts">
+        <t:panelGrid>
+            <p:calendar value="#{bean.restrictionDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                showOn="button">
+                <p:ajax event="dateSelect" listener="#{bean.addMonthRestriction}" update=":searchForm:searchFragments, ${_searchUpdates}" />
+            </p:calendar>
+        </t:panelGrid>
+    </ui:define>
+
+    <ui:define name="toolbar.left" />
+
+    <ui:define name="toolbar.right.1">
+        <p:commandButton id="inputButton" value="输入考勤记录" oncomplete="dlg2.show()" actionListener="${bean.inintAttendanceMR}"
+            update=":attendanceForm:create_attendance_m_r" />
+    </ui:define>
+
+    <ui:define name="dataColumns">
+        <p:column headerText="时间">
+            <h:outputText value="${entry.dateString}" />
+        </p:column>
+        <p:column headerText="雇员">
+            <h:outputText value="${entry.employee.person.name}" />
+        </p:column>
+        <p:column headerText="应出勤">
+            <h:outputText value="${entry.should_attendance}" />
+        </p:column>
+
+        <p:column headerText="出勤">
+            <h:outputText value="${entry.real_attendance}" />
+        </p:column>
+        <p:column headerText="出差">
+            <h:outputText value="${entry.trip}" />
+        </p:column>
+        <p:column headerText="应晚加班">
+            <h:outputText value="${entry.should_overtime}" />
+        </p:column>
+        <p:column headerText="晚加班">
+            <h:outputText value="${entry.real_overtime}" />
+        </p:column>
+        <p:column headerText="缺勤">
+            <h:outputText value="${entry.leave}" />
+        </p:column>
+        <p:column headerText="安全">
+            <p:selectBooleanCheckbox value="#{entry.safety}"  disabled="true" />
+        </p:column>
+    </ui:define>
+
+    <ui:define name="toolsColumn">
+        <p:commandButton id="viewTool" title="查看" icon="ui-icon-search" rendered="${readable != null ? readable : true}"
+            actionListener="${bean.showContent(entry)}" update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
+        </p:commandButton>
+        <p:commandButton id="calsalary" title="生成工资条" icon=".ui-icon-key" actionListener="${bean.doCal(entry)}"
+            disabled="${entry.cal}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}" />
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+
+        <t:panelGrid columns="4">
+            <h:outputText value="雇员:" />
+            <p:inputText value="${obj.employee.person.name}" readonly="true" />
+            <h:outputText value="日期" />
+            <p:inputText value="${obj.date}" />
+
+            <h:outputText value="应出勤" />
+            <p:inputText value="${obj.should_attendance}" />
+            <h:outputText value="出勤" />
+            <p:inputText value="${obj.real_attendance}" />
+
+            <h:outputText value="应晚加班" />
+            <p:inputText value="${obj.should_overtime}" />
+
+            <h:outputText value="晚加班" />
+            <p:inputText value="${obj.real_overtime}" />
+
+            <h:outputText value="出差" />
+            <p:inputText value="${obj.trip}" />
+
+            <h:outputText value="缺勤" />
+            <p:inputText value="${obj.leave}" />
+
+            <h:outputText value="安全" />
+            <p:selectBooleanCheckbox value="#{obj.safety}" />
+
+        </t:panelGrid>
+
+    </ui:define>
+    <ui:define name="dialogs.1">
+        <p:dialog widgetVar="dlg2" modal="true">
+            <h:form id="attendanceForm">
+
+                <p:calendar value="#{bean.openDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                    showOn="button" />
+                <p:dataTable id="create_attendance_m_r" value="${bean.attendanceMRList}" var="record">
+
+                    <p:column headerText="雇员">
+                        <h:outputText value="${record.employee.person.name}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="应出勤">
+                        <p:inputText value="${record.should_attendance}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="出勤">
+                        <p:inputText value="${record.real_attendance}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="出差">
+                        <p:inputText value="${record.trip}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="应晚加班">
+                        <p:inputText value="${record.should_overtime}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="晚加班">
+                        <p:inputText value="${record.real_overtime}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="缺勤">
+                        <p:inputText value="${record.leave}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="安全">
+                        <p:selectBooleanCheckbox value="#{record.safety}" />
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="保存" actionListener="${bean.saveList}" oncomplete="dlg2.hide();"
+                    update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}" />
+                <p:commandButton value="取消" onclick="dlg2.hide();" />
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+    <ui:define name="scripts.user">
+        <script>
+            $(".ui-datepicker-title").bind('click', function(){
+            alert($(".ui-datepicker-month").text())
+            });
+        </script>
+    </ui:define>
+</ui:composition>

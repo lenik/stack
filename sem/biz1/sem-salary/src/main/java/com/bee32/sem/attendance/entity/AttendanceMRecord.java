@@ -1,5 +1,7 @@
 package com.bee32.sem.attendance.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
+import com.bee32.sem.salary.util.SalaryDateUtil;
 
 /**
  * 出勤表
@@ -27,6 +30,10 @@ public class AttendanceMRecord
     EmployeeInfo employee;
     boolean safe;
     String attendanceData;// eg: "1:NM,LE,HO;2:NM,NM,NM;"
+
+    public AttendanceMRecord() {
+        yearMonth = SalaryDateUtil.convertToYearMonth(new Date());
+    }
 
     /**
      * 年月

@@ -14,7 +14,6 @@ import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.attendance.entity.AttendanceType;
 import com.bee32.sem.attendance.util.AttendanceDRecord;
-import com.bee32.sem.attendance.web.AttendanceMAdmin;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
@@ -29,9 +28,8 @@ public class AttendanceMRecordDto
     int month;
     EmployeeInfoDto employee;
     boolean safe;
-    Map<Integer, AttendanceDRecord> records;
-    Integer[] providerArgs;
-    List<AttendanceDRecord> attendances;
+// Integer[] providerArgs;
+// List<AttendanceDRecord> attendances;
     String attendanceData;
 
     List<List<AttendanceDRecord>> monthView;
@@ -47,11 +45,9 @@ public class AttendanceMRecordDto
         year = source.getYearMonth() / 100;
         month = source.getYearMonth() % 100;
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
-        records = warpToAttendanceMap(source.getAttendanceData() == null ? generatorDefaultAttendanceData(year, month) : //
-                source.getAttendanceData());
-        attendances = new ArrayList<AttendanceDRecord>(records.values());
-        providerArgs = ExtractProviderArgs(records);
         attendanceData = source.getAttendanceData();
+        if (attendanceData == null)
+            attendanceData = generatorDefaultAttendanceData(year, month);
     }
 
     @Override
@@ -95,7 +91,6 @@ public class AttendanceMRecordDto
 
             if (record == null) {
                 AttendanceDRecord notavailable = new AttendanceDRecord();
-                notavailable.setStyleClass(AttendanceMAdmin.calendarViewStyleClass[0]);
                 notavailable.setMorning(AttendanceType.notAvailable);
                 notavailable.setAfternoon(AttendanceType.notAvailable);
                 notavailable.setEvening(AttendanceType.notAvailable);
@@ -132,25 +127,27 @@ public class AttendanceMRecordDto
             AttendanceType m = attendance.getMorning();
             AttendanceType a = attendance.getAfternoon();
             AttendanceType e = attendance.getEvening();
-            if (m.getValue() != 'Z')
+
+            if (m != AttendanceType.rest2 && m != AttendanceType.notAvailable)
                 shouldAttendanceNum += 1;
-            if (a.getValue() != 'Z')
+            if (a != AttendanceType.rest2 && a != AttendanceType.notAvailable)
                 shouldAttendanceNum += 1;
+            if (e != AttendanceType.notAvailable && e != AttendanceType.rest2)
+                shouldOvertimeNum += 1;
 
             if (m.isMutiplier())
                 attendanceNum += 1;
             if (a.isMutiplier())
                 attendanceNum += 1;
-
-            if (m.getValue() == 'F')
-                lateNum += 1;
-            if (a.getValue() == 'F')
-                lateNum += 1;
-
-            if (e.getValue() != 'Y')
-                shouldOvertimeNum += 1;
             if (e.isMutiplier())
                 overtimeNum += 1;
+
+            if (m == AttendanceType.late1)
+                lateNum += 1;
+// if (a == AttendanceType.late1)
+// lateNum += 1;
+// if (e == AttendanceType.late1)
+// lateNum += 1;
 
         }
 
@@ -164,8 +161,8 @@ public class AttendanceMRecordDto
         return array;
     }
 
-    public static Map<Integer, AttendanceDRecord> warpToAttendanceMap(String data) {
-        Map<Integer, AttendanceDRecord> map = new HashMap<Integer, AttendanceDRecord>();
+    public static Map<Integer, AttendanceDRecord> wrapToAttendanceMap(String data) {
+        Map<Integer, AttendanceDRecord> map = new HashMap<Integer, AttendanceDRecord>(50);
 
         for (String dayString : data.split(";")) {
             int index = dayString.indexOf(":");
@@ -182,7 +179,6 @@ public class AttendanceMRecordDto
 
             AttendanceDRecord dayRecord = new AttendanceDRecord();
             dayRecord.setDay(day);
-            dayRecord.setStyleClass(AttendanceMAdmin.calendarViewStyleClass[1]);
             dayRecord.setMorning(morning);
             dayRecord.setAfternoon(afternoon);
             dayRecord.setEvening(evening);
@@ -192,27 +188,8 @@ public class AttendanceMRecordDto
         return map;
     }
 
-    public static String warpToAttendanceString(Map<Integer, AttendanceDRecord> map) {
-        StringBuilder sb = new StringBuilder();
-        for (AttendanceDRecord day : map.values()) {
-            sb.append(day.getDay());
-            sb.append(":");
-            sb.append(day.getMorning().getValue());
-            sb.append(",");
-            sb.append(day.getAfternoon().getValue());
-            sb.append(",");
-            sb.append(day.getEvening().getValue());
-            sb.append(";");
-        }
-        int index = sb.length();
-        sb.deleteCharAt(index - 1);
-        return sb.toString();
-    }
-
     public void setRecords(String data) {
-        records = warpToAttendanceMap(data);
-        attendances = new ArrayList<AttendanceDRecord>(records.values());
-        providerArgs = ExtractProviderArgs(records);
+        attendanceData = data;
     }
 
     public int getTmpId() {
@@ -256,22 +233,17 @@ public class AttendanceMRecordDto
     }
 
     public AttendanceDRecord getRecord(int day) {
+        Map<Integer, AttendanceDRecord> records = wrapToAttendanceMap(attendanceData);
         return records.get(day);
     }
 
-    public List<AttendanceDRecord> getAttendances() {
-        return attendances;
-    }
-
-    public void setAttendances(List<AttendanceDRecord> attendances) {
-        this.attendances = attendances;
-    }
-
     public Integer[] getArguments() {
-        return providerArgs;
+        Map<Integer, AttendanceDRecord> records = wrapToAttendanceMap(attendanceData);
+        return ExtractProviderArgs(records);
     }
 
     public List<List<AttendanceDRecord>> getMonthView() {
+        Map<Integer, AttendanceDRecord> records = wrapToAttendanceMap(attendanceData);
         int yearMonth = SalaryDateUtil.convertToYearMonth(new Date());
         this.monthView = calendarView(yearMonth, records);
         return monthView;

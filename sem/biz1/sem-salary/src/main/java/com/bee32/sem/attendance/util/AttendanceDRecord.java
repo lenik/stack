@@ -11,7 +11,6 @@ public class AttendanceDRecord
 
     int day;
     String weekday_zhcn;
-    String styleClass;
 
     AttendanceType morning;
     AttendanceType afternoon;
@@ -34,14 +33,6 @@ public class AttendanceDRecord
 
     public void setWeekday_zhcn(String weekday_zhcn) {
         this.weekday_zhcn = weekday_zhcn;
-    }
-
-    public String getStyleClass() {
-        return styleClass;
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
     }
 
     public AttendanceType getMorning() {

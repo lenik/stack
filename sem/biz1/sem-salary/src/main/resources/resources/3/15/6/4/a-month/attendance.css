@@ -1,0 +1,108 @@
+.attendance-calenda-table-header {
+    border: 1px solid red;
+    padding: 0px;
+    margin: 0px;
+    width: 20px;
+    border-radius: 4px;
+}
+
+.calendarView-notavailable {
+    background-color: #CECECE;
+    border-radius: 7px;
+}
+
+.calendarView-batch-available,.calendarView-edit-available {
+    cursor: pointer;
+    background-color: #D0FFD0;
+    border-radius: 7px;
+    border: 2px solid green;
+}
+
+.a-m-icon-edit,.a-a-icon-edit,.a-e-icon-edit {
+    width: 40px;
+}
+
+.a-m-value-edit,.a-a-value-edit,.a-e-value-edit {
+    width: 20px;
+}
+
+.a-m-name-edit,.a-a-name-edit,.a-e-name-edit {
+    width: 80px;
+}
+
+.a-m-types-edit,.a-a-types-edit,.a-e-types-edit {
+    width: 240px;
+}
+
+.a-m-types-c,.a-a-types-c,.a-e-types-c {
+    cursor: pointer;
+}
+
+.a-m-types-c-edit,.a-a-types-c-edit,.a-e-types-c-edit {
+    cursor: pointer;
+}
+
+.a-types-icon {
+    display: none;
+}
+
+.a-types-icon-edit {
+    display: none;
+}
+
+.a-morning-i,.a-afternoon-i,.a-evening-i {
+    width: 20px;
+    height: 20px;
+}
+
+.a-morning-i-edit,.a-afternoon-i-edit,.a-evening-i-edit {
+    width: 20px;
+    height: 20px;
+}
+
+.a-morning,.a-afternoon,.a-evening {
+    display: none;
+}
+
+.a-morning-edit,.a-afternoon-edit,.a-evening-edit {
+    display: none;
+}
+
+.a-m-icon-i,.a-a-icon-i,.a-e-icon-i {
+    width: 30px;
+    height: 30px;
+}
+
+.a-m-icon-i-edit,.a-a-icon-i-edit,.a-e-icon-i-edit {
+    width: 30px;
+    height: 30px;
+}
+
+.selected-tr {
+    height: 30px;
+}
+
+.calendar-table {
+    border: 1px solid;
+    width: 480px;
+    border-radius: 5px;
+    background-color: #FFF5E5;
+}
+
+.s-info {
+    width: 480px;
+    height: 130px;
+    border: 1px solid blue;
+    border-radius: 5px;
+    background-color: #E8FCFD;
+    margin-botton: 4px;
+}
+
+.dayModel {
+    width: 440px;
+    height: 130px;
+    border: 1px solid #D892D3;
+    border-radius: 5px;
+    background-color: #FFF2FF;
+    margin-botton: 4px;
+}

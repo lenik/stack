@@ -100,7 +100,6 @@ public class AttendanceType
     /**
      * 其他
      */
-    public static final AttendanceType rest1 = new AttendanceType('Y', "不加班", "stop.jpg", false); // 不应晚加班
     public static final AttendanceType rest2 = new AttendanceType('Z', "公休", "stop.jpg", false); // 公休
 
 }

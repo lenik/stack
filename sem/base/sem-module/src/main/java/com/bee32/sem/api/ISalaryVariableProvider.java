@@ -9,6 +9,7 @@ public interface ISalaryVariableProvider {
     String ARG_EMPLOYEE = "employee";
     String ARG_BEGIN_DATE = "beginDate";
     String ARG_END_DATE = "endDate";
+    String ARG_YEARMONTH = "yearMonth";
 
     /**
      * Evaluate a variable name.

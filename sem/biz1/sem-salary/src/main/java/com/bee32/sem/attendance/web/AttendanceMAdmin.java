@@ -13,21 +13,17 @@ import com.bee32.sem.attendance.util.AttendanceDRecord;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.salary.util.ColumnModel;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceMAdmin
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
-    public static final String[] calendarViewStyleClass = { "calendarView-notavailable", "calendarView-available" };
 
     List<EmployeeInfoDto> allEmployees;
     Date openDate = new Date();
-    Date restrictionDate = new Date();
     List<AttendanceMRecordDto> attendances;
     AttendanceMRecordDto editingAttendance;
-    List<ColumnModel> columns;
 
     public AttendanceMAdmin() {
         super(AttendanceMRecord.class, AttendanceMRecordDto.class, 0, AttendanceCriteria.listByYearMonth( //
@@ -56,24 +52,6 @@ public class AttendanceMAdmin
 
             attendances.add(attendance);
         }
-    }
-
-    void generateColumns() {
-        if (columns == null)
-            columns = new ArrayList<ColumnModel>();
-        else
-            columns.clear();
-
-        int columnNumber = SalaryDateUtil.getDayNumberOfMonth(openDate);
-        for (int i = 1; i <= columnNumber; i++) {
-            columns.add(new ColumnModel(Integer.toString(i), i - 1, 0));
-        }
-    }
-
-    public void saveList() {
-        /**
-         * 本月已经存在考勤记录的月，将不再添加进去
-         */
     }
 
     AttendanceDRecord warpTmpAttendance() {
@@ -142,10 +120,6 @@ public class AttendanceMAdmin
 
     public void setEditingAttendance(AttendanceMRecordDto editingAttendance) {
         this.editingAttendance = editingAttendance;
-    }
-
-    public List<ColumnModel> getColumns() {
-        return columns;
     }
 
     public List<AttendanceType> getAttendanceTypes() {

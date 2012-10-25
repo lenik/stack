@@ -28,9 +28,9 @@ selectStatus = 0;
 
 var tempDay = new SelectedDay();
 
-$(".calendarView-available").click(function() {
+$(".calendarView-batch-available").click(function() {
     var clickDay = new SelectedDay();
-    clickDay.day = $(this).attr("id");
+    clickDay.day = $(this).children(".calendar-view-day").text().trim();
 
     if (selectStatus == 0) {
         tempDay = clickDay;
@@ -42,7 +42,7 @@ $(".calendarView-available").click(function() {
             selectStatus = 0;
         }
         if (clickDay.day != tempDay.day) {
-            $("#" + tempDay.day).css("background-color", "#D0FFD0");
+            $("#batchEditView" + tempDay.day).css("background-color", "#D0FFD0");
             tempDay = clickDay;
             $(this).css("background-color", "yellow");
         }
@@ -85,8 +85,8 @@ $(".a-m-types").children(".a-m-types-c").each(
                         var clicktype = types.get(clicktext);
 
                         if (selectedday != 0 && selectStatus == 1) {
-                            $("#" + selectedday).children(".a-morning").text(clicktext);
-                            $("#" + selectedday).children(".a-morning-i").attr('src',
+                            $("#batchEditView" + selectedday).children(".a-morning").text(clicktext);
+                            $("#batchEditView" + selectedday).children(".a-morning-i").attr('src',
                                     clicktype.icon);
                             // $(".a-m-icon").text(clicktype.icon);
                             $(".a-m-icon-i").attr('src', clicktype.icon);
@@ -127,8 +127,8 @@ $(".a-a-types").children(".a-a-types-c").each(
                         var clicktype = types.get(clicktext);
 
                         if (selectedday != 0 && selectStatus == 1) {
-                            $("#" + selectedday).children(".a-afternoon").text(clicktext);
-                            $("#" + selectedday).children(".a-afternoon-i").attr('src',
+                            $("#batchEditView" + selectedday).children(".a-afternoon").text(clicktext);
+                            $("#batchEditView" + selectedday).children(".a-afternoon-i").attr('src',
                                     clicktype.icon);
                             // $(".a-a-icon").text(clicktype.icon);
                             $(".a-a-icon-i").attr('src', clicktype.icon);
@@ -168,8 +168,8 @@ $(".a-e-types").children(".a-e-types-c").each(
                         var clicktype = types.get(clicktext);
 
                         if (selectedday != 0 && selectStatus == 1) {
-                            $("#" + selectedday).children(".a-evening").text(clicktext);
-                            $("#" + selectedday).children(".a-evening-i").attr('src',
+                            $("#batchEditView" + selectedday).children(".a-evening").text(clicktext);
+                            $("#batchEditView" + selectedday).children(".a-evening-i").attr('src',
                                     clicktype.icon);
                             // $(".a-e-icon").text(clicktype.icon);
                             $(".a-e-icon-i").attr('src', clicktype.icon);
