@@ -45,7 +45,40 @@
         <table>
             <tr>
                 <td valign="top">
-                    <t:panelGrid columns="2" styleClass="s-info" >
+                    <table class="calendar-table">
+                        <tr>
+                            <td class="attendance-calenda-table-header">星期天</td>
+                            <td class="attendance-calenda-table-header">星期一</td>
+                            <td class="attendance-calenda-table-header">星期二</td>
+                            <td class="attendance-calenda-table-header">星期三</td>
+                            <td class="attendance-calenda-table-header">星期四</td>
+                            <td class="attendance-calenda-table-header">星期五</td>
+                            <td class="attendance-calenda-table-header">星期六</td>
+                        </tr>
+                        <ui:repeat var="attendanceList" value="${obj.monthView}">
+                            <tr style="height:50px;">
+                                <ui:repeat var="attendance" value="${attendanceList}">
+                                    <td id="editCalendarView${attendance.day}"
+                                        class="${attendance.day == 0 ? 'calendarView-notavailable':'calendarView-edit-available'}">
+                                        <div class="calendar-view-day">
+                                            ${attendance.day}
+                                        </div>
+                                        <img class="a-morning-i-edit" alt="${attendance.morning.value}" src="${attendance.morning.iconString}"
+                                            title="${attendance.morning.name}" /><img class="a-afternoon-i-edit" alt="${attendance.afternoon.value}" src="${attendance.afternoon.iconString}"
+                                            title="${attendance.afternoon.name}" /><img class="a-evening-i-edit" alt="${attendance.evening.value}" src="${attendance.evening.iconString}"
+                                            title="${attendance.evening.name}" />
+                                    </td>
+                                </ui:repeat>
+                            </tr>
+
+                        </ui:repeat>
+
+
+                    </table>
+
+                </td>
+                <td valign="top">
+                    <t:panelGrid columns="2" styleClass="s-info">
                         <h:outputText value="雇员:" styleClass="e-link" onclick="${obj.employee.clickAction}" />
                         <t:panelGroup>
                             <p:inputText id="oename" value="${obj.employee.personName}" readonly="true" />
@@ -62,119 +95,59 @@
                         <h:outputText value="是否为安全月：" />
                         <p:selectBooleanCheckbox value="${obj.safe}" />
                     </t:panelGrid>
-
-
-                    <table class="calendar-table">
-                        <tr>
-                            <td class="attendance-calenda-table-header">星期天</td>
-                            <td class="attendance-calenda-table-header">星期一</td>
-                            <td class="attendance-calenda-table-header">星期二</td>
-                            <td class="attendance-calenda-table-header">星期三</td>
-                            <td class="attendance-calenda-table-header">星期四</td>
-                            <td class="attendance-calenda-table-header">星期五</td>
-                            <td class="attendance-calenda-table-header">星期六</td>
-                        </tr>
-                        <ui:repeat var="attendanceList" value="${obj.monthView}">
-                            <tr style="height:50px;">
-                                <ui:repeat var="attendance" value="${attendanceList}">
-                                    <td id="editCalendarView${attendance.day}" class="${attendance.day == 0 ? 'calendarView-notavailable':'calendarView-edit-available'}">
-                                        <div class="calendar-view-day" style="width:100%;height:100%;z-index:-1;color:red;font-size:25px;">
-                                            ${attendance.day}
-                                        </div>
-                                        <a class="a-morning-edit">${attendance.morning.value}</a>
-                                        <a class="a-afternoon-edit">${attendance.afternoon.value}</a>
-                                        <a class="a-evening-edit">${attendance.evening.value}</a>
-                                        <img class="a-morning-i-edit" src="${attendance.morning.iconString}" /><img class="a-afternoon-i-edit" src="${attendance.afternoon.iconString}" /><img class="a-evening-i-edit" src="${attendance.evening.iconString}" />
-                                    </td>
-                                </ui:repeat>
-                            </tr>
-
-                        </ui:repeat>
-
-
-                    </table>
-
-                </td>
-                <td valign="top">
                     <table class="dayModel">
                         <tr>
                             <td>时间</td>
                             <td>图标</td>
-                            <td>值</td>
                             <td>名称</td>
                             <td>候选项</td>
                         </tr>
                         <tr class="selected-tr">
                             <td>上午</td>
                             <td class="a-m-icon-edit">
-                                <img class="a-m-icon-i-edit" src="div.jpg" />
+                                <img class="a-m-icon-i-edit" src="notavailable.jpg" />
                             </td>
-                            <td class="a-m-value-edit">-</td>
                             <td class="a-m-name-edit">不可用</td>
                             <td class="a-m-types-edit">
                                 <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                    <a class="a-m-types-c-edit">${type.value}</a>
+                                    <img class="a-m-types-c-edit" src="${type.iconString}" alt="${type.value}"
+                                        title="${type.name}" />
                                 </ui:repeat>
                             </td>
                         </tr>
                         <tr class="selected-tr">
                             <td>下午</td>
                             <td class="a-a-icon">
-                                <img class="a-a-icon-i-edit" src="div.jpg" />
+                                <img class="a-a-icon-i-edit" src="notavailable.jpg" />
                             </td>
-                            <td class="a-a-value-edit">-</td>
                             <td class="a-a-name-edit">不可用</td>
                             <td class="a-a-types-edit">
                                 <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                    <a class="a-a-types-c-edit">${type.value}</a>
+                                    <img class="a-a-types-c-edit" src="${type.iconString}" alt="${type.value}"
+                                        title="${type.name}" />
                                 </ui:repeat>
                             </td>
                         </tr>
                         <tr class="selected-tr">
                             <td>晚上</td>
                             <td class="a-e-icon">
-                                <img class="a-e-icon-i-edit" src="div.jpg" />
+                                <img class="a-e-icon-i-edit" src="notavailable.jpg" />
                             </td>
-                            <td class="a-e-value-edit">-</td>
                             <td class="a-e-name-edit">不可用</td>
                             <td class="a-e-types-edit">
                                 <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                    <a class="a-e-types-c-edit">${type.value}</a>
+                                    <img class="a-e-types-c-edit" src="${type.iconString}" alt="${type.value}"
+                                        title="${type.name}" />
                                 </ui:repeat>
                             </td>
                         </tr>
                     </table>
 
                     <h:inputHidden id="attendanceData" value="${obj.attendanceData}" />
-                    <p:fieldset legend="出勤类型参照" toggleable="true" toggleSpeed="500">
-                        <table>
-                            <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                <tr class="a-types-edit">
-                                    <td class="a-types-icon-td-edit">
-                                        <a class="a-types-icon-edit">
-                                            ${type.iconString}
-                                        </a>
-                                        <img src="${type.iconString}" style="width:30px;height:30px;" alt="test" />
-                                    </td>
-                                    <td class="a-types-value-td-edit">
-                                        <a class="a-types-value-edit">
-                                            ${type.value}
-                                        </a>
-                                    </td>
-                                    <td class="a-types-name-td-edit">
-                                        <a class="a-types-name-edit">
-                                            ${type.name}
-                                        </a>
-                                    </td>
-                                </tr>
-                            </ui:repeat>
-                        </table>
-                    </p:fieldset>
                 </td>
             </tr>
 
         </table>
-        <script type="text/javascript" src="./jshashtable-2.1.js"></script>
         <script language="javascript" src="./attendance-edit.js"></script>
 
     </ui:define>
@@ -197,7 +170,8 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="保存" actionListener="${bean.saveBatchAttendance}" oncomplete="batchDialog.hide();" update=":mainForm ${_contentUpdate} ${mirrorTargets}" />
+                <p:commandButton value="保存" actionListener="${bean.saveBatchAttendance}" oncomplete="batchDialog.hide();"
+                    update=":mainForm ${_contentUpdate} ${mirrorTargets}" />
                 <p:commandButton value="取消" onclick="batchDialog.hide();" />
             </h:form>
         </p:dialog>
@@ -207,125 +181,99 @@
                 <table>
                     <tr>
                         <td valign="top">
-                            <div
-                                style="height:34px;background-image:url('./titlebg2.png');border-radius: 5px;margin:3px;width:100%;"
-                                align="center">
-                                <h:outputText value="雇员" />
-                                <span style="background-color:#cecece;">${bean.editingAttendance.employee.personName}</span>
-                                <span style="background-color:#cecece;">${bean.editingAttendance.yearMonthString}</span>
-                                <h:outputText value="出勤情况" />
-                            </div>
-                            <div
-                                style="height:34px;background-image:url('./titlebg2.png');border-radius: 5px;margin:3px;width:100%;">
-                                <h:outputText value="安全月：" />
-                                <p:selectBooleanCheckbox value="${bean.editingAttendance.safe}" />
-                            </div>
-
-                            <table class="calendar-table">
-                                <tr>
-                                    <td class="attendance-calenda-table-header">星期天</td>
-                                    <td class="attendance-calenda-table-header">星期一</td>
-                                    <td class="attendance-calenda-table-header">星期二</td>
-                                    <td class="attendance-calenda-table-header">星期三</td>
-                                    <td class="attendance-calenda-table-header">星期四</td>
-                                    <td class="attendance-calenda-table-header">星期五</td>
-                                    <td class="attendance-calenda-table-header">星期六</td>
-                                </tr>
-                                <ui:repeat var="attendanceList" value="${bean.editingAttendance.monthView}">
-                                    <tr style="height:50px;">
-                                        <ui:repeat var="attendance" value="${attendanceList}">
-                                            <td id="batchEditView${attendance.day}" class="${attendance.day == 0 ? 'calendarView-notavailable':'calendarView-batch-available'}">
-                                                <div class="calendar-view-day" style="width:100%;height:100%;z-index:-1;color:red;font-size:25px;">
-                                                    ${attendance.day}
-                                                </div>
-                                                <a class="a-morning">${attendance.morning.value}</a>
-                                                <a class="a-afternoon">${attendance.afternoon.value}</a>
-                                                <a class="a-evening">${attendance.evening.value}</a>
-                                                <img class="a-morning-i" src="${attendance.morning.iconString}" /><img class="a-afternoon-i" src="${attendance.afternoon.iconString}" /><img class="a-evening-i" src="${attendance.evening.iconString}" />
-                                            </td>
-                                        </ui:repeat>
+                            <div>
+                                <div class="calendar-tab-header">
+                                    <span style="background-color:#cecece;">${bean.editingAttendance.yearMonthString}</span>
+                                </div>
+                                <table class="calendar-table">
+                                    <tr>
+                                        <td class="attendance-calenda-table-header">星期天</td>
+                                        <td class="attendance-calenda-table-header">星期一</td>
+                                        <td class="attendance-calenda-table-header">星期二</td>
+                                        <td class="attendance-calenda-table-header">星期三</td>
+                                        <td class="attendance-calenda-table-header">星期四</td>
+                                        <td class="attendance-calenda-table-header">星期五</td>
+                                        <td class="attendance-calenda-table-header">星期六</td>
                                     </tr>
+                                    <ui:repeat var="attendanceList" value="${bean.editingAttendance.monthView}">
+                                        <tr style="height:50px;">
+                                            <ui:repeat var="attendance" value="${attendanceList}">
+                                                <td id="batchEditView${attendance.day}"
+                                                    class="${attendance.day == 0 ? 'calendarView-notavailable':'calendarView-batch-available'}">
+                                                    <div class="calendar-view-day">
+                                                        ${attendance.day}
+                                                    </div>
+                                                    <img class="a-morning-i" alt="${attendance.morning.value}" src="${attendance.morning.iconString}"
+                                                        title="${attendance.morning.name}" /><img class="a-afternoon-i" alt="${attendance.afternoon.value}"
+                                                        src="${attendance.afternoon.iconString}" title="${attendance.afternoon.name}" /><img class="a-evening-i" alt="${attendance.evening.value}" src="${attendance.evening.iconString}"
+                                                        title="${attendance.evening.name}" />
+                                                </td>
+                                            </ui:repeat>
+                                        </tr>
 
-                                </ui:repeat>
+                                    </ui:repeat>
 
-                            </table>
+                                </table>
+                            </div>
 
                         </td>
                         <td valign="top">
+                            <div style="border:1px solid;">
+                                <div class="calendar-tab-header"></div>
+                                <h:outputText value="雇员" />
+                                <span style="background-color:#cecece;">${bean.editingAttendance.employee.personName}</span>
+                                <h:outputText value="安全月：" />
+                                <p:selectBooleanCheckbox value="${bean.editingAttendance.safe}" />
+                            </div>
                             <table class="dayModel">
                                 <tr>
                                     <td>时间</td>
                                     <td>图标</td>
-                                    <td>值</td>
                                     <td>名称</td>
                                     <td>候选项</td>
                                 </tr>
                                 <tr class="selected-tr">
                                     <td>上午</td>
                                     <td class="a-m-icon">
-                                        <img class="a-m-icon-i" src="div.jpg" />
+                                        <img class="a-m-icon-i" src="notavailable.jpg" />
                                     </td>
-                                    <td class="a-m-value">-</td>
                                     <td class="a-m-name">不可用</td>
                                     <td class="a-m-types">
                                         <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                            <a class="a-m-types-c">${type.value}</a>
+                                            <img class="a-m-types-c" src="${type.iconString}" alt="${type.value}"
+                                                title="${type.name}" style="width:20px;height:20px;" />
                                         </ui:repeat>
                                     </td>
                                 </tr>
                                 <tr class="selected-tr">
                                     <td>下午</td>
                                     <td class="a-a-icon">
-                                        <img class="a-a-icon-i" src="div.jpg" />
+                                        <img class="a-a-icon-i" src="notavailable.jpg" />
                                     </td>
-                                    <td class="a-a-value">-</td>
                                     <td class="a-a-name">不可用</td>
                                     <td class="a-a-types">
                                         <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                            <a class="a-a-types-c">${type.value}</a>
+                                            <img class="a-a-types-c" src="${type.iconString}" alt="${type.value}"
+                                                title="${type.name}" style="width:20px;height:20px;" />
                                         </ui:repeat>
                                     </td>
                                 </tr>
                                 <tr class="selected-tr">
                                     <td>晚上</td>
                                     <td class="a-e-icon">
-                                        <img class="a-e-icon-i" src="div.jpg" />
+                                        <img class="a-e-icon-i" src="notavailable.jpg" />
                                     </td>
-                                    <td class="a-e-value">-</td>
                                     <td class="a-e-name">不可用</td>
                                     <td class="a-e-types">
                                         <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                            <a class="a-e-types-c">${type.value}</a>
+                                            <img class="a-e-types-c" src="${type.iconString}" alt="${type.value}"
+                                                title="${type.name}" style="width:20px;height:20px;" />
                                         </ui:repeat>
                                     </td>
                                 </tr>
                             </table>
 
                             <h:inputHidden id="editingAttendanceData" value="${bean.editingAttendance.attendanceData}" />
-                            <p:fieldset legend="出勤类型参照" toggleable="true" toggleSpeed="500">
-                                <table>
-                                    <ui:repeat var="type" value="${bean.attendanceTypes}">
-                                        <tr class="a-types">
-                                            <td class="a-types-icon-td">
-                                                <a class="a-types-icon">
-                                                    ${type.iconString}
-                                                </a>
-                                                <img src="${type.iconString}" style="width:30px;height:30px;" alt="test" />
-                                            </td>
-                                            <td class="a-types-value-td">
-                                                <a class="a-types-value">
-                                                    ${type.value}
-                                                </a>
-                                            </td>
-                                            <td class="a-types-name-td">
-                                                <a class="a-types-name">
-                                                    ${type.name}
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </ui:repeat>
-                                </table>
-                            </p:fieldset>
                         </td>
                     </tr>
 
@@ -335,7 +283,6 @@
                     update=":batchForm" />
                 <p:commandButton value="取消" onclick="singledlg.hide();" />
 
-                <script type="text/javascript" src="./jshashtable-2.1.js"></script>
                 <script language="javascript" src="./attendance.js"></script>
             </h:form>
         </p:dialog>

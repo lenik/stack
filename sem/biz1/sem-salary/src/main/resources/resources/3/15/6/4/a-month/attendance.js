@@ -1,5 +1,3 @@
-var types = new Hashtable();
-
 function SelectedDay() {
     this.day = 0;
 }
@@ -9,20 +7,6 @@ function AttendanceType() {
     this.value = '-';
     this.name = 'notavailable';
 }
-
-$(".a-types").each(function() {
-
-    var icon = $(this).children(".a-types-icon-td").children(".a-types-icon").text().trim();
-    var value = $(this).children(".a-types-value-td").children(".a-types-value").text().trim();
-    var name = $(this).children(".a-types-name-td").children(".a-types-name").text().trim();
-
-    var type = new AttendanceType();
-    type.icon = icon;
-    type.value = value;
-    type.name = name;
-
-    types.put(value, type);
-});
 
 selectStatus = 0;
 
@@ -48,26 +32,33 @@ $(".calendarView-batch-available").click(function() {
         }
     }
 
-    var morning = $(this).children(".a-morning").text().trim();
-    var afternoon = $(this).children(".a-afternoon").text().trim();
-    var evening = $(this).children(".a-evening").text().trim();
+    var morning = new AttendanceType();
+    morning.icon = $(this).children(".a-morning-i").attr('src').trim();
+    morning.value = $(this).children(".a-morning-i").attr('alt').trim();
+    morning.name = $(this).children(".a-morning-i").attr('title').trim();
 
-    var mt = types.get(morning);
-    var at = types.get(afternoon);
-    var et = types.get(evening);
+    var afternoon = new AttendanceType();
+    afternoon.icon = $(this).children(".a-afternoon-i").attr('src').trim();
+    afternoon.value = $(this).children(".a-afternoon-i").attr('alt').trim();
+    afternoon.name = $(this).children(".a-afternoon-i").attr('title').trim();
+
+    var evening = new AttendanceType();
+    evening.icon = $(this).children(".a-evening-i").attr('src').trim();
+    evening.value = $(this).children(".a-evening-i").attr('alt').trim();
+    evening.name = $(this).children(".a-evening-i").attr('title').trim();
 
     // $(".a-m-icon").text(mt.icon);
-    $(".a-m-icon-i").attr('src', mt.icon);
-    $(".a-m-value").text(mt.value);
-    $(".a-m-name").text(mt.name);
+    $(".a-m-icon-i").attr('src', morning.icon);
+    $(".a-m-value").text(morning.value);
+    $(".a-m-name").text(morning.name);
     // $(".a-a-icon").text(at.icon);
-    $(".a-a-icon-i").attr('src', at.icon);
-    $(".a-a-value").text(at.value);
-    $(".a-a-name").text(at.name);
+    $(".a-a-icon-i").attr('src', afternoon.icon);
+    $(".a-a-value").text(afternoon.value);
+    $(".a-a-name").text(afternoon.name);
     // $(".a-e-icon").text(et.icon);
-    $(".a-e-icon-i").attr('src', et.icon);
-    $(".a-e-value").text(et.value);
-    $(".a-e-name").text(et.name);
+    $(".a-e-icon-i").attr('src', evening.icon);
+    $(".a-e-value").text(evening.value);
+    $(".a-e-name").text(evening.name);
 
 }
 
@@ -80,18 +71,19 @@ $(".a-m-types").children(".a-m-types-c").each(
             $(this).bind(
                     "click",
                     function() {
-                        var clicktext = $(this).text().trim();
+                        var clickType = new AttendanceType();
+                        clickType.value = $(this).attr('alt').trim();
+                        clickType.icon = $(this).attr('src').trim();
+                        clickType.name = $(this).attr('title').trim();
+
                         var selectedday = tempDay.day;
-                        var clicktype = types.get(clicktext);
 
                         if (selectedday != 0 && selectStatus == 1) {
-                            $("#batchEditView" + selectedday).children(".a-morning").text(clicktext);
                             $("#batchEditView" + selectedday).children(".a-morning-i").attr('src',
-                                    clicktype.icon);
+                                    clickType.icon).attr('alt', clickType.value);
                             // $(".a-m-icon").text(clicktype.icon);
-                            $(".a-m-icon-i").attr('src', clicktype.icon);
-                            $(".a-m-value").text(clicktype.value);
-                            $(".a-m-name").text(clicktype.name);
+                            $(".a-m-icon-i").attr('src', clickType.icon);
+                            $(".a-m-name").text(clickType.name);
 
                             var attendanceData = $("#monthView\\:editingAttendanceData").val()
                                     .trim();
@@ -103,7 +95,7 @@ $(".a-m-types").children(".a-m-types-c").each(
                             var tmpstring2 = tmpstring1.substring(index2 + 1);
                             var prifix = tmpstring1.substring(0, index2 + 1);
                             // var morning = tmpstring2.substring(0, 1);
-                            var morning = clicktext;
+                            var morning = clickType.value;
                             var afternoon = tmpstring2.substring(2, 3);
                             // var afternoon = clicktext;
                             var evening = tmpstring2.substring(4);
@@ -122,18 +114,19 @@ $(".a-a-types").children(".a-a-types-c").each(
             $(this).bind(
                     "click",
                     function() {
-                        var clicktext = $(this).text().trim();
+                        var clickType = new AttendanceType();
+                        clickType.icon = $(this).attr('src').trim();
+                        clickType.value = $(this).attr('alt').trim();
+                        clickType.name = $(this).attr('title').trim();
+
                         var selectedday = tempDay.day;
-                        var clicktype = types.get(clicktext);
 
                         if (selectedday != 0 && selectStatus == 1) {
-                            $("#batchEditView" + selectedday).children(".a-afternoon").text(clicktext);
-                            $("#batchEditView" + selectedday).children(".a-afternoon-i").attr('src',
-                                    clicktype.icon);
+                            $("#batchEditView" + selectedday).children(".a-afternoon-i").attr(
+                                    'src', clickType.icon).attr('alt', clickType.value);
                             // $(".a-a-icon").text(clicktype.icon);
-                            $(".a-a-icon-i").attr('src', clicktype.icon);
-                            $(".a-a-value").text(clicktype.value);
-                            $(".a-a-name").text(clicktype.name);
+                            $(".a-a-icon-i").attr('src', clickType.icon);
+                            $(".a-a-name").text(clickType.name);
 
                             var attendanceData = $("#monthView\\:editingAttendanceData").val()
                                     .trim();
@@ -146,7 +139,7 @@ $(".a-a-types").children(".a-a-types-c").each(
                             var prifix = tmpstring1.substring(0, index2 + 1);
                             var morning = tmpstring2.substring(0, 1);
                             // var afternoon = tmpstring2.substring(2,3);
-                            var afternoon = clicktext;
+                            var afternoon = clickType.value;
                             var evening = tmpstring2.substring(4);
                             var toreplace = prifix + morning + "," + afternoon + "," + evening;
                             var replaced = attendanceData.replace(tmpstring1, toreplace);
@@ -163,18 +156,19 @@ $(".a-e-types").children(".a-e-types-c").each(
                     "click",
                     function() {
 
-                        var clicktext = $(this).text().trim();
+                        var clickType = new AttendanceType();
+                        clickType.icon = $(this).attr('src').trim();
+                        clickType.value = $(this).attr('alt').trim();
+                        clickType.name = $(this).attr('title').trim();
+
                         var selectedday = tempDay.day;
-                        var clicktype = types.get(clicktext);
 
                         if (selectedday != 0 && selectStatus == 1) {
-                            $("#batchEditView" + selectedday).children(".a-evening").text(clicktext);
                             $("#batchEditView" + selectedday).children(".a-evening-i").attr('src',
-                                    clicktype.icon);
+                                    clickType.icon).attr('alt', clickType.value);
                             // $(".a-e-icon").text(clicktype.icon);
-                            $(".a-e-icon-i").attr('src', clicktype.icon);
-                            $(".a-e-value").text(clicktype.value);
-                            $(".a-e-name").text(clicktype.name);
+                            $(".a-e-icon-i").attr('src', clickType.icon);
+                            $(".a-e-name").text(clickType.name);
 
                             var attendanceData = $("#monthView\\:editingAttendanceData").val()
                                     .trim();
@@ -186,7 +180,7 @@ $(".a-e-types").children(".a-e-types-c").each(
                             var prifix = tmpstring1.substring(0, index2 + 1);
                             var morning = tmpstring2.substring(0, 1);
                             var afternoon = tmpstring2.substring(2, 3);
-                            var evening = clicktext;
+                            var evening = clickType.value;
                             var toreplace = prifix + morning + "," + afternoon + "," + evening;
                             var replaced = attendanceData.replace(tmpstring1, toreplace);
                             $("#monthView\\:editingAttendanceData").val(replaced);
