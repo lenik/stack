@@ -87,13 +87,13 @@
                     actionListener="${bean.showContent(entry)}" update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
                 </p:commandButton>
                 <c:if test="${editInline}">
-                    <p:commandButton id="editTool" title="修改" disabled="${not entry.locked}" icon="ui-icon-pencil"
+                    <p:commandButton id="editTool" title="修改" disabled="${entry.locked}" icon="ui-icon-pencil"
                         rendered="${editable != null ? editable : true}" actionListener="${bean.showEditForm(entry)}"
                         update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
                     </p:commandButton>
                 </c:if>
                 <c:if test="${deleteInline}">
-                    <p:commandButton id="delTool" title="删除" disabled="${not entry.locked}" icon="ui-icon-close"
+                    <p:commandButton id="delTool" title="删除" disabled="${entry.locked}" icon="ui-icon-close"
                         rendered="${deletable != null ? deletable : true}" onclick="deleteConfirmDialog.show()">
                         <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
                     </p:commandButton>

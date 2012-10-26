@@ -23,16 +23,11 @@ public class AttendanceMRecordDto
     private static final long serialVersionUID = 1L;
     public static final String[] weekday = { "星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
-    int tmpId;
     int year;
     int month;
     EmployeeInfoDto employee;
     boolean safe;
-// Integer[] providerArgs;
-// List<AttendanceDRecord> attendances;
     String attendanceData;
-
-    List<List<AttendanceDRecord>> monthView;
 
     public AttendanceMRecordDto() {
         int yearMonth = SalaryDateUtil.convertToYearMonth(new Date());
@@ -46,6 +41,7 @@ public class AttendanceMRecordDto
         month = source.getYearMonth() % 100;
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
         attendanceData = source.getAttendanceData();
+        safe = source.isSafe();
         if (attendanceData == null)
             attendanceData = generatorDefaultAttendanceData(year, month);
     }
@@ -54,6 +50,7 @@ public class AttendanceMRecordDto
     protected void _unmarshalTo(AttendanceMRecord target) {
         target.setYearMonth(year * 100 + month);
         merge(target, "employee", employee);
+        target.setSafe(safe);
         target.setAttendanceData(attendanceData);
     }
 
@@ -192,14 +189,6 @@ public class AttendanceMRecordDto
         attendanceData = data;
     }
 
-    public int getTmpId() {
-        return tmpId;
-    }
-
-    public void setTmpId(int tmpId) {
-        this.tmpId = tmpId;
-    }
-
     public int getYear() {
         return year;
     }
@@ -245,12 +234,7 @@ public class AttendanceMRecordDto
     public List<List<AttendanceDRecord>> getMonthView() {
         Map<Integer, AttendanceDRecord> records = wrapToAttendanceMap(attendanceData);
         int yearMonth = SalaryDateUtil.convertToYearMonth(new Date());
-        this.monthView = calendarView(yearMonth, records);
-        return monthView;
-    }
-
-    public void setMonthView(List<List<AttendanceDRecord>> monthView) {
-        this.monthView = monthView;
+        return calendarView(yearMonth, records);
     }
 
     public String getAttendanceData() {

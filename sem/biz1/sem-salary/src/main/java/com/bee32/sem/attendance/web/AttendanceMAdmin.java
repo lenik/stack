@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.bee32.plover.faces.utils.SelectableList;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.attendance.dto.AttendanceMRecordDto;
 import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.attendance.entity.AttendanceType;
@@ -21,69 +21,57 @@ public class AttendanceMAdmin
 
     List<EmployeeInfoDto> allEmployees;
     Date openDate = new Date();
-    List<AttendanceMRecordDto> attendances;
     AttendanceMRecordDto editingAttendance;
 
     public AttendanceMAdmin() {
-        super(AttendanceMRecord.class, AttendanceMRecordDto.class, 0, AttendanceCriteria.listByYearMonth( //
-                SalaryDateUtil.convertToYearMonth(new Date())));
-
-        inintAttendanceMR();
+        super(AttendanceMRecord.class, AttendanceMRecordDto.class, 0);
     }
 
+    @Override
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+
+        int yearMonth = SalaryDateUtil.convertToYearMonth(openDate);
+        elements.add(AttendanceCriteria.listByYearMonth(yearMonth));
+
+    }
+
+    /**
+     * generator & save default attendanceData
+     */
     public void inintAttendanceMR() {
-        attendances = new ArrayList<AttendanceMRecordDto>();
-        allEmployees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
+        List<EmployeeInfo> employees = DATA(EmployeeInfo.class).list();
+
+        List<AttendanceMRecord> entityList = new ArrayList<AttendanceMRecord>();
         int yearMonth = SalaryDateUtil.convertToYearMonth(openDate);
 
-        for (int i = 0; i < allEmployees.size(); i++) {
-
-            AttendanceMRecordDto attendance = new AttendanceMRecordDto();
-            attendance.setTmpId(i);
-            attendance.setEmployee(allEmployees.get(i));
-            attendance.setSafe(true);
-            attendance.setRecords(//
-                    AttendanceMRecordDto.generatorDefaultAttendanceData(yearMonth / 100, yearMonth % 100));
-            attendance.setAttendanceData(//
-                    AttendanceMRecordDto.generatorDefaultAttendanceData(yearMonth / 100, yearMonth % 100));
-            attendance.setYear(yearMonth / 100);
-            attendance.setMonth(yearMonth % 100);
-
-            attendances.add(attendance);
-        }
-    }
-
-    public void showEditingAttendance(AttendanceMRecordDto editingAttendance) {
-        this.editingAttendance = editingAttendance;
-    }
-
-    public void test() {
-        attendances.set(editingAttendance.getTmpId(), editingAttendance);
-    }
-
-    public void saveBatchAttendance() {
-
-        List<AttendanceMRecord> entities = new ArrayList<AttendanceMRecord>();
-
-        for (AttendanceMRecordDto dto : attendances) {
-            try {
-                AttendanceMRecord entity = dto.unmarshal();
-                int yearMonth = entity.getYearMonth();
-                if (isMonthRecordExists(entity.getEmployee().getId(), yearMonth))
-                    uiLogger.warn(dto.getEmployee().getPersonName() + "『" + //
-                            yearMonth / 100 + "年" + yearMonth % 100 + "月』 出勤记录 已经存在！");
-                else
-                    entities.add(entity);
-            } catch (Exception e) {
-                e.printStackTrace();
+        for (EmployeeInfo employee : employees) {
+            if (isMonthRecordExists(employee.getId(), yearMonth))
+                uiLogger.warn(employee.getPerson().getDisplayName() + "『" + //
+                        yearMonth / 100 + "年" + yearMonth % 100 + "月』 出勤记录 已经存在！");
+            else {
+                AttendanceMRecord record = new AttendanceMRecord();
+                record.setEmployee(employee);
+                record.setYearMonth(yearMonth);
+                record.setSafe(true);
+                record.setAttendanceData(AttendanceMRecordDto.generatorDefaultAttendanceData(yearMonth / 100,
+                        yearMonth % 100));
+                entityList.add(record);
             }
         }
 
-        if (entities.size() > 0) {
-            DATA(AttendanceMRecord.class).saveAll(entities);
-        } else {
+        if (entityList.size() > 0) {
+            try {
+                DATA(AttendanceMRecord.class).saveAll(entityList);
+                refreshData();
+                uiLogger.info("默认出勤记录生成完毕！");
+            } catch (Exception e) {
+                e.printStackTrace();
+                uiLogger.warn("生成默认出勤记录发生故障" + e.getMessage());
+            }
+
+        } else
             uiLogger.warn("没有需要添加的出勤记录");
-        }
+
 
     }
 
@@ -104,14 +92,6 @@ public class AttendanceMAdmin
 
     public void setOpenDate(Date openDate) {
         this.openDate = openDate;
-    }
-
-    public SelectableList<AttendanceMRecordDto> getAttendances() {
-        return SelectableList.decorate(attendances);
-    }
-
-    public void setAttendances(List<AttendanceMRecordDto> attendances) {
-        this.attendances = attendances;
     }
 
     public AttendanceMRecordDto getEditingAttendance() {
