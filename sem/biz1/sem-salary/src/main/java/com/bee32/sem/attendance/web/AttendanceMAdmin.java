@@ -9,7 +9,6 @@ import com.bee32.sem.attendance.dto.AttendanceMRecordDto;
 import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.attendance.entity.AttendanceType;
 import com.bee32.sem.attendance.util.AttendanceCriteria;
-import com.bee32.sem.attendance.util.AttendanceDRecord;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
@@ -54,17 +53,6 @@ public class AttendanceMAdmin
         }
     }
 
-    AttendanceDRecord warpTmpAttendance() {
-        AttendanceMRecordDto oo = (AttendanceMRecordDto) getOpenedObject();
-        AttendanceDRecord attendance = new AttendanceDRecord();
-        attendance.setWeekday_zhcn("");
-        attendance.setDay(1);
-        attendance.setMorning(AttendanceType.notAvailable);
-        attendance.setAfternoon(AttendanceType.notAvailable);
-        attendance.setEvening(AttendanceType.notAvailable);
-        return attendance;
-    }
-
     public void showEditingAttendance(AttendanceMRecordDto editingAttendance) {
         this.editingAttendance = editingAttendance;
     }
@@ -80,7 +68,12 @@ public class AttendanceMAdmin
         for (AttendanceMRecordDto dto : attendances) {
             try {
                 AttendanceMRecord entity = dto.unmarshal();
-                entities.add(entity);
+                int yearMonth = entity.getYearMonth();
+                if (isMonthRecordExists(entity.getEmployee().getId(), yearMonth))
+                    uiLogger.warn(dto.getEmployee().getPersonName() + "『" + //
+                            yearMonth / 100 + "年" + yearMonth % 100 + "月』 出勤记录 已经存在！");
+                else
+                    entities.add(entity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -94,8 +87,15 @@ public class AttendanceMAdmin
 
     }
 
-    public AttendanceDRecord getTmpAttendance() {
-        return warpTmpAttendance();
+    /**
+     * return true if entity exists
+     */
+    static boolean isMonthRecordExists(Long employeeId, int yearMonth) {
+        List<AttendanceMRecord> records = DATA(AttendanceMRecord.class).list(
+                AttendanceCriteria.listRecordByEmployee(employeeId, yearMonth));
+        if (records.size() > 0)
+            return true;
+        return false;
     }
 
     public Date getOpenDate() {
