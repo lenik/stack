@@ -7,6 +7,12 @@
     </parent>
     <artifactId>sem-pricing</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <dependencies/>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-module</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
     <name>SEM :: Biz1 :: Pricing</name>
 </project>
