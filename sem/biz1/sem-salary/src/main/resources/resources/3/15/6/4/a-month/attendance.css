@@ -11,7 +11,7 @@
     border-radius: 7px;
 }
 
-.calendarView-batch-available,.calendarView-edit-available {
+.calendarView-edit-available {
     cursor: pointer;
     background-color: #D0FFD0;
     border-radius: 7px;
@@ -34,12 +34,6 @@
     width: 240px;
 }
 
-.a-m-types-c,.a-a-types-c,.a-e-types-c {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
 .a-m-types-c-edit,.a-a-types-c-edit,.a-e-types-c-edit {
     width: 20px;
     height: 20px;
@@ -54,35 +48,9 @@
     font-size: 25px;
 }
 
-.a-types-icon {
-    display: none;
-}
-
-.a-types-icon-edit {
-    display: none;
-}
-
-.a-morning-i,.a-afternoon-i,.a-evening-i {
-    width: 20px;
-    height: 20px;
-}
-
 .a-morning-i-edit,.a-afternoon-i-edit,.a-evening-i-edit {
     width: 20px;
     height: 20px;
-}
-
-.a-morning,.a-afternoon,.a-evening {
-    display: none;
-}
-
-.a-morning-edit,.a-afternoon-edit,.a-evening-edit {
-    display: none;
-}
-
-.a-m-icon-i,.a-a-icon-i,.a-e-icon-i {
-    width: 30px;
-    height: 30px;
 }
 
 .a-m-icon-i-edit,.a-a-icon-i-edit,.a-e-icon-i-edit {
@@ -122,6 +90,14 @@
     margin-botton: 4px;
 }
 
+.s-info-left {
+    width: 30%;
+}
+
+.s-info-right {
+    width: 70%;
+}
+
 .dayModel {
     width: 440px;
     height: 130px;
@@ -129,4 +105,12 @@
     border-radius: 5px;
     background-color: #FFF2FF;
     margin-botton: 4px;
+}
+
+.dayModelLeft {
+    width: 20px;
+}
+
+.dayModelRight {
+    width: 80%;
 }

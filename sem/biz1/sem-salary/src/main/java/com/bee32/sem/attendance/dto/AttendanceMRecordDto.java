@@ -21,7 +21,6 @@ public class AttendanceMRecordDto
         extends UIEntityDto<AttendanceMRecord, Long> {
 
     private static final long serialVersionUID = 1L;
-    public static final String[] weekday = { "星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
     int year;
     int month;
@@ -103,7 +102,6 @@ public class AttendanceMRecordDto
                 weekview = new ArrayList<AttendanceDRecord>();
             }
 
-            record.setWeekday_zhcn(weekday[i % 7]);
             weekview.add(record);
         }
 

@@ -10,7 +10,6 @@ public class AttendanceDRecord
     private static final long serialVersionUID = 1L;
 
     int day;
-    String weekday_zhcn;
 
     AttendanceType morning;
     AttendanceType afternoon;
@@ -25,14 +24,6 @@ public class AttendanceDRecord
 
     public void setDay(int day) {
         this.day = day;
-    }
-
-    public String getWeekday_zhcn() {
-        return weekday_zhcn;
-    }
-
-    public void setWeekday_zhcn(String weekday_zhcn) {
-        this.weekday_zhcn = weekday_zhcn;
     }
 
     public AttendanceType getMorning() {
