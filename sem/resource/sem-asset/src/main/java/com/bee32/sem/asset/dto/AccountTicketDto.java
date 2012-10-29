@@ -9,7 +9,9 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.orm.entity.CopyUtils;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.IAccountTicketSource;
 import com.bee32.sem.asset.service.IAccountTicketSourceProvider;
@@ -30,7 +32,7 @@ public class AccountTicketDto
 
     SingleVerifierWithNumberSupportDto verifyContext;
 
-    IAccountTicketSource ticketSource;
+    AccountTicketSource ticketSource;
 
     @Override
     protected void _copy() {
@@ -44,6 +46,26 @@ public class AccountTicketDto
         else
             items = Collections.emptyList();
         verifyContext = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
+        try{
+            ServiceLoader<IAccountTicketSourceProvider> providers = ServiceLoader.load(IAccountTicketSourceProvider.class);
+            for(IAccountTicketSourceProvider provider : providers) {
+                IAccountTicketSource ticketSource = provider.getSource(this.getId());
+                if (ticketSource != null) {
+                    this.ticketSource = new AccountTicketSource();
+                    this.ticketSource.setId(ticketSource.getTicketSrcId());
+                    this.ticketSource.setLabel(ticketSource.getTicketSrcLabel());
+                    this.ticketSource.setType(ticketSource.getTicketSrcType());
+                    try {
+                        this.ticketSource.setValue(ticketSource.getTicketSrcValue());
+                    } catch (FxrQueryException e) {
+                        throw new RuntimeException(e);
+                    }
+                    this.ticketSource.setClassType((Class<? extends Entity<?>>) ticketSource.getClass());
+                }
+            }
+        } catch (Exception e) {
+            new FacesUILogger(false).error("...", e);
+        }
     }
 
     @Override
@@ -128,21 +150,11 @@ public class AccountTicketDto
         this.verifyContext = verifySupport;
     }
 
-    public IAccountTicketSource getTicketSource() {
-        if (ticketSource == null) {
-            ServiceLoader<IAccountTicketSourceProvider> providers = ServiceLoader.load(IAccountTicketSourceProvider.class);
-            for(IAccountTicketSourceProvider provider : providers) {
-                IAccountTicketSource source = provider.getSource(this.getId());
-                if (source != null) {
-                     return ticketSource = source;
-                }
-            }
-        }
-
+    public AccountTicketSource getTicketSource() {
         return ticketSource;
     }
 
-    public void setTicketSource(IAccountTicketSource ticketSource) {
+    public void setTicketSource(AccountTicketSource ticketSource) {
         this.ticketSource = ticketSource;
     }
 }

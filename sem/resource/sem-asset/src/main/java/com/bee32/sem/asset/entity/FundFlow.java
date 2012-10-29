@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.AttributeOverride;
@@ -222,8 +223,8 @@ public class FundFlow
      */
     @Transient
     @Override
-    public String getTicketSrcId() {
-        return this.getId().toString();
+    public Serializable getTicketSrcId() {
+        return this.getId();
     }
 
     /**

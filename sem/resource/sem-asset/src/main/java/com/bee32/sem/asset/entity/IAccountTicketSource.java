@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -16,7 +17,7 @@ public interface IAccountTicketSource {
     public AccountTicket getTicket();
     public void setTicket(AccountTicket ticket);
 
-    public String getTicketSrcId();
+    public Serializable getTicketSrcId();
     public String getTicketSrcType();
     public String getTicketSrcLabel();
     public BigDecimal getTicketSrcValue() throws FxrQueryException;

@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -398,8 +399,8 @@ public class AbstractStockOrder<Item extends StockOrderItem>
      */
     @Transient
     @Override
-    public String getTicketSrcId() {
-        return this.getId().toString();
+    public Serializable getTicketSrcId() {
+        return this.getId();
     }
 
     /**

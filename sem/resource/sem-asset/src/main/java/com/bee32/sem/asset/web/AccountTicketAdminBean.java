@@ -7,6 +7,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;
+import com.bee32.sem.asset.dto.AccountTicketSource;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.IAccountTicketSource;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -38,7 +39,18 @@ public class AccountTicketAdminBean
     public void setSourceToApply(EntityDto<?, ?> source) {
         AccountTicketDto accountTicket = getOpenedObject();
         IAccountTicketSource _source = (IAccountTicketSource) source.unmarshal();
-        accountTicket.setTicketSource(_source);
+        AccountTicketSource ticketSource = new AccountTicketSource();
+        ticketSource.setId(_source.getTicketSrcId());
+        ticketSource.setLabel(_source.getTicketSrcLabel());
+        ticketSource.setType(_source.getTicketSrcType());
+        try {
+            ticketSource.setValue(_source.getTicketSrcValue());
+        } catch (FxrQueryException e1) {
+            throw new RuntimeException(e1);
+        }
+        ticketSource.setClassType((Class<? extends Entity<?>>)_source.getClass());
+
+        accountTicket.setTicketSource(ticketSource);
 
         //把取到的凭证源上的金额生成凭证的一条明细
         AccountTicketItemDto item = new AccountTicketItemDto().create();
@@ -84,7 +96,8 @@ public class AccountTicketAdminBean
     protected void postUpdate(UnmarshalMap uMap) throws Exception {
         for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
             AccountTicketDto dto = uMap.getSourceDto(me);
-            IAccountTicketSource ticketSource = dto.getTicketSource();
+            Class<? extends Entity<?>> ticketSourceType = dto.getTicketSource().getClassType();
+            IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(dto.getTicketSource().getId());
             ticketSource.setTicket(me);
             try {
                 DATA(Entity.class).saveOrUpdate(ticketSource);
@@ -94,10 +107,22 @@ public class AccountTicketAdminBean
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected boolean preDelete(UnmarshalMap uMap) throws Exception {
-        // TODO Auto-generated method stub
-        return super.preDelete(uMap);
+        for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
+            AccountTicketDto dto = uMap.getSourceDto(me);
+            Class<? extends Entity<?>> ticketSourceType = dto.getTicketSource().getClassType();
+            IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(dto.getTicketSource().getId());
+            ticketSource.setTicket(null);
+            try {
+                DATA(Entity.class).saveOrUpdate(ticketSource);
+            } catch (Exception e) {
+                uiLogger.error("...", e);
+            }
+        }
+
+        return true;
     }
 
 
