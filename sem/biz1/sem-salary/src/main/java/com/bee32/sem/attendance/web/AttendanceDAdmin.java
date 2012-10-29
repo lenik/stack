@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.bee32.plover.arch.operation.Operation;
+import com.bee32.plover.faces.utils.SelectableList;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.attendance.dto.AttendanceMRecordDto;
+import com.bee32.sem.attendance.entity.AttendanceMRecord;
+import com.bee32.sem.attendance.entity.AttendanceType;
+import com.bee32.sem.attendance.util.AttendanceCriteria;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
-import com.bee32.sem.salary.util.ColumnModel;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceDAdmin
@@ -18,52 +21,39 @@ public class AttendanceDAdmin
     private static final long serialVersionUID = 1L;
 
     Date targetDate = new Date();
-    int targetYear;
-    int targetMonth;
-    List<EmployeeInfoDto> allEmps;
-    List<ColumnModel> columns;
-
-    String currentView = StandardViews.LIST;
+    int day = SalaryDateUtil.getDayNum(targetDate);
+    List<AttendanceMRecordDto> attendances = new ArrayList<AttendanceMRecordDto>();
 
     public AttendanceDAdmin() {
-        generateColumns();
+        test();
     }
 
-    void generateColumns() {
-        if (columns == null)
-            columns = new ArrayList<ColumnModel>();
-        else
-            columns.clear();
+    void test() {
 
-        int columnNumber = SalaryDateUtil.getDayNumberOfMonth(targetDate);
-        for (int i = 0; i < columnNumber; i++) {
-            columns.add(new ColumnModel(Integer.toString(i + 1), i, 0));
+        int yearMonth = SalaryDateUtil.convertToYearMonth(targetDate);
+
+        List<EmployeeInfoDto> employees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
+        for (EmployeeInfoDto employee : employees) {
+            AttendanceMRecordDto dto = null;
+            if (AttendanceMAdmin.isMonthRecordExists(employee.getId(), yearMonth)) {
+                AttendanceMRecord record = DATA(AttendanceMRecord.class).getUnique(
+                        AttendanceCriteria.listRecordByEmployee(employee.getId(), yearMonth));
+                dto = DTOs.marshal(AttendanceMRecordDto.class, record);
+            } else {
+                dto = new AttendanceMRecordDto().create();
+                dto.setEmployee(employee);
+                dto.setYear(yearMonth / 100);
+                dto.setMonth(yearMonth % 100);
+                dto.setAttendanceData(//
+                AttendanceMRecordDto.generatorDefaultAttendanceData(yearMonth / 100, yearMonth % 100));
+            }
+            attendances.add(dto);
         }
-    }
-
-    void generateAttendance() {
-        allEmps = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
 
     }
 
-    protected void showView(String viewName) {
-        currentView = viewName;
-    }
-
-    @Operation
-    public void showContent() {
-        if (getSelection().isEmpty()) {
-            uiLogger.error("没有选定对象!");
-            return;
-        }
-        openSelection();
-        showView(StandardViews.CONTENT);
-    }
-
-    @Operation
-    public void showContent(Object selection) {
-        setSingleSelection(selection);
-        showContent();
+    public List<AttendanceType> getAttendanceTypes() {
+        return new ArrayList<AttendanceType>(AttendanceType.values());
     }
 
     public Date getTargetDate() {
@@ -74,8 +64,20 @@ public class AttendanceDAdmin
         this.targetDate = targetDate;
     }
 
-    public List<ColumnModel> getColumns() {
-        return columns;
+    public SelectableList<AttendanceMRecordDto> getAttendances() {
+        return SelectableList.decorate(attendances);
+    }
+
+    public void setAttendances(List<AttendanceMRecordDto> attendances) {
+        this.attendances = attendances;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
 }

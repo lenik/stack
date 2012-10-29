@@ -1,0 +1,108 @@
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="每日出勤记录" />
+    <ui:param name="bean" value="${attendanceDAdmin}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
+    <ui:param name="currentDay" value="${bean.day}" />
+
+    <ui:define name="toolbarContexts">
+        <t:panelGrid>
+            <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                showOn="button">
+                <p:ajax event="dateSelect" listener="#{bean.addMonthRestriction}" update=":searchForm:searchFragments, ${_searchUpdates}" />
+            </p:calendar>
+        </t:panelGrid>
+        <p:commandButton value="test" />
+    </ui:define>
+
+    <ui:define name="dataColumns">
+        <p:column headerText="时间">
+            <h:outputText value="${entry.yearMonthString}" />
+        </p:column>
+        <p:column headerText="雇员">
+            <h:outputText value="${entry.employee.person.name}" />
+        </p:column>
+        <p:column headerText="上午">
+            <h:outputText value="${entry.getRecord(currentDay).morning.name}" />
+            <img style="width:20px;height:20px;" src="../a-month/${entry.getRecord(currentDay).morning.iconString}" />
+        </p:column>
+        <p:column headerText="下午">
+            <h:outputText value="${entry.getRecord(currentDay).afternoon.name}" />
+            <img style="width:20px;height:20px;" src="../a-month/${entry.getRecord(currentDay).afternoon.iconString}" />
+        </p:column>
+        <p:column headerText="晚上">
+            <h:outputText value="${entry.getRecord(currentDay).evening.name}" />
+            <img style="width:20px;height:20px;" src="../a-month/${entry.getRecord(currentDay).evening.iconString}" />
+        </p:column>
+
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+        <table>
+            <tr>
+                <td>${obj.yearMonthString}<span id="currentDay">${bean.day}</span>日</td>
+                <td>${obj.employee.personName}</td>
+            </tr>
+            <tr>
+                <td>时间</td>
+                <td>状态</td>
+                <td>选项</td>
+            </tr>
+            <tr>
+                <td>上午</td>
+                <td>${obj.getRecord(currentDay).morning.name}</td>
+                <td>
+                    <ui:repeat var="type" value="${bean.attendanceTypes}">
+                        <img class="m-types-c" src="${type.iconString}" alt="${type.value}" title="${type.name}"
+                            style="${obj.getRecord(currentDay).morning.iconString == type.iconString ? 'border: 2px solid red;':'border:0px;'}" />
+                    </ui:repeat>
+                </td>
+            </tr>
+            <tr>
+                <td>下午</td>
+                <td>${obj.getRecord(currentDay).afternoon.name}</td>
+                <td>
+                    <ui:repeat var="type" value="${bean.attendanceTypes}">
+                        <img class="a-types-c" src="${type.iconString}" alt="${type.value}" title="${type.name}"
+                            style="${obj.getRecord(currentDay).afternoon.iconString == type.iconString ? 'border: 2px solid red;':'border:0px;'}" />
+                    </ui:repeat>
+                </td>
+            </tr>
+            <tr>
+                <td>晚上</td>
+                <td>${obj.getRecord(currentDay).evening.name}</td>
+                <td>
+                    <ui:repeat var="type" value="${bean.attendanceTypes}">
+                        <img class="e-types-c" src="${type.iconString}" alt="${type.value}" title="${type.name}"
+                            style="${obj.getRecord(currentDay).evening.iconString == type.iconString ? 'border: 2px solid red;':'border:0px;'}" />
+                    </ui:repeat>
+                </td>
+            </tr>
+
+        </table>
+
+        <h:inputHidden id="attendanceData" value="${obj.attendanceData}" />
+
+        <script type="text/javascript" src="dayAttendance.js">
+
+
+
+        </script>
+    </ui:define>
+
+    <ui:define name="dialogs.1">
+        <p:dialog widgetVar="dlg2" modal="true">
+            <h:form id="attendanceForm">
+                <table>
+                    <ui:repeat var="item" value="${bean.attendances}">
+
+                    </ui:repeat>
+                </table>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>
