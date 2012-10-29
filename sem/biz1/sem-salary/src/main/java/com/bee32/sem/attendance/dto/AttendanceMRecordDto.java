@@ -231,8 +231,7 @@ public class AttendanceMRecordDto
 
     public List<List<AttendanceDRecord>> getMonthView() {
         Map<Integer, AttendanceDRecord> records = wrapToAttendanceMap(attendanceData);
-        int yearMonth = SalaryDateUtil.convertToYearMonth(new Date());
-        return calendarView(yearMonth, records);
+        return calendarView(year * 100 + month, records);
     }
 
     public String getAttendanceData() {
