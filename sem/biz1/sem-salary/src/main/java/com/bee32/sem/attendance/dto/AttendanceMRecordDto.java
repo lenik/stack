@@ -59,15 +59,17 @@ public class AttendanceMRecordDto
     }
 
     public static String generatorDefaultAttendanceData(int year, int month) {
-        int max = SalaryDateUtil.getDayNumberOfMonth(year, month);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= max; i++) {
-            sb.append(i);
-            sb.append(":");
-            sb.append("A,A,Z;");
+        int days = SalaryDateUtil.getDayNumberOfMonth(year, month);
+        StringBuilder sb = new StringBuilder(days * 10);
+        for (int day = 1; day <= days; day++) {
+            if (day < 10)
+                sb.append('0');
+            sb.append(day);
+            sb.append("A.A.Z.");
+            sb.append(".,");
         }
         String attendanceData = sb.toString();
-        return attendanceData.substring(0, attendanceData.length() - 1);
+        return attendanceData;
     }
 
     public static List<List<AttendanceDRecord>> calendarView(int yearMonth, Map<Integer, AttendanceDRecord> map) {
@@ -76,7 +78,8 @@ public class AttendanceMRecordDto
         int week = pair.getSecond();
         int refer = pair.getFirst();
 
-// AttendanceDRecord[][] recordArray = new AttendanceDRecord[pair.getSecond()][7];
+        // AttendanceDRecord[][] recordArray = new AttendanceDRecord[pair.getSecond()][7];
+        // week * day * record
         List<List<AttendanceDRecord>> monthView = new ArrayList<List<AttendanceDRecord>>();
         List<AttendanceDRecord> weekview = null;
 
@@ -159,28 +162,40 @@ public class AttendanceMRecordDto
     public static Map<Integer, AttendanceDRecord> wrapToAttendanceMap(String data) {
         Map<Integer, AttendanceDRecord> map = new HashMap<Integer, AttendanceDRecord>(50);
 
-        for (String dayString : data.split(";")) {
-            int index = dayString.indexOf(":");
-            String stringday = dayString.substring(0, index);
-            int day = Integer.parseInt(stringday);
-
-            String types = dayString.substring(index + 1).replace(",", "");
-
-            char[] characterValue = types.toCharArray();
-
-            AttendanceType morning = AttendanceType.forValue(characterValue[0]);
-            AttendanceType afternoon = AttendanceType.forValue(characterValue[1]);
-            AttendanceType evening = AttendanceType.forValue(characterValue[2]);
-
-            AttendanceDRecord dayRecord = new AttendanceDRecord();
-            dayRecord.setDay(day);
-            dayRecord.setMorning(morning);
-            dayRecord.setAfternoon(afternoon);
-            dayRecord.setEvening(evening);
-            map.put(day, dayRecord);
+        int len = data.length();
+        int day = 1;
+        for (int i = 0; i < len; i += 10) {
+            String dayString = data.substring(i, i + 10);
+            AttendanceDRecord dayRecord = parseDayString(dayString);
+            assert day == dayRecord.getDay();
+            map.put(day++, dayRecord);
         }
 
         return map;
+    }
+
+    /**
+     * The format of day string:
+     *
+     * DD MM AA EE R C: day morning/afternoon/evening reserved comma.
+     */
+    public static AttendanceDRecord parseDayString(String dayString) {
+        if (dayString.length() != 10)
+            throw new IllegalArgumentException("Bad day string: \"" + dayString + "\"");
+
+        AttendanceDRecord dayRecord = new AttendanceDRecord();
+        int day = Integer.parseInt(dayString.substring(0, 2));
+        dayRecord.setDay(day++);
+
+        AttendanceType morning = AttendanceType.forValue(dayString.charAt(2));
+        AttendanceType afternoon = AttendanceType.forValue(dayString.charAt(4));
+        AttendanceType evening = AttendanceType.forValue(dayString.charAt(6));
+
+        dayRecord.setMorning(morning);
+        dayRecord.setAfternoon(afternoon);
+        dayRecord.setEvening(evening);
+
+        return dayRecord;
     }
 
     public void setRecords(String data) {
@@ -220,8 +235,12 @@ public class AttendanceMRecordDto
     }
 
     public AttendanceDRecord getRecord(int day) {
-        Map<Integer, AttendanceDRecord> records = wrapToAttendanceMap(attendanceData);
-        return records.get(day);
+        if (day == 0)
+            return null;
+
+        int index = (day - 1) * 10;
+        String dayString = attendanceData.substring(index, index + 10);
+        return parseDayString(dayString);
     }
 
     public Integer[] getArguments() {

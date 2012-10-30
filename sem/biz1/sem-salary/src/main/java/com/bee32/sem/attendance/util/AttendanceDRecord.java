@@ -50,4 +50,21 @@ public class AttendanceDRecord
         this.evening = evening;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (day < 10)
+            sb.append('0');
+        sb.append(day);
+        sb.append(morning.getValue());
+        sb.append('.');
+        sb.append(afternoon.getValue());
+        sb.append('.');
+        sb.append(evening.getValue());
+        sb.append('.');
+        sb.append('.');
+        sb.append(',');
+        return sb.toString();
+    }
+
 }

@@ -61,28 +61,15 @@ $(".eveningType").click(function() {
 });
 
 function wrapAttendanceData(hidden, selectedDay, clickType, time) {
-
-    var attendanceData = hidden.val().trim();
-
-    var index = attendanceData.indexOf(selectedDay);
-    var tmpstring1 = selectedDay < 10 ? attendanceData.substring(index, index + 7) : attendanceData
-            .substring(index, index + 8);
-    var index2 = tmpstring1.indexOf(":");
-    var tmpstring2 = tmpstring1.substring(index2 + 1);
-    var prifix = tmpstring1.substring(0, index2 + 1);
-    var morning = tmpstring2.substring(0, 1);
-    var afternoon = tmpstring2.substring(2, 3);
-    var evening = tmpstring2.substring(4);
-
+    var data = hidden.val().trim();
+    var index = (selectedDay - 1) * 10;
     if (time == 'morning')
-        morning = clickType.value;
+        index += 2;
     if (time == 'afternoon')
-        afternoon = clickType.value;
+        index += 4;
     if (time == 'evening')
-        evening = clickType.value;
+        index += 6;
 
-    var toreplace = prifix + morning + "," + afternoon + "," + evening;
-    var replaced = attendanceData.replace(tmpstring1, toreplace);
-
-    hidden.val(replaced);
+    data = data.substring(0, index) + clickType.value + data.substring(index + 1);
+    hidden.val(data);
 }
