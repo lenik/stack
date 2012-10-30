@@ -64,7 +64,7 @@ public class AttendanceMRecordDto
         for (int i = 1; i <= max; i++) {
             sb.append(i);
             sb.append(":");
-            sb.append("-,-,-;");
+            sb.append("A,A,Z;");
         }
         String attendanceData = sb.toString();
         return attendanceData.substring(0, attendanceData.length() - 1);
