@@ -69,8 +69,8 @@ public class AttendanceType
     /**
      * 正常出勤
      */
-    public static final AttendanceType normal = new AttendanceType('A', "内勤", "attendance.jpg", true); // 正常出勤
-    public static final AttendanceType trip = new AttendanceType('B', "外勤", "trip.jpg", true); // 外勤
+    public static final AttendanceType normal = new AttendanceType('A', "出勤", "attendance.jpg", true); // 正常出勤
+    public static final AttendanceType trip = new AttendanceType('B', "出差", "trip.jpg", true); // 外勤
 
     /**
      * 缺勤：请假
