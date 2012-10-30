@@ -1,0 +1,77 @@
+.employee-view {
+    width: 10em;
+    background-color: white;
+    border-bottom: 1px solid red;
+    border-right: 1px solid blue;
+    font-weight: bold;
+}
+
+.morning-view {
+    font-weight: bold;
+    width: 6em;
+    background-color: white;
+    border-bottom: 1px solid red;
+    border-right: 1px solid blue;
+}
+
+.afternoon-view {
+    font-weight: bold;
+    border-bottom: 1px solid red;
+    border-right: 1px solid blue;
+    width: 6em;
+    background-color: white;
+}
+
+.evening-view {
+    font-weight: bold;
+    width: 6em;
+    background-color: white;
+    border-bottom: 1px solid red;
+    border-right: 1px solid blue;
+}
+
+.day-right:hover {
+    background-color: red;
+}
+
+.emp-left {
+    border-right: 1px solid blue;
+    border-bottom: 1px solid red;
+}
+
+.day-right {
+    cursor: url("notavailable.jpg"), default;
+    background-color: #cecece;
+    border-right: 1px solid blue;
+    border-bottom: 1px solid red;
+}
+
+li {
+    border: 1px solid blue;
+    border-radius: 5px;
+    list-style: none;
+    padding-left: 3em;
+    background-color: white;
+    font-size: 15px;
+}
+
+.selection-tool {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.morningType {
+    width: 30px;
+    height: 30px;
+}
+
+.afternoonType {
+    width: 30px;
+    height: 30px;
+}
+
+.eveningType {
+    width: 30px;
+    height: 30px;
+}

@@ -22,5 +22,6 @@ public class SEMSalaryMenu
 
     public MenuNode ATTENDANCE = menu(HR, 71, "ATTENDANCE");
     /**/MenuNode attendancem = entry(ATTENDANCE, 1, "attendancem", prefix.join("a-month/"));
+    /**/MenuNode attendanced = entry(ATTENDANCE, 2, "attendanced", prefix.join("a-day/"));
 
 }

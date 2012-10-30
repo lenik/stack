@@ -1,62 +1,67 @@
 function AttendanceType() {
-    this.icon = 'default';
+    this.name = 'default';
     this.value = '-';
-    this.name = 'notavailable';
+    this.icon = 'default';
 }
+var selectedTool = null;
 
-$(".m-types-c").each(function() {
+var currentDay = $("#contentForm\\:currentDay").val().trim();
+
+$(".selection-tool").each(function() {
     $(this).bind('click', function() {
-
-        var selectedday = $("#currentDay").text().trim();
-
         var clickType = new AttendanceType();
-        clickType.value = $(this).attr('alt').trim();
-        clickType.icon = $(this).attr('src').trim();
-        clickType.name = $(this).attr('title').trim();
+        clickType.name = $(this).attr("title").trim();
+        clickType.value = $(this).attr("alt").trim();
+        clickType.icon = $(this).attr("src").trim();
 
-        $(".m-types-c").css("border", "0px");
-        $(this).css("border", "2px solid red");
-
-        wrapAttendanceData(selectedday, clickType, 'morning');
+        selectedTool = clickType;
+        $("li").css("background-color", "");
+        $(this).parent().css("background-color", "yellow");
+        $(".day-right").css("cursor", "url(" + selectedTool.icon + "),default");
     });
 });
 
-$(".a-types-c").each(function() {
-    $(this).bind('click', function() {
+$(".morningType").click(function() {
+    if (selectedTool != null) {
 
-        var selectedday = $("#currentDay").text().trim();
+        var hidden = $(this).parent().parent().children().first().children('input:hidden');
+        $(this).attr('alt', selectedTool.value);
+        $(this).attr('src', selectedTool.icon);
+        $(this).attr('title', selectedTool.name);
 
-        var clickType = new AttendanceType();
-        clickType.value = $(this).attr('alt').trim();
-        clickType.icon = $(this).attr('src').trim();
-        clickType.name = $(this).attr('title').trim();
+        wrapAttendanceData(hidden, currentDay, selectedTool, 'morning');
+    }
 
-        $(".a-types-c").css("border", "0px");
-        $(this).css("border", "2px solid red");
-
-        wrapAttendanceData(selectedday, clickType, 'afternoon');
-    });
 });
 
-$(".e-types-c").each(function() {
-    $(this).bind('click', function() {
+$(".afternoonType").click(function() {
+    if (selectedTool != null) {
 
-        var selectedday = $("#currentDay").text().trim();
+        var hidden = $(this).parent().parent().children().first().children('input:hidden');
+        $(this).attr('alt', selectedTool.value);
+        $(this).attr('src', selectedTool.icon);
+        $(this).attr('title', selectedTool.name);
 
-        var clickType = new AttendanceType();
-        clickType.value = $(this).attr('alt').trim();
-        clickType.icon = $(this).attr('src').trim();
-        clickType.name = $(this).attr('title').trim();
+        wrapAttendanceData(hidden, currentDay, selectedTool, 'afternoon');
+    }
 
-        $(".e-types-c").css("border", "0px");
-        $(this).css("border", "2px solid red");
-
-        wrapAttendanceData(selectedday, clickType, 'evening');
-    });
 });
 
-function wrapAttendanceData(selectedDay, clickType, time) {
-    var hidden = $("#editDialog\\:form\\:attendanceData");
+$(".eveningType").click(function() {
+    if (selectedTool != null) {
+
+        var hidden = $(this).parent().parent().children().first().children('input:hidden');
+        $(this).attr('alt', selectedTool.value);
+        $(this).attr('src', selectedTool.icon);
+        $(this).attr('title', selectedTool.name);
+
+        wrapAttendanceData(hidden, currentDay, selectedTool, 'evening');
+    }
+
+});
+
+function wrapAttendanceData(hidden, selectedDay, clickType, time) {
+
     var attendanceData = hidden.val().trim();
 
     var index = attendanceData.indexOf(selectedDay);

@@ -22,20 +22,22 @@ public class AttendanceDAdmin
 
     Date targetDate = new Date();
     int day = SalaryDateUtil.getDayNum(targetDate);
-    List<AttendanceMRecordDto> attendances = new ArrayList<AttendanceMRecordDto>();
+    List<AttendanceMRecordDto> attendances;
 
     public AttendanceDAdmin() {
-        test();
+        generatorAttendanceData();
     }
 
-    void test() {
-
+    public void generatorAttendanceData() {
+        attendances = new ArrayList<AttendanceMRecordDto>();
+        day = SalaryDateUtil.getDayNum(targetDate);
         int yearMonth = SalaryDateUtil.convertToYearMonth(targetDate);
 
         List<EmployeeInfoDto> employees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
         for (EmployeeInfoDto employee : employees) {
             AttendanceMRecordDto dto = null;
-            if (AttendanceMAdmin.isMonthRecordExists(employee.getId(), yearMonth)) {
+            boolean flag = AttendanceMAdmin.isMonthRecordExists(employee.getId(), yearMonth);
+            if (flag) {
                 AttendanceMRecord record = DATA(AttendanceMRecord.class).getUnique(
                         AttendanceCriteria.listRecordByEmployee(employee.getId(), yearMonth));
                 dto = DTOs.marshal(AttendanceMRecordDto.class, record);
@@ -50,6 +52,26 @@ public class AttendanceDAdmin
             attendances.add(dto);
         }
 
+    }
+
+    public void batchSave() {
+        List<AttendanceMRecord> entities = new ArrayList<AttendanceMRecord>();
+        for (AttendanceMRecordDto record : attendances) {
+            AttendanceMRecord entity = record.unmarshal();
+            entities.add(entity);
+        }
+        try {
+            DATA(AttendanceMRecord.class).saveAll(entities);
+            uiLogger.info("保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            uiLogger.error("无法保存", e);
+        }
+
+    }
+
+    public void test() {
+        System.out.println("have a test");
     }
 
     public List<AttendanceType> getAttendanceTypes() {
