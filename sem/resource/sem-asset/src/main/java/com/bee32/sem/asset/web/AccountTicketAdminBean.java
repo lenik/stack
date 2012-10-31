@@ -96,11 +96,11 @@ public class AccountTicketAdminBean
     protected void postUpdate(UnmarshalMap uMap) throws Exception {
         for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
             AccountTicketDto dto = uMap.getSourceDto(me);
-            Class<? extends Entity<?>> ticketSourceType = dto.getTicketSource().getClassType();
+            Class ticketSourceType = dto.getTicketSource().getClassType();
             IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(dto.getTicketSource().getId());
             ticketSource.setTicket(me);
             try {
-                DATA(Entity.class).saveOrUpdate(ticketSource);
+                DATA(ticketSourceType).saveOrUpdate(ticketSource);
             } catch (Exception e) {
                 uiLogger.error("无法关联凭证", e);
             }
@@ -112,11 +112,11 @@ public class AccountTicketAdminBean
     protected boolean preDelete(UnmarshalMap uMap) throws Exception {
         for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
             AccountTicketDto dto = uMap.getSourceDto(me);
-            Class<? extends Entity<?>> ticketSourceType = dto.getTicketSource().getClassType();
+            Class ticketSourceType = dto.getTicketSource().getClassType();
             IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(dto.getTicketSource().getId());
             ticketSource.setTicket(null);
             try {
-                DATA(Entity.class).saveOrUpdate(ticketSource);
+                DATA(ticketSourceType).saveOrUpdate(ticketSource);
             } catch (Exception e) {
                 uiLogger.error("...", e);
             }
