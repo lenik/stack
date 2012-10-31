@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.attendance.dto.AttendanceMRecordDto;
 import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.attendance.entity.AttendanceType;
@@ -12,6 +14,7 @@ import com.bee32.sem.attendance.util.AttendanceCriteria;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceMAdmin
@@ -66,13 +69,24 @@ public class AttendanceMAdmin
                 uiLogger.info("默认出勤记录生成完毕！");
             } catch (Exception e) {
                 e.printStackTrace();
-                uiLogger.warn("生成默认出勤记录发生故障" + e.getMessage());
+                uiLogger.error("生成默认出勤记录发生故障", e);
             }
 
         } else
-            uiLogger.warn("没有需要添加的出勤记录");
+            uiLogger.error("没有需要添加的出勤记录");
 
+    }
 
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        AttendanceMRecordDto dto = (AttendanceMRecordDto) getOpenedObject();
+        boolean existing = isMonthRecordExists(dto.getEmployee().getId(), SalaryDateUtil.convertToYearMonth(openDate));
+        if (existing && isCreating()) {
+            uiLogger.error("『" + dto.getEmployee().getPersonName() + "』" + dto.getYearMonthString() + "出勤记录已经存在！");
+            return false;
+        }
+        return super.preUpdate(uMap);
     }
 
     /**
@@ -84,6 +98,18 @@ public class AttendanceMAdmin
         if (records.size() > 0)
             return true;
         return false;
+    }
+
+    @Operation
+    public void showCreateForm() {
+        int yearMonth = SalaryDateUtil.convertToYearMonth(openDate);
+        AttendanceMRecordDto instance = new AttendanceMRecordDto();
+        instance.setYear(yearMonth / 100);
+        instance.setMonth(yearMonth % 100);
+        instance.setAttendanceData(AttendanceMRecordDto
+                .generatorDefaultAttendanceData(yearMonth / 100, yearMonth % 100));
+        setOpenedObject(instance);
+        showView(StandardViews.CREATE_FORM);
     }
 
     public Date getOpenDate() {
