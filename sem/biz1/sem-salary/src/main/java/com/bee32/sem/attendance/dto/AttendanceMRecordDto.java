@@ -65,7 +65,7 @@ public class AttendanceMRecordDto
             if (day < 10)
                 sb.append('0');
             sb.append(day);
-            sb.append("A.A.Z.");
+            sb.append("A.A.-.");
             sb.append(".,");
         }
         String attendanceData = sb.toString();
