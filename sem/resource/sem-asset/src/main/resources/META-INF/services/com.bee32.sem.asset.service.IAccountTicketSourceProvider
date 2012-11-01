@@ -1,3 +1,4 @@
 com.bee32.sem.asset.service.FundFlowSourceProvider
 com.bee32.sem.makebiz.service.DeliveryNoteSourceProvider
 com.bee32.sem.inventory.service.StockOrderSourceProvider
+com.bee32.sem.salary.service.MonthSalarySourceProvider
