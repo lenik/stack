@@ -125,7 +125,7 @@ public class SalaryAdminBean
             map.put(ISalaryVariableProvider.ARG_EMPLOYEE, employee);
             map.put(ISalaryVariableProvider.ARG_BEGIN_DATE, rangePair.getFirst());
             map.put(ISalaryVariableProvider.ARG_END_DATE, rangePair.getSecond());
-            map.put(ISalaryVariableProvider.ARG_YEARMONTH, targetYear*100 + targetMonth);
+            map.put(ISalaryVariableProvider.ARG_YEARMONTH, targetYear * 100 + targetMonth);
             // TODO add other args
 
             final TextMap args = new TextMap(map);
@@ -178,6 +178,7 @@ public class SalaryAdminBean
         }
         DATA(Salary.class).saveAll(salarys);
         uiLogger.info("创建工资记录成功");
+        refreshData();
         return true;
     }
 
@@ -293,7 +294,8 @@ public class SalaryAdminBean
             byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
 
             InputStream stream = new ByteArrayInputStream(pdfByteArray);
-            pdfFile = new DefaultStreamedContent(stream, "application/pdf", salary.getEmployee().getPersonName() + ".pdf");
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", salary.getEmployee().getPersonName()
+                    + ".pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }
