@@ -44,6 +44,9 @@
                 <p:column headerText="摘要">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
+                <p:column headerText="业务对像">
+                    <h:outputText value="#{entry.party.displayName}" />
+                </p:column>
                 <p:column headerText="金额">
                     <h:outputText value="#{entry.value}" />
                 </p:column>
