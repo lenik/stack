@@ -118,6 +118,7 @@ public class SEMPeopleSamples
         weiXiaoBao.setCensusRegister("北京市");
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
         weiXiaoBao.setSid("11010116541220517");
+        weiXiaoBao.setEmployee(true);
         moonOrg.setCustomer(true);
         moonOrg.setEmployee(true);
 
