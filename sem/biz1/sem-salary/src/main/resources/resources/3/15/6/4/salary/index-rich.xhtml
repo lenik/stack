@@ -9,13 +9,13 @@
 
     <ui:define name="toolbarContexts">
         <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" showOn="button">
-            <p:ajax event="dateSelect" listener="#{bean.addDateRestriction}"
-                update=":searchForm:searchFragments, ${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
+            <p:ajax event="dateSelect" listener="#{bean.refreshData}"
+                update="${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
         </p:calendar>
-        <p:commandButton id="gbutton" value="生成${bean.targetYear}年${bean.targetMonth}工资" actionListener="${bean.generateSalary}"
-            update=":searchForm:searchFragments, ${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
-        <p:commandButton id="dbutton" value="删除${bean.targetYear}年${bean.targetMonth}工资" actionListener="${bean.deleteSalary}"
-            update=":searchForm:searchFragments, ${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
+        <p:commandButton id="gbutton" value="生成${bean.year}年${bean.month}月工资" actionListener="${bean.generateSalary}"
+            update="${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
+        <p:commandButton id="dbutton" value="删除${bean.year}年${bean.month}月工资" actionListener="${bean.deleteSalary}"
+            update="${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
         <p:separator />
 
         <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
@@ -68,9 +68,9 @@
                 </t:panelGroup>
                 <t:panelGroup>
                     <h:outputText value="时间:" />
-                    <p:inputText value="${obj.year}" style="width:35px;" />
+                    <p:spinner readonly="true" value="${obj.year}" size="6" />
                     <h:outputText value="年" />
-                    <p:inputText value="${obj.month}" style="width:35px;" />
+                    <p:spinner readonly="true" value="${obj.month}" size="3" />
                     <h:outputText value="月" />
                 </t:panelGroup>
                 <t:panelGroup>

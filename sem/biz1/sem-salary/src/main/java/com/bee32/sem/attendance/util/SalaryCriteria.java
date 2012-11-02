@@ -16,8 +16,8 @@ import com.bee32.sem.salary.util.SalaryDateUtil;
 public class SalaryCriteria
         extends CriteriaSpec {
 
-    public static ICriteriaElement listSalaryByYearAndMonth(int year, int month) {
-        return new Equals("yearMonth", year * 100 + month);
+    public static ICriteriaElement listSalaryByYearAndMonth(int yearMonth) {
+        return new Equals("yearMonth", yearMonth);
     }
 
     public static ICriteriaElement listByDate(Date date) {

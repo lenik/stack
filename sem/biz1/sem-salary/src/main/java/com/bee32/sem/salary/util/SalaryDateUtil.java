@@ -93,16 +93,6 @@ public class SalaryDateUtil {
     }
 
     /**
-     * return Pair<Integer, Integer>(year, month)
-     */
-    public static Pair<Integer, Integer> getYearAndMonth(Date date) {
-        String tmp = getDateString(date);
-        int year = Integer.parseInt(tmp.substring(0, 4));
-        int month = Integer.parseInt(tmp.substring(5, 7));
-        return new Pair<Integer, Integer>(year, month);
-    }
-
-    /**
      * 取得 雇员受雇到现在的月份
      */
     public static int getFixedNumberOfYears(Date begin) {
