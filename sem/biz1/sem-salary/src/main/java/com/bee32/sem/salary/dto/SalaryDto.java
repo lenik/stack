@@ -32,7 +32,7 @@ public class SalaryDto
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
 
         if (selection.contains(ELEMENTS)) {
-            elements = mrefList(SalaryElementDto.class, source.getElements());
+            elements = marshalList(SalaryElementDto.class, source.getElements());
         } else
             elements = Collections.emptyList();
     }
@@ -92,6 +92,8 @@ public class SalaryDto
 
     public BigDecimal getTotal() {
         BigDecimal sum = BigDecimal.ZERO;
+        if (elements == null)
+            return sum;
         for (SalaryElementDto e : elements) {
             BigDecimal bonus = e.getBonus();
             sum = sum.add(bonus);
