@@ -70,10 +70,6 @@ public class AttendanceDAdmin
 
     }
 
-    public void test() {
-        System.out.println("have a test");
-    }
-
     public List<AttendanceType> getAttendanceTypes() {
         return new ArrayList<AttendanceType>(AttendanceType.values());
     }

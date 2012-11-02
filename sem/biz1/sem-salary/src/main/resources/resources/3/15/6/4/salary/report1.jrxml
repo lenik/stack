@@ -1,188 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="690" pageHeight="595" orientation="Landscape" columnWidth="650" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="1"/>
-	<property name="ireport.y" value="10"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<subDataset name="dataset1"/>
 	<parameter name="title" class="java.lang.String"/>
-	<parameter name="employeeName" class="java.lang.String"/>
-	<parameter name="year" class="java.lang.Integer"/>
-	<parameter name="month" class="java.lang.Integer"/>
 	<parameter name="total" class="java.math.BigDecimal"/>
+	<parameter name="yearMonthString" class="java.lang.String"/>
 	<parameter name="tax" class="java.math.BigDecimal"/>
 	<parameter name="salary" class="java.math.BigDecimal"/>
-	<field name="bonus" class="java.math.BigDecimal"/>
+	<parameter name="employeeName" class="java.lang.String"/>
 	<field name="def" class="com.bee32.sem.salary.dto.SalaryElementDefDto"/>
+	<field name="bonus" class="java.math.BigDecimal"/>
+	<field name="category" class="java.lang.String"/>
+	<field name="label" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band splitType="Stretch"/>
-	</title>
 	<pageHeader>
-		<band height="93" splitType="Stretch">
+		<band height="106" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="99" y="0" width="329" height="32"/>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="74" y="37" width="65" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{employeeName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="java.lang.String">
+				<reportElement x="219" y="37" width="100" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{yearMonthString}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="74" y="64" width="65" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="219" y="65" width="100" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tax}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="402" y="63" width="81" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{salary}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="23" y="61" width="460" height="1"/>
+			</line>
 			<staticText>
+				<reportElement x="23" y="38" width="51" height="20"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[员工：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="65" width="51" height="20"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[总工资：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="38" width="51" height="20"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[时间：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="65" width="51" height="20"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[所得税：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="64" width="51" height="20"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[应发工资：]]></text>
 			</staticText>
 			<staticText>
+				<reportElement x="23" y="84" width="51" height="20"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[雇员：]]></text>
+				<text><![CDATA[工资条目明细：]]></text>
 			</staticText>
-			<staticText>
-				<textElement textAlignment="Right">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[时间：]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{year}]]></textFieldExpression>
-			</textField>
-			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{employeeName}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<textElement textAlignment="Center">
-					<font size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<textElement textAlignment="Right">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[实发工资：]]></text>
-			</staticText>
-			<staticText>
-				<textElement textAlignment="Right">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[年]]></text>
-			</staticText>
-			<staticText>
-				<textElement textAlignment="Right">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[月]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{month}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<textElement textAlignment="Right">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[所得税：]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{tax}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{salary}]]></textFieldExpression>
-			</textField>
+			<line>
+				<reportElement x="23" y="103" width="460" height="1"/>
+			</line>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="17" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<staticText>
+				<reportElement x="139" y="1" width="51" height="20"/>
 				<textElement textAlignment="Right">
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[序号]]></text>
-			</staticText>
-			<staticText>
-				<textElement textAlignment="Right">
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[分类]]></text>
-			</staticText>
-			<staticText>
-				<textElement textAlignment="Right">
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[名称]]></text>
 			</staticText>
-			<line>
-			</line>
 			<staticText>
+				<reportElement x="235" y="1" width="51" height="20"/>
 				<textElement textAlignment="Right">
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[金额]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="1" width="51" height="20"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[分类]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23">
-			<textField isBlankWhenNull="true">
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-			</textField>
-			<line>
-			</line>
-			<textField isBlankWhenNull="true">
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{def}.getCategory()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{def}.getLabel()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<textElement textAlignment="Right"/>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="235" y="1" width="84" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[$F{bonus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="138" y="1" width="84" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{label}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="46" y="0" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="100" splitType="Stretch">
-			<line>
-			</line>
-		</band>
-	</columnFooter>
 	<pageFooter>
-		<band height="34" splitType="Stretch">
-			<textField>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<textElement textAlignment="Center">
-					<font size="13"/>
-				</textElement>
-				<text><![CDATA[/]]></text>
-			</staticText>
-			<textField evaluationTime="Report">
-				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="23" splitType="Stretch"/>
 	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>

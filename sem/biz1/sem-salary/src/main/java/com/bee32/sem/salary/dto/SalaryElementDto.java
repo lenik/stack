@@ -18,6 +18,8 @@ public class SalaryElementDto
     SalaryDto parent;
     SalaryElementDefDto def;
     BigDecimal bonus = BigDecimal.ZERO;
+    String category;
+    String label;
 
     @Override
     public SalaryDto getEnclosingObject() {
@@ -34,6 +36,8 @@ public class SalaryElementDto
         parent = mref(SalaryDto.class, source.getParent());
         def = mref(SalaryElementDefDto.class, source.getDef());
         bonus = source.getBonus();
+        category = def.getCategory();
+        label = def.getLabel();
     }
 
     @Override
@@ -72,6 +76,22 @@ public class SalaryElementDto
 
     public void setBonus(BigDecimal bonus) {
         this.bonus = bonus;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override
