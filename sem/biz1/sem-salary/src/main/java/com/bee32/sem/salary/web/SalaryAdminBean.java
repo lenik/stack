@@ -175,12 +175,8 @@ public class SalaryAdminBean
         DATA(Salary.class).saveAll(salarys);
         uiLogger.info("创建工资记录成功");
 
-        List<MonthSalary> mss = DATA(MonthSalary.class).list(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
-        MonthSalary ms;
-
-        if (mss.size() > 0 && mss != null) {
-            ms = mss.get(0);
-        } else {
+        MonthSalary ms = DATA(MonthSalary.class).getUnique(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
+        if (ms == null) {
             ms = new MonthSalary();
             ms.setYearMonth(yearMonth);
         }
@@ -194,7 +190,7 @@ public class SalaryAdminBean
     }
 
     public boolean deleteSalary() {
-        int yearMonth = SalaryDateUtil.convertToYearMonth(targetDate);
+        int yearMonth = getYearMonth();
         try {
             List<Salary> salaries = listSalary(yearMonth);
             if (salaries == null || salaries.size() == 0) {
@@ -263,6 +259,34 @@ public class SalaryAdminBean
             sorted.add(found);
         }
         return sorted;
+    }
+
+    /**
+     * 更新月工资记录
+     *
+     * 效率比较低
+     */
+    public void updateMonthSalary() {
+        int yearMonth = getYearMonth();
+        BigDecimal total = BigDecimal.ZERO;
+        List<Salary> salaries = DATA(Salary.class).list(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
+        MonthSalary ms = DATA(MonthSalary.class).getUnique(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
+
+        if (salaries.size() == 0) {
+            if (ms != null)
+                DATA(MonthSalary.class).delete(ms);
+        } else {
+            for (Salary s : salaries) {
+                total = total.add(s.getTotal());
+            }
+            if (ms == null) {
+                ms = new MonthSalary();
+                ms.setYearMonth(yearMonth);
+            }
+            ms.setValue(total);
+            DATA(MonthSalary.class).saveOrUpdate(ms);
+        }
+
     }
 
     public void exportToPdf() {
