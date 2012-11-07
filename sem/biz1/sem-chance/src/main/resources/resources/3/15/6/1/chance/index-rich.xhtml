@@ -406,7 +406,7 @@
         <fr:listView id="partiesEditView" header="客户" style="editDialog" indexView=":editDialog:form:tv:partiesIndexView"
             mbean="${bean.partiesMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2">
-                <h:outputLabel for="chooseCustomer" value="客户:" />
+                <h:outputText value="客户:" styleClass="e-link" onclick="#{item.party.clickAction}"/>
                 <h:panelGroup>
                     <h:outputText id="party" value="${item.party.displayName}" />
                     <p:commandButton id="chooseCustomer" value="..." onclick="chooseCustomerDialog.show()" />
