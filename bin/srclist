@@ -1,0 +1,27 @@
+#!/bin/bash
+
+tmplog=`tempfile`
+
+file="$1"
+label="$2"
+
+echo "Listing $file" >&2
+
+echo "________________________________________________________________________________"
+echo "FILE:         $label"
+
+vcscmd log-graph - "$file" >$tmplog
+read lines words chars < <(wc "$tmplog")
+
+echo "REVISION:     $lines"
+
+# Date:   Fri Feb 18 09:46:41 2011 +0800
+Date_=`git log "$file" | head -3 | grep Date:`
+date="${Date_#Date:   }"
+echo "UPDATE-TIME:  $date"
+
+echo "CHANGELOG:"
+sed -e 's/^* /    * /' $tmplog | grep -v '\.\.\.'
+
+echo "CONTENTS:"
+cat -n "$file" | sed -e 's/^/    /'

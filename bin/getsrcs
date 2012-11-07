@@ -1,0 +1,28 @@
+#!/bin/bash
+
+cd src
+
+alldir=/tmp/allsrc.d
+rm -fr "$alldir"
+mkdir -p "$alldir"
+
+find -name *.java | while read f; do
+    base="${f##*/}"
+    srclist "$f" "$f" >"$alldir/$base"
+done
+
+find -name *.xhtml | while read f; do
+    base="${f##*/}"
+    dir="${f%/*}"
+    base2="${dir##*/}"
+    srclist "$f" "$f" >"$alldir/$base2-$base"
+done
+
+infdir=main/resources/META-INF
+if [ -d "$infdir" ]; then
+    cd "$infdir"
+    find -type f | while read f; do
+        base="${f##*/}"
+        srclist "$f" "$f" >"$alldir/$base"
+    done
+fi
