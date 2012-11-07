@@ -57,7 +57,7 @@
 
         <p:fieldset id="ticketSource" legend="凭证源">
             <t:panelGrid columns="1">
-                <t:panelGrid columns="4">
+                <t:panelGrid columns="5">
                     <p:commandButton value="选择收款单"
                         onclick="chooseCreditNoteDialog.show()"
                         disabled="#{not bean.editing}">
@@ -84,6 +84,13 @@
                         disabled="#{not bean.editing}">
                         <f:setPropertyActionListener
                             target="${chooseStockOrderDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                    <p:commandButton value="选择月度工资"
+                        onclick="chooseMonthSalaryDialog.show()"
+                        disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener
+                            target="${chooseMonthSalaryDialogBean.haveNoCorrespondingTicket}"
                             value="true" />
                     </p:commandButton>
                 </t:panelGrid>
@@ -198,6 +205,8 @@
         <sem:chooseDeliveryNoteDialog id="c_delivery_note" target="#{bean.sourceToApply}"
             update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
         <sem:chooseStockOrderDialog id="c_stock_order" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
+		<sem:chooseMonthSalaryDialog id="c_month_salary" target="#{bean.sourceToApply}"
             update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
     </ui:define>
 
