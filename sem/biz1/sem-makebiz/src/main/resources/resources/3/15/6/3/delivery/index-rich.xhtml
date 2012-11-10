@@ -64,12 +64,10 @@
                 <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
                 <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}"/>
-                <t:panelGroup>
+                <t:panelGroup colspan="3">
                     <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:25em;"/>
                     <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
                 </t:panelGroup>
-                <t:panelGroup />
-                <t:panelGroup />
 
                 <h:outputText value="简要:" />
                 <t:panelGroup colspan="3">
@@ -88,10 +86,12 @@
                 </t:panelGroup>
 
                 <h:outputText value="要求送达日期:" />
-                <t:panelGroup colspan="3">
-                    <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"
-                        showOn="button" label="要求送达日期:" />
-                </t:panelGroup>
+                <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"
+                    showOn="button" label="要求送达日期:" />
+                <h:outputText value="金额合计:" />
+                <h:outputText value="#{obj.nativeTotal}" >
+                    <f:convertNumber pattern="#0.00"/>
+                </h:outputText>
             </t:panelGrid>
         </p:fieldset>
 
