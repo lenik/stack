@@ -47,12 +47,12 @@ public class MakeOrderAdminBean
     public void setChanceToApply(ChanceDto chance) {
         MakeOrderDto makeOrder = getOpenedObject();
 
-        MakeOrder _checkSameChanceOrder = DATA(MakeOrder.class).getFirst(
-                new Equals("chance.id", chance.getId()));
-        if (_checkSameChanceOrder != null && !_checkSameChanceOrder.getId().equals(makeOrder.getId())) {
-            uiLogger.error("此机会已经对应的定单!");
-            return;
-        }
+//        MakeOrder _checkSameChanceOrder = DATA(MakeOrder.class).getFirst(
+//                new Equals("chance.id", chance.getId()));
+//        if (_checkSameChanceOrder != null && !_checkSameChanceOrder.getId().equals(makeOrder.getId())) {
+//            uiLogger.error("此机会已经对应的定单!");
+//            return;
+//        }
 
         BEAN(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
     }
