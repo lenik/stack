@@ -91,6 +91,12 @@
                         label="备注" />
                 </t:panelGroup>
 
+			<h:outputText value="金额合计:" />
+                <t:panelGroup colspan="3">
+                    <h:outputText value="#{obj.nativeTotal}" >
+                        <f:convertNumber pattern="#0.00"/>
+                    </h:outputText>
+                </t:panelGroup>
             </t:panelGrid>
         </p:fieldset>
 
