@@ -54,8 +54,11 @@
         <p:fieldset legend="基本信息" toggleable="true" toggleSpeed="100">
             <t:panelGrid id="basic" columns="4">
                 <h:outputText value="标识:" />
-                <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
-                <h:outputText value="状态" />
+                <t:panelGrid columns="2">
+			<h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
+			<h:outputText value="#{obj.validString}" style="font-weight:bold;font-size:large;color:#{obj.valid ? 'blue' : 'red'}" />
+                </t:panelGrid>
+                <h:outputText value="状态:" />
                 <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
 
                 <h:outputText value="时间:" />
@@ -63,7 +66,7 @@
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="制单人:" />
-                <p:inputText value="#{obj.owner.displayName}" readonly="true" />
+                <h:outputText value="#{obj.owner.displayName}"/>
 
                 <h:outputText value="简要:" />
                 <t:panelGroup colspan="3">
@@ -92,11 +95,11 @@
                 </t:panelGroup>
 
 			<h:outputText value="金额合计:" />
-                <t:panelGroup colspan="3">
-                    <h:outputText value="#{obj.nativeTotal}" >
-                        <f:convertNumber pattern="#0.00"/>
-                    </h:outputText>
-                </t:panelGroup>
+                <h:outputText value="#{obj.nativeTotal}" >
+                    <f:convertNumber pattern="#0.00"/>
+                </h:outputText>
+                <h:outputText value="有效:" />
+                <p:selectBooleanCheckbox value="#{obj.valid}" />
             </t:panelGrid>
         </p:fieldset>
 

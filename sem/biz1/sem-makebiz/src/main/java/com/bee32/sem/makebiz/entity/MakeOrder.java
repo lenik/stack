@@ -49,6 +49,8 @@ public class MakeOrder
     String status;
     Chance chance;
 
+    boolean valid = true;
+
     List<MakeTask> tasks = new ArrayList<MakeTask>();
     List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
     List<DeliveryNote> deliveryNotes = new ArrayList<DeliveryNote>();
@@ -66,6 +68,7 @@ public class MakeOrder
         customer = o.customer;
         status = o.status;
         chance = o.chance;
+        valid = o.valid;
         tasks = new ArrayList<MakeTask>(o.tasks);
         plans = new ArrayList<MaterialPlan>(o.plans);
         verifyContext = (SingleVerifierWithNumberSupport) verifyContext.clone();
@@ -180,6 +183,19 @@ public class MakeOrder
 
     public void setChance(Chance chance) {
         this.chance = chance;
+    }
+
+    /**
+     * 有效标志
+     *
+     * true:有效定单; false:作废
+     */
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     /**

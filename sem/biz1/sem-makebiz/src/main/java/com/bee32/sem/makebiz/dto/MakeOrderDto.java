@@ -40,6 +40,7 @@ public class MakeOrderDto
     PartyDto customer;
     String status;
     ChanceDto chance;
+    boolean valid;
 
     List<MakeTaskDto> tasks;
     List<MaterialPlanDto> plans;
@@ -74,6 +75,7 @@ public class MakeOrderDto
         customer = mref(PartyDto.class, source.getCustomer());
         status = source.getStatus();
         chance = mref(ChanceDto.class, source.getChance());
+        valid = source.isValid();
 
         if (selection.contains(TASKS))
             tasks = marshalList(MakeTaskDto.class, source.getTasks());
@@ -115,6 +117,7 @@ public class MakeOrderDto
         merge(target, "customer", customer);
         target.setStatus(status);
         merge(target, "chance", chance);
+        target.setValid(valid);
 
         if (selection.contains(TASKS))
             mergeList(target, "tasks", tasks);
@@ -159,6 +162,21 @@ public class MakeOrderDto
 
     public void setChance(ChanceDto chance) {
         this.chance = chance;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public String getValidString() {
+        if (valid) {
+            return "有效";
+        }
+        return "作废";
     }
 
     public List<MakeTaskDto> getTasks() {

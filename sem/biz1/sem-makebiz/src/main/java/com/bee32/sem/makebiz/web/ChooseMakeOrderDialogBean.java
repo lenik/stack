@@ -33,6 +33,7 @@ public class ChooseMakeOrderDialogBean
         if (!customer.isNull()) {
             elements.add(new Equals("customer.id", customer.getId()));
         }
+        elements.add(new Equals("valid", true));    //始终取有效定单
     }
 
     public PartyDto getCustomer() {
