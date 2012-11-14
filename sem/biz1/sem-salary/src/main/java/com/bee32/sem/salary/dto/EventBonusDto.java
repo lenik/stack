@@ -15,18 +15,18 @@ public class EventBonusDto
     private static final long serialVersionUID = 1L;
 
     EmployeeInfoDto employee;
-    BigDecimal bonus;
+    BigDecimal value;
 
     @Override
     protected void _marshal(EventBonus source) {
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
-        bonus = source.getBonus();
+        value = source.getBonus();
     }
 
     @Override
     protected void _unmarshalTo(EventBonus target) {
         merge(target, "employee", employee);
-        target.setBonus(bonus);
+        target.setBonus(value);
     }
 
     @Override
@@ -42,12 +42,20 @@ public class EventBonusDto
         this.employee = employee;
     }
 
-    public BigDecimal getBonus() {
-        return bonus;
+    public BigDecimal getValue() {
+        return value;
     }
 
-    public void setBonus(BigDecimal bonus) {
-        this.bonus = bonus;
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public String getTitle() {
+        int compareTo = value.compareTo(BigDecimal.ZERO);
+        if (compareTo > 0)
+            return "奖";
+        else
+            return "惩";
     }
 
 }
