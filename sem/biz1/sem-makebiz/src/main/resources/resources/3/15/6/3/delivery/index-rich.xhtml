@@ -14,14 +14,10 @@
     <ui:define name="toolbar.left">
         <p:separator />
         <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
-            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
-            <p:fileDownload value="#{bean.pdfFile}" />
-        </p:commandButton>
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false" />
         <p:separator />
         <p:commandButton id="exportToPdfNoPrice" value="PDF无价格" actionListener="${bean.exportToPdfNoPrice}"
-            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
-            <p:fileDownload value="#{bean.pdfFile}" />
-        </p:commandButton>
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false" />
         <p:separator />
     </ui:define>
 
