@@ -1,4 +1,4 @@
-package com.bee32.sem.salary.util;
+package com.bee32.plover.util;
 
 import java.util.regex.Pattern;
 

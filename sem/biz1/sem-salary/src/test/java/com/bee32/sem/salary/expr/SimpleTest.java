@@ -17,6 +17,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
+import com.bee32.plover.util.ChineseCodec;
 import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryVariableProviders;
 import com.bee32.sem.hr.entity.EmployeeInfo;
@@ -24,7 +25,6 @@ import com.bee32.sem.hr.entity.JobPost;
 import com.bee32.sem.hr.entity.JobTitle;
 import com.bee32.sem.hr.entity.PersonEducationType;
 import com.bee32.sem.salary.SEMSalaryUnit;
-import com.bee32.sem.salary.util.ChineseCodec;
 
 @Using(SEMSalaryUnit.class)
 public class SimpleTest

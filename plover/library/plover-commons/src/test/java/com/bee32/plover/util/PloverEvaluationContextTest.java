@@ -1,10 +1,8 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.util;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import com.bee32.plover.arch.util.PloverEvaluationContext;
 
 public class PloverEvaluationContextTest {
 

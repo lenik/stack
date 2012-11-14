@@ -14,14 +14,13 @@ import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.EvaluationException;
-import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.faces.utils.SelectableList;
+import com.bee32.plover.util.ChineseCodec;
+import com.bee32.plover.util.PloverEvaluationContext;
 import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryVariableProviders;
 import com.bee32.sem.hr.entity.EmployeeInfo;
@@ -29,7 +28,6 @@ import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.salary.dto.SalaryElementDefDto;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 import com.bee32.sem.salary.salary.SalaryDefPreview;
-import com.bee32.sem.salary.util.ChineseCodec;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class SalaryDefAdminBean
@@ -58,9 +56,6 @@ public class SalaryDefAdminBean
         previewData = new ArrayList<SalaryDefPreview>();
         List<EmployeeInfo> employeeList = DATA(EmployeeInfo.class).list();
 
-        String expression = def.getExpr();
-        String encode = ChineseCodec.encode(expression);
-
         for (EmployeeInfo employee : employeeList) {
 
             Map<String, Object> map = new HashMap<String, Object>();
@@ -68,7 +63,7 @@ public class SalaryDefAdminBean
             map.put(ISalaryVariableProvider.ARG_YEARMONTH, SalaryDateUtil.convertToYearMonth(new Date()));
             final TextMap args = new TextMap(map);
 
-            StandardEvaluationContext context = new StandardEvaluationContext();
+            PloverEvaluationContext context = new PloverEvaluationContext();
             BeanResolver resolver = new BeanResolver() {
 
                 @Override
@@ -87,19 +82,13 @@ public class SalaryDefAdminBean
             };
             context.setBeanResolver(resolver);
 
-            SpelExpressionParser parser = new SpelExpressionParser();
-            Expression expr = null;
             Number result = null;
 
             try {
-                expr = parser.parseExpression(encode);
+                result = (Number) context.evaluateZh(def.getExpr());
             } catch (ParseException e) {
                 uiLogger.error("表达式非法", e);
                 return false;
-            }
-
-            try {
-                result = (Number) expr.getValue(context);
             } catch (EvaluationException e) {
                 uiLogger.error("无法对表达式求值", e);
                 return false;
@@ -121,11 +110,11 @@ public class SalaryDefAdminBean
 
         SalaryElementDefDto def = (SalaryElementDefDto) getOpenedObject();
         String expression = def.getExpr();
-        String encode = ChineseCodec.encode(expression);
-        SpelExpressionParser parser = new SpelExpressionParser();
-        Expression expr = null;
+        String encoded = ChineseCodec.encode(expression);
+
+        PloverEvaluationContext context = new PloverEvaluationContext();
         try {
-            expr = parser.parseExpression(encode);
+            context.checkSyntaxZh(encoded);
         } catch (ParseException e) {
             uiLogger.error("表达式非法", e);
             return false;

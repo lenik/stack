@@ -21,7 +21,7 @@ public class AttendanceVariableProvider
         int yearMonth = args.getInt(ARG_YEARMONTH);
 
         boolean defined = false;
-        for (String p: PARAMS)
+        for (String p : PARAMS)
             defined |= (p.equals(variableName));
         if (!defined)
             return null;
@@ -32,9 +32,9 @@ public class AttendanceVariableProvider
 
         switch (variableName) {
         case "应出勤":
-            return new BigDecimal(dto.getArguments()[0]/2);
+            return new BigDecimal(dto.getArguments()[0] / 2);
         case "出勤":
-            return new BigDecimal(dto.getArguments()[1]/2);
+            return new BigDecimal(dto.getArguments()[1] / 2);
         case "应加班":
             return new BigDecimal(dto.getArguments()[2]);
         case "加班":
@@ -42,7 +42,7 @@ public class AttendanceVariableProvider
         case "迟到":
             return new BigDecimal(dto.getArguments()[4]);
         case "安全生产月":
-//            AttendanceMRecordDto dto = getDto(employee, yearMonth);
+// AttendanceMRecordDto dto = getDto(employee, yearMonth);
             return new BigDecimal(30);
         default:
             return null;
@@ -60,12 +60,11 @@ public class AttendanceVariableProvider
     }
 
     static AttendanceMRecordDto getDto(EmployeeInfo employee, int yearMonth) {
-            AttendanceMRecord entity = DATA(AttendanceMRecord.class).getUnique(
-                    AttendanceCriteria.listRecordByEmployee(employee.getId(), yearMonth));
+        AttendanceMRecord entity = DATA(AttendanceMRecord.class).getUnique(
+                AttendanceCriteria.listRecordByEmployee(employee.getId(), yearMonth));
         if (entity == null)
             return null;
-        AttendanceMRecordDto dto = DTOs.marshal(AttendanceMRecordDto.class, entity);
-        return dto;
+        return DTOs.marshal(AttendanceMRecordDto.class, entity);
     }
 
 }

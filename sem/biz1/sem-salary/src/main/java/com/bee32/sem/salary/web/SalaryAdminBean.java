@@ -30,13 +30,14 @@ import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.EvaluationException;
-import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.util.ChineseCodec;
+import com.bee32.plover.util.Mime;
+import com.bee32.plover.util.Mimes;
+import com.bee32.plover.util.PloverEvaluationContext;
 import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryVariableProviders;
 import com.bee32.sem.attendance.util.DefCriteria;
@@ -56,7 +57,6 @@ import com.bee32.sem.salary.entity.MonthSalary;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
-import com.bee32.sem.salary.util.ChineseCodec;
 import com.bee32.sem.salary.util.ColumnModel;
 import com.bee32.sem.salary.util.CrosstabModel;
 import com.bee32.sem.salary.util.PersonSalaryReportModel;
@@ -68,11 +68,11 @@ public class SalaryAdminBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+    private static final Mime PDF = Mimes.application_pdf;
+    private static final Mime CSV = Mimes.text_csv;
 
     Date targetDate = new Date();
-
     SalaryElementDto selectedElement = new SalaryElementDto().create();
-
     List<ColumnModel> columns = new ArrayList<ColumnModel>();
 
     public SalaryAdminBean() {
@@ -133,8 +133,7 @@ public class SalaryAdminBean
             final TextMap args = new TextMap(map);
 
             for (SalaryElementDef def : efficaciousDef) {
-                String expression = def.getExpr();
-                StandardEvaluationContext context = new StandardEvaluationContext();
+                PloverEvaluationContext context = new PloverEvaluationContext();
                 BeanResolver resolver = new BeanResolver() {
                     @Override
                     public Double resolve(EvaluationContext context, String beanName)
@@ -151,18 +150,13 @@ public class SalaryAdminBean
                 };
                 context.setBeanResolver(resolver);
 
-                SpelExpressionParser parser = new SpelExpressionParser();
-                Expression expr;
+                Number result;
                 try {
-                    expr = parser.parseExpression(ChineseCodec.encode(expression));
+                    result = (Number) context.evaluateZh(def.getExpr());
+                    System.out.println(result);
                 } catch (ParseException e) {
                     uiLogger.error("表达式非法", e);
                     return false;
-                }
-                Object result;
-                try {
-                    result = (Number) expr.getValue(context);
-                    System.out.println(result);
                 } catch (EvaluationException e) {
                     uiLogger.error("无法对表达式求值", e);
                     return false;
@@ -328,7 +322,7 @@ public class SalaryAdminBean
             reportParams.put("salary", salary.getTax().subtract(salary.getTax()));
 
             // do export
-            doExportToPdf(context, reportTemplate, reportParams, beanSource, "测试", "pdf");
+            doExportToPdf(context, reportTemplate, reportParams, beanSource, "测试", PDF);
         }
 
     }
@@ -350,9 +344,9 @@ public class SalaryAdminBean
 
         for (int i = 0; i < 3; i++) {
             CrosstabModel model = new CrosstabModel();
-            model.setPersonName("test" + i);
-            model.setElementDef("test" + i);
-            model.setBonus(new BigDecimal(i));
+            model.setPersonName("test");
+            model.setElementDef("test");
+            model.setBonus(BigDecimal.ZERO);
             crosstabCollection.add(model);
         }
 // for (SalaryDto salary : monthList) {
@@ -367,11 +361,11 @@ public class SalaryAdminBean
 // }
         datasource = new JRBeanCollectionDataSource(crosstabCollection);
 
-        doExportToPdf(context, reportTemplate, null, datasource, fileName, "pdf");
+        doExportToPdf(context, reportTemplate, null, datasource, fileName, PDF);
     }
 
     static void doExportToPdf(FacesContext context, InputStream template, Map<String, Object> params,
-            JRDataSource datasource, String fileName, String fileType) {
+            JRDataSource datasource, String fileName, Mime contentType) {
         byte[] pdf;
         JasperReport report;
         ServletOutputStream outputStream;
@@ -391,11 +385,8 @@ public class SalaryAdminBean
         }
         response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename + ".pdf");
         response.setCharacterEncoding("UTF-8");
-        if (fileType.equals("pdf")) {
-            response.setContentType("application/pdf");
-        } else if (fileType.equals("csv")) {
-            response.setContentType("application/csv");
-        }
+
+        response.setContentType(contentType.getContentType());
 
         try {
             report = JasperCompileManager.compileReport(template);

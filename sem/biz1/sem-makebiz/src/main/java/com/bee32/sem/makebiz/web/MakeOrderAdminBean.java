@@ -29,6 +29,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.util.Mime;
+import com.bee32.plover.util.Mimes;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
@@ -63,7 +65,7 @@ public class MakeOrderAdminBean
         BEAN(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
     }
 
-    public void exportToPdf() {
+    public void exportToPdf() throws IOException {
         MakeOrderDto makeOrder = this.getOpenedObject();
         JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(makeOrder.getItems());
 
@@ -76,10 +78,10 @@ public class MakeOrderAdminBean
         reportParams.put("description", makeOrder.getDescription());
 
         InputStream report = getClass().getClassLoader().getResourceAsStream("resources/3/15/6/3/order/report1.jrxml");
-        doExport(report, reportParams, datasource, "order.pdf", PDF);
+        doExport(report, reportParams, datasource, "order", PDF);
     }
 
-    public void exportToPdfOuter() {
+    public void exportToPdfOuter() throws IOException {
         MakeOrderDto makeOrder = this.getOpenedObject();
         JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(makeOrder.getItems());
         InputStream report = getClass().getClassLoader().getResourceAsStream("resources/3/15/6/3/order/report2.jrxml");
@@ -92,11 +94,11 @@ public class MakeOrderAdminBean
         params.put("customer", makeOrder.getCustomer().getDisplayName());
         params.put("description", makeOrder.getDescription());
 
-        doExport(report, params, datasource, "order.pdf", PDF);
+        doExport(report, params, datasource, "order", PDF);
 
     }
 
-    public void exportToCsv() {
+    public void exportToCsv() throws IOException {
         MakeOrderDto makeOrder = this.getOpenedObject();
         JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(makeOrder.getItems());
         InputStream report = getClass().getClassLoader().getResourceAsStream("resources/3/15/6/3/order/report1.jrxml");
@@ -109,7 +111,7 @@ public class MakeOrderAdminBean
         params.put("customer", makeOrder.getCustomer().getDisplayName());
         params.put("description", makeOrder.getDescription());
 
-        doExport(report, params, datasource, "order.csv", CSV);
+        doExport(report, params, datasource, "order", CSV);
     }
 
     void doExport(InputStream template, Map<String, Object> params, JRDataSource datasource, String fileName,
