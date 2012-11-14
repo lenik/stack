@@ -153,7 +153,6 @@ public class SalaryAdminBean
                 Number result;
                 try {
                     result = (Number) context.evaluateZh(def.getExpr());
-                    System.out.println(result);
                 } catch (ParseException e) {
                     uiLogger.error("表达式非法", e);
                     return false;
@@ -260,34 +259,6 @@ public class SalaryAdminBean
             sorted.add(found);
         }
         return sorted;
-    }
-
-    /**
-     * 更新月工资记录
-     *
-     * 效率比较低
-     */
-    public void updateMonthSalary() {
-        int yearMonth = getYearMonth();
-        BigDecimal total = BigDecimal.ZERO;
-        List<Salary> salaries = DATA(Salary.class).list(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
-        MonthSalary ms = DATA(MonthSalary.class).getUnique(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
-
-        if (salaries.size() == 0) {
-            if (ms != null)
-                DATA(MonthSalary.class).delete(ms);
-        } else {
-            for (Salary s : salaries) {
-                total = total.add(s.getTotal());
-            }
-            if (ms == null) {
-                ms = new MonthSalary();
-                ms.setYearMonth(yearMonth);
-            }
-            ms.setValue(total);
-            DATA(MonthSalary.class).saveOrUpdate(ms);
-        }
-
     }
 
     public void exportPersonalReport() {
@@ -403,38 +374,77 @@ public class SalaryAdminBean
         context.responseComplete();
     }
 
-    @Override
-    protected void postUpdate(UnmarshalMap uMap)
-            throws Exception {
-        SalaryDto dto = getOpenedObject();
+    /**
+     * 更新月工资记录
+     */
+    public boolean updateMonthSalary() {
+        int yearMonth = getYearMonth();
+        BigDecimal total = BigDecimal.ZERO;
+        List<Salary> salaries = DATA(Salary.class).list(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
+        MonthSalary ms = DATA(MonthSalary.class).getUnique(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
 
+        if (salaries.size() == 0) {
+            if (ms != null)
+                DATA(MonthSalary.class).delete(ms);
+        } else {
+            if (ms == null) {
+                ms = new MonthSalary();
+                ms.setYearMonth(yearMonth);
+            }
+            for (Salary s : salaries) {
+                total = total.add(s.getTotal());
+            }
+            ms.setValue(total);
+            try {
+                DATA(MonthSalary.class).saveOrUpdate(ms);
+            } catch (Exception e) {
+                uiLogger.error(e);
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
         int yearMonth = getYearMonth();
         MonthSalary ms = DATA(MonthSalary.class).getUnique(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
         if (ms == null) {
             ms = new MonthSalary();
             ms.setYearMonth(yearMonth);
         }
-        ms.setValue(dto.getTotal());
-        DATA(MonthSalary.class).saveOrUpdate(ms);
+        if (ms.isLocked()) {
+            uiLogger.error("月工资表被锁定，此工资记录改动不能被保存");
+            return false;
+        }
+        return super.preUpdate(uMap);
+    }
 
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        updateMonthSalary();
         super.postUpdate(uMap);
+    }
+
+    @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        int yearMonth = getYearMonth();
+        MonthSalary monthSalary = DATA(MonthSalary.class).getUnique(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
+        if (monthSalary.isLocked()) {
+            uiLogger.error("月工资表被锁定，此工资记录改动不能被保存");
+            return false;
+        }
+        return super.preDelete(uMap);
     }
 
     @Override
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
-        int yearMonth = getYearMonth();
-        SalaryDto dto = getOpenedObject();
-
-        MonthSalary monthSalary = DATA(MonthSalary.class).getUnique(SalaryCriteria.listSalaryByYearAndMonth(yearMonth));
-        BigDecimal total = monthSalary.getValue();
-        total = total.subtract(dto.getTotal());
-        if (total.equals(BigDecimal.ZERO))
-            DATA(MonthSalary.class).delete(monthSalary);
-        else {
-            monthSalary.setValue(total);
-            DATA(MonthSalary.class).save(monthSalary);
-        }
+        updateMonthSalary();
         super.postDelete(uMap);
     }
 
