@@ -18,8 +18,8 @@ public class SalaryElementDto
     SalaryDto parent;
     SalaryElementDefDto def;
     BigDecimal bonus = BigDecimal.ZERO;
-    String category;
-    String label;
+    String defCategory;
+    String defLabel;
 
     @Override
     public SalaryDto getEnclosingObject() {
@@ -34,17 +34,20 @@ public class SalaryElementDto
     @Override
     protected void _marshal(SalaryElement source) {
         parent = mref(SalaryDto.class, source.getParent());
-        def = mref(SalaryElementDefDto.class, source.getDef());
+        def = marshal(SalaryElementDefDto.class, source.getDef());
         bonus = source.getBonus();
-        category = def.getCategory();
-        label = def.getLabel();
+        defCategory = def.getCategory();
+        if (defCategory == null || defCategory.isEmpty())
+            defCategory = "not defined";
+        defLabel = def.getLabel();
+        if (defLabel == null || defLabel.isEmpty())
+            defLabel = "not defined";
     }
 
     @Override
     protected void _unmarshalTo(SalaryElement target) {
         merge(target, "parent", parent);
         merge(target, "def", def);
-        target.setLabel(label);
         target.setBonus(bonus);
     }
 
@@ -78,20 +81,20 @@ public class SalaryElementDto
         this.bonus = bonus;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDefCategory() {
+        return defCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDefCategory(String defCategory) {
+        this.defCategory = defCategory;
     }
 
-    public String getLabel() {
-        return label;
+    public String getDefLabel() {
+        return defLabel;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setDefLabel(String defLabel) {
+        this.defLabel = defLabel;
     }
 
     @Override

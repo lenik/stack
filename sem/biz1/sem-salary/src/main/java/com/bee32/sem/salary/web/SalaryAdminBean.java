@@ -1,8 +1,10 @@
 package com.bee32.sem.salary.web;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -10,18 +12,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.context.FacesContext;
 import javax.free.Pair;
 import javax.free.TypeMatrix_BigDecimal;
+import javax.free.UnexpectedException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.EvaluationContext;
@@ -36,6 +40,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryVariableProviders;
 import com.bee32.sem.attendance.util.DefCriteria;
+import com.bee32.sem.attendance.util.EventBonusCriteria;
 import com.bee32.sem.attendance.util.SalaryCriteria;
 import com.bee32.sem.frame.ui.ELListMBean;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -43,14 +48,18 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.hr.web.EmployeeInfoCriteria;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
+import com.bee32.sem.salary.dto.EventBonusDto;
 import com.bee32.sem.salary.dto.SalaryDto;
 import com.bee32.sem.salary.dto.SalaryElementDto;
+import com.bee32.sem.salary.entity.EventBonus;
 import com.bee32.sem.salary.entity.MonthSalary;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 import com.bee32.sem.salary.util.ChineseCodec;
 import com.bee32.sem.salary.util.ColumnModel;
+import com.bee32.sem.salary.util.CrosstabModel;
+import com.bee32.sem.salary.util.PersonSalaryReportModel;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 import com.bee32.sem.salary.util.SalaryTreeNode;
 import com.bee32.sem.salary.util.TreeSalaryElementDefComparator;
@@ -65,8 +74,6 @@ public class SalaryAdminBean
     SalaryElementDto selectedElement = new SalaryElementDto().create();
 
     List<ColumnModel> columns = new ArrayList<ColumnModel>();
-
-    StreamedContent pdfFile;
 
     public SalaryAdminBean() {
         super(Salary.class, SalaryDto.class, SalaryDto.ELEMENTS);
@@ -289,46 +296,120 @@ public class SalaryAdminBean
 
     }
 
-    public void exportToPdf() {
+    public void exportPersonalReport() {
 
         openSelection();
         SalaryDto salary = getOpenedObject();
         if (salary == null) {
             System.out.println("openedObject is null");
             return;
-        }
-
-        Pair<Date, Date> datePair = SalaryDateUtil.toMonthRange(targetDate);
-// List<EventBonusDto> events = mrefList(EventBonus.class, EventBonusDto.class, 0,
-// EventBonusCriteria.listEvents(salary.getId(), datePair.getFirst(), datePair.getSecond()));
-// IReportRowModel model = new IReportRowModel(salary.getElements(), events);
-
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(salary.getElements());
-
-        ClassLoader ccl = getClass().getClassLoader(); // Thread.currentThread().getContextClassLoader();
-        InputStream reportStream = ccl.getResourceAsStream("resources/3/15/6/4/salary/report1.jrxml");
-
-        try {
-            BigDecimal tax = salary.getTax().setScale(4, BigDecimal.ROUND_HALF_UP);
-            BigDecimal realsalary = salary.getTax().subtract(salary.getTax());
-            JasperReport report = JasperCompileManager.compileReport(reportStream);
+        } else {
+            // initialization
+            FacesContext context = FacesContext.getCurrentInstance();
+            InputStream reportTemplate = getClass().getClassLoader().getResourceAsStream(
+                    "resources/3/15/6/4/salary/report1.jrxml");
+            Pair<Date, Date> datePair = SalaryDateUtil.toMonthRange(targetDate);
+            List<EventBonusDto> events = mrefList(EventBonus.class, EventBonusDto.class, 0,
+                    EventBonusCriteria.listEvents(salary.getId(), datePair.getFirst(), datePair.getSecond()));
+            PersonSalaryReportModel personalSalaryModel = new PersonSalaryReportModel();
+            List<PersonSalaryReportModel> sourceList = new ArrayList<PersonSalaryReportModel>();
             Map<String, Object> reportParams = new HashMap<String, Object>();
+
+            // set
+            personalSalaryModel.setElements(salary.getElements());
+            personalSalaryModel.setEvents(events);
+            sourceList.add(personalSalaryModel);
+            JRBeanCollectionDataSource beanSource = new JRBeanCollectionDataSource(sourceList);
             reportParams.put("title", "工资单");
             reportParams.put("employeeName", salary.getEmployee().getPersonName());
             reportParams.put("yearMonthString", salary.getYear() + "年" + salary.getMonth() + "月份");
             reportParams.put("total", salary.getTotal());
-            reportParams.put("tax", tax);
-            reportParams.put("salary", realsalary);
-            System.out.println(reportParams);
+            reportParams.put("tax", salary.getTax().setScale(4, BigDecimal.ROUND_HALF_UP));
+            reportParams.put("salary", salary.getTax().subtract(salary.getTax()));
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
-            byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
-
-            InputStream stream = new ByteArrayInputStream(pdfByteArray);
-            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "test.pdf");
-        } catch (Exception e) {
-            e.printStackTrace();
+            // do export
+            doExportToPdf(context, reportTemplate, reportParams, beanSource, "测试", "pdf");
         }
+
+    }
+
+    public void exportMonthReport() {
+
+        String directory = "resources/3/15/6/4/salary/report2.jrxml";
+        String fileName = getYear() + "年" + getMonth() + "月 工资表";
+        FacesContext context = FacesContext.getCurrentInstance();
+        InputStream reportTemplate;
+        List<CrosstabModel> crosstabCollection;
+// List<SalaryDto> monthList;
+        JRBeanCollectionDataSource datasource;
+
+        reportTemplate = getClass().getClassLoader().getResourceAsStream(directory);
+        crosstabCollection = new ArrayList<CrosstabModel>();
+// monthList = mrefList(Salary.class, SalaryDto.class, SalaryDto.ELEMENTS,
+// SalaryCriteria.listSalaryByYearAndMonth(getYearMonth()));
+
+        for (int i = 0; i < 3; i++) {
+            CrosstabModel model = new CrosstabModel();
+            model.setPersonName("test" + i);
+            model.setElementDef("test" + i);
+            model.setBonus(new BigDecimal(i));
+            crosstabCollection.add(model);
+        }
+// for (SalaryDto salary : monthList) {
+// String personName = salary.getEmployee().getPersonName();
+// for (SalaryElementDto element : salary.getElements()) {
+// CrosstabModel model = new CrosstabModel();
+// model.setPersonName(personName);
+// model.setElementDef(element.getDef().getTitle());
+// model.setBonus(element.getBonus());
+// crosstabCollection.add(model);
+// }
+// }
+        datasource = new JRBeanCollectionDataSource(crosstabCollection);
+
+        doExportToPdf(context, reportTemplate, null, datasource, fileName, "pdf");
+    }
+
+    static void doExportToPdf(FacesContext context, InputStream template, Map<String, Object> params,
+            JRDataSource datasource, String fileName, String fileType) {
+        byte[] pdf;
+        JasperReport report;
+        ServletOutputStream outputStream;
+        HttpServletResponse response;
+
+        response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+        /**
+         * @see RFC 5987 2.3
+         */
+        String encodedFilename;
+        try {
+            encodedFilename = URLEncoder.encode(fileName, "utf-8");
+            System.out.println(encodedFilename);
+        } catch (UnsupportedEncodingException e) {
+            throw new UnexpectedException(e);
+        }
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename + ".pdf");
+        response.setCharacterEncoding("UTF-8");
+        if (fileType.equals("pdf")) {
+            response.setContentType("application/pdf");
+        } else if (fileType.equals("csv")) {
+            response.setContentType("application/csv");
+        }
+
+        try {
+            report = JasperCompileManager.compileReport(template);
+            pdf = JasperRunManager.runReportToPdf(report, params, datasource);
+            outputStream = response.getOutputStream();
+            outputStream.write(pdf);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException ioexception) {
+            throw new RuntimeException(ioexception.getMessage(), ioexception);
+        } catch (JRException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        context.responseComplete();
     }
 
     @Override
@@ -401,10 +482,6 @@ public class SalaryAdminBean
 
     public void setSelectedElement(SalaryElementDto selectedElement) {
         this.selectedElement = selectedElement;
-    }
-
-    public StreamedContent getPdfFile() {
-        return pdfFile;
     }
 
     final ListMBean<SalaryElementDto> salaryElementMBean = ELListMBean.fromEL(this,//

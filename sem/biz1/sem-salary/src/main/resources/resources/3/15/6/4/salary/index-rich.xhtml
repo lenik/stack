@@ -9,8 +9,7 @@
 
     <ui:define name="toolbarContexts">
         <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" showOn="button">
-            <p:ajax event="dateSelect" listener="#{bean.refreshData}"
-                update="${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
+            <p:ajax event="dateSelect" listener="#{bean.refreshData}" update="${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
         </p:calendar>
         <p:commandButton id="gbutton" value="生成${bean.year}年${bean.month}月工资" actionListener="${bean.generateSalary}"
             update="${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
@@ -18,11 +17,12 @@
             update="${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
         <p:separator />
 
-        <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
-            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
-            <p:fileDownload value="${bean.pdfFile}" />
-        </p:commandButton>
+        <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportPersonalReport}"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false" />
+        <p:commandButton id="batchExport" value="月工资报表" actionListener="${bean.exportMonthReport}"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false" />
         <p:separator />
+
     </ui:define>
 
     <ui:define name="dataColumns">
