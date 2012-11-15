@@ -8,64 +8,63 @@
     <ui:define name="content">
         <h:form id="contentForm">
 
-            <table style="width:100%;">
-                <tr>
-                    <td colspan="2">
-                        <p:calendar value="${bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
-                            showOn="button">
-                            <p:ajax event="dateSelect" listener="${bean.generatorAttendanceData}" update=":contentForm" />
-                        </p:calendar>
-                        <h:inputHidden id="currentDay" value="${bean.day}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:200px;" valign="top">
-                        <ui>
-                            <li style="font-weight:bold;height:30px;">工具栏</li>
-                            <ui:repeat var="item" value="${bean.attendanceTypes}">
-                                <li>
-                                    <img class="selection-tool" alt="${item.value}" title="${item.name}" src="${item.iconString}" />
-                                    <h:outputText value="${item.name}" />
-                                </li>
-                            </ui:repeat>
-                        </ui>
-                    </td>
-                    <td valign="top">
-                        <table>
-                            <tr>
-                                <td class="employee-view" align="center">员工</td>
-                                <td class="morning-view" align="center">上午</td>
-                                <td class="afternoon-view" align="center">下午</td>
-                                <td class="evening-view" align="center">晚上</td>
-                            </tr>
-                            <ui:repeat var="item" value="${bean.attendances}">
-                                <tr>
-                                    <td align="center" class="emp-left">
-                                        <h:outputText value="${item.employee.personName}" />
-                                        <h:inputHidden class="hiddenAttendanceData" value="${item.attendanceData}" />
-                                    </td>
-                                    <td class="day-right" align="center">
-                                        <img class="morningType" src="${item.getRecord(bean.day).morning.iconString}"
-                                            alt="${item.getRecord(day).morning.value}" title="${item.getRecord(day).morning.name}" />
-                                    </td>
-                                    <td class="day-right" align="center">
-                                        <img class="afternoonType" src="${item.getRecord(bean.day).afternoon.iconString}"
-                                            alt="${item.getRecord(day).afternoon.value}" title="${item.getRecord(day).afternoon.name}" />
-                                    </td>
-                                    <td class="day-right" align="center">
-                                        <img class="eveningType" src="${item.getRecord(bean.day).evening.iconString}"
-                                            alt="${item.getRecord(day).evening.value}" title="${item.getRecord(day).evening.name}" />
-                                    </td>
-                                </tr>
-                            </ui:repeat>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-            <p:separator id="separator"/>
-            <p:commandButton value="保存" actionListener="${bean.batchSave}" />
+            <div>
+                <p:calendar value="${bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                    showOn="button">
+                    <p:ajax event="dateSelect" listener="${bean.generatorAttendanceData}" update=":contentForm" />
+                </p:calendar>
+                <h:inputHidden id="currentDay" value="${bean.day}" />
+            </div>
+
+            <div style="min-height:500px;position:relative;left:200px;width:500px;">
+                <table>
+                    <tr>
+                        <td class="employee-view" align="center">员工</td>
+                        <td class="morning-view" align="center">上午</td>
+                        <td class="afternoon-view" align="center">下午</td>
+                        <td class="evening-view" align="center">晚上</td>
+                    </tr>
+                    <ui:repeat var="item" value="${bean.attendances}">
+                        <tr>
+                            <td align="center" class="emp-left">
+                                <h:outputText value="${item.employee.personName}" />
+                                <h:inputHidden class="hiddenAttendanceData" value="${item.attendanceData}" />
+                            </td>
+                            <td class="day-right" align="center">
+                                <img class="morningType" src="${item.getRecord(bean.day).morning.iconString}" alt="${item.getRecord(day).morning.value}"
+                                    title="${item.getRecord(day).morning.name}" />
+                            </td>
+                            <td class="day-right" align="center">
+                                <img class="afternoonType" src="${item.getRecord(bean.day).afternoon.iconString}"
+                                    alt="${item.getRecord(day).afternoon.value}" title="${item.getRecord(day).afternoon.name}" />
+                            </td>
+                            <td class="day-right" align="center">
+                                <img class="eveningType" src="${item.getRecord(bean.day).evening.iconString}" alt="${item.getRecord(day).evening.value}"
+                                    title="${item.getRecord(day).evening.name}" />
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </table>
+                <div>
+                    <p:separator id="separator" />
+                    <p:commandButton value="保存" actionListener="${bean.batchSave}" />
+                </div>
+            </div>
+            <div style="position:fixed; width:150px; top:90px; left:20px;; ">
+                <ui>
+                    <li style="font-weight:bold;height:30px;">工具箱</li>
+                    <ui:repeat var="item" value="${bean.attendanceTypes}">
+                        <li>
+                            <img class="selection-tool" alt="${item.value}" title="${item.name}" src="${item.iconString}" />
+                            <h:outputText value="${item.name}" />
+                        </li>
+                    </ui:repeat>
+                </ui>
+            </div>
+
             <link rel="styleSheet" href="dayView.css" />
             <script type="text/javascript" src="dayAttendance.js"></script>
         </h:form>
+
     </ui:define>
 </ui:composition>

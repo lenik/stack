@@ -62,7 +62,7 @@
                                     <td id="editCalendarView${attendance.day}"
                                         class="${attendance.day == 0 ? 'calendarView-notavailable':'calendarView-edit-available'}">
                                         <div class="calendar-view-day">
-                                            ${attendance.day}
+                                            ${attendance.day == 0 ? '' : attendance.day}
                                         </div>
                                         <img class="a-morning-i-edit" alt="${attendance.morning.value}" src="${attendance.morning.iconString}"
                                             title="${attendance.morning.name}" /><img class="a-afternoon-i-edit" alt="${attendance.afternoon.value}" src="${attendance.afternoon.iconString}"
@@ -79,7 +79,18 @@
 
                 </td>
                 <td valign="top">
-                    <table class="s-info">
+                    <table class="s-info" >
+                        <tr>
+                            <td>
+                                <h:outputText value="时间：" />
+                            </td>
+                            <td>
+                                <p:spinner  readonly="true" value="${obj.year}" size="6" style="font:italic bold 12px/20px arial,sans-serif;" />
+                                <h:outputText value="年" />
+                                <p:spinner  readonly="true" value="${obj.month}" size="3" />
+                                <h:outputText value="月" />
+                            </td>
+                        </tr>
                         <tr>
                             <td class="s-info-left">
                                 <h:outputText value="雇员:" styleClass="e-link" onclick="${obj.employee.clickAction}" />
@@ -91,17 +102,6 @@
                         </tr>
                         <tr>
                             <td>
-                                <h:outputText value="时间：" />
-                            </td>
-                            <td>
-                                <p:spinner  readonly="true" value="${obj.year}" size="6" />
-                                <h:outputText value="年" />
-                                <p:spinner  readonly="true" value="${obj.month}" size="3" />
-                                <h:outputText value="月" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
                                 <h:outputText value="是否为安全月：" />
                             </td>
                             <td>
@@ -109,13 +109,13 @@
                             </td>
                         </tr>
                     </table>
-                    <table class="dayModel">
+                    <table class="dayModel" cellspacing="0">
                         <tr>
-                            <td class="dayModelLeft">时间</td>
-                            <td class="dayModelRight">候选项</td>
+                            <td class="dayModelLeft" style="border-top:0;">时间</td>
+                            <td class="dayModelRight">可选出勤状态</td>
                         </tr>
                         <tr class="selected-tr">
-                            <td>上午</td>
+                            <td class="dayModelLeft">上午</td>
                             <td class="a-m-types-edit">
                                 <ui:repeat var="type" value="${bean.attendanceTypes}">
                                     <img class="a-m-types-c-edit" src="${type.iconString}" alt="${type.value}"
@@ -124,7 +124,7 @@
                             </td>
                         </tr>
                         <tr class="selected-tr">
-                            <td>下午</td>
+                            <td class="dayModelLeft">下午</td>
                             <td class="a-a-types-edit">
                                 <ui:repeat var="type" value="${bean.attendanceTypes}">
                                     <img class="a-a-types-c-edit" src="${type.iconString}" alt="${type.value}"
@@ -133,7 +133,7 @@
                             </td>
                         </tr>
                         <tr class="selected-tr">
-                            <td>晚上</td>
+                            <td class="dayModelLeft">晚上</td>
                             <td class="a-e-types-edit">
                                 <ui:repeat var="type" value="${bean.attendanceTypes}">
                                     <img class="a-e-types-c-edit" src="${type.iconString}" alt="${type.value}"

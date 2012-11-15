@@ -89,7 +89,7 @@ $(".a-m-types-edit").children(".a-m-types-c-edit").each(
 
                         if (selectedday != 0 && eselectStatus == 1) {
                             $("#editCalendarView" + selectedday).children(".a-morning-i-edit")
-                                    .attr('src', clickType.icon).attr('alt', clickType.value);
+                                    .attr('src', clickType.icon).attr('alt', clickType.value).attr('title', clickType.name);
                             // $(".a-m-icon").text(clicktype.icon);
 
                             wrapAttendanceData(selectedday, clickType, 'morning');
@@ -116,7 +116,7 @@ $(".a-a-types-edit").children(".a-a-types-c-edit").each(
 
                         if (selectedday != 0 && eselectStatus == 1) {
                             $("#editCalendarView" + selectedday).children(".a-afternoon-i-edit")
-                                    .attr('src', clickType.icon).attr('alt', clickType.value);
+                                    .attr('src', clickType.icon).attr('alt', clickType.value).attr('title', clickType.name);
                             // $(".a-a-icon").text(clicktype.icon);
 
                             wrapAttendanceData(selectedday, clickType, 'afternoon');
@@ -142,7 +142,7 @@ $(".a-e-types-edit").children(".a-e-types-c-edit").each(
 
                         if (selectedday != 0 && eselectStatus == 1) {
                             $("#editCalendarView" + selectedday).children(".a-evening-i-edit")
-                                    .attr('src', clickType.icon).attr('alt', clickType.value);
+                                    .attr('src', clickType.icon).attr('alt', clickType.value).attr('title', clickType.name);
                             // $(".a-e-icon").text(clicktype.icon);
 
                             wrapAttendanceData(selectedday, clickType, 'evening');
