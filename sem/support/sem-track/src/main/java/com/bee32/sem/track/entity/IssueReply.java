@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Index;
 
 import com.bee32.plover.ox1.color.MomentInterval;
+import com.bee32.sem.people.entity.Person;
 
 @Entity
 public class IssueReply
@@ -16,6 +17,7 @@ public class IssueReply
 
     public static final int TEXT_LENGTH = 4000;
 
+    Person replier;
     Issue issue;
     String text = "";
 
