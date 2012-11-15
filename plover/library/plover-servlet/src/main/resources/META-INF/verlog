@@ -1,3 +1,10 @@
+Plover-3.5.1 (谢继雷, 2012-11-15)
+	* Released SEM-2.1.6
+
+Plover-3.5.0 (朱挺峰, 谢继雷, 2012-11-14)
+	* 改正合并产生的错误。
+	* Added variable support in EL evaluation.
+
 Plover-3.4.3 (谢继雷, 2012-10-25)
 	* Released plover-3.4.3.
 	* Integrated plover-ox1 manual.
