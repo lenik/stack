@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -271,29 +272,34 @@ public class SalaryAdminBean
         } else {
             // initialization
             FacesContext context = FacesContext.getCurrentInstance();
-            InputStream reportTemplate = getClass().getClassLoader().getResourceAsStream(
-                    "resources/3/15/6/4/salary/report1.jrxml");
+            ClassLoader loader = getClass().getClassLoader();
+            InputStream reportTemplate = loader.getResourceAsStream("resources/3/15/6/4/salary/report1.jrxml");
+            URL sub1 = loader.getResource("resources/3/15/6/4/salary/report1_subreport1.jasper");
+            URL sub2 = loader.getResource("resources/3/15/6/4/salary/report1_subreport2.jasper");
             Pair<Date, Date> datePair = SalaryDateUtil.toMonthRange(targetDate);
             List<EventBonusDto> events = mrefList(EventBonus.class, EventBonusDto.class, 0,
                     EventBonusCriteria.listEvents(salary.getId(), datePair.getFirst(), datePair.getSecond()));
             PersonSalaryReportModel personalSalaryModel = new PersonSalaryReportModel();
             List<PersonSalaryReportModel> sourceList = new ArrayList<PersonSalaryReportModel>();
             Map<String, Object> reportParams = new HashMap<String, Object>();
-
+            String employeeName = salary.getEmployee().getPersonName();
+            String yearMonthString = salary.getYear() + "年" + salary.getMonth() + "月";
+            String fileName = employeeName + yearMonthString + "工资单";
             // set
             personalSalaryModel.setElements(salary.getElements());
             personalSalaryModel.setEvents(events);
             sourceList.add(personalSalaryModel);
             JRBeanCollectionDataSource beanSource = new JRBeanCollectionDataSource(sourceList);
             reportParams.put("title", "工资单");
-            reportParams.put("employeeName", salary.getEmployee().getPersonName());
-            reportParams.put("yearMonthString", salary.getYear() + "年" + salary.getMonth() + "月份");
+            reportParams.put("employeeName", employeeName);
+            reportParams.put("yearMonthString", yearMonthString);
             reportParams.put("total", salary.getTotal());
             reportParams.put("tax", salary.getTax().setScale(4, BigDecimal.ROUND_HALF_UP));
             reportParams.put("salary", salary.getTax().subtract(salary.getTax()));
-
+            reportParams.put("sub1", sub1);
+            reportParams.put("sub2", sub2);
             // do export
-            doExportToPdf(context, reportTemplate, reportParams, beanSource, "测试", PDF);
+            doExportToPdf(context, reportTemplate, reportParams, beanSource, fileName, PDF);
         }
 
     }

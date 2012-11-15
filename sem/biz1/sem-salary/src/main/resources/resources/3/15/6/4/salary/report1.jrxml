@@ -11,9 +11,8 @@
 	<parameter name="tax" class="java.math.BigDecimal"/>
 	<parameter name="salary" class="java.math.BigDecimal"/>
 	<parameter name="employeeName" class="java.lang.String"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/ztf/work/secca/stack/sem/biz1/sem-salary/src/main/resources/resources/3/15/6/4/salary/"]]></defaultValueExpression>
-	</parameter>
+	<parameter name="sub1" class="java.net.URL"/>
+	<parameter name="sub2" class="java.net.URL"/>
 	<field name="elements" class="java.util.List"/>
 	<field name="events" class="java.util.List"/>
 	<pageHeader>
@@ -21,42 +20,42 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="99" y="0" width="329" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="18" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="18" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="74" y="25" width="65" height="20"/>
 				<textElement>
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{employeeName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="java.lang.String">
 				<reportElement x="219" y="25" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{yearMonthString}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="74" y="44" width="65" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="219" y="44" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tax}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="402" y="44" width="81" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{salary}]]></textFieldExpression>
 			</textField>
@@ -66,35 +65,35 @@
 			<staticText>
 				<reportElement x="23" y="25" width="51" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[员工：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="23" y="44" width="51" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[总工资：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="168" y="25" width="51" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[时间：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="168" y="44" width="51" height="20"/>
 				<textElement>
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[所得税：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="351" y="44" width="51" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="经典宋体简" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[应发工资：]]></text>
 			</staticText>
@@ -105,14 +104,14 @@
 			<subreport>
 				<reportElement x="23" y="3" width="200" height="100"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{elements})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report1_subreport2.jasper"]]></subreportExpression>
+				<subreportExpression>$P{sub2}</subreportExpression>
 			</subreport>
 		</band>
 		<band height="107">
 			<subreport>
 				<reportElement x="23" y="3" width="200" height="100"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{events})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report1_subreport1.jasper"]]></subreportExpression>
+				<subreportExpression>$P{sub1}</subreportExpression>
 			</subreport>
 		</band>
 	</detail>
