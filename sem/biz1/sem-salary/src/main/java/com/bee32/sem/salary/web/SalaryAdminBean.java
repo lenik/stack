@@ -360,7 +360,8 @@ public class SalaryAdminBean
         } catch (UnsupportedEncodingException e) {
             throw new UnexpectedException(e);
         }
-        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename + ".pdf");
+        response.setHeader("Content-Disposition",
+                "attachment; filename*=UTF-8''" + encodedFilename + "." + contentType.getPreferredExtension());
         response.setCharacterEncoding("UTF-8");
 
         response.setContentType(contentType.getContentType());
