@@ -1,4 +1,4 @@
-package com.bee32.sem.pricing.entity;
+package com.bee32.xem.zjhf.entity;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 

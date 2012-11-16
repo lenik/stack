@@ -1,12 +1,17 @@
-package com.bee32.sem.pricing.entity;
+package com.bee32.xem.zjhf.util;
 
 import java.math.BigDecimal;
+
+import com.bee32.sem.pricing.util.PricingObject;
+import com.bee32.xem.zjhf.entity.AirBlowerBodyPrice;
+import com.bee32.xem.zjhf.entity.Motor;
 
 /**
  * 风机
  *
  */
-public class AirBlower extends PricingObject {
+public class AirBlower
+        extends PricingObject {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,6 +22,7 @@ public class AirBlower extends PricingObject {
 
     /**
      * 电机数量
+     *
      * @return
      */
     public BigDecimal getMotorAmount() {
@@ -29,6 +35,7 @@ public class AirBlower extends PricingObject {
 
     /**
      * 风机体价格
+     *
      * @return
      */
     public AirBlowerBodyPrice getBodyPrice() {
@@ -41,6 +48,7 @@ public class AirBlower extends PricingObject {
 
     /**
      * 电机
+     *
      * @return
      */
     public Motor getMotor() {
@@ -50,8 +58,5 @@ public class AirBlower extends PricingObject {
     public void setMotor(Motor motor) {
         this.motor = motor;
     }
-
-
-
 
 }

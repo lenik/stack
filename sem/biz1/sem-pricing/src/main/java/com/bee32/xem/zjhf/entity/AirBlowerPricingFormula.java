@@ -1,7 +1,9 @@
-package com.bee32.sem.pricing.entity;
+package com.bee32.xem.zjhf.entity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+
+import com.bee32.sem.pricing.entity.PricingFormula;
 
 /**
  * 风机价格公式

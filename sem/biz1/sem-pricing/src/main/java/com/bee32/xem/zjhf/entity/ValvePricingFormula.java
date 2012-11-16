@@ -1,8 +1,10 @@
-package com.bee32.sem.pricing.entity;
+package com.bee32.xem.zjhf.entity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import com.bee32.sem.pricing.entity.PricingFormula;
 
 /**
  * 阀价格公式
