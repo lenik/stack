@@ -1,16 +1,16 @@
-package com.bee32.xem.zjhf.util;
+package com.bee32.xem.zjhf.expr;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
-import com.bee32.sem.pricing.util.PricingObject;
+import com.bee32.plover.util.VariableEntry;
+import com.bee32.sem.pricing.expr.PricingObject;
 
 /**
  * 方型阀
  */
 public class SquareValve
         extends PricingObject {
-
-    private static final long serialVersionUID = 1L;
 
     BigDecimal length;
     BigDecimal width;
@@ -39,6 +39,13 @@ public class SquareValve
 
     public void setWidth(BigDecimal width) {
         this.width = width;
+    }
+
+    @Override
+    protected void populateVariables(Map<String, VariableEntry> varMap) {
+        super.populateVariables(varMap);
+        varMap.put("长度", new VariableEntry(length));
+        varMap.put("宽度", new VariableEntry(width));
     }
 
 }

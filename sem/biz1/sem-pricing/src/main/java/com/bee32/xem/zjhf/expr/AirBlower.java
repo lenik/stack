@@ -1,8 +1,8 @@
-package com.bee32.xem.zjhf.util;
+package com.bee32.xem.zjhf.expr;
 
 import java.math.BigDecimal;
 
-import com.bee32.sem.pricing.util.PricingObject;
+import com.bee32.sem.pricing.expr.PricingObject;
 import com.bee32.xem.zjhf.entity.AirBlowerBodyPrice;
 import com.bee32.xem.zjhf.entity.Motor;
 
@@ -12,8 +12,6 @@ import com.bee32.xem.zjhf.entity.Motor;
  */
 public class AirBlower
         extends PricingObject {
-
-    private static final long serialVersionUID = 1L;
 
     AirBlowerBodyPrice bodyPrice;
 
