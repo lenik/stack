@@ -15,23 +15,10 @@ public class AirBlower
 
     private static final long serialVersionUID = 1L;
 
-    BigDecimal motorAmount;
-
     AirBlowerBodyPrice bodyPrice;
+
     Motor motor;
-
-    /**
-     * 电机数量
-     *
-     * @return
-     */
-    public BigDecimal getMotorAmount() {
-        return motorAmount;
-    }
-
-    public void setMotorAmount(BigDecimal motorAmount) {
-        this.motorAmount = motorAmount;
-    }
+    BigDecimal motorCount;
 
     /**
      * 风机体价格
@@ -57,6 +44,19 @@ public class AirBlower
 
     public void setMotor(Motor motor) {
         this.motor = motor;
+    }
+
+    /**
+     * 电机数量
+     *
+     * @return
+     */
+    public BigDecimal getMotorCount() {
+        return motorCount;
+    }
+
+    public void setMotorCount(BigDecimal motorCount) {
+        this.motorCount = motorCount;
     }
 
 }
