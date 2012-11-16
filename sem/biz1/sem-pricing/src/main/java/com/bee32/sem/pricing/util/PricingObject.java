@@ -15,7 +15,7 @@ public class PricingObject
     private static final long serialVersionUID = 1L;
 
     float discount;
-    BigDecimal amount;
+    BigDecimal quantity;
     Date date;
 
     PricingFormula formula;
@@ -36,12 +36,12 @@ public class PricingObject
     /**
      * 数量
      */
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getQuantity() {
+        return quantity;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
     }
 
     /**

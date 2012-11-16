@@ -19,7 +19,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "pricing_formula_seq", allocationSize = 1)
-public class PricingFormula extends UIEntityAuto<Long> {
+public class PricingFormula
+        extends UIEntityAuto<Long> {
     private static final long serialVersionUID = 1L;
 
     public static final int CONTENT_LENGTH = 200;
@@ -29,12 +30,15 @@ public class PricingFormula extends UIEntityAuto<Long> {
     /**
      * 公式内容
      */
-    @Column(length = CONTENT_LENGTH)
+    @Column(length = CONTENT_LENGTH, nullable = false)
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
+        if (content == null)
+            throw new NullPointerException("content");
         this.content = content;
     }
+
 }
