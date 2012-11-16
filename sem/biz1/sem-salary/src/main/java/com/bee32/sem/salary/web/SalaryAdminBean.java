@@ -356,15 +356,14 @@ public class SalaryAdminBean
         String encodedFilename;
         try {
             encodedFilename = URLEncoder.encode(fileName, "utf-8");
-            System.out.println(encodedFilename);
         } catch (UnsupportedEncodingException e) {
             throw new UnexpectedException(e);
         }
+
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType(contentType.getContentType());
         response.setHeader("Content-Disposition",
                 "attachment; filename*=UTF-8''" + encodedFilename + "." + contentType.getPreferredExtension());
-        response.setCharacterEncoding("UTF-8");
-
-        response.setContentType(contentType.getContentType());
 
         try {
             report = JasperCompileManager.compileReport(template);

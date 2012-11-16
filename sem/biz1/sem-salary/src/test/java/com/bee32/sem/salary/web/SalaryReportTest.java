@@ -59,9 +59,14 @@ public class SalaryReportTest
         params.put("tax", BigDecimal.valueOf(200));
         params.put("salary", BigDecimal.valueOf(3000));
 
-        ClassLoader loader = SalaryAdminBean.class.getClassLoader();
-        URL sub1 = loader.getResource("resources/3/15/6/4/salary/report1_subreport1.jasper");
-        URL sub2 = loader.getResource("resources/3/15/6/4/salary/report1_subreport2.jasper");
+//        ClassLoader loader = SalaryAdminBean.class.getClassLoader();
+//        URL sub1 = loader.getResource("resources/3/15/6/4/salary/report1_subreport1.jasper");
+//        URL sub2 = loader.getResource("resources/3/15/6/4/salary/report1_subreport2.jasper");
+        URL dir = new URL("jar:file:///home/ztf/work/secca/stack/sem/biz1/sem-salary/target/sem-salary-0.3.2-SNAPSHOT-sources.jar!/resources/3/15/6/4/salary/");
+        URL sub1 = new URL(dir,"report1_subreport1.jasper");
+        URL sub2 = new URL(dir,"report1_subreport2.jasper");
+        System.out.println(sub1);
+        System.out.println(sub2);
         params.put("sub1", sub1);
         params.put("sub2", sub2);
 
