@@ -13,10 +13,9 @@ import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 风机体价格
- *
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "air_blower_body_price_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "zjhf_air_blower_body_price_seq", allocationSize = 1)
 public class AirBlowerBodyPrice extends UIEntityAuto<Long> {
     private static final long serialVersionUID = 1L;
 

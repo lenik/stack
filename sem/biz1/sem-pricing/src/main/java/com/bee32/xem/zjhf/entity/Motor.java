@@ -17,7 +17,7 @@ import com.bee32.sem.world.monetary.MCValue;
  *
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "motor_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "zjhf_motor_seq", allocationSize = 1)
 public class Motor implements Serializable {
 
     private static final long serialVersionUID = 1L;

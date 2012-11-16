@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
@@ -16,7 +16,7 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
  *
  */
 @Entity
-@Blue
+@Table(name = "zjhf_motor_type")
 public class MotorType
         extends ShortNameDict {
 
