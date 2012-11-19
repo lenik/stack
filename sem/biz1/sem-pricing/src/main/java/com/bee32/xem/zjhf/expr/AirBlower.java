@@ -1,7 +1,9 @@
 package com.bee32.xem.zjhf.expr;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
+import com.bee32.plover.util.VariableEntry;
 import com.bee32.sem.pricing.expr.PricingObject;
 import com.bee32.xem.zjhf.entity.AirBlowerBodyPrice;
 import com.bee32.xem.zjhf.entity.Motor;
@@ -55,6 +57,14 @@ public class AirBlower
 
     public void setMotorCount(BigDecimal motorCount) {
         this.motorCount = motorCount;
+    }
+
+    @Override
+    protected void populateVariables(Map<String, VariableEntry> varMap) {
+        super.populateVariables(varMap);
+        varMap.put("直径", new VariableEntry(bodyPrice.getValue()));
+        varMap.put("电机数量", new VariableEntry(motorCount));
+        varMap.put("电机价格", new VariableEntry(motor.getValue()));
     }
 
 }

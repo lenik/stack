@@ -1,17 +1,13 @@
 package com.bee32.xem.zjhf.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 电机
@@ -28,7 +24,7 @@ public class Motor implements Serializable {
 
     MotorType type;
     String modelSpec;
-    MCValue value;
+    BigDecimal value;
 
     /**
      * 电机类型
@@ -57,18 +53,14 @@ public class Motor implements Serializable {
     /**
      * 电机价格
      */
-    @Embedded
-    @AttributeOverrides({
-            // { price_cc, price }
-            @AttributeOverride(name = "currency", column = @Column(name = "value_cc")), //
-            @AttributeOverride(name = "value", column = @Column(name = "value")) })
-    public MCValue getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(MCValue value) {
-        if (value == null)
-            throw new NullPointerException("value");
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
+
+
+
 }

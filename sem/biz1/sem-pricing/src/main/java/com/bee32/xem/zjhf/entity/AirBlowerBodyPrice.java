@@ -1,16 +1,14 @@
 package com.bee32.xem.zjhf.entity;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
-import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 风机体价格
@@ -25,7 +23,7 @@ public class AirBlowerBodyPrice extends UIEntityAuto<Long> {
 
     AirBlowerType type;
     String number;
-    MCValue value = new MCValue();
+    BigDecimal value;
 
     /**
      * 风机类型
@@ -57,18 +55,11 @@ public class AirBlowerBodyPrice extends UIEntityAuto<Long> {
      * 风机体价格
      *
      */
-    @Embedded
-    @AttributeOverrides({
-            // { price_cc, price }
-            @AttributeOverride(name = "currency", column = @Column(name = "value_cc")), //
-            @AttributeOverride(name = "value", column = @Column(name = "value")) })
-    public MCValue getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(MCValue value) {
-        if (value == null)
-            throw new NullPointerException("value");
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 }
