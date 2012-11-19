@@ -11,6 +11,8 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
  * 风机类型
+ *
+ * 字典类
  */
 @Entity
 @Table(name = "zjhf_air_blower_type")

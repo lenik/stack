@@ -9,7 +9,6 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>ui</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>plover-chart</module>

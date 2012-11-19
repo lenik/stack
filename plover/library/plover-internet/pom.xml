@@ -6,7 +6,6 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-internet</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.plover</groupId>

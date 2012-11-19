@@ -7,7 +7,6 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-servlet</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>${spec.servlet.groupId}</groupId>

@@ -7,6 +7,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.world.monetary.MCValue;
@@ -15,6 +16,7 @@ import com.bee32.sem.world.monetary.MCValue;
  * 风机体价格
  */
 @Entity
+@Table(name = "zjhf_air_blower_body_price")
 @SequenceGenerator(name = "idgen", sequenceName = "zjhf_air_blower_body_price_seq", allocationSize = 1)
 public class AirBlowerBodyPrice extends UIEntityAuto<Long> {
     private static final long serialVersionUID = 1L;

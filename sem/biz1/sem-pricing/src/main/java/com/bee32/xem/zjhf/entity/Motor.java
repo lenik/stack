@@ -9,6 +9,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -17,6 +18,7 @@ import com.bee32.sem.world.monetary.MCValue;
  *
  */
 @Entity
+@Table(name = "zjhf_motor")
 @SequenceGenerator(name = "idgen", sequenceName = "zjhf_motor_seq", allocationSize = 1)
 public class Motor implements Serializable {
 

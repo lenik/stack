@@ -12,7 +12,7 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 /**
  * 电机类型
  *
- * 风机所使用的电机类型。
+ * 风机所使用的电机类型。字典类
  *
  */
 @Entity
