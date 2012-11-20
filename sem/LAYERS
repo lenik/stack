@@ -21,7 +21,6 @@ resource/           资源
     sem-make
 
 support/            （偏低层）支持
-    sem-track
     sem-kb
 
 biz1/                日常业务
@@ -33,6 +32,9 @@ biz1/                日常业务
     sem-salary
     sem-shop
     sem-purchase
+
+biz2/
+    sem-track
 
 demo/               示例
     sem-samples

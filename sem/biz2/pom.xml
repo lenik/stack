@@ -8,10 +8,11 @@
         <artifactId>sem</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>build</artifactId>
+    <artifactId>biz2</artifactId>
+    <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>sem-uber</module>
+        <module>sem-track</module>
     </modules>
-    <name>SEM :: Build</name>
+    <name>SEM :: Biz2</name>
 </project>

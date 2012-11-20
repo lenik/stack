@@ -12,7 +12,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>sem-kb</module>
-        <module>sem-track</module>
     </modules>
     <name>SEM :: Support</name>
 </project>

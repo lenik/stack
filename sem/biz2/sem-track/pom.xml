@@ -2,8 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sem</groupId>
-        <artifactId>support</artifactId>
-        <version>0.3.2-SNAPSHOT</version>
+        <artifactId>biz2</artifactId>
     </parent>
     <artifactId>sem-track</artifactId>
     <dependencies>
@@ -18,11 +17,11 @@
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
-		<groupId>com.bee32.sem</groupId>
-		<artifactId>sem-file</artifactId>
-		<version>0.3.2-SNAPSHOT</version>
-		<scope>compile</scope>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-file</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
-    <name>SEM :: Support :: Track</name>
+    <name>SEM :: Biz2 :: Track</name>
 </project>

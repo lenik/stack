@@ -15,6 +15,7 @@
         <module>resource</module>
         <module>support</module>
         <module>biz1</module>
+        <module>biz2</module>
         <module>build</module>
     </modules>
     <build>
