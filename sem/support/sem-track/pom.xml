@@ -17,6 +17,12 @@
             <artifactId>sem-event</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+		<groupId>com.bee32.sem</groupId>
+		<artifactId>sem-file</artifactId>
+		<version>0.3.2-SNAPSHOT</version>
+		<scope>compile</scope>
+        </dependency>
     </dependencies>
     <name>SEM :: Support :: Track</name>
 </project>
