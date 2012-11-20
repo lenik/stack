@@ -1,6 +1,5 @@
 package com.bee32.xem.zjhf.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -9,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.bee32.plover.ox1.color.UIEntityAuto;
+
 /**
  * 电机
  *
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "zjhf_motor")
 @SequenceGenerator(name = "idgen", sequenceName = "zjhf_motor_seq", allocationSize = 1)
-public class Motor implements Serializable {
+public class Motor extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
