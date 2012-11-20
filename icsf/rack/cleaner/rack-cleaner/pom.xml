@@ -7,7 +7,6 @@
     </parent>
     <artifactId>rack-cleaner</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.2-SNAPSHOT</version>
     <dependencies/>
     <name>ICSF :: Rack :: Cleaner :: Rack Cleaner</name>
 </project>

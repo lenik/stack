@@ -7,7 +7,6 @@
     </parent>
     <artifactId>rack-monitor-appserv</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.2-SNAPSHOT</version>
     <dependencies/>
     <name>ICSF :: Rack :: Monitor :: Rack Monitor Appserv</name>
 </project>

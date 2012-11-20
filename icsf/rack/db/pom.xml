@@ -6,7 +6,6 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>db</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>rack-coredb</module>

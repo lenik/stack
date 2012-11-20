@@ -23,7 +23,7 @@ public class PricingFormula
         extends UIEntityAuto<Long> {
     private static final long serialVersionUID = 1L;
 
-    public static final int CONTENT_LENGTH = 200;
+    public static final int CONTENT_LENGTH = 300;
 
     String content;
 

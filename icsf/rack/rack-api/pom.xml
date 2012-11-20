@@ -6,7 +6,6 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>rack-api</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
     <modules/>
     <name>ICSF :: Rack :: Rack Api</name>
 </project>

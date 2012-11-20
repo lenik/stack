@@ -6,7 +6,6 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>icsf-jaas</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
     <dependencies/>
     <name>ICSF :: Identity :: Jaas</name>
 </project>

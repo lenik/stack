@@ -9,7 +9,6 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>base</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>sem-attendance</module>

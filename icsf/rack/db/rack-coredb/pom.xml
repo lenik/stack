@@ -7,7 +7,6 @@
     </parent>
     <artifactId>rack-coredb</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.2-SNAPSHOT</version>
     <dependencies/>
     <name>ICSF :: Rack :: Db :: Rack Coredb</name>
 </project>
