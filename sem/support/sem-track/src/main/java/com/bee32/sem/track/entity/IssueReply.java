@@ -3,6 +3,7 @@ package com.bee32.sem.track.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Index;
 
@@ -10,6 +11,7 @@ import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.sem.people.entity.Person;
 
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "reply_seq", allocationSize = 1)
 public class IssueReply
         extends MomentInterval {
 

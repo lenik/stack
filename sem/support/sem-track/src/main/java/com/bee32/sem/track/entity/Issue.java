@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.MomentInterval;
@@ -22,6 +23,7 @@ import com.bee32.sem.file.entity.UserFile;
  * -- 用 issue 而不用 topic, question，以突出这个问题是需要解决的具有任务性质的。
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "issue_seq", allocationSize = 1)
 public class Issue
         extends MomentInterval {
 
@@ -135,6 +137,7 @@ public class Issue
      */
     @ElementCollection
     @JoinTable(name = "IssueAttachment", //
+    /*        */joinColumns = @JoinColumn(name = "issue"),
     /*        */inverseJoinColumns = @JoinColumn(name = "userFile"))
     public List<UserFile> getAttachments() {
         return attachments;
