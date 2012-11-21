@@ -1,65 +1,36 @@
 package com.bee32.xem.zjhf.entity;
 
-import java.beans.Transient;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.bee32.plover.ox1.dict.ShortNameDict;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 风机类型
  *
- * 字典类
+ * 使用父类中的label 和 description
  */
 @Entity
 @Table(name = "zjhf_air_blower_type")
+@SequenceGenerator(name = "idgen", sequenceName = "air_blower_type_seq", allocationSize = 1)
 public class AirBlowerType
-        extends ShortNameDict {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
-
-    static TreeMap<Integer, AirBlowerType> airBlowerTypes = new TreeMap<Integer, AirBlowerType>();
 
     public AirBlowerType() {
         super();
     }
 
-    public AirBlowerType(int order, String name, String label) {
-        super(order, name, label);
+    public AirBlowerType(String name) {
+        super(name);
     }
 
-    public AirBlowerType(int order, String name, String label, String description) {
-        super(order, name, label, description);
-    }
-
-    {
-        airBlowerTypes.put(getOrder(), this);
-    }
-
-    @Override
-    public void populate(Object source) {
-        if (source instanceof AirBlowerType)
-            _populate((AirBlowerType) source);
-        else
-            super.populate(source);
-    }
-
-    protected void _populate(AirBlowerType o) {
-        super._populate(o);
-    }
-
-    @Transient
-    public AirBlowerType getPrevious() {
-        int order = getOrder();
-        int previous = order - 1;
-        Entry<Integer, AirBlowerType> entry = airBlowerTypes.floorEntry(previous);
-        if (entry == null)
-            return null;
-        else
-            return entry.getValue();
+    public AirBlowerType(String label, String desc) {
+        super();
+        this.label = label;
+        this.description = desc;
     }
 
 }

@@ -1,0 +1,8 @@
+com.bee32.sem.pricing.entity.PricingFormula
+com.bee32.xem.zjhf.entity.AirBlowerBodyPrice
+com.bee32.xem.zjhf.entity.AirBlowerPricingFormula
+com.bee32.xem.zjhf.entity.AirBlowerType
+com.bee32.xem.zjhf.entity.Motor
+com.bee32.xem.zjhf.entity.MotorType
+com.bee32.xem.zjhf.entity.ValvePricingFormula
+com.bee32.xem.zjhf.entity.ValveType

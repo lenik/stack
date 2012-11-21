@@ -1,66 +1,38 @@
 package com.bee32.xem.zjhf.entity;
 
-import java.beans.Transient;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.bee32.plover.ox1.dict.ShortNameDict;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 电机类型
  *
- * 风机所使用的电机类型。字典类
+ * 风机所使用的电机类型
+ *
+ * 使用父类中的label 和 description
  *
  */
 @Entity
 @Table(name = "zjhf_motor_type")
+@SequenceGenerator(name = "idgen", sequenceName = "motor_type_seq", allocationSize = 1)
 public class MotorType
-        extends ShortNameDict {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
-
-    static TreeMap<Integer, MotorType> motorTypes = new TreeMap<Integer, MotorType>();
 
     public MotorType() {
         super();
     }
 
-    public MotorType(int order, String name, String label) {
-        super(order, name, label);
+    public MotorType(String name) {
+        super(name);
     }
 
-    public MotorType(int order, String name, String label, String description) {
-        super(order, name, label, description);
+    public MotorType(String label, String desc) {
+        super();
+        this.label = label;
+        this.description = desc;
     }
-
-    {
-        motorTypes.put(getOrder(), this);
-    }
-
-    @Override
-    public void populate(Object source) {
-        if (source instanceof MotorType)
-            _populate((MotorType) source);
-        else
-            super.populate(source);
-    }
-
-    protected void _populate(MotorType o) {
-        super._populate(o);
-    }
-
-    @Transient
-    public MotorType getPrevious() {
-        int order = getOrder();
-        int previous = order - 1;
-        Entry<Integer, MotorType> entry = motorTypes.floorEntry(previous);
-        if (entry == null)
-            return null;
-        else
-            return entry.getValue();
-    }
-
 }
