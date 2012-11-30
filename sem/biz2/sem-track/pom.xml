@@ -3,6 +3,7 @@
     <parent>
         <groupId>com.bee32.sem</groupId>
         <artifactId>biz2</artifactId>
+        <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>sem-track</artifactId>
     <dependencies>
@@ -20,7 +21,16 @@
             <groupId>com.bee32.sem</groupId>
             <artifactId>sem-file</artifactId>
             <version>0.3.2-SNAPSHOT</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-chance</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-makebiz</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <name>SEM :: Biz2 :: Track</name>

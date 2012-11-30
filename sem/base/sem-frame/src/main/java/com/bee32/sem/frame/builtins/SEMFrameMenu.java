@@ -34,6 +34,7 @@ public class SEMFrameMenu
 
     public MenuNode RESOURCES = menu(MAIN, 310, "RESOURCES");
     public MenuNode BIZ1 = menu(MAIN, 320, "BIZ1");
+    public MenuNode BIZ2 = menu(MAIN, 321, "BIZ2");
     /**//*
           * static MenuNode contract = entry(BIZ1, 10, "contract",
           * JAVASCRIPT.join("alert('under development')"));
@@ -42,6 +43,7 @@ public class SEMFrameMenu
     public MenuNode HR = menu(MAIN, 330, "HR");
 
     public MenuNode PROCESS = menu(MAIN, 600, "PROCESS");
+    public MenuNode SUPPORT = menu(MAIN, 700, "SUPPORT");
 
     public MenuNode HELP = menu(MAIN, 10000, "HELP");
 

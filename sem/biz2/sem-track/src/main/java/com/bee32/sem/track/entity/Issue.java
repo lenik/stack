@@ -8,12 +8,19 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.ox1.color.MomentInterval;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.file.entity.UserFile;
+import com.bee32.sem.inventory.entity.StockOrder;
 
 /**
  * 问题
@@ -29,7 +36,7 @@ public class Issue
 
     private static final long serialVersionUID = 1L;
 
-    public static final int TEXT_LENGTH = 4000;
+    public static final int TEXT_LENGTH = 10000;
     public static final int REPLAY_LENGTH = 500;
     public static final int COMMITISH_LENGTH = 32;
     public static final int TAGS_LENGTH = 100;
@@ -44,6 +51,9 @@ public class Issue
 
     List<UserFile> attachments = new ArrayList<UserFile>();
     List<IssueReply> replies = new ArrayList<IssueReply>();
+
+    Chance chance;
+    StockOrder order;
 
     /**
      * 状态
@@ -155,6 +165,8 @@ public class Issue
      * 对本问题的跟踪回复。
      */
     @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @Cascade({ CascadeType.DELETE, CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
+    @OrderBy("createdDate ASC")
     public List<IssueReply> getReplies() {
         return replies;
     }
@@ -163,6 +175,24 @@ public class Issue
         if (replies == null)
             throw new NullPointerException("replies");
         this.replies = replies;
+    }
+
+    @ManyToOne
+    public Chance getChance() {
+        return chance;
+    }
+
+    public void setChance(Chance chance) {
+        this.chance = chance;
+    }
+
+    @ManyToOne
+    public StockOrder getOrder() {
+        return order;
+    }
+
+    public void setOrder(StockOrder order) {
+        this.order = order;
     }
 
 }

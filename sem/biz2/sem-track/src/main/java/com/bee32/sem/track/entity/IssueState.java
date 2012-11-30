@@ -55,7 +55,7 @@ public class IssueState
     }
 
     /** 新创建的问题 */
-    public static final IssueState NEW = new IssueState(' ', "new", 0, 0);
+    public static final IssueState NEW = new IssueState('N', "new", 0, 0);
 
     /** 问题已被接受，正在分配资源中 */
     public static final IssueState ACCEPTED = new IssueState('a', "accepted", 1, 0);

@@ -48,8 +48,11 @@ public interface SEMOids {
         int Pricing = 5;
     }
 
-    interface support {
+    interface biz2 {
         int Track = 2;
+    }
+
+    interface support {
         int Kb = 3;
     }
 

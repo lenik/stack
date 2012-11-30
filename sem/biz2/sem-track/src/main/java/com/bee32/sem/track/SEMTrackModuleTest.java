@@ -21,7 +21,7 @@ public class SEMTrackModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return super.getRefreshPeriod();
+        return 10;
     }
 
     public static void main(String[] args)

@@ -7,8 +7,8 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Index;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.ox1.color.MomentInterval;
-import com.bee32.sem.people.entity.Person;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "reply_seq", allocationSize = 1)
@@ -19,11 +19,20 @@ public class IssueReply
 
     public static final int TEXT_LENGTH = 4000;
 
-    Person replier;
+    User replier;
     Issue issue;
     String text = "";
 
-    @ManyToOne(optional = false)
+    @ManyToOne
+    public User getReplier() {
+        return replier;
+    }
+
+    public void setReplier(User replier) {
+        this.replier = replier;
+    }
+
+    @ManyToOne
     public Issue getIssue() {
         return issue;
     }
