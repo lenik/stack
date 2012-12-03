@@ -49,7 +49,7 @@
                         sessionQuit();
                     }
                 }, 250);
-            }, timeoutInterval - 10000);
+            }, timeoutInterval - 5 * 60 * 1000);
     }
 
     $("#aQuit").click(sessionQuit);

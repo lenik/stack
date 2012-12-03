@@ -1,5 +1,7 @@
 package com.bee32.sem.frame.web;
 
+import javax.servlet.http.HttpSession;
+
 import com.bee32.plover.faces.utils.ILocationConstants;
 import com.bee32.plover.faces.view.ViewBean;
 import com.bee32.plover.inject.scope.PerSession;
@@ -123,6 +125,15 @@ public class ViewConfig
 
     public void setSmallFont(boolean smallFont) {
         this.smallFont = smallFont;
+    }
+
+    public int getSessionTimeout() {
+        HttpSession session = ThreadHttpContext.getSession();
+        int interval = session.getMaxInactiveInterval();
+        if (interval <= 0) {
+            interval = 30 * 60; // default half an hour.
+        }
+        return interval;
     }
 
 }

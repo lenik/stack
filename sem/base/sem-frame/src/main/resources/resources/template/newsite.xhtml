@@ -29,7 +29,7 @@
     <script language="javascript">
         document.contextPath = "${location.WEB_APP}";
         document.WEB_APP = "${location.WEB_APP}";
-        document.sessionTimeout = ${session.maxInactiveInterval} * 60 - 10; // Prompt 10s before real timeout
+        document.sessionTimeout = ${viewConfig.sessionTimeout} - 10; // Prompt 10s before real timeout
     </script>
 
     <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
