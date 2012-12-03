@@ -29,6 +29,7 @@
     <script language="javascript">
         document.contextPath = "${location.WEB_APP}";
         document.WEB_APP = "${location.WEB_APP}";
+        document.sessionTimeout = ${session.maxInactiveInterval} * 60 - 10; // Prompt 10s before real timeout
     </script>
 
     <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
@@ -52,10 +53,20 @@
     </ui:insert>
 
     <img alt="Desktop Image" class="background" src="${location.WEB_APP}/site/background/Waves.png" />
+    <div class="session-controller" style="display: none">
+        <ui:insert name="session-controller">
+            剩余操作时间：
+            <div style="width: 8em" align="center">
+                <div id="sessionMesg">
+                </div>
+            </div>
+            <ui:insert name="session-ops" />
+        </ui:insert>
+    </div>
 
     <div id="menu">
         <ui:insert name="menu">
-            <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
+            <f:verbatim>${mainMenu.superfishHtml}</f:verbatim>
         </ui:insert>
         <div style="clear: both" />
     </div>
@@ -80,11 +91,11 @@
     <h:panelGroup id="pageFooter" layout="block">
         <ui:insert name="pageFooter">
             <div class="site-page-footer">
-                <div style=" padding: 0.5em;" title="Effective-Implication: #{sessionUser.imIdSet} :: #{sessionUser.imNameSet}">
+                <div style=" padding: 0.5em;" title="Effective-Implication: ${sessionUser.imIdSet} :: ${sessionUser.imNameSet}">
                     ■ 当前用户：
                     <span title="${site.name} - ${site.description}">${site.label}</span> ⚛
-                    <ui:repeat var="node" value="#{sessionPerson.chain}">
-                        <span>#{node}</span>
+                    <ui:repeat var="node" value="${sessionPerson.chain}">
+                        <span>${node}</span>
                     </ui:repeat>
                     （<a id="aQuit" name="aQuit" href="#" title="当您不需要使用本系统时，请及时退出以免被他人非法使用。">退出</a>）
                 </div>

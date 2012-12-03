@@ -61,6 +61,23 @@ label {
     width: 120px;
 }
 
+.session-controller {
+    border-left: solid #cccccc 5px;
+    border-right: solid #cccccc 5px;
+    border-top: solid #cccccc 3px;
+    border-bottom: solid #cccccc 3px;
+    background: #ffddee;
+    position: fixed;
+    z-index: 100;
+    top: 10px;
+    right: 10px;
+}
+
+#sessionMesg {
+    color: red;
+    font-size: large;
+}
+
 .site-page-footer {
     clear: both;
     border-top: solid 1px #808080;

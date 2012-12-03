@@ -1,4 +1,4 @@
-package com.bee32.sem.frame;
+package com.bee32.sem.frame.test;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import com.bee32.plover.orm.PloverORMUnit;
 import com.bee32.plover.orm.unit.Using;
 
 @Using(PloverORMUnit.class)
-public class SEMFrameModuleTest
+public class FrameFaceletsTest
         extends FaceletsTestCase {
 
     @Override
@@ -17,7 +17,7 @@ public class SEMFrameModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMFrameModuleTest().browseAndWait("test/person-lv.jsf");
+        new FrameFaceletsTest().browseAndWait("test/person-lv.jsf");
     }
 
 }

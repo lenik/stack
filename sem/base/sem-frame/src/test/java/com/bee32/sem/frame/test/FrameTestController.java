@@ -1,4 +1,4 @@
-package com.bee32.sem.frame;
+package com.bee32.sem.frame.test;
 
 import java.io.IOException;
 

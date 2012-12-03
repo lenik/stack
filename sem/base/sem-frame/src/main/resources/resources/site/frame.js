@@ -1,5 +1,6 @@
 (function($) {
-    $("#aQuit").click(function() {
+
+    function sessionQuit()  {
         $.ajax({
             "dataType" : "json",
             "type" : "POST",
@@ -17,7 +18,41 @@
             }
         });
         return false;
-    });
+    }
+
+    window.setupSessionTimeout = function() {
+        var sessionController = $(".session-controller");
+        sessionController.css("display", "none");
+
+        var sessionMesg = $("#sessionMesg");
+        var timeoutInterval = document.sessionTimeout * 1000;
+        var sessionTimeout = new Date().getTime() + timeoutInterval;
+
+        if (window.sessionAlertHandle != null)
+            window.clearInterval(window.sessionAlertHandle);
+
+        window.setTimeout(function() {
+                sessionController.css("display", "block");
+
+                window.sessionAlertHandle = window.setInterval(function() {
+                    var remaining = sessionTimeout - new Date();
+                    sessionMesg.text( Math.floor(remaining / 1000) );
+
+                    var visibility = sessionMesg.css("visibility") == "visible" ? "hidden" : "visible";
+                    sessionMesg.css("visibility", visibility);
+
+                    if (remaining <= 0) {
+                        window.clearInterval(window.sessionAlertHandle);
+                        sessionMesg.css("display", "none");
+                        // sessionController.css("display", "none");
+                        sessionController.text("由于长时间没有操作，已自动注销。");
+                        sessionQuit();
+                    }
+                }, 250);
+            }, timeoutInterval - 10000);
+    }
+
+    $("#aQuit").click(sessionQuit);
 
     $(document).ready(function() {
         $.ajaxSetup({
@@ -29,6 +64,8 @@
         logo.mouseover(function() {
             logo.hide().delay(5000).fadeIn();
         });
+
+        window.setupSessionTimeout();
 
         var dataTable = $("#mainForm\\:dataTable");
         if (dataTable.length != 0) {
