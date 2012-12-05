@@ -1,9 +1,29 @@
-\section{物料分类管理}
+
+% 物料
+    \input{\DIRNAME/material.tex}
+
+% 简介
+    \input{\DIRNAME/inventory-all.tex}
+    % 中小企业的库存
+        \input{\DIRNAME/sme.tex}
+
+% 库存的优化
+    \section {库存的优化}
+    \input{\DIRNAME/probsrc.tex}
+    \input{\DIRNAME/safeopt.tex}
+    \input{\DIRNAME/negative.tex}
+
+% 多级库存
+    \input{\DIRNAME/ml-info.tex}
+    \input{\DIRNAME/mlopt-1.tex}
+
+\practices
+\subsection{物料分类管理}
 物料分类的模型图：
 \screenshot{category.png}
 某个物料分类可以0到多个子分类，子分类可以还有自己的子分类。
 
-\subsection{物料分类设置}
+\subsubsection{物料分类设置}
 在其中新增分类时，有一个“分类性质”，这个属性是在BOM模块中起作用的。只有在分类性质为成品或半成品下面的物料才能设置BOM
 \opset{物料分类设置}{
     \item \ops{新建物料分类}{
@@ -34,7 +54,7 @@
 }
 
 
-\section{物料管理}
+\subsection{物料管理}
 物料的模型图:
 \screenshot{material.png}
     \ul {
@@ -118,9 +138,9 @@
 }
 
 
-\section{设置}
+\subsection{设置}
 
-\subsection{仓库设置}
+\subsubsection{仓库设置}
 \opset{仓库设置}{
     \item \ops{新建仓库}{
         \item  点击工具栏上\button{新建}按钮，弹出新建仓库对话框
@@ -148,7 +168,7 @@
     }
 }
 
-\subsection{库位设置}
+\subsubsection{库位设置}
 \opset{库位设置}{
     \item \ops{新建库位}{
         \item  选择仓库
@@ -184,9 +204,9 @@
 }
 
 
-\section{日常业务}
+\subsection{日常业务}
 
-\subsection{库存初始化}
+\subsubsection{库存初始化}
 \opset{库存初始化}{
     \item \ops{新建库存初始化条目}{
         \item  选择要初始化库存的仓库
@@ -225,7 +245,7 @@
     }
 }
 
-\subsection{物料出入库}
+\subsubsection{物料出入库}
 本系统对不同类型的入库，直接从菜单上进行区分。例如：采购入库，生产入库，委外入库，销售出库，生产出库，计划出库，委外出库等
 点击相应的菜单，进入到不同类型的入库单管理界面
 \opset{物料出入库}{
@@ -277,7 +297,7 @@
     }
 }
 
-\subsection{库存调拨}
+\subsubsection{库存调拨}
 \opset{库存调拨}{
     \item \ops{新建库存调拨单}{
         \item  选择需要调拨的仓库，选择仓库后，会显示最新的调拨单据。
@@ -325,7 +345,7 @@
     }
 }
 
-\subsection{库存盘点}
+\subsubsection{库存盘点}
 \opset{库存盘点}{
     \item \ops{新建库存盘点表}{
         \item  选择需要盘点的仓库
@@ -361,9 +381,9 @@
 }
 
 
-\section{查询}
+\subsection{查询}
 
-\subsection{库存查询(含明细)}
+\subsubsection{库存查询(含明细)}
 库存查询，可以查询仓库的全部物料，也可以选择目标物料进行独立的查询。
 \screenshot{21.png}
 \ul {
