@@ -1,4 +1,26 @@
-\section{工艺管理}
+
+\section {物料建模}
+        .
+        \begin{center}
+            \includegraphics[scale=0.6] {bom1.png}
+        \end{center}
+
+    \input{\DIRNAME/bom-base.tex} % 物料清单
+
+\section {工艺路线建模}
+        .
+        \begin{center}
+            \includegraphics[scale=0.5] {flow1.png}
+        \end{center}
+    \input{\DIRNAME/flow-def.tex} % 工艺路线的定义
+
+\section {质量检验标准}
+    \input{\DIRNAME/qc-m1.tex} % 什么是质量
+    \input{\DIRNAME/qc-m2.tex} % 制定检验标准
+
+\practices
+
+\subsection{工艺管理}
 \opset{工艺管理}{
     \item \ops{新建工艺}{
         \item  点击\button{新建}按钮，弹出新建工艺对话框
@@ -26,8 +48,7 @@
     }
 }
 
-
-\section{BOM管理}
+\subsection{BOM管理}
     \opset{BOM管理}{
     \item \ops{新建BOM物料清单}{
         \item  点击工具栏上的\button{新建}按钮，弹出新建BOM物料清单对话框
