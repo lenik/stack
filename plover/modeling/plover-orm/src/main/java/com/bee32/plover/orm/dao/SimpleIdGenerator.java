@@ -66,6 +66,7 @@ public class SimpleIdGenerator {
             break;
         case TABLE:
             throw new UnsupportedOperationException("Couldn't simulate a TABLE-generator used by " + entityType);
+        default:
         }
 
         Serializable id;

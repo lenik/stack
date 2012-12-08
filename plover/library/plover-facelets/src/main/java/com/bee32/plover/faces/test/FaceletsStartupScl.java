@@ -37,6 +37,8 @@ public class FaceletsStartupScl
         switch (FaceletsTestCase.faceletsProvider) {
         case APACHE_MYFACES:
             // myfacesScl.contextDestroyed(sce);
+            break;
+        default:
         }
     }
 

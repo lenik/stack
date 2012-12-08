@@ -114,7 +114,7 @@ public class AccountTicketAdminBean
         return true;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
@@ -132,7 +132,7 @@ public class AccountTicketAdminBean
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected boolean preDelete(UnmarshalMap uMap)
             throws Exception {

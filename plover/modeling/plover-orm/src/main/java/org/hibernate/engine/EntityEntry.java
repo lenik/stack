@@ -23,10 +23,10 @@
  */
 package org.hibernate.engine;
 
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -43,6 +43,8 @@ import org.hibernate.pretty.MessageHelper;
  * @author Gavin King
  */
 public final class EntityEntry implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private LockMode lockMode;
     private Status status;

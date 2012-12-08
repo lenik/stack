@@ -2,8 +2,6 @@ package com.bee32.sem.asset.web.ca;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;

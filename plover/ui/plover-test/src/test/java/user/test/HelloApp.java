@@ -16,6 +16,7 @@ public class HelloApp {
             w.write(buf, 0, count);
             count = r.read(buf);
         }
+        r.close();
         return w.toString();
     }
 

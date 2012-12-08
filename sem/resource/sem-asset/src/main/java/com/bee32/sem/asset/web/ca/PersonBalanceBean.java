@@ -41,7 +41,6 @@ public class PersonBalanceBean
         this.result = result;
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     public void query() {
         String sql1 = getBundledSQL("1", //

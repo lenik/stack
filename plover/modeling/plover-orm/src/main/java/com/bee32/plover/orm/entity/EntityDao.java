@@ -46,7 +46,6 @@ import com.bee32.plover.site.scope.PerSite;
  */
 @ComponentTemplate
 @PerSite
-@SuppressWarnings("deprecation")
 public abstract class EntityDao<E extends Entity<? extends K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements IEntityAccessService<E, K> {

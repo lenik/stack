@@ -15,6 +15,7 @@ public class ClassResourceBase
 
     @Override
     public URL getResource(String name) {
+        // XXX Optim: 2235 inv. 1419 us
         return clazz.getResource(name);
     }
 

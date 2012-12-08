@@ -50,6 +50,7 @@ public abstract class BaseDto<S>
         Class<? extends S> srcType = null;
         for (String fqcn : tryFqcns) {
             try {
+                // XXX Optim: 14625 hot spot, 727us.
                 srcType = (Class<? extends S>) Class.forName(fqcn);
             } catch (ClassNotFoundException e) {
                 // try next.

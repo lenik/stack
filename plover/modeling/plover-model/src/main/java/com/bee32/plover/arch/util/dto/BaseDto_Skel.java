@@ -212,7 +212,7 @@ public abstract class BaseDto_Skel<S>
 
         if (marshalType.isReference()) {
             if (isNullRef())
-            return null;
+                return null;
         } else {
             if (isNull())
                 return null;
@@ -242,8 +242,8 @@ public abstract class BaseDto_Skel<S>
                 _unmarshalTo(deref);
                 break;
 
-            // default:
-            // throw new IllegalUsageException("merge from a non-selection dto is meaningless.");
+            default:
+                // throw new IllegalUsageException("merge from a non-selection dto is meaningless.");
             }
         }
 
