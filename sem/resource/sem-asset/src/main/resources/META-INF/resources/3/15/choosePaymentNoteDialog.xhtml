@@ -53,6 +53,9 @@
                 <p:column headerText="付款人">
                     <h:outputText value="#{entry.whoPay.displayName}" />
                 </p:column>
+                <p:column headerText="业务详细">
+                    <h:outputText value="#{entry.shortText}" />
+                </p:column>
                 <cc:renderFacet name="columns" />
             </ui:define>
 

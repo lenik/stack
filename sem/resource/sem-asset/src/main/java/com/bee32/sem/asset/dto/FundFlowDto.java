@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
+import javax.free.Strings;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
@@ -71,6 +72,10 @@ public class FundFlowDto
     @NLength(min = 1, max = FundFlow.TEXT_LENGTH)
     public String getText() {
         return text;
+    }
+
+    public String getShorText() {
+        return Strings.ellipse(text, 30);
     }
 
     public void setText(String text) {
