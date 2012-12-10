@@ -1,8 +1,12 @@
 #!/bin/bash
 
-cd src
+if ! cd src; then
+    echo "Please run this command in each module."
+    echo "Maybe you should chdir to sem/ and run eachdir -rfsrc/main getsrcs"
+    exit 1
+fi
 
-alldir=/tmp/allsrc.d
+alldir=doc/src
 rm -fr "$alldir"
 mkdir -p "$alldir"
 
