@@ -74,7 +74,7 @@ public class FundFlowDto
         return text;
     }
 
-    public String getShorText() {
+    public String getShortText() {
         return Strings.ellipse(text, 30);
     }
 
