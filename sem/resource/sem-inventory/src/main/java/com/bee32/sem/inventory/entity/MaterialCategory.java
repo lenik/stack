@@ -157,32 +157,6 @@ public class MaterialCategory
     }
 
     /**
-     * 组件计数
-     *
-     * 该类别组件的数目。
-     */
-    @Formula("(select count(*) from part p where p.category=id)")
-    public int getPartCount() {
-        return partCount;
-    }
-
-    public void setPartCount(int partCount) {
-        this.partCount = partCount;
-    }
-
-    /**
-     * 顶层bom数
-     */
-    @Formula("(select count(*) from part p where p.category=id and p.id not in (select distinct pi.part from part_item pi where pi.part is not null))")
-    public int getTopPartCount() {
-        return topPartCount;
-    }
-
-    public void setTopPartCount(int topPartCount) {
-        this.topPartCount = topPartCount;
-    }
-
-    /**
      * 形式类型
      *
      * 物料的形式，如原材料(r)、成品(p)或半成品(s)。

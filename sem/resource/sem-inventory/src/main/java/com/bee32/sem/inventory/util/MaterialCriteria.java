@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.criterion.MatchMode;
 
+import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -23,8 +24,7 @@ public class MaterialCriteria
         if (pattern == null || pattern.isEmpty())
             return null;
         else
-            return compose(alias("category", "category"),
-                    likeIgnoreCase("category.label", pattern, MatchMode.ANYWHERE));
+            return compose(alias("category", "category"), likeIgnoreCase("category.label", pattern, MatchMode.ANYWHERE));
     }
 
     @LeftHand(Material.class)
@@ -33,11 +33,9 @@ public class MaterialCriteria
             return null;
         else
             return
-//                    likeIgnoreCase("material.category.label", pattern, MatchMode.ANYWHERE);
-                    compose(
-                    alias("category", "materialCategory"),
-                    likeIgnoreCase("materialCategory.label", pattern,
-                            MatchMode.ANYWHERE));
+// likeIgnoreCase("material.category.label", pattern, MatchMode.ANYWHERE);
+            compose(alias("category", "materialCategory"),
+                    likeIgnoreCase("materialCategory.label", pattern, MatchMode.ANYWHERE));
     }
 
     @LeftHand(Material.class)
@@ -93,6 +91,12 @@ public class MaterialCriteria
             return likeIgnoreCase("modelSpec", pattern, MatchMode.ANYWHERE);
         else
             return like("modelSpec", pattern, MatchMode.ANYWHERE);
+    }
+
+    public static ICriteriaElement gPartNum(int categoryId) {
+        CriteriaElement isnull = isNull("item.part");
+        CriteriaComposite composite = compose(alias("children", "item"), not(in("item", isnull)));
+        return conj(equals("category.id", categoryId), composite);
     }
 
 }

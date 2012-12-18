@@ -17,6 +17,7 @@ public class MaterialCategoryDto
     private static final long serialVersionUID = 1L;
 
     public static final int MATERIALS = 0x01000000;
+    public static final int PART_COUNTS = 0x02000000;
 
     String name;
     List<MaterialDto> materials;
@@ -37,8 +38,15 @@ public class MaterialCategoryDto
             this.materials = Collections.emptyList();
 
         this.materialCount = source.getMaterialCount();
-        this.partCount = source.getPartCount();
-        this.topPartCount = source.getTopPartCount();
+
+        if (selection.contains(PART_COUNTS)) {
+            // TODO @Formula("(select count(*) from part p where p.category=id)")
+            // TODO @Formula("(select count(*) from part p where p.category=id and p.id not in (select distinct pi.part from part_item pi where pi.part is not null))")
+            // this.partCount = source.getPartCount();
+            // this.topPartCount = source.getTopPartCount();
+            this.partCount = 0;
+            this.topPartCount = 0;
+        }
     }
 
     @Override

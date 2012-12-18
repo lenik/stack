@@ -63,7 +63,8 @@ public class MaterialCategoryTreeModel
     synchronized void loadTree() {
         if (rootNode == null) {
             List<MaterialCategory> _categories = DATA(MaterialCategory.class).list(criteriaElements);
-            List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, TreeEntityDto.PARENT,
+            List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, //
+                    TreeEntityDto.PARENT | MaterialCategoryDto.PART_COUNTS, //
                     _categories);
             index = DTOs.index(categories);
             Set<MaterialCategoryDto> roots = TreeEntityUtils.rebuildTree(index);

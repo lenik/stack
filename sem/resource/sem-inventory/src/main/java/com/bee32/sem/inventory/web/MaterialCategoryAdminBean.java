@@ -25,7 +25,8 @@ public class MaterialCategoryAdminBean
     protected List<MaterialType> types; // = new ArrayList<MaterialType>();
 
     public MaterialCategoryAdminBean() {
-        super(MaterialCategory.class, MaterialCategoryDto.class, 0);
+        super(MaterialCategory.class, MaterialCategoryDto.class, //
+                0 /* | MaterialCategoryDto.PART_COUNTS */);
     }
 
     @Override

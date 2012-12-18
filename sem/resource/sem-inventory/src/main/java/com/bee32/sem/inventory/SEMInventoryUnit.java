@@ -2,6 +2,7 @@ package com.bee32.sem.inventory;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.sem.asset.SEMAssetUnit;
 import com.bee32.sem.file.SEMFileUnit;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
@@ -27,7 +28,7 @@ import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.process.SEMProcessUnit;
 import com.bee32.sem.world.SEMWorldUnit;
 
-@ImportUnit({ SEMProcessUnit.class, SEMPeopleUnit.class, SEMWorldUnit.class, SEMFileUnit.class })
+@ImportUnit({ SEMProcessUnit.class, SEMPeopleUnit.class, SEMWorldUnit.class, SEMFileUnit.class, SEMAssetUnit.class })
 public class SEMInventoryUnit
         extends PersistenceUnit {
 
