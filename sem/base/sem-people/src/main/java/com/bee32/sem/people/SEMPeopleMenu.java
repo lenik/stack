@@ -5,11 +5,6 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.people.entity.ContactCategory;
-import com.bee32.sem.people.entity.OrgType;
-import com.bee32.sem.people.entity.PartyRecordCategory;
-import com.bee32.sem.people.entity.PartySidType;
-import com.bee32.sem.people.entity.PartyTagname;
 
 public class SEMPeopleMenu
         extends MenuComposite
@@ -27,12 +22,12 @@ public class SEMPeopleMenu
     MenuNode orgPersonAdmin = entry(PARENT, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
 
     public MenuNode SETTINGS = menu(PARENT, 12, "SETTINGS");
-    /**/MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));
-    /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
-    /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
-    /**/MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", getDictIndex(ContactCategory.class));
+    /**/MenuNode partyTag = entry(SETTINGS, 1, "partyTag", prefix.join("tagname/"));
+    /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", prefix.join("sidType/"));
+    /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", prefix.join("orgType/"));
+    /**/MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", prefix.join("contactCategory/"));
     /**/MenuNode partyRecordCategory = mode(X_RECORDS) ? entry(SETTINGS, 5, "partyRecordCategory",
-            getDictIndex(PartyRecordCategory.class)) : null;
+            prefix.join("recordCategory/")) : null;
 
     public MenuNode EMPLOYEE = menu(_frame_.HR, 25, "EMPLOYEE");
     /**/MenuNode employeeAdmin = entry(EMPLOYEE, 1, "employeeAdmin", prefix.join("employee/"));

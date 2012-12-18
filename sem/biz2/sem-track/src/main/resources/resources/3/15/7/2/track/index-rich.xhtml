@@ -28,7 +28,7 @@
             <div id="dataList" style="width:100%; background-color:#cecece;">
                 <p:dataTable var="issue" value="${bean.issues}" selection="${bean.singleSelection}"
                     selectionMode="single">
-                    <p:ajax event="rowSelect" process=":@this" listener="${bean.applyAndToogle}" update=":issueMainForm:contentView" />
+                    <p:ajax event="rowSelect" process=":@this" listener="${bean.applyAndToogle}" />
                     <p:column headerText="编号">
                         <h:outputText value="${issue.id}" />
                     </p:column>

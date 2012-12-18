@@ -2,10 +2,6 @@ package com.bee32.sem.chance;
 
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.Location;
-import com.bee32.sem.chance.entity.ChanceActionStyle;
-import com.bee32.sem.chance.entity.ChanceCategory;
-import com.bee32.sem.chance.entity.ChanceSourceType;
-import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
@@ -23,10 +19,10 @@ public class SEMChanceMenu
     MenuNode action = entry(CHANCE, 31, "action", prefix.join("action/"));
 
     public MenuNode CHANCE_DICT = menu(CHANCE, 32, "CHANCE_DICT");
-    /*    */MenuNode category = entry(CHANCE_DICT, 1, "category", getDictIndex(ChanceCategory.class));
-    /*    */MenuNode sourceType = entry(CHANCE_DICT, 2, "sourceType", getDictIndex(ChanceSourceType.class));
-    /*    */MenuNode actionStyle = entry(CHANCE_DICT, 3, "actionStyle", getDictIndex(ChanceActionStyle.class));
-    /*    */MenuNode stage = entry(CHANCE_DICT, 4, "stage", getDictIndex(ChanceStage.class));
+    /*    */MenuNode category = entry(CHANCE_DICT, 1, "category", prefix.join("category/"));
+    /*    */MenuNode sourceType = entry(CHANCE_DICT, 2, "sourceType", prefix.join("sourceType/"));
+    /*    */MenuNode actionStyle = entry(CHANCE_DICT, 3, "actionStyle", prefix.join("actionStyle"));
+    /*    */MenuNode stage = entry(CHANCE_DICT, 4, "stage", prefix.join("stage/"));
 
     public MenuNode PRICE = menu(CHANCE, 32, "PRICE");
 
