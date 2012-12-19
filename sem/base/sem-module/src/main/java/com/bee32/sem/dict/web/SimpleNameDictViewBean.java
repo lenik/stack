@@ -33,8 +33,6 @@ public class SimpleNameDictViewBean
         HttpServletRequest request = ThreadServletContext.getRequest();
         String entity = request.getParameter("entityClass");
         Class<? extends NameDict> entityClass = (Class<? extends NameDict>) ABBR.expand(entity);
-        System.out.println("entityClass abbr=" + entity);
-        System.out.println(entityClass);
         return entityClass;
     }
 

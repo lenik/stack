@@ -25,4 +25,15 @@
         </t:panelGrid>
     </ui:define>
 
+    <ui:define name="searchPanel.id">
+        <p:panel header="按编号搜索" toggleable="true" rendered="${not baseEntity}">
+            <div align="center">
+                <p:inputText id="id" value="${bean.searchId}" />
+                <p:commandButton id="filterId" value="限定记录 ID" actionListener="${bean.addIdRestriction}"
+                    update="@form, ${_searchUpdates}" />
+                <ui:insert name="searchPanel.id.1" />
+            </div>
+        </p:panel>
+    </ui:define>
+
 </ui:composition>
