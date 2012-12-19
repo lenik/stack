@@ -1,0 +1,28 @@
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+    <ui:param name="bean" value="${simpleNameDictViewBean}" />
+    <ui:param name="title" value="${bean.title}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
+
+    <ui:define name="dataColumns">
+        <p:column headerText="名称">
+            <h:outputText value="${entry.label}" />
+        </p:column>
+        <ui:insert name="cusColumns" />
+        <p:column headerText="描述">
+            <h:outputText value="${entry.description}" />
+        </p:column>
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+        <t:panelGrid columns="2">
+            <h:outputText value="名称" />
+            <p:inputText value="${obj.label}" />
+            <ui:insert name="cusContent" />
+            <h:outputText value="描述" />
+            <p:inputText value="${obj.description}" />
+        </t:panelGrid>
+    </ui:define>
+
+</ui:composition>

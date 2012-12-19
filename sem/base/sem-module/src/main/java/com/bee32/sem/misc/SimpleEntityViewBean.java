@@ -132,6 +132,9 @@ public abstract class SimpleEntityViewBean
     boolean checkDuplicatesBeforeCreate = true;
     protected boolean checkDuplicatedLabel = true;
 
+    public SimpleEntityViewBean() {
+    }
+
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         setEntityType(entityClass);

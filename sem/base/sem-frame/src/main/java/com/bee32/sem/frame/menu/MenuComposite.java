@@ -1,6 +1,8 @@
 package com.bee32.sem.frame.menu;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,8 +18,10 @@ import com.bee32.plover.arch.Composite;
 import com.bee32.plover.arch.IAppProfile;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.ox1.dict.CommonDictController;
+import com.bee32.plover.ox1.PloverOx1Module;
 import com.bee32.plover.ox1.dict.DictEntity;
+import com.bee32.plover.ox1.dict.NameDict;
+import com.bee32.plover.ox1.dict.NameDictDto;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.rtx.location.Location;
@@ -159,11 +163,25 @@ public abstract class MenuComposite
 
     // Helpers.
 
-    static Location DICT = WEB_APP.join(CommonDictController.PREFIX + "/");
+    static Location DICT = WEB_APP.join(PloverOx1Module.PREFIX + "/dict/");
 
     protected static Location getDictIndex(Class<? extends DictEntity<?>> dictType) {
         Location dictIndex = DICT.join(ABBR.abbr(dictType) + "/index.do");
         return dictIndex;
+    }
+
+    protected static Location simpleDictIndex(String title, Class<? extends NameDict> entityClass,
+            Class<? extends NameDictDto<?>> dtoClass) {
+        String entity = ABBR.abbr(entityClass);
+        String dto = ABBR.abbr(dtoClass);
+        try {
+            entity = URLEncoder.encode(entity, "UTF-8");
+            dto = URLEncoder.encode(dto, "UTF-8");
+        } catch (UnsupportedEncodingException e1) {
+            throw new RuntimeException(e1.getMessage(), e1);
+        }
+        Location index = DICT.join("?title=" + title + "&entityClass=" + entity + "&dtoClass=" + dto);
+        return index;
     }
 
 }
