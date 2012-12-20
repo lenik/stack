@@ -55,6 +55,8 @@ public class UserFile
     Class<?> refType;
     String refId;
 
+    UserFolder folder;
+
     @Override
     public void populate(Object source) {
         if (source instanceof UserFile)
@@ -73,6 +75,7 @@ public class UserFile
         tags = new HashSet<UserFileTagname>(o.tags);
         refType = o.refType;
         refId = o.refId;
+        folder = o.folder;
     }
 
     /**
@@ -282,5 +285,21 @@ public class UserFile
         else
             this.refId = String.valueOf(refId);
     }
+
+    /**
+     * 文件夹，文件分类
+     *
+     */
+    @ManyToOne(optional = false)
+    public UserFolder getFolder() {
+        return folder;
+    }
+
+    public void setFolder(UserFolder folder) {
+        if (folder == null)
+            throw new NullPointerException("folder");
+        this.folder = folder;
+    }
+
 
 }
