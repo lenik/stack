@@ -9,6 +9,7 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.Index;
 
 import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
@@ -27,10 +28,36 @@ public class UserFolder
 
     public static final int PATH_LENGTH = 300;
 
+    String name = "noname";
     String path;
     List<UserFile> files;
 
     int fileCount;
+
+    public UserFolder() {
+        super();
+    }
+
+    public UserFolder(UserFolder parent, String name) {
+        super(parent);
+        setName(name);
+    }
+
+    @Index(name = "user_folder_name")
+    @Column(nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        if (name.isEmpty())
+            throw new IllegalArgumentException("name is empty");
+        if (name.contains("/") || name.contains("\\") || name.contains("*") || name.contains("?"))
+            throw new IllegalArgumentException("Illegal name: " + name);
+        this.name = name;
+    }
 
     /**
      * （冗余， = ... + parent.name + name)
@@ -40,7 +67,18 @@ public class UserFolder
         if (path == null) {
             StringBuilder buf = new StringBuilder(PATH_LENGTH);
             UserFolder node = this;
-            buf.append(node.getLabel());
+            while (node != null) {
+                if (buf.length() != 0)
+                    buf.append("/");
+
+                String baseName = node.getName();
+                int len = baseName.length();
+                for (int i = len - 1; i >= 0; i--)
+                    buf.append(baseName.charAt(i));
+
+                node = node.getParent();
+            }
+            path = buf.reverse().toString();
         }
         return path;
     }
