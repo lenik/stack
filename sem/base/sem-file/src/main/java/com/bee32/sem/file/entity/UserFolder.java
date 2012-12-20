@@ -20,17 +20,14 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
 @Entity
 @BatchSize(size = BatchConfig.TREE)
 @SequenceGenerator(name = "idgen", sequenceName = "user_folder_seq", allocationSize = 1)
-public class UserFolder extends TreeEntityAuto<Integer, UserFolder> {
+public class UserFolder
+        extends TreeEntityAuto<Integer, UserFolder> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int PATH_LENGTH = 300;
-    public static final int GID_LENGTH = 20;
-    public static final int MODE_LENGTH = 20;
 
     String path;
-    String gid;
-    String mode;
     List<UserFile> files;
 
     int fileCount;
@@ -39,38 +36,17 @@ public class UserFolder extends TreeEntityAuto<Integer, UserFolder> {
      * （冗余， = ... + parent.name + name)
      */
     @Column(length = PATH_LENGTH)
-    public String getPath() {
+    public synchronized String getPath() {
+        if (path == null) {
+            StringBuilder buf = new StringBuilder(PATH_LENGTH);
+            UserFolder node = this;
+            buf.append(node.getLabel());
+        }
         return path;
     }
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    /**
-     * 属组id
-     * @return
-     */
-    @Column(length = GID_LENGTH)
-    public String getGid() {
-        return gid;
-    }
-
-    public void setGid(String gid) {
-        this.gid = gid;
-    }
-
-    /**
-     * 类似unix的模式
-     * @return
-     */
-    @Column(length = MODE_LENGTH)
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
     }
 
     /**
@@ -95,7 +71,5 @@ public class UserFolder extends TreeEntityAuto<Integer, UserFolder> {
     public void setFileCount(int fileCount) {
         this.fileCount = fileCount;
     }
-
-
 
 }

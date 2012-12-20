@@ -43,8 +43,7 @@ public class UserFile
     public static final int REF_ID_LENGTH = 30;
 
     FileBlob fileBlob;
-
-    String dir = "";
+    UserFolder folder;
     String name = "";
     Date fileDate;
     Date expiredDate;
@@ -54,8 +53,6 @@ public class UserFile
 
     Class<?> refType;
     String refId;
-
-    UserFolder folder;
 
     @Override
     public void populate(Object source) {
@@ -68,7 +65,6 @@ public class UserFile
     protected void _populate(UserFile o) {
         super._populate(o);
         fileBlob = o.fileBlob;
-        dir = o.dir;
         name = o.name;
         fileDate = o.fileDate;
         expiredDate = o.expiredDate;
@@ -93,22 +89,6 @@ public class UserFile
     }
 
     /**
-     * 目录
-     *
-     * 文件所在目录的路径名称。
-     */
-    @Column(length = DIR_LENGTH, nullable = false)
-    public String getDir() {
-        return dir;
-    }
-
-    public void setDir(String dir) {
-        if (dir == null)
-            throw new NullPointerException("dir");
-        this.dir = dir;
-    }
-
-    /**
      * 文化名
      *
      * 用户对上传文件的命名。
@@ -124,24 +104,29 @@ public class UserFile
         this.name = name.trim();
     }
 
-    @Transient
-    public String getPath() {
-        return dir + "/" + name;
+    /**
+     * 文件夹
+     *
+     * 用于文件的分类。
+     *
+     * 若未指定，则在垃圾箱中。
+     */
+    @ManyToOne
+    public UserFolder getFolder() {
+        return folder;
     }
 
-    public void setPath(String path) {
-        if (path == null)
-            throw new NullPointerException("path");
-        path = path.trim();
-        path = path.replace('\\', '/');
-        int slash = path.lastIndexOf('/');
-        if (slash == -1) {
-            dir = "";
-            name = path;
-        } else {
-            dir = path.substring(0, slash);
-            name = path.substring(slash + 1);
-        }
+    public void setFolder(UserFolder folder) {
+        this.folder = folder;
+    }
+
+    @Transient
+    public String getPath() {
+        UserFolder folder = getFolder();
+        if (folder == null)
+            return "";
+        else
+            return folder.getPath() + "/" + name;
     }
 
     /**
@@ -285,21 +270,5 @@ public class UserFile
         else
             this.refId = String.valueOf(refId);
     }
-
-    /**
-     * 文件夹，文件分类
-     *
-     */
-    @ManyToOne(optional = false)
-    public UserFolder getFolder() {
-        return folder;
-    }
-
-    public void setFolder(UserFolder folder) {
-        if (folder == null)
-            throw new NullPointerException("folder");
-        this.folder = folder;
-    }
-
 
 }
