@@ -14,7 +14,7 @@
             <h:outputText value="${entry.employee.person.name}" />
         </p:column>
         <p:column headerText="奖惩金额">
-            <h:outputText value="${entry.bonus}" />
+            <h:outputText value="${entry.value}" />
         </p:column>
         <p:column headerText="奖惩描述">
             <h:outputText value="${entry.description}" />
@@ -33,7 +33,7 @@
             </t:panelGroup>
 
             <h:outputText value="补贴金额" />
-            <p:inputText value="${obj.bonus}" />
+            <p:inputText value="${obj.value}" />
 
             <h:outputText value="补贴描述" />
             <p:inputText value="${obj.description}" />
