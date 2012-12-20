@@ -85,7 +85,15 @@ public class UserFolder
     }
 
     public void setPath(String path) {
-        this.path = path;
+        StringBuilder buf = new StringBuilder(PATH_LENGTH);
+        if(this.getParent() != null) {
+            buf.append(this.getParent().getPath());
+            buf.append("/");
+            buf.append(path);
+        } else {
+            buf.append(path);
+        }
+        this.path = buf.toString();
     }
 
     /**

@@ -12,7 +12,8 @@ public class SEMFileMenu
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
     MenuNode FILE = menu(_frame_.START, 1000, "FILE");
-    /**/MenuNode userFile = entry(FILE, 40, "userFile", __.join("file/"));
+    /**/MenuNode folder = entry(FILE, 200, "folder", __.join("folder/"));
+    /**/MenuNode userFile = entry(FILE, 300, "userFile", __.join("file/"));
 
     /**/MenuNode SETTINGS = menu(FILE, 1000, "SETTINGS");
     /*    */MenuNode fileTag = entry(SETTINGS, 10, "fileTag", __.join("fileTag/"));
