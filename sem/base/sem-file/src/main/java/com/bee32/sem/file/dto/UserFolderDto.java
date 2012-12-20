@@ -16,18 +16,16 @@ public class UserFolderDto extends
 
     public static final int FILES = 0x01000000;
 
+    String name;
     String path;
-    String gid;
-    String mode;
     List<UserFileDto> files;
 
     int fileCount;
 
     @Override
     protected void _marshal(UserFolder source) {
+        this.name = source.getName();
         this.path = source.getPath();
-        this.gid = source.getGid();
-        this.mode = source.getMode();
         if (selection.contains(FILES))
             this.files = mrefList(UserFileDto.class, -1, source.getFiles());
         else
@@ -39,9 +37,8 @@ public class UserFolderDto extends
 
     @Override
     protected void _unmarshalTo(UserFolder target) {
+        target.setName(name);
         target.setPath(path);
-        target.setGid(gid);
-        target.setMode(mode);
 
         if (selection.contains(FILES))
             mergeList(target, "files", files);
@@ -52,6 +49,14 @@ public class UserFolderDto extends
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @NLength(max = UserFolder.PATH_LENGTH)
     public String getPath() {
         return path;
@@ -59,24 +64,6 @@ public class UserFolderDto extends
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    @NLength(max = UserFolder.GID_LENGTH)
-    public String getGid() {
-        return gid;
-    }
-
-    public void setGid(String gid) {
-        this.gid = gid;
-    }
-
-    @NLength(max = UserFolder.MODE_LENGTH)
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
     }
 
     public List<UserFileDto> getFiles() {

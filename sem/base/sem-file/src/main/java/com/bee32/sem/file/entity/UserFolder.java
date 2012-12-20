@@ -26,6 +26,7 @@ public class UserFolder
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NAME_LENGTH = 200;
     public static final int PATH_LENGTH = 300;
 
     String name = "noname";

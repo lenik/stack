@@ -15,7 +15,6 @@ import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.util.Mime;
-import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.web.UserFileController;
 import com.bee32.sem.people.dto.PartyDto;
@@ -29,7 +28,7 @@ public class UserFileDto
     public static final int TAGS = 1;
 
     FileBlobDto fileBlob;
-    String dir;
+    UserFolderDto folder;
     FileName fileName;
     Date fileDate;
     Date expiredDate;
@@ -48,7 +47,7 @@ public class UserFileDto
     @Override
     protected void _marshal(UserFile source) {
         fileBlob = mref(FileBlobDto.class, source.getFileBlob());
-        setDir(source.getDir());
+        folder = mref(UserFolderDto.class, source.getFolder());
         setName(source.getName());
         fileDate = source.getFileDate();
         expiredDate = source.getExpiredDate();
@@ -61,7 +60,7 @@ public class UserFileDto
     @Override
     protected void _unmarshalTo(UserFile target) {
         merge(target, "fileBlob", fileBlob);
-        target.setDir(dir);
+        merge(target, "folder", folder);
         target.setName(fileName.toString());
         target.setFileDate(fileDate);
         target.setExpiredDate(expiredDate);
@@ -75,7 +74,6 @@ public class UserFileDto
     protected void _parse(TextMap map)
             throws ParseException {
         fileBlob = new FileBlobDto().ref(map.getString("fileBlob"));
-        setDir(map.getString("dir"));
         setName(map.getString("name"));
         fileDate = map.getDate("fileDate");
         expiredDate = map.getDate("expiredDate");
@@ -102,6 +100,16 @@ public class UserFileDto
         this.fileBlob = fileBlob;
     }
 
+
+
+    public UserFolderDto getFolder() {
+        return folder;
+    }
+
+    public void setFolder(UserFolderDto folder) {
+        this.folder = folder;
+    }
+
     public String getLabelOrName() {
         if (label != null && !label.isEmpty())
             return label;
@@ -109,16 +117,6 @@ public class UserFileDto
             return getName();
     }
 
-    @NLength(max = UserFile.DIR_LENGTH)
-    public String getDir() {
-        return dir;
-    }
-
-    public void setDir(String dir) {
-        if (dir == null)
-            throw new NullPointerException("dir");
-        this.dir = TextUtil.normalizeSpace(dir);
-    }
 
     public FileName getFileName() {
         return fileName;
@@ -137,24 +135,11 @@ public class UserFileDto
 
     @Transient
     public String getPath() {
-        return dir + "/" + fileName;
-    }
-
-    public void setPath(String path) {
-        if (path == null)
-            throw new NullPointerException("path");
-        path = path.trim();
-        path = path.replace('\\', '/');
-        int slash = path.lastIndexOf('/');
-        String name;
-        if (slash == -1) {
-            dir = "";
-            name = path;
-        } else {
-            dir = path.substring(0, slash);
-            name = path.substring(slash + 1);
-        }
-        setName(name);
+        UserFolderDto folder = getFolder();
+        if (folder == null)
+            return "";
+        else
+            return folder.getPath() + "/" + fileName;
     }
 
     public String getViewHref() {
