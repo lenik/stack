@@ -19,6 +19,7 @@ public class SEMFileUnit
         add(FileAttribute.class);
         add(UserFile.class);
         add(UserFileTagname.class);
+        add(UserFolder.class);
     }
 
 }
