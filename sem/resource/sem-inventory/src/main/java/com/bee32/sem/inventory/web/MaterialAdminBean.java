@@ -301,7 +301,7 @@ public class MaterialAdminBean
                     DATA(FileBlob.class).saveOrUpdate(fileBlob);
 
                     UserFile userFile = new UserFile();
-                    userFile.setPath(fileName);
+                    userFile.setName(fileName);
                     userFile.setFileBlob(fileBlob);
                     userFile.setLabel("未命名物料附件");
                     DATA(UserFile.class).save(userFile);

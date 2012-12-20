@@ -37,7 +37,7 @@ public class FileUploadBean
         }
 
         UserFile userFile = new UserFile();
-        userFile.setPath(upFile.getFileName());
+        userFile.setName(upFile.getFileName());
 
         try {
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
