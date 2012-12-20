@@ -7,6 +7,7 @@ import com.bee32.sem.file.entity.FileAttribute;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
+import com.bee32.sem.file.entity.UserFolder;
 import com.bee32.sem.people.SEMPeopleUnit;
 
 @ImportUnit({ IcsfAccessUnit.class, SEMPeopleUnit.class })
