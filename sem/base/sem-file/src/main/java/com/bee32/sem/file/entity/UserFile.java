@@ -120,15 +120,6 @@ public class UserFile
         this.folder = folder;
     }
 
-    @Transient
-    public String getPath() {
-        UserFolder folder = getFolder();
-        if (folder == null)
-            return "";
-        else
-            return folder.getPath() + "/" + name;
-    }
-
     /**
      * 文件日期
      *

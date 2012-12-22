@@ -6,7 +6,6 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.sem.file.entity.UserFolder;
 
@@ -17,7 +16,6 @@ public class UserFolderDto extends
     public static final int FILES = 0x01000000;
 
     String name;
-    String path;
     List<UserFileDto> files;
 
     int fileCount;
@@ -25,7 +23,6 @@ public class UserFolderDto extends
     @Override
     protected void _marshal(UserFolder source) {
         this.name = source.getName();
-        this.path = source.getPath();
         if (selection.contains(FILES))
             this.files = mrefList(UserFileDto.class, -1, source.getFiles());
         else
@@ -38,7 +35,6 @@ public class UserFolderDto extends
     @Override
     protected void _unmarshalTo(UserFolder target) {
         target.setName(name);
-        target.setPath(path);
 
         if (selection.contains(FILES))
             mergeList(target, "files", files);
@@ -57,13 +53,21 @@ public class UserFolderDto extends
         this.name = name;
     }
 
-    @NLength(max = UserFolder.PATH_LENGTH)
-    public String getPath() {
-        return path;
-    }
+    public synchronized String getPath() {
+        StringBuilder buf = new StringBuilder();
+        UserFolderDto node = this;
+        while (node != null && !node.isNull()) {
+            if (buf.length() != 0)
+                buf.append("/");
 
-    public void setPath(String path) {
-        this.path = path;
+            String baseName = node.getName();
+            int len = baseName.length();
+            for (int i = len - 1; i >= 0; i--)
+                buf.append(baseName.charAt(i));
+
+            node = node.getParent();
+        }
+        return buf.reverse().toString();
     }
 
     public List<UserFileDto> getFiles() {

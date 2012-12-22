@@ -27,10 +27,8 @@ public class UserFolder
     private static final long serialVersionUID = 1L;
 
     public static final int NAME_LENGTH = 200;
-    public static final int PATH_LENGTH = 300;
 
     String name = "noname";
-    String path;
     List<UserFile> files;
 
     int fileCount;
@@ -58,42 +56,6 @@ public class UserFolder
         if (name.contains("/") || name.contains("\\") || name.contains("*") || name.contains("?"))
             throw new IllegalArgumentException("Illegal name: " + name);
         this.name = name;
-    }
-
-    /**
-     * （冗余， = ... + parent.name + name)
-     */
-    @Column(length = PATH_LENGTH)
-    public synchronized String getPath() {
-        if (path == null) {
-            StringBuilder buf = new StringBuilder(PATH_LENGTH);
-            UserFolder node = this;
-            while (node != null) {
-                if (buf.length() != 0)
-                    buf.append("/");
-
-                String baseName = node.getName();
-                int len = baseName.length();
-                for (int i = len - 1; i >= 0; i--)
-                    buf.append(baseName.charAt(i));
-
-                node = node.getParent();
-            }
-            path = buf.reverse().toString();
-        }
-        return path;
-    }
-
-    public void setPath(String path) {
-        StringBuilder buf = new StringBuilder(PATH_LENGTH);
-        if(this.getParent() != null) {
-            buf.append(this.getParent().getPath());
-            buf.append("/");
-            buf.append(path);
-        } else {
-            buf.append(path);
-        }
-        this.path = buf.toString();
     }
 
     /**
