@@ -62,11 +62,11 @@ public class UserFolderTreeModel
 
     synchronized void loadTree() {
         if (rootNode == null) {
-            List<UserFolder> _categories = DATA(UserFolder.class).list(criteriaElements);
-            List<UserFolderDto> categories = DTOs.mrefList(UserFolderDto.class, //
+            List<UserFolder> _folders = DATA(UserFolder.class).list(criteriaElements);
+            List<UserFolderDto> folders = DTOs.mrefList(UserFolderDto.class, //
                     TreeEntityDto.PARENT , //
-                    _categories);
-            index = DTOs.index(categories);
+                    _folders);
+            index = DTOs.index(folders);
             Set<UserFolderDto> roots = TreeEntityUtils.rebuildTree(index);
 
             rootNode = new DefaultTreeNode("folderRoot", null);

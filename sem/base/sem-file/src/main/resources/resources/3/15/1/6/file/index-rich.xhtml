@@ -4,8 +4,11 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
 
     <ui:param name="title" value="用户文件" />
+    <ui:param name="sideBarWVisible" value="true" />
     <ui:param name="creatable" value="false" />
     <ui:param name="bean" value="${userFileBean}" />
+    <ui:param name="mirrorTargets" value=":navigatorForm:folderTree" />
+    <ui:param name="contentUpdate" value="${_entryUpdate} :editDialog:form :navigatorForm:folderTree" />
 
     <ui:define name="toolbar.left">
         <p:toolbarGroup align="left">
@@ -15,6 +18,26 @@
             <p:commandButton value="打开文件" disabled="${not bean.selected}" onclick="location.href = '${bean.singleSelection.viewHref}'" />
         </p:toolbarGroup>
     </ui:define>
+
+    <ui:define name="sideBarW">
+        <h:form id="navigatorForm">
+            <p:treeTable id="folderTree" value="#{bean.folderTree.rootNode}" var="folder"
+                selectionMode="single" selection="#{bean.folderTree.selectedNode}">
+
+                <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
+                <p:ajax event="unselect" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
+
+                <p:column headerText="分类名称" styleClass="f-wrappable" style="width:15em;">
+                    <h:outputText value="#{folder.name}" />
+                </p:column>
+
+                <p:column headerText="文件数" style="width:5em;">
+                    <h:outputText value="#{folder.fileCount} (#{folder.totalFileCount})" />
+                </p:column>
+            </p:treeTable>
+        </h:form>
+    </ui:define>
+
 
     <ui:define name="dataColumns">
         <h:outputStylesheet library="frame" name="table.css" />
@@ -55,6 +78,10 @@
             </h:panelGrid>
         </p:column>
 
+        <p:column headerText="所属分类">
+            <h:outputText value="${entry.folder.name}" />
+        </p:column>
+
         <p:column headerText="经办人">
             <h:outputText value="${entry.operator.displayName}" />
         </p:column>
@@ -62,7 +89,7 @@
 
     <ui:define name="dialogs">
         <sem:uploadFileDialog id="createUserFileDialog" var="createUserFileDialog"
-            fileUploadListener="${bean.createUserFileListener.handleFileUpload}" update=":mainForm:dataTable" />
+            fileUploadListener="${bean.createUserFileListener.handleFileUpload}" update=":mainForm:dataTable :navigatorForm:folderTree" />
         <sem:chooseUserFileTagDialog id="addTag_d" var="addTagDialog" target="${bean.selectedTag}"
             actionListener="${bean.addTag}" update=":editDialog:form:tagTable" />
         <icsf:choosePrincipalDialog id="c_operator" var="chooseOperatorDialog" target="${obj.operator}"
@@ -71,11 +98,20 @@
             update=":editDialog:form:customer" />
         <sem:choosePartyDialog id="c_searchParty" var="choosePartyToSearchDialog" target="${bean.searchParty}"
             update=":searchForm" />
+        <sem:chooseUserFolderDialog id="c_folder" target="${obj.folder}"
+            update=":editDialog:form:folder" />
     </ui:define>
 
     <ui:define name="editDialogContent">
         <c:set var="obj" value="${bean.openedObject}" />
         <h:panelGrid columns="2" columnClasses="field-label, field-content">
+
+            <h:outputText value="文件分类:" styleClass="e-link" onclick="#{obj.folder.clickAction}" />
+            <h:panelGroup>
+                <p:inputText id="folder" value="${obj.folder.name}" readonly="true" label="文件分类" />
+                <p:commandButton value="..." title="选择文件分类" onclick="chooseUserFolderDialog.show()" />
+            </h:panelGroup>
+
             <h:outputText value="档案日期：" />
             <p:calendar id="date" label="档案日期" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="${obj.fileDate}"
                 showOn="button" />

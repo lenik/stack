@@ -25,13 +25,12 @@ import com.bee32.sem.file.service.IUserFileTagStatService;
 import com.bee32.sem.file.util.UserFileCriteria;
 import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.misc.IDateCriteriaComposer;
-import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.PartyDto;
 
 @ForEntity(UserFile.class)
 public class UserFileBean
-        extends SimpleEntityViewBean {
+        extends UserFolderSupportBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,6 +42,18 @@ public class UserFileBean
     public UserFileBean() {
         super(UserFile.class, UserFileDto.class, UserFileDto.TAGS);
     }
+
+
+
+    @Override
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+        super.composeBaseRestrictions(elements);
+        Integer folderId = folderTree.getSelectedId();
+        if (folderId != null)
+            elements.add(UserFileCriteria.folderOf(folderId));
+    }
+
+
 
     public void createUserFile(FileBlob fileBlob, IncomingFile incomingFile) {
         try {
@@ -67,6 +78,11 @@ public class UserFileBean
             // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.addUsage(userFile.getTags());
         }
+
+        for (UserFileDto file : uMap.<UserFileDto> dtos()) {
+            if (file.isNewCreated())
+                onCreateFile(file);
+        }
     }
 
     @Override
@@ -77,7 +93,13 @@ public class UserFileBean
             // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.removeUsage(userFile.getTags());
         }
+
+        for (UserFileDto file : uMap.<UserFileDto> dtos()) {
+            onDeleteFile(file);
+        }
     }
+
+
 
     public TagCloudModel getTagCloudModel() {
         TagCloudModel model = new DefaultTagCloudModel();

@@ -11,6 +11,7 @@
     <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
     <ui:param name="thing" value="#{thingDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
+    <ui:param name="contentUpdate" value="${_entryUpdate} :editDialog:form :navigatorForm:categoryTree" />
 
     <ui:define name="toolbar.left.1">
         <p:commandButton id="copyButton" value="复制" rendered="${editable != null ? editable : true}"

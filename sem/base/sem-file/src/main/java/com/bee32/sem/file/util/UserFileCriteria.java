@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.hibernate.criterion.MatchMode;
 
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
@@ -40,6 +41,14 @@ public class UserFileCriteria
             return isNotNull("refTypeId");
         else
             return isNull("refTypeId");
+    }
+
+    @LeftHand(UserFile.class)
+    public static CriteriaElement folderOf(Integer folderId) {
+        if (folderId == null)
+            return null;
+        else
+            return equals("folder.id", folderId);
     }
 
 }
