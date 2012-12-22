@@ -131,7 +131,7 @@ public class ViewConfig
         HttpSession session = ThreadHttpContext.getSession();
         int interval = session.getMaxInactiveInterval();
         if (interval <= 0) {
-            interval = 30 * 60; // default half an hour.
+            interval = 120 * 60; // default two hours.
         }
         return interval;
     }
