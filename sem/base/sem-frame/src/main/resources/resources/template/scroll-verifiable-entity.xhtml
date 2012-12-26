@@ -1,11 +1,11 @@
-<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+<ui:composition template="/template/verifiable-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="plainEditForm" value="true" />
     <ui:param name="searchUpdates" value=":mainForm, :editDialog:form" />
     <ui:param name="_indexUpdate" value=":mainForm:dataContainer" />
-    <ui:param name="_entryUpdate" value=":mainForm:toolbar" />
+    <ui:param name="_entryUpdate" value=":mainForm:toolbar :verifyInfoForm" />
     <ui:param name="_contentUpdate" value="${_entryUpdate} :editDialog:form" />
 
     <ui:define name="toolbar">
@@ -22,6 +22,9 @@
                 <p:separator />
                 <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
                     disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" />
+                <p:separator />
+                <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}"
+                    disabled="#{bean.editing or not bean.selected}" />
                 <ui:insert name="toolbar.left" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
