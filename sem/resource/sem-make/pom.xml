@@ -17,6 +17,11 @@
             <artifactId>sem-inventory</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-chance</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>SEM :: Resource :: Make</name>
 </project>

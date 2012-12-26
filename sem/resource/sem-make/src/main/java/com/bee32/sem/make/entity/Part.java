@@ -26,6 +26,7 @@ import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialType;
@@ -48,6 +49,8 @@ public class Part
     private static final long serialVersionUID = 1L;
 
     public static final int RELEASE_VERSION_LENGTH = 20;
+
+    Chance chance;
 
     Part obsolete;
     String releaseVersion;
@@ -90,6 +93,7 @@ public class Part
 
     protected void _populate(Part o) {
         super._populate(o);
+        chance = o.chance;
         obsolete = o.obsolete;
         releaseVersion = o.releaseVersion;
         children = CopyUtils.copyList(o.children);
@@ -106,6 +110,20 @@ public class Part
         electricityFee = o.electricityFee;
         equipmentCost = o.equipmentCost;
         steps = CopyUtils.copyList(o.steps);
+    }
+
+    /**
+     * BOM 对应的机会
+     *
+     * 机会也可以理解为工程项目。所以这里也是产品对应的项目
+     */
+    @ManyToOne
+    public Chance getChance() {
+        return chance;
+    }
+
+    public void setChance(Chance chance) {
+        this.chance = chance;
     }
 
     /**
