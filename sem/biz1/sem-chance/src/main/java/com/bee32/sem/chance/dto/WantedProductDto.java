@@ -15,7 +15,7 @@ import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.orm.util.dto.LastModifiedComparator;
 import com.bee32.sem.chance.entity.WantedProduct;
 import com.bee32.sem.chance.entity.WantedProductXP;
-import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.world.thing.ThingDto;
 
 public class WantedProductDto
