@@ -13,4 +13,12 @@ public class IssueCriteria
     public static ICriteriaElement getUniqueById(long id) {
         return equals("id", id);
     }
+
+    public static ICriteriaElement getObserverCount(long issueId) {
+        return equals("issue.id", issueId);
+    }
+
+    public static ICriteriaElement getUniqueByIssueAndUser(long issueId, int userId) {
+        return and(equals("issue.id", issueId), equals("user.id", userId));
+    }
 }

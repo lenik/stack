@@ -13,7 +13,7 @@ public class BundlePathTest
     public static void main(String[] args)
             throws ClassNotFoundException {
 
-        Class<?> clazz = Issue.class;
+        ArrayTest<?> clazz = Issue.class;
         String name = clazz.getName();
         String replace = name.replace('.', '/');
         ResourceBundle bundle = ResourceBundle.getBundle(replace, Locale.CHINA);

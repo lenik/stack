@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAuto;
 
@@ -22,9 +25,7 @@ public class IssueObserver
 
     Issue issue;
     User user;
-    boolean admin;
     boolean manager;
-    boolean fav;
 
     /**
      * 问题
@@ -32,6 +33,7 @@ public class IssueObserver
      * 相关的问题。
      */
     @ManyToOne(optional = false)
+    @Cascade(CascadeType.REFRESH)
     public Issue getIssue() {
         return issue;
     }
@@ -45,7 +47,7 @@ public class IssueObserver
     /**
      * 用户
      *
-     * 对问题感兴趣或负责的用户。
+     * 对问题感兴趣的用户。
      */
     @ManyToOne(optional = false)
     public User getUser() {
@@ -56,20 +58,6 @@ public class IssueObserver
         if (user == null)
             throw new NullPointerException("user");
         this.user = user;
-    }
-
-    /**
-     * 超级管理员状态
-     *
-     * 用户是否对问题有超级管理权，超级管理权可以删除问题。
-     */
-    @Column(nullable = false)
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
     }
 
     /**
@@ -84,20 +72,6 @@ public class IssueObserver
 
     public void setManager(boolean manager) {
         this.manager = manager;
-    }
-
-    /**
-     * 收藏状态
-     *
-     * 是否已将该问题加入到用户的问题收藏夹。
-     */
-    @Column(nullable = false)
-    public boolean isFav() {
-        return fav;
-    }
-
-    public void setFav(boolean fav) {
-        this.fav = fav;
     }
 
 }

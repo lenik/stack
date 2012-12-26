@@ -9,6 +9,7 @@ import com.bee32.sem.file.SEMFileUnit;
 import com.bee32.sem.makebiz.SEMMakebizUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.track.entity.Issue;
+import com.bee32.sem.track.entity.IssueFav;
 import com.bee32.sem.track.entity.IssueObserver;
 import com.bee32.sem.track.entity.IssueReply;
 import com.bee32.sem.track.entity.ProductLine;
@@ -22,6 +23,7 @@ public class SEMTrackUnit
     protected void preamble() {
         add(Issue.class);
         add(IssueReply.class);
+        add(IssueFav.class);
         add(IssueObserver.class);
         add(ProductLine.class);
     }

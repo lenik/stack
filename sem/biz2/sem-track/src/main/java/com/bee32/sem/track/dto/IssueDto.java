@@ -1,5 +1,6 @@
 package com.bee32.sem.track.dto;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class IssueDto
     private static final long serialVersionUID = 1L;
     public static final int ATTACHMENTS = 1;
     public static final int REPLIES = 2;
+    public static final int OBSERVERS = 4;
 
     IssueState state = IssueState.NEW;
 
@@ -28,6 +30,7 @@ public class IssueDto
 
     List<UserFileDto> attachments;
     List<IssueReplyDto> replies;
+    List<IssueObserverDto> observers;
 
     boolean contentEditable = true;
 
@@ -47,6 +50,12 @@ public class IssueDto
             replies = marshalList(IssueReplyDto.class, source.getReplies());
         else
             replies = Collections.emptyList();
+
+        if (selection.contains(OBSERVERS))
+            observers = marshalList(IssueObserverDto.class, source.getObservers());
+        else
+            observers = new ArrayList<IssueObserverDto>();
+
     }
 
     @Override
@@ -58,6 +67,7 @@ public class IssueDto
         target.setCommitish(commitish);
         mergeList(target, "attachments", attachments);
         mergeList(target, "replies", replies);
+        mergeList(target, "observers", observers);
     }
 
     @Override
@@ -135,6 +145,14 @@ public class IssueDto
 
     public void setContentEditable(boolean contentEditable) {
         this.contentEditable = contentEditable;
+    }
+
+    public List<IssueObserverDto> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(List<IssueObserverDto> observers) {
+        this.observers = observers;
     }
 
 }

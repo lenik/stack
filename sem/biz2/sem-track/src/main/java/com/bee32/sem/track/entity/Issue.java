@@ -51,6 +51,7 @@ public class Issue
 
     List<UserFile> attachments = new ArrayList<UserFile>();
     List<IssueReply> replies = new ArrayList<IssueReply>();
+    List<IssueObserver> observers = new ArrayList<IssueObserver>();
 
     Chance chance;
     StockOrder order;
@@ -175,6 +176,16 @@ public class Issue
         if (replies == null)
             throw new NullPointerException("replies");
         this.replies = replies;
+    }
+
+    @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @Cascade({ CascadeType.DELETE, CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
+    public List<IssueObserver> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(List<IssueObserver> observers) {
+        this.observers = observers;
     }
 
     @ManyToOne
