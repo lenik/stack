@@ -11,11 +11,11 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.inventory.util.IMaterialConsumer;
 import com.bee32.sem.makebiz.entity.MaterialPlan;
+import com.bee32.sem.material.dto.StockWarehouseDto;
 
 public class MaterialPlanDto
         extends StockJobDto<MaterialPlan>

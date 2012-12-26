@@ -23,7 +23,7 @@ import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;

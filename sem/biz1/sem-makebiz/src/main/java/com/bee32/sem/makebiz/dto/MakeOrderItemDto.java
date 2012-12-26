@@ -13,8 +13,8 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
+import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
 public class MakeOrderItemDto

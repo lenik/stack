@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.dto.MakeOrderItemDto;
 import com.bee32.sem.makebiz.dto.MakeTaskDto;
@@ -19,6 +18,7 @@ import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.makebiz.service.SplitToProcessHolder;
+import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 

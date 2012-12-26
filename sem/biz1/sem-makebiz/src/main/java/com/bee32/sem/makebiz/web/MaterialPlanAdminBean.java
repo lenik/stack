@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.frame.ui.ListMBean;
-import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.service.IStockQuery;
@@ -25,6 +24,7 @@ import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.makebiz.service.MakebizService;
+import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
