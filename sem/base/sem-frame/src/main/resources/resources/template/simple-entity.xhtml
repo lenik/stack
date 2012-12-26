@@ -7,7 +7,6 @@
     <ui:param name="_indexUpdate" value=":mainForm:dataContainer" />
     <ui:param name="_entryUpdate" value=":mainForm:toolbar ${verifiable ? ':verifyInfoForm' : ''}" />
     <ui:param name="_contentUpdate" value="${_entryUpdate} :editDialog:form" />
-    <ui:param name="vctx" value="${bean.singleSelection.verifyContext}" />
 
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
@@ -36,10 +35,7 @@
                     <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
                         onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
                     <p:separator />
-                    <c:if test="${verifiable}">
-                        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
-                            disabled="${bean.editing or not bean.selected}" />
-                    </c:if>
+                    <ui:insert name="toolbar.verify" />
                     <p:commandButton id="print" icon="ui-icon-print" title="打印"
                         onclick="print('#mainForm:dataContainer')" />
                 </p:toolbarGroup>
@@ -54,16 +50,7 @@
 
         <ui:insert name="dataColumns" />
 
-        <ui:insert name="dataColumnsV">
-            <c:if test="${verifiable}">
-                <p:column headerText="审核">
-                    <p:commandLink id="vst" value="${entry.verifyContext.verifyEvalState}" update="${_entryUpdate}"
-                        oncomplete="verifyInfoDialog.show()">
-                        <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
-                    </p:commandLink>
-                </p:column>
-            </c:if>
-        </ui:insert>
+        <ui:insert name="dataColumnsV" />
 
         <ui:insert name="dataColumnsC">
             <p:column headerText="创建日期" sortBy="${entry.createdDate}" styleClass="${entry.styleClass}" rendered="${showCreatedDate == true}">
@@ -113,37 +100,7 @@
                 </h:form>
             </p:confirmDialog>
         </ui:insert>
-        <c:if test="${verifiable}">
-            <sem:singleVerifierSupportDialog id="verifyDialog" pageBean="${bean}"
-                update="${_contentUpdate}" />
-            <p:dialog id="d_verifyInfo" widgetVar="verifyInfoDialog" header="记录审核信息" modal="true"
-                dynamic="${viewConfig.dynamicDialog}">
-                <h:form id="verifyInfoForm" styleClass="ui-dialog-form">
-                    <h:panelGrid columns="2" rendered="${bean.singleSelection != null}">
-                        <h:outputText value="锁定状态:" />
-                        <h:outputText value="${bean.singleSelection.entityFlags.locked ? '记录已锁定' : '未锁定'}" />
-
-                        <h:outputText value="审核求值状态:" />
-                        <h:outputText value="${vctx.verifyEvalState}" />
-
-                        <h:outputText value="审核执行:" />
-                        <h:outputText value="${vctx.verifier1.displayName}" />
-
-                        <h:outputText value="审核时间:" />
-                        <h:outputText value="${vctx.verifiedDate1}" />
-
-                        <h:outputText value="审核谓词:" />
-                        <h:outputText value="${vctx.accepted1 ? '同意' : '拒绝'}" />
-
-                        <h:outputText value="拒绝审核的原因:" rendered="${not vctx.accepted1}" />
-                        <h:outputText value="${vctx.rejectedReason1}" rendered="${not vctx.accepted1}" />
-                    </h:panelGrid>
-                    <div align="right">
-                        <p:commandButton id="close" value="关闭" onclick="verifyInfoDialog.hide()" />
-                    </div>
-                </h:form>
-            </p:dialog>
-        </c:if>
+        <ui:insert name="toolbarDialogs.verify" />
     </ui:define>
 
     <ui:define name="searchSupport.0">

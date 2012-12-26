@@ -1,0 +1,53 @@
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:pf="http://bee32.com/plover/faces" xmlns:p="http://primefaces.org/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="verifiable" value="true" />
+
+    <ui:define name="toolbar.verify">
+        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
+            disabled="${bean.editing or not bean.selected}" />
+    </ui:define>
+
+    <ui:define name="dataColumnsV">
+        <p:column headerText="审核">
+            <p:commandLink id="vst" value="${entry.verifyContext.verifyEvalState}" update="${_entryUpdate}"
+                oncomplete="verifyInfoDialog.show()">
+                <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
+            </p:commandLink>
+        </p:column>
+    </ui:define>
+
+    <ui:define name="toolbarDialogs.verify">
+        <sem:singleVerifierSupportDialog id="verifyDialog" pageBean="${bean}" update="${_contentUpdate}" />
+        <p:dialog id="d_verifyInfo" widgetVar="verifyInfoDialog" header="记录审核信息" modal="true"
+            dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="verifyInfoForm" styleClass="ui-dialog-form">
+                <h:panelGrid columns="2" rendered="${bean.singleSelection != null}">
+                    <h:outputText value="锁定状态:" />
+                    <h:outputText value="${bean.singleSelection.entityFlags.locked ? '记录已锁定' : '未锁定'}" />
+
+                    <h:outputText value="审核求值状态:" />
+                    <h:outputText value="${vctx.verifyEvalState}" />
+
+                    <h:outputText value="审核执行:" />
+                    <h:outputText value="${vctx.verifier1.displayName}" />
+
+                    <h:outputText value="审核时间:" />
+                    <h:outputText value="${vctx.verifiedDate1}" />
+
+                    <h:outputText value="审核谓词:" />
+                    <h:outputText value="${vctx.accepted1 ? '同意' : '拒绝'}" />
+
+                    <h:outputText value="拒绝审核的原因:" rendered="${not vctx.accepted1}" />
+                    <h:outputText value="${vctx.rejectedReason1}" rendered="${not vctx.accepted1}" />
+                </h:panelGrid>
+                <div align="right">
+                    <p:commandButton id="close" value="关闭" onclick="verifyInfoDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
