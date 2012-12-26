@@ -14,6 +14,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -30,6 +31,8 @@ public class PartDto
     public static final int STEPS = 4;
     public static final int MATERIAL_CONSUMPTION = 0x01000000 | CHILDREN;
     public static final int TARGET_ATTRIBUTES = 8;
+
+    ChanceDto chance;
 
     PartDto obsolete;
 
@@ -72,6 +75,8 @@ public class PartDto
 
     @Override
     protected void _marshal(Part source) {
+        chance = mref(ChanceDto.class, source.getChance());
+
         obsolete = new PartDto().ref(source.getObsolete());
 
         target = mref(MaterialDto.class, //
@@ -117,6 +122,8 @@ public class PartDto
 
     @Override
     protected void _unmarshalTo(Part target) {
+        merge(target, "chance", chance);
+
         merge(target, "obsolete", obsolete);
 
         merge(target, "target", this.target);
@@ -146,6 +153,14 @@ public class PartDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
+    }
+
+    public ChanceDto getChance() {
+        return chance;
+    }
+
+    public void setChance(ChanceDto chance) {
+        this.chance = chance;
     }
 
     public PartDto getObsolete() {

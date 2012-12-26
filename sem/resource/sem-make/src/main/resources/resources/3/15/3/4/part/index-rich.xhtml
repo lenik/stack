@@ -44,9 +44,10 @@
                     <h:outputText value="#{category.label}" />
                 </p:column>
 
-                <p:column headerText="BOM数" width="50">
+                <p:column headerText="BOM数" width="50" rendered="false">
                     <h:outputText value="#{category.partCount} (#{category.totalPartCount})" />
                 </p:column>
+
             </p:treeTable>
         </h:form>
     </ui:define>
@@ -77,7 +78,13 @@
         <p:tabView id="tv">
             <p:tab title="基本信息">
                 <t:panelGrid id="basic" columns="4">
-                    <h:outputLabel for="target" value="物料" />
+                    <h:outputText value="销售机会" styleClass="e-link" onclick="#{obj.chance.clickAction}"/>
+                    <t:panelGroup colspan="3">
+                        <p:inputText id="chance" value="#{obj.chance.subject}" readonly="true" label="销售机会" style="width:30em;"/>
+                        <p:commandButton value="..." onclick="chooseChanceDialog.show()" disabled="#{not bean.editing}" />
+                    </t:panelGroup>
+
+                    <h:outputText value="物料" styleClass="e-link" onclick="#{obj.target.clickAction}"/>
                     <t:panelGroup colspan="3">
                         <p:inputText id="material" value="#{obj.targetPattern}"/>
                         <p:commandButton
@@ -174,6 +181,8 @@
             target="#{stepObj.stepName}" update=":stepsView:editForm:stepEditTab:makeStepName" />
         <sem:chooseMaterialDialog id="c_stepInput" header="选择材料" var="chooseStepInputMaterialDialog"
             target="#{stepInputObj.material}" update=":stepInputEditView:editForm:material" />
+        <sem:chooseChanceDialog id="c_chance" target="#{obj.chance}"
+            update=":editDialog:form:tv:chance" />
 
 
         <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:tv:childrenIndexView"
