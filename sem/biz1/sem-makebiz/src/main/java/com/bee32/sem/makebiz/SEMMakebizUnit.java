@@ -17,8 +17,9 @@ import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.makebiz.entity.MaterialPlanItem;
 import com.bee32.sem.makebiz.entity.SerialNumber;
 import com.bee32.sem.makebiz.entity.StockPlanOrder;
+import com.bee32.sem.material.SEMMaterialUnit;
 
-@ImportUnit({ SEMMakeUnit.class, SEMChanceUnit.class })
+@ImportUnit({ SEMMakeUnit.class, SEMChanceUnit.class, SEMMaterialUnit.class })
 public class SEMMakebizUnit
         extends PersistenceUnit {
 
