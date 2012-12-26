@@ -38,6 +38,7 @@ public interface SEMOids {
         int Asset = 3;
         int Bom = 4;
         int Account = 5;
+        int Material = 6;
     }
 
     interface biz1 {
