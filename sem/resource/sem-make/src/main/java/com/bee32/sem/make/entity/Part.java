@@ -27,11 +27,11 @@ import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.inventory.entity.MaterialCategory;
-import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.make.service.PriceStrategy;
+import com.bee32.sem.material.entity.Material;
+import com.bee32.sem.material.entity.MaterialCategory;
+import com.bee32.sem.material.entity.MaterialType;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 /**

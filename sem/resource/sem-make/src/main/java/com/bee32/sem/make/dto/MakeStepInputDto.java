@@ -9,8 +9,8 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.make.entity.MakeStepInput;
+import com.bee32.sem.material.dto.MaterialDto;
 
 public class MakeStepInputDto
     extends UIEntityDto<MakeStepInput, Integer>

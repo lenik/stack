@@ -15,11 +15,11 @@ import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.chance.dto.ChanceDto;
-import com.bee32.sem.inventory.dto.MaterialCategoryDto;
-import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.material.dto.MaterialCategoryDto;
+import com.bee32.sem.material.dto.MaterialDto;
+import com.bee32.sem.material.entity.Material;
 
 public class PartDto
         extends UIEntityDto<Part, Integer> {
@@ -75,8 +75,6 @@ public class PartDto
 
     @Override
     protected void _marshal(Part source) {
-        chance = mref(ChanceDto.class, source.getChance());
-
         obsolete = new PartDto().ref(source.getObsolete());
 
         target = mref(MaterialDto.class, //

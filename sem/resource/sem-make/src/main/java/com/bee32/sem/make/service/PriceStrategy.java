@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
+import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 public abstract class PriceStrategy

@@ -21,8 +21,8 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.inventory.entity.MaterialType;
+import com.bee32.sem.material.entity.Material;
+import com.bee32.sem.material.entity.MaterialType;
 
 /**
  * 子部件

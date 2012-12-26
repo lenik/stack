@@ -12,9 +12,9 @@ import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.make.entity.PartItem;
+import com.bee32.sem.material.dto.MaterialDto;
+import com.bee32.sem.material.entity.MaterialType;
 
 public class PartItemDto
         extends UIEntityDto<PartItem, Long>

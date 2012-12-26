@@ -10,7 +10,7 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.material.entity.Material;
 
 /**
  * 消耗材料

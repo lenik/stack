@@ -3,8 +3,8 @@ package com.bee32.sem.make.web;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.make.dto.PartDto;
+import com.bee32.sem.material.dto.MaterialDto;
 
 /**
  * 为Part->PartItem形成统一的树而建立的辅助类

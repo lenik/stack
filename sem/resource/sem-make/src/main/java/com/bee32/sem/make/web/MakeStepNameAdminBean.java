@@ -1,9 +1,9 @@
 package com.bee32.sem.make.web;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.make.dto.MakeStepNameDto;
 import com.bee32.sem.make.entity.MakeStepName;
+import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 @ForEntity(StockWarehouse.class)

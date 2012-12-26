@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.ox1.util.CommonCriteria;
-import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.util.BomCriteria;
+import com.bee32.sem.material.entity.MaterialCategory;
 import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChoosePartDialogBean

@@ -8,8 +8,9 @@ import com.bee32.sem.make.entity.MakeStepModel;
 import com.bee32.sem.make.entity.MakeStepName;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
+import com.bee32.sem.material.SEMMaterialUnit;
 
-@ImportUnit({ SEMInventoryUnit.class, SEMQCUnit.class })
+@ImportUnit({ SEMInventoryUnit.class, SEMQCUnit.class, SEMMaterialUnit.class })
 public class SEMMakeUnit
         extends PersistenceUnit {
 

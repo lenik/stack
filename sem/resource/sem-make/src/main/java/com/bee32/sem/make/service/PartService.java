@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.make.dto.MakeStepInputDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.PartDto;
@@ -16,6 +15,7 @@ import com.bee32.sem.make.dto.QCSpecDto;
 import com.bee32.sem.make.dto.QCSpecParameterDto;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
+import com.bee32.sem.material.entity.Material;
 
 public class PartService
         extends DataService {
