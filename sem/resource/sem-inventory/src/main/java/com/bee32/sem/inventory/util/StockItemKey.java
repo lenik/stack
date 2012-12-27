@@ -2,8 +2,8 @@ package com.bee32.sem.inventory.util;
 
 import java.io.Serializable;
 
-import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.material.entity.StockLocation;
 
 @Deprecated
 public class StockItemKey

@@ -11,14 +11,14 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.ProjectionList;
 import com.bee32.plover.criteria.hibernate.SumProjection;
 import com.bee32.plover.orm.entity.EntityAccessor;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
-import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.util.BatchArray;
 import com.bee32.sem.inventory.util.BatchMetadata;
+import com.bee32.sem.material.entity.Material;
+import com.bee32.sem.material.entity.StockLocation;
+import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class StockQuery

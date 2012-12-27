@@ -11,8 +11,8 @@ import javax.inject.Inject;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
-import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.inventory.SEMInventoryUnit;
+import com.bee32.sem.material.SEMMaterialSamples;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @SuppressWarnings("unused")
@@ -22,15 +22,16 @@ public class StockQueryFeat
 
     @Inject
     IStockQuery stockQuery;
+
     @Inject
-    SEMInventorySamples inventories;
+    SEMMaterialSamples materialSamples;
 
     void list()
             throws FxrQueryException {
         System.out.println("----------- LIST BEGIN -----------");
         List<Long> materials = Arrays.asList( //
-                inventories.m_glass1.getId(), //
-                inventories.m_glue1.getId());
+                materialSamples.m_glass1.getId(), //
+                materialSamples.m_glue1.getId());
 
         StockQueryOptions sqopts = new StockQueryOptions(new Date(), false);
         sqopts.setBatchArray(null, true);
@@ -45,8 +46,8 @@ public class StockQueryFeat
         System.out.println(actualTotal);
         System.out.println(virtualTotal);
 
-        BigDecimal gunAq = stockQuery.getPhysicalStock(inventories.m_glass1.getId(), sqopts);
-        BigDecimal gunVq = stockQuery.getAvailableStock(inventories.m_glass1.getId(), sqopts);
+        BigDecimal gunAq = stockQuery.getPhysicalStock(materialSamples.m_glass1.getId(), sqopts);
+        BigDecimal gunVq = stockQuery.getAvailableStock(materialSamples.m_glass1.getId(), sqopts);
 
         System.out.println("----------- LIST END -----------");
     }

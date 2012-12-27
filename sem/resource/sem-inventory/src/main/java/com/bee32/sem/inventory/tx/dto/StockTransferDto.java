@@ -5,8 +5,8 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
+import com.bee32.sem.material.dto.StockWarehouseDto;
 import com.bee32.sem.people.dto.PersonDto;
 
 public class StockTransferDto

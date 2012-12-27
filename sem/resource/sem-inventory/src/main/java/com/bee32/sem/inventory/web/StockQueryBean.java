@@ -17,7 +17,6 @@ import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockItemListDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockInventory;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
@@ -26,6 +25,7 @@ import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
+import com.bee32.sem.material.dto.StockWarehouseDto;
 
 @ForEntity(StockInventory.class)
 public class StockQueryBean

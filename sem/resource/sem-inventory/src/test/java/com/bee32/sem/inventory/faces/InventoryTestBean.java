@@ -1,6 +1,6 @@
 package com.bee32.sem.inventory.faces;
 
-import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.test.ChooseTestBean;
 
 public class InventoryTestBean

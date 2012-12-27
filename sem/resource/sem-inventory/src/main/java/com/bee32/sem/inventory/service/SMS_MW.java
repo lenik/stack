@@ -1,8 +1,8 @@
 package com.bee32.sem.inventory.service;
 
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
-import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.material.entity.Material;
+import com.bee32.sem.material.entity.StockWarehouse;
 
 public class SMS_MW
         implements IStockMergeStrategy {

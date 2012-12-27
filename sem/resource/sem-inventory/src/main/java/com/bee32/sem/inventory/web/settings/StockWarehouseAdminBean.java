@@ -1,9 +1,9 @@
 package com.bee32.sem.inventory.web.settings;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
-import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.util.StockWarehouseCriteria;
+import com.bee32.sem.material.dto.StockWarehouseDto;
+import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 @ForEntity(StockWarehouse.class)

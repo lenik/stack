@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.free.Nullables;
 
 import com.bee32.sem.inventory.util.BatchArray;
+import com.bee32.sem.material.entity.Material;
 
 public class StockItemKey
         implements Serializable {

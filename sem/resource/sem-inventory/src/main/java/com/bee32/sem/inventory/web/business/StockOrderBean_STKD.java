@@ -9,7 +9,6 @@ import javax.faces.model.SelectItem;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
-import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StocktakingOrderDto;
 import com.bee32.sem.inventory.dto.StocktakingOrderItemDto;
@@ -19,6 +18,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StocktakingOrder;
 import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.StockJobStepping;
+import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.sandbox.UIHelper;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "STKD"))

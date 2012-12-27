@@ -1,0 +1,9 @@
+com.bee32.sem.inventory.entity.Material
+com.bee32.sem.inventory.entity.MaterialAttribute
+com.bee32.sem.inventory.entity.MaterialCategory
+com.bee32.sem.inventory.entity.MaterialPreferredLocation
+com.bee32.sem.inventory.entity.MaterialPrice
+com.bee32.sem.inventory.entity.MaterialWarehouseOption
+com.bee32.sem.inventory.entity.MaterialXP
+com.bee32.sem.inventory.entity.StockLocation
+com.bee32.sem.inventory.entity.StockWarehouse

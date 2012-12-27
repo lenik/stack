@@ -3,6 +3,8 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import com.bee32.sem.material.entity.StockWarehouse;
+
 /**
  * 库存单据
  *

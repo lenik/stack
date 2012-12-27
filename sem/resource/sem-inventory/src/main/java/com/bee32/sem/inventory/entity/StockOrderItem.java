@@ -20,6 +20,10 @@ import org.hibernate.annotations.BatchSize;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.sem.inventory.util.BatchArray;
+import com.bee32.sem.material.entity.Material;
+import com.bee32.sem.material.entity.MaterialPreferredLocation;
+import com.bee32.sem.material.entity.StockLocation;
+import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.world.thing.AbstractItem;
 
 /**

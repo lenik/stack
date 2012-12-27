@@ -19,6 +19,9 @@ import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.util.BatchArray;
 import com.bee32.sem.inventory.util.BatchArrayEntry;
+import com.bee32.sem.material.dto.MaterialDto;
+import com.bee32.sem.material.dto.MaterialPreferredLocationDto;
+import com.bee32.sem.material.dto.StockLocationDto;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
 public class StockOrderItemDto

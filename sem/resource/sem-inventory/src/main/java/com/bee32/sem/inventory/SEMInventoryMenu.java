@@ -6,6 +6,7 @@ import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.material.SEMMaterialModule;
 import com.bee32.sem.process.SEMProcessMenu;
 
 public class SEMInventoryMenu
@@ -20,9 +21,7 @@ public class SEMInventoryMenu
         return __.join("stock/?subject=" + subject.getValue());
     }
 
-    public MenuNode MATERIAL = menu(_frame_.MAIN, 430, "MATERIAL");
-    /*    */MenuNode category = entry(MATERIAL, 1, "category", __.join("category/"));
-    /*    */MenuNode material = entry(MATERIAL, 3, "material", __.join("material/"));
+    static Location _material_ = WEB_APP.join(SEMMaterialModule.PREFIX_);
 
     public MenuNode INVENTORY = menu(_frame_.MAIN, 440, "INVENTORY");
     /*    */MenuNode init = entry(INVENTORY, 10, "init", __.join("stock/INIT/"));
@@ -43,8 +42,8 @@ public class SEMInventoryMenu
     /*    */MenuNode __2 = _separator_(INVENTORY, 999);
 
     public MenuNode SETTINGS = menu(INVENTORY, 1000, "SETTINGS");
-    /*    */MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", __.join("warehouse/"));
-    /*    */MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", __.join("location/"));
+    /*    */MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", _material_.join("warehouse/"));
+    /*    */MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", _material_.join("location/"));
 
     /*    */MenuNode verifyPolicy = entry(_process_.VERIFY_POLICY, 100, "verifyPolicy", __.join("verify/"));
 

@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IdUtils;
-import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
+import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 

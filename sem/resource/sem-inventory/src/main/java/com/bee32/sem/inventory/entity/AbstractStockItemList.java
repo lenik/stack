@@ -10,6 +10,8 @@ import javax.persistence.Transient;
 
 import com.bee32.sem.inventory.service.IStockMergeStrategy;
 import com.bee32.sem.inventory.service.SMS_MBLC;
+import com.bee32.sem.material.entity.Material;
+import com.bee32.sem.material.entity.StockLocation;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.AbstractItemList;

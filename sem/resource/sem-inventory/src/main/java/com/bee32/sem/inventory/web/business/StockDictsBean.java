@@ -9,14 +9,14 @@ import javax.faces.model.SelectItem;
 
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DataViewBean;
-import com.bee32.sem.inventory.dto.MaterialCategoryDto;
-import com.bee32.sem.inventory.dto.StockLocationDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
-import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.StockItemState;
-import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.material.dto.MaterialCategoryDto;
+import com.bee32.sem.material.dto.StockLocationDto;
+import com.bee32.sem.material.dto.StockWarehouseDto;
+import com.bee32.sem.material.entity.MaterialCategory;
+import com.bee32.sem.material.entity.StockLocation;
+import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.misc.LazyDTOMap;
 
 public class StockDictsBean

@@ -8,7 +8,7 @@ import javax.persistence.OneToOne;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.people.entity.Person;
 
 /**

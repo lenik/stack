@@ -4,9 +4,9 @@ import java.util.Currency;
 
 import javax.free.Nullables;
 
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.util.BatchArray;
+import com.bee32.sem.material.entity.Material;
 
 public class SMS_MBC
         implements IStockMergeStrategy {

@@ -8,8 +8,8 @@ import java.util.Map;
 
 import javax.free.IBidiTransformer;
 
-import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.material.dto.MaterialDto;
+import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.sandbox.TransformedKeysMap;
 
 public class ConsumptionMap

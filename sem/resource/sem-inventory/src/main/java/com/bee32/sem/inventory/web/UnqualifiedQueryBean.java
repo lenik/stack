@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockInventory;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
+import com.bee32.sem.material.dto.StockWarehouseDto;
 
 @ForEntity(StockInventory.class)
 public class UnqualifiedQueryBean
