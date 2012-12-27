@@ -16,6 +16,7 @@
         <module>sem-inventory</module>
         <module>sem-make</module>
         <module>sem-world</module>
+        <module>sem-material</module>
     </modules>
     <name>SEM :: Resource</name>
 </project>
