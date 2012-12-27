@@ -12,6 +12,7 @@ public class IcsfPrincipalModule
 
     @Override
     protected void preamble() {
+        declareEntityPages(User.class, "user");
     }
 
 }
