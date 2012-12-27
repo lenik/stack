@@ -3,6 +3,7 @@ package com.bee32.sem.world;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
+import com.bee32.sem.world.thing.Unit;
 
 @Oid({ 3, 15, SEMOids.Resource, SEMOids.resource.World })
 public class SEMWorldModule
@@ -13,6 +14,7 @@ public class SEMWorldModule
 
     @Override
     protected void preamble() {
+        declareEntityPages(Unit.class, "unit");
     }
 
 }
