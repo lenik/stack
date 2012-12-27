@@ -5,6 +5,7 @@ import javax.free.PrefixMap;
 
 import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.rtx.location.Location;
 
 public class PageDirectory {
@@ -47,6 +48,7 @@ public class PageDirectory {
      *            <code>false</code> otherwise.
      */
     public static IObjectPageDirectory getPageDirectory(Class<?> clazz, boolean inheritable) {
+        clazz = ClassUtil.skipProxies(clazz);
         IObjectPageDirectory pageDir = classMap.get(clazz);
         if (pageDir != null)
             return pageDir;
