@@ -14,7 +14,9 @@ public class SEMMakebizMenu
     public MenuNode MAKEBIZ = menu(_frame_.MAIN, 450, "MAKEBIZ");
 
     MenuNode makeOrderAdmin = entry(MAKEBIZ, 1, "makeOrderAdmin", __.join("order/"));
+    MenuNode makeOrderListAdmin = entry(MAKEBIZ, 1, "makeOrderListAdmin", __.join("order/list.jsf"));
     MenuNode makeTaskAdmin = entry(MAKEBIZ, 10, "makeTaskAdmin", __.join("task/"));
+    MenuNode makeTaskListAdmin = entry(MAKEBIZ, 11, "makeTaskListAdmin", __.join("task/list.jsf"));
     MenuNode materialPlanAdmin = entry(MAKEBIZ, 20, "materialPlanAdmin", __.join("plan/"));
     MenuNode deliveryNoteAdmin = entry(MAKEBIZ, 50, "deliveryNoteAdmin", __.join("delivery/"));
     MenuNode makeProcessAdmin = entry(MAKEBIZ, 60, "makeProcessAdmin", __.join("process/"));

@@ -11,6 +11,7 @@ import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.makebiz.entity.MakeProcess;
 import com.bee32.sem.makebiz.entity.MakeStep;
+import com.bee32.sem.makebiz.entity.MakeStepItem;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.makebiz.entity.MakeTaskItem;
 import com.bee32.sem.makebiz.entity.MaterialPlan;
@@ -37,6 +38,7 @@ public class SEMMakebizUnit
         add(DeliveryNoteTakeOut.class);
         add(MakeProcess.class);
         add(MakeStep.class);
+        add(MakeStepItem.class);
         add(SerialNumber.class);
     }
 

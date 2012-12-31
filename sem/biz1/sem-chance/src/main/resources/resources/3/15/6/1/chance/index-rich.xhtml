@@ -37,6 +37,11 @@
         <p:column headerText="机会阶段" sortBy="${entry.stage}">
             <h:outputText value="${entry.stage.label}" />
         </p:column>
+        <p:column headerText="操作" >
+            <p:commandLink onclick="return _open('#{location.WEB_APP}/3/15/6/3/order/list.jsf?chanceId=#{entry.id}');">
+                <h:outputText value="对应定单" />
+            </p:commandLink>
+        </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">

@@ -24,7 +24,7 @@
         <p:column headerText="标识" sortBy="#{entry.id}">
             <h:outputText value="#{entry.id}" />
         </p:column>
-        <p:column headerText="状态">
+        <p:column headerText="审核">
             <h:outputText value="#{entry.verifyContext.verifyEvalState}" />
         </p:column>
         <p:column headerText="时间" sortBy="#{entry.createDate}">
@@ -51,7 +51,7 @@
 			<h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
 			<h:outputText value="#{obj.validString}" style="font-weight:bold;font-size:large;color:#{obj.valid ? 'blue' : 'red'}" />
                 </t:panelGrid>
-                <h:outputText value="状态:" />
+                <h:outputText value="审核:" />
                 <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
 
                 <h:outputText value="时间:" />
@@ -91,7 +91,7 @@
                 <h:outputText value="#{obj.nativeTotal}" >
                     <f:convertNumber pattern="#0.00"/>
                 </h:outputText>
-                <h:outputText value="有效:" />
+                <h:outputText value="状态:" />
                 <p:selectBooleanCheckbox value="#{obj.valid}" />
             </t:panelGrid>
         </p:fieldset>

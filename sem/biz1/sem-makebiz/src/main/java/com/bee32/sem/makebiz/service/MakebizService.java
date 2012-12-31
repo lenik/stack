@@ -256,12 +256,12 @@ public class MakebizService
 
 		step.setParent(process);
 		step.setModel(stepModel);
-		step.setPlanQuantity(quantity);
+		//step.setPlanQuantity(quantity);
 
 		if(stepModel.isQualityControlled()) {
 		    //如果需要质量控制
 		    QCResult qcResult = new QCResult();
-		    step.setQcResult(qcResult);
+		    //step.setQcResult(qcResult);
 		    for(QCSpecParameter specPara : stepModel.getQcSpec().getParameters()) {
 		        QCResultParameter resultPara = new QCResultParameter();
 		        resultPara.setParent(qcResult);
