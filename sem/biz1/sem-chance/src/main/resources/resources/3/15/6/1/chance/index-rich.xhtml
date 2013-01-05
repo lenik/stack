@@ -9,6 +9,7 @@
     <ui:param name="partyObj" value="${bean.partiesMBean.openedObject}" />
     <ui:param name="actionObj" value="${bean.actionsMBean.openedObject}" />
     <ui:param name="productObj" value="${bean.productsMBean.openedObject}" />
+    <ui:param name="competitorObj" value="${bean.competitoriesMBean.openedObject}" />
     <ui:param name="dicts" value="${chanceDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
@@ -202,8 +203,8 @@
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
         <sem:chooseMaterialDialog id="c_material" header="选择产品/物料" target="${productObj.decidedMaterial}"
             update=":pEditView:editForm:tv:decidedMaterial" />
-        <sem:choosePartyDialog id="c_competitor" header="选择竞争对手" var="chooseCompetitorDialog"
-            target="${bean.competitoriesMBean.openedObject.party}" update=":competitorEditView:editForm:displayCompetitor"/>
+        <sem:choosePartyDialog id="c_competitor" header="选择竞争对手" var="chooseCompetitorDialog" target="${competitorObj.party}"
+            update=":competitorEditView:editForm:competitor"/>
 
 
         <fr:listView id="actionsEditView" header="行动记录" style="editDialog" picker="chooseChanceActionDialog"
@@ -278,8 +279,8 @@
                <h:panelGrid columns="2">
 
                     <h:outputText value="竞争对手" />
-                    <h:panelGroup  id="displayCompetitor">
-                        <p:inputText value="${item.party.fullName}" />
+                    <h:panelGroup>
+                        <p:inputText id="competitor" readonly="true" value="${item.party.displayName}" />
                         <p:commandButton value="..." onclick="chooseCompetitorDialog.show();"/>
                     </h:panelGroup>
 
