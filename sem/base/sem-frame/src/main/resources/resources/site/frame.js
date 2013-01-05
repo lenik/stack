@@ -46,7 +46,7 @@
                         sessionMesg.css("display", "none");
                         // sessionController.css("display", "none");
                         sessionController.text("由于长时间没有操作，已自动注销。");
-                        sessionQuit();
+                        // sessionQuit();
                     }
                 }, 250);
             }, timeoutInterval - 5 * 60 * 1000);
