@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 
+import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -20,6 +22,9 @@ public class TrackAdminBean
     private static final long serialVersionUID = 1L;
 
     public String globalState = "";
+    int userId = -1;
+    boolean flag = false;
+    public List<IssueDto> issues;
 
     public TrackAdminBean() {
     }
@@ -47,14 +52,26 @@ public class TrackAdminBean
     }
 
     public SelectableList<IssueDto> getIssues() {
-        List<Issue> list = new ArrayList<Issue>();
-        if (globalState == null || globalState.isEmpty()) {
-            list = DATA(Issue.class).list();
-        } else {
-            list = DATA(Issue.class).list(IssueCriteria.getIssueByState(globalState.charAt(0)));
-        }
-        List<IssueDto> dtoList = DTOs.marshalList(IssueDto.class, IssueDto.REPLIES, list);
-        return SelectableList.decorate(dtoList);
+        List<Issue> list = DATA(Issue.class).list(IssueCriteria.listIssueByObserver(userId, globalState, flag));
+        issues = DTOs.marshalList(IssueDto.class, IssueDto.REPLIES, list);
+        return SelectableList.decorate(issues);
+    }
+
+    public void oberverfilter() {
+        UserDto user = SessionUser.getInstance().getUser();
+        userId = user.getId();
+        flag = true;
+    }
+
+    public void favfilter() {
+        UserDto user = SessionUser.getInstance().getUser();
+        userId = user.getId();
+        flag = false;
+    }
+
+    public void allFilter() {
+        userId = -1;
+        flag = false;
     }
 
     public SelectableList<IssueState> getIssueStates() {
@@ -68,6 +85,14 @@ public class TrackAdminBean
 
     public void setGlobalState(String globalState) {
         this.globalState = globalState;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
 }

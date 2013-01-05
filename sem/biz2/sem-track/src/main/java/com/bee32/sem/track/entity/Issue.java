@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
@@ -52,6 +53,7 @@ public class Issue
     List<UserFile> attachments = new ArrayList<UserFile>();
     List<IssueReply> replies = new ArrayList<IssueReply>();
     List<IssueObserver> observers = new ArrayList<IssueObserver>();
+    List<IssueFav> favs = new ArrayList<IssueFav>();
 
     Chance chance;
     StockOrder order;
@@ -188,7 +190,17 @@ public class Issue
         this.observers = observers;
     }
 
-    @ManyToOne
+    @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @Cascade({ CascadeType.DELETE, CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
+    public List<IssueFav> getFavs() {
+        return favs;
+    }
+
+    public void setFavs(List<IssueFav> favs) {
+        this.favs = favs;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
     public Chance getChance() {
         return chance;
     }
@@ -197,7 +209,7 @@ public class Issue
         this.chance = chance;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public StockOrder getOrder() {
         return order;
     }

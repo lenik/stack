@@ -36,7 +36,6 @@ public class IssueFav
     }
 
     @ManyToOne(optional = false)
-    @Cascade(CascadeType.REFRESH)
     public User getUser() {
         return user;
     }

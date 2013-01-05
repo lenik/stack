@@ -7,6 +7,7 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.track.entity.Issue;
@@ -33,6 +34,12 @@ public class IssueDto
     List<IssueObserverDto> observers;
 
     boolean contentEditable = true;
+
+    @Override
+    protected void _copy() {
+        replies = CopyUtils.copyList(replies);
+        observers = CopyUtils.copyList(observers);
+    }
 
     @Override
     protected void _marshal(Issue source) {

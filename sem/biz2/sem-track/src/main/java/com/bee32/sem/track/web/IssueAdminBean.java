@@ -35,8 +35,16 @@ public class IssueAdminBean
     public IssueReplyDto reply = new IssueReplyDto().create();
     public int favNum;
     public boolean fav;
-    public boolean editing = false;
+    /**
+     * editing = -1, new issue
+     *
+     * editing = 0, not editing issue
+     *
+     * editing = 1, editing issue
+     */
+    public int editing = -1;
     public boolean operatable;
+    public IssueDto temp;
     public List<IssueObserverDto> availableObservers;
     public IssueObserverDto openedObserver = new IssueObserverDto().create();
 
@@ -57,6 +65,7 @@ public class IssueAdminBean
             fav = false;
             favNum = 0;
             operatable = true;
+            editing = -1;
         } else {
             long issueId = Long.parseLong(param);
             Issue issue = DATA(Issue.class).getUnique(IssueCriteria.getUniqueById(issueId));
@@ -81,9 +90,11 @@ public class IssueAdminBean
                 operatable = true;
 
             favNum = DATA(IssueFav.class).count(IssueCriteria.getObserverCount(issueId));
+            editing = 0;
             issueDto.setContentEditable(false);
         }
         setOpenedObject(issueDto);
+        temp = issueDto;
     }
 
     public void attention(boolean favFlag) {
@@ -125,8 +136,10 @@ public class IssueAdminBean
             IssueObserverDto observer = new IssueObserverDto().create();
             observer.setIssue(oo);
             observer.setUser(user);
-            if (observers.contains(observer))
-                observer.setSelected(true);
+            for (IssueObserverDto iod : observers) {
+                if (iod.getIssue().getId() == oo.getId() && iod.getUser().getId() == user.getId())
+                    observer.setSelected(true);
+            }
             availableObservers.add(observer);
         }
     }
@@ -135,9 +148,7 @@ public class IssueAdminBean
         IssueDto openedObject = (IssueDto) getOpenedObject();
         UserDto user = SessionUser.getInstance().getUser();
         IEntityAccessService<IssueReply, Long> replyData = DATA(IssueReply.class);
-        IEntityAccessService<Issue, Long> issueData = DATA(Issue.class);
         IssueReplyDto marshaled;
-        Issue IssueEntity;
 
         reply.setIssue(openedObject);
         reply.setReplier(user);
@@ -146,8 +157,6 @@ public class IssueAdminBean
         marshaled = DTOs.marshal(IssueReplyDto.class, replyEntity);
         openedObject.getReplies().add(marshaled);
         openedObject.setStateValue(reply.getStateValue().charAt(0));
-        IssueEntity = openedObject.unmarshal();
-        issueData.saveOrUpdate(IssueEntity);
 
         RequestContext.getCurrentInstance().execute("clearContent()");
     }
@@ -160,11 +169,12 @@ public class IssueAdminBean
     }
 
     public void doSaveIssue() {
-        IssueDto issueDto = (IssueDto) getOpenedObject();
+        IssueDto issueDto = temp;
         Issue entity = issueDto.unmarshal();
         DATA(Issue.class).saveOrUpdate(entity);
-// issueDto = DTOs.marshal(IssueDto.class, IssueDto.REPLIES + IssueDto.OBSERVERS, entity);
-// setOpenedObject(issueDto);
+        temp = DTOs.marshal(IssueDto.class, IssueDto.REPLIES + IssueDto.OBSERVERS, entity);
+        setOpenedObject(temp);
+        editing = 0;
     }
 
     public void deselectObserver(IssueObserverDto observer) {
@@ -172,9 +182,9 @@ public class IssueAdminBean
         issueDto.getObservers().remove(observer);
     }
 
-    public void deEditing(){
+    public void deEditing() {
         IssueDto issueDto = (IssueDto) getOpenedObject();
-        //TODO
+        // TODO
     }
 
     public void testSetProterty() {
@@ -191,15 +201,20 @@ public class IssueAdminBean
                     iod.setSelected(true);
                 list.add(iod);
             }
-
             availableObservers = list;
         }
     }
 
     public void startEditing() {
         IssueDto oo = (IssueDto) getOpenedObject();
-        editing = true;
+        temp = oo.copy();
+        editing = 1;
         oo.setContentEditable(true);
+    }
+
+    public void cancelEditing() {
+        setOpenedObject(temp);
+        editing = 0;
     }
 
     public SelectableList<IssueState> getIssueStates() {
@@ -231,11 +246,11 @@ public class IssueAdminBean
         this.fav = fav;
     }
 
-    public boolean isEditing() {
+    public int getEditing() {
         return editing;
     }
 
-    public void setEditing(boolean editing) {
+    public void setEditing(int editing) {
         this.editing = editing;
     }
 

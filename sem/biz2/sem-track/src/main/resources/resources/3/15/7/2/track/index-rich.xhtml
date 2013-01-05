@@ -21,8 +21,12 @@
                             itemValue="${item.value}" />
                     </p:selectOneMenu>
                     <p:separator />
-                    <p:commandButton value="我关注的问题" />
-                    <p:commandButton value="我负责的问题" />
+                    <p:commandButton value="显示全部" disabled="${bean.userId == -1}" actionListener="${bean.allFilter}"
+                        update=":issueMainForm" />
+                    <p:commandButton value="我关注的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.favfilter}"
+                        update=":issueMainForm" />
+                    <p:commandButton value="我负责的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.oberverfilter}"
+                        update=":issueMainForm" />
                 </p:toolbarGroup>
             </p:toolbar>
 

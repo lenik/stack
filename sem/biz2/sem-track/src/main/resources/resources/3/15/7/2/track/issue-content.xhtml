@@ -19,14 +19,14 @@
                                         <h:outputText value="${obj.id}" />
                                     </span>
                                 </t:div>
-                                <t:div id="issue-attention-container" rendered="${!bean.editing}">
+                                <t:div id="issue-attention-container" rendered="${bean.editing == 0}">
                                     <div align="center">
                                         <p:commandLink styleClass="favoritestar" title="添加到我的关注"
                                             style="#{bean.fav == true? 'background-position:0 -40px;' : 'background-position:0 0;'}"
                                             update=":issueMainForm:issue-favoritecount" actionListener="#{bean.attention(bean.fav)}">
                                         </p:commandLink>
                                     </div>
-                                    <t:div id="issue-favoritecount"  styleClass="issue-favoritecount-container">
+                                    <t:div id="issue-favoritecount" styleClass="issue-favoritecount-container">
                                         <h:outputText class="favoritecount" value="${bean.favNum}" />
                                     </t:div>
                                 </t:div>
@@ -46,7 +46,7 @@
 
                             <td valign="top">
                                 <t:div id="issue-title">
-                                    <p:inputText value="${obj.label}" style="width:495px;" readonly="${!obj.contentEditable}" />
+                                    <p:inputText value="${obj.label}" style="width:495px;" readonly="${bean.editing == 0}" />
                                 </t:div>
                                 <t:div>
                                     <p:editor value="${obj.text}" />
@@ -64,7 +64,7 @@
                                         </p:column>
                                         <p:column>
                                             <p:commandLink value="del" actionListener="${bean.deselectObserver(observer)}"
-                                                rendered="${bean.operatable and bean.editing}" update=":issueMainForm:issue-observers">
+                                                rendered="${bean.operatable and (bean.editing == 0)}" update=":issueMainForm:issue-observers">
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataTable>
@@ -72,7 +72,7 @@
 
                             </td>
                             <td valign="top">
-                                <t:div style="float:left" rendered="${bean.editing}">
+                                <t:div style="float:left" rendered="${bean.editing == 1}">
                                     <p:dataList value="#{bean.availableObservers}" id="available-observers"
                                         paginator="true" effectSpeed="fast" var="observer" type="none" rows="5"
                                         paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
@@ -93,61 +93,84 @@
                     </table>
 
                     <t:div>
-                        <p:commandButton value="编辑" actionListener="${bean.startEditing}" update=":issueMainForm:contentView" />
-                        <p:commandButton value="保存" rendered="${bean.editing}" actionListener="${bean.doSaveIssue}"
-                            update=":issueMainForm:contentView" />
-                        <p:commandButton value="取消" rendered="${bean.editing}" actionListener="${bean.backToList}" />
+                        <p:commandButton value="编辑" rendered="${bean.operatable and (bean.editing != -1)}" actionListener="${bean.startEditing}"
+                            update=":issueMainForm:contentView, :issueMainForm:reply-container" />
+                        <p:commandButton value="保存" rendered="${bean.editing != 0}" actionListener="${bean.doSaveIssue}"
+                            update=":issueMainForm:contentView, :issueMainForm:reply-container" />
+                        <p:commandButton value="取消" rendered="${bean.editing == 1}" actionListener="${bean.cancelEditing}"
+                            update=":issueMainForm:contentView, :issueMainForm:reply-container" />
                     </t:div>
                 </t:div>
 
 
                 <p:separator rendered="${!obj.contentEditable}" />
 
-                <t:div id="replies" align="center" style="width:100%;">
-                    <ui style="width:100%;">
-                        <ui:repeat var="reply" value="${obj.replies}">
-                            <li class="issue-comment">
-                                <h:outputText value="${reply.text}" />
-                                <h:outputText value=" -- " />
-                                <h:outputText class="comm-user" value="${reply.replier.displayName} " />
-                                <h:outputText class="comm-date" value="${reply.createdDate}" />
-                                <p:commandButton value="delete" rendered="${reply.flag}" actionListener="${bean.deleteReply(reply)}"
-                                    update=":issueMainForm:replies" />
-                            </li>
-                        </ui:repeat>
-                    </ui>
+                <t:div id="reply-container">
+                    <t:div id="replies" align="center" style="width:100%;" rendered="${bean.editing == 0}">
+                        <ui style="width:100%;">
+                            <ui:repeat var="reply" value="${obj.replies}">
+                                <li class="issue-comment">
+                                    <h:outputText value="${reply.text}" />
+                                    <h:outputText value=" -- " />
+                                    <h:outputText class="comm-user" value="${reply.replier.displayName} " />
+                                    <h:outputText class="comm-date" value="${reply.createdDate}" />
+                                    <p:commandButton value="delete" rendered="${reply.flag}"
+                                        actionListener="${bean.deleteReply(reply)}" update=":issueMainForm:replies" />
+                                </li>
+                            </ui:repeat>
+                        </ui>
+                    </t:div>
 
+                    <h:outputText id="addComment"
+                        value="添加评论" class="toogleText" rendered="${bean.editing == 0}" />
+
+                    <t:div id="commentView" rendered="${bean.editing == 0}">
+
+                        <table style="margin-left:5em; width:80%;">
+                            <tr>
+                                <td colspan="2">
+                                    <p:inputTextarea id="commentContent" value="${bean.reply.text}"
+                                        rows="5" cols="80" autoResize="false" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:selectOneMenu rendered="${bean.operatable}" value="${bean.reply.stateValue}"
+                                        panelStyle="width:150px;margin-top:10px;">
+                                        <f:selectItem itemLabel="Select One" itemValue="" />
+                                        <f:selectItems value="${bean.issueStates}" var="item" itemLabel="${item.name}"
+                                            itemValue="${item.value}" />
+                                    </p:selectOneMenu>
+                                </td>
+                                <td>
+                                    <p:commandLink value="评论" actionListener="${bean.doComment}"
+                                        update=":issueMainForm:replies, :issueMainForm:issueState" />
+                                    <h:outputText class="toogleText" id="cancelComment" value="取消" />
+                                </td>
+                            </tr>
+                        </table>
+                    </t:div>
+                    <script type="text/javascript">
+                        $("#issueMainForm\\:commentView").slideUp();
+
+                        $("#issueMainForm\\:addComment").click(function(){
+                        $("#issueMainForm\\:commentView").slideDown();
+                        $(this).hide();
+                        });
+
+                        $("#issueMainForm\\:cancelComment").click(function(){
+                        $("#issueMainForm\\:commentView").slideUp();
+                        $("#issueMainForm\\:addComment").show();
+                        });
+
+                        function
+                        clearContent(){
+                        $("#issueMainForm\\:commentContent").val("");
+                        }
+
+                    </script>
                 </t:div>
 
-                <h:outputText id="addComment" style="margin-left:5em;margin-top:5px;margin-bottom:3em;"
-                    value="添加评论" class="toogleText" rendered="${!obj.contentEditable}" />
-
-                <t:div id="commentView">
-
-                    <table style="margin-left:5em; width:80%;">
-                        <tr>
-                            <td colspan="2">
-                                <p:inputTextarea id="commentContent" value="${bean.reply.text}" rows="5"
-                                    cols="80" autoResize="false" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p:selectOneMenu rendered="${bean.operatable}" value="${bean.reply.stateValue}"
-                                    panelStyle="width:150px;margin-top:10px;">
-                                    <f:selectItem itemLabel="Select One" itemValue="" />
-                                    <f:selectItems value="${bean.issueStates}" var="item" itemLabel="${item.name}"
-                                        itemValue="${item.value}" />
-                                </p:selectOneMenu>
-                            </td>
-                            <td>
-                                <p:commandButton value="评论" actionListener="${bean.doComment}"
-                                    update=":issueMainForm:replies, :issueMainForm:issueState" />
-                                <h:outputText class="toogleText" id="cancelComment" value="取消" />
-                            </td>
-                        </tr>
-                    </table>
-                </t:div>
             </t:div>
 
             <p:dialog header="choose observer" widgetVar="testDialog">
@@ -168,8 +191,15 @@
             color:rgba(125, 57, 187, 0.66);
             }
             .toogleText {
+            margin-left:5em;
+            margin-top:5px;
+            margin-bottom:3em;
             color:#888;
-            margin:5px;display:block
+            margin:5px;
+            display:block;
+            width:60px;
+            border:1px solid;
+            border-radius:2px;
             }
 
             .toogleText:hover {
@@ -235,25 +265,6 @@
 
 
         </style>
-        <script type="text/javascript">
-            $("#issueMainForm\\:commentView").slideUp();
-
-            $("#issueMainForm\\:addComment").click(function(){
-            $("#issueMainForm\\:commentView").slideDown();
-            $(this).hide();
-            });
-
-            $("#issueMainForm\\:cancelComment").click(function(){
-            $("#issueMainForm\\:commentView").slideUp();
-            $("#issueMainForm\\:addComment").show();
-            });
-
-            function
-            clearContent(){
-            $("#issueMainForm\\:commentContent").val("");
-            }
-
-        </script>
 
     </ui:define>
 
