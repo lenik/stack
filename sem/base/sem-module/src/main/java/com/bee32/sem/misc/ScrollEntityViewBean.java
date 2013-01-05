@@ -24,6 +24,8 @@ public class ScrollEntityViewBean
         super(entityClass, dtoClass, fmask, criteriaElements);
         dateRange = DateRangeTemplate.thisYear;
         addInitialRestrictions();
+        // TODO only if not refreshed...
+        refreshRowCount();
     }
 
     protected boolean isScrollEnabled() {
