@@ -38,7 +38,8 @@ public class ScrollEntityViewBean
     }
 
     protected void addInitialRestrictions() {
-        addBeginEndDateRestriction();
+        if (ctx.view.getRequest().getParameterMap().isEmpty())
+            addBeginEndDateRestriction();
     }
 
     @Override
