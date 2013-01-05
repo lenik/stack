@@ -1,6 +1,7 @@
 package com.bee32.sem.purchase.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 import com.bee32.sem.inventory.tx.entity.StockJob;
@@ -38,7 +39,7 @@ public class PurchaseTakeIn
      *
      * @return
      */
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     public PurchaseRequest getPurchaseRequest() {
         return purchaseRequest;
     }

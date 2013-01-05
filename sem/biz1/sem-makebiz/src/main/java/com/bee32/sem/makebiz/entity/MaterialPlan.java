@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -54,7 +55,7 @@ public class MaterialPlan
      *
      * 物料计划对应的生产任务。
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public MakeTask getTask() {
         return task;
     }
@@ -64,11 +65,11 @@ public class MaterialPlan
     }
 
     /**
-     * 定单
+     * [冗余]定单
      *
      * 外购产品，直接由定单生成。这里即为对应的定单。
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public MakeOrder getOrder() {
         return order;
     }

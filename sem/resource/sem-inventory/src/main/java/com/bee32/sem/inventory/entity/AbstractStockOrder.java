@@ -9,6 +9,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
@@ -215,7 +216,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
      * @return 作业ID （根据用途对应具体的作业类型），如果没有对应作业则返回 <code>null</code>。
      */
     @Index(name = "##_job")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public StockJob getJob() {
         return job;
     }
