@@ -40,3 +40,17 @@ drop table person_education_type;
 
 drop table person_skill;
 drop table person_skill_category;
+
+-- 6: Separate material* from sem-inventory.
+
+    -- stockwarehouse
+        update r_ace set q_name='entity:semmaterial-unit:Stoc_dqKNg.' where q_name='entity:seminventory-unit:Stoc_MwV6i.';
+
+    -- stocklocation
+        update r_ace set q_name='entity:semmaterial-unit:Stoc_eXMFC.' where q_name='entity:seminventory-unit:Stoc_Bv28S.';
+
+    -- material
+        update r_ace set q_name='entity:semmaterial-unit:Mate_Psiq4.' where q_name='entity:seminventory-unit:Mate_8ZplY.';
+
+    -- material_category
+        update r_ace set q_name='entity:semmaterial-unit:Mate_ZkPet.' where q_name='entity:seminventory-unit:Mate_N6R6X.';
