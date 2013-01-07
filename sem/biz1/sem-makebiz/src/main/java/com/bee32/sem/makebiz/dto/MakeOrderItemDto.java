@@ -16,6 +16,7 @@ import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.world.thing.AbstractItemDto;
+import com.bee32.sem.world.thing.UnitDto;
 
 public class MakeOrderItemDto
         extends AbstractItemDto<MakeOrderItem>
@@ -134,9 +135,13 @@ public class MakeOrderItemDto
 
     @NLength(max = MakeOrderItem.EXT_UNIT_LENGTH)
     public String getExternalUnit() {
-        if (externalUnit == null || externalUnit.isEmpty())
-            return material.getUnit().getLabel();
-        else
+        if (externalUnit == null || externalUnit.isEmpty()) {
+            UnitDto unit = material.getUnit();
+            if (unit == null)
+                return null;
+            else
+                return unit.getLabel();
+        } else
             return externalUnit;
     }
 
