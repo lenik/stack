@@ -42,10 +42,10 @@ public class MakeOrderItemDto
         parent = mref(MakeOrderDto.class, source.getParent());
 
         int materialSelection = 0;
-        if(selection.contains(MATERIAL_ATTRIBUTES)) materialSelection = MATERIAL_ATTRIBUTES;
+        if (selection.contains(MATERIAL_ATTRIBUTES))
+            materialSelection = MATERIAL_ATTRIBUTES;
         material = mref(MaterialDto.class, //
-                materialSelection,
-                source.getMaterial());
+                materialSelection, source.getMaterial());
 
         deadline = source.getDeadline();
         nameplate = source.isNameplate();
@@ -134,7 +134,10 @@ public class MakeOrderItemDto
 
     @NLength(max = MakeOrderItem.EXT_UNIT_LENGTH)
     public String getExternalUnit() {
-        return externalUnit;
+        if (externalUnit == null || externalUnit.isEmpty())
+            return material.getUnit().getLabel();
+        else
+            return externalUnit;
     }
 
     public void setExternalUnit(String externalUnit) {
@@ -159,7 +162,7 @@ public class MakeOrderItemDto
 
     public BigDecimal getDeliveriedQuantity() {
         BigDecimal num = new BigDecimal(0);
-        for(DeliveryNoteItemDto deliveryNoteItem : deliveryNoteItems) {
+        for (DeliveryNoteItemDto deliveryNoteItem : deliveryNoteItems) {
             num = num.add(deliveryNoteItem.getQuantity());
         }
 
