@@ -78,14 +78,6 @@ public class IssueReplyDto
         this.text = text;
     }
 
-    public String getStateValue() {
-        return issue.getStateValue().toString();
-    }
-
-    public void setStateValue(String stateValue) {
-        issue.setStateValue(stateValue.charAt(0));
-    }
-
     public boolean isFlag() {
         return flag;
     }

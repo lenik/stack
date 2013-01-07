@@ -150,13 +150,18 @@ public class IssueAdminBean
         IEntityAccessService<IssueReply, Long> replyData = DATA(IssueReply.class);
         IssueReplyDto marshaled;
 
+        if (operatable) {
+            IEntityAccessService<Issue, Long> issueData = DATA(Issue.class);
+            Issue unmarshal = openedObject.unmarshal();
+            issueData.saveOrUpdate(unmarshal);
+        }
+
         reply.setIssue(openedObject);
         reply.setReplier(user);
         IssueReply replyEntity = reply.unmarshal();
         replyData.saveOrUpdate(replyEntity);
         marshaled = DTOs.marshal(IssueReplyDto.class, replyEntity);
         openedObject.getReplies().add(marshaled);
-        openedObject.setStateValue(reply.getStateValue().charAt(0));
 
         RequestContext.getCurrentInstance().execute("clearContent()");
     }
