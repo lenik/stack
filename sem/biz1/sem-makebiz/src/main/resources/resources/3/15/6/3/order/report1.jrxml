@@ -16,7 +16,7 @@
 	<field name="description" class="java.lang.String"/>
 	<field name="deadline" class="java.util.Date"/>
 	<field name="externalUnit" class="java.lang.String"/>
-	<field name="material" class="com.bee32.sem.inventory.dto.MaterialDto"/>
+	<field name="material" class="com.bee32.sem.material.dto.MaterialDto"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

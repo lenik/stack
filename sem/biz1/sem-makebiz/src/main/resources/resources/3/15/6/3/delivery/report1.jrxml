@@ -14,7 +14,7 @@
 	<field name="id" class="java.lang.Long"/>
 	<field name="quantity" class="java.math.BigDecimal"/>
 	<field name="description" class="java.lang.String"/>
-	<field name="material" class="com.bee32.sem.inventory.dto.MaterialDto"/>
+	<field name="material" class="com.bee32.sem.material.dto.MaterialDto"/>
 	<field name="orderItem" class="com.bee32.sem.makebiz.dto.MakeOrderItemDto"/>
 	<field name="price" class="com.bee32.sem.world.monetary.MutableMCValue"/>
 	<field name="nativeTotal" class="java.math.BigDecimal"/>
