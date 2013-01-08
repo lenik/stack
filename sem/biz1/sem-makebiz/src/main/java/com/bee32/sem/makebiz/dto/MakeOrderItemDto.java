@@ -12,11 +12,11 @@ import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.material.dto.MaterialDto;
 import com.bee32.sem.world.thing.AbstractItemDto;
-import com.bee32.sem.world.thing.UnitDto;
 
 public class MakeOrderItemDto
         extends AbstractItemDto<MakeOrderItem>
@@ -136,11 +136,14 @@ public class MakeOrderItemDto
     @NLength(max = MakeOrderItem.EXT_UNIT_LENGTH)
     public String getExternalUnit() {
         if (externalUnit == null || externalUnit.isEmpty()) {
-            UnitDto unit = material.getUnit();
-            if (unit == null)
+            if (DTOs.isNull(material))
                 return null;
-            else
-                return unit.getLabel();
+            else {
+                if (DTOs.isNull(material.getUnit())) {
+                    return null;
+                } else
+                    return material.getUnit().getLabel();
+            }
         } else
             return externalUnit;
     }
