@@ -36,11 +36,13 @@
             <h:outputText value="#{entry.chance.subject}" />
         </p:column>
         <p:column headerText="操作" >
-            <p:commandLink onclick="return _open('#{location.WEB_APP}/3/15/6/3/task/list.jsf?orderId=#{entry.id}');">
-                <h:outputText value="对应生产任务" />
+            <p:commandLink styleClass="icon-button" title="对应生产任务"
+                onclick="return _open('#{location.WEB_APP}/3/15/6/3/task/list.jsf?orderId=#{entry.id}');">
+                <p:graphicImage value="#{location.ICON}/etool16/profile_exc.gif" />
             </p:commandLink>
-            <p:commandLink onclick="return _open('#{location.WEB_APP}/3/15/6/3/delivery/list.jsf?orderId=#{entry.id}');">
-                <h:outputText value="对应送货单" />
+            <p:commandLink styleClass="icon-button" title="对应送货单"
+                onclick="return _open('#{location.WEB_APP}/3/15/6/3/delivery/list.jsf?orderId=#{entry.id}');">
+                <p:graphicImage value="#{location.ICON}/obj/share_project.gif" />
             </p:commandLink>
         </p:column>
     </ui:define>
