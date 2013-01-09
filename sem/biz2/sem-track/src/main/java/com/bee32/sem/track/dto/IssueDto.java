@@ -9,7 +9,9 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.file.dto.UserFileDto;
+import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.entity.IssueState;
 
@@ -32,6 +34,8 @@ public class IssueDto
     List<UserFileDto> attachments;
     List<IssueReplyDto> replies;
     List<IssueObserverDto> observers;
+    ChanceDto chance;
+    StockOrderDto order;
 
     boolean contentEditable = true;
 
@@ -48,6 +52,10 @@ public class IssueDto
         replay = source.getReplay();
         tags = source.getTags();
         commitish = source.getCommitish();
+        if (source.getChance() != null)
+            chance = marshal(ChanceDto.class, 0, source.getChance());
+        if (source.getOrder() != null)
+            order = marshal(StockOrderDto.class, 0, source.getOrder());
         if (selection.contains(ATTACHMENTS))
             attachments = marshalList(UserFileDto.class, source.getAttachments());
         else
@@ -75,6 +83,8 @@ public class IssueDto
         mergeList(target, "attachments", attachments);
         mergeList(target, "replies", replies);
         mergeList(target, "observers", observers);
+        merge(target, "chance", chance);
+        merge(target, "order", order);
     }
 
     @Override
@@ -160,6 +170,36 @@ public class IssueDto
 
     public void setObservers(List<IssueObserverDto> observers) {
         this.observers = observers;
+    }
+
+    public String getChanceSubject() {
+        if (chance == null)
+            return "无";
+        else
+            return chance.getSubject();
+    }
+
+    public String getOrderSubject() {
+        if (order == null)
+            return "无";
+        else
+            return order.getSubject().getDisplayName();
+    }
+
+    public ChanceDto getChance() {
+        return chance;
+    }
+
+    public void setChance(ChanceDto chance) {
+        this.chance = chance;
+    }
+
+    public StockOrderDto getOrder() {
+        return order;
+    }
+
+    public void setOrder(StockOrderDto order) {
+        this.order = order;
     }
 
 }

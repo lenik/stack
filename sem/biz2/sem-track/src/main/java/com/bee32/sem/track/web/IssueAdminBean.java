@@ -149,6 +149,10 @@ public class IssueAdminBean
         UserDto user = SessionUser.getInstance().getUser();
         IEntityAccessService<IssueReply, Long> replyData = DATA(IssueReply.class);
         IssueReplyDto marshaled;
+        if (reply.getText().isEmpty()) {
+            uiLogger.warn("请输入评论内容");
+            return;
+        }
 
         if (operatable) {
             IEntityAccessService<Issue, Long> issueData = DATA(Issue.class);
@@ -174,7 +178,7 @@ public class IssueAdminBean
     }
 
     public void doSaveIssue() {
-        IssueDto issueDto = temp;
+        IssueDto issueDto = getOpenedObject();
         Issue entity = issueDto.unmarshal();
         DATA(Issue.class).saveOrUpdate(entity);
         temp = DTOs.marshal(IssueDto.class, IssueDto.REPLIES + IssueDto.OBSERVERS, entity);
@@ -185,6 +189,10 @@ public class IssueAdminBean
     public void deselectObserver(IssueObserverDto observer) {
         IssueDto issueDto = (IssueDto) getOpenedObject();
         issueDto.getObservers().remove(observer);
+        for (IssueObserverDto available : availableObservers) {
+            if (available.getUser().getId() == observer.getUser().getId())
+                available.setSelected(false);
+        }
     }
 
     public void deEditing() {

@@ -10,15 +10,15 @@
         <h:form id="issueMainForm">
             <t:div style="width:100%; background-color:#FFFFFF;">
                 <t:div styleClass="north layout" style="height:50px;">
-                    <t:div id="layout-header">
+                    <t:div id="layout-header" valign="center">
                         <h:outputText value="问题" rendered="${bean.editing ==  0}" />
                         <span class="issue-id">
                             <h:outputText value="${obj.id}" rendered="${bean.editing == 0}" />
                         </span>
                         <h:outputText value="：" rendered="${bean.editing == 0}" />
                         <h:outputText value="${obj.label}" rendered="${bean.editing == 0}" />
-                        <h:outputText value="标题:" rendered="${bean.editing != 0}" />
-                        <p:inputText value="${obj.label}" rendered="${bean.editing != 0}" />
+                        <h:outputText value="标题:" rendered="${bean.editing != 0}" style="margin:5px;" />
+                        <p:inputText value="${obj.label}" rendered="${bean.editing != 0}" style="margin:5px;width:600px;" />
                     </t:div>
                 </t:div>
 
@@ -43,24 +43,35 @@
                             <td class="layout middle" valign="top">
                                 <p:editor value="${obj.text}" width="640" />
                                 <p:separator />
-                                <t:div>
-                                    <h:outputText value="相关机会" />
-                                    <h:outputText value="相关订单" />
-                                </t:div>
-                                <p:separator />
                                 <t:div id="issue-process">
+                                    <t:div>
+                                        <h:outputText value="相关机会：" />
+                                        <h:outputText value="#{obj.chanceSubject}" rendered="#{bean.editing == 0}" />
+                                        <p:inputText value="#{obj.chanceSubject}" rendered="#{bean.editing != 0}"
+                                            readonly="#{true}" />
+                                        <p:commandButton value="..." rendered="#{bean.editing != 0 }"
+                                            onclick="chooseChanceDialog.show();" />
+                                        <br />
+                                        <h:outputText value="相关订单：" />
+                                        <h:outputText value="#{obj.orderSubject}" rendered="#{bean.editing == 0}" />
+                                        <p:inputText value="#{obj.orderSubject}" rendered="#{bean.editing != 0}"
+                                            readonly="#{true}" />
+                                        <p:commandButton value="..." rendered="#{bean.editing != 0}"
+                                            onclick="chooseStockOrderDialog.show()" />
+                                    </t:div>
+                                    <p:separator />
                                     <h:outputText value="状态：" />
                                     <h:outputText id="issueState" value="${obj.stateName}" />
-                                    <h:outputText value="|" />
+                                    <h:outputText value=" | " />
                                     <h:outputText value="所有者：" />
                                     <h:outputText value="${obj.owner.displayName}" />
-                                    <p:commandLink value="编辑" rendered="${bean.operatable and (bean.editing != -1)}"
-                                        actionListener="${bean.startEditing}"
-                                        update=":issueMainForm:reply-container, :issueMainForm:layout-header, :issueMainForm:layout-west, :issueMainForm:layout-east, :issueMainForm:issue-process" />
-                                    <p:commandLink value="保存" rendered="${bean.editing != 0}"
+                                    <p:commandLink styleClass="cusButton" value="编辑"
+                                        rendered="${bean.operatable and (bean.editing ==0 )}" actionListener="${bean.startEditing}"
+                                        update=":issueMainForm:reply-container, :issueMainForm:layout-header, :issueMainForm:layout-west, :issueMainForm:layout-east, :issueMainForm:issue-observers, :issueMainForm:issue-process" />
+                                    <p:commandLink styleClass="cusButton" value="保存" rendered="${bean.editing != 0}"
                                         actionListener="${bean.doSaveIssue}"
                                         update=":issueMainForm:reply-container, :issueMainForm:layout-header, :issueMainForm:layout-west, :issueMainForm:layout-east, :issueMainForm:issue-observers, :issueMainForm:issue-process" />
-                                    <p:commandLink value="取消" rendered="${bean.editing == 1}"
+                                    <p:commandLink styleClass="cusButton" value="取消" rendered="${bean.editing == 1}"
                                         actionListener="${bean.cancelEditing}"
                                         update=":issueMainForm:reply-container, :issueMainForm:layout-header, :issueMainForm:layout-west, :issueMainForm:layout-east, :issueMainForm:issue-observers, :issueMainForm:issue-process" />
                                 </t:div>
@@ -68,35 +79,38 @@
                             <td class="layout" valign="top">
                                 <t:div id="issue-observers" style="width:200px;">
                                     <p:dataTable value="#{obj.observers}" var="observer" type="none">
-                                        <p:column headerText="负责">
+                                        <p:column headerText="负责人">
                                             <h:outputText value="#{observer.user.displayName}" />
                                         </p:column>
-                                        <p:column headerText="权限">
+                                        <p:column headerText="编辑权限">
                                             <p:selectBooleanCheckbox disabled="true"
                                                 value="${observer.manager}" />
                                         </p:column>
                                         <p:column>
-                                            <p:commandLink value="del" actionListener="${bean.deselectObserver(observer)}"
-                                                rendered="${bean.operatable and (bean.editing != 0)}" update=":issueMainForm:issue-observers">
+                                            <p:commandLink value="删除" styleClass="cusButton"
+                                                update=":issueMainForm:issue-observers,  :issueMainForm:layout-east"
+                                                actionListener="${bean.deselectObserver(observer)}" rendered="${bean.operatable and (bean.editing != 0)}">
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataTable>
                                 </t:div>
                             </td>
-                            <td class="layout">
+                            <td class="layout" valign="top">
                                 <t:div id="layout-east">
-                                    <t:div rendered="#{bean.editing != 0}">
+                                    <t:div rendered="#{bean.editing != 0}" style="width:200px;">
                                         <p:dataList value="#{bean.availableObservers}" id="available-observers"
                                             paginator="true" effectSpeed="fast" var="observer" type="none" rows="5"
                                             paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
                                             rowsPerPageTemplate="5,10,15">
                                             <p:column>
-                                                <h:outputText value="#{observer.user.displayName}" />
-                                                <p:commandButton icon="ui-icon-tag" update=":issueMainForm:observercontent"
-                                                    oncomplete="testDialog.show()" disabled="#{observer.selected}">
+                                                <h:outputText style="margin-left:10px;margin-right:10px;"
+                                                    value="#{observer.user.displayName}" />
+                                                <p:commandLink update=":issueMainForm:observercontent"
+                                                    style="display:inline;" oncomplete="testDialog.show()" disabled="#{observer.selected}">
+                                                    <img src="./addbutton.png" />
                                                     <f:setPropertyActionListener value="#{observer}"
                                                         target="#{bean.openedObserver}" />
-                                                </p:commandButton>
+                                                </p:commandLink>
                                             </p:column>
                                             <br />
                                         </p:dataList>
@@ -134,6 +148,8 @@
                                     <p:inputTextarea id="commentContent" value="${bean.reply.text}"
                                         rows="5" cols="80" autoResize="false" />
                                 </td>
+                                <td>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -144,150 +160,49 @@
                                     </p:selectOneMenu>
                                 </td>
                                 <td>
-                                    <p:commandLink value="评论" actionListener="${bean.doComment}"
+                                    <p:commandLink value="评论" styleClass="cusButton" actionListener="${bean.doComment}"
                                         update=":issueMainForm:replies, :issueMainForm:issueState" />
-                                    <h:outputText class="toogleText" id="cancelComment" value="取消" />
+                                    <p:commandLink styleClass="toogleText" id="cancelComment" value="取消" />
                                 </td>
                             </tr>
                         </table>
                     </t:div>
-                    <script type="text/javascript">
-                        $("#issueMainForm\\:commentView").slideUp();
-
-                        $("#issueMainForm\\:addComment").click(function(){
-                        $("#issueMainForm\\:commentView").slideDown();
-                        $(this).hide();
-                        });
-
-                        $("#issueMainForm\\:cancelComment").click(function(){
-                        $("#issueMainForm\\:commentView").slideUp();
-                        $("#issueMainForm\\:addComment").show();
-                        });
-
-                        function
-                        clearContent(){
-                        $("#issueMainForm\\:commentContent").val("");
-                        }
-
+                    <script type="text/javascript" src="issue-comment.js">
                     </script>
                 </t:div>
 
             </t:div>
-
-            <p:dialog header="choose observer" widgetVar="testDialog">
+            <p:dialog header="choose observer" modal="true" widgetVar="testDialog">
                 <t:div id="observercontent">
-                    <h:outputText value="#{bean.openedObserver.user.displayName}" />
-                    <p:selectBooleanCheckbox value="#{bean.openedObserver.manager}" />
-                    <p:commandButton value="确定" actionListener="${bean.testSetProterty}" oncomplete="testDialog.hide();"
-                        update=":issueMainForm:issue-observers, :issueMainForm:available-observers" />
-                    <p:commandButton value="取消" onclick="testDialog.hide();" />
+
+                    <t:panelGrid columns="2">
+
+                        <h:outputText value="用户：" />
+                        <h:outputText value="#{bean.openedObserver.user.displayName}" />
+
+                        <h:outputText value="编辑权限：" />
+                        <p:selectBooleanCheckbox value="#{bean.openedObserver.manager}" />
+
+                        <p:commandButton value="确定" actionListener="${bean.testSetProterty}" oncomplete="testDialog.hide();"
+                            update=":issueMainForm:issue-observers, :issueMainForm:available-observers" />
+                        <p:commandButton value="取消" onclick="testDialog.hide();" />
+                    </t:panelGrid>
                 </t:div>
             </p:dialog>
-
         </h:form>
 
-        <style>
-            .issue-id{
-            font-size:40px;
-            color:rgba(125, 57, 187, 0.66);
-            }
-            .toogleText {
-            margin-left:5em;
-            margin-top:5px;
-            margin-bottom:3em;
-            color:#888;
-            margin:5px;
-            display:block;
-            width:60px;
-            border:1px solid;
-            border-radius:2px;
-            }
+        <sem:chooseStockOrderDialog id="c_stock_order" target="#{obj.order}" update=":issueMainForm:issue-process" />
+        <sem:chooseChanceDialog id="c_chance" header="选择销售机会" dialogBean="#{chooseChanceDialogBean}"
+            target="${obj.chance}" update=":issueMainForm:issue-process" />
 
-            .toogleText:hover {
-            cursor:pointer;
-            background-color:#fbe254;
-            color:#222;
-            }
-
-            .toogleText:active {
-            background-color:#D19F8F;
-            }
-
-            .issue-comment {
-            width:80%;
-            list-style:none;
-            margin-left:5em;
-            padding-top:5px;
-            padding-bottom:5px;
-            font-size:14px;
-            border-bottom:1px solid #cecece;
-            }
-
-            .comm-user {
-            color:#962D0C;
-            }
-            .comm-user:hover{
-            text-decoration:underLine;
-            }
-
-            .comm-date{
-            color:#999;
-            font-size:8px;
-            }
-            .comm-date:hover{
-            text-decoration:underLine;
-            }
-
-            .issue-infor{
-            margin-left:5em;
-            }
-
-            .favoritestar{
-            display:block;
-            width:30px;
-            height:35px;
-            overflow:hidden;
-            background-repeat:
-            no-repeat;
-            background-image:url('star-on-star-off.png')
-            }
-
-            .issue-favoritecount-container{
-            text-align: center;
-            }
-            .favoritecount{
-            color:#d4a849;
-            font-weight:bold;
-            }
-
-            .observerManage{
-            display:block;
-            }
-
-            .layout{
-            border:1px solid #A6C9E2;
-            border-radius:5px;
-            }
-
-            .north{
-            height:50px;
-            }
-
-            .west{
-            width:100px;
-            }
-
-            .middle{
-            width:650px;
-            }
-
-            .center{
-            width:100%;
-            height:100%;
-            }
-
-        </style>
-
+        <link rel="stylesheet" type="text/css" href="./issue.css" />
     </ui:define>
 
 </ui:composition>
+
+
+
+
+
+
+
