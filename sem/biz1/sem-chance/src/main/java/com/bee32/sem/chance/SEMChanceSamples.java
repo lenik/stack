@@ -15,7 +15,6 @@ import com.bee32.sem.chance.entity.ChanceSourceTypes;
 import com.bee32.sem.chance.entity.ChanceStages;
 import com.bee32.sem.chance.entity.ProcurementMethods;
 import com.bee32.sem.chance.entity.PurchaseRegulations;
-import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
@@ -32,7 +31,6 @@ public class SEMChanceSamples
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
     SEMPeopleSamples people = predefined(SEMPeopleSamples.class);
-    SEMInventorySamples inventories = predefined(SEMInventorySamples.class);
     ChanceActionStyles actionStyles = predefined(ChanceActionStyles.class);
     ChanceSourceTypes sourceTypes = predefined(ChanceSourceTypes.class);
     ChanceStages chanceStages = predefined(ChanceStages.class);

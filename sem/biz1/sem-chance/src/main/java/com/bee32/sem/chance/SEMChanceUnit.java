@@ -16,9 +16,8 @@ import com.bee32.sem.chance.entity.WantedProduct;
 import com.bee32.sem.chance.entity.WantedProductAttribute;
 import com.bee32.sem.chance.entity.WantedProductQuotation;
 import com.bee32.sem.chance.entity.WantedProductXP;
-import com.bee32.sem.inventory.SEMInventoryUnit;
 
-@ImportUnit({ SEMInventoryUnit.class })
+@ImportUnit({  })
 public class SEMChanceUnit
         extends PersistenceUnit {
 

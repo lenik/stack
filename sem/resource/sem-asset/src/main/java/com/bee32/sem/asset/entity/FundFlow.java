@@ -22,6 +22,7 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.verify.builtin.IJudgeNumber;
@@ -53,6 +54,7 @@ public class FundFlow
 
     public static final int TEXT_LENGTH = 3000;
 
+    Chance chance;
     Party party;
     Person operator;
     String text;
@@ -71,6 +73,7 @@ public class FundFlow
 
     protected void _populate(FundFlow o) {
         super._populate(o);
+        chance = o.chance;
         party = o.party;
         operator = o.operator;
         text = o.text;
@@ -78,6 +81,21 @@ public class FundFlow
         ticket = o.ticket;
 
         nativeValue = o.nativeValue;
+    }
+
+
+    /**
+     * 销售机会
+     *
+     * @return
+     */
+    @ManyToOne
+    public Chance getChance() {
+        return chance;
+    }
+
+    public void setChance(Chance chance) {
+        this.chance = chance;
     }
 
     /**
