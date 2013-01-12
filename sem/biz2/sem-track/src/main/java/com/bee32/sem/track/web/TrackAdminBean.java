@@ -10,14 +10,14 @@ import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.track.dto.IssueDto;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.entity.IssueState;
 import com.bee32.sem.track.util.IssueCriteria;
 
 public class TrackAdminBean
-        extends EntityViewBean {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,6 +27,7 @@ public class TrackAdminBean
     public List<IssueDto> issues;
 
     public TrackAdminBean() {
+        super(Issue.class, IssueDto.class, 0);
     }
 
     public void applyAndToogle() {

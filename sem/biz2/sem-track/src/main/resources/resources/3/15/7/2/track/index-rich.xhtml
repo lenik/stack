@@ -1,56 +1,46 @@
-<ui:composition template="/template/custom-rich.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:fr="http://java.sun.com/jsf/composite/frame">
 
     <ui:param name="bean" value="${trackAdminBean}" />
-
     <ui:define name="title" value="问题跟踪" />
 
-    <ui:define name="content">
-        <h:form id="issueMainForm">
-            <p:toolbar>
-                <p:toolbarGroup>
-                    <p:commandButton value="新问题" actionListener="${bean.gotoCreateView}" />
-                    <p:separator />
-                    <h:outputText value="按问题阶段搜索：" />
-                    <p:selectOneMenu value="${bean.globalState}" panelStyle="width:150px;margin-top:10px;">
-                        <p:ajax update=":issueMainForm" />
-                        <f:selectItem itemLabel="all" itemValue="" />
-                        <f:selectItems value="${bean.issueStates}" var="item" itemLabel="${item.name}"
-                            itemValue="${item.value}" />
-                    </p:selectOneMenu>
-                    <p:separator />
-                    <p:commandButton value="显示全部" disabled="${bean.userId == -1}" actionListener="${bean.allFilter}"
-                        update=":issueMainForm" />
-                    <p:commandButton value="我关注的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.favfilter}"
-                        update=":issueMainForm" />
-                    <p:commandButton value="我负责的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.oberverfilter}"
-                        update=":issueMainForm" />
-                </p:toolbarGroup>
-            </p:toolbar>
+    <ui:define name="toolbar.left">
+        <p:toolbarGroup>
+            <p:commandButton value="新问题" actionListener="${bean.gotoCreateView}" />
+            <p:separator />
+            <h:outputText value="按问题阶段搜索：" />
+            <p:selectOneMenu value="${bean.globalState}" panelStyle="width:150px;margin-top:10px;">
+                <p:ajax update=":mainForm:toolbar, :mainForm:dataContainer" />
+                <f:selectItem itemLabel="all" itemValue="" />
+                <f:selectItems value="${bean.issueStates}" var="item" itemLabel="${item.name}" itemValue="${item.value}" />
+            </p:selectOneMenu>
+            <p:separator />
+            <p:commandButton value="显示全部" disabled="${bean.userId == -1}" actionListener="${bean.allFilter}"
+                update=":mainForm:toolbar, :mainForm:dataContainer" />
+            <p:commandButton value="我关注的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.favfilter}"
+                update=":mainForm:toolbar, :mainForm:dataContainer" />
+            <p:commandButton value="我负责的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.oberverfilter}"
+                update=":mainForm:toolbar, :mainForm:dataContainer" />
+        </p:toolbarGroup>
+    </ui:define>
 
-            <div id="dataList" style="width:100%; background-color:#cecece;">
-                <p:dataTable var="issue" value="${bean.issues}" selection="${bean.singleSelection}"
-                    selectionMode="single">
-                    <p:ajax event="rowSelect" process=":@this" listener="${bean.applyAndToogle}" />
-                    <p:column headerText="编号">
-                        <h:outputText value="${issue.id}" />
-                    </p:column>
-                    <p:column headerText="问题状态">
-                        <h:outputText value="${issue.stateName}" />
-                    </p:column>
-                    <p:column headerText="属主">
-                        <h:outputText value="${issue.owner.displayName}" />
-                    </p:column>
-                    <p:column headerText="Label">
-                        <h:outputText value="${issue.label}" />
-                    </p:column>
+    <ui:define name="toolbar.right">
+    </ui:define>
 
-                </p:dataTable>
+    <ui:define name="dataColumns">
+        <p:ajax event="rowSelect" process=":@this" listener="${bean.applyAndToogle}" />
+        <p:column headerText="优先级" sortBy="${entry._priority}">
+            <h:outputText value="${entry.priorityName}" />
+        </p:column>
+        <p:column headerText="问题状态">
+            <h:outputText value="${entry.stateName}" />
+        </p:column>
+        <p:column headerText="标题">
+            <h:outputText value="${entry.label}" />
+        </p:column>
 
-            </div>
-        </h:form>
     </ui:define>
 
 </ui:composition>
