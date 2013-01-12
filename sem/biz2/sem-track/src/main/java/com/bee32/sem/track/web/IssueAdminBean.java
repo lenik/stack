@@ -23,6 +23,7 @@ import com.bee32.sem.track.dto.IssueObserverDto;
 import com.bee32.sem.track.dto.IssueReplyDto;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.entity.IssueFav;
+import com.bee32.sem.track.entity.IssuePriority;
 import com.bee32.sem.track.entity.IssueReply;
 import com.bee32.sem.track.entity.IssueState;
 import com.bee32.sem.track.util.IssueCriteria;
@@ -233,6 +234,11 @@ public class IssueAdminBean
     public SelectableList<IssueState> getIssueStates() {
         List<IssueState> list = new ArrayList<IssueState>(IssueState.values());
         return SelectableList.decorate(list);
+    }
+
+    public SelectableList<IssuePriority> getPriorities() {
+        List<IssuePriority> values = new ArrayList<IssuePriority>(IssuePriority.values());
+        return SelectableList.decorate(values);
     }
 
     public IssueReplyDto getReply() {

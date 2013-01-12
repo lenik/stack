@@ -43,6 +43,7 @@ public class Issue
     public static final int TAGS_LENGTH = 100;
 
     IssueState state = IssueState.NEW;
+    IssuePriority priority = IssuePriority.normal;
 
     String text = "";
     String replay = "";
@@ -79,6 +80,24 @@ public class Issue
 
     void set_state(char _state) {
         state = IssueState.forValue(_state);
+    }
+
+    @Transient
+    public IssuePriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(IssuePriority priority) {
+        this.priority = priority;
+    }
+
+    @Column(name="priority_order")
+    public int get_priority(){
+        return priority.getValue();
+    }
+
+    public void set_priority(int value){
+        this.priority = IssuePriority.forValue(value);
     }
 
     /**

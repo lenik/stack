@@ -13,6 +13,7 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.track.entity.Issue;
+import com.bee32.sem.track.entity.IssuePriority;
 import com.bee32.sem.track.entity.IssueState;
 
 public class IssueDto
@@ -24,6 +25,7 @@ public class IssueDto
     public static final int OBSERVERS = 4;
 
     IssueState state = IssueState.NEW;
+    IssuePriority priority = IssuePriority.normal;
 
     String text = "";
     String replay = "";
@@ -48,6 +50,7 @@ public class IssueDto
     @Override
     protected void _marshal(Issue source) {
         state = source.getState();
+        priority = source.getPriority();
         text = source.getText();
         replay = source.getReplay();
         tags = source.getTags();
@@ -76,6 +79,7 @@ public class IssueDto
     @Override
     protected void _unmarshalTo(Issue target) {
         target.setState(state);
+        target.setPriority(priority);
         target.setText(text);
         target.setReplay(replay);
         target.setTags(tags);
@@ -106,6 +110,18 @@ public class IssueDto
 
     public String getStateName() {
         return state.getName();
+    }
+
+    public String getPriorityName() {
+        return priority.getName();
+    }
+
+    public int getPriorityOrder() {
+        return priority.getValue();
+    }
+
+    public void setPriorityOrder(int priorityOrder) {
+        priority = IssuePriority.forValue(priorityOrder);
     }
 
     public String getText() {
