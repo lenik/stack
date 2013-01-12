@@ -16,7 +16,7 @@
                             <h:outputText value="${obj.id}" rendered="${bean.editing == 0}" />
                         </span>
                         <h:outputText value="：" rendered="${bean.editing == 0}" />
-                        <h:outputText value="${obj.label}" rendered="${bean.editing == 0}" />
+                        <h:outputText value="${obj.label}" rendered="${bean.editing == 0}" style="font-size:25px;" />
                         <h:outputText value="标题:" rendered="${bean.editing != 0}" style="margin:5px;" />
                         <p:inputText value="${obj.label}" rendered="${bean.editing != 0}" style="margin:5px;width:600px;" />
                     </t:div>
@@ -41,9 +41,12 @@
                                 </t:div>
                             </td>
                             <td class="layout middle" valign="top">
-                                <p:editor value="${obj.text}" width="640" />
-                                <p:separator />
                                 <t:div id="issue-process">
+                                    <t:div rendered="${bean.editing == 0}" style="min-height:250px;">
+                                        <h:outputText escape="false" value="${obj.text}" />
+                                    </t:div>
+                                    <p:editor value="${obj.text}" width="640" rendered="${bean.editing != 0}" />
+                                    <p:separator />
                                     <t:div>
                                         <h:outputText value="相关机会：" />
                                         <h:outputText value="#{obj.chanceSubject}" rendered="#{bean.editing == 0}" />
@@ -60,6 +63,15 @@
                                             onclick="chooseStockOrderDialog.show()" />
                                     </t:div>
                                     <p:separator />
+                                    <h:outputText value="优先级：" />
+                                    <h:outputText value="${obj.priorityName}" rendered="#{bean.editing == 0}" />
+                                    <p:selectOneMenu value="${obj.priorityOrder}" rendered="#{bean.editing != 0}">
+                                        <f:selectItems value="${bean.priorities}" var="item" itemLabel="${item.label}"
+                                            itemValue="${item.value}" />
+                                    </p:selectOneMenu>
+
+
+                                    <h:outputText value=" | " />
                                     <h:outputText value="状态：" />
                                     <h:outputText id="issueState" value="${obj.stateName}" />
                                     <h:outputText value=" | " />
@@ -138,34 +150,26 @@
                         </ui>
                     </t:div>
 
-                    <h:outputText id="addComment" value="添加评论" class="toogleText" rendered="${bean.editing == 0}" />
+                    <h:outputText id="addComment" value="添加评论" class="toogleText" style="margin-left:5em;"
+                        rendered="${bean.editing == 0}" />
 
                     <t:div id="commentView" rendered="${bean.editing == 0}">
-
-                        <table style="margin-left:5em; width:80%;">
-                            <tr>
-                                <td colspan="2">
-                                    <p:inputTextarea id="commentContent" value="${bean.reply.text}"
-                                        rows="5" cols="80" autoResize="false" />
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p:selectOneMenu rendered="${bean.operatable}" value="${obj.stateValue}"
-                                        panelStyle="width:150px;margin-top:10px;">
-                                        <f:selectItems value="${bean.issueStates}" var="item" itemLabel="${item.name}"
-                                            itemValue="${item.value}" />
-                                    </p:selectOneMenu>
-                                </td>
-                                <td>
-                                    <p:commandLink value="评论" styleClass="cusButton" actionListener="${bean.doComment}"
-                                        update=":issueMainForm:replies, :issueMainForm:issueState" />
-                                    <p:commandLink styleClass="toogleText" id="cancelComment" value="取消" />
-                                </td>
-                            </tr>
-                        </table>
+                        <t:div style="margin-left:5em;">
+                            <p:inputTextarea id="commentContent" value="${bean.reply.text}" rows="5"
+                                cols="80" autoResize="false" />
+                        </t:div>
+                        <t:div style="margin-left:5em;width:650px;">
+                            <h:outputText value="问题状态：" />
+                            <p:selectOneMenu rendered="${bean.operatable}" value="${obj.stateValue}"
+                                panelStyle="width:150px;margin-top:10px;">
+                                <f:selectItems value="${bean.issueStates}" var="item" itemLabel="${item.name}"
+                                    itemValue="${item.value}" />
+                            </p:selectOneMenu>
+                            <p:commandLink value="评论" styleClass="cusButton" actionListener="${bean.doComment}"
+                                update=":issueMainForm:replies, :issueMainForm:issueState" style="position:relative;left:20em;" />
+                            <p:commandLink styleClass="toogleText" style="position:relative;left:20em;"
+                                id="cancelComment" value="取消" />
+                        </t:div>
                     </t:div>
                     <script type="text/javascript" src="issue-comment.js">
                     </script>
