@@ -25,6 +25,7 @@ import com.bee32.plover.arch.generic.IParameterizedType;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.IAccountTicketSource;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
 import com.bee32.sem.inventory.process.StockOrderVerifySupport;
 import com.bee32.sem.inventory.tx.entity.StockJob;
@@ -63,6 +64,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     StockOrderSubject subject;
     StockJob job;
 
+    Chance chance;
     Party org;
     OrgUnit orgUnit;
     StockWarehouse warehouse; // Redundant.
@@ -125,6 +127,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         subject = o.subject;
         spec = o.spec;
         job = o.job;
+        chance = o.chance;
         org = o.org;
         orgUnit = o.orgUnit;
         warehouse = o.warehouse;
@@ -240,6 +243,20 @@ public class AbstractStockOrder<Item extends StockOrderItem>
      */
     public void setJob(StockJob job) {
         this.job = job;
+    }
+
+    /**
+     * 销售机会
+     *
+     * 仓库单据对应的销售机会
+     */
+    @ManyToOne
+    public Chance getChance() {
+        return chance;
+    }
+
+    public void setChance(Chance chance) {
+        this.chance = chance;
     }
 
     /**

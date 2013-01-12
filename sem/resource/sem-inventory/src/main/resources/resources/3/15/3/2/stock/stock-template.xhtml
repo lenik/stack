@@ -69,7 +69,13 @@
 
                     <h:outputText value="描述：" />
                     <t:panelGroup colspan="3">
-                        <p:inputText label="描述" value="${obj.description}" />
+                        <p:inputText label="描述" value="${obj.description}" style="width:470px;"/>
+                    </t:panelGroup>
+
+                    <h:outputText value="销售机会：" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText id="chance" label="销售机会" value="${obj.chance.subject}" style="width:470px;" readonly="true" />
+                        <p:commandButton value="..." oncomplete="chooseChanceDialog.show()" />
                     </t:panelGroup>
 
                     <h:outputText value="对应公司或人员：" styleClass="e-link" onclick="${obj.org.clickAction}" />
@@ -160,8 +166,9 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="c_party" target="${obj.org}" update=":editDialog:form" />
-        <sem:chooseOrgUnitDialog id="c_orgunit" target="${obj.orgUnit}" update=":editDialog:form" />
+        <sem:choosePartyDialog id="c_party" target="${obj.org}" update=":editDialog:form:party" />
+        <sem:chooseChanceDialog id="c_chance" target="${obj.chance}" update=":editDialog:form:chance" />
+        <sem:chooseOrgUnitDialog id="c_orgunit" target="${obj.orgUnit}" update=":editDialog:form:orgUnit" />
         <sem:chooseStockLocationDialog id="c_location" target="${itemObj.location}"
             update=":itemsEditView:editForm:body" />
         <sem:chooseMaterialDialog id="c_material" target="${itemObj.material}" update=":itemsEditView:editForm:body" />

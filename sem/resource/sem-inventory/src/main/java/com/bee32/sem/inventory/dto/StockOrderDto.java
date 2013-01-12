@@ -5,6 +5,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.dto.AccountTicketDto;
+import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.inventory.entity.AbstractStockItemList;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -27,6 +28,7 @@ public class StockOrderDto
     StockOrderSubject subject;
     StockJobDto<?> job;
 
+    ChanceDto chance;
     PartyDto org;
     OrgUnitDto orgUnit;
     StockWarehouseDto warehouse;
@@ -67,6 +69,7 @@ public class StockOrderDto
         StockJob stockJob = source.getJob();
         job = mref(stockJobDtoClass, stockJob);
 
+        chance = mref(ChanceDto.class, source.getChance());
         org = mref(PartyDto.class, source.getOrg());
         orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
@@ -82,6 +85,7 @@ public class StockOrderDto
         merge(target, "spec", spec);
         target.setSubject(subject);
         merge(target, "job", job);
+        merge(target, "chance", chance);
         merge(target, "org", org);
         merge(target, "orgUnit", orgUnit);
         merge(target, "warehouse", warehouse);
@@ -134,6 +138,14 @@ public class StockOrderDto
 
     public void setJob(StockJobDto<?> job) {
         this.job = job;
+    }
+
+    public ChanceDto getChance() {
+        return chance;
+    }
+
+    public void setChance(ChanceDto chance) {
+        this.chance = chance;
     }
 
     public PartyDto getOrg() {
