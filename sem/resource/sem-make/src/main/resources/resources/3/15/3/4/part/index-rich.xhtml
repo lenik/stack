@@ -85,7 +85,7 @@
                     </t:panelGroup>
 
                     <h:outputText value="物料" styleClass="e-link" onclick="#{obj.target.clickAction}"/>
-                    <t:panelGroup colspan="3">
+                    <t:panelGroup>
                         <p:inputText id="material" value="#{obj.targetPattern}"/>
                         <p:commandButton
                             title="选择生成的物料" value="..."
@@ -97,6 +97,8 @@
                             <f:setPropertyActionListener target="#{chooseMaterialDialogBean.pattern}" value="#{obj.targetPattern}" />
                         </p:commandButton>
                     </t:panelGroup>
+                    <h:outputText value="物料规格"/>
+                    <h:outputText id="materialModelSpec" value="#{obj.target.modelSpec}"/>
 
                     <h:outputLabel for="validDateFrom" value="生效日期" />
                     <p:calendar id="validDateFrom" pattern="yyyy-MM-dd" value="#{obj.validDateFrom}"
@@ -174,9 +176,9 @@
 
     <ui:define name="dialogs">
         <sem:chooseMaterialDialog id="c_material" header="选择产品对应的物料" var="chooseTargetDialog"
-            target="#{obj.target}" update=":editDialog:form:tv:material" />
+            target="#{obj.target}" update=":editDialog:form:tv:material :editDialog:form:tv:materialModelSpec" />
         <sem:chooseMaterialDialog id="c_itemMaterial" header="选择组件对应的物料" var="chooseItemMaterialDialog"
-            target="#{bean.partItemMaterial}" update=":childrenEditView:editForm:material" />
+            target="#{bean.partItemMaterial}" update=":childrenEditView:editForm:material :childrenEditView:editForm:materialModelSpec" />
         <sem:chooseMakeStepNameDialog id="c_makeStepName" header="选择标准工艺" var="chooseMakeStepNameDialog"
             target="#{stepObj.stepName}" update=":stepsView:editForm:stepEditTab:makeStepName" />
         <sem:chooseMaterialDialog id="c_stepInput" header="选择材料" var="chooseStepInputMaterialDialog"
@@ -201,8 +203,9 @@
                         <f:setPropertyActionListener target="#{chooseMaterialDialogBean.pattern}" value="#{item.anyPattern}" />
                     </p:commandButton>
                 </t:panelGroup>
-                <h:outputLabel for="valid" value="是否有效" />
-                <p:selectBooleanCheckbox id="valid" value="#{item.valid}" label="是否有效" />
+                <h:outputText value="物料规格"/>
+                <h:outputText id="materialModelSpec" value="#{item.anyMaterial.modelSpec}"/>
+
 
                 <h:outputLabel for="validDateFrom" value="生效日期" />
                 <p:calendar id="validDateFrom" pattern="yyyy-MM-dd" value="#{item.validDateFrom}" navigator="true"
@@ -212,11 +215,11 @@
                     locale="zh_CN" showOn="button" label="失效日期" />
 
                 <h:outputLabel for="quantity" value="数量" />
-                <t:panelGroup colspan="3">
-                    <p:inputText id="quantity" value="#{item.quantity}" label="数量" >
-                        <f:convertNumber pattern="#0.00" />
-                    </p:inputText>
-                </t:panelGroup>
+                <p:inputText id="quantity" value="#{item.quantity}" label="数量" >
+                    <f:convertNumber pattern="#0.00" />
+                </p:inputText>
+                <h:outputLabel for="valid" value="是否有效" />
+                <p:selectBooleanCheckbox id="valid" value="#{item.valid}" label="是否有效" />
 
                 <h:outputLabel for="description" value="描述" />
                 <t:panelGroup colspan="3">

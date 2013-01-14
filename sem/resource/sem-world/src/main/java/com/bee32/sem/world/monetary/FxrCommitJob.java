@@ -89,7 +89,7 @@ public class FxrCommitJob
         triggerDataMap.put(INTERVAL_KEY, getInterval());
         trigger.setJobDataMap(triggerDataMap);
 
-        sched.rescheduleJob(triggerKey, trigger);
+        // sched.rescheduleJob(triggerKey, trigger);
     }
 
     protected FxrTable downloadAndCommit()
