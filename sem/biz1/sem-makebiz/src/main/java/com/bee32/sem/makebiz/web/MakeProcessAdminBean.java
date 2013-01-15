@@ -1,6 +1,5 @@
 package com.bee32.sem.makebiz.web;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,20 +18,16 @@ import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 
-import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
-import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.MakeStepNameDto;
 import com.bee32.sem.make.dto.PartDto;
-import com.bee32.sem.make.dto.QCResultParameterDto;
 import com.bee32.sem.makebiz.dto.MakeProcessDto;
 import com.bee32.sem.makebiz.dto.MakeStepDto;
 import com.bee32.sem.makebiz.entity.MakeProcess;
 import com.bee32.sem.makebiz.entity.MakeStep;
-import com.bee32.sem.people.dto.PersonDto;
 
 public class MakeProcessAdminBean extends DataViewBean {
 

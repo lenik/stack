@@ -1,9 +1,10 @@
 package com.bee32.sem.makebiz.web;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.inject.scope.PerRequest;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.util.CommonCriteria;
@@ -14,7 +15,6 @@ import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
-@PerRequest
 @ForEntity(Chance.class)
 public class MakeTaskListAdminBean
         extends SimpleEntityViewBean {
@@ -24,7 +24,10 @@ public class MakeTaskListAdminBean
 
     public MakeTaskListAdminBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
+    }
 
+    @PostConstruct
+    public void init() {
         String orderId = ctx.view.getRequest().getParameter("orderId");
         if(StringUtils.isNotBlank(orderId)) {
             MakeOrder order = ctx.data.getOrFail(MakeOrder.class, Long.parseLong(orderId));
@@ -32,7 +35,6 @@ public class MakeTaskListAdminBean
             addOrderRestriction();
         }
     }
-
 
     /*************************************************************************
      * Section: MBeans
