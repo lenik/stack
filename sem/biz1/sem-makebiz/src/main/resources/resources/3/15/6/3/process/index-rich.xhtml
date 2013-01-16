@@ -5,6 +5,7 @@
 
     <ui:param name="title" value="工艺流转单" />
     <ui:param name="bean" value="#{makeProcessAdminBean}" />
+    <ui:param name="process" value="#{bean.process}" />
     <ui:param name="item" value="#{bean.currStep}" />
 
     <ui:define name="title">
@@ -30,7 +31,25 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:panel id="panel" header="工艺流转单">
+            <p:panel header="工艺流转单">
+                <p:fieldset legend="基本信息" toggleable="true" toggleSpeed="100">
+                    <t:panelGrid columns="4">
+                        <h:outputText value="ID:"/>
+                        <h:outputText value="#{process.id}"/>
+
+                        <h:outputText value="简要:"/>
+                        <h:outputText value="#{process.label}"/>
+
+                        <h:outputText value="产品:"/>
+                        <h:outputText value="#{process.part.target.label}"/>
+
+                        <h:outputText value="规格型号:"/>
+                        <h:outputText value="#{process.part.target.modelSpec}"/>
+                    </t:panelGrid>
+                </p:fieldset>
+
+                <p:panel id="steps">
+                </p:panel>
             </p:panel>
         </h:form>
 

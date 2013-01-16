@@ -28,4 +28,6 @@ public class SEMMakebizMenu
     MenuNode makeProcessListAdmin = entry(MAKEBIZ, 60, "makeProcessListAdmin", __.join("process/list.jsf"));
     MenuNode makeProcessAdmin = entry(MAKEBIZ, 61, "makeProcessAdmin", __.join("process/"));
 
+    MenuNode makeStepItemListAdmin = entry(MAKEBIZ, 70, "makeStepItemListAdmin", __.join("makeStep/list.jsf"));
+
 }

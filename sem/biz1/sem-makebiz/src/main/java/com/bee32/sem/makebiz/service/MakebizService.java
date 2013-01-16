@@ -230,6 +230,8 @@ public class MakebizService
 
 		for(SplitToProcessHolder holder : holders) {
                 MakeProcess process = new MakeProcess();
+                process.setLabel(_taskItem.getTask().getLabel());
+                process.setDescription(_taskItem.getTask().getDescription());
                 process.setTaskItemEven(_taskItem);
                 process.setPart(_part);
                 process.setBatchNumber(holder.getBatchNumber());

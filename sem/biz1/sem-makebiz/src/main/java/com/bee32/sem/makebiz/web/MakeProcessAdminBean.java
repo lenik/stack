@@ -52,7 +52,15 @@ public class MakeProcessAdminBean extends DataViewBean {
 
     }
 
-	private List<UIComponent> getComponentChildren(UIComponent component) {
+    public MakeProcessDto getProcess() {
+        return process;
+    }
+
+    public void setProcess(MakeProcessDto process) {
+        this.process = process;
+    }
+
+    private List<UIComponent> getComponentChildren(UIComponent component) {
         List<UIComponent> componentList = null;
         System.out.println(component.getId());
         if(component.getChildCount() > 0){
@@ -100,7 +108,7 @@ public class MakeProcessAdminBean extends DataViewBean {
 
         //动态生成表格
         FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent panel = context.getViewRoot().findComponent("mainForm:panel");
+        UIComponent panel = context.getViewRoot().findComponent("mainForm:steps");
 
         if (panel.getChildCount() > 0) {
             panel.getChildren().remove(0);
