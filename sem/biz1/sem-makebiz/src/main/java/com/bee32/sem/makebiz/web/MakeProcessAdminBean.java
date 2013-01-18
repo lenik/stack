@@ -1,26 +1,9 @@
 package com.bee32.sem.makebiz.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlPanelGroup;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.MethodExpressionActionListener;
-
-import org.primefaces.component.commandbutton.CommandButton;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.component.panelgrid.PanelGrid;
-
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
+import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.MakeStepNameDto;
 import com.bee32.sem.make.dto.PartDto;
@@ -28,8 +11,23 @@ import com.bee32.sem.makebiz.dto.MakeProcessDto;
 import com.bee32.sem.makebiz.dto.MakeStepDto;
 import com.bee32.sem.makebiz.entity.MakeProcess;
 import com.bee32.sem.makebiz.entity.MakeStep;
+import org.apache.commons.lang.StringUtils;
+import org.primefaces.component.commandlink.CommandLink;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
 
-public class MakeProcessAdminBean extends DataViewBean {
+import javax.annotation.PostConstruct;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlPanelGroup;
+import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MakeProcessAdminBean extends DataViewBean implements ILocationConstants {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,6 +48,15 @@ public class MakeProcessAdminBean extends DataViewBean {
         //初始建一个空的MakeStepDto,为避免程序出错
         currStep = new MakeStepDto().create();
 
+    }
+
+    @PostConstruct
+    public void init() {
+        String id = ctx.view.getRequest().getParameter("id");
+        if(StringUtils.isNotBlank(id)) {
+            MakeProcess _process = ctx.data.getOrFail(MakeProcess.class, Long.parseLong(id));
+            process = DTOs.marshal(MakeProcessDto.class, _process);
+        }
     }
 
     public MakeProcessDto getProcess() {
@@ -139,29 +146,27 @@ public class MakeProcessAdminBean extends DataViewBean {
             for(MakeStepNameDto stepName : stepNames) {
                 MakeStepDto makeStep = table.get(part).get(stepName);
                 if (makeStep != null) {
-                    CommandButton button = new CommandButton();
-                    button.setId("btnFillStep" + makeStep.getId());
-                    button.setValue("...");
-                    button.setUpdate("stepDialogForm:stepEditTab");
+                    //首先建立一个列数为1的panelGrid
+                    PanelGrid stepGrid = new PanelGrid();
+                    stepGrid.setColumns(1);
+                    stepGrid.setRendered(true);
 
-                    MethodExpression methodExpression =
-                            context.getApplication().getExpressionFactory().createMethodExpression(
-                                    context.getELContext(),
-                                    "#{makeProcessAdminBean.fillStep(" + makeStep.getId() + ")}",
-                                    null,
-                                    new Class[] { ActionEvent.class });
+                    HtmlOutputText txtRecordCount = new HtmlOutputText();
+                    txtRecordCount.setValue("记录数:" + makeStep.getItems().size());
+                    txtRecordCount.setRendered(true);
 
-                    button.addActionListener(new MethodExpressionActionListener(methodExpression));
-                    button.setOnclick("waitbox.show();");
-                    button.setOncomplete("waitbox.hide();stepDialog.show();");
+                    stepGrid.getChildren().add(txtRecordCount);
 
+                    CommandLink link = new CommandLink();
+                    link.setId("lnkItem" + makeStep.getId());
+                    link.setValue("明细");
 
-                    //ActionListener listener = new ActionListener();
+                    link.setOnclick("return _open('" + WEB_APP.resolveAbsolute(ctx.view.getRequest()) + "/3/15/6/3/stepItem/list.jsf?stepId=" + makeStep.getId() + "');");
+                    link.setRendered(true);
 
-                    //button.addActionListener(listener);
+                    stepGrid.getChildren().add(link);
 
-                    button.setRendered(true);
-                    grid.getChildren().add(button);
+                    grid.getChildren().add(stepGrid);
                 } else {
                     HtmlOutputText textNa= new HtmlOutputText();
                     textNa.setValue("");

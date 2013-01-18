@@ -1,20 +1,18 @@
 package com.bee32.sem.makebiz.web;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.makebiz.dto.MakeProcessDto;
-import com.bee32.sem.makebiz.dto.MakeTaskDto;
-import com.bee32.sem.makebiz.entity.MakeProcess;
-import com.bee32.sem.makebiz.entity.MakeTask;
+import com.bee32.sem.makebiz.dto.MakeStepDto;
+import com.bee32.sem.makebiz.dto.MakeStepItemDto;
+import com.bee32.sem.makebiz.entity.MakeStep;
+import com.bee32.sem.makebiz.entity.MakeStepItem;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import org.apache.commons.lang.StringUtils;
+
+import javax.annotation.PostConstruct;
 
 @ForEntity(Chance.class)
 public class MakeStepItemListAdminBean
@@ -24,16 +22,16 @@ public class MakeStepItemListAdminBean
 
 
     public MakeStepItemListAdminBean() {
-        super(MakeProcess.class, MakeProcessDto.class, 0);
+        super(MakeStepItem.class, MakeStepItemDto.class, 0);
     }
 
     @PostConstruct
     public void init() {
-        String taskId = ctx.view.getRequest().getParameter("taskId");
-        if(StringUtils.isNotBlank(taskId)) {
-            MakeTask task = ctx.data.getOrFail(MakeTask.class, Long.parseLong(taskId));
-            searchTask = DTOs.marshal(MakeTaskDto.class, task);
-            addTaskRestriction();
+        String stepId = ctx.view.getRequest().getParameter("stepId");
+        if(StringUtils.isNotBlank(stepId)) {
+            MakeStep step = ctx.data.getOrFail(MakeStep.class, Long.parseLong(stepId));
+            searchStep = DTOs.marshal(MakeStepDto.class, step);
+            addStepRestriction();
         }
     }
 
@@ -59,22 +57,21 @@ public class MakeStepItemListAdminBean
         searchPattern = null;
     }
 
-    MakeTaskDto searchTask;
+    MakeStepDto searchStep;
 
-    public MakeTaskDto getSearchTask() {
-        return searchTask;
+    public MakeStepDto getSearchStep() {
+        return searchStep;
     }
 
-    public void setSearchTask(MakeTaskDto searchTask) {
-        this.searchTask = searchTask;
+    public void setSearchStep(MakeStepDto searchStep) {
+        this.searchStep = searchStep;
     }
 
-    public void addTaskRestriction() {
-        if (searchTask != null) {
-            setSearchFragment("task", "生产任务为 " + searchTask.getLabel(), //
-                    new Alias("taskItem", "taskItem"),
-                    new Equals("taskItem.task.id", searchTask.getId()));
-            searchTask = null;
+    public void addStepRestriction() {
+        if (searchStep != null) {
+            setSearchFragment("step", "工艺步骤为 " + searchStep.getLabel(), //
+                    new Equals("parent.id", searchStep.getId()));
+            searchStep = null;
         }
     }
 }
