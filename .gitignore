@@ -57,3 +57,6 @@ SOURCES
 
 /.pomdirs
 RELEASE-NOTES
+
+/.directory
+/icsf/.directory

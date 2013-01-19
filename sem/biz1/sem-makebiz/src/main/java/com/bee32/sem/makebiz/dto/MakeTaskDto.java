@@ -22,6 +22,7 @@ public class MakeTaskDto
     public static final int PLANS = 2;
     // public static final int ITEM_PART_CHILDREN = 0x01000000;
     public static final int ITEM_ATTRIBUTES = 64 | ITEMS;
+    public static final int ITEM_PROCESSES = 128 | ITEMS;
 
     MakeOrderDto order;
     Date deadline;
@@ -42,8 +43,10 @@ public class MakeTaskDto
 
         if (selection.contains(ITEMS)) {
             items = marshalList(MakeTaskItemDto.class, //
-                    selection.translate(ITEM_ATTRIBUTES, MakeTaskItemDto.PART_ATTRIBUTES), //
-                    source.getItems());
+                selection.translate(
+                    ITEM_ATTRIBUTES, MakeTaskItemDto.PART_ATTRIBUTES,
+                    ITEM_PROCESSES, MakeTaskItemDto.PROCESSES), //
+                source.getItems());
         } else
             items = new ArrayList<MakeTaskItemDto>();
 

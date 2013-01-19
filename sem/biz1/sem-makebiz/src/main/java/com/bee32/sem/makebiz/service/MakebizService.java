@@ -258,6 +258,7 @@ public class MakebizService
 
 		step.setParent(process);
 		step.setModel(stepModel);
+            step.setLabel(process.getLabel());
 		//step.setPlanQuantity(quantity);
 
 		if(stepModel.isQualityControlled()) {

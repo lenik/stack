@@ -273,36 +273,4 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
         }
     }
 
-
-    /*************************************************************************
-     * Section: MBeans
-     *************************************************************************/
-//    final ListMBean<PersonDto> operatorsMBean = ListMBean.fromEL(this, //
-//            "currStep.operators", PersonDto.class);
-//
-//    class QCResultContext
-//    implements IEnclosingContext, Serializable {
-//
-//        private static final long serialVersionUID = 1L;
-//
-//        @Override
-//        public Object getEnclosingObject() {
-//            //return currStep.getQcResult();
-//        }
-//    }
-//
-//    final ListMBean<QCResultParameterDto> qcResultParasMBean = ListMBean.fromEL(new QCResultContext(), //
-//            "enclosingObject.parameters", QCResultParameterDto.class);
-//
-//    public ListMBean<PersonDto> getOperatorsMBean() {
-//        return operatorsMBean;
-//    }
-//
-//    public ListMBean<QCResultParameterDto> getQcResultParasMBean() {
-//        return qcResultParasMBean;
-//    }
-
-
-
-
 }
