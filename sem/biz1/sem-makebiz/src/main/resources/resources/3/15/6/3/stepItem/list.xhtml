@@ -20,6 +20,9 @@
         <p:column headerText="简要" >
             <h:outputText value="${entry.label}" />
         </p:column>
+        <p:column headerText="工艺" >
+            <h:outputText value="#{entry.parent.model.stepName.label}" />
+        </p:column>
         <p:column headerText="工艺流转单" >
             <h:outputText value="${entry.parent.parent.label}" />
         </p:column>
@@ -49,10 +52,15 @@
 
     <ui:define name="editDialogContent">
 
-        <p:tabView id="stepEditTab">
+        <p:tabView id="tv">
             <p:tab title="基本信息">
 
                 <t:panelGrid columns="4">
+                    <h:outputText value="简要:" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText value="#{obj.label}" style="width:300px;"/>
+                    </t:panelGroup>
+
                     <h:outputText value="工艺名称:" />
                     <t:panelGroup colspan="3">
                         <h:outputText id="makeStepName" value="#{obj.parent.model.stepName.label}"/>
@@ -77,7 +85,7 @@
                                 locale="zh_CN" showOn="button" label="实际完成时间" />
 
 
-                    <h:outputText value="部门:" styleClass="e-link" onclick="#{item.orgUnit.clickAction}"/>
+                    <h:outputText value="部门:" styleClass="e-link" onclick="#{obj.orgUnit.clickAction}"/>
                     <t:panelGroup>
                         <p:inputText id="orgUnit" label="对应部门" value="#{obj.orgUnit.path}" readonly="true" />
                         <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" />
@@ -89,7 +97,7 @@
             </p:tab>
 
             <p:tab title="操作员">
-                <fr:listView id="operatorIndexView" header="操作员" style="indexPanel"
+                <fr:listView id="operatorIndexView" header="操作员" style="indexPanel" editView=":operatorEditView"
                              picker="choosePersonDialog"
                              mbean="#{bean.operatorsMBean}" nested="true">
                     <f:facet name="columns">
@@ -131,8 +139,25 @@
     <ui:define name="dialogs">
         <sem:choosePersonDialog
                 id="c_person" header="选择要关联的操作员" target="${bean.operatorsMBean.addition}"
-                update=":stepDialogForm:stepEditTab:operatorIndexView:indexForm:body"/>
-        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{item.orgUnit}" update=":stepDialogForm:stepEditTab:orgUnit" />
+                update=":editDialog:form:tv:operatorIndexView:indexForm:body"/>
+        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form:tv:orgUnit" />
+
+        <fr:listView id="operatorEditView" header="操作员" style="editDialog" indexView=":editDialog:form:tv:operatorIndexView"
+                     mbean="#{bean.operatorsMBean}" readonly="#{not bean.editing}">
+            <h:panelGrid columns="2" columnClasses="field-label, field-content">
+                <h:outputLabel for="category" value="操作员：" />
+                <h:panelGroup colspan="3">
+                    <p:inputText id="person" readonly="true" value="#{item.person.displayName}" label="操作员" />
+                    <p:commandButton
+                            value="..."
+                            update=":choosePersonDialog:form"
+                            onclick="waitbox.show()"
+                            oncomplete="waitbox.hide();choosePersonDialog.show()">
+                        <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}" value="true" />
+                    </p:commandButton>
+                </h:panelGroup>
+            </h:panelGrid>
+        </fr:listView>
 
         <fr:listView id="qcResultParaEditView" header="质检结果编辑" style="editDialog"
                      indexView=":stepDialogForm:stepEditTab:qcResultParaIndexView" mbean="#{bean.qcResultParasMBean}">

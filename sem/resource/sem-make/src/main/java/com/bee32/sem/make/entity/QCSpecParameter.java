@@ -14,8 +14,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 质量规范参数定义。
  *
  * <ul>
- * <li>label = 参数名称
- * <li>description = 参数描述
+ * <li>label = 质检内容
+ * <li>value = 标准值
+ * <li>description = 标准描述
  * </ul>
  */
 @Entity

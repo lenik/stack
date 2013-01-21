@@ -77,9 +77,9 @@ public class MakeStepItemListAdminBean
     @Override
     public void showCreateForm() {
         //新建makeStepItem时，设置parent为从工艺流转单上跳转过来时对应的MakeStep
-        ((MakeStepItemDto)getOpenedObject()).setParent(searchStep);
         super.showCreateForm();
-
+        MakeStepItemDto _stepItem = ((MakeStepItemDto)getOpenedObject());
+        _stepItem.setParent(searchStep);
     }
 
     /*************************************************************************
@@ -106,7 +106,6 @@ public class MakeStepItemListAdminBean
         if (searchStep != null) {
             setSearchFragment("step", "工艺步骤为 " + searchStep.getLabel() + (searchStep.getModel().getStepName().getLabel()), //
                     new Equals("parent.id", searchStep.getId()));
-            searchStep = null;
         }
     }
 }

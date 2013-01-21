@@ -45,6 +45,14 @@
 
                         <h:outputText value="规格型号:"/>
                         <p:inputText value="#{process.part.target.modelSpec}" readonly="true"/>
+
+                        <h:outputText value="数量:"/>
+                        <p:inputText value="#{process.quantity}" readonly="true">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:inputText>
+
+                        <t:panelGroup/>
+                        <t:panelGroup/>
                     </t:panelGrid>
                 </p:fieldset>
 
