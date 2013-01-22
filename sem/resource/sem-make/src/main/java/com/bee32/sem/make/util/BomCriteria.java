@@ -82,4 +82,7 @@ public class BomCriteria
 
     }
 
+    public static ICriteriaElement specParamsOf(Long qcSpecId) {
+        return new Equals("parent.id", qcSpecId);
+    }
 }

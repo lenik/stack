@@ -141,6 +141,7 @@
                 id="c_person" header="选择要关联的操作员" target="${bean.operatorsMBean.addition}"
                 update=":editDialog:form:tv:operatorIndexView:indexForm:body"/>
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form:tv:orgUnit" />
+        <sem:chooseQcSpecParameterDialog id="c_qcSpecParameter" target="#{bean.qcResultParasMBean.addition}" update=""/>
 
         <fr:listView id="operatorEditView" header="操作员" style="editDialog" indexView=":editDialog:form:tv:operatorIndexView"
                      mbean="#{bean.operatorsMBean}" readonly="#{not bean.editing}">
@@ -164,7 +165,16 @@
             <t:panelGrid columns="2">
 
                 <h:outputText value="质检内容:" />
-                <h:outputText value="#{item.key.label}" />
+                <t:panelGroup>
+                    <p:inputText id="qcSpecParam" readonly="true" value="#{item.key.label}" label="质检内容" />
+                    <p:commandButton
+                            value="..."
+                            update=":chooseQCSpecParameterDialog:form"
+                            onclick="waitbox.show()"
+                            oncomplete="waitbox.hide();chooseQCSpecParameterDialog.show()">
+                        <f:setPropertyActionListener target="#{chooseQCSpecParameterDialog.qcSpecId}" value="" />
+                    </p:commandButton>
+                </t:panelGroup>
 
                 <h:outputText value="标准值:" />
                 <h:outputText value="#{item.key.value}" />

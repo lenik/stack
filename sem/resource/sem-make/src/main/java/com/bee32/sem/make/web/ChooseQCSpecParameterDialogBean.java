@@ -2,7 +2,9 @@ package com.bee32.sem.make.web;
 
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.ox1.util.CommonCriteria;
+import com.bee32.sem.make.dto.QCSpecDto;
 import com.bee32.sem.make.dto.QCSpecParameterDto;
+import com.bee32.sem.make.entity.QCSpec;
 import com.bee32.sem.make.entity.QCSpecParameter;
 import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.misc.ChooseEntityDialogBean;
@@ -16,11 +18,10 @@ public class ChooseQCSpecParameterDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseQCSpecParameterDialogBean.class);
 
-    String mode;
-
     public ChooseQCSpecParameterDialogBean() {
         super(QCSpecParameter.class, QCSpecParameterDto.class, 0);
     }
+
 
     @Override
     public void addNameOrLabelRestriction() {
@@ -30,11 +31,11 @@ public class ChooseQCSpecParameterDialogBean
         searchPattern = null;
     }
 
-    public String getMode() {
-        return mode;
+    public void setQcSpecRestriction(Long qcSpecId) {
+        if (qcSpecId != null && qcSpecId != -1) {
+            setSearchFragment("qcSpec", "质检标准id为" + qcSpecId, //
+                    BomCriteria.specParamsOf(qcSpecId));
+        }
     }
 
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
 }
