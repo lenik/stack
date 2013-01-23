@@ -1,5 +1,11 @@
 package com.bee32.sem.makebiz.web;
 
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -7,24 +13,21 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.frame.ui.ListMBean;
+import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.QCResultParameterDto;
+import com.bee32.sem.make.web.ChooseQCSpecParameterDialogBean;
 import com.bee32.sem.makebiz.dto.MakeStepDto;
 import com.bee32.sem.makebiz.dto.MakeStepItemDto;
 import com.bee32.sem.makebiz.entity.MakeStep;
 import com.bee32.sem.makebiz.entity.MakeStepItem;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.PersonDto;
-import org.apache.commons.lang.StringUtils;
-
-import javax.annotation.PostConstruct;
-import java.io.Serializable;
 
 @ForEntity(Chance.class)
 public class MakeStepItemListAdminBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
-
 
     public MakeStepItemListAdminBean() {
         super(MakeStepItem.class, MakeStepItemDto.class, MakeStepItemDto.OPERATORS);
@@ -33,13 +36,19 @@ public class MakeStepItemListAdminBean
     @PostConstruct
     public void init() {
         String stepId = ctx.view.getRequest().getParameter("stepId");
-        if(StringUtils.isNotBlank(stepId)) {
+        if (StringUtils.isNotBlank(stepId)) {
             MakeStep step = ctx.data.getOrFail(MakeStep.class, Long.parseLong(stepId));
             searchStep = DTOs.marshal(MakeStepDto.class, step);
             addStepRestriction();
         }
     }
 
+    public void addQcSpecRestriction() {
+        if (!DTOs.isNull(searchStep)) {
+            MakeStepModelDto model = searchStep.getModel();
+            BEAN(ChooseQCSpecParameterDialogBean.class).addQcSpecRestriction(model.getQcSpec().getId());
+        }
+    }
 
     /*************************************************************************
      * Section: MBeans
@@ -48,13 +57,12 @@ public class MakeStepItemListAdminBean
             "openedObject.operators", PersonDto.class);
 
     class QCResultContext
-    implements IEnclosingContext, Serializable {
-
+            implements IEnclosingContext, Serializable {
         private static final long serialVersionUID = 1L;
 
         @Override
         public Object getEnclosingObject() {
-            return ((MakeStepItemDto)getOpenedObject()).getQcResult();
+            return ((MakeStepItemDto) getOpenedObject()).getQcResult();
         }
     }
 
@@ -69,16 +77,15 @@ public class MakeStepItemListAdminBean
         return qcResultParasMBean;
     }
 
-
     /*************************************************************************
      * Section: Persistence
      *************************************************************************/
 
     @Override
     public void showCreateForm() {
-        //新建makeStepItem时，设置parent为从工艺流转单上跳转过来时对应的MakeStep
+        // 新建makeStepItem时，设置parent为从工艺流转单上跳转过来时对应的MakeStep
         super.showCreateForm();
-        MakeStepItemDto _stepItem = ((MakeStepItemDto)getOpenedObject());
+        MakeStepItemDto _stepItem = ((MakeStepItemDto) getOpenedObject());
         _stepItem.setParent(searchStep);
     }
 
@@ -87,8 +94,7 @@ public class MakeStepItemListAdminBean
      *************************************************************************/
     @Override
     public void addNameOrLabelRestriction() {
-        setSearchFragment("name", "名称含有 " + searchPattern,
-                CommonCriteria.labelledWith(searchPattern, true));
+        setSearchFragment("name", "名称含有 " + searchPattern, CommonCriteria.labelledWith(searchPattern, true));
         searchPattern = null;
     }
 
@@ -104,7 +110,8 @@ public class MakeStepItemListAdminBean
 
     public void addStepRestriction() {
         if (searchStep != null) {
-            setSearchFragment("step", "工艺步骤为 " + searchStep.getLabel() + (searchStep.getModel().getStepName().getLabel()), //
+            setSearchFragment("step",
+                    "工艺步骤为 " + searchStep.getLabel() + (searchStep.getModel().getStepName().getLabel()), //
                     new Equals("parent.id", searchStep.getId()));
         }
     }

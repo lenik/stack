@@ -232,7 +232,7 @@ public class MakeStepItem
      * @return
      */
     @ManyToMany
-    @JoinTable(name = "MakeStepOperator",
+    @JoinTable(name = "MakeStepItemOperator",
     /*            */joinColumns = @JoinColumn(name = "makeStep"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "operator"))
     public List<Person> getOperators() {
@@ -259,6 +259,8 @@ public class MakeStepItem
     }
 
     public void setQcResult(QCResult qcResult) {
+        if (qcResult == null)
+            throw new NullPointerException("qcResult");
         this.qcResult = qcResult;
     }
 

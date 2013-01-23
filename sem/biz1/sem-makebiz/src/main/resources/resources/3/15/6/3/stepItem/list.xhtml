@@ -8,7 +8,6 @@
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
-    <ui:param name="deletable" value="false" />
 
 
     <ui:define name="dataColumns">
@@ -138,10 +137,13 @@
 
     <ui:define name="dialogs">
         <sem:choosePersonDialog
-                id="c_person" header="选择要关联的操作员" target="${bean.operatorsMBean.addition}"
-                update=":editDialog:form:tv:operatorIndexView:indexForm:body"/>
+            id="c_person" header="选择要关联的操作员" target="${bean.operatorsMBean.addition}"
+            update=":editDialog:form:tv:operatorIndexView:indexForm:body"/>
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form:tv:orgUnit" />
-        <sem:chooseQcSpecParameterDialog id="c_qcSpecParameter" target="#{bean.qcResultParasMBean.addition}" update=""/>
+        <sem:chooseQCSpecParameterDialog
+            id="c_qcSpecParameter"
+            target="#{bean.qcResultParasMBean.openedObject.key}"
+            update=":qcResultParaEditView:editForm:qcSpecParam :qcResultParaEditView:editForm:qcSpecParamKey :qcResultParaEditView:editForm:qcSpecParamDescription"/>
 
         <fr:listView id="operatorEditView" header="操作员" style="editDialog" indexView=":editDialog:form:tv:operatorIndexView"
                      mbean="#{bean.operatorsMBean}" readonly="#{not bean.editing}">
@@ -161,26 +163,24 @@
         </fr:listView>
 
         <fr:listView id="qcResultParaEditView" header="质检结果编辑" style="editDialog"
-                     indexView=":stepDialogForm:stepEditTab:qcResultParaIndexView" mbean="#{bean.qcResultParasMBean}">
+                     indexView=":editDialog:form:tv:qcResultParaIndexView" mbean="#{bean.qcResultParasMBean}">
             <t:panelGrid columns="2">
-
                 <h:outputText value="质检内容:" />
                 <t:panelGroup>
                     <p:inputText id="qcSpecParam" readonly="true" value="#{item.key.label}" label="质检内容" />
                     <p:commandButton
                             value="..."
-                            update=":chooseQCSpecParameterDialog:form"
+                            update=":c_qcSpecParameter:form"
                             onclick="waitbox.show()"
-                            oncomplete="waitbox.hide();chooseQCSpecParameterDialog.show()">
-                        <f:setPropertyActionListener target="#{chooseQCSpecParameterDialog.qcSpecId}" value="" />
-                    </p:commandButton>
+                            actionListener="#{bean.addQcSpecRestriction}"
+                            oncomplete="waitbox.hide();chooseQCSpecParameterDialog.show()"/>
                 </t:panelGroup>
 
                 <h:outputText value="标准值:" />
-                <h:outputText value="#{item.key.value}" />
+                <p:inputText id="qcSpecParamKey" readonly="true" value="#{item.key.value}" label="标准值" />
 
                 <h:outputText value="标准描述:" />
-                <h:outputText value="#{item.key.description}" />
+                <p:inputText id="qcSpecParamDescription" readonly="true" value="#{item.key.description}" label="标准描述" />
 
                 <h:outputText value="检测值:" />
                 <p:inputText value="#{item.value}" label="检测值" />

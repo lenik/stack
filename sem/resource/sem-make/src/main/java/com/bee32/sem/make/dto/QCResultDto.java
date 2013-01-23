@@ -1,5 +1,6 @@
 package com.bee32.sem.make.dto;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -26,8 +27,9 @@ public class QCResultDto
     protected void _marshal(QCResult source) {
         if (selection.contains(PARAMETERS))
             parameters = marshalList(QCResultParameterDto.class, source.getParameters());
+        else
+            parameters = Collections.emptyList();
         memo = source.getMemo();
-
     }
 
     @Override
@@ -41,7 +43,6 @@ public class QCResultDto
     @Override
     protected void _parse(TextMap map) throws ParseException {
         throw new NotImplementedException();
-
     }
 
     public List<QCResultParameterDto> getParameters() {

@@ -64,7 +64,7 @@ public class MakeStepItemDto
         else
             operators = Collections.emptyList();
 
-        qcResult = mref(QCResultDto.class, source.getQcResult());
+        qcResult = marshal(QCResultDto.class, source.getQcResult());
     }
 
     @Override

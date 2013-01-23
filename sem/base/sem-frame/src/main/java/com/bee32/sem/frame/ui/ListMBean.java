@@ -225,8 +225,8 @@ public abstract class ListMBean<T>
     public void setAddition(T picked) {
         if (picked == null)
             return; // maybe nullable...?
-        else
-            getList().add(picked);
+        List<T> list = getList();
+        list.add(picked);
     }
 
     public static <T> ListMBean<T> fromEL(Object root, String property, Factory<T> elementFactory) {
