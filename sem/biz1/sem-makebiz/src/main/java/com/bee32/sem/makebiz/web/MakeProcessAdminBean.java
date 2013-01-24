@@ -1,5 +1,20 @@
 package com.bee32.sem.makebiz.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlPanelGroup;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.commandlink.CommandLink;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
+
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
@@ -10,53 +25,41 @@ import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.makebiz.dto.MakeProcessDto;
 import com.bee32.sem.makebiz.dto.MakeStepDto;
 import com.bee32.sem.makebiz.entity.MakeProcess;
-import com.bee32.sem.makebiz.entity.MakeStep;
-import org.apache.commons.lang.StringUtils;
-import org.primefaces.component.commandlink.CommandLink;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.component.panelgrid.PanelGrid;
-
-import javax.annotation.PostConstruct;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlPanelGroup;
-import javax.faces.context.FacesContext;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MakeProcessAdminBean extends DataViewBean implements ILocationConstants {
 
     private static final long serialVersionUID = 1L;
 
-    UIViewRoot viewRoot;
+    Long id;
+    boolean invalidateId = false;
 
     MakeProcessDto process;
 
     int goNumber;
     int count;
 
-
-    MakeStepDto currStep;
-
     public MakeProcessAdminBean() {
         goNumber = 1;
         loadMakeProcess(goNumber);
-
-        //初始建一个空的MakeStepDto,为避免程序出错
-        currStep = new MakeStepDto().create();
-
     }
 
-    @PostConstruct
     public void init() {
-        String id = ctx.view.getRequest().getParameter("id");
-        if(StringUtils.isNotBlank(id)) {
-            MakeProcess _process = ctx.data.getOrFail(MakeProcess.class, Long.parseLong(id));
-            process = DTOs.marshal(MakeProcessDto.class, _process);
+        if (!invalidateId) {
+            id = null;   //如果没有带参数进入页面，则设id为null
+        } else {
+            goNumber = 1;   //如果带参数了，则只显示一个process
         }
+        loadMakeProcess(goNumber);
+        invalidateId = false;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+        invalidateId = true;
     }
 
     public MakeProcessDto getProcess() {
@@ -79,7 +82,8 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
     }
 
     public String getComponentsList(){
-        viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIViewRoot viewRoot = context.getViewRoot();
         for(UIComponent component : viewRoot.getChildren()){
             getComponentChildren(component);
         }
@@ -115,7 +119,7 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
 
         //动态生成表格
         FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent panel = context.getViewRoot().findComponent("mainForm:steps");
+        UIComponent panel = context.getViewRoot().findComponent(":mainForm:steps");
 
         if (panel.getChildCount() > 0) {
             panel.getChildren().remove(0);
@@ -187,15 +191,8 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
         this.goNumber = goNumber;
     }
 
-    public MakeStepDto getCurrStep() {
-        return currStep;
-    }
-
-    public void setCurrStep(MakeStepDto currStep) {
-        this.currStep = currStep;
-    }
-
     public int getCount() {
+        if(id != null) return 1;
         count = DATA(MakeProcess.class).count();
         return count;
     }
@@ -215,7 +212,12 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
         }
 
         process = new MakeProcessDto().create();
-        MakeProcess _process = DATA(MakeProcess.class).getFirst(new Offset(goNumber - 1));
+        MakeProcess _process;
+        if (id != null) {
+            _process = DATA(MakeProcess.class).get(id);
+        } else {
+            _process = DATA(MakeProcess.class).getFirst(new Offset(goNumber - 1));
+        }
         if (_process != null)
             process = DTOs.marshal(MakeProcessDto.class, _process);
 
@@ -256,21 +258,4 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
         goNumber = count + 1;
         loadMakeProcess(goNumber);
     }
-
-    public void fillStep(long stepId) {
-        MakeStep _step = DATA(MakeStep.class).get(stepId);
-
-        currStep = DTOs.marshal(MakeStepDto.class, _step);
-    }
-
-    public void save() {
-        try {
-            MakeStep _step = currStep.unmarshal();
-            DATA(MakeStep.class).saveOrUpdate(_step);
-            uiLogger.info("保存成功");
-        } catch (Exception e) {
-            uiLogger.error("保存出错!", e);
-        }
-    }
-
 }

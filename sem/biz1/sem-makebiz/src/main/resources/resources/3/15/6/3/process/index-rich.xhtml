@@ -3,6 +3,13 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{makeProcessAdminBean.id}" />
+            <f:event type="preRenderView" listener="#{makeProcessAdminBean.init}" />
+        </f:metadata>
+    </ui:define>
+
     <ui:param name="title" value="工艺流转单" />
     <ui:param name="bean" value="#{makeProcessAdminBean}" />
     <ui:param name="process" value="#{bean.process}" />
@@ -17,17 +24,17 @@
             <p:toolbar>
                 <p:toolbarGroup align="left">
                         <p:commandButton value="第一条"
-                            actionListener="#{bean.first}" update="mainForm" />
+                            actionListener="#{bean.first}" update="mainForm" disabled="#{bean.count le 1}"/>
                         <p:commandButton value="上一条"
-                            actionListener="#{bean.previous}" update="mainForm" />
+                            actionListener="#{bean.previous}" update="mainForm" disabled="#{bean.count le 1}"/>
                         <p:commandButton value="下一条"
-                            actionListener="#{bean.next}" update="mainForm" />
+                            actionListener="#{bean.next}" update="mainForm" disabled="#{bean.count le 1}"/>
                         <p:commandButton value="最末条"
-                            actionListener="#{bean.last}" update="mainForm" />
-                        <p:inputText value="#{bean.goNumber}" style="width:30px;" />
+                            actionListener="#{bean.last}" update="mainForm" disabled="#{bean.count le 1}"/>
+                        <p:inputText value="#{bean.goNumber}" style="width:30px;" disabled="#{bean.count le 1}"/>
                         <h:outputText value="/#{bean.count}"/>
                         <p:commandButton value="前往"
-                            actionListener="#{bean.go}" update="mainForm" />
+                            actionListener="#{bean.go}" update="mainForm" disabled="#{bean.count le 1}"/>
                 </p:toolbarGroup>
             </p:toolbar>
 
