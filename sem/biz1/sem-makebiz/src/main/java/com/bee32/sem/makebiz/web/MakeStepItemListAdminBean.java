@@ -2,16 +2,11 @@ package com.bee32.sem.makebiz.web;
 
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.util.CommonCriteria;
-import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.QCResultParameterDto;
@@ -23,24 +18,39 @@ import com.bee32.sem.makebiz.entity.MakeStepItem;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.PersonDto;
 
-@ForEntity(Chance.class)
+@ForEntity(MakeStepItem.class)
 public class MakeStepItemListAdminBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
+    Long stepId;
+    boolean invalidateStepId = false;
+
     public MakeStepItemListAdminBean() {
         super(MakeStepItem.class, MakeStepItemDto.class, MakeStepItemDto.OPERATORS);
     }
 
-    @PostConstruct
     public void init() {
-        String stepId = ctx.view.getRequest().getParameter("stepId");
-        if (StringUtils.isNotBlank(stepId)) {
-            MakeStep step = ctx.data.getOrFail(MakeStep.class, Long.parseLong(stepId));
+        if (!invalidateStepId) {
+            clearSearchFragments();
+            stepId = null;
+        } else {
+            MakeStep step = ctx.data.getOrFail(MakeStep.class, stepId);
             searchStep = DTOs.marshal(MakeStepDto.class, step);
             addStepRestriction();
         }
+        invalidateStepId = false;
+    }
+
+
+    public Long getStepId() {
+        return stepId;
+    }
+
+    public void setStepId(Long stepId) {
+        this.stepId = stepId;
+        invalidateStepId = true;
     }
 
     public void addQcSpecRestriction() {

@@ -1,40 +1,48 @@
 package com.bee32.sem.makebiz.web;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.util.CommonCriteria;
-import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
-@ForEntity(Chance.class)
+@ForEntity(DeliveryNote.class)
 public class DeliveryNoteListAdminBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    Long orderId;
+    boolean invalidateOrderId = false;
 
 
     public DeliveryNoteListAdminBean() {
         super(DeliveryNote.class, DeliveryNoteDto.class, 0);
     }
 
-
-    @PostConstruct
     public void init() {
-        String orderId = ctx.view.getRequest().getParameter("orderId");
-        if(StringUtils.isNotBlank(orderId)) {
-            MakeOrder order = ctx.data.getOrFail(MakeOrder.class, Long.parseLong(orderId));
+        if (!invalidateOrderId) {
+            clearSearchFragments();
+            orderId = null;
+        } else {
+            MakeOrder order = ctx.data.getOrFail(MakeOrder.class, orderId);
             searchOrder = DTOs.marshal(MakeOrderDto.class, order);
             addOrderRestriction();
         }
+        invalidateOrderId = false;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+        invalidateOrderId = true;
     }
 
     /*************************************************************************

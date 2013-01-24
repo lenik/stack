@@ -1,9 +1,5 @@
 package com.bee32.sem.makebiz.web;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -14,27 +10,39 @@ import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
-@ForEntity(Chance.class)
+@ForEntity(MakeOrder.class)
 public class MakeOrderListAdminBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
+    Long chanceId;
+    boolean invalidateChanceId = false;
 
     public MakeOrderListAdminBean() {
         super(MakeOrder.class, MakeOrderDto.class, 0);
     }
 
-    @PostConstruct
     public void init() {
-        String chanceId = ctx.view.getRequest().getParameter("chanceId");
-        if(StringUtils.isNotBlank(chanceId)) {
-            Chance chance = ctx.data.getOrFail(Chance.class, Long.parseLong(chanceId));
+        if (!invalidateChanceId) {
+            clearSearchFragments();
+            chanceId = null;
+        } else {
+            Chance chance = ctx.data.getOrFail(Chance.class, chanceId);
             searchChance = DTOs.marshal(ChanceDto.class, chance);
             addChanceRestriction();
         }
+        invalidateChanceId = false;
     }
 
+    public Long getChanceId() {
+        return chanceId;
+    }
+
+    public void setChanceId(Long chanceId) {
+        this.chanceId = chanceId;
+        invalidateChanceId = true;
+    }
 
     /*************************************************************************
      * Section: MBeans

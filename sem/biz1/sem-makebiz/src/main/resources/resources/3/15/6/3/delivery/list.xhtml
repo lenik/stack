@@ -3,13 +3,19 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:pf="http://bee32.com/plover/faces">
 
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="orderId" value="${deliveryNoteListAdminBean.orderId}" />
+            <f:event type="preRenderView" listener="#{deliveryNoteListAdminBean.init}" />
+        </f:metadata>
+    </ui:define>
+
     <ui:param name="title" value="送货单列表" />
     <ui:param name="bean" value="${deliveryNoteListAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
     <ui:param name="deletable" value="false" />
-
 
     <ui:define name="dataColumns">
         <p:column headerText="时间" sortBy="#{entry.createdDate}">

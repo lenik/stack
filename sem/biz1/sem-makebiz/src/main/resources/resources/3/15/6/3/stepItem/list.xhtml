@@ -3,6 +3,13 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:pf="http://bee32.com/plover/faces">
 
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="stepId" value="${makeStepItemListAdminBean.stepId}" />
+            <f:event type="preRenderView" listener="${makeStepItemListAdminBean.init}" />
+        </f:metadata>
+    </ui:define>
+
     <ui:param name="title" value="生产数据列表" />
     <ui:param name="bean" value="${makeStepItemListAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />

@@ -119,7 +119,8 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
 
         //动态生成表格
         FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent panel = context.getViewRoot().findComponent(":mainForm:steps");
+        UIComponent form = context.getViewRoot().findComponent(":mainForm");
+        UIComponent panel = form.findComponent("steps");
 
         if (panel.getChildCount() > 0) {
             panel.getChildren().remove(0);
