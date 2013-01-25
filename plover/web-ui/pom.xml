@@ -12,7 +12,6 @@
     <packaging>pom</packaging>
     <modules>
         <!--<module>plover-webtest</module>-->
-        <module>plover-zk</module>
     </modules>
     <name>Plover :: Web Ui</name>
 </project>

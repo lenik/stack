@@ -13,12 +13,6 @@
     <modules>
         <module>plover-repr</module>
         <module>plover-restful</module>
-        <module>plover-x2csv</module>
-        <module>plover-x2flex</module>
-        <module>plover-x2html</module>
-        <module>plover-x2mso</module>
-        <module>plover-x2pdf</module>
-        <module>plover-x2xml</module>
     </modules>
     <name>Plover :: Repr</name>
 </project>

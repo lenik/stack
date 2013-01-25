@@ -40,12 +40,6 @@ modeling/
 repr/
     plover-repr         基本表示层
     plover-restful      资源状态表示与集成
-    plover-x2html       HTML 表示
-    plover-x2pdf        PDF 表示
-    plover-x2xml        XML 表示
-    plover-x2csv        CSV 表示
-    plover-x2flex       Flex 表示
-    plover-x2mso        Word/Excel 表示
 
 ui/
     plover-widgets      SWT 控件
@@ -53,6 +47,5 @@ ui/
     plover-chart        图表支持
 
 web-ui/
-    plover-zk           Zk 支持
     # plover-webtest      Web 测试支持
 
