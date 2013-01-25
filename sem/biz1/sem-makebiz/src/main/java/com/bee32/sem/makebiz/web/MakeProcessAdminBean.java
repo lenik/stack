@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGroup;
@@ -40,7 +39,6 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
 
     public MakeProcessAdminBean() {
         goNumber = 1;
-        loadMakeProcess(goNumber);
     }
 
     public void init() {
@@ -70,26 +68,6 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
         this.process = process;
     }
 
-    private List<UIComponent> getComponentChildren(UIComponent component) {
-        List<UIComponent> componentList = null;
-        System.out.println(component.getId());
-        if(component.getChildCount() > 0){
-            for(UIComponent ui : component.getChildren()){
-                componentList = getComponentChildren(ui);
-            }
-        }
-        return componentList;
-    }
-
-    public String getComponentsList(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        UIViewRoot viewRoot = context.getViewRoot();
-        for(UIComponent component : viewRoot.getChildren()){
-            getComponentChildren(component);
-        }
-        return null;
-    }
-
     private void generateTwoDimensionTable() {
         List<PartDto> parts = new ArrayList<PartDto>();
         List<MakeStepNameDto> stepNames = new ArrayList<MakeStepNameDto>();
@@ -117,13 +95,15 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
            }
         }
 
-        //动态生成表格
-        FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent form = context.getViewRoot().findComponent(":mainForm");
-        UIComponent panel = form.findComponent("steps");
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        UIViewRoot root = facesContext.getViewRoot();
+        Panel stepsPanel = (Panel) root.findComponent("mainForm:steps");
+        if (stepsPanel == null)
+            return;
 
-        if (panel.getChildCount() > 0) {
-            panel.getChildren().remove(0);
+        if (stepsPanel.getChildCount() > 0) {
+            //先清空子元素
+            stepsPanel.getChildren().clear();
         }
 
         PanelGrid grid = new PanelGrid();
@@ -181,7 +161,7 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
             }
         }
 
-        ((Panel)panel).getChildren().add(grid);
+        ((Panel)stepsPanel).getChildren().add(grid);
     }
 
     public int getGoNumber() {
