@@ -27,6 +27,11 @@
             <artifactId>plover-indexing</artifactId>
             <version>0.2.114</version>
         </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>5.11</version>
+        </dependency>
     </dependencies>
     <name>SEM :: Process :: Process</name>
 </project>

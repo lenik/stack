@@ -115,6 +115,11 @@ public abstract class Principal
         setLabel(fullName);
     }
 
+    public void setFullName(String firstName, String lastName) {
+        String fullName = (firstName + " " + lastName).trim();
+        setFullName(fullName);
+    }
+
     @Transient
     public String getDisplayName() {
         if (!StringUtils.isEmpty(getLabel()))
