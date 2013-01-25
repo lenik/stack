@@ -11,7 +11,7 @@ import javax.inject.Scope;
 import com.bee32.plover.inject.spring.ScopeName;
 
 /**
- * 值得注意的一点： per-site 并不能取代 &#64;Lazy。
+ * XXX 值得注意的一点： per-site 并不能取代 &#64;Lazy。
  *
  * 但不明白提前获取 per-site 实例的意义何在？
  */

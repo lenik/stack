@@ -3,7 +3,7 @@ package com.bee32.plover.orm.unit;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.inject.spring.ImportUtil;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.servlet.test.C_Wac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
@@ -35,7 +35,7 @@ public class C_ConfigPUnitWac
             throw new IllegalUsageException("@Using isn't defined on " + outerType);
 
         PersistenceUnit unit = UsingUtil.getUsingUnit(outerType);
-        CustomizedSessionFactoryBean.setForceUnit(unit);
+        SiteSessionFactoryBean.setForceUnit(unit);
     }
 
 }

@@ -8,11 +8,11 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.cfg.DBDialect;
 import com.bee32.plover.site.cfg.OptimizationLevel;
-import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
+import com.bee32.plover.thirdparty.hibernate.util.IHibernatePropertyNames;
 
 public class SiteDatabaseConfigurer
         extends AbstractDatabaseConfigurer
-        implements HibernateProperties {
+        implements IHibernatePropertyNames {
 
     @Override
     public void configureHibernateProperties(Properties properties)

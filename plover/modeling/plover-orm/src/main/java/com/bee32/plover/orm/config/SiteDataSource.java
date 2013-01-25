@@ -12,7 +12,6 @@ import com.bee32.plover.site.cfg.DBDialect;
 import com.bee32.plover.site.cfg.OptimizationLevel;
 import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.site.scope.PerSite;
-import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 import com.p6spy.engine.common.P6SpyOptions;
 import com.p6spy.engine.common.PropertiesRefreshListener;
 import com.p6spy.engine.common.PropertiesRefresher;
@@ -21,7 +20,8 @@ import com.p6spy.engine.common.PropertiesRefresher;
 @PerSite
 public class SiteDataSource
         extends BasicDataSource
-        implements HibernateProperties {
+// implements IHibernatePropertyNames //
+{
 
     static Logger logger = LoggerFactory.getLogger(SiteDataSource.class);
 

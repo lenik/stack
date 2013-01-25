@@ -11,14 +11,14 @@ import org.primefaces.webapp.filter.FileUploadFilter;
 
 import com.bee32.plover.faces.ClassResourceResolver;
 import com.bee32.plover.faces.FaceletsConfig;
-import com.bee32.plover.faces.FacesConstants;
+import com.bee32.plover.faces.IFacesParameterNames;
 import com.bee32.plover.servlet.rabbits.RabbitServletContextHandler;
 import com.bee32.plover.servlet.test.C_Wac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 
 public class C_FaceletsWac
         extends C_Wac<FaceletsTestCase>
-        implements FacesConstants {
+        implements IFacesParameterNames {
 
     boolean pushServerEnabled = true;
 

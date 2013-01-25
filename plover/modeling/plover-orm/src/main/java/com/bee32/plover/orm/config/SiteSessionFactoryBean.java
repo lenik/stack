@@ -34,17 +34,17 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteException;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.scope.PerSite;
-import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
+import com.bee32.plover.thirdparty.hibernate.util.IHibernatePropertyNames;
 import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
 
 @Component
 @PerSite
 @ScopeProxy(ScopedProxyMode.INTERFACES)
-public class CustomizedSessionFactoryBean
+public class SiteSessionFactoryBean
         extends LazySessionFactoryBean
-        implements HibernateProperties {
+        implements IHibernatePropertyNames {
 
-    static final Logger logger = LoggerFactory.getLogger(CustomizedSessionFactoryBean.class);
+    static final Logger logger = LoggerFactory.getLogger(SiteSessionFactoryBean.class);
 
     static final Set<IDatabaseConfigurer> configurers;
     static {
@@ -65,13 +65,13 @@ public class CustomizedSessionFactoryBean
     public static void setForceUnit(PersistenceUnit forceUnit) {
         if (forceUnit == null)
             throw new NullPointerException("forceUnit");
-        CustomizedSessionFactoryBean.staticUnit = forceUnit;
+        SiteSessionFactoryBean.staticUnit = forceUnit;
         forceUnit.select();
     }
 
     SiteInstance site;
 
-    public CustomizedSessionFactoryBean()
+    public SiteSessionFactoryBean()
             throws SiteException {
         site = ThreadHttpContext.getSiteInstance();
     }
@@ -107,7 +107,7 @@ public class CustomizedSessionFactoryBean
         this.setHibernateProperties(properties);
 
         // Naming strategy (used to escape the name)
-        String hibernateDialect = (String) properties.get("hibernate.dialect");
+        String hibernateDialect = (String) properties.get(dialectKey);
         this.setNamingStrategy(PloverNamingStrategy.getInstance(hibernateDialect));
 
         // Merge mapping resources

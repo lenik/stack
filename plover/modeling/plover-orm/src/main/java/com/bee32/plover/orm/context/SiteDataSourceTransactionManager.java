@@ -10,17 +10,20 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.site.scope.PerSite;
+
 @Component
 @Named("dataSourceTransactionManager")
+@PerSite
 @Lazy
-public class PloverDataSourceTransactionManager
+public class SiteDataSourceTransactionManager
         extends DataSourceTransactionManager {
 
     private static final long serialVersionUID = 1L;
 
-    static Logger logger = LoggerFactory.getLogger(PloverDataSourceTransactionManager.class);
+    static Logger logger = LoggerFactory.getLogger(SiteDataSourceTransactionManager.class);
 
-    public PloverDataSourceTransactionManager() {
+    public SiteDataSourceTransactionManager() {
         logger.info("Create plover data-source transaction manager");
     }
 

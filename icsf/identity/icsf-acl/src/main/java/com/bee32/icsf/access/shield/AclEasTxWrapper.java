@@ -43,7 +43,7 @@ import com.bee32.icsf.principal.Users;
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.builtin.PloverConf;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
@@ -118,7 +118,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         defaults.put(ACLEntry.class, RWX);
         defaults.put(R_ACE.class, R_X);
 
-        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        PersistenceUnit unit = SiteSessionFactoryBean.getForceUnit();
         for (Class<?> entityType : unit.getClasses()) {
             DefaultPermission _defaultPermission = entityType.getAnnotation(DefaultPermission.class);
             if (_defaultPermission != null) {
@@ -152,7 +152,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         if (imset.contains(adminRoleId))
             return;
 
-        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        PersistenceUnit unit = SiteSessionFactoryBean.getForceUnit();
         Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
         ClassCatalog catalog = invMap.get(entityType);
         if (catalog == null)

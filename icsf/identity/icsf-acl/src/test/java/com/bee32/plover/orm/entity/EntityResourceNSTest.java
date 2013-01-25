@@ -3,14 +3,14 @@ package com.bee32.plover.orm.entity;
 import org.junit.Assert;
 
 import com.bee32.plover.orm.PloverORMUnit;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 
 public class EntityResourceNSTest
         extends Assert {
 
     public static void main(String[] args) {
         PloverORMUnit unit = new PloverORMUnit();
-        CustomizedSessionFactoryBean.setForceUnit(unit);
+        SiteSessionFactoryBean.setForceUnit(unit);
 
         EntityResourceNS ns = new EntityResourceNS();
         for (EntityResource r : ns.getResources()) {

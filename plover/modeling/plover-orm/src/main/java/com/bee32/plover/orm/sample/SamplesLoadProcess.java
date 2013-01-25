@@ -16,7 +16,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.inject.NotAComponent;
 import com.bee32.plover.orm.builtin.IPloverConfManager;
 import com.bee32.plover.orm.builtin.PloverConfDto;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
@@ -43,7 +43,7 @@ public class SamplesLoadProcess
             throw new NullPointerException("queue");
         this.queue = queue;
         this.progress = progress;
-        this.unit = CustomizedSessionFactoryBean.getForceUnit();
+        this.unit = SiteSessionFactoryBean.getForceUnit();
         this.confManager = confManager;
         this.section = confManager.getSection(SamplePackage.SECTION);
     }

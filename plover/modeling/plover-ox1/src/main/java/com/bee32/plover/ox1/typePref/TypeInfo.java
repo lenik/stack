@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 
@@ -52,7 +52,7 @@ public class TypeInfo
     }
 
     public static List<TypeInfo> getEntityTypes(Class<?>... interfaces) {
-        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        PersistenceUnit unit = SiteSessionFactoryBean.getForceUnit();
         Set<Class<?>> classes = unit.getClasses();
         List<TypeInfo> entityTypes = new ArrayList<TypeInfo>(/* classes.size() */);
         for (Class<?> clazz : classes) {

@@ -10,6 +10,9 @@ import javax.inject.Scope;
 
 import com.bee32.plover.inject.spring.ScopeName;
 
+/**
+ * Annotation for HTTP-Session scope.
+ */
 @Scope
 @ScopeName("session")
 @Inherited

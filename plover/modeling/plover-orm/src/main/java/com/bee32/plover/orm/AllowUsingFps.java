@@ -1,6 +1,6 @@
 package com.bee32.plover.orm;
 
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.test.AbstractFps;
@@ -14,7 +14,7 @@ public class AllowUsingFps
 
         logger.debug("Plover-ORM FPS: Force unit to " + usedUnit);
 
-        CustomizedSessionFactoryBean.setForceUnit(usedUnit);
+        SiteSessionFactoryBean.setForceUnit(usedUnit);
     }
 
 }

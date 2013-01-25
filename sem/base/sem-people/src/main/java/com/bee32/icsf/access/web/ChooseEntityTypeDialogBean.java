@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.faces.utils.SelectableList;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.util.EntityDto;
@@ -34,7 +34,7 @@ public class ChooseEntityTypeDialogBean
     public SelectableList<?> getList() {
         List<EntityTypeDescriptor> descriptors;
         descriptors = new ArrayList<EntityTypeDescriptor>();
-        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        PersistenceUnit unit = SiteSessionFactoryBean.getForceUnit();
         for (ClassCatalog catalog : unit.getAllDependencies()) {
             for (Class<?> entityType : catalog.getLocalClasses()) {
                 EntityTypeDescriptor descriptor = new EntityTypeDescriptor(catalog, entityType);

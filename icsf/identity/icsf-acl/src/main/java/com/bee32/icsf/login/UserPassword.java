@@ -19,6 +19,9 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
+/**
+ *
+ */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_password_seq", allocationSize = 1)

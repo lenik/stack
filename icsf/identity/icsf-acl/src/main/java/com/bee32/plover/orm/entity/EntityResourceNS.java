@@ -8,7 +8,7 @@ import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.IResourceScanner;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.plover.arch.util.ClassCatalog;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class EntityResourceNS
@@ -51,7 +51,7 @@ public class EntityResourceNS
             return;
         scanned = true;
 
-        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        PersistenceUnit unit = SiteSessionFactoryBean.getForceUnit();
 
         for (ClassCatalog catalog : unit.getAllDependencies()) {
             String superLocalName = EntityResource.getLocalName(catalog, null);

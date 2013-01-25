@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.html.HtmlTemplate;
 import com.bee32.plover.orm.PloverNamingStrategy;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.site.SimpleServlet;
@@ -40,7 +40,7 @@ public class Ox1SQLServlet
             if (template != null) {
                 pre();
 
-                PersistenceUnit root = CustomizedSessionFactoryBean.getForceUnit();
+                PersistenceUnit root = SiteSessionFactoryBean.getForceUnit();
                 Set<Class<?>> selection = Collections.emptySet();
                 if (unitName == null) {
                     selection = root.getClasses();

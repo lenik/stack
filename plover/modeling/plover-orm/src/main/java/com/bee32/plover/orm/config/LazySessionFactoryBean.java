@@ -16,29 +16,32 @@ public abstract class LazySessionFactoryBean
 
     static Logger logger = LoggerFactory.getLogger(LazySessionFactoryBean.class);
 
+    class LazyConfigureSessionFactory
+            extends LazyInitSessionFactory {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        protected SessionFactory newSessionFactory()
+                throws Exception {
+
+            LazySessionFactoryBean sfb = LazySessionFactoryBean.this;
+
+            logger.debug("Lazy initialize session-factory: " + this);
+            logger.debug("    SFB = " + sfb);
+
+            lazyConfigure();
+
+            return _buildSessionFactory();
+        }
+    }
+
     protected abstract void lazyConfigure();
 
     @Override
     protected SessionFactory buildSessionFactory()
             throws Exception {
-        return new LazyInitSessionFactory() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected SessionFactory newSessionFactory()
-                    throws Exception {
-
-                LazySessionFactoryBean sfb = LazySessionFactoryBean.this;
-
-                logger.debug("Lazy initialize session-factory: " + this);
-                logger.debug("    SFB = " + sfb);
-
-                lazyConfigure();
-
-                return _buildSessionFactory();
-            }
-        };
+        return new LazyConfigureSessionFactory();
     }
 
     private SessionFactory _buildSessionFactory()

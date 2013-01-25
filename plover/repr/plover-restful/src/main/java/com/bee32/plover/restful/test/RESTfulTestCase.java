@@ -7,7 +7,7 @@ import javax.free.IllegalUsageException;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.inject.cref.Import;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.sample.SamplesLoader;
 import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -27,7 +27,7 @@ public abstract class RESTfulTestCase
 
     protected RESTfulTestCase() {
         PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
-        CustomizedSessionFactoryBean.setForceUnit(unit);
+        SiteSessionFactoryBean.setForceUnit(unit);
     }
 
     @Override

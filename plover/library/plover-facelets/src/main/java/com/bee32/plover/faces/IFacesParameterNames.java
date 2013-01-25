@@ -1,6 +1,6 @@
 package com.bee32.plover.faces;
 
-public interface FacesConstants {
+public interface IFacesParameterNames {
 
     // Initialization Parameters
 

@@ -19,7 +19,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
@@ -53,7 +53,7 @@ public class EntityGraphTool {
     boolean built;
 
     public EntityGraphTool() {
-        unit = CustomizedSessionFactoryBean.getForceUnit();
+        unit = SiteSessionFactoryBean.getForceUnit();
         entityGraphMap = new HashMap<Class<?>, EntityGraph>();
     }
 

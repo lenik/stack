@@ -1,6 +1,6 @@
 package com.bee32.plover.thirdparty.hibernate.util;
 
-public interface HibernateProperties {
+public interface IHibernatePropertyNames {
 
     /**
      * <strong>Hibernate JDBC Properties</strong>
