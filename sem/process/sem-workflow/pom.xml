@@ -6,6 +6,22 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>sem-workflow</artifactId>
-    <dependencies/>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-module</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-people</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-process</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
     <name>SEM :: Process :: Workflow</name>
 </project>
