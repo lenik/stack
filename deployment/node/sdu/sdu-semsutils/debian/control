@@ -8,7 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-semsutils
 
 Package: sdu-semsutils
 Architecture: all
-Depends: maven2
+Depends: maven | maven2
 Recommends: bash-enh, vcscmds
 Suggests: sdu-seccajx
 Description: SEMS maintainence utilities
