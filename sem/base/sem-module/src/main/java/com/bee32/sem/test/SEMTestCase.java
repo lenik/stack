@@ -7,11 +7,11 @@ import org.springframework.context.ApplicationContext;
 
 import com.bee32.icsf.login.LoginManager;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.faces.test.FaceletsTestCase;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.RESTfulConfig;
-import com.bee32.plover.zk.test.ZkTestCase;
 
 /**
  * 关于调试配置：
@@ -30,7 +30,7 @@ import com.bee32.plover.zk.test.ZkTestCase;
  */
 @Import(WiredDaoTestCase.class)
 public class SEMTestCase
-        extends ZkTestCase {
+        extends FaceletsTestCase {
 
     protected String PREFIX = RESTfulConfig.preferredPrefix;
 

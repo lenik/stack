@@ -2,9 +2,6 @@ package com.bee32.sem.frame.action;
 
 import javax.faces.event.ActionListener;
 
-import org.apache.commons.collections15.Closure;
-import org.zkoss.zk.ui.event.Event;
-
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.rtx.location.ILocationContext;
 
@@ -14,7 +11,6 @@ public class Action
 
     private boolean enabled = true;
     private ILocationContext target;
-    private Closure<Event> zkCallback;
     private ActionListener actionListener;
 
     public Action() {
@@ -43,15 +39,6 @@ public class Action
 
     public void setTarget(ILocationContext target) {
         this.target = target;
-    }
-
-    @Override
-    public Closure<Event> getZkCallback() {
-        return zkCallback;
-    }
-
-    public void setZkCallback(Closure<Event> zkCallback) {
-        this.zkCallback = zkCallback;
     }
 
     @Override
