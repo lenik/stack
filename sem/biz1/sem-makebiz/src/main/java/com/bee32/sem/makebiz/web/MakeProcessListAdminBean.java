@@ -25,13 +25,16 @@ public class MakeProcessListAdminBean
 
 
     public void init() {
-        String taskIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("taskId");
-        if(taskIdStr == null) {
-            clearSearchFragments();
-        } else {
-            MakeTask task = ctx.data.getOrFail(MakeTask.class, Long.parseLong(taskIdStr));
-            searchTask = DTOs.marshal(MakeTaskDto.class, task);
-            addTaskRestriction();
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!context.isPostback()) {
+            String taskIdStr = context.getExternalContext().getRequestParameterMap().get("taskId");
+            if(taskIdStr == null) {
+                clearSearchFragments();
+            } else {
+                MakeTask task = ctx.data.getOrFail(MakeTask.class, Long.parseLong(taskIdStr));
+                searchTask = DTOs.marshal(MakeTaskDto.class, task);
+                addTaskRestriction();
+            }
         }
     }
 

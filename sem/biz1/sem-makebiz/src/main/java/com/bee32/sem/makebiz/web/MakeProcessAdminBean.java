@@ -41,14 +41,17 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
     }
 
     public void init() {
-        String idStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-        if(idStr == null) {
-            id = null;   //如果没有带参数进入页面，则设id为null
-        } else {
-            goNumber = 1;   //如果带参数了，则只显示一个process
-            id = Long.parseLong(idStr);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!context.isPostback()) {
+            String idStr = context.getExternalContext().getRequestParameterMap().get("id");
+            if(idStr == null) {
+                id = null;   //如果没有带参数进入页面，则设id为null
+            } else {
+                goNumber = 1;   //如果带参数了，则只显示一个process
+                id = Long.parseLong(idStr);
+            }
+            loadMakeProcess(goNumber);
         }
-        loadMakeProcess(goNumber);
     }
 
     public MakeProcessDto getProcess() {

@@ -23,13 +23,16 @@ public class MakeOrderListAdminBean
     }
 
     public void init() {
-        String chanceIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("chanceId");
-        if(chanceIdStr == null) {
-            clearSearchFragments();
-        } else {
-            Chance chance = ctx.data.getOrFail(Chance.class, Long.parseLong(chanceIdStr));
-            searchChance = DTOs.marshal(ChanceDto.class, chance);
-            addChanceRestriction();
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!context.isPostback()) {
+            String chanceIdStr = context.getExternalContext().getRequestParameterMap().get("chanceId");
+            if(chanceIdStr == null) {
+                clearSearchFragments();
+            } else {
+                Chance chance = ctx.data.getOrFail(Chance.class, Long.parseLong(chanceIdStr));
+                searchChance = DTOs.marshal(ChanceDto.class, chance);
+                addChanceRestriction();
+            }
         }
     }
 

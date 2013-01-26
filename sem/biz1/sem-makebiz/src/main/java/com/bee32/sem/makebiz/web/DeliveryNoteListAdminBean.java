@@ -23,13 +23,16 @@ public class DeliveryNoteListAdminBean
     }
 
     public void init() {
-        String orderIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("orderId");
-        if(orderIdStr == null) {
-            clearSearchFragments();
-        } else {
-            MakeOrder order = ctx.data.getOrFail(MakeOrder.class, Long.parseLong(orderIdStr));
-            searchOrder = DTOs.marshal(MakeOrderDto.class, order);
-            addOrderRestriction();
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!context.isPostback()) {
+            String orderIdStr = context.getExternalContext().getRequestParameterMap().get("orderId");
+            if(orderIdStr == null) {
+                clearSearchFragments();
+            } else {
+                MakeOrder order = ctx.data.getOrFail(MakeOrder.class, Long.parseLong(orderIdStr));
+                searchOrder = DTOs.marshal(MakeOrderDto.class, order);
+                addOrderRestriction();
+            }
         }
     }
 

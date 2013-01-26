@@ -31,13 +31,16 @@ public class MakeStepItemListAdminBean
     }
 
     public void init() {
-        String stepIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("stepId");
-        if(stepIdStr == null) {
-            clearSearchFragments();
-        } else {
-            MakeStep step = ctx.data.getOrFail(MakeStep.class, Long.parseLong(stepIdStr));
-            searchStep = DTOs.marshal(MakeStepDto.class, step);
-            addStepRestriction();
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!context.isPostback()) {
+            String stepIdStr = context.getExternalContext().getRequestParameterMap().get("stepId");
+            if(stepIdStr == null) {
+                clearSearchFragments();
+            } else {
+                MakeStep step = ctx.data.getOrFail(MakeStep.class, Long.parseLong(stepIdStr));
+                searchStep = DTOs.marshal(MakeStepDto.class, step);
+                addStepRestriction();
+            }
         }
     }
 
