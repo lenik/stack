@@ -5,7 +5,6 @@
 
     <ui:define name="metadata">
         <f:metadata>
-            <f:viewParam name="stepId" value="${makeStepItemListAdminBean.stepId}" />
             <f:event type="preRenderView" listener="${makeStepItemListAdminBean.init}" />
         </f:metadata>
     </ui:define>
@@ -198,25 +197,4 @@
             </t:panelGrid>
         </fr:listView>
     </ui:define>
-
-    <ui:define name="searchPanels.1">
-        <ui:insert name="searchPanel.step">
-            <p:panel header="按工艺步骤搜索" toggleable="true">
-                <div align="center">
-                    <p:inputText id="step" readonly="true" value="${bean.searchStep.model.stepName.label}" />
-                    <p:commandButton id="chooseStep" value="..." onclick="chooseTaskToSearchDialog.show()" />
-                    <p:commandButton id="filterTask" value="限定工艺步骤" actionListener="${bean.addStepRestriction}"
-                        update="@form, ${_searchUpdates}" />
-                </div>
-            </p:panel>
-        </ui:insert>
-    </ui:define>
-
-    <ui:define name="searchSupport.1">
-        <sem:chooseMakeTaskDialog id="c_searchTask" var="chooseTaskToSearchDialog" target="${bean.searchTask}"
-            update=":searchForm" />
-    </ui:define>
-
-
-
 </ui:composition>

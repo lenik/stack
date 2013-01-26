@@ -30,7 +30,6 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
     private static final long serialVersionUID = 1L;
 
     Long id;
-    boolean invalidateId = false;
 
     MakeProcessDto process;
 
@@ -42,22 +41,14 @@ public class MakeProcessAdminBean extends DataViewBean implements ILocationConst
     }
 
     public void init() {
-        if (!invalidateId) {
+        String idStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+        if(idStr == null) {
             id = null;   //如果没有带参数进入页面，则设id为null
         } else {
             goNumber = 1;   //如果带参数了，则只显示一个process
+            id = Long.parseLong(idStr);
         }
         loadMakeProcess(goNumber);
-        invalidateId = false;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-        invalidateId = true;
     }
 
     public MakeProcessDto getProcess() {

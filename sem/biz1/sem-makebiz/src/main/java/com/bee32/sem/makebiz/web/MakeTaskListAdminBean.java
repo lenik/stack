@@ -1,5 +1,7 @@
 package com.bee32.sem.makebiz.web;
 
+import javax.faces.context.FacesContext;
+
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -16,35 +18,21 @@ public class MakeTaskListAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    Long orderId;
-    boolean invalidateOrderId = false;
-
-
     public MakeTaskListAdminBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
     }
 
     public void init() {
-        if (!invalidateOrderId) {
+        String orderIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("orderId");
+        if(orderIdStr == null) {
             clearSearchFragments();
-            orderId = null;
         } else {
-            MakeOrder order = ctx.data.getOrFail(MakeOrder.class, orderId);
+            MakeOrder order = ctx.data.getOrFail(MakeOrder.class, Long.parseLong(orderIdStr));
             searchOrder = DTOs.marshal(MakeOrderDto.class, order);
             addOrderRestriction();
         }
-        invalidateOrderId = false;
-    }
 
-    public Long getOrderId() {
-        return orderId;
     }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-        invalidateOrderId = true;
-    }
-
 
     /*************************************************************************
      * Section: MBeans

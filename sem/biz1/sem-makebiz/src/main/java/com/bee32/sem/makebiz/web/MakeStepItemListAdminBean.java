@@ -2,6 +2,8 @@ package com.bee32.sem.makebiz.web;
 
 import java.io.Serializable;
 
+import javax.faces.context.FacesContext;
+
 import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -24,33 +26,19 @@ public class MakeStepItemListAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    Long stepId;
-    boolean invalidateStepId = false;
-
     public MakeStepItemListAdminBean() {
         super(MakeStepItem.class, MakeStepItemDto.class, MakeStepItemDto.OPERATORS);
     }
 
     public void init() {
-        if (!invalidateStepId) {
+        String stepIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("stepId");
+        if(stepIdStr == null) {
             clearSearchFragments();
-            stepId = null;
         } else {
-            MakeStep step = ctx.data.getOrFail(MakeStep.class, stepId);
+            MakeStep step = ctx.data.getOrFail(MakeStep.class, Long.parseLong(stepIdStr));
             searchStep = DTOs.marshal(MakeStepDto.class, step);
             addStepRestriction();
         }
-        invalidateStepId = false;
-    }
-
-
-    public Long getStepId() {
-        return stepId;
-    }
-
-    public void setStepId(Long stepId) {
-        this.stepId = stepId;
-        invalidateStepId = true;
     }
 
     public void addQcSpecRestriction() {
@@ -121,7 +109,7 @@ public class MakeStepItemListAdminBean
     public void addStepRestriction() {
         if (searchStep != null) {
             setSearchFragment("step",
-                    "工艺步骤为 " + searchStep.getLabel() + (searchStep.getModel().getStepName().getLabel()), //
+                    "工艺步骤为  " + (searchStep.getModel().getStepName().getLabel()), //
                     new Equals("parent.id", searchStep.getId()));
         }
     }

@@ -1,5 +1,7 @@
 package com.bee32.sem.makebiz.web;
 
+import javax.faces.context.FacesContext;
+
 import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -16,8 +18,6 @@ public class MakeProcessListAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    Long taskId;
-    boolean invalidateTaskId = false;
 
     public MakeProcessListAdminBean() {
         super(MakeProcess.class, MakeProcessDto.class, 0);
@@ -25,25 +25,16 @@ public class MakeProcessListAdminBean
 
 
     public void init() {
-        if (!invalidateTaskId) {
+        String taskIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("taskId");
+        if(taskIdStr == null) {
             clearSearchFragments();
-            taskId = null;
         } else {
-            MakeTask task = ctx.data.getOrFail(MakeTask.class, taskId);
+            MakeTask task = ctx.data.getOrFail(MakeTask.class, Long.parseLong(taskIdStr));
             searchTask = DTOs.marshal(MakeTaskDto.class, task);
             addTaskRestriction();
         }
-        invalidateTaskId = false;
     }
 
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-        invalidateTaskId = true;
-    }
 
     /*************************************************************************
      * Section: MBeans

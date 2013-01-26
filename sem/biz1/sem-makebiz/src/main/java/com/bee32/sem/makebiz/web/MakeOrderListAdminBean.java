@@ -1,5 +1,7 @@
 package com.bee32.sem.makebiz.web;
 
+import javax.faces.context.FacesContext;
+
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -16,33 +18,21 @@ public class MakeOrderListAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    Long chanceId;
-    boolean invalidateChanceId = false;
-
     public MakeOrderListAdminBean() {
         super(MakeOrder.class, MakeOrderDto.class, 0);
     }
 
     public void init() {
-        if (!invalidateChanceId) {
+        String chanceIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("chanceId");
+        if(chanceIdStr == null) {
             clearSearchFragments();
-            chanceId = null;
         } else {
-            Chance chance = ctx.data.getOrFail(Chance.class, chanceId);
+            Chance chance = ctx.data.getOrFail(Chance.class, Long.parseLong(chanceIdStr));
             searchChance = DTOs.marshal(ChanceDto.class, chance);
             addChanceRestriction();
         }
-        invalidateChanceId = false;
     }
 
-    public Long getChanceId() {
-        return chanceId;
-    }
-
-    public void setChanceId(Long chanceId) {
-        this.chanceId = chanceId;
-        invalidateChanceId = true;
-    }
 
     /*************************************************************************
      * Section: MBeans
