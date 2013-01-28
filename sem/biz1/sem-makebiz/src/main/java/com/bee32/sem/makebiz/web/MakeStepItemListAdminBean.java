@@ -38,7 +38,7 @@ public class MakeStepItemListAdminBean
                 clearSearchFragments();
             } else {
                 MakeStep step = ctx.data.getOrFail(MakeStep.class, Long.parseLong(stepIdStr));
-                searchStep = DTOs.marshal(MakeStepDto.class, step);
+                searchStep = DTOs.mref(MakeStepDto.class, step);
                 addStepRestriction();
             }
         }
@@ -83,11 +83,11 @@ public class MakeStepItemListAdminBean
      *************************************************************************/
 
     @Override
-    public void showCreateForm() {
+    protected Object create() {
+        MakeStepItemDto newItem = (MakeStepItemDto) super.create();
         // 新建makeStepItem时，设置parent为从工艺流转单上跳转过来时对应的MakeStep
-        super.showCreateForm();
-        MakeStepItemDto _stepItem = ((MakeStepItemDto) getOpenedObject());
-        _stepItem.setParent(searchStep);
+        newItem.setParent(searchStep);
+        return newItem;
     }
 
     /*************************************************************************
