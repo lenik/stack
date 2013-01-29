@@ -24,7 +24,9 @@ import javax.servlet.http.HttpServlet;
 
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.testing.HttpTester;
+import org.eclipse.jetty.util.LazyList;
 import org.junit.After;
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -173,18 +175,30 @@ public class ServletTestLibrary
         welcomeList.add("index.html");
     }
 
-    public ServletHolder addServlet(String servletName, Class<? extends HttpServlet> servlet, String pathSpec) {
+    public ServletHolder addServlet(String servletName, Class<? extends HttpServlet> servletClass, String... pathSpecs) {
         if (servletName == null)
             throw new NullPointerException("servletName");
 
         RabbitServletContextHandler servletManager = getServletContextHandler();
         ServletHandler servletHandler = servletManager.getServletHandler();
 
-        ServletHolder holder = new ServletHolder(servlet);
+        ServletHolder holder = new ServletHolder(servletClass);
 
         holder.setName(servletName);
 
-        servletHandler.addServletWithMapping(holder, pathSpec);
+        String firstPathSpec = null;
+        if (pathSpecs.length != 0)
+            firstPathSpec = pathSpecs[0];
+        servletHandler.addServletWithMapping(holder, firstPathSpec);
+
+        for (int i = 1; i < pathSpecs.length; i++) {
+            ServletMapping mapping = new ServletMapping();
+            mapping.setServletName(servletName);
+            mapping.setPathSpec(pathSpecs[i]);
+            servletHandler.setServletMappings((ServletMapping[]) LazyList.addToArray(
+                    servletHandler.getServletMappings(), mapping, ServletMapping.class));
+        }
+
         return holder;
     }
 
@@ -375,23 +389,22 @@ public class ServletTestLibrary
         }
 
         try {
-		Desktop.getDesktop().browse(uri);
+            Desktop.getDesktop().browse(uri);
         } catch (UnsupportedOperationException e) {
-			String[] browsers = { "gnome-open", "google-chrome", "firefox", "iexplore" };
-			String browser = null;
-			b: for (String br : browsers) {
-				for (String dir : System.getenv("PATH").split(
-				        SystemProperties.getPathSeparator())) {
-					if (new File(dir, br).canExecute()) {
-						browser = br;
-						break b;
-					}
-				}
-			}
-			if (browser == null)
-				throw new RuntimeException("No available browser.");
-			logger.debug("Launch browser: " + browser + " for " + uri);
-			Runtime.getRuntime().exec( new String[] {browser, uri.toString()}, null);
+            String[] browsers = { "gnome-open", "google-chrome", "firefox", "iexplore" };
+            String browser = null;
+            b: for (String br : browsers) {
+                for (String dir : System.getenv("PATH").split(SystemProperties.getPathSeparator())) {
+                    if (new File(dir, br).canExecute()) {
+                        browser = br;
+                        break b;
+                    }
+                }
+            }
+            if (browser == null)
+                throw new RuntimeException("No available browser.");
+            logger.debug("Launch browser: " + browser + " for " + uri);
+            Runtime.getRuntime().exec(new String[] { browser, uri.toString() }, null);
         }
 
         return url;

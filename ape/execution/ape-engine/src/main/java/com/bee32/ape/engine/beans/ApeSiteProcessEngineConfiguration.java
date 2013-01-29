@@ -1,8 +1,12 @@
 package com.bee32.ape.engine.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
+import org.activiti.engine.impl.form.AbstractFormType;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.ape.engine.base.IAppCtxAware;
@@ -30,6 +34,10 @@ public class ApeSiteProcessEngineConfiguration
         // setTransactionManager();
         setDatabaseSchemaUpdate("true");
         setJobExecutorActivate(true);
+
+        List<AbstractFormType> customFormTypes = new ArrayList<>();
+        // customFormTypes.add(UserFormType());
+        setCustomFormTypes(customFormTypes);
     }
 
 }
