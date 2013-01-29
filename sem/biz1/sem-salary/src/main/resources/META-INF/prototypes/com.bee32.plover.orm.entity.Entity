@@ -1,6 +1,6 @@
-com.bee32.sem.attendance.entity.Attendance
+com.bee32.sem.attendance.entity.AttendanceMRecord
 com.bee32.sem.salary.entity.EventBonus
+com.bee32.sem.salary.entity.MonthSalary
 com.bee32.sem.salary.entity.Salary
 com.bee32.sem.salary.entity.SalaryElement
 com.bee32.sem.salary.entity.SalaryElementDef
-com.bee32.sem.salary.entity.MonthSalary
