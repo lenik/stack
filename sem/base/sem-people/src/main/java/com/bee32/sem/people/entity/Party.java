@@ -70,6 +70,7 @@ public abstract class Party
     boolean customer = true;
     boolean supplier;
     boolean competitor;
+    boolean other;
 
     Date birthday;
     String interests;
@@ -107,6 +108,7 @@ public abstract class Party
         customer = o.customer;
         supplier = o.supplier;
         competitor = o.competitor;
+        other = o.other;
         birthday = o.birthday;
         interests = o.interests;
         bank = o.bank;
@@ -268,6 +270,22 @@ public abstract class Party
 
     public void setCompetitor(boolean competitor) {
         this.competitor = competitor;
+    }
+
+
+    /**
+     * 其他
+     *
+     * 属性不为雇员，客户，供应商，竞争对手时，可以设置为其他
+     */
+    @DefaultValue("false")
+    @Column(nullable = false)
+    public boolean isOther() {
+        return other;
+    }
+
+    public void setOther(boolean other) {
+        this.other = other;
     }
 
     /**

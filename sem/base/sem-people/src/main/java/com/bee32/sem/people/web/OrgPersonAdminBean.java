@@ -52,6 +52,7 @@ public class OrgPersonAdminBean
     boolean customer;
     boolean supplier;
     boolean competitor;
+    boolean other;
 
     List<ContactHolder> contactHolders = new ArrayList<ContactHolder>();
 
@@ -165,6 +166,14 @@ public class OrgPersonAdminBean
 
     public void setCompetitor(boolean competitor) {
         this.competitor = competitor;
+    }
+
+    public boolean isOther() {
+        return other;
+    }
+
+    public void setOther(boolean other) {
+        this.other = other;
     }
 
     public List<ContactHolder> getContactHolders() {
@@ -287,6 +296,8 @@ public class OrgPersonAdminBean
         person.setSupplier(supplier);
         org.setCompetitor(competitor);
         person.setCompetitor(competitor);
+        org.setOther(other);
+        person.setOther(other);
 
         person.setSex(sex);
         person.setMemo(personMemo);

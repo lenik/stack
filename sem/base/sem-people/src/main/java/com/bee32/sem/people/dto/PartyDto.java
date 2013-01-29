@@ -46,6 +46,7 @@ public class PartyDto
     boolean customer = true;
     boolean supplier;
     boolean competitor;
+    boolean other;
 
     Date birthday;
     String interests;
@@ -83,6 +84,7 @@ public class PartyDto
         customer = source.isCustomer();
         supplier = source.isSupplier();
         competitor = source.isCompetitor();
+        other = source.isOther();
 
         birthday = source.getBirthday();
         interests = source.getInterests();
@@ -124,6 +126,7 @@ public class PartyDto
         target.setCustomer(customer);
         target.setSupplier(supplier);
         target.setCompetitor(competitor);
+        target.setOther(other);
 
         target.setBirthday(birthday);
         target.setInterests(interests);
@@ -205,6 +208,8 @@ public class PartyDto
             sb.append("客");
         if (competitor)
             sb.append("竞");
+        if (other)
+            sb.append("其");
         return sb.toString();
     }
 
@@ -218,6 +223,8 @@ public class PartyDto
             sb.append("，客户");
         if (competitor)
             sb.append("，竞争对手");
+        if (other)
+            sb.append("，其他");
         if (sb.length() != 0)
             sb.delete(0, 1);
         return sb.toString();
@@ -253,6 +260,14 @@ public class PartyDto
 
     public void setCompetitor(boolean competitor) {
         this.competitor = competitor;
+    }
+
+    public boolean isOther() {
+        return other;
+    }
+
+    public void setOther(boolean other) {
+        this.other = other;
     }
 
     @Past

@@ -126,9 +126,9 @@ public abstract class AbstractPartyAdminBean
             throws Exception {
         for (Object dto : dtos) {
             PartyDto party = (PartyDto) dto;
-            boolean any = party.isCustomer() || party.isSupplier() || party.isEmployee() || party.isCompetitor();
+            boolean any = party.isCustomer() || party.isSupplier() || party.isEmployee() || party.isCompetitor() || party.isOther();
             if (!any) {
-                uiLogger.error("没有指定类型：[客户/供应商/雇员/竞争对手]必须选一个。");
+                uiLogger.error("没有指定类型：[客户/供应商/雇员/竞争对手/其他]必须选一个。");
                 return false;
             }
         }

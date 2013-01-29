@@ -44,7 +44,7 @@
 
                     <h:outputText value="属性" />
                     <t:panelGroup colspan="3">
-                        <t:panelGrid columns="4">
+                        <t:panelGrid columns="5">
                             <t:panelGrid columns="2">
                                 <p:selectBooleanCheckbox value="#{obj.employee}" label="雇员" />
                                 <h:outputText value="雇员" />
@@ -60,6 +60,10 @@
                             <t:panelGrid columns="2">
                                 <p:selectBooleanCheckbox value="#{obj.competitor}" label="竞争对手" />
                                 <h:outputText value="竞争对手" />
+                            </t:panelGrid>
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.other}" label="其他" />
+                                <h:outputText value="其他" />
                             </t:panelGrid>
                         </t:panelGrid>
                     </t:panelGroup>

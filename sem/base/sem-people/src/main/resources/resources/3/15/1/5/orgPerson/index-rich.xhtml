@@ -100,12 +100,12 @@
 
         <h:form id="editForm">
             <p:dialog header="新增" widgetVar="editDialog" modal="true"
-                height="500" width="640">
+                height="500" width="700">
                 <t:panelGrid id="editPanel" columns="4">
                     <h:outputText value="公司名称" />
                     <p:inputText value="#{orgPersonAdminBean.orgName}"/>
                     <h:outputText value="属性" />
-                    <t:panelGrid columns="4">
+                    <t:panelGrid columns="5">
                         <t:panelGrid columns="2">
                             <p:selectBooleanCheckbox value="#{orgPersonAdminBean.employee}" label="雇员" />
                             <h:outputText value="雇员" />
@@ -121,6 +121,10 @@
                         <t:panelGrid columns="2">
                             <p:selectBooleanCheckbox value="#{orgPersonAdminBean.competitor}" label="竞争对手" />
                             <h:outputText value="竞争对手" />
+                        </t:panelGrid>
+                        <t:panelGrid columns="2">
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.other}" label="其他" />
+                            <h:outputText value="其他" />
                         </t:panelGrid>
                     </t:panelGrid>
 
