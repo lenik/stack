@@ -21,7 +21,6 @@ import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.PloverOx1Module;
 import com.bee32.plover.ox1.dict.DictEntity;
 import com.bee32.plover.ox1.dict.NameDict;
-import com.bee32.plover.ox1.dict.NameDictDto;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.rtx.location.Location;
@@ -170,17 +169,25 @@ public abstract class MenuComposite
         return dictIndex;
     }
 
-    protected static Location simpleDictIndex(String title, Class<? extends NameDict> entityClass,
-            Class<? extends NameDictDto<?>> dtoClass) {
+    protected static Location simpleDictIndex(String title, Class<? extends NameDict> entityClass) {
         String entity = ABBR.abbr(entityClass);
-        String dto = ABBR.abbr(dtoClass);
         try {
             entity = URLEncoder.encode(entity, "UTF-8");
-            dto = URLEncoder.encode(dto, "UTF-8");
         } catch (UnsupportedEncodingException e1) {
             throw new RuntimeException(e1.getMessage(), e1);
         }
-        Location index = DICT.join("?title=" + title + "&entityClass=" + entity + "&dtoClass=" + dto);
+        Location index = DICT.join("?title=" + title + "&entityClass=" + entity);
+        return index;
+    }
+
+    protected static Location customDictIndex(Location prefix, String title, Class<? extends NameDict> entityClass) {
+        String entity = ABBR.abbr(entityClass);
+        try {
+            entity = URLEncoder.encode(entity, "UTF-8");
+        } catch (UnsupportedEncodingException e1) {
+            throw new RuntimeException(e1.getMessage(), e1);
+        }
+        Location index = prefix.join("?title=" + title + "&entityClass=" + entity);
         return index;
     }
 

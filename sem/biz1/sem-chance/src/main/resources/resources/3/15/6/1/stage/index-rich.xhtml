@@ -1,35 +1,17 @@
-<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="/3/12/3/5/dict/index-rich.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="机会阶段" />
-    <ui:param name="bean" value="${chanceStageAdminBean}" />
-    <ui:param name="obj" value="${bean.openedObject}" />
 
-    <ui:define name="dataColumns">
-        <p:column headerText="编码">
-            <h:outputText value="${entry.label}" />
-        </p:column>
-        <p:column headerText="名称">
-            <h:outputText value="${entry.name}" />
-        </p:column>
-        <p:column headerText="描述">
-            <h:outputText value="${entry.description}" />
+    <ui:define name="cusColumns">
+        <p:column headerText="顺序">
+            <h:outputText value="${entry.order}" />
         </p:column>
     </ui:define>
 
-    <ui:define name="editDialogContent">
-        <t:panelGrid columns="2">
-            <h:outputText value="编码" />
-            <p:inputText value="${obj.label}" />
-
-            <h:outputText value="名称" />
-            <p:inputText value="${obj.name}" />
-
-            <h:outputText value="描述" />
-            <p:inputText value="${obj.description}" />
-        </t:panelGrid>
+    <ui:define name="cusDialogContent">
+        <h:outputText value="顺序" />
+        <p:inputText value="${obj.order}" />
     </ui:define>
-
 </ui:composition>
