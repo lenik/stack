@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>aped-ajax</module>
-        <module>aped-flex</module>
         <module>aped-swt</module>
     </modules>
     <name>APE :: Designer</name>

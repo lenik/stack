@@ -19,8 +19,11 @@
         </dependency>
     </dependencies>
     <modules>
-        <module>identity</module>
-        <module>rack</module>
+        <module>compat</module>
+        <module>designer</module>
+        <module>execution</module>
+        <module>repr</module>
+        <module>spec</module>
     </modules>
     <build>
         <plugins>

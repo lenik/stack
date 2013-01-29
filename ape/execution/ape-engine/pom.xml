@@ -7,6 +7,27 @@
     </parent>
     <artifactId>ape-engine</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <dependencies/>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-orm</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.icsf</groupId>
+            <artifactId>icsf-acl</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>5.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring</artifactId>
+            <version>5.11</version>
+        </dependency>
+    </dependencies>
     <name>APE :: Execution :: Engine</name>
 </project>

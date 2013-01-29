@@ -10,7 +10,6 @@ execution/
     ape-engine  The APE execution engine.
 
 repr/
-    ape-repr    Abstract represtation of APE model.
     ape-banner  Banner form.
     ape-graph   Full graph form.
     ape-html    HTML dump.
@@ -18,4 +17,3 @@ repr/
 designer/
     aped-swt    Designer using SWT.
     aped-ajax   Designer using AJAX.
-    aped-flex   Deisgner powered by Adobe Flex (tm).
