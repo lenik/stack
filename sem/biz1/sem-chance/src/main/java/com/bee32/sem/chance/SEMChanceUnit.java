@@ -1,5 +1,6 @@
 package com.bee32.sem.chance;
 
+import com.bee32.icsf.principal.IcsfPrincipalUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.chance.entity.Chance;
@@ -16,8 +17,13 @@ import com.bee32.sem.chance.entity.WantedProduct;
 import com.bee32.sem.chance.entity.WantedProductAttribute;
 import com.bee32.sem.chance.entity.WantedProductQuotation;
 import com.bee32.sem.chance.entity.WantedProductXP;
+import com.bee32.sem.event.SEMEventUnit;
+import com.bee32.sem.material.SEMMaterialUnit;
+import com.bee32.sem.people.SEMPeopleUnit;
+import com.bee32.sem.world.SEMWorldUnit;
 
-@ImportUnit({  })
+@ImportUnit({ IcsfPrincipalUnit.class, SEMEventUnit.class, SEMPeopleUnit.class, SEMWorldUnit.class,
+        SEMMaterialUnit.class })
 public class SEMChanceUnit
         extends PersistenceUnit {
 
