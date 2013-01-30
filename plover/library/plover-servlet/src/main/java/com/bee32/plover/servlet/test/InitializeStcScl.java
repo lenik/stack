@@ -26,7 +26,8 @@ public class InitializeStcScl
         logger.info("Test servlet context is initialized.");
         ServletContext servletContext = sce.getServletContext();
         ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
-        application.servletContext = servletContext;
+        if (application != null)
+            application.servletContext = servletContext;
     }
 
     @Override
@@ -34,7 +35,8 @@ public class InitializeStcScl
         logger.info("Test servlet context is destroyed.");
         ServletContext servletContext = sce.getServletContext();
         ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
-        application.servletContext = null;
+        if (application != null)
+            application.servletContext = null;
     }
 
 }

@@ -1,2 +1,3 @@
+com.bee32.plover.servlet.util.SpringRequestContextListener
 com.bee32.plover.servlet.util.ThreadServletRequestListener
 com.bee32.plover.site.scope.StartAndStatsSrl

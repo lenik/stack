@@ -17,6 +17,9 @@ import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
+/**
+ * Transaction-Enabled Entity Access Service Wrapper.
+ */
 public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         extends Component
         implements IEntityAccessService<E, K> {

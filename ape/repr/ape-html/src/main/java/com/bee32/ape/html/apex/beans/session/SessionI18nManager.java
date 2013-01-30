@@ -17,7 +17,7 @@ public class SessionI18nManager
 
     public SessionI18nManager() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames("messages");
+        messageSource.setBasename("messages");
         setMessageSource(messageSource);
     }
 

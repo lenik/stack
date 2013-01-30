@@ -12,16 +12,22 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import javax.free.IIndentedOut;
 import javax.free.IllegalUsageException;
+import javax.free.IndentedOutImpl;
+import javax.free.Stdio;
 import javax.free.StringPart;
 import javax.free.SystemProperties;
 import javax.servlet.http.HttpServlet;
 
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.FilterMapping;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlet.ServletMapping;
@@ -102,7 +108,7 @@ public class ServletTestLibrary
         }
     }
 
-    protected synchronized void initialize() {
+    public synchronized void initialize() {
         if (initialized)
             return;
 
@@ -419,6 +425,92 @@ public class ServletTestLibrary
             throws IOException {
         browse(location);
         mainLoop(location);
+    }
+
+    public void dumpXML() {
+        IIndentedOut out = new IndentedOutImpl(Stdio.cout);
+        out.enter();
+        dumpXML(out);
+        out.leave();
+    }
+
+    public void dumpXML(IIndentedOut out) {
+        RabbitServletContextHandler servletContextHandler = getServletContextHandler();
+        ServletHandler servletHandler = servletContextHandler.getServletHandler();
+
+        out.println("<context-params>");
+        dumpInitParameters(out, servletContextHandler.getInitParams());
+        out.println("</context-params>");
+        out.println();
+
+        for (EventListener eventListener : servletContextHandler.getEventListeners()) {
+            out.println("<event-listener>" + eventListener.getClass().getName() + "</event-listener>");
+        }
+        out.println();
+
+        for (FilterHolder filterHolder : servletHandler.getFilters()) {
+            out.println("<filter>");
+            out.println("    <filter-name>" + filterHolder.getName() + "</filter-name>");
+            out.println("    <filter-class>" + filterHolder.getClassName() + "</filter-class>");
+            dumpInitParameters(out, filterHolder.getInitParameters());
+            out.println("</filter>");
+        }
+        out.println();
+
+        for (FilterMapping mapping : servletHandler.getFilterMappings()) {
+            String[] pathSpecs = mapping.getPathSpecs();
+            if (pathSpecs.length == 0)
+                throw new IllegalUsageException("No mapping path specified for filter " + mapping.getFilterName());
+            for (String pathSpec : pathSpecs) {
+                out.println("<filter-mapping>");
+                out.println("    <filter-name>" + mapping.getFilterName() + "</filter-name>");
+                out.println("    <url-pattern>" + pathSpec + "</url-pattern>");
+                out.println("</filter-mapping>");
+            }
+        }
+        out.println();
+
+        for (ServletHolder servletHolder : servletHandler.getServlets()) {
+            out.println("<servlet>");
+            out.println("    <servlet-name>" + servletHolder.getName() + "</servlet-name>");
+
+            if (servletHolder.getDisplayName() != null)
+                out.println("    <display-name>" + servletHolder.getDisplayName() + "</display-name>");
+
+            out.println("    <servlet-class>" + servletHolder.getClassName() + "</servlet-class>");
+
+            if (servletHolder.getInitOrder() != 0)
+                out.println("    <init-order>" + servletHolder.getInitOrder() + "</init-order>");
+
+            dumpInitParameters(out, servletHolder.getInitParameters());
+            out.println("</servlet>");
+        }
+        out.println();
+
+        for (ServletMapping mapping : servletHandler.getServletMappings()) {
+            String[] pathSpecs = mapping.getPathSpecs();
+            if (pathSpecs.length == 0)
+                throw new IllegalUsageException("No mapping path specified for servlet " + mapping.getServletName());
+            for (String pathSpec : pathSpecs) {
+                out.println("<servlet-mapping>");
+                out.println("    <servlet-name>" + mapping.getServletName() + "</servlet-name>");
+                out.println("    <url-pattern>" + pathSpec + "</url-pattern>");
+                out.println("</servlet-mapping>");
+            }
+        }
+        out.println();
+
+    }
+
+    static void dumpInitParameters(IIndentedOut out, Map<?, ?> map) {
+        out.enter();
+        for (Entry<?, ?> entry : map.entrySet()) {
+            out.println("<init-param>");
+            out.println("    <param-name>" + entry.getKey() + "</param-name>");
+            out.println("    <param-value>" + entry.getValue() + "</param-value>");
+            out.println("</init-param>");
+        }
+        out.leave();
     }
 
 }

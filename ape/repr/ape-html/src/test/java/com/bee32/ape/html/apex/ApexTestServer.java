@@ -2,14 +2,21 @@ package com.bee32.ape.html.apex;
 
 import java.io.IOException;
 
-import com.bee32.plover.faces.test.FaceletsTestCase;
+import com.bee32.icsf.IcsfAccessUnit;
+import com.bee32.icsf.test.LoginedTestCase;
+import com.bee32.plover.orm.unit.Using;
 
+@Using(IcsfAccessUnit.class)
 public class ApexTestServer
-        extends FaceletsTestCase {
+        extends LoginedTestCase {
+    // extends FaceletsTestCase {
 
     public static void main(String[] args)
             throws IOException {
-        new ApexTestServer().browseAndWait();
+        ApexTestServer server = new ApexTestServer();
+        server.stl.initialize();
+        server.stl.dumpXML();
+        server.browseAndWait();
     }
 
 }

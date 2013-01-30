@@ -11,7 +11,12 @@ import org.activiti.explorer.ui.form.FormPropertyRendererManager;
 import org.activiti.explorer.ui.form.LongFormPropertyRenderer;
 import org.activiti.explorer.ui.form.StringFormPropertyRenderer;
 import org.activiti.explorer.ui.form.UserFormPropertyRenderer;
+import org.springframework.stereotype.Component;
 
+import com.bee32.plover.site.scope.PerSite;
+
+@Component
+@PerSite(reason = "stated: renderers is modifiable.")
 public class ApexFormPropertyRendererManager
         extends FormPropertyRendererManager {
 

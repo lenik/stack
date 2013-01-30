@@ -122,8 +122,13 @@ public class RabbitServer {
 
     public synchronized String createSocketConnector(boolean boundToLocalhostonly)
             throws Exception {
+
         SelectChannelConnector connector = new SelectChannelConnector();
-        connector.setPort(getPort());
+
+        int port = getPort();
+        if (port == -1)
+            port = 0;
+        connector.setPort(port);
 
         if (boundToLocalhostonly)
             connector.setHost("127.0.0.1");

@@ -17,7 +17,8 @@ public abstract class C_SessionListener
         HttpSession session = se.getSession();
         ServletContext servletContext = session.getServletContext();
         ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
-        sessionCreated(se, application);
+        if (application != null)
+            sessionCreated(se, application);
     }
 
     @Override
@@ -25,7 +26,8 @@ public abstract class C_SessionListener
         HttpSession session = se.getSession();
         ServletContext servletContext = session.getServletContext();
         ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
-        sessionDestroyed(se, application);
+        if (application != null)
+            sessionDestroyed(se, application);
     }
 
     protected abstract void sessionCreated(HttpSessionEvent event, ServletTestCase application);

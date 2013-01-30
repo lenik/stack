@@ -22,4 +22,6 @@ import com.bee32.plover.inject.spring.ScopeName;
 @Documented
 public @interface PerSite {
 
+    String reason() default "";
+
 }
