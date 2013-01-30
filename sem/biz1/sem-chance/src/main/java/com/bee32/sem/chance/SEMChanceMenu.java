@@ -35,7 +35,7 @@ public class SEMChanceMenu
             simpleDictIndex("供货方式", ProcurementMethod.class));
     /*    */MenuNode purchaseRegulation = entry(CHANCE_DICT, 6, "purchaseRegulation",
             simpleDictIndex("采购原则", PurchaseRegulation.class));
-    /*    */MenuNode stage = entry(CHANCE_DICT, 6, "chanceStage",
+    /*    */MenuNode stage = entry(CHANCE_DICT, 6, "stage",
             customDictIndex(prefix.join("stage/"), "机会阶段", ChanceStage.class));
 
     public MenuNode PRICE = menu(CHANCE, 32, "PRICE");
