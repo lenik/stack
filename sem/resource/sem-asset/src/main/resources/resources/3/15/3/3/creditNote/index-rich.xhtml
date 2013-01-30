@@ -27,9 +27,9 @@
                     </p:commandButton>
                 </t:panelGroup>
 
-                <h:outputText value="时间:" />
+                <h:outputText value="发生时间:" />
                 <t:panelGroup colspan="3">
-                    <p:calendar id="beginTime" label="时间" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                    <p:calendar id="beginTime" label="发生时间" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
                         value="#{obj.beginTime}" showOn="button" />
                 </t:panelGroup>
 
@@ -53,7 +53,7 @@
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputText value="摘要:" />
+                <h:outputText value="简要:" />
                 <t:panelGroup colspan="3">
                     <p:inputText value="#{obj.description}" readonly="#{not bean.editing}" style="width: 35em" label="摘要"/>
                 </t:panelGroup>
