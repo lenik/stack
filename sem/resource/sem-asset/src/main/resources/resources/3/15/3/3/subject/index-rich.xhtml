@@ -10,10 +10,6 @@
 
     <ui:define name="dataColumns">
         <p:column>
-            <f:facet name="header">编号</f:facet>
-            <h:outputText value="#{entry.name}" />
-        </p:column>
-        <p:column>
             <f:facet name="header">会计科目名称</f:facet>
             <h:outputText value="#{entry.label}" />
         </p:column>
@@ -21,18 +17,18 @@
 
     <ui:define name="editDialogContent">
         <h:panelGrid columns="2">
-            <h:outputText value="上级科目" styleClass="e-link" onclick="${bean.parentSubject.clickAction}"/>
+            <h:outputText value="上级科目" styleClass="e-link" onclick="${bean.parentSubject.clickAction}" />
             <h:panelGroup>
                 <h:outputText id="parentSubjectCode" value="#{bean.parentSubject.name}" />
-                <p:inputText id="parentSubject" value="#{bean.parentSubject.label}" disabled="true" label="上级科目"/>
+                <p:inputText id="parentSubject" value="#{bean.parentSubject.label}" disabled="true" label="上级科目" />
                 <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
             </h:panelGroup>
 
-            <h:outputLabel value="编号" />
-            <p:inputText id="name" value="#{obj.name}" label="编号"/>
+            <h:outputLabel value="标识" />
+            <p:inputText id="name" value="#{obj.name}" label="标识" readonly="${bean.cusEditing}" />
 
             <h:outputLabel value="名称" />
-            <p:inputText id="label" value="#{obj.label}" label="名称"/>
+            <p:inputText id="label" value="#{obj.label}" label="名称" />
         </h:panelGrid>
     </ui:define>
 
@@ -42,7 +38,7 @@
     </ui:define>
 
     <ui:define name="searchPanel.keyword.1">
-        <p:commandButton id="test" value="限定代码"  actionListener="${bean.addSubjectCodeRestriction}"
+        <p:commandButton id="test" value="限定代码" actionListener="${bean.addSubjectCodeRestriction}"
             update="@form, ${_searchUpdates}" />
     </ui:define>
 

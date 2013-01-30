@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.dict.NameDict;
+import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
@@ -34,6 +35,15 @@ public class SimpleNameDictViewBean
         String entity = request.getParameter("entityClass");
         Class<? extends NameDict> entityClass = (Class<? extends NameDict>) ABBR.expand(entity);
         return entityClass;
+    }
+
+    public boolean isCusEditing() {
+        if (currentView.equals(StandardViews.EDIT_FORM)) {
+            if (getOpenedObjects().isEmpty())
+                throw new IllegalStateException("No opened objects for editing");
+            return true;
+        }
+        return false;
     }
 
     public void setTitle(String title) {

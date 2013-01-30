@@ -120,7 +120,7 @@ public abstract class SimpleEntityViewBean
     protected int saveFlags = 0;
     protected int deleteFlags = 0;
 
-    String currentView = StandardViews.LIST;
+    protected String currentView = StandardViews.LIST;
     protected Set<Serializable> requestWindow = new HashSet<Serializable>();
     List<ICriteriaElement> baseRestriction;
     ICriteriaElement userRestriction;
