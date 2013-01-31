@@ -15,6 +15,15 @@
 % \usepackage{multicol}           % Multi column article
 
 \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[LO,RE]{\slshape \modtitle (版本 \modversion)}
+    \fancyhead[LE,RO]{\slshape \leftmark}
+    \fancyfoot[C]{}
+    \fancyfoot[LO,RE]{}
+    \fancyfoot[LE,RO]{\thepage}
+    \renewcommand{\chaptermark}[1]{%
+        \markboth{第\CJKnumber{\thechapter}章.\ #1}{}}
+
 \usepackage{fancybox}
 \usepackage[vario]{fancyref}
 \usepackage{url}
@@ -79,14 +88,14 @@
                                         \end{landscape}
 }
 
-\title {\modtitle \\ \modsubtitle \\ 使用说明书}
-\author{SECCA项目组 \\ $\infty$ \small{海宁市智恒软件有限公司}}
+\title {\modtitle \\ 使用说明书}
+% \author{SECCA项目组 \\ $\infty$ \small{海宁市智恒软件有限公司}}
 
 \begin{document}
 
+\date{}
 \maketitle
 
-\renewcommand\contentsname{目录/Contents}
 \tableofcontents
 {
     \let\clearpage\relax
@@ -98,13 +107,12 @@
 \def\DIRNAME{.}
 \import{\DIRNAME/}{profile}
 
-\appendix
+%\appendix
 
-\chapter{版本历史}
-{
-    \centering
-    % \rowcolors{1}{white}{lightgray}
-    \input{history}
-}
+%\chapter{版本历史}
+%{ \centering
+%    % \rowcolors{1}{white}{lightgray}
+%    \input{history}
+%}
 
 \end{document}

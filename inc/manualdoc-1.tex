@@ -15,6 +15,14 @@
 % \usepackage{multicol}           % Multi column article
 
 \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[LO,RE]{\slshape \modsubtitle-1.2.0}
+    \fancyhead[LE,RO]{\slshape \rightmark}
+    \fancyfoot[C]{}
+    \fancyfoot[LO,RE]{}
+    \fancyfoot[LE,RO]{\thepage}
+    % \renewcommand{\chaptermark}
+
 \usepackage{fancybox}
 \usepackage[vario]{fancyref}
 \usepackage{url}
@@ -59,8 +67,8 @@
 
 \input{\DIRNAME/libmanual.tex}
 
-\title {\modtitle \\ \modsubtitle \\ 使用说明书}
-\author{SECCA项目组 \\ $\infty$ \small{海宁市智恒软件有限公司}}
+\title {\modsubtitle \\ 使用说明书}
+% \author{SECCA项目组 \\ $\infty$ \small{海宁市智恒软件有限公司}}
 
 \begin{document}
 
@@ -68,6 +76,7 @@
 %\renewcommand*\subsectionmark[1]{\markright{\thesubsection. #1}}
 \renewcommand*\thesection{\arabic{section}}
 
+\date{}
 \maketitle
 
 \renewcommand\contentsname{目录/Contents}

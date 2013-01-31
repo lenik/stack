@@ -10,9 +10,23 @@ tex_libmanual := $(g_incdir)/libmanual.tex
 all: manualpro.pdf
 
 manualpro.pdf: profile.tex history.tex $(tex_template) $(tex_libmanual)
-	cooltex -abvjmanualpro -DDIRNAME="$(g_incdir)" -Dmodtitle="$(TITLE)" -Dmodsubtitle="$(SUBTITLE)" "$(tex_template)"
+	cooltex -abvjmanualpro \
+		-DDIRNAME="$(g_incdir)" \
+		-Dmodtitle="$(TITLE)" \
+		-Dmodsubtitle="$(SUBTITLE)" \
+		-Dmodversion="`cat version`" \
+		"$(tex_template)"
 
 # stack/manuals/profiles/FooBar/...
+
+version: history.tex
+	grep '\hline' history.tex | head -1 | while read col1 _; do \
+		: col1="\multirow{1}{*}{1.10.2}" ...; \
+		ver="$${col1%\}}"; \
+		ver="$${ver##*\{}"; \
+		echo "$$ver" >version; \
+	done
+
 history.tex: modules
 	CWD="$$PWD"; cd ../../..; \
 	gitcl `cat $$CWD/modules` | gitcl2 -r -t '' -T \
