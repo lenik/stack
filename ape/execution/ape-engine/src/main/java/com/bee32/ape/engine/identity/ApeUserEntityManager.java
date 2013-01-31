@@ -12,6 +12,8 @@ import org.activiti.engine.impl.UserQueryImpl;
 import org.activiti.engine.impl.persistence.entity.IdentityInfoEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.ape.engine.base.IApeActivitiAdapter;
@@ -22,16 +24,11 @@ public class ApeUserEntityManager
         extends UserEntityManager
         implements IApeActivitiAdapter {
 
-    /**
-     * @throws DataAccessException
-     */
-    @Override
-    public User createNewUser(String userId) {
-        com.bee32.icsf.principal.User _user = new com.bee32.icsf.principal.User();
-        _user.setName(userId);
-        ctx.data.access(icsfUserType).save(_user);
+    static final Logger logger = LoggerFactory.getLogger(ApeUserEntityManager.class);
 
-        return ActivitiIdentityAdapters.icsfUser2activitiUser(_user);
+    @Override
+    public UserEntity createNewUser(String userId) {
+        return new UserEntity(userId);
     }
 
     /**
@@ -42,8 +39,19 @@ public class ApeUserEntityManager
         if (user == null)
             throw new NullPointerException("user");
 
+        String icsfName = user.getId();
+
+        com.bee32.icsf.principal.Principal _principal = ctx.data.access(icsfPrincipalType).getByName(icsfName);
+        if (_principal != null) {
+            if (!(_principal instanceof com.bee32.icsf.principal.User))
+                throw new IllegalStateException("Incompatible principal type.");
+            else
+                logger.error("User is already existed: " + icsfName);
+            return;
+        }
+
         com.bee32.icsf.principal.User _user = new com.bee32.icsf.principal.User();
-        _user.setName(user.getId());
+        _user.setName(icsfName);
         _user.setFullName(user.getFirstName(), user.getLastName());
         _user.setPreferredEmail(user.getEmail());
         // _user.addPassword(user.getPassword());
@@ -84,9 +92,9 @@ public class ApeUserEntityManager
      */
     @Override
     public List<Group> findGroupsByUser(String userId) {
-        ctx.data.access(icsfGroupType).findAndDelete(//
-                );
-        return super.findGroupsByUser(userId);
+        ApeGroupQuery query = new ApeGroupQuery();
+        query.groupMember(userId);
+        return query.list();
     }
 
     @Override

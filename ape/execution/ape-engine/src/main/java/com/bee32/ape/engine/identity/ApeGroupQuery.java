@@ -3,6 +3,7 @@ package com.bee32.ape.engine.identity;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.GroupQuery;
 import org.activiti.engine.impl.GroupQueryImpl;
+import org.activiti.engine.impl.persistence.entity.GroupEntity;
 
 import com.bee32.ape.engine.base.AbstractApeQuery;
 import com.bee32.icsf.principal.User;
@@ -98,7 +99,7 @@ public class ApeGroupQuery
         CriteriaComposite composite = new CriteriaComposite();
 
         if (id != null)
-            composite.add(new Equals("name", id));
+            composite.add(new Equals("name", id + GROUP_EXT));
 
         if (name != null)
             composite.add(new Equals("label", name));
@@ -130,8 +131,8 @@ public class ApeGroupQuery
     }
 
     @Override
-    protected Group icsf2activiti(Entity<?> icsfEntity) {
-        com.bee32.icsf.principal.Group icsfGroup = (com.bee32.icsf.principal.Group) icsfEntity;
+    protected GroupEntity icsf2activiti(Entity<?> icsfEntity) {
+        com.bee32.icsf.principal.Role icsfGroup = (com.bee32.icsf.principal.Role) icsfEntity;
         return ActivitiIdentityAdapters.icsfGroup2activitiGroup(icsfGroup);
     }
 

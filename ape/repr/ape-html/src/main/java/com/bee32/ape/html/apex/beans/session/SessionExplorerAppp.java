@@ -18,6 +18,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import com.bee32.ape.html.apex.beans.ApexConfig;
+import com.bee32.ape.html.apex.beans.standalone.ApexDemoDataGenerator;
 import com.bee32.plover.inject.scope.PerSession;
 
 @Component
@@ -30,6 +31,12 @@ public class SessionExplorerAppp
 
     @Inject
     ApexConfig config;
+
+    /**
+     * This is a trigger injection, to make sure demo data be generated.
+     */
+    @Inject
+    ApexDemoDataGenerator demoDataGenerator;
 
     @Override
     public void afterPropertiesSet()

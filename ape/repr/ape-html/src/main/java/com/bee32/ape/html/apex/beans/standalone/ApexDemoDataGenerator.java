@@ -1,5 +1,6 @@
 package com.bee32.ape.html.apex.beans.standalone;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.activiti.engine.ProcessEngine;
@@ -23,6 +24,12 @@ public class ApexDemoDataGenerator
     @Override
     public void setProcessEngine(ProcessEngine processEngine) {
         super.setProcessEngine(processEngine);
+    }
+
+    @PostConstruct
+    @Override
+    public void init() {
+        super.init();
     }
 
 }

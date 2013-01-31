@@ -3,10 +3,12 @@ package com.bee32.ape.engine.identity;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
 
-import com.bee32.icsf.principal.Group;
+import com.bee32.ape.engine.base.IApeActivitiAdapter;
+import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
 
-class ActivitiIdentityAdapters {
+class ActivitiIdentityAdapters
+        implements IApeActivitiAdapter {
 
     public static UserEntity icsfUser2activitiUser(User icsfUser) {
         UserEntity activitiUser = new UserEntity();
@@ -18,9 +20,13 @@ class ActivitiIdentityAdapters {
         return activitiUser;
     }
 
-    public static GroupEntity icsfGroup2activitiGroup(Group icsfGroup) {
+    public static GroupEntity icsfGroup2activitiGroup(Role icsfGroup) {
+        String plainName = icsfGroup.getName();
+        if (plainName.endsWith(GROUP_EXT))
+            plainName = plainName.substring(0, plainName.length() - 4);
+
         GroupEntity activitiGroup = new GroupEntity();
-        activitiGroup.setId(icsfGroup.getName());
+        activitiGroup.setId(plainName);
         // groupEntity.setRevision(icsfGroup.getVersion());
         activitiGroup.setName(icsfGroup.getLabel());
         // group.setType("type");

@@ -150,7 +150,9 @@ public class ApeUserQuery
         if (groupId != null) {
             Set<Principal> imset = new HashSet<Principal>();
 
-            Group group = ctx.data.access(Group.class).getByName(groupId);
+            String icsfGroupName = groupId + GROUP_EXT;
+            Group group = ctx.data.access(Group.class).getByName(icsfGroupName);
+
             if (group != null)
                 imset.addAll(group.getImSet());
 

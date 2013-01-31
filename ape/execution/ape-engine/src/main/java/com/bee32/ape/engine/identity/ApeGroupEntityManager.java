@@ -8,24 +8,22 @@ import org.activiti.engine.impl.GroupQueryImpl;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import org.activiti.engine.impl.persistence.entity.GroupEntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.ape.engine.base.IApeActivitiAdapter;
 import com.bee32.plover.criteria.hibernate.Equals;
 
-public class ApeGroupManager
+public class ApeGroupEntityManager
         extends GroupEntityManager
         implements IApeActivitiAdapter {
 
-    /**
-     * @throws DataAccessException
-     */
+    static final Logger logger = LoggerFactory.getLogger(ApeGroupEntityManager.class);
+
     @Override
-    public Group createNewGroup(String groupId) {
-        com.bee32.icsf.principal.Group _group = new com.bee32.icsf.principal.Group();
-        _group.setName(groupId);
-        ctx.data.access(icsfGroupType).save(_group);
-        return ActivitiIdentityAdapters.icsfGroup2activitiGroup(_group);
+    public GroupEntity createNewGroup(String groupId) {
+        return new GroupEntity(groupId);
     }
 
     /**
@@ -33,8 +31,16 @@ public class ApeGroupManager
      */
     @Override
     public void insertGroup(Group group) {
-        com.bee32.icsf.principal.Group _group = new com.bee32.icsf.principal.Group();
-        _group.setName(group.getId());
+        String icsfName = group.getId() + GROUP_EXT;
+
+        com.bee32.icsf.principal.Principal _principal = ctx.data.access(icsfPrincipalType).getByName(icsfName);
+        if (_principal != null) {
+            logger.error("Group is already existed: " + icsfName);
+            return;
+        }
+
+        com.bee32.icsf.principal.Role _group = new com.bee32.icsf.principal.Role();
+        _group.setName(icsfName);
         _group.setFullName(group.getName());
         ctx.data.access(icsfGroupType).save(_group);
     }
@@ -45,10 +51,12 @@ public class ApeGroupManager
     @Override
     public void updateGroup(GroupEntity updatedGroup) {
         String name = updatedGroup.getId();
-        com.bee32.icsf.principal.Group _group = ctx.data.access(icsfGroupType).getByName(name);
+        String icsfName = name + GROUP_EXT;
+
+        com.bee32.icsf.principal.Role _group = ctx.data.access(icsfGroupType).getByName(icsfName);
         if (_group == null)
             // _user = new com.bee32.icsf.principal.User();
-            throw new IllegalStateException("Group isn't existed: " + updatedGroup.getId());
+            throw new IllegalStateException("Group isn't existed: " + name);
 
         _group.setFullName(updatedGroup.getName());
         // updatedGroup.getType();
@@ -61,8 +69,10 @@ public class ApeGroupManager
      */
     @Override
     public void deleteGroup(String groupId) {
-        ctx.data.access(com.bee32.icsf.principal.Group.class)//
-                .findAndDelete(new Equals("name", groupId));
+        String icsfName = groupId + GROUP_EXT;
+
+        ctx.data.access(com.bee32.icsf.principal.Role.class)//
+                .findAndDelete(new Equals("name", icsfName));
     }
 
     @Override
@@ -86,7 +96,9 @@ public class ApeGroupManager
     public GroupEntity findGroupById(String groupId) {
         if (groupId == null)
             throw new NullPointerException("groupId");
-        com.bee32.icsf.principal.Group icsfGroup = ctx.data.access(icsfGroupType).getByName(groupId);
+        String icsfName = groupId + GROUP_EXT;
+
+        com.bee32.icsf.principal.Role icsfGroup = ctx.data.access(icsfGroupType).getByName(icsfName);
         if (icsfGroup == null)
             return null;
         else
