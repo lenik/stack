@@ -1,7 +1,5 @@
 package com.bee32.icsf;
 
-import static com.bee32.icsf.login.UserPassword.digest;
-
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.sample.NormalSamples;
@@ -19,11 +17,11 @@ public class IcsfAccessSamples
 
     @Override
     protected void wireUp() {
-        eva.init(principals.eva, digest("EVA"));
-        wallE.init(principals.wallE, digest("WALL-E"));
-        alice.init(principals.alice, digest("ALICE"));
-        tom.init(principals.tom, digest("TOM"));
-        kate.init(principals.kate, digest("KATE"));
+        eva.init(principals.eva, ("EVA"));
+        wallE.init(principals.wallE, ("WALL-E"));
+        alice.init(principals.alice, ("ALICE"));
+        tom.init(principals.tom, ("TOM"));
+        kate.init(principals.kate, ("KATE"));
     }
 
 }

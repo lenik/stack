@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,6 +19,7 @@ import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.model.validation.core.Alphabet;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.restful.resource.StandardViews;
@@ -46,38 +47,33 @@ public class UserAdminBean
         super(User.class, UserDto.class, 0);
     }
 
-    /**
-     * 密码保存到数据库中为 hash 值，并无长度限制。但出于一般限制需要设置最大长度为 12 （相当于 96 位密钥强度） 。
-     */
-    @NotEmpty
-    // @Size(min = 5, max = 12)
-    // @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
+    @Size(min = 1, max = 12)
+    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
+        if (password == null)
+            throw new NullPointerException("password");
         this.password = password;
     }
 
     @NotEmpty
-    // @Size(min = 5, max = 12)
-    // @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
+    @Size(min = 1, max = 12)
+    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
 
     public void setPasswordConfirm(String passwordConfirm) {
+        if (passwordConfirm == null)
+            throw new NullPointerException("passwordConfirm");
         this.passwordConfirm = passwordConfirm;
     }
 
     public void passwordValidator(FacesContext context, UIComponent toValidate, Object value) {
-        UIInput passwordField = (UIInput) context.getViewRoot().findComponent("editDialog:form:password");
-        if (passwordField == null)
-            throw new IllegalArgumentException(String.format("Unable to find component."));
-        String password = (String) passwordField.getValue();
-        String confirmPassword = (String) value;
-        if (!confirmPassword.equals(password)) {
+        if (!passwordConfirm.equals(password)) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, //
                     "输入的密码不匹配！", null);
             throw new ValidatorException(message);
@@ -103,6 +99,7 @@ public class UserAdminBean
             throws Exception {
         for (User user : uMap.<User> entitySet())
             if (password != null) {
+                // if (password.isEmpty()) ;
                 try {
                     DATA(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
                     UserPassword pass = new UserPassword(user, password);
@@ -113,15 +110,6 @@ public class UserAdminBean
                 } catch (Exception e) {
                     uiLogger.error("更新密码失败。", e);
                 }
-
-                //虽然p:inputText:passPlain和passPlainConfirm没有绑定bean内的值，
-                //但是里面输入的值在page范围内还是会自动保存,
-                //所以这里做清除
-                FacesContext context = FacesContext.getCurrentInstance();
-                UIInput passPlain = (UIInput) context.getViewRoot().findComponent("editDialog:form:passPlain");
-                passPlain.setValue(null);
-                UIInput passPlainConfirm = (UIInput) context.getViewRoot().findComponent("editDialog:form:passPlainConfirm");
-                passPlainConfirm.setValue(null);
             }
     }
 

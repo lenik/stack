@@ -1,12 +1,16 @@
 package com.bee32.icsf.access.web;
 
 import java.util.List;
-import java.util.Random;
+
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.bee32.icsf.login.LoginCriteria;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.model.validation.core.Alphabet;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.EntityViewBean;
 
@@ -16,45 +20,42 @@ public class ModifyPasswordBean
 
     private static final long serialVersionUID = 1L;
 
-    private String oldPass;
-    private String newPass;
-    private String confirmPass;
-    private String challenge = "C" + new Random().nextInt();
+    private String oldPassword;
+    private String newPassword;
+    private String passwordConfirm;
 
-    public String getOldPass() {
-        return oldPass;
+    public String getOldPassword() {
+        return oldPassword;
     }
 
-    public void setOldPass(String oldPass) {
-        this.oldPass = oldPass;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
-    public String getNewPass() {
-        return newPass;
+    @NotEmpty
+    @Size(min = 1, max = 12)
+    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setNewPass(String newPass) {
-        this.newPass = newPass;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
-    public String getConfirmPass() {
-        return confirmPass;
+    @NotEmpty
+    @Size(min = 1, max = 12)
+    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
+    public String getPasswordConfirm() {
+        return passwordConfirm;
     }
 
-    public void setConfirmPass(String confirmPass) {
-        this.confirmPass = confirmPass;
-    }
-
-    public String getChallenge() {
-        return challenge;
-    }
-
-    public void setChallenge(String challenge) {
-        this.challenge = challenge;
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public void modify() {
-        if (!newPass.equals(confirmPass)) {
+        if (!newPassword.equals(passwordConfirm)) {
             uiLogger.error("新密码和新密码确认不匹配");
             return;
         }
@@ -68,9 +69,9 @@ public class ModifyPasswordBean
         UserPassword userPassword = plist.get(0);
         String oldP1 = userPassword.getPasswd();
 
-        if (oldP1.equals(oldPass)) {
+        if (oldP1.equals(oldPassword)) {
             // 用户输入的旧密码正确
-            userPassword.setPasswd(newPass);
+            userPassword.setPasswd(newPassword);
 
             try {
                 DATA(UserPassword.class).saveOrUpdate(userPassword);

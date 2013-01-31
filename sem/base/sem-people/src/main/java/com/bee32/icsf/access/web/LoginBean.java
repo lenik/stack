@@ -25,7 +25,7 @@ public class LoginBean
     static Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
     private String username;
-    private String password;
+    private String actual4;
     private String challenge = "C" + new Random().nextInt();
 
     public String getUsername() {
@@ -37,11 +37,11 @@ public class LoginBean
     }
 
     public String getPassword() {
-        return password;
+        return actual4;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.actual4 = password;
     }
 
     public String getChallenge() {
@@ -65,13 +65,14 @@ public class LoginBean
             return;
         }
 
-        String p1 = userPasswords.get(0).getPasswd();
-        String _p2 = challenge + p1 + challenge;
-        String p2 = DigestUtils.shaHex(_p2);
+        String expected1 = userPasswords.get(0).getPasswd();
+        String expected2 = DigestUtils.shaHex(expected1);
+        String expected3 = challenge + expected2 + challenge;
+        String expected4 = DigestUtils.shaHex(expected3);
 
-        if (!p2.equals(password)) {
+        if (!expected4.equals(actual4)) {
             uiLogger.error("密码输入错误");
-            logger.debug("Login: p1=" + p1 + ", _p2=" + _p2 + ", p2=" + p2 + ", expected=" + password);
+            logger.debug("Login: e1=" + expected1 + ", e3=" + expected3 + ", e4=" + expected4 + ", actual4=" + actual4);
             return;
         }
 

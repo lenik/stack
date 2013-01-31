@@ -1,5 +1,6 @@
 package com.bee32.icsf.login;
 
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Random;
 
@@ -13,15 +14,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
-/**
- *
- */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_password_seq", allocationSize = 1)
@@ -30,6 +29,9 @@ public class UserPassword
 
     private static final long serialVersionUID = 1L;
 
+    public static final int MASTER_LENGTH = 40;
+    public static final int PASSWD_LENGTH = 40;
+
     public static final int EXPIRE_HOURS = 240;
 
     static Random random = new Random();
@@ -37,8 +39,8 @@ public class UserPassword
     User user;
 
     int salt = random.nextInt();
-    String master;
-    String passwd; // Not used.
+    String master = "";
+    String passwd = "";
 
     PrivateQuestion resetQ;
     String resetA = "";
@@ -109,22 +111,46 @@ public class UserPassword
         this.salt = salt;
     }
 
-    @Column(length = 40)
+    @Transient
     public String getMaster() {
         return master;
     }
 
     public void setMaster(String master) {
+        if (master == null)
+            throw new NullPointerException("master");
         this.master = master;
     }
 
-    @Column(length = 40)
+    @Column(name = "master", length = MASTER_LENGTH)
+    public String get_master() {
+        return encrypt(master);
+    }
+
+    public void set_master(String master) {
+        this.master = decrypt(master);
+    }
+
+    @Transient
     public String getPasswd() {
         return passwd;
     }
 
     public void setPasswd(String passwd) {
+        if (passwd == null)
+            throw new NullPointerException("passwd");
         this.passwd = passwd;
+    }
+
+    @Column(name = "passwd", length = PASSWD_LENGTH)
+    String get_passwd() {
+        return encrypt(passwd);
+    }
+
+    void set_passwd(String passwd) {
+        if (passwd == null)
+            throw new NullPointerException("passwd");
+        this.passwd = decrypt(passwd);
     }
 
     public void createResetTicket() {
@@ -190,8 +216,37 @@ public class UserPassword
         return (int) hours;
     }
 
-    public static String digest(String text) {
-        return DigestUtils.shaHex(text);
+    static final Charset utf8Charset = Charset.forName("utf-8");
+
+    public static String encrypt(String text) {
+        if (text == null)
+            return null;
+        if (text.length() > 12)
+            text = text.substring(0, 12);
+        byte[] textBytes = text.getBytes(utf8Charset);
+        byte[] base64Bytes = Base64.encodeBase64(textBytes);
+        String base64 = new String(base64Bytes, utf8Charset);
+        return base64;
+    }
+
+    public static String decrypt(String base64) {
+        if (base64 == null)
+            return null;
+        byte[] base64Bytes = base64.getBytes(utf8Charset);
+        byte[] textBytes = Base64.decodeBase64(base64Bytes);
+        String text = new String(textBytes, utf8Charset);
+        return text;
+    }
+
+    public static void main(String[] args) {
+        String[] commonPasswords = { "", "Bee32", "guest", "secret", "168168", "000000", "123123", "888888",
+                "13666670345", "hmzy888888", "15967301888", "fya1888888", "278591" };
+        for (String password : commonPasswords) {
+            String sha = DigestUtils.shaHex(password);
+            System.out.println("-- Rewrite password \"" + password + "\"");
+            System.out.println("update user_password set passwd='" + encrypt(password) //
+                    + "' where passwd='" + sha + "';");
+        }
     }
 
 }
