@@ -16,12 +16,18 @@
             <h:outputText value="状态" />
             <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" label="状态"/>
 
-            <h:outputText value="时间:" />
-            <h:outputText value="#{obj.createdDate}">
+            <h:outputText value="创建时间:" />
+            <p:inputText value="#{obj.createdDate}" readonly="true">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
+            </p:inputText>
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" label="制单人"/>
+
+            <h:outputText value="发生时间:" />
+            <t:panelGroup colspan="3">
+                <p:calendar id="beginTime" label="发生时间" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{obj.beginTime}" showOn="button" />
+            </t:panelGroup>
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="凭证项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"

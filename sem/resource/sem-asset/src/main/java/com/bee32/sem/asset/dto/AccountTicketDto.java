@@ -157,4 +157,11 @@ public class AccountTicketDto
     public void setTicketSource(AccountTicketSource ticketSource) {
         this.ticketSource = ticketSource;
     }
+
+    public String getSummary() {
+        if(items != null) {
+            return items.get(0).getDescription();
+        }
+        return null;
+    }
 }

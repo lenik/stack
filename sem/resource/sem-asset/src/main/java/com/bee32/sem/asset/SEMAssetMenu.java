@@ -21,7 +21,8 @@ public class SEMAssetMenu
     MenuNode creditNoteAdmin = entry(ASSET, 21, "creditNoteAdmin", __.join("creditNote/"));
     MenuNode paymentNoteListAdmin = entry(ASSET, 30, "paymentNoteListAdmin", __.join("paymentNote/list.jsf"));
     MenuNode paymentNoteAdmin = entry(ASSET, 31, "paymentNoteAdmin", __.join("paymentNote/"));
-    MenuNode accountTicketAdmin = entry(ASSET, 40, "accountTicketAdmin", __.join("ticket/"));
+    MenuNode accountTicketListAdmin = entry(ASSET, 40, "accountTicketListAdmin", __.join("ticket/list.jsf"));
+    MenuNode accountTicketAdmin = entry(ASSET, 41, "accountTicketAdmin", __.join("ticket/"));
 
     MenuNode assetQuery = entry(ASSET, 7, "assetQuery", __.join("query/"));
 
