@@ -4,24 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
-import org.activiti.engine.impl.form.AbstractFormType;
+import javax.inject.Inject;
+
+import org.activiti.engine.form.AbstractFormType;
+import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import com.bee32.ape.engine.base.IAppCtxAware;
+import com.bee32.ape.engine.base.IAppCtxAccess;
 import com.bee32.plover.site.scope.PerSite;
 
 @Component
 @PerSite(reason = "data source")
 public class ApeProcessEngineConfiguration
-        extends StandaloneProcessEngineConfiguration
-        implements IAppCtxAware {
+        extends SpringProcessEngineConfiguration
+        implements IAppCtxAccess, InitializingBean {
 
     static final Logger logger = LoggerFactory.getLogger(ApeProcessEngineConfiguration.class);
 
-    public ApeProcessEngineConfiguration() {
+    @Inject
+    ApplicationContext appctx;
+
+    @Override
+    public void afterPropertiesSet()
+            throws Exception {
         List<AbstractFormType> mutableList = new ArrayList<>();
         setCustomFormTypes(mutableList);
 
@@ -29,7 +39,10 @@ public class ApeProcessEngineConfiguration
         // setJobExecutorActivate(true);
 
         for (IProcessEngineConfigurer configurer : ServiceLoader.load(IProcessEngineConfigurer.class)) {
-            configurer.processEngineConfigure(this);
+            if (configurer instanceof ApplicationContextAware) {
+                ((ApplicationContextAware) configurer).setApplicationContext(appctx);
+            }
+            configurer.configureSpring(this);
         }
     }
 

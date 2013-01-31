@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-modeler</artifactId>
-            <version>5.11</version>
+            <version>${activiti.version}</version>
         </dependency>
     </dependencies>
     <name>APE :: Repr :: Graph</name>

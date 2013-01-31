@@ -2,19 +2,19 @@ package com.bee32.ape.engine.identity;
 
 import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.interceptor.SessionFactory;
-import org.activiti.engine.impl.persistence.entity.UserManager;
+import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 
-public class ApeUserManagerFactory
+public class ApeUserEntityManagerFactory
         implements SessionFactory {
 
     @Override
     public Class<?> getSessionType() {
-        return UserManager.class;
+        return UserEntityManager.class;
     }
 
     @Override
     public Session openSession() {
-        return new ApeUserManager();
+        return new ApeUserEntityManager();
     }
 
 }

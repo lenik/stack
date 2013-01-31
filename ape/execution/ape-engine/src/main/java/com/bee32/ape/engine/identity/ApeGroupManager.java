@@ -7,14 +7,14 @@ import org.activiti.engine.identity.GroupQuery;
 import org.activiti.engine.impl.GroupQueryImpl;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
-import org.activiti.engine.impl.persistence.entity.GroupManager;
+import org.activiti.engine.impl.persistence.entity.GroupEntityManager;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.ape.engine.base.IApeActivitiAdapter;
 import com.bee32.plover.criteria.hibernate.Equals;
 
 public class ApeGroupManager
-        extends GroupManager
+        extends GroupEntityManager
         implements IApeActivitiAdapter {
 
     /**
@@ -90,7 +90,7 @@ public class ApeGroupManager
         if (icsfGroup == null)
             return null;
         else
-            return ActivitiIdentityAdapters.icsfGroup2ActivitiGroupEntity(icsfGroup);
+            return ActivitiIdentityAdapters.icsfGroup2activitiGroup(icsfGroup);
     }
 
     @Override

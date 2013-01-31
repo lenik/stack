@@ -9,6 +9,8 @@ import com.bee32.plover.servlet.test.ServletTestLibrary;
 public class VaadinWac
         extends AbstractWac {
 
+    static int ACTIVITI_VERSION = 512;
+
     @Override
     public int getOrder() {
         return LOW_ORDER;
@@ -22,8 +24,24 @@ public class VaadinWac
 
     @Override
     public void configureServlets(ServletTestLibrary stl) {
-        stl.addServlet("Vaadin Application Servlet", //
-                ExplorerApplicationServlet.class, "/ui/*", "/VAADIN/*");
+        if (ACTIVITI_VERSION < 512) {
+            // 5.11
+            // Not works: still have problems.
+            stl.addServlet("Vaadin Application Servlet", ExplorerApplicationServlet.class, //
+                    "/*", //
+                    "/api/*", //
+                    "/editor/*", //
+                    "/explorer/*", //
+                    "/libs/*", //
+                    "/VAADIN/*"//
+            );
+        } else {
+            // 5.12+
+            stl.addServlet("Vaadin Application Servlet", ExplorerApplicationServlet.class, //
+                    "/ui/*", //
+                    "/VAADIN/*"//
+            );
+        }
     }
 
 }

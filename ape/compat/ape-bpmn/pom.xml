@@ -11,7 +11,7 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-bpmn-model</artifactId>
-            <version>5.11</version>
+            <version>${activiti.version}</version>
         </dependency>
     </dependencies>
     <name>APE :: Compat :: Bpmn</name>

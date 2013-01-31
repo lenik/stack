@@ -22,12 +22,12 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-engine</artifactId>
-            <version>5.11</version>
+            <version>${activiti.version}</version>
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring</artifactId>
-            <version>5.11</version>
+            <version>${activiti.version}</version>
         </dependency>
     </dependencies>
     <name>APE :: Execution :: Engine</name>

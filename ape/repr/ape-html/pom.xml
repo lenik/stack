@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-explorer</artifactId>
-            <version>5.11</version>
+            <version>${activiti.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

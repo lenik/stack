@@ -11,15 +11,15 @@ import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.UserQueryImpl;
 import org.activiti.engine.impl.persistence.entity.IdentityInfoEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
-import org.activiti.engine.impl.persistence.entity.UserManager;
+import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.ape.engine.base.IApeActivitiAdapter;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.criteria.hibernate.Equals;
 
-public class ApeUserManager
-        extends UserManager
+public class ApeUserEntityManager
+        extends UserEntityManager
         implements IApeActivitiAdapter {
 
     /**
@@ -96,11 +96,12 @@ public class ApeUserManager
 
     @Override
     public Boolean checkPassword(String userId, String password) {
+        String base64 = UserPassword.encrypt(password);
         com.bee32.icsf.principal.User icsfUser = ctx.data.access(icsfUserType).getByName(userId);
         Integer icsfUserId = icsfUser.getId();
         int matches = ctx.data.access(UserPassword.class).count(//
                 new Equals("user.id", icsfUserId), //
-                new Equals("passwd", password));
+                new Equals("_passwd", base64));
         return matches != 0;
     }
 
@@ -114,7 +115,7 @@ public class ApeUserManager
     @Override
     public UserEntity findUserById(String userId) {
         com.bee32.icsf.principal.User icsfUser = ctx.data.access(icsfUserType).getByName(userId);
-        return ActivitiIdentityAdapters.icsfUser2activitiUserEntity(icsfUser);
+        return ActivitiIdentityAdapters.icsfUser2activitiUser(icsfUser);
     }
 
     @Override

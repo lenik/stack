@@ -13,6 +13,7 @@ import org.activiti.explorer.ui.content.AttachmentRendererManager;
 import org.activiti.explorer.ui.form.FormPropertyRendererManager;
 import org.activiti.explorer.ui.login.LoginHandler;
 import org.activiti.explorer.ui.variable.VariableRendererManager;
+import org.activiti.workflow.simple.converter.WorkflowDefinitionConversionFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -94,6 +95,13 @@ public class SessionExplorerAppp
     @Override
     public void setLoginHandler(LoginHandler loginHandler) {
         super.setLoginHandler(loginHandler);
+    }
+
+    @Inject
+    @Override
+    public void setWorkflowDefinitionConversionFactory(
+            WorkflowDefinitionConversionFactory workflowDefinitionConversionFactory) {
+        super.setWorkflowDefinitionConversionFactory(workflowDefinitionConversionFactory);
     }
 
 }

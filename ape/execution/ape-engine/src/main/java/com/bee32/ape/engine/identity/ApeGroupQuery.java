@@ -112,7 +112,7 @@ public class ApeGroupQuery
             User user = ctx.data.access(icsfUserType).getByName(memberUserId);
             int userId = user == null ? -1 : user.getId();
 
-            composite.add(new Alias("memberUser", "u"));
+            composite.add(new Alias("memberUsers", "u"));
             composite.add(new Equals("u.id", userId));
         }
 

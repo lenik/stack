@@ -1,7 +1,7 @@
 package com.bee32.ape.engine.base;
 
 public interface IApeActivitiAdapter
-        extends IAppCtxAware {
+        extends IAppCtxAccess {
 
     Class<com.bee32.icsf.principal.User> icsfUserType = com.bee32.icsf.principal.User.class;
     Class<com.bee32.icsf.principal.Group> icsfGroupType = com.bee32.icsf.principal.Group.class;
