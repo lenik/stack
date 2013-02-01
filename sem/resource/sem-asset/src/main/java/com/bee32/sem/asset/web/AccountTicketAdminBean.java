@@ -2,6 +2,8 @@ package com.bee32.sem.asset.web;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
@@ -86,6 +88,14 @@ public class AccountTicketAdminBean
             if (!ticket.isDebitCreditEqual()) {
                 uiLogger.error("借贷金额不相等");
                 return false;
+            }
+
+            List<AccountTicketItemDto> items = ticket.getItems();
+            for(AccountTicketItemDto item : items) {
+                if (StringUtils.isEmpty(item.getDescription())) {
+                    uiLogger.error("摘要不能为空");
+                    return false;
+                }
             }
         }
         return true;
