@@ -159,7 +159,7 @@ public class AccountTicketDto
     }
 
     public String getSummary() {
-        if(items != null) {
+        if(items != null && items.size() > 0) {
             return items.get(0).getDescription();
         }
         return null;

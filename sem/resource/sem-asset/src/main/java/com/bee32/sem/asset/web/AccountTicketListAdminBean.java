@@ -13,7 +13,7 @@ public class AccountTicketListAdminBean
 
 
     public AccountTicketListAdminBean() {
-        super(AccountTicket.class, AccountTicketDto.class, 0);
+        super(AccountTicket.class, AccountTicketDto.class, AccountTicketDto.ITEMS);
     }
 
 

@@ -29,6 +29,8 @@
             </p:commandLink>
         </p:column>
 
-
+        <p:column headerText="摘要" sortBy="#{entry.summary}">
+            <h:outputText value="#{entry.summary}" />
+        </p:column>
     </ui:define>
 </ui:composition>
