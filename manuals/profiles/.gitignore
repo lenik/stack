@@ -2,3 +2,8 @@ modules
 version
 src
 randsrc
+
+manualdoc-1.mk
+manualdoc-1.tex
+manualpro.mk
+manualpro.tex

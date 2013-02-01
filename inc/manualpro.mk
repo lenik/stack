@@ -7,7 +7,18 @@ g_incdir := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 tex_template := $(g_incdir)/manualpro.tex
 tex_libmanual := $(g_incdir)/libmanual.tex
 
-all: manualpro.pdf
+all: version manualpro.pdf symlinks
+
+symlinks: manualdoc-1.mk manualpro.tex manualpro.mk
+
+manualdoc-1.mk:
+	ln -snf ../../../inc/manualdoc-1.mk .
+
+manualpro.mk:
+	ln -snf ../../../inc/manualpro.mk .
+
+manualpro.tex:
+	ln -snf ../../../inc/manualpro.tex .
 
 manualpro.pdf: profile.tex history.tex $(tex_template) $(tex_libmanual)
 	cooltex -abvjmanualpro \

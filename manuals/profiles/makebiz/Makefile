@@ -2,5 +2,5 @@
 
 include ../../../inc/manualpro.mk
 
-TITLE    = SEM-Makebiz-Profile
-SUBTITLE = 企业生产管理系统
+TITLE       = 智恒企业生产管理系统
+SUBTITLE    = SEM-Makebiz-Profile

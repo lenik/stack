@@ -2,5 +2,5 @@
 
 include ../../../inc/manualpro.mk
 
-TITLE    = SEM-Asset-Profile
-SUBTITLE = 企业资产管理系统
+TITLE       = 智恒企业资产管理系统
+SUBTITLE    = SEM-Asset-Profile

@@ -2,5 +2,5 @@
 
 include ../../../inc/manualpro.mk
 
-TITLE    = SEM-Inventory-Profile
-SUBTITLE = 企业库存管理系统
+TITLE       = 智恒企业库存管理系统
+SUBTITLE    = SEM-Inventory-Profile

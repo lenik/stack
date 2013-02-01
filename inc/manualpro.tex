@@ -16,11 +16,18 @@
 
 \usepackage{fancyhdr}
     \pagestyle{fancy}
+    \fancypagestyle{plain}
+
     \fancyhead[LO,RE]{\slshape \modtitle (版本 \modversion)}
-    \fancyhead[LE,RO]{\slshape \leftmark}
+    %\fancyhead[LE,RO]{\slshape \leftmark}
     \fancyfoot[C]{}
     \fancyfoot[LO,RE]{}
-    \fancyfoot[LE,RO]{\thepage}
+    %\fancyfoot[LE,RO]{\thepage}
+
+    % 要求页码必须在右上角
+        \fancyhead[LE,RO]{\slshape \thepage}
+        \fancyfoot[LE,RO]{}
+
     \renewcommand{\chaptermark}[1]{%
         \markboth{第\CJKnumber{\thechapter}章.\ #1}{}}
 
@@ -68,6 +75,27 @@
 
 \input{\DIRNAME/libmanual.tex}
 
+    \newcounter{oldpage}
+    \newcounter{contpage}
+    \setcounter{contpage}{1}
+
+    \newif\ifclearbeforecont
+    \newif\ifclearaftercont
+    \clearbeforeconttrue
+    \clearafterconttrue
+    \def\begincont{
+        \ifclearbeforecont\clearpage\fi
+        \setcounter{oldpage}{\thepage}
+        \setcounter{page}{\thecontpage}
+        \clearbeforeconttrue
+    }
+    \def\endcont{
+        \ifclearaftercont\clearpage\fi
+        \setcounter{contpage}{\thepage}
+        \setcounter{page}{\theoldpage}
+        \clearafterconttrue
+    }
+
 \newcommand\modulechapter[2]{
     \chapter{#1}
     \def\DIRNAME{../../../#2/doc}
@@ -103,6 +131,7 @@
     \listoffigures
 }
 \clearpage
+\setcounter{page}{10001}
 
 \def\DIRNAME{.}
 \import{\DIRNAME/}{profile}

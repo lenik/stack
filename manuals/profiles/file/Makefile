@@ -2,5 +2,5 @@
 
 include ../../../inc/manualpro.mk
 
-TITLE    = SEM-File-Profile
-SUBTITLE = 企业档案管理系统
+TITLE       = 智恒企业档案管理系统
+SUBTITLE    = SEM-File-Profile

@@ -1,0 +1,100 @@
+\practices
+
+\subsection {定单管理}
+\opset{订单管理}{
+    \item \ops{新建生产订单}{
+        \item  点击工具栏上的\button{新建}按钮，进入新建生产订单界面
+            \screenshot{11.png}
+        \item  输入\button{摘要}
+        \item  输入\textbox{附加要求}
+        \item 选择\button{客户}
+        \item 选择对应\button{销售机会}
+        \item  点击\button{添加}按钮弹出添加订单项目对话框
+            \screenshot{12.png}
+        \ul {
+            \item  选择订单项目对应的\button{物料}
+            \item  输入\textbox{单价}
+            \item  输入\textbox{数量}
+            \item  输入\textbox{对外名称}
+            \item  输入\textbox{对外规格型号}
+            \item  输入\textbox{备注}
+            \item  选择\button{币种}，\button{铭牌}和\button{交货时间}
+            \item  点击\button{确定}按钮，增加一个生产订单项目
+        }
+            \screenshot{13.png}
+        \item  点击\button{保存}按钮，保存新建的生产订单
+    }
+    \item \ops{修改生产订单}{
+        \item  选择需要修改的生产订单
+            \screenshot{14.png}
+        \item  点击工具栏上的\button{修改}按钮，进入修改生产订单页面
+        \item  修改相应需要修改的内容
+        \item  点击\button{保存}按钮，保存更改后的生产订单
+    }
+    \item \ops{删除生产订单}{
+        \item  选择需要删除的生产订单
+            \screenshot{15.png}
+        \item  点击工具栏上的\button{删除}按钮
+        \item  在弹出的确认对话框中点击\button{确定}，删除对应的生产订单
+    }
+    \item \ops{将生产任务单转换为PDF格式} {}
+}
+选择需要打印的生产任务单，点击工具栏上的PDF按钮。系统会生成此生产任务单对应的PDF文件。方便打印。
+
+\subsection{生产任务管理}
+\opset{生产任务管理}{
+    \item \ops{新建生产任务单}{
+        \item  点击工具栏上的\button{新建}按钮，进入到新建生产任务单界面
+            \screenshot{16.png}
+        \item  选择相应的\button{生产订单},系统自动导入生产项目
+            \screenshot{17.png}
+        \item  编辑\button{摘要信息}
+        \item  如果需要修改生产项目
+        \ul {
+            \item  选中需要修改的生产项目
+            \item  点击\button{修改}按钮，进入到修改生产项目界面
+            \item  修改相应需要修改的项目
+            \item  点击\button{确定}按钮，保存修改后的生产项目
+                \screenshot{18.png}
+        }
+        \item  点击\button{保存}按钮，保存新建的生产任务单
+    }
+    \item \ops{修改生产任务单}{
+        \item  选择需要修改的生产任务单
+        \item  点击工具栏上的\button{修改}按钮，进入到生产任务单修改页面
+        \item  修改相应需要修改的内容
+        \item  点击\button{保存}按钮，保存更改后的胜场任务单
+    }
+    \item \ops{删除生产任务单}{
+        \item  选择需要删除的生产任务单
+        \item  点击工具栏上的\button{删除}按钮，在弹出的确认对话框中点击\button{确定}按钮，删除相应的生产任务单
+            \screenshot{19.png}
+    }
+}
+
+
+\subsection{物料计划管理}
+\opset{物料计划管理}{
+    \item \ops{新建物料计划单}{
+        \item  点击工具栏上的\button{新建}按钮，进入新建物料计划单界面
+            \screenshot{20.png}
+        \item  选择对应的\button{生产任务单}或者\button{订单}，系统会自动计算出物料计划项
+            \screenshot{21.png}
+        \item  编辑\button{物料计划项}明细
+        \item  点击库存锁定标签，点击\button{库存导入}按钮，导入仓库中相关原料
+            \screenshot{22.png}
+        \item  编辑\button{库存锁定项}明细
+        \item  点击\button{保存}按钮，保存新建的物料计划单
+    }
+    \item \ops{修改物料计划单}{
+        \item  选择需要修改的物料计划单
+        \item  点击工具栏上的\button{修改}按钮，进入修改物料计划单页面
+        \item  修改相应的内容
+        \item  点击\button{保存}按钮，保存修改后的物料计划单
+    }
+    \item \ops{删除物料计划单}{
+        \item  选择需要删除的物料计划单
+        \item  点击工具栏上的\button{删除}按钮，在弹出的确认对话框中，点击\button{确认}按钮，删除相应的物料计划单
+            \screenshot{23.png}
+    }
+}

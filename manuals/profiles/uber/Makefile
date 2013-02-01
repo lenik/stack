@@ -2,5 +2,5 @@
 
 include ../../../inc/manualpro.mk
 
-TITLE    = SEM-Uber-Profile
-SUBTITLE = 企业统一管理系统
+TITLE       = 智恒企业统一管理系统
+SUBTITLE    = SEM-Uber-Profile

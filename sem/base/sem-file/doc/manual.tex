@@ -1,69 +1,11 @@
+\clearbeforecontfalse
+
+\ifdefine\fileCont{\begincont}\fi
 
 %\input{\DIRNAME/part1.tex}
 \input{\DIRNAME/part2.tex}
 
-\practices
+\input{\DIRNAME/practice.tex}
 
-\subsection{用户文件管理}
-上传用户文件分为两个步骤
-\button{ I}.上传文件
-\button{ II}.对上传的文件设置标签等信息
-\opset{用户文件管理}{
-    \item \ops{上传文件}{
-        \item 点击\button{上传}按钮，弹出上传文件对话框
-            \screenshot{8.png}
-        \item 点击\button{选择文件}按钮，选择需要上传的文件
-        \item 点击右侧的小箭头图标，单个上传文件
-        \item (如果要取消上传)最右边的取消按钮，取消上传对应的文件
-        \item 点击\button{上传}按钮，批量上传文件
-        \item 点击\button{取消}按钮，取消全部选中文件的上传
-    }
-    \item \ops{对上传的文件设置标签等信息}{
-        \item 选择刚刚上传的文件，点击工具栏上的\button{修改}按钮,弹出修改文件信息对话框
-            \screenshot{9.png}
-        \item 选择档案日期，客户
-        \item 点击按钮，弹出选择客户对话框(如果该文件对应某个客户)
-            \screenshot{10.png}
-        \item 选择客户，点击\button{确定}按钮，完成选择
-        \item 编辑\textbox{文件名称}
-        \item 编辑\textbox{文件标题}
-        \item 编辑\textbox{描述信息}
-        \item 点击按钮，弹出选择经办人对话框(如果需要)
-            \screenshot{11.png}
-        \item 点击\button{确定}按钮，选择\textbf{经办人}
-        \item 点击添加标签按钮，弹出添加标签对话框(标签需在标签设置中预置)
-        \item 点击\button{确定}按钮，给文件添加选中的标签
-        item 点击\button{保存}按钮，保存更改
-    }
-    \item \ops{删除文件}{
-        \item \screenshot{7.png}
-    }
-    \item \opset {检索用户文件} {
-        \item \screenshot{6.png}
-    }
-}
+\ifdefine\fileCont{\endcont}\fi
 
-\subsection{文件标签设置}
-\opset{文件标签设置}{
-    \item \ops{新建文件标签}{
-        \item  点击工具栏上的\button{新建}按钮，弹出新建文件标签对话框
-            \screenshot{1.png}
-        \item  输入\textbox{标签名称}
-        \item  输入\textbox{描述}
-        \item  点击\button{保存}按钮，完成新增标签
-    }
-    \item \ops{查看文件标签}{
-        \item  选择文件标签
-        \item  点击工具栏上的\button{查看}按钮，查看文件标签详细
-    }
-    \item \ops{修改文件标签}{
-        \item  点击工具栏上的\button{修改}按钮，弹出修改标签对话框
-        \item  修改相关信息，点击\button{保存}按钮，完成修改
-            \screenshot{3.png}
-    }
-    \item \ops{删除文件标签}{
-        \item  点击工具栏上的\button{删除}按钮，弹出确定删除对话框
-            \screenshot{2.png}
-        \item  点击\button{确定}按钮，删除文件标签
-    }
-}

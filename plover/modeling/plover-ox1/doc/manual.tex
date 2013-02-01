@@ -1,184 +1,20 @@
-% 帐号与密码
-\input{\DIRNAME/account.tex}
+\clearbeforecontfalse
 
-% 基于角色的访问控制
-\input{\DIRNAME/rbac.tex}
+% \newcommand{\contfor}[1]{\ifdefined #1 #2}
+\ifdefined\userCont{\begincont}\fi
 
-\practices
-\subsection{角色，组，用户之间的关系}
-    模型图:
-    \screenshot{role_group_user.png}
-    \ol {
-        \item  一个用户可以有很多角色
-        \item  一个用户可以属于很多组
-        \item  一个组可以拥有很多用户
-        \item  一个组可以有很多角色
-        \item  一个角色可以对应很多用户
-        \item  一个角色可以对应很多组
-        \item  组是一个树型的结构。一个组下面可以有很多组
-        \item  角色是一个树型的结构。一个角色下面可以有很多角色
-    }
+\ifdefined\rbacCont{}\else{
+    % 帐号与密码
+    \input{\DIRNAME/account.tex}
+}\fi
 
-\subsection{登录}
-    \ol {
-        \item  在浏览器地址栏输入本系统的网址
-            登录界面如下图
-            \screenshot{login.png}
-        \item  输入用户名
-        \item  输入密码
-        \item  点击登录
-    }
-    登录后的界面如下:
-    \screenshot{welcome.png}
+\ifdefined\rbacCont{\begincont}\fi
 
-\subsection{角色管理}
-    对应菜单:选项$\rightarrow$系统$\rightarrow$安全主体$\rightarrow$角色管理
-    \opset{角色管理}{
-        \item \ops{新建角色}{
-            \item  点击工具栏上的\button{新建}按钮，弹出新建用户角色对话框
-                \screenshot{45.png}
-            \item  (如果有上级角色)点击按钮，弹出选择上级角色对话框
-                \screenshot{46.png}
-            \item  选择上级角色，点击\button{确定}按钮，完成上级角色选择
-            \item  (如果没有上级角色)点击\button{X按钮}，删除上级角色
-            \item  输入角色\textbox{代码}
-            \item  输入角色\textbox{名称}
-            \item  点击\button{保存}按钮，完成角色新建
-        }
-        \item \ops{编辑角色}{
-            \item  选择需要修改的角色
-            \item  点击工具栏上的\button{修改}按钮，弹出修改角色对话框
-            \item  修改相应的内容，过程类似与新建角色
-            \item  点击\button{保存}按钮，完成角色信息修改
-        }
-        \item  \ops{查看角色}{
-            \item  选择需要查看的角色
-            \item  点击工具栏上的\button{查看}按钮，查看角色的详细信息
-        }
-        \item  \ops{删除角色}{
-            \item  点击\button{删除}按钮，弹出确认删除对话框
-                \screenshot{47.png}
-            \item  点击\button{确定}按钮，完成角色删除
-        }
-    }
+    % 基于角色的访问控制
+    \input{\DIRNAME/rbac.tex}
 
-\subsection{组管理}
-    \opset{组管理}{
-        \item  \ops{新建用户分组}{
-            \item  点击\button{新建}按钮，弹出新建用户组对话框
-                \screenshot{42.png}
-            \item  点击按钮，弹出选择上级分组对话框
-                \screenshot{43.png}
-            \item  选择上级用户组，点击\button{确定}按钮，完成选择
-            \item  如果不需要上级分组）点击\button{X按钮}删除
-            \item  输入组的\textbox{代码}
-            \item  输入组的\textbox{名称}
-            \item  输入组的\textbox{描述}
-            \item  点击\button{保存}按钮，完成新用户组的添加
-        }
-        \item  \ops{编辑用户分组}{
-            \item  选择用户分组
-            \item  点击工具栏上的\button{编辑}按钮，弹出编辑用户组对话框
-            \item  编辑相关信息，过程类似于新建用户组
-            \item  点击\button{保存}按钮，完成用户组编辑
-        }
-        \item  \ops{查看用户分组}{
-            \item  选择需要查看的用户组
-            \item  点击工具栏上的查看按钮，显示用户分组明细信息
-        }
-        \item  \ops{删除用户分组}{
-            \item  点击工具栏上的\button{删除}按钮，弹出确认删除对话框
-                \screenshot{44.png}
-            \item  点击\button{确定}按钮，完成用户分组删除
-        }
-    }
+    \input{\DIRNAME/practice.tex}
 
-\subsection{用户管理}
-    \opset{用户管理}{
-        \item  \ops{新建用户}{
-            \item  点击工具栏上的\button{新建}按钮，弹出新建用户对话框
-                \screenshot{48.png}
-            \item  输入用户\textbox{代码}，（注意：一经确定，不可跟改）
-            \item  输入用户\textbox{名称}
-            \item  输入用户\textbox{密码}
-            \item  \textbf{确认密码}
-            \item  点击\button{保存}按钮，完成用户添加
-        }
-        \item  \ops{查看用户}{
-            \item --该功能被禁用
-        }
-        \item  \ops{编辑用户}{
-            \item  选择用户
-            \item  点击工具栏上的\button{修改}按钮，弹出修改用户信息对话框
-            \item  修改相应内容（用户代码不能修改）
-            \item  点击\button{保存}按钮，完成修改
-        }
-        \item \ops{删除用户}{
-            \item  点击工具栏上的\button{删除}按钮，弹出确认删除对话框
-            \screenshot{49.png}
-            \item  点击\button{确定}按钮，完成删除
-        }
-        \item  \ops{设置用户角色}{
-            \item  点击操作列中\button{指派角色}，弹出用户角色指派对话框
-                \screenshot{50.png}
-            \item  点击\button{添加}按钮，弹出角色列表供选择
-                \screenshot{51.png}
-            \item  点击\button{确定}按钮，选择用户角色
-            \item  点击\button{移除}按钮，移除不必要的用户角色
-            \item  点击\button{确定}按钮，完成用户角色指派
-        }
-        \item  \ops{设置用户分组}{
-            \item  点击操作列中\button{指派组}，弹出指派用户组的对话框
-                \screenshot{52.png}
-            \item  点击\button{添加}按钮，弹出用户组选择对话框
-                \screenshot{53.png}
-            \item  选择用户组，点击\button{确定}按钮，添加用户所属的组
-            \item  点击\button{移除}按钮，移除用户所在的组
-            \item  点击\button{确定}按钮，完成用户所在组设置
-        }
-        \item  \ops{设置对应人员}{
-            \item  点击工具列中\button{对应人员}，弹数对应人员对话框
-                \screenshot{54.png}
-            \item  点击\button{选择对应人员}按钮，弹出人员选择对话框
-                \screenshot{55.png}
-            \item  点击\button{确定}按钮，设置对应人员
-        }
-    }
+\ifdefined\rbacCont{\endcont}\fi
+\ifdefined\userCont{\endcont}\fi
 
-\subsection{权限管理}
-    \opset{权限管理}{
-        \item  \ops{新建用户权限}{
-            \item  点击工具栏上的\button{新建}按钮，弹出新建权限对话框
-                \screenshot{56.png}
-            \item  点击按钮，弹出选择权限主体对话框
-                \screenshot{57.png}
-            \item  点击\button{确定}按钮，选择权限主题
-            \item  点击按钮，弹出选择数据单元模块对话框
-                \screenshot{58.png}
-            \item  点击\button{确定}按钮，选择权限对应的数据模块
-            \item  设置具体权限
-                \ul {
-                    \item  \button{继承}:从上级用户或者组继承下来权限
-                    \item  \button{允许}
-                    \item  \button{拒绝}
-                }
-            \item  点击\button{确定}按钮，完成权限设置
-        }
-        \item  \ops{修改权限}{
-            \item 点击工具栏上的\button{修改}按钮，弹出修改权限对话框
-            \item 修改权限主体及数据单元(过程类似于新建权限）
-            \item 点击\button{保存}按钮，完成权限修改
-        }
-        \item  \ops{删除权限}{
-            \item  点击工具栏上\button{删除}按钮，弹出确认删除对话框
-                \screenshot{59.png}
-            \item  点击\button{确定}按钮，完成删除
-        }
-    }
-
-\subsection{修改密码}
-    \screenshot{60.png}
-    1.输入当前密码
-    2.输入新密码
-    3.确认新密码
-    4.点击修改，完成修改密码
