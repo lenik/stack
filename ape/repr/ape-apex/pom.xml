@@ -6,7 +6,7 @@
         <artifactId>repr</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>ape-html</artifactId>
+    <artifactId>ape-apex</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>

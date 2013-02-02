@@ -14,7 +14,7 @@
     <modules>
         <module>ape-banner</module>
         <module>ape-graph</module>
-        <module>ape-html</module>
+        <module>ape-apex</module>
     </modules>
     <name>APE :: Repr</name>
 </project>

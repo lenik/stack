@@ -12,7 +12,7 @@ execution/
 repr/
     ape-banner  Banner form.
     ape-graph   Full graph form.
-    ape-html    HTML dump.
+    ape-apex    HTML explorer.
 
 designer/
     aped-swt    Designer using SWT.

@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.ape</groupId>
-            <artifactId>ape-html</artifactId>
+            <artifactId>ape-apex</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
