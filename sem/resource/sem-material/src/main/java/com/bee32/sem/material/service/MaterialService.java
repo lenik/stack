@@ -29,6 +29,7 @@ public class MaterialService extends DataService {
 
         for(MaterialPriceDto price : material.getPrices()) {
             MaterialPriceDto newPrice = new MaterialPriceDto().create();
+            newPrice.setMaterial(newMaterial);
             newPrice.setPrice(price.getPrice());
 
             newMaterial.addPrice(newPrice);
