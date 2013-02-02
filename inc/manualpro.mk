@@ -25,7 +25,7 @@ manualpro.pdf: profile.tex history.tex $(tex_template) $(tex_libmanual)
 		-DDIRNAME="$(g_incdir)" \
 		-Dmodtitle="$(TITLE)" \
 		-Dmodsubtitle="$(SUBTITLE)" \
-		-Dmodversion="`cat version`" \
+		-Dmodversion="2.1.6" \
 		"$(tex_template)"
 
 # stack/manuals/profiles/FooBar/...
