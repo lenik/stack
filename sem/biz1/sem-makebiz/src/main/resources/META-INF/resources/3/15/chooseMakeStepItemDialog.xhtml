@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="var" default="chooseMakeStepItemDialog" />
+        <cc:attribute name="stereo" shortDescription="NOT IMPLMENETED" />
+        <cc:attribute name="target" type="java.lang.Object" required="true" />
+        <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="actionListener" targets="form:ok-validated" />
+        <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="header" default="${cc.attrs.dialogBean.header}" />
+        <cc:attribute name="formStyleClass" default="ui-dialog-form" />
+        <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${chooseMakeStepItemDialogBean}" />
+        <cc:attribute name="selectionHolder" type="java.lang.Object" />
+
+        <!-- facets -->
+        <cc:facet name="search" />
+        <cc:facet name="columns" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:decorate template="/template/simple-entity-dialog.xhtml">
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="target" value="${cc.attrs.target}" />
+            <ui:param name="multiple" value="${cc.attrs.multiple}" />
+            <ui:param name="update" value="${cc.attrs.update}" />
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="header" value="${cc.attrs.header}" />
+            <ui:param name="formStyleClass" value="${cc.attrs.formStyleClass}" />
+            <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+            <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
+
+            <ui:define name="columns">
+               <p:column headerText="时间" sortBy="${entry.createdDate}">
+                    <h:outputText value="${entry.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="简要" >
+                    <h:outputText value="${entry.label}" />
+                </p:column>
+                <p:column headerText="工艺" >
+                    <h:outputText value="#{entry.parent.model.stepName.label}" />
+                </p:column>
+                <p:column headerText="工艺流转单" >
+                    <h:outputText value="${entry.parent.parent.label}" />
+                </p:column>
+                <p:column headerText="计划数量" >
+                    <h:outputText value="${entry.planQuantity}" />
+                </p:column>
+                <p:column headerText="实际数量" >
+                    <h:outputText value="${entry.actualQuantity}" />
+                </p:column>
+                <p:column headerText="合格数量" >
+                    <h:outputText value="${entry.verifiedQuantity}" />
+                </p:column>
+                <p:column headerText="计划完成时间" sortBy="${entry.planDeadline}">
+                    <h:outputText value="${entry.planDeadline}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="实际完成时间" sortBy="${entry.actualDeadline}">
+                    <h:outputText value="${entry.actualDeadline}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="部门" >
+                    <h:outputText value="${entry.orgUnit.label}" />
+                </p:column>
+
+                <cc:renderFacet name="columns" />
+            </ui:define>
+        </ui:decorate>
+    </cc:implementation>
+</html>
