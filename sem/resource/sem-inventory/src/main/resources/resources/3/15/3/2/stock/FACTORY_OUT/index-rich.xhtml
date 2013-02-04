@@ -1,0 +1,22 @@
+<ui:composition template="../stock-template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="bean" value="#{stockOrderBean_OSP_OUT}" />
+    <ui:param name="title" value="#{bean.subject.displayName}" />
+    <ui:param name="job" value="#{bean.job.openedObject}" />
+
+    <ui:define name="edit-pre">
+        <p:panel id="job" header="委外加工作业信息">
+            <h:panelGrid columns="2">
+                <h:outputText value="作业简要" />
+                <p:inputText id="jobLabel" value="#{job.label}" label="作业简要"/>
+                <h:outputText value="作业描述" />
+                <p:inputText id="jobDescription" value="#{job.description}" label="作业描述"/>
+                <h:outputText value="对应的委外入库单：" />
+                <p:inputText id="jobInput" value="#{job.input.label}" disabled="true" label="对应的委外入库单"/>
+            </h:panelGrid>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
