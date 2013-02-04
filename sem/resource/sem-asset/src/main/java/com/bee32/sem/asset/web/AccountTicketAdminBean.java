@@ -7,11 +7,14 @@ import org.apache.commons.lang.StringUtils;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;
 import com.bee32.sem.asset.dto.AccountTicketSource;
+import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.IAccountTicketSource;
+import com.bee32.sem.asset.util.AssetCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -50,11 +53,11 @@ public class AccountTicketAdminBean
         } catch (FxrQueryException e1) {
             throw new RuntimeException(e1);
         }
-        ticketSource.setClassType((Class<? extends Entity<?>>)_source.getClass());
+        ticketSource.setClassType((Class<? extends Entity<?>>) _source.getClass());
 
         accountTicket.setTicketSource(ticketSource);
 
-        //把取到的凭证源上的金额生成凭证的一条明细
+        // 把取到的凭证源上的金额生成凭证的一条明细
         AccountTicketItemDto item = new AccountTicketItemDto().create();
         item.setDescription(_source.getTicketSrcLabel());
         item.setTicket(accountTicket);
@@ -91,9 +94,19 @@ public class AccountTicketAdminBean
             }
 
             List<AccountTicketItemDto> items = ticket.getItems();
-            for(AccountTicketItemDto item : items) {
+            for (AccountTicketItemDto item : items) {
                 if (StringUtils.isEmpty(item.getDescription())) {
                     uiLogger.error("摘要不能为空");
+                    return false;
+                }
+            }
+
+            for (AccountTicketItemDto item : items) {
+                AccountSubjectDto subject = item.getSubject();
+                String name = subject.getName();
+                List<AccountSubject> list = DATA(AccountSubject.class).list(AssetCriteria.subjectWithPrefix(name));
+                if (list.size() > 0) {
+                    uiLogger.warn(subject.getLabel() + "不是末级科目");
                     return false;
                 }
             }
@@ -103,11 +116,13 @@ public class AccountTicketAdminBean
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void postUpdate(UnmarshalMap uMap) throws Exception {
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
         for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
             AccountTicketDto dto = uMap.getSourceDto(me);
             Class ticketSourceType = dto.getTicketSource().getClassType();
-            IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(dto.getTicketSource().getId());
+            IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(
+                    dto.getTicketSource().getId());
             ticketSource.setTicket(me);
             try {
                 DATA(ticketSourceType).saveOrUpdate(ticketSource);
@@ -119,11 +134,13 @@ public class AccountTicketAdminBean
 
     @SuppressWarnings("unchecked")
     @Override
-    protected boolean preDelete(UnmarshalMap uMap) throws Exception {
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
         for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
             AccountTicketDto dto = uMap.getSourceDto(me);
             Class ticketSourceType = dto.getTicketSource().getClassType();
-            IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(dto.getTicketSource().getId());
+            IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(
+                    dto.getTicketSource().getId());
             ticketSource.setTicket(null);
             try {
                 DATA(ticketSourceType).saveOrUpdate(ticketSource);
@@ -134,6 +151,5 @@ public class AccountTicketAdminBean
 
         return true;
     }
-
 
 }
