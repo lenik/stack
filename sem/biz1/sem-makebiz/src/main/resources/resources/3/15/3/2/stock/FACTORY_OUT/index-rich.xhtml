@@ -9,7 +9,6 @@
     <ui:define name="edit-pre">
         <p:panel id="job" header="生产出库作业信息">
             <h:panelGrid columns="2">
-
                 <p:commandButton value="选择生产数据" onclick="chooseMakeStepItemDialog.show()" disabled="#{not bean.editing}" />
 
                 <h:outputText value="作业简要" />
@@ -23,7 +22,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMakeStepItemDialog id="c_makeStepItem" target="#{bean.job}"
+        <sem:chooseMakeStepItemDialog id="c_makeStepItem" target="#{bean.makeStepItem}"
             update=":editDialog:form:jobLabel :editDialog:form:jobDescription" />
     </ui:define>
 </ui:composition>
