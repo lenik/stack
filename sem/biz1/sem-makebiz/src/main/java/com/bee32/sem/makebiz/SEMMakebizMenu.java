@@ -4,12 +4,15 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
+import com.bee32.sem.inventory.SEMInventoryMenu;
+import com.bee32.sem.inventory.SEMInventoryModule;
 
 public class SEMMakebizMenu
         extends MenuComposite {
 
     static Location __ = WEB_APP.join(SEMMakebizModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
+    SEMInventoryMenu _inventory = require(SEMInventoryMenu.class);
 
     public MenuNode MAKEBIZ = menu(_frame_.MAIN, 450, "MAKEBIZ");
 
@@ -30,4 +33,9 @@ public class SEMMakebizMenu
 
     MenuNode makeStepItemListAdmin = entry(MAKEBIZ, 70, "makeStepItemListAdmin", __.join("stepItem/list.jsf"));
 
+
+    static Location __Inv = WEB_APP.join(SEMInventoryModule.PREFIX_);
+
+    /*    */MenuNode factoryTakeIn = entry(_inventory.INVENTORY, 40, "factoryTakeIn", __Inv.join("stock/OSP_IN/"));
+    /*    */MenuNode factoryTakeOut = entry(_inventory.INVENTORY, 41, "factoryTakeOut", __Inv.join("stock/FACTORY_OUT/"));
 }

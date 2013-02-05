@@ -27,8 +27,6 @@ public class SEMInventoryMenu
     /*    */MenuNode init = entry(INVENTORY, 10, "init", __.join("stock/INIT/"));
     /*    */MenuNode takeIn = entry(INVENTORY, 20, "takeIn", _stock(StockOrderSubject.TAKE_IN));
     /*    */MenuNode takeOut = entry(INVENTORY, 21, "takeOut", _stock(StockOrderSubject.TAKE_OUT));
-    /*    */MenuNode factoryTakeIn = entry(INVENTORY, 40, "factoryTakeIn", _stock(StockOrderSubject.FACTORY_IN));
-    /*    */MenuNode factoryTakeOut = entry(INVENTORY, 41, "factoryTakeOut", _stock(StockOrderSubject.FACTORY_OUT));
     /*    */MenuNode planOut = entry(INVENTORY, 42, "planOut", _stock(StockOrderSubject.PLAN_OUT));
     /*    */MenuNode stocktaking = entry(INVENTORY, 60, "stocktaking", __.join("stock/STKD/"));
     /*    */MenuNode transferOut = entry(INVENTORY, 70, "transferOut", __.join("stock/XFER_OUT/"));
