@@ -4,7 +4,7 @@
 
     <ui:param name="bean" value="#{stockOrderBean_FACTORY_OUT}" />
     <ui:param name="title" value="#{bean.subject.displayName}" />
-    <ui:param name="job" value="#{bean.job.openedObject}" />
+    <ui:param name="stockOrder" value="#{bean.openedObject}" />
 
     <ui:define name="edit-pre">
         <p:panel id="job" header="生产出库作业信息">
@@ -12,17 +12,17 @@
                 <p:commandButton value="选择生产数据" onclick="chooseMakeStepItemDialog.show()" disabled="#{not bean.editing}" />
 
                 <h:outputText value="作业简要" />
-                <p:inputText id="jobLabel" value="#{job.label}" label="作业简要"/>
+                <p:inputText id="jobLabel" value="#{stockOrder.job.label}" label="作业简要"/>
 
                 <h:outputText value="作业描述" />
-                <p:inputText id="jobDescription" value="#{job.description}" label="作业描述"/>
+                <p:inputText id="jobDescription" value="#{stockOrder.job.description}" label="作业描述"/>
 
             </h:panelGrid>
         </p:panel>
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMakeStepItemDialog id="c_makeStepItem" target="#{bean.makeStepItem}"
+        <sem:chooseMakeStepItemDialog id="c_makeStepItem" target="#{stockOrder.job}"
             update=":editDialog:form:jobLabel :editDialog:form:jobDescription" />
     </ui:define>
 </ui:composition>
