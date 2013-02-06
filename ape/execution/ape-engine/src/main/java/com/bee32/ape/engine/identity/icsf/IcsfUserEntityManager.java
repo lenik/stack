@@ -1,4 +1,4 @@
-package com.bee32.ape.engine.identity;
+package com.bee32.ape.engine.identity.icsf;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import javax.free.NotImplementedException;
 
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
-import org.activiti.engine.identity.UserQuery;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.UserQueryImpl;
 import org.activiti.engine.impl.persistence.entity.IdentityInfoEntity;
@@ -20,11 +19,11 @@ import com.bee32.ape.engine.base.IApeActivitiAdapter;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.criteria.hibernate.Equals;
 
-public class ApeUserEntityManager
+public class IcsfUserEntityManager
         extends UserEntityManager
         implements IApeActivitiAdapter {
 
-    static final Logger logger = LoggerFactory.getLogger(ApeUserEntityManager.class);
+    static final Logger logger = LoggerFactory.getLogger(IcsfUserEntityManager.class);
 
     @Override
     public UserEntity createNewUser(String userId) {
@@ -92,14 +91,9 @@ public class ApeUserEntityManager
      */
     @Override
     public List<Group> findGroupsByUser(String userId) {
-        ApeGroupQuery query = new ApeGroupQuery();
+        IcsfGroupQuery_G query = new IcsfGroupQuery_G();
         query.groupMember(userId);
         return query.list();
-    }
-
-    @Override
-    public UserQuery createNewUserQuery() {
-        return new ApeUserQuery();
     }
 
     @Override
@@ -123,7 +117,7 @@ public class ApeUserEntityManager
     @Override
     public UserEntity findUserById(String userId) {
         com.bee32.icsf.principal.User icsfUser = ctx.data.access(icsfUserType).getByName(userId);
-        return ActivitiIdentityAdapters.icsfUser2activitiUser(icsfUser);
+        return IcsfIdentityAdapters.icsfUser2activitiUser(icsfUser);
     }
 
     @Override

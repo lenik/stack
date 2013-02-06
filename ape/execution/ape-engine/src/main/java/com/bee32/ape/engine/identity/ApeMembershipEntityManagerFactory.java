@@ -4,6 +4,8 @@ import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.activiti.engine.impl.persistence.entity.MembershipEntityManager;
 
+import com.bee32.ape.engine.identity.icsf.IcsfMembershipEntityManager;
+
 public class ApeMembershipEntityManagerFactory
         implements SessionFactory {
 
@@ -14,7 +16,7 @@ public class ApeMembershipEntityManagerFactory
 
     @Override
     public Session openSession() {
-        return new ApeMembershipEntityManager();
+        return new IcsfMembershipEntityManager();
     }
 
 }

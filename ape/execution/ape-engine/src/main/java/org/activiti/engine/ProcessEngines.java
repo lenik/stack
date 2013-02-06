@@ -18,10 +18,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.ProcessEngineInfo;
 import org.activiti.engine.impl.ProcessEngineInfoImpl;
 import org.activiti.engine.impl.util.IoUtil;
 import org.activiti.engine.impl.util.ReflectUtil;

@@ -7,7 +7,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>ape-apex</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.ape</groupId>

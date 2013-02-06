@@ -7,6 +7,8 @@ import org.activiti.engine.impl.AbstractQuery;
 import org.activiti.engine.impl.UserQueryProperty;
 import org.activiti.engine.query.Query;
 
+import com.bee32.ape.engine.identity.ActivitiOrderUtils;
+import com.bee32.ape.engine.identity.UserEntityUtils;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
@@ -19,7 +21,7 @@ public abstract class AbstractApeQuery<query_t extends Query<?, ?>, pojo_t>
 
     Class<? extends Entity<?>> icsfEntityType;
 
-    String orderProperty;
+    String sqlOrderProperty;
     boolean reverseOrder = false;
 
     public AbstractApeQuery(Class<? extends Entity<?>> icsfEntityType) {
@@ -37,29 +39,20 @@ public abstract class AbstractApeQuery<query_t extends Query<?, ?>, pojo_t>
         this.icsfEntityType = icsfEntityType;
 
         String orderBy = o.getOrderBy();
-        // parse orderBy...
         if (orderBy != null) {
-            orderBy = orderBy.trim();
-            int pos = orderBy.indexOf(' ');
-            String column;
-            if (pos == -1) {
-                column = orderBy;
-            } else {
-                column = orderBy.substring(0, pos);
-                switch (orderBy.substring(pos + 1).trim().toLowerCase()) {
-                case "desc":
-                    reverseOrder = true;
-                }
-            }
+            if (!ActivitiOrderUtils.isAscending(orderBy))
+                reverseOrder = true;
 
-            if (UserQueryProperty.USER_ID.getName().equals(column))
-                orderProperty = "name";
-            else if (UserQueryProperty.FIRST_NAME.getName().equals(column))
-                orderProperty = "label";
-            else if (UserQueryProperty.LAST_NAME.getName().equals(column))
+            UserQueryProperty property = UserEntityUtils.getOrderProperty(orderBy);
+            if (property == UserQueryProperty.USER_ID)
+                sqlOrderProperty = "name";
+
+            else if (property == UserQueryProperty.FIRST_NAME)
+                sqlOrderProperty = "label";
+            else if (property == UserQueryProperty.LAST_NAME)
                 // order by last name isn't supported.
                 ;
-            else if (UserQueryProperty.EMAIL.getName().equals(column))
+            else if (property == UserQueryProperty.EMAIL)
                 // order by email isn't supported.
                 ;
             else
@@ -81,11 +74,11 @@ public abstract class AbstractApeQuery<query_t extends Query<?, ?>, pojo_t>
     }
 
     protected String getOrderProperty() {
-        return orderProperty;
+        return sqlOrderProperty;
     }
 
     protected void setOrderProperty(String orderProperty) {
-        this.orderProperty = orderProperty;
+        this.sqlOrderProperty = orderProperty;
     }
 
     protected boolean isReverseOrder() {
@@ -98,12 +91,12 @@ public abstract class AbstractApeQuery<query_t extends Query<?, ?>, pojo_t>
 
     CriteriaComposite composeAll() {
         CriteriaComposite composite = compose();
-        if (orderProperty != null) {
+        if (sqlOrderProperty != null) {
             Order order;
             if (reverseOrder)
-                order = Order.desc(orderProperty);
+                order = Order.desc(sqlOrderProperty);
             else
-                order = Order.asc(orderProperty);
+                order = Order.asc(sqlOrderProperty);
             composite.add(order);
         }
         return composite;

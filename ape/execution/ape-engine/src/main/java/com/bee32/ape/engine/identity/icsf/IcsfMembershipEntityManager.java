@@ -1,4 +1,4 @@
-package com.bee32.ape.engine.identity;
+package com.bee32.ape.engine.identity.icsf;
 
 import org.activiti.engine.impl.persistence.entity.MembershipEntityManager;
 
@@ -6,17 +6,17 @@ import com.bee32.ape.engine.base.IApeActivitiAdapter;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
 
-public class ApeMembershipEntityManager
+public class IcsfMembershipEntityManager
         extends MembershipEntityManager
         implements IApeActivitiAdapter {
 
     @Override
     public void createMembership(String userId, String groupId) {
         String icsfUserName = userId;
-        String icsfGroupName = groupId + GROUP_EXT;
+        String icsfRoleName = groupId + ROLE_EXT;
 
         User _user = ctx.data.access(icsfUserType).getByName(icsfUserName);
-        Role _group = ctx.data.access(icsfGroupType).getByName(icsfGroupName);
+        Role _group = ctx.data.access(icsfRoleType).getByName(icsfRoleName);
 
         _user.addAssignedRole(_group);
 
@@ -26,10 +26,10 @@ public class ApeMembershipEntityManager
     @Override
     public void deleteMembership(String userId, String groupId) {
         String icsfUserName = userId;
-        String icsfGroupName = groupId + GROUP_EXT;
+        String icsfRoleName = groupId + ROLE_EXT;
 
         User _user = ctx.data.access(icsfUserType).getByName(icsfUserName);
-        Role _group = ctx.data.access(icsfGroupType).getByName(icsfGroupName);
+        Role _group = ctx.data.access(icsfRoleType).getByName(icsfRoleName);
 
         _user.removeAssignedRole(_group);
 

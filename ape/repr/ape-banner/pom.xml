@@ -6,7 +6,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>ape-banner</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
     <name>APE :: Repr :: Banner</name>
 </project>
