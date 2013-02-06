@@ -35,4 +35,10 @@ public class SiteHibernateTransactionManager
         super.setSessionFactory(sessionFactory);
     }
 
+//    @Inject
+//    @Override
+//    public void setDataSource(DataSource dataSource) {
+//        super.setDataSource(dataSource);
+//    }
+
 }
