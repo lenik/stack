@@ -79,20 +79,29 @@
     \newcounter{contpage}
     \setcounter{contpage}{1}
 
+    %\newcounter{oldchapter}
+    %\newcounter{contchapter}
+    %\setcounter{contchapter}{1}
+
     \newif\ifclearbeforecont
     \newif\ifclearaftercont
     \clearbeforeconttrue
     \clearafterconttrue
+
     \def\begincont{
         \ifclearbeforecont\clearpage\fi
         \setcounter{oldpage}{\thepage}
         \setcounter{page}{\thecontpage}
+        %\setcounter{oldchapter}{\thechapter}
+        %\setcounter{chapter}{\thecontchapter}
         \clearbeforeconttrue
     }
     \def\endcont{
         \ifclearaftercont\clearpage\fi
         \setcounter{contpage}{\thepage}
         \setcounter{page}{\theoldpage}
+        %\setcounter{contchapter}{\thechapter}
+        %\setcounter{chapter}{\theoldchapter}
         \clearafterconttrue
     }
 
@@ -132,6 +141,7 @@
 }
 \clearpage
 \setcounter{page}{10001}
+%\setcounter{chapter}{10001}
 
 \def\DIRNAME{.}
 \import{\DIRNAME/}{profile}
