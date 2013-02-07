@@ -52,21 +52,10 @@
                 <p:column headerText="工艺流转单" >
                     <h:outputText value="${entry.parent.parent.label}" />
                 </p:column>
-                <p:column headerText="计划数量" >
-                    <h:outputText value="${entry.planQuantity}" />
-                </p:column>
                 <p:column headerText="实际数量" >
                     <h:outputText value="${entry.actualQuantity}" />
                 </p:column>
-                <p:column headerText="合格数量" >
-                    <h:outputText value="${entry.verifiedQuantity}" />
-                </p:column>
-                <p:column headerText="计划完成时间" sortBy="${entry.planDeadline}">
-                    <h:outputText value="${entry.planDeadline}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="实际完成时间" sortBy="${entry.actualDeadline}">
+                <p:column headerText="完成时间" sortBy="${entry.actualDeadline}">
                     <h:outputText value="${entry.actualDeadline}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
