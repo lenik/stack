@@ -1,6 +1,6 @@
 package com.bee32.ape.engine.identity;
 
-public class ActivitiEntityUtils {
+public class MatchUtils {
 
     protected static boolean notMatch(String pattern, String str) {
         if (pattern == null)

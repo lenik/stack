@@ -2,12 +2,16 @@ package com.bee32.ape.engine.identity.composite;
 
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.GroupQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CompositeGroupQuery
         extends AbstractCompositeQuery<GroupQuery, Group>
         implements GroupQuery {
 
     private static final long serialVersionUID = 1L;
+
+    static final Logger logger = LoggerFactory.getLogger(CompositeGroupQuery.class);
 
     public CompositeGroupQuery() {
         super();

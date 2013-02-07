@@ -10,9 +10,13 @@ import org.activiti.engine.impl.GroupQueryImpl;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import org.activiti.engine.impl.persistence.entity.GroupEntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CompositeGroupEntityManager
         extends GroupEntityManager {
+
+    static final Logger logger = LoggerFactory.getLogger(CompositeGroupEntityManager.class);
 
     private List<GroupEntityManager> implementations = new ArrayList<>();
     private GroupEntityManager master;
@@ -71,24 +75,32 @@ public class CompositeGroupEntityManager
     @Override
     public List<Group> findGroupByQueryCriteria(GroupQueryImpl query, Page page) {
         Set<Group> union = new LinkedHashSet<Group>();
-        int firstResult = page.getFirstResult();
-        int maxResults = page.getMaxResults();
+        if (page == null) {
+            for (GroupEntityManager impl : implementations) {
+                List<Group> list = impl.findGroupByQueryCriteria(query, null);
+                union.addAll(list);
+            }
+        } else {
+            int firstResult = page.getFirstResult();
+            int maxResults = page.getMaxResults();
 
-        int beginIndex = 0;
-        for (GroupEntityManager impl : implementations) {
+            int beginIndex = 0;
+            for (GroupEntityManager impl : implementations) {
 
-            int localOffset = firstResult - beginIndex;
-            if (localOffset < 0)
-                localOffset = 0;
+                int localOffset = firstResult - beginIndex;
+                if (localOffset < 0)
+                    localOffset = 0;
 
-            int max = maxResults - union.size();
-            if (max <= 0)
-                break;
+                int max = maxResults - union.size();
+                if (max <= 0)
+                    break;
 
-            union.addAll(impl.findGroupByQueryCriteria(query, new Page(localOffset, max)));
-            beginIndex += impl.findGroupCountByQueryCriteria(query);
+                union.addAll(impl.findGroupByQueryCriteria(query, new Page(localOffset, max)));
+                beginIndex += impl.findGroupCountByQueryCriteria(query);
+            }
         }
-        return new ArrayList<Group>(union);
+        List<Group> groups = new ArrayList<Group>(union);
+        return groups;
     }
 
     @Override
@@ -98,7 +110,8 @@ public class CompositeGroupEntityManager
             List<Group> list = impl.findGroupsByUser(userId);
             union.addAll(list);
         }
-        return new ArrayList<Group>(union);
+        List<Group> groups = new ArrayList<Group>(union);
+        return groups;
     }
 
 }

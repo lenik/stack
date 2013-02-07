@@ -11,6 +11,8 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
 
+import com.bee32.ape.engine.identity.ActivitiGroupType;
+
 public class MemoryActivitiDatabase {
 
     private Map<String, UserEntity> userMap = new HashMap<>();
@@ -118,17 +120,26 @@ public class MemoryActivitiDatabase {
         getMemberIdSet(groupId).add(userId);
     }
 
-    public GroupEntity ADMIN_GROUP = new GroupEntity("admin");
-    public GroupEntity GUEST_GROUP = new GroupEntity("guest");
-    public UserEntity ADMIN_USER = new UserEntity("admin");
-    public UserEntity GUEST_USER = new UserEntity("guest");
+    public GroupEntity ADMIN_GROUP = createGroup(ActivitiGroupType.SECURITY_ROLE_ADMIN, "APE Administrators");
+    public GroupEntity USER_GROUP = createGroup(ActivitiGroupType.SECURITY_ROLE_USER, "APE Users");
     {
         addGroup(ADMIN_GROUP);
-        addGroup(GUEST_GROUP);
-        addUser(ADMIN_USER);
-        addUser(GUEST_USER);
-        addMembership(ADMIN_GROUP, ADMIN_USER);
-        addMembership(GUEST_GROUP, GUEST_USER);
+        addGroup(USER_GROUP);
+    }
+
+    static GroupEntity createGroup(String id, String name) {
+        GroupEntity group = new GroupEntity(id);
+        group.setName(name);
+        group.setType(ActivitiGroupType.SECURITY_ROLE);
+        return group;
+    }
+
+    static UserEntity createUser(String id, String firstName, String lastName, String password) {
+        UserEntity user = new UserEntity(id);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPassword(password);
+        return user;
     }
 
 }

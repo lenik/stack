@@ -87,8 +87,8 @@ public class InMemoryUserEntityManager
 
     @Override
     public List<User> findUserByQueryCriteria(UserQueryImpl query, Page page) {
-        int offset = page.getFirstResult();
-        int max = page.getMaxResults();
+        int offset = page == null ? 0 : page.getFirstResult();
+        int max = page == null ? -1 : page.getMaxResults();
         if (max == -1)
             max = Integer.MAX_VALUE;
 

@@ -84,6 +84,44 @@ public class User
         _retargetMerge(emails, o.emails);
     }
 
+    @Transient
+    public String getFirstName() {
+        String fullName = this.getFullName();
+        if (fullName == null)
+            return this.getName();
+
+        fullName = fullName.trim();
+        if (fullName.isEmpty())
+            return this.getName();
+
+        int space = fullName.indexOf(' ');
+        if (space == -1)
+            return fullName;
+        else
+            return fullName.substring(0, space);
+    }
+
+    @Transient
+    public String getLastName() {
+        String fullName = this.getFullName();
+        if (fullName == null)
+            return this.getName();
+
+        fullName = fullName.trim();
+        if (fullName.isEmpty())
+            return this.getName();
+
+        int space = fullName.indexOf(' ');
+        if (space == -1)
+            return "";
+
+        String lastName = fullName.substring(space + 1).trim();
+        if (lastName.isEmpty())
+            return "";
+        else
+            return lastName;
+    }
+
     /**
      * 主组
      *

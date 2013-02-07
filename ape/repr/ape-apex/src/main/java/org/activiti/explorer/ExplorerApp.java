@@ -35,242 +35,264 @@ import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
 /**
  * @author Joram Barrez
  */
-public class ExplorerApp extends Application implements HttpServletRequestListener {
+public class ExplorerApp
+        extends Application
+        implements HttpServletRequestListener {
 
-  private static final long serialVersionUID = -1L;
+    private static final long serialVersionUID = -1L;
 
-  // Thread local storage of instance for each user
-  protected static ThreadLocal<ExplorerApp> current = new ThreadLocal<ExplorerApp>();
+    // Thread local storage of instance for each user
+    protected static ThreadLocal<ExplorerApp> current = new ThreadLocal<ExplorerApp>();
 
-  protected String environment;
-  protected UserCache userCache;
-  protected MainWindow mainWindow;
-  protected ViewManager viewManager;
-  protected NotificationManager notificationManager;
-  protected I18nManager i18nManager;
-  protected AttachmentRendererManager attachmentRendererManager;
-  protected FormPropertyRendererManager formPropertyRendererManager;
-  protected VariableRendererManager variableRendererManager;
-  protected LoginHandler loginHandler;
-  protected WorkflowDefinitionConversionFactory workflowDefinitionConversionFactory;
-  protected ComponentFactories componentFactories;
+    protected String environment;
+    protected UserCache userCache;
+    protected MainWindow mainWindow;
+    protected ViewManager viewManager;
+    protected NotificationManager notificationManager;
+    protected I18nManager i18nManager;
+    protected AttachmentRendererManager attachmentRendererManager;
+    protected FormPropertyRendererManager formPropertyRendererManager;
+    protected VariableRendererManager variableRendererManager;
+    protected LoginHandler loginHandler;
+    protected WorkflowDefinitionConversionFactory workflowDefinitionConversionFactory;
+    protected ComponentFactories componentFactories;
 
-  // Flag to see if the session has been invalidated, when the application was closed
-  protected boolean invalidatedSession = false;
+    // Flag to see if the session has been invalidated, when the application was closed
+    protected boolean invalidatedSession = false;
 
-  public void init() {
-    setMainWindow(mainWindow);
-    mainWindow.showLoginPage();
-  }
+    public void init() {
+        setMainWindow(mainWindow);
+        mainWindow.showLoginPage();
+    }
 
-  /**
-   *  Required to support multiple browser windows/tabs,
-   *  see http://vaadin.com/web/joonas/wiki/-/wiki/Main/Supporting%20Multible%20Tabs
-   */
-//  public Window getWindow(String name) {
-//    Window window = super.getWindow(name);
-//    if (window == null) {
-//      window = new Window("Activiti Explorer");
-//      window.setName(name);
-//      addWindow(window);
-//      window.open(new ExternalResource(window.getURL()));
-//    }
+    /**
+     * Required to support multiple browser windows/tabs, see
+     * http://vaadin.com/web/joonas/wiki/-/wiki/Main/Supporting%20Multible%20Tabs
+     */
+// public Window getWindow(String name) {
+// Window window = super.getWindow(name);
+// if (window == null) {
+// window = new Window("Activiti Explorer");
+// window.setName(name);
+// addWindow(window);
+// window.open(new ExternalResource(window.getURL()));
+// }
 //
-//    return window;
-//  }
+// return window;
+// }
 
-  @Override
-  public void close() {
-    final LoggedInUser theUser = getLoggedInUser();
+    @Override
+    public void close() {
+        final LoggedInUser theUser = getLoggedInUser();
 
-    // Clear the logged in user
-    setUser(null);
+        // Clear the logged in user
+        setUser(null);
 
-    // Call loginhandler
-    getLoginHandler().logout(theUser);
+        // Call loginhandler
+        getLoginHandler().logout(theUser);
 
-    invalidatedSession = false;
-    super.close();
-  }
-
-  public static ExplorerApp get() {
-    return current.get();
-  }
-
-  public LoggedInUser getLoggedInUser() {
-    return (LoggedInUser) getUser();
-  }
-
-  public String getEnvironment() {
-    return environment;
-  }
-
-  // Managers (session scoped)
-
-  public ViewManager getViewManager() {
-    return viewManager;
-  }
-
-  public I18nManager getI18nManager() {
-    return i18nManager;
-  }
-
-  public NotificationManager getNotificationManager() {
-    return notificationManager;
-  }
-
-  // Application-wide services
-
-  public AttachmentRendererManager getAttachmentRendererManager() {
-    return attachmentRendererManager;
-  }
-
-  public FormPropertyRendererManager getFormPropertyRendererManager() {
-    return formPropertyRendererManager;
-  }
-
-  public void setFormPropertyRendererManager(FormPropertyRendererManager formPropertyRendererManager) {
-    this.formPropertyRendererManager = formPropertyRendererManager;
-  }
-
-  public UserCache getUserCache() {
-    return userCache;
-  }
-
-  public <T> ComponentFactory<T> getComponentFactory(Class<? extends ComponentFactory<T>> clazz) {
-    return componentFactories.get(clazz);
-  }
-
-  public LoginHandler getLoginHandler() {
-    return loginHandler;
-  }
-
-  public void setVariableRendererManager(VariableRendererManager variableRendererManager) {
-    this.variableRendererManager = variableRendererManager;
-  }
-
-  public VariableRendererManager getVariableRendererManager() {
-    return variableRendererManager;
-  }
-
-  public WorkflowDefinitionConversionFactory getWorkflowDefinitionConversionFactory() {
-    return workflowDefinitionConversionFactory;
-  }
-
-  public void setLocale(Locale locale) {
-    super.setLocale(locale);
-    if(i18nManager != null) {
-      i18nManager.setLocale(locale);
+        invalidatedSession = false;
+        super.close();
     }
-  }
 
-  // HttpServletRequestListener -------------------------------------------------------------------
+    public static ExplorerApp get() {
+        return current.get();
+    }
 
-  public void onRequestStart(HttpServletRequest request, HttpServletResponse response) {
-    // Set current application object as thread-local to make it easy accessible
-    current.set(this);
+    public LoggedInUser getLoggedInUser() {
+        return (LoggedInUser) getUser();
+    }
 
-    // Authentication: check if user is found, otherwise send to login page
-    LoggedInUser user = (LoggedInUser) getUser();
-    if (user == null) {
-      // First, try automatic login
-      user = loginHandler.authenticate(request, response);
-      if(user == null) {
-        if (mainWindow != null && !mainWindow.isShowingLoginPage()) {
-          viewManager.showLoginPage();
+    public String getEnvironment() {
+        return environment;
+    }
+
+    // Managers (session scoped)
+
+    public ViewManager getViewManager() {
+        return viewManager;
+    }
+
+    public I18nManager getI18nManager() {
+        return i18nManager;
+    }
+
+    public NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
+
+    // Application-wide services
+
+    public AttachmentRendererManager getAttachmentRendererManager() {
+        return attachmentRendererManager;
+    }
+
+    public FormPropertyRendererManager getFormPropertyRendererManager() {
+        return formPropertyRendererManager;
+    }
+
+    public void setFormPropertyRendererManager(FormPropertyRendererManager formPropertyRendererManager) {
+        this.formPropertyRendererManager = formPropertyRendererManager;
+    }
+
+    public UserCache getUserCache() {
+        return userCache;
+    }
+
+    public <T> ComponentFactory<T> getComponentFactory(Class<? extends ComponentFactory<T>> clazz) {
+        return componentFactories.get(clazz);
+    }
+
+    public LoginHandler getLoginHandler() {
+        return loginHandler;
+    }
+
+    public void setVariableRendererManager(VariableRendererManager variableRendererManager) {
+        this.variableRendererManager = variableRendererManager;
+    }
+
+    public VariableRendererManager getVariableRendererManager() {
+        return variableRendererManager;
+    }
+
+    public WorkflowDefinitionConversionFactory getWorkflowDefinitionConversionFactory() {
+        return workflowDefinitionConversionFactory;
+    }
+
+    public void setLocale(Locale locale) {
+        super.setLocale(locale);
+        if (i18nManager != null) {
+            i18nManager.setLocale(locale);
         }
-      } else {
-        setUser(user);
-      }
     }
 
-    if(user != null) {
-      Authentication.setAuthenticatedUserId(user.getId());
-      if (mainWindow != null && mainWindow.isShowingLoginPage()) {
-        viewManager.showDefaultPage();
-      }
+    // HttpServletRequestListener
+// -------------------------------------------------------------------
+
+    public void onRequestStart(HttpServletRequest request, HttpServletResponse response) {
+        // Set current application object as thread-local to make it easy accessible
+        current.set(this);
+
+        // Authentication: check if user is found, otherwise send to login page
+        LoggedInUser user = (LoggedInUser) getUser();
+        if (user == null) {
+            // First, try automatic login
+            user = loginHandler.authenticate(request, response);
+            if (user == null) {
+                if (mainWindow != null && !mainWindow.isShowingLoginPage()) {
+                    viewManager.showLoginPage();
+                }
+            } else {
+                setUser(user);
+            }
+        }
+
+        if (user != null) {
+            Authentication.setAuthenticatedUserId(user.getId());
+            if (mainWindow != null && mainWindow.isShowingLoginPage()) {
+                viewManager.showDefaultPage();
+            }
+        }
+
+        // Callback to the login handler
+        loginHandler.onRequestStart(request, response);
     }
 
-    // Callback to the login handler
-    loginHandler.onRequestStart(request, response);
-  }
+    public void onRequestEnd(HttpServletRequest request, HttpServletResponse response) {
+        // Clean up thread-local app
+        current.remove();
 
-  public void onRequestEnd(HttpServletRequest request, HttpServletResponse response) {
-    // Clean up thread-local app
-    current.remove();
+        // Clear authentication context
+        Authentication.setAuthenticatedUserId(null);
 
-    // Clear authentication context
-    Authentication.setAuthenticatedUserId(null);
+        // Callback to the login handler
+        loginHandler.onRequestEnd(request, response);
 
-    // Callback to the login handler
-    loginHandler.onRequestEnd(request, response);
-
-    if(!isRunning() && !invalidatedSession) {
-      // Clear the session context, the application has been closed during this request, otherwise
-      // the application will be stuck on the spring-session scope and will be reused on the next
-      // request, which will lead to problems
-      if(request.getSession(false) != null) {
-        request.getSession().invalidate();
-        invalidatedSession = true;
-      }
+        if (!isRunning() && !invalidatedSession) {
+            // Clear the session context, the application has been closed during this request,
+// otherwise
+            // the application will be stuck on the spring-session scope and will be reused on the
+// next
+            // request, which will lead to problems
+            if (request.getSession(false) != null) {
+                request.getSession().invalidate();
+                invalidatedSession = true;
+            }
+        }
     }
-  }
 
-  // Error handling ---------------------------------------------------------------------------------
+    // Error handling
+// ---------------------------------------------------------------------------------
 
-  @Override
-  public void terminalError(com.vaadin.terminal.Terminal.ErrorEvent event) {
-    super.terminalError(event);
+    @Override
+    public void terminalError(com.vaadin.terminal.Terminal.ErrorEvent event) {
+        super.terminalError(event);
 
-    if (notificationManager == null)
-        throw new NullPointerException("notificationManager");
+        if (notificationManager == null)
+            throw new NullPointerException("notificationManager");
 
-    Throwable ex = event.getThrowable();
-    if (ex == null)
-        throw new NullPointerException("ex");
+        Throwable ex = event.getThrowable();
+        if (ex == null)
+            throw new NullPointerException("ex");
 
-    notificationManager.showErrorNotification(Messages.UNCAUGHT_EXCEPTION, event.getThrowable().getCause().getMessage());
-  }
+        Throwable cause = ex.getCause();
+        if (cause == null)
+            cause = ex;
+        String message = ex.getMessage();
+        notificationManager.showErrorNotification(Messages.UNCAUGHT_EXCEPTION, message);
+    }
 
-  // URL Handling ---------------------------------------------------------------------------------
+    // URL Handling
+// ---------------------------------------------------------------------------------
 
-  public void setCurrentUriFragment(UriFragment fragment) {
-    mainWindow.setCurrentUriFragment(fragment);
-  }
-  public UriFragment getCurrentUriFragment() {
-    return mainWindow.getCurrentUriFragment();
-  }
+    public void setCurrentUriFragment(UriFragment fragment) {
+        mainWindow.setCurrentUriFragment(fragment);
+    }
 
-  // Injection setters
+    public UriFragment getCurrentUriFragment() {
+        return mainWindow.getCurrentUriFragment();
+    }
 
-  public void setEnvironment(String environment) {
-    this.environment = environment;
-  }
-  public void setUserCache(UserCache userCache) {
-    this.userCache = userCache;
-  }
-  public void setApplicationMainWindow(MainWindow mainWindow) {
-    this.mainWindow = mainWindow;
-  }
-  public void setViewManager(ViewManager viewManager) {
-    this.viewManager = viewManager;
-  }
-  public void setNotificationManager(NotificationManager notificationManager) {
-    this.notificationManager = notificationManager;
-  }
-  public void setI18nManager(I18nManager i18nManager) {
-    this.i18nManager = i18nManager;
-  }
-  public void setAttachmentRendererManager(AttachmentRendererManager attachmentRendererManager) {
-    this.attachmentRendererManager = attachmentRendererManager;
-  }
-  public void setComponentFactories(ComponentFactories componentFactories) {
-    this.componentFactories = componentFactories;
-  }
-  public void setLoginHandler(LoginHandler loginHandler) {
-    this.loginHandler = loginHandler;
-  }
-  public void setWorkflowDefinitionConversionFactory(WorkflowDefinitionConversionFactory workflowDefinitionConversionFactory) {
-    this.workflowDefinitionConversionFactory = workflowDefinitionConversionFactory;
-  }
+    // Injection setters
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+
+    public void setUserCache(UserCache userCache) {
+        this.userCache = userCache;
+    }
+
+    public void setApplicationMainWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+    }
+
+    public void setViewManager(ViewManager viewManager) {
+        this.viewManager = viewManager;
+    }
+
+    public void setNotificationManager(NotificationManager notificationManager) {
+        this.notificationManager = notificationManager;
+    }
+
+    public void setI18nManager(I18nManager i18nManager) {
+        this.i18nManager = i18nManager;
+    }
+
+    public void setAttachmentRendererManager(AttachmentRendererManager attachmentRendererManager) {
+        this.attachmentRendererManager = attachmentRendererManager;
+    }
+
+    public void setComponentFactories(ComponentFactories componentFactories) {
+        this.componentFactories = componentFactories;
+    }
+
+    public void setLoginHandler(LoginHandler loginHandler) {
+        this.loginHandler = loginHandler;
+    }
+
+    public void setWorkflowDefinitionConversionFactory(
+            WorkflowDefinitionConversionFactory workflowDefinitionConversionFactory) {
+        this.workflowDefinitionConversionFactory = workflowDefinitionConversionFactory;
+    }
 }

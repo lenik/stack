@@ -1,20 +1,13 @@
 package com.bee32.ape.engine.identity;
 
+import java.util.Collection;
+
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.GroupQueryImpl;
 import org.activiti.engine.impl.GroupQueryProperty;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
 
-import com.bee32.ape.engine.base.IAppCtxAccess.ctx;
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.criteria.hibernate.Alias;
-import com.bee32.plover.criteria.hibernate.CriteriaComposite;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Order;
-
-public class GroupEntityUtils
-        extends ActivitiEntityUtils {
+public class GroupEntityUtils {
 
     public static void populate(GroupEntity dst, GroupEntity src) {
         dst.setId(src.getId());
@@ -29,13 +22,13 @@ public class GroupEntityUtils
      * The member users and process info isn't matched.
      */
     public static boolean match(Group group, GroupQueryImpl query) {
-        if (notMatch(query.getId(), group.getId()))
+        if (MatchUtils.notMatch(query.getId(), group.getId()))
             return false;
-        if (notMatch(query.getName(), group.getName()))
+        if (MatchUtils.notMatch(query.getName(), group.getName()))
             return false;
-        if (notLike(query.getNameLike(), group.getName()))
+        if (MatchUtils.notLike(query.getNameLike(), group.getName()))
             return false;
-        if (notMatch(query.getType(), group.getType()))
+        if (MatchUtils.notMatch(query.getType(), group.getType()))
             return false;
         return true;
     }
@@ -57,45 +50,14 @@ public class GroupEntityUtils
         return null;
     }
 
-    public static CriteriaComposite compose(GroupQueryImpl query) {
-        CriteriaComposite composite = new CriteriaComposite();
-
-        String id = query.getId();
-        String name = query.getName();
-        String nameLike = query.getNameLike();
-        String type = query.getType();
-
-        if (id != null)
-            composite.add(new Equals("name", id + ROLE_EXT));
-
-        if (name != null)
-            composite.add(new Equals("label", name));
-        if (nameLike != null)
-            composite.add(new Like(true, "label", name));
-
-        if (type != null)
-            ;
-
-        if (memberUserId != null) {
-            User user = ctx.data.access(icsfUserType).getByName(memberUserId);
-            int userId = user == null ? -1 : user.getId();
-
-            // composite.add(new Alias("memberUsers", "u"));
-            composite.add(new Alias("responsibleUsers", "u"));
-            composite.add(new Equals("u.id", userId));
+    public static String toString(Collection<? extends Group> groups) {
+        StringBuilder sb = new StringBuilder(groups.size() * 30);
+        for (Group group : groups) {
+            if (sb.length() != 0)
+                sb.append(", ");
+            sb.append(group.getId());
         }
-
-        String orderProperty = getOrderProperty();
-        if (orderProperty != null) {
-            Order order;
-            if (isReverseOrder())
-                order = Order.desc(orderProperty);
-            else
-                order = Order.asc(orderProperty);
-            composite.add(order);
-        }
-
-        return composite;
+        return sb.toString();
     }
 
 }

@@ -12,9 +12,13 @@ import org.activiti.engine.impl.UserQueryImpl;
 import org.activiti.engine.impl.persistence.entity.IdentityInfoEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CompositeUserEntityManager
         extends UserEntityManager {
+
+    static final Logger logger = LoggerFactory.getLogger(CompositeUserEntityManager.class);
 
     private List<UserEntityManager> implementations = new ArrayList<>();
     private UserEntityManager master;
@@ -84,24 +88,33 @@ public class CompositeUserEntityManager
     @Override
     public List<User> findUserByQueryCriteria(UserQueryImpl query, Page page) {
         Set<User> union = new LinkedHashSet<User>();
-        int firstResult = page.getFirstResult();
-        int maxResults = page.getMaxResults();
 
-        int beginIndex = 0;
-        for (UserEntityManager impl : implementations) {
+        if (page == null) {
+            for (UserEntityManager impl : implementations) {
+                List<User> list = impl.findUserByQueryCriteria(query, null);
+                union.addAll(list);
+            }
+        } else {
+            int firstResult = page.getFirstResult();
+            int maxResults = page.getMaxResults();
 
-            int localOffset = firstResult - beginIndex;
-            if (localOffset < 0)
-                localOffset = 0;
+            int beginIndex = 0;
+            for (UserEntityManager impl : implementations) {
 
-            int max = maxResults - union.size();
-            if (max <= 0)
-                break;
+                int localOffset = firstResult - beginIndex;
+                if (localOffset < 0)
+                    localOffset = 0;
 
-            union.addAll(impl.findUserByQueryCriteria(query, new Page(localOffset, max)));
-            beginIndex += impl.findUserCountByQueryCriteria(query);
+                int max = maxResults - union.size();
+                if (max <= 0)
+                    break;
+
+                union.addAll(impl.findUserByQueryCriteria(query, new Page(localOffset, max)));
+                beginIndex += impl.findUserCountByQueryCriteria(query);
+            }
         }
-        return new ArrayList<User>(union);
+        List<User> users = new ArrayList<User>(union);
+        return users;
     }
 
     @Override
@@ -111,7 +124,8 @@ public class CompositeUserEntityManager
             List<Group> list = impl.findGroupsByUser(userId);
             union.addAll(list);
         }
-        return new ArrayList<Group>(union);
+        List<Group> groups = new ArrayList<Group>(union);
+        return groups;
     }
 
     @Override
@@ -131,17 +145,19 @@ public class CompositeUserEntityManager
             List<String> list = impl.findUserInfoKeysByUserIdAndType(userId, type);
             union.addAll(list);
         }
-        return new ArrayList<String>(union);
+        ArrayList<String> keys = new ArrayList<String>(union);
+        return keys;
     }
 
     @Override
-    public List<User> findPotentialStarterUsers(String proceDefId) {
+    public List<User> findPotentialStarterUsers(String procDefId) {
         Set<User> union = new LinkedHashSet<>();
         for (UserEntityManager impl : implementations) {
-            List<User> list = impl.findPotentialStarterUsers(proceDefId);
+            List<User> list = impl.findPotentialStarterUsers(procDefId);
             union.addAll(list);
         }
-        return new ArrayList<User>(union);
+        List<User> users = new ArrayList<User>(union);
+        return users;
     }
 
 }
