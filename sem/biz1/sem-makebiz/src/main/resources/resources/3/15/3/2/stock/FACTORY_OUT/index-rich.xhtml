@@ -8,16 +8,21 @@
 
     <ui:define name="edit-pre">
         <p:panel id="job" header="生产出库作业信息">
-            <h:panelGrid columns="2">
-                <p:commandButton value="选择生产数据" onclick="chooseMakeStepItemDialog.show()" disabled="#{not bean.editing}" />
+            <t:panelGrid columns="2">
+                <t:panelGroup colspan="2">
+                    <p:commandButton value="选择生产数据" onclick="chooseMakeStepItemDialog.show()" disabled="#{not bean.editing}" />
+                </t:panelGroup>
 
-                <h:outputText value="作业简要" />
+                <h:outputText value="作业简要:" />
                 <p:inputText id="jobLabel" value="#{stockOrder.job.label}" label="作业简要"/>
 
-                <h:outputText value="作业描述" />
+                <h:outputText value="作业描述:" />
                 <p:inputText id="jobDescription" value="#{stockOrder.job.description}" label="作业描述"/>
 
-            </h:panelGrid>
+                <t:panelGroup colspan="2">
+                    <p:commandButton value="由工艺数据生成耗材出库单" actionListener="${bean.}" disabled="#{not bean.editing}" />
+                </t:panelGroup>
+            </t:panelGrid>
         </p:panel>
     </ui:define>
 
