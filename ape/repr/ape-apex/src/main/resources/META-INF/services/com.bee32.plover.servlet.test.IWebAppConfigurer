@@ -1,3 +1,2 @@
-com.bee32.ape.html.apex.wac.RestletWac
-com.bee32.ape.html.apex.wac.UIFilterWac
-com.bee32.ape.html.apex.wac.VaadinWac
+com.bee32.ape.html.apex.wac.ApexFilterWac
+com.bee32.ape.html.apex.wac.ApexWac

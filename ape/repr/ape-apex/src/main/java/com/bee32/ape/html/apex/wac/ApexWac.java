@@ -2,11 +2,12 @@ package com.bee32.ape.html.apex.wac;
 
 import org.activiti.explorer.servlet.ExplorerApplicationServlet;
 
+import com.bee32.ape.html.apex.ApexModule;
 import com.bee32.plover.servlet.rabbits.RabbitServletContextHandler;
 import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 
-public class VaadinWac
+public class ApexWac
         extends AbstractWac {
 
     static int ACTIVITI_VERSION = 512;
@@ -27,20 +28,20 @@ public class VaadinWac
         if (ACTIVITI_VERSION < 512) {
             // 5.11
             // Not works: still have problems.
-            stl.addServlet("Vaadin Application Servlet", ExplorerApplicationServlet.class, //
-                    "/*", //
-                    "/api/*", //
-                    "/editor/*", //
-                    "/explorer/*", //
-                    "/libs/*", //
-                    "/VAADIN/*"//
-            );
+            // stl.addServlet("Vaadin Application Servlet", ExplorerApplicationServlet.class, //
+            // "/*", //
+            // "/api/*", //
+            // "/editor/*", //
+            // "/explorer/*", //
+            // "/libs/*", //
+            // "/VAADIN/*"//
+            // );
         } else {
             // 5.12+
-            stl.addServlet("Vaadin Application Servlet", ExplorerApplicationServlet.class, //
-                    "/ui/*", //
-                    "/VAADIN/*"//
-            );
+            stl.addServlet("Vaadin static files", ExplorerApplicationServlet.class, //
+                    "/VAADIN/*");
+            stl.addServlet("Explorer application", ExplorerApplicationServlet.class, //
+                    ApexModule.PREFIX + "/*");
         }
     }
 

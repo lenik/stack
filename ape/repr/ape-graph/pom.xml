@@ -8,9 +8,9 @@
     <artifactId>ape-graph</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-model</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
+            <groupId>com.bee32.ape</groupId>
+            <artifactId>ape-engine</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>

@@ -1,7 +1,8 @@
 package com.bee32.plover.pub.oid;
 
 @Oid({ 3, 12, PloverOids.Library, PloverOids.library.Commons, 1, 1 })
-public interface PloverOids {
+public interface PloverOids
+        extends SeccaOids {
 
     int[] ROOT = { 3, 12 };
 

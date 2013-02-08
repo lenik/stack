@@ -15,8 +15,8 @@ public class ApexTestServer
             throws IOException {
         ApexTestServer server = new ApexTestServer();
         server.stl.initialize();
-        server.stl.dumpXML();
-        server.browseAndWait();
+        // server.stl.dumpXML();
+        server.browseAndWait("3/30/3/3/");
     }
 
 }

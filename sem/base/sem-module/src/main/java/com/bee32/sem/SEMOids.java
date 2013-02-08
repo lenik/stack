@@ -1,6 +1,9 @@
 package com.bee32.sem;
 
-public interface SEMOids {
+import com.bee32.plover.pub.oid.SeccaOids;
+
+public interface SEMOids
+        extends SeccaOids {
 
     int[] ROOT = { 3, 15 };
 

@@ -1,6 +1,9 @@
 package com.bee32.icsf;
 
-public interface IcsfOids {
+import com.bee32.plover.pub.oid.SeccaOids;
+
+public interface IcsfOids
+        extends SeccaOids {
 
     int[] ROOT = { 3, 7 };
 
