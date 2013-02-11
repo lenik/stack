@@ -4,7 +4,6 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.inventory.SEMInventoryMenu;
 import com.bee32.sem.inventory.SEMInventoryModule;
 
 public class SEMMakebizMenu
@@ -12,30 +11,28 @@ public class SEMMakebizMenu
 
     static Location __ = WEB_APP.join(SEMMakebizModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
-    SEMInventoryMenu _inventory = require(SEMInventoryMenu.class);
 
     public MenuNode MAKEBIZ = menu(_frame_.MAIN, 450, "MAKEBIZ");
 
-    MenuNode makeOrderListAdmin = entry(MAKEBIZ, 1, "makeOrderListAdmin", __.join("order/list.jsf"));
-    MenuNode makeOrderAdmin = entry(MAKEBIZ, 2, "makeOrderAdmin", __.join("order/"));
+    /**/MenuNode makeOrderListAdmin = entry(MAKEBIZ, 1, "makeOrderListAdmin", __.join("order/list.jsf"));
+    /**/MenuNode makeOrderAdmin = entry(MAKEBIZ, 2, "makeOrderAdmin", __.join("order/"));
 
-    MenuNode makeTaskListAdmin = entry(MAKEBIZ, 10, "makeTaskListAdmin", __.join("task/list.jsf"));
-    MenuNode makeTaskAdmin = entry(MAKEBIZ, 11, "makeTaskAdmin", __.join("task/"));
+    /**/MenuNode makeTaskListAdmin = entry(MAKEBIZ, 10, "makeTaskListAdmin", __.join("task/list.jsf"));
+    /**/MenuNode makeTaskAdmin = entry(MAKEBIZ, 11, "makeTaskAdmin", __.join("task/"));
 
-    MenuNode materialPlanAdmin = entry(MAKEBIZ, 20, "materialPlanAdmin", __.join("plan/"));
+    /**/MenuNode materialPlanAdmin = entry(MAKEBIZ, 20, "materialPlanAdmin", __.join("plan/"));
 
-    MenuNode deliveryNoteListAdmin = entry(MAKEBIZ, 50, "deliveryNoteListAdmin", __.join("delivery/list.jsf"));
-    MenuNode deliveryNoteAdmin = entry(MAKEBIZ, 51, "deliveryNoteAdmin", __.join("delivery/"));
+    /**/MenuNode deliveryNoteListAdmin = entry(MAKEBIZ, 50, "deliveryNoteListAdmin", __.join("delivery/list.jsf"));
+    /**/MenuNode deliveryNoteAdmin = entry(MAKEBIZ, 51, "deliveryNoteAdmin", __.join("delivery/"));
 
 
-    MenuNode makeProcessListAdmin = entry(MAKEBIZ, 60, "makeProcessListAdmin", __.join("process/list.jsf"));
-    MenuNode makeProcessAdmin = entry(MAKEBIZ, 61, "makeProcessAdmin", __.join("process/"));
+    /**/MenuNode makeProcessListAdmin = entry(MAKEBIZ, 60, "makeProcessListAdmin", __.join("process/list.jsf"));
+    /**/MenuNode makeProcessAdmin = entry(MAKEBIZ, 61, "makeProcessAdmin", __.join("process/"));
 
-    MenuNode makeStepItemListAdmin = entry(MAKEBIZ, 70, "makeStepItemListAdmin", __.join("stepItem/list.jsf"));
-
+    /**/MenuNode makeStepItemListAdmin = entry(MAKEBIZ, 70, "makeStepItemListAdmin", __.join("stepItem/list.jsf"));
 
     static Location __Inv = WEB_APP.join(SEMInventoryModule.PREFIX_);
 
-    /*    */MenuNode factoryTakeIn = entry(_inventory.INVENTORY, 40, "factoryTakeIn", __Inv.join("stock/OSP_IN/"));
-    /*    */MenuNode factoryTakeOut = entry(_inventory.INVENTORY, 41, "factoryTakeOut", __Inv.join("stock/FACTORY_OUT/"));
+    /**/MenuNode factoryTakeIn = entry(MAKEBIZ, 80, "factoryTakeIn", __Inv.join("stock/FACTORY_IN/"));
+    /**/MenuNode factoryTakeOut = entry(MAKEBIZ, 81, "factoryTakeOut", __Inv.join("stock/FACTORY_OUT/"));
 }
