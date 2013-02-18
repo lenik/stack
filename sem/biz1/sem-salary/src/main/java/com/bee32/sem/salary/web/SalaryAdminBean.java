@@ -457,10 +457,10 @@ public class SalaryAdminBean
     @Override
     protected Object create() {
         int yearMonth = getYearMonth();
-        SalaryDto create = (SalaryDto) super.create();
-        create.setYear(yearMonth / 100);
-        create.setMonth(yearMonth % 100);
-        return create;
+        SalaryDto salary = (SalaryDto) super.create();
+        salary.setYear(yearMonth / 100);
+        salary.setMonth(yearMonth % 100);
+        return salary;
     }
 
     public Date getTargetDate() {

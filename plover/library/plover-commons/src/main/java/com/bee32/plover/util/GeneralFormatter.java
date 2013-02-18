@@ -25,4 +25,10 @@ public class GeneralFormatter
         out.print(idHex);
     }
 
+    public static String toString(Object obj, FormatStyle format, int depth) {
+        GeneralFormatter formatter = new GeneralFormatter();
+        formatter.format(obj, format, depth);
+        return formatter.toString();
+    }
+
 }
