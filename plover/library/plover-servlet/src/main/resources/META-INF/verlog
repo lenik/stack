@@ -1,3 +1,46 @@
+Plover-3.8.4 (谢继雷, 2013-02-18)
+	* Released Plover-3.8.4.
+	* Added GeneralFormatter.toString static method.
+	* sem-process: Added apex admin views.
+	* Moved openSelection() method to SelectionHolder.
+	* Fixed SiteConfigServlet: site.theme accessor ambiguous.
+
+Plover-3.8.3 (谢继雷, 2013-02-08)
+	* Setup apex servlet using oid paths, and separated ape-graph and wacs from apex.
+
+Plover-3.8.2 (谢继雷, 2013-02-07)
+	* ape-identity: Implemented memdb user/group manager, and icsf-type-mapping for normalization.
+
+Plover-3.8.1 (谢继雷, 2013-02-06)
+	* plover-orm: SiteHibernateTransactionManager.dataSource could be injectable.
+
+Plover-3.8.0 (谢继雷, 2013-02-01)
+	* Manual cont-edition for submit, reviewed by CJH.
+
+Plover-3.7.2 (谢继雷, 2013-01-30)
+	* Integrating Apex with activiti.
+
+Plover-3.7.1 (谢继雷, 2013-01-29)
+	* Prepare to integrate activiti explorer into apex.
+
+Plover-3.7.0 (谢继雷, 2013-01-25)
+	* sem-process: Prepare identity adapters.
+	* plover-ox1: Refactor CustomizedSFB to SiteSFB.
+	* Removed plover-x2* and plover-zk.
+
+Plover-3.6.1 (朱挺峰, 谢继雷, 2012-12-27)
+	* added declaredEntityPages: User.class
+	* PageDirectory: Skip proxy classes when get page directory.
+
+Plover-3.6.0 (谢继雷, 2012-12-08)
+	* Polishing
+
+Plover-3.5.3 (金卫林, 2012-11-19)
+	* 1.pom文件中去掉重复的版本指示 2.给遗漏“zjhf_”的表加上这个前缀
+
+Plover-3.5.2 (朱挺峰, 2012-11-16)
+	* Fixed dependency conflict.
+
 Plover-3.5.1 (谢继雷, 2012-11-15)
 	* Released SEM-2.1.6
 
