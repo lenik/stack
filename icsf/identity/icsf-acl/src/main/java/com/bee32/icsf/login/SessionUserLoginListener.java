@@ -28,7 +28,7 @@ public class SessionUserLoginListener
 
         if (_user != null) {
             Set<Principal> _imSet = _user.getImSet();
-            Set<Principal> _invSet = _user.getImSet();
+            Set<Principal> _invSet = _user.getInvSet();
             Set<Integer> imIdSet = IdUtils.getIdSet(_imSet);
             Set<Integer> invIdSet = IdUtils.getIdSet(_invSet);
             sessionUser.setImIdSet(imIdSet);
@@ -41,7 +41,7 @@ public class SessionUserLoginListener
             for (Principal p : _invSet)
                 invNameSet.add(p.getName());
             sessionUser.setImNameSet(imNameSet);
-            sessionUser.setInvNameSet(imNameSet);
+            sessionUser.setInvNameSet(invNameSet);
 
             List<PrincipalDto> imSet = DTOs.mrefList(PrincipalDto.class, 0, _imSet);
             List<PrincipalDto> invSet = DTOs.mrefList(PrincipalDto.class, 0, _invSet);
