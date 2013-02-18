@@ -164,6 +164,11 @@ public class SelectionHolder
         setOpenedObjects(nonNulls);
     }
 
+    public void openSelection() {
+        List<?> selection = getSelection();
+        setOpenedObjects(selection);
+    }
+
     @Override
     public final void addObjectOpenListener(IObjectOpenListener listener) {
         if (listener == null)
