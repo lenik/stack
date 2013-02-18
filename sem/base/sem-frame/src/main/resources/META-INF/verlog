@@ -1,4 +1,251 @@
+SEM-2.4.9 (谢继雷, 2013-02-18)
+	* Released SEM-2.4.9.
+	* Added GeneralFormatter.toString static method.
+	* sem-process: Added apex admin views.
+	* Refactor Sevb: separated generic data object support to DataViewBean.
+
+SEM-2.4.8 (金卫林, 2013-02-17)
+	* fix editViewEditDialog not define problem
+
+SEM-2.4.7 (金卫林, 2013-02-12)
+	* 生产出库，生产入库初步完成。但编辑仓库单据明细时还有错误：itemsEditViewEditDialog is not defined（在firebug中可以看到）
+
+SEM-2.4.6 (金卫林, 2013-02-08)
+	* 生产出库continue...
+
+SEM-2.4.5 (金卫林, 2013-02-07)
+	* 生产出库继续中
+
+SEM-2.4.4 (金卫林, 2013-02-06)
+	* 生产出库临时提交
+
+SEM-2.4.3 (金卫林, 2013-02-05)
+	* 生产出库改进临时提交
+	* 1.生产出库和生产入库移到makebiz中，因为需要用到makeStepItem
+
+SEM-2.4.2 (朱挺峰, 金卫林, 2013-02-04)
+	* 生产出库临时提交
+	* 新建凭证时，会计科目不是末级不能保存。
+	* 加入生产数据选择对话框
+	* 新建凭证时，会计科目不是末级不能保存。
+
+SEM-2.4.1 (朱挺峰, 金卫林, 2013-02-02)
+	* 增加订单按时间筛选功能。
+	* 解决复制有price的物料时，不能保存的问题
+
+SEM-2.4.0 (金卫林, 2013-02-01)
+	* 加入凭证摘要不能为空的检测
+	* 凭证列表功能加入摘要的显示
+
+SEM-2.3.20 (金卫林, 2013-01-31)
+	* 加入凭证列表功能（初步）
+
+SEM-2.3.19 (朱挺峰, 金卫林, 2013-01-30)
+	* 加入付款单和收款单列表功能
+	* 锁定会计科目标识，新增后不能修改。
+	* 改正机会阶段菜单现在可以显示中文。
+
+SEM-2.3.18 (朱挺峰, 金卫林, 2013-01-29)
+	* 1.party加other属性
+	* sem-chance: import necessory units.
+	* 1.锁定字典类id 在编辑的时候不能修改。 2.完善字典类模板.
+	* sem-chance: add menu resource bundle.
+
+SEM-2.3.17 (金卫林, 朱挺峰, 2013-01-28)
+	* 机会来源标准样本，只保留“其他”
+	* 删除机会分类标准样本
+	* 删除机会样本
+	* 机会阶段只保留 INIT,并把INIT的文字 从“初始化”改为“初步信息采集”
+	* 修正字典类不能保存问题。
+	* 解决makestepitem新增时覆盖上一条新增记录的问题
+
+SEM-2.3.16 (金卫林, 2013-01-26)
+	* preRenderView event加入 isPostBack判断
+	* 改进取viewParam的方法
+
+SEM-2.3.15 (金卫林, 2013-01-25)
+	* 动态取得UIComponent改进
+
+SEM-2.3.14 (金卫林, 2013-01-24)
+	* 参数跳转都采用f:viewParam方法
+	* process带参数进入页面，使用f:viewParam方法进行改进
+
+SEM-2.3.13 (金卫林, 2013-01-23)
+	* 工艺流转单continue...
+
+SEM-2.3.12 (金卫林, 2013-01-22)
+	* makebiz continue...
+
+SEM-2.3.11 (金卫林, 2013-01-21)
+	* makebiz继续中
+
+SEM-2.3.10 (金卫林, 2013-01-19)
+	* 工艺流转单继续中。。。
+
+SEM-2.3.9 (金卫林, 2013-01-18)
+	* makebiz制作临时提交
+
+SEM-2.3.8 (金卫林, 2013-01-16)
+	* 工艺流转单数据输入临时提交
+
+SEM-2.3.7 (金卫林, 2013-01-15)
+	* 1.加入工艺流转单列表 2.解决使用PerRequest后搜索边栏不能使用的问题。使用spring的PostConstruct解决
+
+SEM-2.3.6 (金卫林, 2013-01-14)
+	* 1.移除下载汇率表的任务 2.bom管理页面加上规格型号的显示
+
+SEM-2.3.5 (朱挺峰, 金卫林, 2013-01-12)
+	* 1.收款单和付款单FundFlow加入销售机会 2. 仓库单据StockOrder加入销售机会
+	* refactor TrackAdminBean: Inherited from SimpleEntityViewBean
+	* added abbr test.
+	* issue-content page polishing finished.
+	* sem-track added priority in entity Issue.
+
+SEM-2.3.4 (金卫林, 2013-01-11)
+	* 1.因为material已经成为单独的模块，所以移除chance对inventory的引用 2.asset加入对chance的引用
+
+SEM-2.3.3 (朱挺峰, 2013-01-09)
+	* sem-track页面优化。
+
+SEM-2.3.2 (金卫林, 2013-01-08)
+	* 定单列表跳转由“文字”改为“图标”
+	* 修正当MakeOrderItem没有输入物料时，读取物料单位为NullPointerException的问题
+	* 由于material包名的变更，而更改相应jasperreport 报表
+
+SEM-2.3.1 (朱挺峰, 金卫林, 2013-01-07)
+	* sem-track: 页面改进.
+	* 订单项目单位的默认值为物料单位：修正null错误。
+	* 加入送货单列表到送货单明细的跳转
+	* 修正送货单列表bean写错的问题
+	* 加入送货单列表视图
+	* 订单项目单位的默认值为物料单位。
+	* added upgrade sql: separated sem-material from sem-inentory
+
+SEM-2.3.0 (金卫林, 朱挺峰, SEM Operator, 谢继雷, 2013-01-05)
+	* ScrollEVB: refresh row count always at init.
+	* Issue: added fav and observer filter.
+	* added lazy fetch in entites :MaterialPlan, PurchaseTakeIn AbstractStockOrder
+	* 1.送货单视图恢复scroll-view
+	* 如果ScrollView有参数传进来，则不加入“发生于今年”的限制条件
+	* modify frame.js for session expire hint
+	* 解决机会中添加竞争对手，选择对手后，对手名称无法显示的问题
+
+SEM-2.2.15 (金卫林, 2012-12-31)
+	* 生产管理修改暂时提交
+
+SEM-2.2.14 (金卫林, 2012-12-28)
+	* 更新工艺流转单模型
+
+SEM-2.2.13 (朱挺峰, 2012-12-27)
+	* added sem-material to module.
+	* split sem-material form sem-inventory.
+	* sem-world: added declaredEntityPage Unit.class
+
+SEM-2.2.12 (朱挺峰, 金卫林, 2012-12-26)
+	* sem-purchase refactor.
+	* sem-make refactor: added dependency sem-material.
+	* sem-makebiz: added SEMMaterialUnit.
+	* sem-chance refactor. added dependency: sem-material.
+	* sem-makebiz refector. added dependency : sem-material.
+	* added Material Oid.
+	* Split SingleVerifiableButton template to verifiable and unverifiable.
+	* sem-frame: Separate verifiable-entity template from simple-entity template.
+	* bom中的part加入对chance的引用(即对项目的引用)
+	* part加对应chance临时提交
+	* 问题跟踪基本完成。
+
+SEM-2.2.11 (金卫林, 谢继雷, 2012-12-22)
+	* 文件分类管理初步完成。文件管理视图中的文件数统计还有问题
+	* Changed default session timeout to 2 hours.
+	* 文件分类管理完成
+
+SEM-2.2.10 (金卫林, 谢继雷, 朱挺峰, 2012-12-20)
+	* 文件分类管理加入页面，对话框；还需调试
+	* add UserFolder to Unit fix
+	* add UserFolder to Unit
+	* 修正修改UserFile去掉setPath引发的问题
+	* 改变上传文件大小至200m
+	* UserFolderDto.java UserFileDto.java review
+	* UserFolder: Implemented getPath().
+	* Removed gid/mode from UserFolder.
+	* 文件管理加入文件加的实体
+	* 奖惩事件页面错误修改。
+
+SEM-2.2.9 (朱挺峰, 2012-12-19)
+	* name-dict template polishing.
+	* removed unuse resources.
+	* chance, people name dict refactor
+	* Added simple-name-dict template.
+
+SEM-2.2.8 (朱挺峰, 金卫林, 2012-12-18)
+	* sem-track: Added some test classes.
+	* sem-inventory: Get Material.partCount on demand.
+	* Added new admin pages for name dicts.
+	* 库存调拨-拨出，修复引用错误obj -> tr
+
+SEM-2.2.7 (金卫林, 2012-12-12)
+	* 收款单，付款单选择对话框加入业务详细，修正错误
+
+SEM-2.2.6 (谢继雷, 2012-12-10)
+	* Added utility to merge source docs for each profile.
+
+SEM-2.2.5 (金卫林, 2012-12-09)
+	* 选择付款单和收款单对话框中加入业务明细列
+
+SEM-2.2.4 (谢继雷, 2012-12-08)
+	* Polishing
+
+SEM-2.2.3 (谢继雷, 2012-12-07)
+	* Added profile manuals for sem-makebiz.
+
+SEM-2.2.2 (谢继雷, 2012-12-06)
+	* Added profile manuals for sem-file.
+	* Added profile manuals for sem-asset, sem-make.
+
+SEM-2.2.1 (谢继雷, 2012-12-05)
+	* Added profile manuals for sem-chance, sem-inventory, sem-asset, sem-world.
+
+SEM-2.2.0 (谢继雷, 2012-12-03)
+	* sem-frame: Set default session timeout to half an hour.
+	* sem-uber: Added qdox dependency.
+	* Added session timeout prompt, with renew support.
+
+SEM-2.1.11 (朱挺峰, 2012-11-30)
+	* SEMTrack 基本完成。
+
+SEM-2.1.10 (金卫林, 2012-11-21)
+	* 风机体价格管理功能初步
+	* SEMZjhfProfile加入中文资源文件
+	* sem-pricing界面开始制作
+
+SEM-2.1.9 (朱挺峰, 金卫林, 谢继雷, 2012-11-20)
+	* sem-pricing 加入dto
+	* Moved sem-track to biz2.
+	* Track: added base page.
+	* Track added basic classes.
+	* Track: added SequenceGenerator and DTOs.
+	* Track added Dependency: People.
+	* pom文件中去掉重复的版本指示 for icsf & sem
+
+SEM-2.1.8 (金卫林, 2012-11-19)
+	* 报价模块查看和整理
+	* 1.pom文件中去掉重复的版本指示 2.给遗漏“zjhf_”的表加上这个前缀
+
+SEM-2.1.7 (谢继雷, 朱挺峰, 金卫林, 2012-11-16)
+	* Code review: 风机报价对象导出变量。
+	* 加入对象内部属性作为变量的简易支持。
+	* Code Review: Renamed AirBlower.motorAmount to motorCount.
+	* Code Review: Renamed PricingObject.amount to quantity.
+	* Code Review: 风机相关的表名前添加 zjhf_ 前缀。
+	* Code Review: 将风机相关的类移动到 xem.zjhf. 包中。
+	* 报价模型建立(sem-pricing，独立模块)
+	* Fixed dependency conflict.
+	* Salary polishing.
+
 SEM-2.1.6 (朱挺峰, 谢继雷, 2012-11-15)
+	* report polishing
+	* sem-track: updated issue track models.
+	* 改正工资单报表错误。
 	* Released SEM-2.1.6
 	* Attendance polishing.
 
