@@ -39,6 +39,9 @@ public abstract class EntityViewBean
         }
     }
 
+    /**
+     * Type-safe accessor wrapper.
+     */
     @Override
     protected Class<? extends Entity<?>> getMajorTypeOfContextPage() {
         Class<?> majorType = super.getMajorTypeOfContextPage();
@@ -111,6 +114,7 @@ public abstract class EntityViewBean
         return getOpenedObject();
     }
 
+    @Override
     public boolean isSelectionEditable() {
         if (getSelection().isEmpty())
             return false;
@@ -124,7 +128,8 @@ public abstract class EntityViewBean
         return true;
     }
 
-    protected void openSelection() {
+    @Override
+    public void openSelection() {
         int fmask = Fmask.F_MORE;
         String fmaskParam = ctx.view.getRequest().getParameter("fmask");
         if (fmaskParam != null)

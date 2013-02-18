@@ -1,0 +1,214 @@
+<ui:composition template="/template/_primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
+
+    <ui:param name="_toolbar" value="${toolbar != null ? toolbar : viewConfig.toolbarPlacement}" />
+
+    <ui:define name="login">
+        <icsf:loginPanel xpc="true" style="none" />
+    </ui:define>
+
+    <ui:define name="title">${title}管理</ui:define>
+    <ui:define name="styles">
+        <c:if test="${fn:contains(_toolbar, 't')}">
+            <style type="text/css">
+            </style>
+        </c:if>
+    </ui:define>
+
+    <ui:define name="scripts.0.simple-entity">
+        <h:outputScript library="frame" name="ajax-validation.js" target="head" />
+    </ui:define>
+
+    <ui:define name="content">
+        <div id="includes">
+            <ui:insert name="includes" />
+        </div>
+
+        <h:outputStylesheet library="frame" name="layout.css" />
+        <table id="layoutTable" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%">
+            <tr>
+                <c:if test="${sideBarWVisible != null}">
+                    <td valign="top" id="sideBarW" style="width: 20em; ${sideBarWVisible == true ? '' : 'display: none'}">
+                        <h:panelGroup id="sidePanelW">
+                            <ui:insert name="sideBarW" />
+                            <ui:insert name="sideBarW.1" />
+                            <ui:insert name="sideBarWSupport" />
+                        </h:panelGroup>
+                    </td>
+                    <td valign="center" id="sideBarWToggler" class="layout-side-toggler ui-state-default" style="width: 9px"
+                        onclick="$('#sideBarW').toggle()" />
+                </c:if>
+                <td valign="top" style="overflow: hidden; overflow-x: auto">
+                    <c:if test="${sideBarNVisible != null}">
+                        <h:panelGroup id="sideBarN" layout="block">
+                            <ui:insert name="sideBarN" />
+                            <ui:insert name="sideBarN.1" />
+                            <ui:insert name="sideBarNSupport" />
+                        </h:panelGroup>
+                    </c:if>
+
+                    <ui:insert name="mainForm">
+                        <h:form id="mainForm">
+                            <c:if test="${fn:contains(_toolbar, 't')}">
+                                <div id="toolbar">
+                                    <ui:insert name="toolbar" />
+                                </div>
+                            </c:if>
+
+                            <h:inputHidden id="entityType" value="${bean.entityTypeAbbr}" disabled="true" />
+
+                            <h:panelGroup id="dataContainer" layout="block">
+                                <ui:insert name="dataContainer">
+                                    <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}" lazy="true"
+                                        selection="${bean.singleSelection}" selectionMode="single" paginator="true"
+                                        rows="${viewConfig.pageSize}" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                                        rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
+                                        rowIndexVar="rowIndex" sortBy="${entry.lastModified}" sortOrder="descending">
+
+                                        <p:ajax event="rowSelect" process=":@this" update="${_entryUpdate}" />
+                                        <p:ajax event="rowUnselect" process=":@this" update="${_entryUpdate}" />
+
+                                        <ui:insert name="dataTableHeader">
+                                            <f:facet name="header">${title}</f:facet>
+                                        </ui:insert>
+
+                                        <ui:insert name="dataTableRow" />
+                                    </p:dataTable>
+                                </ui:insert>
+                            </h:panelGroup>
+                            <div id="dataContextMenu">
+                                <ui:insert name="dataContextMenu" />
+                            </div>
+
+                            <c:if test="${fn:contains(_toolbar, 'b')}">
+                                <div id="toolbar">
+                                    <ui:insert name="toolbar" />
+                                </div>
+                            </c:if>
+                            <h:panelGroup id="exportMenu" layout="block"
+                                style="position: absolute; display: none; background: white; border: solid 1px gray; ">
+                                <h:panelGrid columns="1">
+                                    <h:commandLink value="导出当前页到 PDF …">
+                                        <p:dataExporter target="dataTable" type="pdf" pageOnly="true"
+                                            fileName="${bean.exportFileName}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                    </h:commandLink>
+                                    <h:commandLink value="导出当前页到 CSV …">
+                                        <p:dataExporter target="dataTable" type="csv" pageOnly="true"
+                                            fileName="${bean.exportFileName}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                    </h:commandLink>
+                                    <h:commandLink value="导出当前页到 XML …">
+                                        <p:dataExporter target="dataTable" type="xml" pageOnly="true"
+                                            fileName="${bean.exportFileName}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                    </h:commandLink>
+                                    <h:commandLink value="导出当前页到 Excel …">
+                                        <p:dataExporter target="dataTable" type="xls" pageOnly="true"
+                                            fileName="${bean.exportFileName}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                    </h:commandLink>
+                                    <h:commandLink value="导出全部记录到 PDF …">
+                                        <p:dataExporter target="dataTable" type="pdf" pageOnly="false"
+                                            fileName="${bean.exportFileName}" />
+                                    </h:commandLink>
+                                    <h:commandLink value="导出全部记录到 CSV …">
+                                        <p:dataExporter target="dataTable" type="csv" pageOnly="false"
+                                            fileName="${bean.exportFileName}" />
+                                    </h:commandLink>
+                                    <h:commandLink value="导出全部记录到 XML …">
+                                        <p:dataExporter target="dataTable" type="xml" pageOnly="false"
+                                            fileName="${bean.exportFileName}" />
+                                    </h:commandLink>
+                                    <h:commandLink value="导出全部记录到 Excel …">
+                                        <p:dataExporter target="dataTable" type="xls" pageOnly="false"
+                                            fileName="${bean.exportFileName}" />
+                                    </h:commandLink>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:form>
+                    </ui:insert>
+
+                    <c:if test="${plainEditForm}">
+                        <f:subview id="editDialog">
+                            <p:panel id="editPanel" header="${title}" style="position: relative">
+                                <div class="ui-toolbox">
+                                    <h:form id="toolform" style="background: white">
+                                        <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print"
+                                            onclick="print('#editDialog:form:content')" />
+                                    </h:form>
+                                </div>
+                                <ui:insert name="editDialogBody" />
+                            </p:panel>
+                        </f:subview>
+                    </c:if>
+
+                    <c:if test="${sideBarSVisible != null}">
+                        <h:panelGroup id="sideBarS" layout="block">
+                            <ui:insert name="sideBarS" />
+                            <ui:insert name="sideBarS.1" />
+                            <ui:insert name="sideBarSSupport" />
+                        </h:panelGroup>
+                    </c:if>
+                </td>
+                <td valign="center" id="sideBarEToggler" class="layout-side-toggler ui-state-default" style="width: 9px"
+                    onclick="$('#sideBarE').toggle()"></td>
+                <td valign="top" id="sideBarE" style="width: 20em; display: none">
+                    <h:panelGroup id="sidePanelE" layout="block">
+                        <ui:insert name="sideBarE">
+                            <ui:insert name="sideBarE.0">
+                                <h:form id="searchForm">
+                                    <ui:insert name="searchPanels">
+                                        <ui:insert name="searchPanels.0" />
+                                        <ui:insert name="searchPanels.1" />
+                                    </ui:insert>
+                                    <ui:insert name="searchFragmentsPanel" />
+                                </h:form>
+                            </ui:insert>
+                            <ui:insert name="sideBarE.1" />
+                        </ui:insert>
+                        <ui:insert name="searchSupport">
+                            <ui:insert name="searchSupport.0" />
+                            <ui:insert name="searchSupport.1" />
+                        </ui:insert>
+                        <ui:insert name="sideBarESupport" />
+                    </h:panelGroup>
+                </td>
+            </tr>
+        </table>
+
+        <div id="toolbarDialogs">
+            <ui:insert name="toolbarDialogs" />
+        </div>
+
+        <div id="dialogs">
+            <ui:insert name="dialogs.0">
+                <ui:insert name="editDialogs">
+                    <!-- plainEditForm may also be here. -->
+                    <c:if test="${not plainEditForm}">
+                        <f:subview id="editDialog">
+                            <ui:insert name="editDialog">
+                                <p:dialog id="editDialog" header="编辑${title}" widgetVar="editdlg" modal="true"
+                                    dynamic="${viewConfig.dynamicDialog}">
+                                    <div class="ui-toolbox">
+                                        <h:form id="toolform">
+                                            <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print"
+                                                onclick="print('#editDialog:form:content')" />
+                                        </h:form>
+                                    </div>
+                                    <ui:insert name="editDialogBody" />
+                                </p:dialog>
+                            </ui:insert>
+                        </f:subview>
+                    </c:if>
+                </ui:insert>
+                <ui:insert name="optionDialogs">
+                    <ui:insert name="optionDialogs.0">
+                        <icsf:securityOptionsDialog id="securityDialog" var="securityDialog" />
+                    </ui:insert>
+                    <ui:insert name="optionDialogs.1" />
+                </ui:insert>
+            </ui:insert>
+            <ui:insert name="dialogs.1" />
+            <ui:insert name="dialogs" />
+        </div>
+    </ui:define>
+
+</ui:composition>

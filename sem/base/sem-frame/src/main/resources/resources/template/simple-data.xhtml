@@ -1,0 +1,230 @@
+<ui:composition template="/template/simple-data-f1.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:pf="http://bee32.com/plover/faces" xmlns:p="http://primefaces.org/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="_searchUpdates" value="${searchUpdates != null ? searchUpdates : ':mainForm'}" />
+    <ui:param name="_indexUpdate" value=":mainForm:dataContainer" />
+    <ui:param name="_entryUpdate" value=":mainForm:toolbar ${verifiable ? ':verifyInfoForm' : ''}" />
+    <ui:param name="_contentUpdate" value="${_entryUpdate} :editDialog:form" />
+
+    <ui:define name="toolbar">
+        <p:toolbar id="toolbar">
+            <p:toolbarGroup align="left">
+                <ui:insert name="toolbarContexts" />
+            </p:toolbarGroup>
+            <ui:insert name="toolbar.left">
+                <p:toolbarGroup align="left">
+                    <p:commandButton id="createButton" value="新建" rendered="${creatable != null ? creatable : true}"
+                        actionListener="${bean.showCreateForm}" onclick="waitbox.show()"
+                        oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" update="${_contentUpdate}" />
+                    <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
+                    <ui:insert name="toolbar.left.1" />
+                </p:toolbarGroup>
+            </ui:insert>
+            <ui:insert name="toolbar.right">
+                <p:toolbarGroup align="left">
+                    <ui:insert name="toolbar.right.1" />
+                    <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
+                        disabled="${not bean.selected}" actionListener="${bean.showContent}" update="${_contentUpdate}"
+                        onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
+                    <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
+                        disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
+                        update="${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
+                    <p:separator />
+                    <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
+                        onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
+                    <p:separator />
+                    <ui:insert name="toolbar.verify" />
+                    <p:commandButton id="print" icon="ui-icon-print" title="打印"
+                        onclick="print('#mainForm:dataContainer')" />
+                </p:toolbarGroup>
+            </ui:insert>
+        </p:toolbar>
+    </ui:define>
+
+    <ui:define name="dataTableRow">
+        <p:column headerText="ID" sortBy="${entry.id}" styleClass="entity-id">
+            <h:outputText value="${entry.id}" />
+        </p:column>
+
+        <ui:insert name="dataColumns" />
+
+        <ui:insert name="dataColumnsV" />
+
+        <ui:insert name="dataColumnsC">
+            <p:column headerText="创建日期" sortBy="${entry.createdDate}" styleClass="${entry.styleClass}" rendered="${showCreatedDate == true}">
+                <h:outputLabel value="${entry.createdDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputLabel>
+            </p:column>
+            <p:column headerText="更新日期" sortBy="${entry.lastModified}">
+                <h:outputText value="${entry.lastModified}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="属主" sortBy="${entry.owner}">
+                <h:outputText value="${entry.owner.displayName}" />
+            </p:column>
+        </ui:insert>
+
+        <p:column headerText="工具" style="padding: 0">
+            <ui:insert name="toolsColumn">
+                <p:commandButton id="viewTool" title="查看" icon="ui-icon-search" rendered="${readable != null ? readable : true}"
+                    actionListener="${bean.showContent(entry)}" update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
+                </p:commandButton>
+                <c:if test="${editInline}">
+                    <p:commandButton id="editTool" title="修改" disabled="${entry.locked}" icon="ui-icon-pencil"
+                        rendered="${editable != null ? editable : true}" actionListener="${bean.showEditForm(entry)}"
+                        update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
+                    </p:commandButton>
+                </c:if>
+                <c:if test="${deleteInline}">
+                    <p:commandButton id="delTool" title="删除" disabled="${entry.locked}" icon="ui-icon-close"
+                        rendered="${deletable != null ? deletable : true}" onclick="deleteConfirmDialog.show()">
+                        <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
+                    </p:commandButton>
+                </c:if>
+            </ui:insert>
+        </p:column>
+    </ui:define>
+
+    <ui:define name="toolbarDialogs">
+        <ui:insert name="deleteConfirmDialog">
+            <p:confirmDialog id="y_delete" widgetVar="deleteConfirmDialog" header="删除确认" message="确定要删除吗?"
+                severity="alert" modal="true">
+                <h:form id="form" style="margin: 0em 7em 1em">
+                    <p:commandButton id="ok" value="确定" update=":mainForm ${_contentUpdate} ${mirrorTargets}"
+                        actionListener="${bean.deleteSelection}" onclick="waitbox.show()" oncomplete="waitbox.hide(); deleteConfirmDialog.hide()" />
+                    <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+                </h:form>
+            </p:confirmDialog>
+        </ui:insert>
+        <ui:insert name="toolbarDialogs.verify" />
+    </ui:define>
+
+    <ui:define name="searchSupport.0">
+        <icsf:choosePrincipalDialog id="c_principalToSearch" var="choosePrincipalToSearchDialog"
+            target="${bean.searchPrincipal}" update=":searchForm" />
+    </ui:define>
+
+    <ui:define name="searchPanels.0">
+        <ui:insert name="searchPanel.id">
+            <p:panel header="按编号搜索" toggleable="true" rendered="${not baseEntity}">
+                <div align="center">
+                    <p:spinner id="id" value="${bean.searchId}" />
+                    <p:commandButton id="filterId" value="限定记录 ID" actionListener="${bean.addIdRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                    <ui:insert name="searchPanel.id.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+        <ui:insert name="searchPanel.keyword">
+            <p:panel header="按关键字搜索" toggleable="true" rendered="${not baseEntity}">
+                <div align="center">
+                    <p:inputText id="pattern" value="${bean.searchPattern}" />
+                    <p:commandButton id="filterNameOrLabel" value="限定名称" actionListener="${bean.addNameOrLabelRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                    <p:commandButton id="filterDescription" value="限定描述" actionListener="${bean.addDescriptionRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                    <ui:insert name="searchPanel.keyword.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+        <ui:insert name="searchPanel.time">
+            <p:panel header="按时间搜索" toggleable="true" rendered="${not baseEntity}">
+                <div align="center">
+                    时间范围：
+                    <p:selectOneMenu id="lastModifiedRange" value="${bean.dateRangeIndex}">
+                        <f:selectItem itemLabel="选择" itemValue="-1" />
+                        <f:selectItems value="${bean.dateRangeTemplates}" var="t" itemLabel="${t.label}"
+                            itemValue="${t.index}" />
+                    </p:selectOneMenu>
+                    <p:commandButton id="filterCreatedDate" value="限定创建时间" actionListener="${bean.addCreatedDateRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                    <p:commandButton id="filterLastModified" value="限定更新时间" actionListener="${bean.addLastModifiedRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                    <ui:insert name="searchPanel.time.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+        <ui:insert name="searchPanel.principal">
+            <p:panel header="按用户搜索" toggleable="true">
+                <div align="center">
+                    <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
+                    <p:commandButton id="choosePrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
+                    <p:commandButton id="filterOwner" value="限定属主" actionListener="${bean.addOwnerRestriction}"
+                        update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
+                    <ui:insert name="searchPanel.principal.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+    </ui:define>
+
+    <ui:define name="searchFragmentsPanel">
+        <h:panelGroup id="searchFragments" layout="block" style="padding: .2em 0em; background: #eee">
+            <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
+                <c:set var="form" value="${component.parent.parent.parent.clientId}" />
+                <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
+                    actionListener="${fragment.detach}" onclick="waitbox.show()" oncomplete="waitbox.hide()"
+                    update=":searchForm:searchFragments, ${_searchUpdates}" />
+            </ui:repeat>
+        </h:panelGroup>
+    </ui:define>
+
+    <ui:define name="editDialogBody">
+        <!-- TODO: fr:disable applied=${not plainEditForm} -->
+        <h:form id="form" styleClass="${(plainEditForm and bean.editing) ? 'form-editing' : ''}">
+            <h:panelGroup rendered="${bean.openedObject == null}">
+                （请选择要操作的对象。）
+            </h:panelGroup>
+            <h:panelGroup rendered="${bean.openedObject != null}">
+                <h:panelGroup id="content" layout="block"
+                    styleClass="${formStyleClass != null ? formStyleClass : 'ui-dialog-form'}">
+                    <pf:locker id="locker" test="${not bean.editing}" layout="block"
+                        styleClass="${bean.editing ? '' : 'locker-active'}">
+                        <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
+                    </pf:locker>
+                </h:panelGroup>
+            </h:panelGroup>
+            <!-- Hide edit buttons in plain-edit-form/show-content mode. -->
+            <table border="0" width="100%">
+                <tr>
+                    <td align="left">
+                        <h:panelGroup rendered="${bean.openedObject != null and not bean.editing}">
+                            <h:panelGroup title="如果要编辑请点击工具栏上的修改按钮。" style="font-size: 120%; color: green">
+                                （您正在浏览数据中…）
+                            </h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="${copyable and (bean.editing or not plainEditForm)}">
+                            <p:commandButton id="dup-validated" value="创建副本" actionListener="${bean.saveDup}"
+                                disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
+                                rendered="${not plainEditForm}" onclick="waitbox.show()" oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
+                        </h:panelGroup>
+                        <h:panelGroup rendered="${bean.creating}">
+                            <p:selectBooleanCheckbox value="${bean.checkDuplicatesBeforeCreate}" />
+                            避免重复
+                        </h:panelGroup>
+                        <ui:insert name="editDialogButtons.left">
+                        </ui:insert>
+                    </td>
+                    <td align="right">
+                        <h:panelGroup rendered="${bean.editing or not plainEditForm}">
+                            <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                                disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
+                                onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.hideValidated(args)'}" />
+                            <p:commandButton id="cancel" value="${bean.editing  ? '取消' : '关闭'}"
+                                onclick="waitbox.show(); ${plainEditForm ? '' : 'editdlg.hide()'}" oncomplete="waitbox.hide()"
+                                actionListener="${bean.showIndex}" update="${plainEditForm ? _contentUpdate : '@none'}" />
+                        </h:panelGroup>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="postLoad.0">
+        <script language="javascript" src="${location.WEB_APP}/site/simple-entity.js"></script>
+    </ui:define>
+
+</ui:composition>
