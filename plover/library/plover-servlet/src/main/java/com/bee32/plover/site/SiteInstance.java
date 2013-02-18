@@ -320,7 +320,7 @@ public class SiteInstance
         setProperty(THEME_KEY, _theme);
     }
 
-    public void setTheme(String themeName) {
+    public void setThemeByName(String themeName) {
         PrimefacesTheme theme;
         if (themeName == null || themeName.isEmpty())
             theme = null;

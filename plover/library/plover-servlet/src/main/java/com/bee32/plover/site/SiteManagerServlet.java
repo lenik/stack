@@ -31,6 +31,7 @@ import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.cfg.DBDialect;
 import com.bee32.plover.site.cfg.ISiteConfigBlock;
 import com.bee32.plover.site.cfg.OptimizationLevel;
+import com.bee32.plover.site.cfg.PrimefacesTheme;
 import com.bee32.plover.site.cfg.SamplesSelection;
 import com.bee32.plover.site.cfg.SiteConfigBlocks;
 import com.bee32.plover.site.cfg.VerboseLevel;
@@ -218,6 +219,7 @@ public class SiteManagerServlet
                     aliasSet.add(alias);
                 }
 
+                PrimefacesTheme theme = PrimefacesTheme.forName(_theme);
                 VerboseLevel verbose = VerboseLevel.forName(_verbose);
                 OptimizationLevel optimization = OptimizationLevel.forName(_optimization);
 
@@ -241,7 +243,7 @@ public class SiteManagerServlet
                 site.setLabel(label);
                 site.setDescription(description);
                 site.setLogo(_logo);
-                site.setTheme(_theme);
+                site.setTheme(theme);
                 site.setVerboseLevel(verbose);
                 site.setOptimizationLevel(optimization);
                 site.setAliases(aliasSet);
