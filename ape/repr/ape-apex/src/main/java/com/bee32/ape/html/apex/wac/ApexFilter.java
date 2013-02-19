@@ -70,10 +70,10 @@ public class ApexFilter
         // }
 
         if (rewrite == path) {
-            System.out.println("REQ: " + path);
+            // System.out.println("REQ: " + path);
             chain.doFilter(request, response);
         } else {
-            System.out.println("REQ: " + path + " -> " + rewrite);
+            // System.out.println("REQ: " + path + " -> " + rewrite);
             request.getRequestDispatcher(rewrite).forward(request, response);
         }
     }
