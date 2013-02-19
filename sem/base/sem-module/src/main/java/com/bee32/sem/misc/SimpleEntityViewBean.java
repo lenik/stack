@@ -245,31 +245,6 @@ public abstract class SimpleEntityViewBean
         return dataModel;
     }
 
-    public boolean refreshData() {
-        if (dataModel instanceof ZLazyDataModel<?, ?>)
-            try {
-                ZLazyDataModel<?, ?> model = (ZLazyDataModel<?, ?>) dataModel;
-                model.setRowIndex(0);
-                model.refreshRowCount();
-            } catch (Exception e) {
-                uiLogger.warn("刷新记录时出现异常。", e);
-                return false;
-            }
-        return true;
-    }
-
-    public boolean refreshRowCount() {
-        if (dataModel instanceof ZLazyDataModel<?, ?>)
-            try {
-                ZLazyDataModel<?, ?> model = (ZLazyDataModel<?, ?>) dataModel;
-                model.refreshRowCount();
-            } catch (Exception e) {
-                uiLogger.warn("刷新记录时出现异常。", e);
-                return false;
-            }
-        return true;
-    }
-
     protected final List<? extends ICriteriaElement> composeBaseRestrictions() {
         List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
         join.addAll(baseRestriction);
@@ -373,47 +348,6 @@ public abstract class SimpleEntityViewBean
 
     /* ********************************************************************** */
 
-    /**
-     * Show (or switch to) the real view.
-     *
-     * You need to override this method to set extra view states.
-     *
-     * @param viewName
-     *            Standard view name.
-     * @see StandardViews#LIST
-     * @see StandardViews#CONTENT
-     * @see StandardViews#CREATE_FORM
-     * @see StandardViews#EDIT_FORM
-     */
-    protected void showView(String viewName) {
-        currentView = viewName;
-    }
-
-    @Operation
-    public final void showIndex() {
-        showIndex(null);
-    }
-
-    protected void showIndex(Integer offset) {
-        setOpenedObjects(Collections.emptyList());
-        showView(StandardViews.LIST);
-    }
-
-    @Operation
-    public void showCreateForm() {
-        Object newInstance = create();
-        if (newInstance == null)
-            return;
-        setOpenedObject(newInstance);
-        showView(StandardViews.CREATE_FORM);
-    }
-
-    @Operation
-    public final void showEditForm(Object selection) {
-        setSingleSelection(selection);
-        showEditForm();
-    }
-
     @Operation
     public void showEditForm() {
         if (getSelection().isEmpty()) {
@@ -454,69 +388,8 @@ public abstract class SimpleEntityViewBean
             showView(StandardViews.EDIT_FORM);
     }
 
-    @Operation
-    public void showContent(Object selection) {
-        setSingleSelection(selection);
-        showContent();
-    }
-
-    @Operation
-    public void showContent() {
-        if (getSelection().isEmpty()) {
-            uiLogger.error("没有选定对象!");
-            return;
-        }
-        openSelection();
-        showView(StandardViews.CONTENT);
-    }
-
-    @Operation
-    public void showPartialForm(Object selection) {
-        setSingleSelection(selection);
-        showPartialForm();
-    }
-
-    @Operation
-    public void showPartialForm() {
-        // default fmask override..
-        showEditForm();
-    }
-
-    @Operation
-    public void showPartialContent(Object selection, int fmask) {
-        setSingleSelection(selection);
-        showPartialContent(fmask);
-    }
-
-    @Operation
-    public void showPartialContent(int fmask) {
-        showContent();
-    }
-
-    public String getCurrentView() {
-        return currentView;
-    }
-
-    public boolean isCreating() {
-        if (!currentView.equals(StandardViews.CREATE_FORM))
-            return false;
-        if (getOpenedObjects().isEmpty())
-            throw new IllegalStateException("No opened objects for creating");
-        return true;
-    }
-
-    public boolean isEditing() {
-        if (currentView.equals(StandardViews.CREATE_FORM) //
-                || currentView.equals(StandardViews.EDIT_FORM)) {
-            if (getOpenedObjects().isEmpty())
-                throw new IllegalStateException("No opened objects for editing");
-            return true;
-        }
-        return false;
-    }
-
     public void refresh() {
-        switch (currentView) {
+        switch (getCurrentView()) {
         case StandardViews.LIST:
             showIndex();
             break;
