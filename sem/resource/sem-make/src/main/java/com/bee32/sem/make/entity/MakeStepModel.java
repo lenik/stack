@@ -48,10 +48,10 @@ public class MakeStepModel
     boolean qualityControlled;
 
     float consumeTime;
-    BigDecimal oneHourWage = new BigDecimal(0);
-    BigDecimal otherFee = new BigDecimal(0);
-    BigDecimal electricityFee = new BigDecimal(0);
-    BigDecimal equipmentCost = new BigDecimal(0);
+    BigDecimal oneHourWage = BigDecimal.ZERO;
+    BigDecimal otherFee = BigDecimal.ZERO;
+    BigDecimal electricityFee = BigDecimal.ZERO;
+    BigDecimal equipmentCost = BigDecimal.ZERO;
     Date validateTime;
     String equipment;
     String operation;

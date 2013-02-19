@@ -1,0 +1,56 @@
+<ui:composition template="/template/custom-rich.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="物料导入" />
+    <ui:param name="bean" value="${materialBatchImportBean}" />
+
+    <ui:define name="content">
+        <div style="background-color:white;height:400px;overflow-y:auto;">
+
+            <input type="file" id="fileinput" />
+            <script type="text/javascript" src="./cus_analysis.js">
+            </script>
+
+            <h:form id="mainForm">
+                <t:div id="test">
+                    <p id="filename"></p>
+                    <p id="filesize"></p>
+
+                    <p>
+                        <h:outputText value="构件" class="prompt" />
+                        <table id="component">
+                            <tbody></tbody>
+                        </table>
+                    </p>
+                    <p>
+                        <h:outputText value="零件" class="prompt" />
+                        <table id="part">
+                            <tbody></tbody>
+                        </table>
+                    </p>
+                    <p>
+                        <h:outputText value="原材料" class="prompt" />
+                        <table id="raw">
+                            <tbody></tbody>
+                        </table>
+                    </p>
+                </t:div>
+
+                <h:inputHidden id="part" value="${bean.partData}" />
+
+                <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
+                <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
+                <p:commandButton id="start_import" value="开始导入" actionListener="${bean.doImport}" />
+
+                <script>
+                    $(".prompt").hide();
+                    $("#mainForm\\:start_import").hide();
+                </script>
+            </h:form>
+            <sem:chooseChanceDialog id="chooseChanceDialog" target="${bean.target}" update=":mainForm:chance" />
+
+        </div>
+    </ui:define>
+
+</ui:composition>

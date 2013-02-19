@@ -99,4 +99,8 @@ public class MaterialCriteria
         return conj(equals("category.id", categoryId), composite);
     }
 
+    public static ICriteriaElement equalsLabel(String label) {
+        return equals("label", label);
+    }
+
 }

@@ -118,6 +118,7 @@ public class Part
      * 机会也可以理解为工程项目。所以这里也是产品对应的项目
      */
     @ManyToOne
+    @Cascade(CascadeType.REFRESH)
     public Chance getChance() {
         return chance;
     }
@@ -176,9 +177,9 @@ public class Part
     }
 
     /**
-     *  物料分类
+     * 物料分类
      *
-     *  【冗余】便于统计某个物料分类下的BOM数量。
+     * 【冗余】便于统计某个物料分类下的BOM数量。
      *
      * 相当于 target.category.
      */
