@@ -38,7 +38,7 @@ public class SimpleNameDictViewBean
     }
 
     public boolean isCusEditing() {
-        if (currentView.equals(StandardViews.EDIT_FORM)) {
+        if (getCurrentView().equals(StandardViews.EDIT_FORM)) {
             if (getOpenedObjects().isEmpty())
                 throw new IllegalStateException("No opened objects for editing");
             return true;
