@@ -135,6 +135,7 @@ function _mvn() {
     if [ $LOGLEVEL -ge 2 ]; then
         echoli "$@"
     fi
+    export MAVEN_OPTS="-XX:MaxPermSize=128m"
     mvn "$@"
 }
 
