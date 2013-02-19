@@ -32,8 +32,4 @@ public interface IIcsfTypeMapping {
 
     List<Group> convertGroupList(List<? extends Principal> icsfGroups);
 
-    void addMembership(com.bee32.icsf.principal.User icsfUser, Principal icsfGroup);
-
-    void removeMembership(com.bee32.icsf.principal.User icsfUser, Principal icsfGroup);
-
 }

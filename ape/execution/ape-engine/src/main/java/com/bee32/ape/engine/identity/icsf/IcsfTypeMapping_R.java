@@ -8,7 +8,6 @@ import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import com.bee32.ape.engine.identity.ActivitiGroupType;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
@@ -70,20 +69,6 @@ public class IcsfTypeMapping_R
 
         activitiGroup.setType(ActivitiGroupType.ASSIGNMENT);
         return activitiGroup;
-    }
-
-    @Override
-    public void addMembership(User icsfUser, Principal icsfGroup) {
-        Role icsfRole = (Role) icsfGroup;
-        icsfUser.addAssignedRole(icsfRole);
-        icsfRole.addResponsibleUser(icsfUser);
-    }
-
-    @Override
-    public void removeMembership(User icsfUser, Principal icsfGroup) {
-        Role icsfRole = (Role) icsfGroup;
-        icsfUser.removeAssignedRole(icsfRole);
-        icsfRole.removeResponsibleUser(icsfUser);
     }
 
 }

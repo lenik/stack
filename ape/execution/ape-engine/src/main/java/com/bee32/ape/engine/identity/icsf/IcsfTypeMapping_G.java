@@ -71,18 +71,4 @@ public class IcsfTypeMapping_G
         return activitiGroup;
     }
 
-    @Override
-    public void addMembership(com.bee32.icsf.principal.User icsfUser, Principal _icsfGroup) {
-        Group icsfGroup = (Group) _icsfGroup;
-        icsfUser.addAssignedGroup(icsfGroup);
-        icsfGroup.addMemberUser(icsfUser);
-    }
-
-    @Override
-    public void removeMembership(com.bee32.icsf.principal.User icsfUser, Principal _icsfGroup) {
-        Group icsfGroup = (Group) _icsfGroup;
-        icsfUser.removeAssignedGroup(icsfGroup);
-        icsfGroup.removeMemberUser(icsfUser);
-    }
-
 }

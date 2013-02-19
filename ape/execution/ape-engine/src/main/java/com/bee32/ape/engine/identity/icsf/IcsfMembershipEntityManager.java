@@ -3,8 +3,8 @@ package com.bee32.ape.engine.identity.icsf;
 import org.activiti.engine.impl.persistence.entity.MembershipEntityManager;
 
 import com.bee32.ape.engine.base.IApeActivitiAdapter;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.UserService;
 
 public class IcsfMembershipEntityManager
         extends MembershipEntityManager
@@ -23,13 +23,11 @@ public class IcsfMembershipEntityManager
         String icsfUserName = userId;
         String icsfGroupName = icsfTypeMapping.toIcsfGroupName(groupId);
 
-        User _user = ctx.data.access(icsfUserType).getByName(icsfUserName);
-        Principal _group = ctx.data.access(icsfTypeMapping.getIcsfGroupType()).getByName(icsfGroupName);
-
-        icsfTypeMapping.addMembership(_user, _group);
-
-        ctx.data.access(icsfUserType).update(_user);
-        // ctx.data.access(*).saveOrUpdateAll(_user, _group);
+        UserService userService = ctx.bean.getBean(UserService.class);
+        if (icsfTypeMapping.getIcsfGroupType() == Group.class)
+            userService.assignGroupByName(icsfUserName, icsfGroupName);
+        else
+            userService.assignRoleByName(icsfUserName, icsfGroupName);
     }
 
     @Override
@@ -37,13 +35,11 @@ public class IcsfMembershipEntityManager
         String icsfUserName = userId;
         String icsfGroupName = icsfTypeMapping.toIcsfGroupName(groupId);
 
-        User _user = ctx.data.access(icsfUserType).getByName(icsfUserName);
-        Principal _group = ctx.data.access(icsfTypeMapping.getIcsfGroupType()).getByName(icsfGroupName);
-
-        icsfTypeMapping.removeMembership(_user, _group);
-
-        ctx.data.access(icsfUserType).update(_user);
-        // ctx.data.access(*).saveOrUpdateAll(_user, _group);
+        UserService userService = ctx.bean.getBean(UserService.class);
+        if (icsfTypeMapping.getIcsfGroupType() == Group.class)
+            userService.unassignGroupByName(icsfUserName, icsfGroupName);
+        else
+            userService.unassignRoleByName(icsfUserName, icsfGroupName);
     }
 
 }
