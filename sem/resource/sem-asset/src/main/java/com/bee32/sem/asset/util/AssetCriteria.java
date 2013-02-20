@@ -87,8 +87,7 @@ public class AssetCriteria
 
     @LeftHand(AccountSubject.class)
     public static ICriteriaElement subjectWithPrefix(String prefix) {
-        return compose(//
-                like("id", prefix, MatchMode.START));
+        return like("id", prefix, MatchMode.START);
     }
 
 }

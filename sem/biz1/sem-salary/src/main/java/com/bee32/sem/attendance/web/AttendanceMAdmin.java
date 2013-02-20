@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.attendance.dto.AttendanceMRecordDto;
 import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.attendance.entity.AttendanceType;
@@ -100,16 +98,15 @@ public class AttendanceMAdmin
         return false;
     }
 
-    @Operation
-    public void showCreateForm() {
+    @Override
+    protected Object create() {
+        AttendanceMRecordDto instance = (AttendanceMRecordDto) super.create();
         int yearMonth = SalaryDateUtil.convertToYearMonth(openDate);
-        AttendanceMRecordDto instance = new AttendanceMRecordDto();
         instance.setYear(yearMonth / 100);
         instance.setMonth(yearMonth % 100);
         instance.setAttendanceData(AttendanceMRecordDto
                 .generatorDefaultAttendanceData(yearMonth / 100, yearMonth % 100));
-        setOpenedObject(instance);
-        showView(StandardViews.CREATE_FORM);
+        return instance;
     }
 
     public Date getOpenDate() {
