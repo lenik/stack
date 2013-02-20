@@ -23,7 +23,7 @@ import com.bee32.plover.inject.scope.PerSession;
 
 @Component
 @PerSession
-public class SessionExplorerAppp
+public class SessionExplorerApp
         extends ExplorerApp
         implements InitializingBean {
 
