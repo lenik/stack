@@ -22,6 +22,8 @@ import javax.faces.context.FacesContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.el.ValueExpressionLiteral;
+
 public class Locker
         extends UIPreprocessor {
 
@@ -110,8 +112,18 @@ public class Locker
 
         String lockAttr = lockMethod.getAttributeName();
         ValueExpression origExpr = uiComponent.getValueExpression(lockAttr);
+
+        Object locking = uiComponent.getAttributes().get("locking");
+        if (locking != null)
+            if ("never".equals(locking)) {
+                ValueExpression falseConst = new ValueExpressionLiteral(false, Boolean.class);
+                uiComponent.setValueExpression(lockAttr, falseConst);
+                return;
+            }
+
         if (origExpr == null) {
-            // System.err.println("Lock attribute: " + uiComponent.getClientId() + "." + lockAttr);
+            // System.err.println("Lock attribute: " + uiComponent.getClientId() + "." +
+// lockAttr);
             uiComponent.setValueExpression(lockAttr, testExpr);
         } else {
             String test = getScript(testExpr);
@@ -125,6 +137,7 @@ public class Locker
             ValueExpression conjExpr = exprFactory.createValueExpression(testElContext, conj, Boolean.class);
             // uiComponent.setValueExpression(lockAttr, conjExpr);
         }
+
         stateHelper.put(APPLIED_ATTRIBUTE, true);
     }
 
