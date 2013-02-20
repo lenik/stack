@@ -1046,12 +1046,21 @@ public abstract class SimpleEntityViewBean
         this.searchPrincipal = searchPrincipal;
     }
 
-    public void addOwnerRestriction() {
-        if (searchPrincipal == null)
+    public void addOwnerRestriction(){
+        if(searchPrincipal == null)
             return;
         Principal principal = searchPrincipal.unmarshal();
         setSearchFragment("owner", "为 " + searchPrincipal.getDisplayName() + " 所有", //
                 CommonCriteria.ownedBy(principal));
+        searchPrincipal = null;
+    }
+
+    public void addImpliedOwnerRestriction() {
+        if (searchPrincipal == null)
+            return;
+        Principal principal = searchPrincipal.unmarshal();
+        setSearchFragment("owner", "为 " + searchPrincipal.getDisplayName() + " 所有", //
+                CommonCriteria.effectiveOwnedBy(principal));
         searchPrincipal = null;
     }
 

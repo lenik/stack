@@ -15,7 +15,7 @@ import com.bee32.plover.util.date.LocalDateUtil;
 public class CommonCriteria
         extends CriteriaSpec {
 
-    public static CriteriaElement ownedBy(Principal user) {
+    public static CriteriaElement effectiveOwnedBy(Principal user) {
         if (user == null)
             throw new NullPointerException("user");
         return _ownedBy(user);
@@ -133,6 +133,10 @@ public class CommonCriteria
 
     public static CriteriaElement createdBetweenEx(Date beginDate, Date endDate) {
         return betweenEx("createdDate", beginDate, endDate);
+    }
+
+    public static CriteriaElement ownedBy(Principal user) {
+        return equals("owner.id", user.getId());
     }
 
 }
