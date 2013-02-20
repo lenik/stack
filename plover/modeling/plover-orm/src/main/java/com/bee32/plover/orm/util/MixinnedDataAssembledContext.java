@@ -1,5 +1,8 @@
 package com.bee32.plover.orm.util;
 
+/**
+ * This context suggests the use of BEAN(...), DATA(...).
+ */
 public class MixinnedDataAssembledContext
         extends DefaultDataAssembledContext {
 

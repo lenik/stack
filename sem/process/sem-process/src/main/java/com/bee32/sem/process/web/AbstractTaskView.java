@@ -2,6 +2,7 @@ package com.bee32.sem.process.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.activiti.engine.TaskService;
@@ -9,20 +10,21 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.task.DelegationState;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+import org.activiti.explorer.I18nManager;
+import org.activiti.explorer.util.time.HumanTime;
 import org.primefaces.model.SortOrder;
 
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.Strs;
-import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.GeneralFormatter;
+import com.bee32.sem.misc.AbstractSimpleEntityView;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public abstract class AbstractTaskView
-        extends DataViewBean {
+        extends AbstractSimpleEntityView {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,15 +39,82 @@ public abstract class AbstractTaskView
         return ITypeAbbrAware.ABBR.abbr(TaskEntity.class);
     }
 
-    public void test() {
+    @Override
+    protected Task create() {
         TaskService taskService = BEAN(TaskService.class);
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        List<Task> tasks = taskQuery.list();
-        for (Task task : tasks) {
-            System.out.println("Task: ");
-            String str = GeneralFormatter.toString(task, FormatStyle.NORMAL, 2);
-            System.out.println(str);
-            System.out.println();
+        Task task = taskService.newTask();
+        task.setOwner(getLoggedInUserName());
+        return task;
+    }
+
+    @Override
+    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
+        TaskService taskService = BEAN(TaskService.class);
+        Task task = getOpenedObject();
+        try {
+            taskService.saveTask(task);
+        } catch (Exception e) {
+            uiLogger.error("无法保存任务", e);
+            return false;
+        }
+        uiLogger.info("保存成功");
+        return true;
+    }
+
+    public String relativeDateTo(Date date) {
+        I18nManager i18nManager = BEAN(I18nManager.class);
+        i18nManager.setLocale(Locale.getDefault());
+        String humanTime = new HumanTime(i18nManager).format(date);
+        return humanTime;
+    }
+
+    public void setNewOwner(PrincipalDto newOwner) {
+        String owner = null;
+        if (newOwner != null)
+            owner = newOwner.getName();
+
+        Task task = getOpenedObject();
+        task.setOwner(owner);
+    }
+
+    public void setNewAssignee(PrincipalDto newAssignee) {
+        String assignee = null;
+        if (newAssignee != null)
+            assignee = newAssignee.getName();
+
+        Task task = getOpenedObject();
+        task.setAssignee(assignee);
+    }
+
+    public void assignToMe() {
+        Task task = getOpenedObject();
+        task.setAssignee(getLoggedInUserName());
+    }
+
+    public void completeSelection() {
+        TaskService service = BEAN(TaskService.class);
+        for (Object sel : getSelection()) {
+            Task task = (Task) sel;
+            try {
+                service.complete(task.getId());
+                uiLogger.info("提交成功。");
+            } catch (Exception e) {
+                uiLogger.info("提交失败", e);
+            }
+        }
+    }
+
+    public void complete() {
+        Task task = getOpenedObject();
+        if (task == null)
+            uiLogger.error("未选择要提交的任务。");
+
+        TaskService service = BEAN(TaskService.class);
+        try {
+            service.complete(task.getId());
+            uiLogger.info("提交成功。");
+        } catch (Exception e) {
+            uiLogger.info("提交失败", e);
         }
     }
 

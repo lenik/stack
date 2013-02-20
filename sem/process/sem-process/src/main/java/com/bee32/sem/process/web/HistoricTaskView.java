@@ -301,6 +301,15 @@ public class HistoricTaskView
                 case "priority":
                     query.orderByTaskPriority();
                     break;
+                case "startTime":
+                    query.orderByHistoricTaskInstanceStartTime();
+                    break;
+                case "endTime":
+                    query.orderByHistoricTaskInstanceEndTime();
+                    break;
+                case "duration":
+                    query.orderByHistoricTaskInstanceDuration();
+                    break;
                 case "taskDueDate":
                     query.orderByTaskDueDate();
                     break;

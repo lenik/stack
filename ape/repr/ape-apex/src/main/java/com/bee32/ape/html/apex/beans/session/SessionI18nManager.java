@@ -1,5 +1,7 @@
 package com.bee32.ape.html.apex.beans.session;
 
+import java.util.Locale;
+
 import org.activiti.explorer.I18nManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -19,6 +21,7 @@ public class SessionI18nManager
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         setMessageSource(messageSource);
+        setLocale(Locale.getDefault());
     }
 
     @Override

@@ -20,4 +20,9 @@ public class MyProcessInstanceView
         return query;
     }
 
+    @Override
+    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
+        throw new UnsupportedOperationException("Historic process instance is read-only.");
+    }
+
 }

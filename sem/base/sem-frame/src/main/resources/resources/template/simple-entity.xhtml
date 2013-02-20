@@ -32,6 +32,7 @@
                         disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
                         update="${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
                     <p:separator />
+                    <ui:insert name="toolbar.right.2" />
                     <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
                         onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
                     <p:separator />
@@ -53,7 +54,8 @@
         <ui:insert name="dataColumnsV" />
 
         <ui:insert name="dataColumnsC">
-            <p:column headerText="创建日期" sortBy="${entry.createdDate}" styleClass="${entry.styleClass}" rendered="${showCreatedDate == true}">
+            <p:column headerText="创建日期" sortBy="${entry.createdDate}" styleClass="${entry.styleClass}"
+                rendered="${showCreatedDate == true}">
                 <h:outputLabel value="${entry.createdDate}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputLabel>

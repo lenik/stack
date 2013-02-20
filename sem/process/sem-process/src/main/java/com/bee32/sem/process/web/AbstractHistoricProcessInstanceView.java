@@ -12,17 +12,17 @@ import org.activiti.engine.impl.persistence.entity.HistoricProcessInstanceEntity
 import org.primefaces.model.SortOrder;
 
 import com.bee32.plover.arch.util.Strs;
-import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.GeneralFormatter;
+import com.bee32.sem.misc.AbstractSimpleEntityView;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public abstract class AbstractHistoricProcessInstanceView
-        extends DataViewBean {
+        extends AbstractSimpleEntityView {
 
     private static final long serialVersionUID = 1L;
 

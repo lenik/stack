@@ -5,23 +5,20 @@ import java.util.Map;
 import java.util.Set;
 
 import org.activiti.engine.RuntimeService;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.primefaces.model.SortOrder;
 
 import com.bee32.plover.arch.util.Strs;
-import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.GeneralFormatter;
+import com.bee32.sem.misc.AbstractSimpleEntityView;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public abstract class AbstractProcessInstanceView
-        extends DataViewBean {
+        extends AbstractSimpleEntityView {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,19 +30,12 @@ public abstract class AbstractProcessInstanceView
     }
 
     public String getEntityTypeAbbr() {
-        return ITypeAbbrAware.ABBR.abbr(ExecutionEntity.class);
+        return ITypeAbbrAware.ABBR.abbr(ProcessInstance.class);
     }
 
-    public void test() {
-        RuntimeService service = BEAN(RuntimeService.class);
-        ProcessInstanceQuery query = service.createProcessInstanceQuery();
-        List<ProcessInstance> processInstances = query.list();
-        for (ProcessInstance processInstance : processInstances) {
-            System.out.println("ProcessInstance: ");
-            String str = GeneralFormatter.toString(processInstance, FormatStyle.NORMAL, 2);
-            System.out.println(str);
-            System.out.println();
-        }
+    @Override
+    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
+        throw new UnsupportedOperationException("Process instance can only be started.");
     }
 
     /*************************************************************************

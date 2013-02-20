@@ -1,9 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15"
-    template="../task-template.xhtml">
+    template="../template.xhtml">
 
-    <ui:param name="title" value="我发起的任务" />
-    <ui:param name="bean" value="${ownedByMeTaskView}" />
+    <ui:param name="title" value="待办任务" />
+    <ui:param name="subtitle" value="指派给我的任务" />
+    <ui:param name="bean" value="${assignedToMeTaskView}" />
+    <ui:param name="editable" value="false" />
+    <ui:param name="deletable" value="false" />
 
 </ui:composition>

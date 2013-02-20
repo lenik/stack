@@ -5,6 +5,9 @@ import org.springframework.beans.BeansException;
 import com.bee32.plover.arch.util.ApplicationContextPartialContext;
 import com.bee32.plover.arch.util.BeanPartialContext;
 
+/**
+ * This partial context suggests the use of BEAN(...).
+ */
 public class MixinnedBeanPartialContext
         extends BeanPartialContext {
 
