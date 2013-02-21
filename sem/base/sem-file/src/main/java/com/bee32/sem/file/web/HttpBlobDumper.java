@@ -2,7 +2,6 @@ package com.bee32.sem.file.web;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.Date;
 
 import javax.free.InputStreamSource;
@@ -60,25 +59,9 @@ public class HttpBlobDumper {
          */
         String actionName = req.getActionName();
         {
-            String contentDisposition = null;
-            if ("download".equals(actionName)) {
-                contentDisposition = "attachment";
-                if (filename != null) {
-                    /**
-                     * @see RFC 5987 2.3
-                     */
-                    String encodedFilename = URLEncoder.encode(filename, "utf-8");
-
-                    // This is for IE8:
-                    // contentDisposition += "; filename=" + encodedFilename;
-
-                    // This is for Firefox and rest.
-                    contentDisposition += "; filename*=UTF-8''" + encodedFilename;
-                }
-
-            }
-            if ("view".equals(actionName))
-                contentDisposition = "inline";
+            String contentDisposition = ContentDisposition.format(filename, //
+                    "download".equals(actionName), //
+                    "view".equals(actionName));
 
             if (contentDisposition != null) {
                 response.setHeader("Content-Disposition", contentDisposition);

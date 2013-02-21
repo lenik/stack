@@ -6,10 +6,11 @@
     <ui:param name="_historicMode" value="${historicMode != null ? historicMode : false}" />
     <ui:param name="oo" value="${bean.openedObject}" />
 
+    <ui:param name="_toggleable" value="${editable != false and bean.editing}" />
+
     <ui:define name="toolbar.right.2">
-        <p:commandButton id="completeButton" value="完成" rendered="${completable != null ? completable : true}"
-            disabled="${not bean.selected}" actionListener="${bean.completeSelection}" update="${_indexUpdate}" onclick="waitbox.show()"
-            oncomplete="waitbox.hide()" />
+        <p:commandButton id="completeButton" value="完成" rendered="${completable != false}" disabled="${not bean.selected}"
+            actionListener="${bean.completeSelection}" update="${_indexUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
     </ui:define>
 
     <ui:define name="dataColumns">
@@ -72,8 +73,8 @@
                             <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/task-50.png" />
                         </td>
                         <td>
-                            <p:inplace emptyLabel="没有设置任务名称" editor="true" style="font-size: x-large;">
-                                <p:inputText id="name" label="名称" value="${oo.name}" style="font-size: x-large;" />
+                            <p:inplace emptyLabel="没有设置任务名称" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
+                                <p:inputText id="name" label="名称" value="${oo.name}" style="font-size: x-large; width: 100%" />
                                 <p:watermark for="name" value="输入任务的简短名称" />
                             </p:inplace>
                         </td>
@@ -85,7 +86,7 @@
                                     <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/duedate-16.png" />
                                     到期时间：
 
-                                    <p:inplace emptyLabel="无设置" editor="true">
+                                    <p:inplace emptyLabel="无设置" editor="true" toggleable="${_toggleable}">
                                         <p:calendar id="dueDate" label="到期时间" pattern="yyyy-MM-dd HH:mm"
                                             navigator="${true}" value="${oo.dueDate}" showOn="button" />
                                     </p:inplace>
@@ -95,7 +96,7 @@
                                         src="${location.WEB_APP}/VAADIN/themes/activiti/img/priority-${
                         oo.priority > 50 ? 'high' : oo.priority > 0 ? 'medium' : 'low' }-16.png" />
                                     优先级：
-                                    <p:inplace editor="true">
+                                    <p:inplace editor="true" toggleable="${_toggleable}">
                                         <p:selectOneMenu value="${oo.priority}" style="width: 6em">
                                             <f:selectItem itemLabel="低" itemValue="0" />
                                             <f:selectItem itemLabel="中等" itemValue="50" />
@@ -115,16 +116,16 @@
                 </table>
 
                 <p:separator />
-                <p:inplace emptyLabel="此任务没有描述。" editor="true">
-                    <p:inputTextarea id="description" label="描述" value="${oo.description}" style="width: 95%;" />
+                <p:inplace emptyLabel="此任务没有描述。" editor="true" toggleable="${_toggleable}">
+                    <p:inputTextarea id="description" label="描述" value="${oo.description}" style="width: 100%;" />
                     <p:watermark for="description" value="输入任务的描述信息" />
                 </p:inplace>
 
                 <p:separator />
                 <h3>参与人</h3>
-                <h:panelGrid id="headerGrid" columns="2" columnClasses="f-left, f-left">
+                <h:panelGrid id="headerGrid" columns="2" columnClasses="f-right, f-left">
                     <h:outputText value="所属人：" />
-                    <p:inplace emptyLabel="无属主" editor="true">
+                    <p:inplace emptyLabel="无属主" editor="true" toggleable="${_toggleable}">
                         <p:inputText id="owner" value="${oo.owner}" readonly="true" />
                         <p:commandButton value="转让" oncomplete="chooseOwnerDialog.show()">
                             <f:setPropertyActionListener target="${chooseOwnerDialog.stereo}"
@@ -133,7 +134,7 @@
                     </p:inplace>
 
                     <h:outputText value="执行：" />
-                    <p:inplace emptyLabel="尚未分配执行者。" editor="true">
+                    <p:inplace emptyLabel="尚未分配执行者。" editor="true" toggleable="${_toggleable}">
                         <p:inputText id="assignee" value="${oo.assignee}" readonly="true" />
                         <p:commandButton value="重新分配" oncomplete="chooseAssigneeDialog.show()">
                             <f:setPropertyActionListener target="${chooseAssigneeDialog.stereo}"
@@ -144,35 +145,243 @@
                     </p:inplace>
                 </h:panelGrid>
 
-                <p:separator />
-                <h3>动作</h3>
-                <table border="0" width="100%">
-                    <tr>
-                        <td align="left">
-                            <p:commandButton id="completeButton" value="完成/提交" styleClass="locker-bypass"
-                                rendered="${ (completable != null ? completable : true) and not bean.creating}"
-                                actionListener="${bean.complete}" onclick="waitbox.show()" oncomplete="waitbox.hide(); editdlg.hideValidated(args)"
-                                update="${_indexUpdate} ${mirrorTargets}">
-                                <f:attribute name="locking" value="never" />
-                            </p:commandButton>
-                        </td>
-                    </tr>
-                </table>
+                <ui:fragment rendered="${completable != false}">
+                    <p:separator />
+                    <h3>动作</h3>
+                    <table border="0" width="100%">
+                        <tr>
+                            <td align="left">
+                                <p:commandButton id="completeButton" value="完成/提交" styleClass="locker-bypass"
+                                    rendered="${ (completable != null ? completable : true) and not bean.creating}"
+                                    actionListener="${bean.complete}" onclick="waitbox.show()"
+                                    oncomplete="waitbox.hide(); editdlg.hideValidated(args)" update="${_indexUpdate} ${mirrorTargets}">
+                                    <f:attribute name="locking" value="never" />
+                                </p:commandButton>
+                            </td>
+                        </tr>
+                    </table>
+                </ui:fragment>
             </p:tab>
 
             <p:tab title="相关内容">
-                此任务无附加内容。
+                <div style="max-height: 30em; overflow-y: auto">
+                    <h3>参考链接</h3>
+                    <table border="0" style="width: 100%">
+                        <ui:repeat value="${bean.attachments}" var="a">
+                            <ui:fragment rendered="${a.url != null}">
+                                <tr>
+                                    <td width="20">
+                                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_world.png" />
+                                    </td>
+                                    <td>
+                                        <a href="${a.url}" target="_blank">${a.name}</a>
+                                    </td>
+                                    <td width="30">
+                                        <p:commandLink id="deleteURL" title="删除此链接" rendered="${editable != false}"
+                                            icon="ui-icon-close" actionListener="${bean.removeAttachment(a.id, '链接')}"
+                                            update=":@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
+                                            <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                                        </p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="2" style="color: gray">${a.description}</td>
+                                </tr>
+                            </ui:fragment>
+                        </ui:repeat>
+                    </table>
+
+                    <ui:fragment rendered="${editable != false}">
+                        <div align="right">
+                            <p:commandLink id="addURL" value="添加链接" onclick="addURLDialog.show()" />
+                        </div>
+                    </ui:fragment>
+
+                    <p:separator />
+                    <h3>附件</h3>
+                    <table border="0" style="width: 100%">
+                        <ui:repeat value="${bean.attachments}" var="a">
+                            <ui:fragment rendered="${a.url == null}">
+                                <tr>
+                                    <td width="20">
+                                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_get.png"
+                                            style="display: none" />
+                                        <img src="${location.ICON}/etool16/save_edit.gif" />
+                                    </td>
+                                    <td>
+                                        <p:commandLink id="downloadLink" value="${a.name}" ajax="false"
+                                            styleClass="locker-bypass">
+                                            <f:attribute name="locking" value="never" />
+                                            <p:fileDownload value="${bean.downloadFile(a)}"
+                                                contentDisposition="${bean.contentDisposition(a)}" />
+                                        </p:commandLink>
+                                    </td>
+                                    <td width="30">
+                                        <p:commandLink id="deleteFile" title="删除此附件" rendered="${editable != false}"
+                                            icon="ui-icon-close" actionListener="${bean.removeAttachment(a.id, '附件')}"
+                                            update=":@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
+                                            <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                                        </p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="2" style="color: gray">${a.description}</td>
+                                </tr>
+                            </ui:fragment>
+                        </ui:repeat>
+                    </table>
+
+                    <ui:fragment rendered="${editable != false}">
+                        <div align="right">
+                            <p:commandLink id="addFile" value="添加附件" actionListener="${bean.newFile}"
+                                oncomplete="addFileDialog.show()" />
+                        </div>
+                    </ui:fragment>
+                </div>
             </p:tab>
 
+            <p:tab title="评论">
+                <ui:fragment rendered="${not historicMode and bean.editing}">
+                    <div>
+                        <b>${bean.loggedInUserDisplayName}</b>
+                        说：
+                        <p:inputText id="comment" label="评论内容" value="${bean.commentText}" size="40" />
+                        <p:watermark for="comment" value="输入评论内容" />
+                        <p:commandButton id="addCommentButton" value="发送" onclick="waitbox.show()"
+                            oncomplete="waitbox.hide()" actionListener="${bean.addComment}" update=":@form" />
+                    </div>
+                </ui:fragment>
+                <table width="100%" border="0">
+                    <ui:repeat var="c" value="${bean.comments}">
+                        <tr>
+                            <td colspan="2">
+                                <p:separator />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="40">
+                                <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/user-32.png" />
+                            </td>
+                            <td>
+                                <div>
+                                    <b>${c.userId}</b>
+                                    说：
+                                    ${c.fullMessage}
+                                </div>
+                                <div style="color: gray; font-style: italic">
+                                    ${bean.relativeDateTo(c.time)}
+                                </div>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </table>
+            </p:tab>
+
+            <p:tab title="事件" rendered="${bean.events != null}">
+                <div style="max-height: 25em; overflow-y: auto">
+                    <table width="100%" border="0">
+                        <ui:repeat var="e" value="${bean.events}">
+                            <ui:fragment rendered="${e.action != 'AddComment'}">
+                                <tr>
+                                    <td colspan="2">
+                                        <p:separator />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40">
+                                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/user-32.png" />
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <b>${e.userId}</b>
+                                            ${e.action}: ${e.message}
+                                        </div>
+                                        <div style="color: gray; font-style: italic">
+                                            ${bean.relativeDateTo(e.time)}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ui:fragment>
+                        </ui:repeat>
+                    </table>
+                </div>
+            </p:tab>
+
+            <p:tab title="参数">
+                此任务未定义任何参数。
+            </p:tab>
         </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
+        <ui:insert name="dialogs.taskTemplate" />
+
         <icsf:choosePrincipalDialog id="chooseOwnerDialog" var="chooseOwnerDialog" header="选择被转让任务的用户"
             stereo="U" target="${bean.newOwner}" update=":editDialog:form" />
         <icsf:choosePrincipalDialog id="chooseAssigneeDialog" var="chooseAssigneeDialog"
             header="选择任务的执行者" stereo="U" target="${bean.newAssignee}" update=":editDialog:form" />
-        <ui:insert name="dialogs.taskTemplate" />
+
+        <sem:uploadFileDialog id="uploadFileDialog" var="uploadFileDialog"
+            fileUploadListener="${bean.uploadFileListener.handleFileUpload}" update=":addFileForm" />
+
+        <p:dialog header="添加链接" widgetVar="addURLDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="addURLForm" style="" rendered="${historicMode != true}">
+                <h:panelGrid id="urlGrid" columns="2" columnClasses="f-right, f-left" style="width: 100%">
+                    <ui:fragment>
+                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_world.png" />
+                        <h:outputText value="链接地址：" />
+                    </ui:fragment>
+                    <p:inputText id="url" label="链接地址" value="${bean.url}" style="width: 100%" />
+                    <h:outputText value="名称：" />
+                    <p:inputText id="urlName" label="名称" value="${bean.urlName}" style="width: 100%" />
+                    <h:outputText value="描述：" />
+                    <p:inputTextarea id="urlDescription" label="描述" value="${bean.urlDescription}"
+                        style="width: 100%" />
+                </h:panelGrid>
+                <p:watermark for="url" value="输入链接地址" />
+                <p:watermark for="urlName" value="输入链接名称" />
+                <p:watermark for="urlDescription" value="输入链接描述" />
+                <p:separator />
+                <div align="right">
+                    <p:commandButton id="addButton" value="确定" onclick="waitbox.show()" actionListener="${bean.addURL}"
+                        oncomplete="waitbox.hide(); addURLDialog.hideValidated(args)" update=":editDialog:form" />
+                    <p:commandButton id="cancelButton" value="取消" onclick="addURLDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="添加附件" widgetVar="addFileDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="addFileForm" style="" rendered="${historicMode != true}">
+                <h:panelGrid id="fileGrid" columns="2" columnClasses="f-right, f-left" style="width: 100%">
+                    <ui:fragment>
+                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_get.png" />
+                        <h:outputText value="文件名：" />
+                    </ui:fragment>
+                    <h:panelGroup>
+                        <h:outputText value="${bean.filePath}" />
+                        <p:commandButton id="uploadButton" value="上传" onclick="uploadFileDialog.show()" />
+                    </h:panelGroup>
+
+                    <h:outputText value="名称：" />
+                    <p:inputText id="fileName" label="名称" value="${bean.fileName}" style="width: 100%" />
+
+                    <h:outputText value="描述：" />
+                    <p:inputTextarea id="fileDescription" label="描述" value="${bean.fileDescription}"
+                        style="width: 100%" />
+                </h:panelGrid>
+                <p:watermark for="fileName" value="输入附件名称" />
+                <p:watermark for="fileDescription" value="输入附件描述" />
+                <p:separator />
+                <div align="right">
+                    <p:commandButton id="addButton" value="确定" onclick="waitbox.show()" actionListener="${bean.addFile}"
+                        oncomplete="waitbox.hide(); addFileDialog.hideValidated(args)" update=":editDialog:form" />
+                    <p:commandButton id="cancelButton" value="取消" onclick="addFileDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
     </ui:define>
 
 </ui:composition>

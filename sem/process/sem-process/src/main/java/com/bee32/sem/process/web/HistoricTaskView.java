@@ -1,5 +1,8 @@
 package com.bee32.sem.process.web;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,22 +12,32 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.impl.persistence.entity.HistoricTaskInstanceEntity;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.Comment;
+import org.activiti.engine.task.Event;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.StreamedContent;
 
 import com.bee32.plover.arch.util.Strs;
-import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
+import com.bee32.sem.file.entity.FileBlob;
+import com.bee32.sem.file.web.ContentDisposition;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public class HistoricTaskView
-        extends DataViewBean {
+        extends AbstractApexView {
 
     private static final long serialVersionUID = 1L;
 
     DataModel dataModel = new DataModel();
+
+    List<Event> events;
+    List<Comment> comments;
+    List<Attachment> attachments;
 
     @Override
     public DataModel getDataModel() {
@@ -33,6 +46,103 @@ public class HistoricTaskView
 
     public String getEntityTypeAbbr() {
         return ITypeAbbrAware.ABBR.abbr(HistoricTaskInstanceEntity.class);
+    }
+
+    @Override
+    protected void openSelection(int fmask) {
+        HistoricTaskInstance task = (HistoricTaskInstance) getSingleSelection();
+        if (task == null) {
+            uiLogger.error("没有选择要打开的对象。");
+            return;
+        }
+
+        setOpenedObject(task);
+        loadTaskFull();
+    }
+
+    void loadTaskFull() {
+        HistoricTaskInstance task = getOpenedObject();
+        TaskService service = BEAN(TaskService.class);
+        String taskId = task.getId();
+        events = service.getTaskEvents(taskId);
+        comments = service.getTaskComments(taskId);
+        attachments = service.getTaskAttachments(taskId);
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public StreamedContent downloadFile(Attachment attachment)
+            throws IOException {
+        if (attachment == null)
+            throw new NullPointerException("attachment");
+
+        TaskService taskService = BEAN(TaskService.class);
+
+        InputStream fakeContent = taskService.getAttachmentContent(attachment.getId());
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        int byt;
+        while ((byt = fakeContent.read()) != -1)
+            buf.write(byt);
+        String blobId = new String(buf.toByteArray());
+
+        FileBlob fileBlob = DATA(FileBlob.class).get(blobId);
+        if (fileBlob == null) {
+            uiLogger.error("文件数据不存在: " + blobId);
+            return null;
+        }
+
+        String contentType = fileBlob.getContentType();
+        InputStream in = fileBlob.newInputStream();
+        StreamedContent stream = new DefaultStreamedContent(in, contentType, attachment.getName());
+        return stream;
+    }
+
+    public String contentDisposition(Attachment attachment) {
+        boolean downloadAsAttachment = true;
+        if (attachment == null)
+            throw new NullPointerException("attachment");
+        String filename = attachment.getName();
+        return ContentDisposition.format(filename, downloadAsAttachment, !downloadAsAttachment);
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+
+    @Override
+    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
+        throw new UnsupportedOperationException("Can't save historic task.");
+    }
+
+    public void deleteSelection() {
+        TaskService taskService = BEAN(TaskService.class);
+        HistoryService historyService = BEAN(HistoryService.class);
+
+        for (Object sel : getSelection()) {
+            HistoricTaskInstance task = (HistoricTaskInstance) sel;
+            try {
+                taskService.deleteTask(task.getId());
+                historyService.deleteHistoricTaskInstance(task.getId());
+            } catch (Exception e) {
+                uiLogger.error("无法删除任务 " + task.getId(), e);
+                return;
+            }
+        }
+        uiLogger.info("删除成功。");
+
+        setSelection(null);
+        // if ((deleteFlags & DELETE_NO_REFRESH) == 0)
+        refreshRowCount();
     }
 
     /*************************************************************************
@@ -247,28 +357,8 @@ public class HistoricTaskView
     }
 
     /*************************************************************************
-     * Section: Persistence
+     * Section: Data Model
      *************************************************************************/
-
-    public void deleteSelection() {
-        setSelection(null);
-
-        TaskService taskService = BEAN(TaskService.class);
-
-        for (Object sel : getSelection()) {
-            HistoricTaskInstance task = (HistoricTaskInstance) sel;
-            try {
-                taskService.deleteTask(task.getId(), true);
-            } catch (Exception e) {
-                uiLogger.error("无法删除任务 " + task.getId(), e);
-                return;
-            }
-        }
-        uiLogger.info("删除成功。");
-
-        // if ((deleteFlags & DELETE_NO_REFRESH) == 0)
-        refreshRowCount();
-    }
 
     class DataModel
             extends LazyDataModelImpl<HistoricTaskInstance> {

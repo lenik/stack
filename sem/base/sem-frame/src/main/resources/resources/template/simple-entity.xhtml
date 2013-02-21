@@ -15,7 +15,7 @@
             </p:toolbarGroup>
             <ui:insert name="toolbar.left">
                 <p:toolbarGroup align="left">
-                    <p:commandButton id="createButton" value="新建" rendered="${creatable != null ? creatable : true}"
+                    <p:commandButton id="createButton" value="新建" rendered="${creatable != false}"
                         actionListener="${bean.showCreateForm}" onclick="waitbox.show()"
                         oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" update="${_contentUpdate}" />
                     <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
@@ -28,12 +28,12 @@
                     <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
                         disabled="${not bean.selected}" actionListener="${bean.showContent}" update="${_contentUpdate}"
                         onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
-                    <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
+                    <p:commandButton id="editButton" value="修改" rendered="${editable != false}"
                         disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
                         update="${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
                     <p:separator />
                     <ui:insert name="toolbar.right.2" />
-                    <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
+                    <p:commandButton id="deleteButton" value="删除" rendered="${deletable != false}"
                         onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
                     <p:separator />
                     <ui:insert name="toolbar.verify" />
@@ -77,13 +77,13 @@
                 </p:commandButton>
                 <c:if test="${editInline}">
                     <p:commandButton id="editTool" title="修改" disabled="${entry.locked}" icon="ui-icon-pencil"
-                        rendered="${editable != null ? editable : true}" actionListener="${bean.showEditForm(entry)}"
-                        update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
+                        rendered="${editable != false}" actionListener="${bean.showEditForm(entry)}" update="${_contentUpdate}"
+                        oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
                     </p:commandButton>
                 </c:if>
                 <c:if test="${deleteInline}">
                     <p:commandButton id="delTool" title="删除" disabled="${entry.locked}" icon="ui-icon-close"
-                        rendered="${deletable != null ? deletable : true}" onclick="deleteConfirmDialog.show()">
+                        rendered="${deletable != false}" onclick="deleteConfirmDialog.show()">
                         <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
                     </p:commandButton>
                 </c:if>

@@ -1,34 +1,65 @@
 package com.bee32.sem.process.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
+import javax.free.FilePath;
+
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.DelegationState;
+import org.activiti.engine.task.Event;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
-import org.activiti.explorer.I18nManager;
-import org.activiti.explorer.util.time.HumanTime;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.StreamedContent;
 
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.Strs;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.sem.misc.AbstractSimpleEntityView;
+import com.bee32.plover.rtx.location.ILocationConstants;
+import com.bee32.plover.util.Mime;
+import com.bee32.plover.util.TextUtil;
+import com.bee32.sem.file.entity.FileBlob;
+import com.bee32.sem.file.web.ContentDisposition;
+import com.bee32.sem.file.web.IncomingFile;
+import com.bee32.sem.file.web.IncomingFileBlobAdapter;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public abstract class AbstractTaskView
-        extends AbstractSimpleEntityView {
+        extends AbstractApexView
+        implements ILocationConstants {
 
     private static final long serialVersionUID = 1L;
 
     DataModel dataModel = new DataModel();
+
+    List<Event> events;
+    List<Comment> comments;
+    List<Attachment> attachments;
+
+    String commentText = "";
+    String url = "";
+    String urlName = "";
+    String urlDescription = "";
+
+    String fileBlobId = null;
+    String filePath = "";
+    String fileName = "";
+    String fileDescription = "";
+    String fileContentType = "";
 
     @Override
     public DataModel getDataModel() {
@@ -40,32 +71,36 @@ public abstract class AbstractTaskView
     }
 
     @Override
-    protected Task create() {
-        TaskService taskService = BEAN(TaskService.class);
-        Task task = taskService.newTask();
-        task.setOwner(getLoggedInUserName());
-        return task;
-    }
-
-    @Override
-    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
-        TaskService taskService = BEAN(TaskService.class);
-        Task task = getOpenedObject();
-        try {
-            taskService.saveTask(task);
-        } catch (Exception e) {
-            uiLogger.error("无法保存任务", e);
-            return false;
+    protected void openSelection(int fmask) {
+        Task task = (Task) getSingleSelection();
+        if (task == null) {
+            uiLogger.error("没有选择要打开的对象。");
+            return;
         }
-        uiLogger.info("保存成功");
-        return true;
+
+        setOpenedObject(task);
+        loadTaskFull();
     }
 
-    public String relativeDateTo(Date date) {
-        I18nManager i18nManager = BEAN(I18nManager.class);
-        i18nManager.setLocale(Locale.getDefault());
-        String humanTime = new HumanTime(i18nManager).format(date);
-        return humanTime;
+    void loadTaskFull() {
+        Task task = getOpenedObject();
+        TaskService service = BEAN(TaskService.class);
+        String taskId = task.getId();
+        events = service.getTaskEvents(taskId);
+        comments = service.getTaskComments(taskId);
+        attachments = service.getTaskAttachments(taskId);
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
     }
 
     public void setNewOwner(PrincipalDto newOwner) {
@@ -116,6 +151,315 @@ public abstract class AbstractTaskView
         } catch (Exception e) {
             uiLogger.info("提交失败", e);
         }
+    }
+
+    public String getCommentText() {
+        return commentText;
+    }
+
+    public void setCommentText(String commentText) {
+        if (commentText == null)
+            throw new NullPointerException("commentText");
+        this.commentText = TextUtil.normalizeSpace(commentText);
+    }
+
+    public void addComment() {
+        if (commentText.isEmpty()) {
+            uiLogger.error("未输入评论内容。");
+            return;
+        }
+
+        IdentityService identityService = BEAN(IdentityService.class);
+        identityService.setAuthenticatedUserId(getLoggedInUserName());
+
+        TaskService taskService = BEAN(TaskService.class);
+        Task task = getOpenedObject();
+
+        try {
+            if (task.getId() == null) {
+                taskService.saveTask(task);
+                uiLogger.info("新任务已创建。");
+            }
+
+            taskService.addComment(task.getId(), task.getProcessInstanceId(), commentText);
+            loadTaskFull();
+        } catch (Exception e) {
+            uiLogger.error("无法添加评论", e);
+        }
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        if (url == null)
+            throw new NullPointerException("url");
+        this.url = TextUtil.normalizeSpace(url);
+    }
+
+    public String getUrlName() {
+        return urlName;
+    }
+
+    public void setUrlName(String urlName) {
+        if (urlName == null)
+            throw new NullPointerException("urlName");
+        this.urlName = TextUtil.normalizeSpace(urlName);
+    }
+
+    public String getUrlDescription() {
+        return urlDescription;
+    }
+
+    public void setUrlDescription(String urlDescription) {
+        if (urlDescription == null)
+            throw new NullPointerException("urlDescription");
+        this.urlDescription = TextUtil.normalizeSpace(urlDescription);
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        if (filePath == null)
+            throw new NullPointerException("filePath");
+        this.filePath = TextUtil.normalizeSpace(filePath);
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        if (fileName == null)
+            throw new NullPointerException("fileName");
+        this.fileName = TextUtil.normalizeSpace(fileName);
+    }
+
+    public String getFileDescription() {
+        return fileDescription;
+    }
+
+    public void setFileDescription(String fileDescription) {
+        if (fileDescription == null)
+            throw new NullPointerException("fileDescription");
+        this.fileDescription = TextUtil.normalizeSpace(fileDescription);
+    }
+
+    public StreamedContent downloadFile(Attachment attachment)
+            throws IOException {
+        if (attachment == null)
+            throw new NullPointerException("attachment");
+
+        TaskService taskService = BEAN(TaskService.class);
+
+        InputStream fakeContent = taskService.getAttachmentContent(attachment.getId());
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        int byt;
+        while ((byt = fakeContent.read()) != -1)
+            buf.write(byt);
+        String blobId = new String(buf.toByteArray());
+
+        FileBlob fileBlob = DATA(FileBlob.class).get(blobId);
+        if (fileBlob == null) {
+            uiLogger.error("文件数据不存在: " + blobId);
+            return null;
+        }
+
+        String contentType = fileBlob.getContentType();
+        InputStream in = fileBlob.newInputStream();
+        StreamedContent stream = new DefaultStreamedContent(in, contentType, attachment.getName());
+        return stream;
+    }
+
+    public String contentDisposition(Attachment attachment) {
+        boolean downloadAsAttachment = true;
+        if (attachment == null)
+            throw new NullPointerException("attachment");
+        String filename = attachment.getName();
+        return ContentDisposition.format(filename, downloadAsAttachment, !downloadAsAttachment);
+    }
+
+    public void addURL() {
+        if (url.isEmpty()) {
+            uiLogger.error("未输入网址。");
+            return;
+        }
+        if (urlName.isEmpty()) {
+            uiLogger.error("未输入链接名称。");
+            return;
+        }
+
+        IdentityService identityService = BEAN(IdentityService.class);
+        identityService.setAuthenticatedUserId(getLoggedInUserName());
+
+        TaskService taskService = BEAN(TaskService.class);
+        Task task = getOpenedObject();
+
+        try {
+            if (task.getId() == null) {
+                taskService.saveTask(task);
+                uiLogger.info("新任务已创建。");
+            }
+
+            String contentType = "text/html";
+
+            String file = url;
+            int quest = file.lastIndexOf('?');
+            if (quest != -1)
+                file = file.substring(0, quest);
+            String extension = FilePath.getExtension(file, false);
+            Mime mime = Mime.getInstanceByExtension(extension);
+            if (mime != null)
+                contentType = mime.getContentType();
+
+            /**
+             * indication of the type of content that this attachment refers to. Can be mime type or
+             * any other indication.
+             */
+            taskService.createAttachment(contentType, task.getId(), task.getProcessInstanceId(), urlName,
+                    urlDescription, url);
+        } catch (Exception e) {
+            uiLogger.error("无法添加链接", e);
+            return;
+        }
+
+        loadTaskFull();
+    }
+
+    public void newFile() {
+        fileBlobId = null;
+        filePath = "";
+        fileName = "";
+        fileDescription = "";
+        fileContentType = "";
+    }
+
+    public Object getUploadFileListener() {
+        return new UploadFileListener();
+    }
+
+    class UploadFileListener
+            extends IncomingFileBlobAdapter {
+
+        @Override
+        protected void process(FileBlob fileBlob, IncomingFile incomingFile)
+                throws IOException {
+            fileBlobId = fileBlob.getId();
+            filePath = incomingFile.getFileName();
+            fileContentType = incomingFile.getContentType();
+
+            if (fileName.isEmpty())
+                fileName = filePath;
+
+            DATA(FileBlob.class).saveOrUpdate(fileBlob);
+        }
+
+        @Override
+        protected void reportError(String message, Exception exception) {
+            uiLogger.error(message, exception);
+        }
+
+    }
+
+    public void addFile() {
+        if (fileBlobId == null) {
+            uiLogger.error("尚未上传附件。");
+            return;
+        }
+        if (filePath == null) {
+            uiLogger.error("未指定文件名。");
+            return;
+        }
+        if (fileName.isEmpty()) {
+            uiLogger.error("未输入附件名称。");
+            return;
+        }
+
+        IdentityService identityService = BEAN(IdentityService.class);
+        identityService.setAuthenticatedUserId(getLoggedInUserName());
+
+        TaskService taskService = BEAN(TaskService.class);
+        Task task = getOpenedObject();
+
+        try {
+            if (task.getId() == null) {
+                taskService.saveTask(task);
+                uiLogger.info("新任务已创建。");
+            }
+
+            InputStream fakeContent = new ByteArrayInputStream(fileBlobId.getBytes());
+
+            taskService.createAttachment(fileContentType, task.getId(), task.getProcessInstanceId(), fileName,
+                    fileDescription, fakeContent);
+        } catch (Exception e) {
+            uiLogger.error("无法添加附件", e);
+            return;
+        }
+
+        loadTaskFull();
+    }
+
+    public void removeAttachment(String attachmentId, String type) {
+        if (attachmentId == null)
+            throw new NullPointerException("attachmentId");
+        TaskService taskService = BEAN(TaskService.class);
+        try {
+            taskService.deleteAttachment(attachmentId);
+        } catch (Exception e) {
+            uiLogger.error("无法删除" + type, e);
+            return;
+        }
+
+        loadTaskFull();
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+
+    @Override
+    protected Task create() {
+        TaskService taskService = BEAN(TaskService.class);
+        Task task = taskService.newTask();
+        task.setOwner(getLoggedInUserName());
+        return task;
+    }
+
+    @Override
+    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
+        TaskService taskService = BEAN(TaskService.class);
+        Task task = getOpenedObject();
+        try {
+            taskService.saveTask(task);
+        } catch (Exception e) {
+            uiLogger.error("无法保存任务", e);
+            return false;
+        }
+        uiLogger.info("保存成功");
+        return true;
+    }
+
+    public void deleteSelection() {
+        setSelection(null);
+
+        TaskService taskService = BEAN(TaskService.class);
+
+        for (Object sel : getSelection()) {
+            Task task = (Task) sel;
+            try {
+                taskService.deleteTask(task.getId(), true);
+            } catch (Exception e) {
+                uiLogger.error("无法删除任务 " + task.getId(), e);
+                return;
+            }
+        }
+        uiLogger.info("删除成功。");
+
+        // if ((deleteFlags & DELETE_NO_REFRESH) == 0)
+        refreshRowCount();
     }
 
     /*************************************************************************
@@ -393,28 +737,8 @@ public abstract class AbstractTaskView
     }
 
     /*************************************************************************
-     * Section: Persistence
+     * Section: Data Model
      *************************************************************************/
-
-    public void deleteSelection() {
-        setSelection(null);
-
-        TaskService taskService = BEAN(TaskService.class);
-
-        for (Object sel : getSelection()) {
-            Task task = (Task) sel;
-            try {
-                taskService.deleteTask(task.getId(), true);
-            } catch (Exception e) {
-                uiLogger.error("无法删除任务 " + task.getId(), e);
-                return;
-            }
-        }
-        uiLogger.info("删除成功。");
-
-        // if ((deleteFlags & DELETE_NO_REFRESH) == 0)
-        refreshRowCount();
-    }
 
     class DataModel
             extends LazyDataModelImpl<Task> {

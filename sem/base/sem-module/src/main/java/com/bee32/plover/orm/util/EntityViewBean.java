@@ -129,7 +129,7 @@ public abstract class EntityViewBean
     }
 
     @Override
-    public void openSelection() {
+    public final void openSelection() {
         int fmask = Fmask.F_MORE;
         String fmaskParam = ctx.view.getRequest().getParameter("fmask");
         if (fmaskParam != null)
