@@ -1,8 +1,5 @@
 package com.bee32.sem.process.web;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,32 +9,21 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.impl.persistence.entity.HistoricTaskInstanceEntity;
-import org.activiti.engine.task.Attachment;
-import org.activiti.engine.task.Comment;
-import org.activiti.engine.task.Event;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.SortOrder;
-import org.primefaces.model.StreamedContent;
 
 import com.bee32.plover.arch.util.Strs;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.sem.file.entity.FileBlob;
-import com.bee32.sem.file.web.ContentDisposition;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public class HistoricTaskView
-        extends AbstractApexView {
+        extends GenericTaskView {
 
     private static final long serialVersionUID = 1L;
 
     DataModel dataModel = new DataModel();
-
-    List<Event> events;
-    List<Comment> comments;
-    List<Attachment> attachments;
 
     @Override
     public DataModel getDataModel() {
@@ -57,62 +43,7 @@ public class HistoricTaskView
         }
 
         setOpenedObject(task);
-        loadTaskFull();
-    }
-
-    void loadTaskFull() {
-        HistoricTaskInstance task = getOpenedObject();
-        TaskService service = BEAN(TaskService.class);
-        String taskId = task.getId();
-        events = service.getTaskEvents(taskId);
-        comments = service.getTaskComments(taskId);
-        attachments = service.getTaskAttachments(taskId);
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public List<Attachment> getAttachments() {
-        return attachments;
-    }
-
-    public StreamedContent downloadFile(Attachment attachment)
-            throws IOException {
-        if (attachment == null)
-            throw new NullPointerException("attachment");
-
-        TaskService taskService = BEAN(TaskService.class);
-
-        InputStream fakeContent = taskService.getAttachmentContent(attachment.getId());
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        int byt;
-        while ((byt = fakeContent.read()) != -1)
-            buf.write(byt);
-        String blobId = new String(buf.toByteArray());
-
-        FileBlob fileBlob = DATA(FileBlob.class).get(blobId);
-        if (fileBlob == null) {
-            uiLogger.error("文件数据不存在: " + blobId);
-            return null;
-        }
-
-        String contentType = fileBlob.getContentType();
-        InputStream in = fileBlob.newInputStream();
-        StreamedContent stream = new DefaultStreamedContent(in, contentType, attachment.getName());
-        return stream;
-    }
-
-    public String contentDisposition(Attachment attachment) {
-        boolean downloadAsAttachment = true;
-        if (attachment == null)
-            throw new NullPointerException("attachment");
-        String filename = attachment.getName();
-        return ContentDisposition.format(filename, downloadAsAttachment, !downloadAsAttachment);
+        reloadTaskDetails(task.getId());
     }
 
     /*************************************************************************
@@ -149,67 +80,30 @@ public class HistoricTaskView
      * Section: Search
      *************************************************************************/
 
-    boolean finishedOnly;
-    boolean unfinishedOnly;
-    boolean unassignedOnly;
-    boolean excludeSubtasks;
+    private boolean finishedOnly;
+    private boolean unfinishedOnly;
 
-    String executionId;
-    String processDefinitionId;
-    String processDefinitionKey;
-    String processDefinitionName;
-    String processInstanceId;
+    private String executionId;
+    private String processDefinitionId;
+    private String processDefinitionKey;
+    private String processDefinitionName;
+    private String processInstanceId;
 
-    String taskId;
-    String taskPriority;
-    String taskOwnerLike;
-    Date taskDueBefore;
-    Date taskDueAfter;
-    Date taskDueDate;
-    String taskAssignee;
-    String taskCandidateUser;
-    String taskCandidateGroup;
-    List<String> taskCandidateGroups;
-    String taskDefinitionKey;
-    String taskNameLike;
-    String taskDescriptionLike;
+    private String taskId;
+    private String taskPriority;
+    private String taskOwnerLike;
+    private Date taskDueBefore;
+    private Date taskDueAfter;
+    private Date taskDueDate;
+    private String taskAssignee;
+    private String taskDefinitionKey;
+    private String taskNameLike;
+    private String taskDescriptionLike;
 
     protected HistoricTaskInstanceQuery createQuery() {
         HistoryService service = BEAN(HistoryService.class);
         HistoricTaskInstanceQuery query = service.createHistoricTaskInstanceQuery();
         return query;
-    }
-
-    public boolean isActiveOnly() {
-        return finishedOnly;
-    }
-
-    public void setActiveOnly(boolean activeOnly) {
-        this.finishedOnly = activeOnly;
-    }
-
-    public boolean isSuspendedOnly() {
-        return unfinishedOnly;
-    }
-
-    public void setSuspendedOnly(boolean suspendedOnly) {
-        this.unfinishedOnly = suspendedOnly;
-    }
-
-    public boolean isUnassignedOnly() {
-        return unassignedOnly;
-    }
-
-    public void setUnassignedOnly(boolean unassignedOnly) {
-        this.unassignedOnly = unassignedOnly;
-    }
-
-    public boolean isExcludeSubtasks() {
-        return excludeSubtasks;
-    }
-
-    public void setExcludeSubtasks(boolean excludeSubtasks) {
-        this.excludeSubtasks = excludeSubtasks;
     }
 
     public Date getDueBefore() {
@@ -234,118 +128,6 @@ public class HistoricTaskView
 
     public void setDueDate(Date dueDate) {
         this.taskDueDate = dueDate;
-    }
-
-    public String getExecutionId() {
-        return executionId;
-    }
-
-    public void setExecutionId(String executionId) {
-        this.executionId = executionId;
-    }
-
-    public String getProcessDefinitionId() {
-        return processDefinitionId;
-    }
-
-    public void setProcessDefinitionId(String processDefinitionId) {
-        this.processDefinitionId = processDefinitionId;
-    }
-
-    public String getProcessDefinitionKey() {
-        return processDefinitionKey;
-    }
-
-    public void setProcessDefinitionKey(String processDefinitionKey) {
-        this.processDefinitionKey = processDefinitionKey;
-    }
-
-    public String getProcessDefinitionName() {
-        return processDefinitionName;
-    }
-
-    public void setProcessDefinitionName(String processDefinitionName) {
-        this.processDefinitionName = processDefinitionName;
-    }
-
-    public String getProcessInstanceId() {
-        return processInstanceId;
-    }
-
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-    }
-
-    public String getTaskAssignee() {
-        return taskAssignee;
-    }
-
-    public void setTaskAssignee(String taskAssignee) {
-        this.taskAssignee = taskAssignee;
-    }
-
-    public String getTaskCandidateUser() {
-        return taskCandidateUser;
-    }
-
-    public void setTaskCandidateUser(String taskCandidateUser) {
-        this.taskCandidateUser = taskCandidateUser;
-    }
-
-    public String getTaskCandidateGroup() {
-        return taskCandidateGroup;
-    }
-
-    public void setTaskCandidateGroup(String taskCandidateGroup) {
-        this.taskCandidateGroup = taskCandidateGroup;
-    }
-
-    public List<String> getTaskCandidateGroups() {
-        return taskCandidateGroups;
-    }
-
-    public void setTaskCandidateGroups(List<String> taskCandidateGroups) {
-        this.taskCandidateGroups = taskCandidateGroups;
-    }
-
-    public String getTaskDefinitionKeyLike() {
-        return taskDefinitionKey;
-    }
-
-    public void setTaskDefinitionKeyLike(String taskDefinitionKeyLike) {
-        this.taskDefinitionKey = taskDefinitionKeyLike;
-    }
-
-    public String getTaskNameLike() {
-        return taskNameLike;
-    }
-
-    public void setTaskNameLike(String taskNameLike) {
-        this.taskNameLike = taskNameLike;
-    }
-
-    public String getTaskDescriptionLike() {
-        return taskDescriptionLike;
-    }
-
-    public void setTaskDescriptionLike(String taskDescriptionLike) {
-        this.taskDescriptionLike = taskDescriptionLike;
-    }
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getTaskPriority() {
-        return taskPriority;
-    }
-
-    public void setTaskPriority(String taskPriority) {
-        this.taskPriority = taskPriority;
     }
 
     public String getTaskOwnerLike() {
