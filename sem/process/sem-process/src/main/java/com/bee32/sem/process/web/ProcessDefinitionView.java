@@ -3,24 +3,26 @@ package com.bee32.sem.process.web;
 import java.util.List;
 import java.util.Map;
 
+import org.activiti.engine.FormService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.primefaces.model.SortOrder;
 
 import com.bee32.plover.arch.util.Strs;
-import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.GeneralFormatter;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public class ProcessDefinitionView
-        extends DataViewBean {
+        extends AbstractApexView {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,16 +37,58 @@ public class ProcessDefinitionView
         return ITypeAbbrAware.ABBR.abbr(ProcessDefinitionEntity.class);
     }
 
-    public void test() {
-        RepositoryService service = BEAN(RepositoryService.class);
-        ProcessDefinitionQuery query = service.createProcessDefinitionQuery();
-        List<ProcessDefinition> defs = query.list();
-        for (ProcessDefinition def : defs) {
-            System.out.println("ProcessDefinition: ");
-            String str = GeneralFormatter.toString(def, FormatStyle.NORMAL, 2);
-            System.out.println(str);
-            System.out.println();
+    public void startup() {
+        RepositoryService repositoryService = BEAN(RepositoryService.class);
+        RuntimeService runtimeService = BEAN(RuntimeService.class);
+        FormService formService = BEAN(FormService.class);
+
+        List<?> selection = getSelection();
+        if (selection.isEmpty()) {
+            uiLogger.error("没有选择要启动的流程。");
+            return;
         }
+
+        for (Object sel : getSelection()) {
+            ProcessDefinition processDefinition = (ProcessDefinition) sel;
+
+            // Object renderedStartForm =
+// formService.getRenderedStartForm(processDefinition.getId());
+            StartFormData startFormData = formService.getStartFormData(processDefinition.getId());
+            int requiredProperties = 0;
+            for (FormProperty property : startFormData.getFormProperties()) {
+                if (property.isRequired())
+                    requiredProperties++;
+            }
+
+            if (requiredProperties > 0) {
+                uiLogger.error("不能直接启动参数化(" + requiredProperties + "+]流程");
+                continue;
+            }
+
+            try {
+                ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId());
+                uiLogger.info("启动流程成功：编号 " + processInstance.getId());
+            } catch (Exception e) {
+                uiLogger.error("启动流程失败", e);
+            }
+        }
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+
+    @Override
+    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
+        throw new UnsupportedOperationException("Can only deploy process definition.");
+    }
+
+    public void deleteSelection() {
+        if (!isSelected()) {
+            uiLogger.error("没有选择需要删除的对象。");
+            return;
+        }
+        uiLogger.error("过程定义不可删除。");
     }
 
     /*************************************************************************
@@ -132,16 +176,8 @@ public class ProcessDefinitionView
     }
 
     /*************************************************************************
-     * Section: Persistence
+     * Section: Data Model
      *************************************************************************/
-
-    public void deleteSelection() {
-        if (!isSelected()) {
-            uiLogger.error("没有选择需要删除的对象。");
-            return;
-        }
-        uiLogger.error("过程定义不可删除。");
-    }
 
     class DataModel
             extends LazyDataModelImpl<ProcessDefinition> {

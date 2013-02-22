@@ -2,7 +2,6 @@ package com.bee32.sem.process.web;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
@@ -13,16 +12,13 @@ import org.primefaces.model.SortOrder;
 
 import com.bee32.plover.arch.util.Strs;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.GeneralFormatter;
-import com.bee32.sem.misc.AbstractSimpleEntityView;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
-public abstract class AbstractHistoricProcessInstanceView
-        extends AbstractSimpleEntityView {
+public class HistoricProcessInstanceView
+        extends GenericProcessInstanceView {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,16 +33,34 @@ public abstract class AbstractHistoricProcessInstanceView
         return ITypeAbbrAware.ABBR.abbr(HistoricProcessInstanceEntity.class);
     }
 
-    public void test() {
-        HistoryService service = BEAN(HistoryService.class);
-        HistoricProcessInstanceQuery query = service.createHistoricProcessInstanceQuery();
-        List<HistoricProcessInstance> historicProcessInstances = query.list();
-        for (HistoricProcessInstance historicProcessInstance : historicProcessInstances) {
-            System.out.println("HistoricProcessInstance: ");
-            String str = GeneralFormatter.toString(historicProcessInstance, FormatStyle.NORMAL, 2);
-            System.out.println(str);
-            System.out.println();
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+
+    @Override
+    protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
+        throw new UnsupportedOperationException("Can't save historic process instance.");
+    }
+
+    public void deleteSelection() {
+        setSelection(null);
+
+        RuntimeService service = BEAN(RuntimeService.class);
+
+        for (Object sel : getSelection()) {
+            HistoricProcessInstance processInstance = (HistoricProcessInstance) sel;
+            try {
+                // Delete an existing runtime process instance.
+                service.deleteProcessInstance(processInstance.getId(), "Reason");
+            } catch (Exception e) {
+                uiLogger.error("无法删除过程 " + processInstance.getId(), e);
+                return;
+            }
         }
+        uiLogger.info("删除成功。");
+
+        // if ((deleteFlags & DELETE_NO_REFRESH) == 0)
+        refreshRowCount();
     }
 
     /*************************************************************************
@@ -55,12 +69,6 @@ public abstract class AbstractHistoricProcessInstanceView
 
     boolean finishedOnly;
     boolean unfinishedOnly;
-
-    String processDefinitionId;
-    String processDefinitionKey;
-    String processInstanceBusinessKey;
-    String processInstanceId;
-    Set<String> processInstanceIds;
 
     String startedBy;
 
@@ -86,46 +94,6 @@ public abstract class AbstractHistoricProcessInstanceView
         this.unfinishedOnly = unfinishedOnly;
     }
 
-    public String getProcessDefinitionId() {
-        return processDefinitionId;
-    }
-
-    public void setProcessDefinitionId(String processDefinitionId) {
-        this.processDefinitionId = processDefinitionId;
-    }
-
-    public String getProcessDefinitionKey() {
-        return processDefinitionKey;
-    }
-
-    public void setProcessDefinitionKey(String processDefinitionKey) {
-        this.processDefinitionKey = processDefinitionKey;
-    }
-
-    public String getProcessInstanceBusinessKey() {
-        return processInstanceBusinessKey;
-    }
-
-    public void setProcessInstanceBusinessKey(String processInstanceBusinessKey) {
-        this.processInstanceBusinessKey = processInstanceBusinessKey;
-    }
-
-    public String getProcessInstanceId() {
-        return processInstanceId;
-    }
-
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-    }
-
-    public Set<String> getProcessInstanceIds() {
-        return processInstanceIds;
-    }
-
-    public void setProcessInstanceIds(Set<String> processInstanceIds) {
-        this.processInstanceIds = processInstanceIds;
-    }
-
     public String getStartedBy() {
         return startedBy;
     }
@@ -135,29 +103,8 @@ public abstract class AbstractHistoricProcessInstanceView
     }
 
     /*************************************************************************
-     * Section: Persistence
+     * Section: Data Model
      *************************************************************************/
-
-    public void deleteSelection() {
-        setSelection(null);
-
-        RuntimeService service = BEAN(RuntimeService.class);
-
-        for (Object sel : getSelection()) {
-            HistoricProcessInstance processInstance = (HistoricProcessInstance) sel;
-            try {
-                // Delete an existing runtime process instance.
-                service.deleteProcessInstance(processInstance.getId(), "Reason");
-            } catch (Exception e) {
-                uiLogger.error("无法删除过程 " + processInstance.getId(), e);
-                return;
-            }
-        }
-        uiLogger.info("删除成功。");
-
-        // if ((deleteFlags & DELETE_NO_REFRESH) == 0)
-        refreshRowCount();
-    }
 
     class DataModel
             extends LazyDataModelImpl<HistoricProcessInstance> {

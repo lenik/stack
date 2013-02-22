@@ -87,6 +87,7 @@
                         <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
                     </p:commandButton>
                 </c:if>
+                <ui:insert name="toolsColumn.1" />
             </ui:insert>
         </p:column>
     </ui:define>
@@ -154,7 +155,8 @@
             <p:panel header="按用户搜索" toggleable="true">
                 <div align="center">
                     <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
-                    <p:commandButton id="chooseImpliedPrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
+                    <p:commandButton id="chooseImpliedPrincipal" value="..."
+                        onclick="choosePrincipalToSearchDialog.show()" />
                     <p:commandButton id="filterImpliedOwner" value="限定有效属主" actionListener="${bean.addImpliedOwnerRestriction}"
                         update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
                     <p:commandButton id="filterOwner" value="限定属主" actionListener="${bean.addOwnerRestriction}"

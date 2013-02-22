@@ -2,8 +2,8 @@ package com.bee32.sem.process.web;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
@@ -11,14 +11,13 @@ import org.primefaces.model.SortOrder;
 
 import com.bee32.plover.arch.util.Strs;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.sem.misc.AbstractSimpleEntityView;
 import com.bee32.sem.sandbox.LazyDataModelImpl;
 
 /**
  * @see com.bee32.ape.engine.beans.ApeActivitiServices
  */
 public abstract class AbstractProcessInstanceView
-        extends AbstractSimpleEntityView {
+        extends GenericProcessInstanceView {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,110 +32,24 @@ public abstract class AbstractProcessInstanceView
         return ITypeAbbrAware.ABBR.abbr(ProcessInstance.class);
     }
 
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+
     @Override
     protected boolean saveImpl(int saveFlags, String hint, boolean creating) {
         throw new UnsupportedOperationException("Process instance can only be started.");
     }
 
-    /*************************************************************************
-     * Section: Search
-     *************************************************************************/
-
-    boolean activeOnly;
-    boolean suspendedOnly;
-    boolean unassignedOnly;
-
-    String processDefinitionId;
-    String processDefinitionKey;
-    String processInstanceBusinessKey;
-    String processInstanceId;
-    Set<String> processInstanceIds;
-    String subProcessInstanceId;
-    String superProcessInstanceId;
-
-    protected ProcessInstanceQuery createQuery() {
-        RuntimeService service = BEAN(RuntimeService.class);
-        ProcessInstanceQuery query = service.createProcessInstanceQuery();
-        return query;
-    }
-
-    public boolean isActiveOnly() {
-        return activeOnly;
-    }
-
-    public void setActiveOnly(boolean activeOnly) {
-        this.activeOnly = activeOnly;
-    }
-
-    public boolean isSuspendedOnly() {
-        return suspendedOnly;
-    }
-
-    public void setSuspendedOnly(boolean suspendedOnly) {
-        this.suspendedOnly = suspendedOnly;
-    }
-
-    public boolean isUnassignedOnly() {
-        return unassignedOnly;
-    }
-
-    public void setUnassignedOnly(boolean unassignedOnly) {
-        this.unassignedOnly = unassignedOnly;
-    }
-
-    public String getProcessDefinitionId() {
-        return processDefinitionId;
-    }
-
-    public void setProcessDefinitionId(String processDefinitionId) {
-        this.processDefinitionId = processDefinitionId;
-    }
-
-    public String getProcessDefinitionKey() {
-        return processDefinitionKey;
-    }
-
-    public void setProcessDefinitionKey(String processDefinitionKey) {
-        this.processDefinitionKey = processDefinitionKey;
-    }
-
-    public String getProcessInstanceBusinessKey() {
-        return processInstanceBusinessKey;
-    }
-
-    public void setProcessInstanceBusinessKey(String processInstanceBusinessKey) {
-        this.processInstanceBusinessKey = processInstanceBusinessKey;
-    }
-
-    public String getProcessInstanceId() {
-        return processInstanceId;
-    }
-
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-    }
-
-    public Set<String> getProcessInstanceIds() {
-        return processInstanceIds;
-    }
-
-    public void setProcessInstanceIds(Set<String> processInstanceIds) {
-        this.processInstanceIds = processInstanceIds;
-    }
-
-    /*************************************************************************
-     * Section: Persistence
-     *************************************************************************/
-
     public void deleteSelection() {
-        setSelection(null);
-
-        RuntimeService service = BEAN(RuntimeService.class);
+        RuntimeService runtimeService = BEAN(RuntimeService.class);
+        HistoryService historyService = BEAN(HistoryService.class);
 
         for (Object sel : getSelection()) {
             ProcessInstance processInstance = (ProcessInstance) sel;
             try {
-                service.deleteProcessInstance(processInstance.getId(), "Reason");
+                runtimeService.deleteProcessInstance(processInstance.getId(), "forced");
+                historyService.deleteHistoricProcessInstance(processInstance.getId());
             } catch (Exception e) {
                 uiLogger.error("无法删除过程 " + processInstance.getId(), e);
                 return;
@@ -144,9 +57,24 @@ public abstract class AbstractProcessInstanceView
         }
         uiLogger.info("删除成功。");
 
+        setSingleSelection(null);
         // if ((deleteFlags & DELETE_NO_REFRESH) == 0)
         refreshRowCount();
     }
+
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
+
+    protected ProcessInstanceQuery createQuery() {
+        RuntimeService service = BEAN(RuntimeService.class);
+        ProcessInstanceQuery query = service.createProcessInstanceQuery();
+        return query;
+    }
+
+    /*************************************************************************
+     * Section: Data Model
+     *************************************************************************/
 
     class DataModel
             extends LazyDataModelImpl<ProcessInstance> {

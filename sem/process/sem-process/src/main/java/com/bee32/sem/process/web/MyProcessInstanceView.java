@@ -5,7 +5,7 @@ import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import com.bee32.icsf.login.SessionUser;
 
 public class MyProcessInstanceView
-        extends AbstractHistoricProcessInstanceView {
+        extends HistoricProcessInstanceView {
 
     private static final long serialVersionUID = 1L;
 

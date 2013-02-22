@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
+
+    <ui:param name="title" value="过程模型" />
+    <ui:param name="bean" value="${processModelView}" />
+    <ui:param name="oo" value="${bean.openedObject}" />
+
+    <ui:param name="_toggleable" value="${editable != false and bean.editing}" />
+
+    <ui:define name="toolbar.right.2">
+        <p:commandButton id="deploy" value="部署" disabled="${not bean.selected}" actionListener="${bean.deploy}"
+            update="${_indexUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
+    </ui:define>
+
+    <ui:define name="dataColumns">
+        <p:column headerText="名称" sortBy="${entry.name}" styleClass="f-wrappable">
+            <h:outputText value="${entry.name}" />
+        </p:column>
+        <p:column headerText="键名" sortBy="${entry.key}">
+            <h:outputText value="${entry.key}" />
+        </p:column>
+        <p:column headerText="版本" sortBy="${entry.version}">
+            <h:outputText value="${entry.version}" />
+        </p:column>
+        <p:column headerText="类别" sortBy="${entry.category}">
+            <h:outputText value="${entry.category}" />
+        </p:column>
+        <p:column headerText="部署标识" sortBy="${entry.deploymentId}">
+            <h:outputText value="${entry.deploymentId}" />
+        </p:column>
+        <p:column headerText="元信息" sortBy="${entry.metaInfo}" styleClass="f-wrappable" rendered="false">
+            <h:outputText value="${entry.metaInfo}" />
+        </p:column>
+        <p:column headerText="创建时间" sortBy="${entry.createTime}">
+            <h:outputText value="${entry.createTime}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
+        <p:column headerText="更新时间" sortBy="${entry.lastUpdateTime}">
+            <h:outputText value="${entry.lastUpdateTime}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
+    </ui:define>
+
+    <ui:define name="dataColumnsC">
+    </ui:define>
+
+    <ui:define name="toolsColumn.1">
+        <p:commandButton id="editorButton" icon="ui-icon-extlink" rendered="${designable != false}"
+            onclick="location.href = '${location.WEB_APP}/3/30/3/3/service/editor?id=${entry.id}';" />
+    </ui:define>
+
+    <ui:define name="searchPanels">
+    </ui:define>
+
+    <ui:define name="searchFragmentsPanel">
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+        <t:panelGrid columns="2" columnClasses="f-right, f-left">
+            <h:graphicImage value="/VAADIN/themes/activiti/img/process-50.png" alt="ICON" />
+            <p:inplace emptyLabel="未设置模型名称" editor="true" toggleable="${_toggleable}" style="font-size: x-large">
+                <p:inputText id="name" value="${oo.name}" style="font-size: x-large" />
+                <p:watermark for="name" value="输入模型名称" />
+            </p:inplace>
+        </t:panelGrid>
+
+        <p:separator />
+
+        <t:panelGrid columns="2" columnClasses="f-right, f-left">
+            <h:outputText value="键名：" />
+            <p:inplace emptyLabel="未设置键名" editor="true" toggleable="${_toggleable}">
+                <p:inputText id="key" value="${oo.key}" />
+                <p:watermark for="key" value="输入模型的键名" />
+            </p:inplace>
+
+            <h:outputText value="类别：" />
+            <p:inplace emptyLabel="未设置名称" editor="true" toggleable="${_toggleable}">
+                <p:inputText id="category" value="${oo.category}" />
+                <p:watermark for="category" value="输入模型的类别" />
+            </p:inplace>
+        </t:panelGrid>
+
+
+        <p:separator />
+        <h3>元信息</h3>
+        <h:outputText>${oo.metaInfo}</h:outputText>
+
+        <h:panelGroup rendered="${oo.id != null and oo.id != ''}">
+            <p:separator />
+            <a href="${location.WEB_APP}/3/30/3/3/service/editor?id=${oo.id}" target="_blank">
+                点击此处打开模型设计器。
+            </a>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>

@@ -206,6 +206,10 @@ label {
     text-align: right;
 }
 
+.f-center {
+    text-align: center;
+}
+
 .f-top {
     vertical-align: top;
 }
@@ -214,7 +218,7 @@ label {
     vertical-align: bottom;
 }
 
-.f-center {
+.f-middle {
     margin-left: auto;
     margin-right: auto;
 }
