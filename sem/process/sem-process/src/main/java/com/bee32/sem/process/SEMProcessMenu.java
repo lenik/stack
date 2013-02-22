@@ -12,8 +12,8 @@ public class SEMProcessMenu
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
     public MenuNode WORKFLOW = menu(_frame_.START, 30, "WORKFLOW");
-    MenuNode inbox = entry(WORKFLOW, 10, "inbox", __.join("task/inbox"));
-    MenuNode my = entry(WORKFLOW, 20, "my", __.join("task/my"));
+    MenuNode my = entry(WORKFLOW, 10, "my", __.join("task/my"));
+    MenuNode inbox = entry(WORKFLOW, 20, "inbox", __.join("task/inbox"));
     MenuNode queued = entry(WORKFLOW, 30, "queued", __.join("task/queued"));
     MenuNode archived = entry(WORKFLOW, 40, "archived", __.join("task/archived"));
     // MenuNode __1 = _separator_(WORKFLOW, 100);
