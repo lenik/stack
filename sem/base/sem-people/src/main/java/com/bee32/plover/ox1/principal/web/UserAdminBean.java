@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.validation.constraints.Size;
@@ -73,11 +74,17 @@ public class UserAdminBean
     }
 
     public void passwordValidator(FacesContext context, UIComponent toValidate, Object value) {
-        if (!passwordConfirm.equals(password)) {
+        UIInput passwordField = (UIInput) context.getViewRoot().findComponent("editDialog:form:password");
+        if (passwordField == null)
+            throw new IllegalArgumentException(String.format("Unable to find component."));
+        String password = (String) passwordField.getValue();
+        String confirmPassword = (String) value;
+        if (!confirmPassword.equals(password)) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, //
                     "输入的密码不匹配！", null);
             throw new ValidatorException(message);
         }
+
     }
 
     @Override
