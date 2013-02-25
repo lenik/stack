@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.constraints.Size;
 
 import org.h2.util.StringUtils;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.GroupDto;
@@ -45,7 +44,7 @@ public class UserAdminBean
         super(User.class, UserDto.class, 0);
     }
 
-    @Size(min = 1, max = 12)
+    @Size(max = 12)
     @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPassword() {
         return password;
@@ -57,8 +56,7 @@ public class UserAdminBean
         this.password = password;
     }
 
-    @NotEmpty
-    @Size(min = 1, max = 12)
+    @Size(max = 12)
     @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPasswordConfirm() {
         return passwordConfirm;
@@ -112,8 +110,7 @@ public class UserAdminBean
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         for (User user : uMap.<User> entitySet())
-            if (password != null) {
-                // if (password.isEmpty()) ;
+            if (password != null && !password.isEmpty()) {
                 try {
                     DATA(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
                     UserPassword pass = new UserPassword(user, password);
