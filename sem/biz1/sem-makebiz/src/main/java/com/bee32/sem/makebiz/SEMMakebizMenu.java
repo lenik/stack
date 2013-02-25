@@ -25,11 +25,13 @@ public class SEMMakebizMenu
     /**/MenuNode deliveryNoteListAdmin = entry(MAKEBIZ, 50, "deliveryNoteListAdmin", __.join("delivery/list.jsf"));
     /**/MenuNode deliveryNoteAdmin = entry(MAKEBIZ, 51, "deliveryNoteAdmin", __.join("delivery/"));
 
-
     /**/MenuNode makeProcessListAdmin = entry(MAKEBIZ, 60, "makeProcessListAdmin", __.join("process/list.jsf"));
     /**/MenuNode makeProcessAdmin = entry(MAKEBIZ, 61, "makeProcessAdmin", __.join("process/"));
 
     /**/MenuNode makeStepItemListAdmin = entry(MAKEBIZ, 70, "makeStepItemListAdmin", __.join("stepItem/list.jsf"));
+
+    /**/MenuNode batchImport = entry(MAKEBIZ, 80, "batchImport", __.join("import/"));
+    /**/MenuNode productionSchedule = entry(MAKEBIZ, 90, "productionSchedule", __.join("schedule/"));
 
     static Location __Inv = WEB_APP.join(SEMInventoryModule.PREFIX_);
 
