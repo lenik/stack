@@ -16,7 +16,7 @@ public class IcsfPrincipalMenu
 
     MenuNode userAdmin = entry(IDENTITY, 10, "userAdmin", prefix.join("user/index-rich.jsf"));
     MenuNode groupAdmin = entry(IDENTITY, 11, "groupAdmin", prefix.join("group/index-rich.jsf"));
-    MenuNode roleAdmin = entry(IDENTITY, 12, "roleAdmin", prefix.join("role/index-rich.jsf"));
+    // MenuNode roleAdmin = entry(IDENTITY, 12, "roleAdmin", prefix.join("role/index-rich.jsf"));
 
     MenuNode modifyPassword = entry(_frame_.CONTROL, 50, "modifyPassword", prefix.join("modifyPassword.jsf"));
 
