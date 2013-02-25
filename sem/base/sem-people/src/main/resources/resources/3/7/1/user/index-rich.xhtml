@@ -21,19 +21,16 @@
             <p:commandLink value="指派角色" action="#{bean.showPartialForm}" oncomplete="rolesDialog.show()"
                 update=":rolesForm" rendered="false">
                 <f:setPropertyActionListener target="#{bean.singleSelection}" value="#{entry}" />
-                <f:setPropertyActionListener target="#{bean.password}" value="#{null}" />
             </p:commandLink>
             <p:spacer width="10" />
             <p:commandLink value="指派组" action="#{bean.showPartialForm}" oncomplete="groupsDialog.show()"
                 update=":groupsForm">
                 <f:setPropertyActionListener target="#{bean.singleSelection}" value="#{entry}" />
-                <f:setPropertyActionListener target="#{bean.password}" value="#{null}" />
             </p:commandLink>
             <p:spacer width="10" />
             <p:commandLink value="对应人员" action="#{bean.showPartialForm}" oncomplete="personDialog.show()"
                 update=":personForm">
                 <f:setPropertyActionListener target="#{bean.singleSelection}" value="#{entry}" />
-                <f:setPropertyActionListener target="#{bean.password}" value="#{null}" />
             </p:commandLink>
         </p:column>
     </ui:define>

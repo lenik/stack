@@ -3,13 +3,9 @@ package com.bee32.plover.ox1.principal.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.validation.constraints.Size;
 
+import org.h2.util.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.bee32.icsf.login.UserPassword;
@@ -19,6 +15,7 @@ import com.bee32.icsf.principal.PrincipalCriteria;
 import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.model.validation.core.Alphabet;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -73,18 +70,28 @@ public class UserAdminBean
         this.passwordConfirm = passwordConfirm;
     }
 
-    public void passwordValidator(FacesContext context, UIComponent toValidate, Object value) {
-        UIInput passwordField = (UIInput) context.getViewRoot().findComponent("editDialog:form:password");
-        if (passwordField == null)
-            throw new IllegalArgumentException(String.format("Unable to find component."));
-        String password = (String) passwordField.getValue();
-        String confirmPassword = (String) value;
-        if (!confirmPassword.equals(password)) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, //
-                    "输入的密码不匹配！", null);
-            throw new ValidatorException(message);
-        }
+    @Override
+    @Operation
+    public void showCreateForm() {
+        password = passwordConfirm = null;
+        super.showCreateForm();
+    }
 
+    @Override
+    @Operation
+    public void showEditForm() {
+        password = passwordConfirm = null;
+        super.showEditForm();
+    }
+
+    @Override
+    protected boolean postValidate(List<?> dtos)
+            throws Exception {
+        if (!StringUtils.equals(password, passwordConfirm)) {
+            uiLogger.error("输入的密码不匹配！");
+            return false;
+        }
+        return true;
     }
 
     @Override
