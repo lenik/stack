@@ -69,10 +69,12 @@ public class PrimefacesMenuBuilder
         // String tooltips = appearance.getDescription();
 
         if (node.isEmpty()) { // menu-item
-            MenuItem item = new MenuItem();
+            MenuItem menuItem = new MenuItem();
 
-            item.setValue(label);
+            menuItem.setValue(label);
             // item.setHelpText(tooltips);
+
+            // menuItem.setIcon("css-name");
 
             IAction action = node.getAction();
             boolean actionUsed = false;
@@ -80,18 +82,18 @@ public class PrimefacesMenuBuilder
                 ILocationContext target = action.getTargetLocation();
                 if (target != null) {
                     String href = resolve(target);
-                    item.setUrl(href);
+                    menuItem.setUrl(href);
                     actionUsed = true;
                 }
                 ActionListener listener = action.getActionListener();
                 if (listener != null) {
-                    item.addActionListener(listener);
-                    item.setAjax(false);
+                    menuItem.addActionListener(listener);
+                    menuItem.setAjax(false);
                     actionUsed = true;
                 }
             }
-            item.setDisabled(!actionUsed);
-            return item;
+            menuItem.setDisabled(!actionUsed);
+            return menuItem;
         }
 
         else { // sub-menu
