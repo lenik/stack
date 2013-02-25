@@ -8,14 +8,19 @@
     <ui:define name="content">
         <div style="background-color:white;height:400px;overflow-y:auto;">
 
-            <input type="file" id="fileinput" />
-            <script type="text/javascript" src="./cus_analysis.js">
-            </script>
+
 
             <h:form id="mainForm">
+
+                <h:outputText value="选择销售机会:" />
+                <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
+                <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
+                <p:separator />
+                <h:outputText value="选择材料表文件:" />
+                <input type="file" id="fileinput" />
+                <p:separator />
+
                 <t:div id="test">
-                    <p id="filename"></p>
-                    <p id="filesize"></p>
 
                     <p>
                         <h:outputText value="构件" class="prompt" />
@@ -39,8 +44,6 @@
 
                 <h:inputHidden id="part" value="${bean.partData}" />
 
-                <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
-                <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
                 <p:commandButton id="start_import" value="开始导入" actionListener="${bean.doImport}" />
 
                 <script>
@@ -48,6 +51,9 @@
                     $("#mainForm\\:start_import").hide();
                 </script>
             </h:form>
+
+            <script type="text/javascript" src="./cus_analysis.js">
+            </script>
             <sem:chooseChanceDialog id="chooseChanceDialog" target="${bean.target}" update=":mainForm:chance" />
 
         </div>

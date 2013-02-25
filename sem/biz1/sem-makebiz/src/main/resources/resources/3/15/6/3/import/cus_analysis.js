@@ -6,8 +6,6 @@ function readSingleFile(evt) {
         var r = new FileReader();
         r.onload = function(e) {
             var contents = e.target.result;
-            $("#filename").text(f.name);
-            $("#filesize").text(f.size + ' bytes');
 
             var reg = /[^\x00-\xff]/; // 匹配中文或双字节标点
             var arr = contents.split(/\n/);
