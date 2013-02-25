@@ -233,7 +233,7 @@
                         </ui:repeat>
                     </table>
 
-                    <ui:fragment rendered="${editable != false}">
+                    <ui:fragment rendered="${contrable != false}">
                         <div align="right">
                             <p:commandLink id="addFile" value="添加附件" actionListener="${bean.newFile}"
                                 oncomplete="addFileDialog.show()" />
@@ -243,7 +243,7 @@
             </p:tab>
 
             <p:tab title="评论">
-                <ui:fragment rendered="${not historicMode and bean.editing}">
+                <ui:fragment rendered="${contrable != false}">
                     <div>
                         <b>${bean.loggedInUserDisplayName}</b>
                         说：
