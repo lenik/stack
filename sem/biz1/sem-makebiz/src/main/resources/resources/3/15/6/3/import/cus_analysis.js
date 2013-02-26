@@ -22,13 +22,11 @@ function readSingleFile(evt) {
                     continue;
                 if (i == 1)
                     continue;
-                if (i == 2)
-                    continue;
 
                 var tablerow = $("<tr></tr>");
                 var item = str.split(',');
 
-                if (i == 3) {
+                if (i == 2) {
                     var index = item[0].indexOf('、');
                     pre = item[0].substring(0, index);
                     var td1 = $("<td>" + pre + "</td>");

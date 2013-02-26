@@ -5,19 +5,49 @@
     <ui:param name="title" value="物料导入" />
     <ui:param name="bean" value="${materialBatchImportBean}" />
 
+    <ui:define name="styles">
+        <link rel="stylesheet" type="text/css" href="bubble.css" />
+    </ui:define>
+
     <ui:define name="content">
+
         <div style="background-color:white;height:400px;overflow-y:auto;">
-
-
 
             <h:form id="mainForm">
 
-                <h:outputText value="选择销售机会:" />
-                <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
-                <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
-                <p:separator />
-                <h:outputText value="选择材料表文件:" />
-                <input type="file" id="fileinput" />
+                <p>
+                    <h:outputText value="选择销售机会:" />
+                    <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
+                    <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
+                </p>
+                <p>
+                    <h:outputText value="选择材料表文件:" />
+                    <input type="file" id="fileinput" />
+                    <div class="bubble">
+                        导出为csv文件前，excel格式要求：
+                        <table border="1px solid;">
+                            <tr>
+                                <td colspan="8" style="text-align:center;">某某材料表</td>
+                            </tr>
+                            <tr>
+                                <td>编号</td>
+                                <td>规格（mm）</td>
+                                <td>长度（mm）</td>
+                                <td>数量</td>
+                                <td>单重（kg）</td>
+                                <td>表面积（m²）</td>
+                                <td>材质</td>
+                                <td>备注</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" style="text-align:center;">材料表数据...</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" style="text-align:center;">材料表数据...</td>
+                            </tr>
+                        </table>
+                    </div>
+                </p>
                 <p:separator />
 
                 <t:div id="test">
