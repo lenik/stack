@@ -84,6 +84,22 @@ public class SessionUser
             extends DefaultDataAssembledContext {
     }
 
+    public Integer getId() {
+        UserDto user = getUserOpt();
+        if (user == null)
+            return null;
+        else
+            return user.getId();
+    }
+
+    public String getName() {
+        UserDto user = getUserOpt();
+        if (user == null)
+            return null;
+        else
+            return user.getName();
+    }
+
     public User getInternalUserOpt() {
         if (internalUserOverride != null)
             return internalUserOverride;
