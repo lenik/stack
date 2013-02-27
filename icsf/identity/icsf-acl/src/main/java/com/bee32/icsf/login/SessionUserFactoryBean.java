@@ -14,12 +14,19 @@ import com.bee32.plover.inject.scope.PerSession;
 @PerSession
 public class SessionUserFactoryBean {
 
+    public Integer getId() {
+        return SessionUser.getInstance().getId();
+    }
+
+    public String getName() {
+        return SessionUser.getInstance().getName();
+    }
+
     public User getInternalUserOpt() {
         return SessionUser.getInstance().getInternalUserOpt();
     }
 
-    public final User getInternalUser()
-            throws LoginControl {
+    public final User getInternalUser() throws LoginControl {
         return SessionUser.getInstance().getInternalUser();
     }
 
@@ -27,8 +34,7 @@ public class SessionUserFactoryBean {
         return SessionUser.getInstance().getUserOpt();
     }
 
-    public final UserDto getUser()
-            throws LoginControl {
+    public final UserDto getUser() throws LoginControl {
         return SessionUser.getInstance().getUser();
     }
 
