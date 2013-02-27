@@ -66,8 +66,8 @@
                                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
                                         rowIndexVar="rowIndex" sortBy="${entry.lastModified}" sortOrder="descending">
 
-                                        <p:ajax event="rowSelect" process=":@this" update="${_entryUpdate}" />
-                                        <p:ajax event="rowUnselect" process=":@this" update="${_entryUpdate}" />
+                                        <p:ajax event="rowSelect" process="@this" update="${_entryUpdate}" />
+                                        <p:ajax event="rowUnselect" process="@this" update="${_entryUpdate}" />
 
                                         <ui:insert name="dataTableHeader">
                                             <f:facet name="header">${title}</f:facet>

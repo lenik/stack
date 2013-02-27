@@ -51,7 +51,7 @@
                             <f:setPropertyActionListener target="${choosePartyDialogBean.customer}"
                                 value="true" />
                         </p:commandButton>
-                        <p:commandButton id="clearCustomer" value="X" update=":@form">
+                        <p:commandButton id="clearCustomer" value="X" update="@form">
                             <f:setPropertyActionListener target="${dialogBean.customer}"
                                 value="${null}" />
                         </p:commandButton>

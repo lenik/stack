@@ -30,7 +30,7 @@
     </ui:define>
 
     <ui:define name="dataColumns">
-        <p:ajax event="rowSelect" process=":@this" listener="${bean.applyAndToogle}" />
+        <p:ajax event="rowSelect" process="@this" listener="${bean.applyAndToogle}" />
         <p:column headerText="优先级" sortBy="${entry._priority}">
             <h:outputText value="${entry.priorityName}" />
         </p:column>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Prime Technology.
+ * Copyright 2009-2012 Prime Teknoloji.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,21 +20,25 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.component.ValueHolder;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.BeanValidator;
 
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
 import com.bee32.plover.arch.util.PloverOverlayPatch;
@@ -51,24 +55,29 @@ import com.bee32.plover.faces.primefaces.ClientIdHelper;
 @SuppressWarnings("unchecked")
 public class ComponentUtils {
 
-    private final static Logger logger = Logger.getLogger(ComponentUtils.class.getName());
-
     /**
-     * Algorithm works as follows;
-     * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
-     * terminates jsf lifecycle
-     * - Finally the value of the component is retrieved from backing bean and if there's a converter, converted value is returned
+     * Algorithm works as follows; - If it's an input component, submitted value is checked first
+     * since it'd be the value to be used in case validation errors terminates jsf lifecycle -
+     * Finally the value of the component is retrieved from backing bean and if there's a converter,
+     * converted value is returned
      *
-     * @param context           FacesContext instance
-     * @param component         UIComponent instance whose value will be returned
-     * @return                  End text
+     * @param context
+     *            FacesContext instance
+     * @param component
+     *            UIComponent instance whose value will be returned
+     * @return End text
      */
     public static String getValueToRender(FacesContext context, UIComponent component) {
-        if(component instanceof ValueHolder) {
+        if (component instanceof ValueHolder) {
 
-            if(component instanceof EditableValueHolder) {
-                Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
-                if(submittedValue != null) {
+            if (component instanceof EditableValueHolder) {
+                EditableValueHolder input = (EditableValueHolder) component;
+                Object submittedValue = input.getSubmittedValue();
+
+                if (ComponentUtils.considerEmptyStringAsNull(context) && submittedValue == null
+                        && context.isValidationFailed() && !input.isValid()) {
+                    return null;
+                } else if (submittedValue != null) {
                     return submittedValue.toString();
                 }
             }
@@ -76,43 +85,45 @@ public class ComponentUtils {
             ValueHolder valueHolder = (ValueHolder) component;
             Object value = valueHolder.getValue();
 
-            //format the value as string
-            if(value != null) {
+            // format the value as string
+            if (value != null) {
                 Converter converter = getConverter(context, valueHolder);
 
-                if(converter != null)
+                if (converter != null)
                     return converter.getAsString(context, component, value);
                 else
-                    return value.toString();    //Use toString as a fallback if there is no explicit or implicit converter
+                    return value.toString(); // Use toString as a fallback if there is no explicit
+// or implicit converter
 
-            }
-            else {
-                //component is a value holder but has no value
+            } else {
+                // component is a value holder but has no value
                 return null;
             }
         }
 
-        //component it not a value holder
+        // component it not a value holder
         return null;
     }
 
     /**
      * Finds appropriate converter for a given value holder
      *
-     * @param context           FacesContext instance
-     * @param component         ValueHolder instance to look converter for
-     * @return                  Converter
+     * @param context
+     *            FacesContext instance
+     * @param component
+     *            ValueHolder instance to look converter for
+     * @return Converter
      */
     public static Converter getConverter(FacesContext context, ValueHolder component) {
-        //explicit converter
+        // explicit converter
         Converter converter = component.getConverter();
 
-        //try to find implicit converter
-        if(converter == null) {
+        // try to find implicit converter
+        if (converter == null) {
             ValueExpression expr = ((UIComponent) component).getValueExpression("value");
-            if(expr != null) {
+            if (expr != null) {
                 Class<?> valueType = expr.getType(context.getELContext());
-                if(valueType != null) {
+                if (valueType != null) {
                     converter = context.getApplication().createConverter(valueType);
                 }
             }
@@ -121,46 +132,43 @@ public class ComponentUtils {
         return converter;
     }
 
-    /**
-     * Resolves the end text to render by using a specified value
-     *
-     * @param context           FacesContext instance
-     * @param component         UIComponent instance whose value will be returned
-     * @return                  End text
-     */
-    public static String getStringValueToRender(FacesContext facesContext, UIComponent component, Object value) {
-        if(value == null)
-            return null;
-
-        ValueHolder valueHolder = (ValueHolder) component;
-
-        Converter converter = valueHolder.getConverter();
-        if(converter != null) {
-            return converter.getAsString(facesContext, component, value);
-        }
-        else {
-            ValueExpression expr = component.getValueExpression("value");
-            if(expr != null) {
-                Class<?> valueType = expr.getType(facesContext.getELContext());
-                Converter converterForType = facesContext.getApplication().createConverter(valueType);
-
-                if(converterForType != null)
-                    return converterForType.getAsString(facesContext, component, value);
-            }
-        }
-
-        return value.toString();
-    }
-
     public static UIComponent findParentForm(FacesContext context, UIComponent component) {
         return PrimefacesPatches.findParentForm(context, component);
+    }
+
+    public static UniqueIdVendor findParentUniqueIdVendor(UIComponent component) {
+        UIComponent parent = component.getParent();
+
+        while (parent != null) {
+            if (parent instanceof UniqueIdVendor) {
+                return (UniqueIdVendor) parent;
+            }
+
+            parent = parent.getParent();
+        }
+
+        return null;
+    }
+
+    public static UIComponent findParentNamingContainer(UIComponent component) {
+        UIComponent parent = component.getParent();
+
+        while (parent != null) {
+            if (parent instanceof NamingContainer) {
+                return (UIComponent) parent;
+            }
+
+            parent = parent.getParent();
+        }
+
+        return null;
     }
 
     public static void decorateAttribute(UIComponent component, String attribute, String value) {
         String attributeValue = (String) component.getAttributes().get(attribute);
 
-        if(attributeValue != null) {
-            if(attributeValue.indexOf(value) == -1) {
+        if (attributeValue != null) {
+            if (attributeValue.indexOf(value) == -1) {
                 String decoratedValue = attributeValue + ";" + value;
 
                 component.getAttributes().put(attribute, decoratedValue);
@@ -168,7 +176,7 @@ public class ComponentUtils {
                 component.getAttributes().put(attribute, attributeValue);
             }
         } else {
-                component.getAttributes().put(attribute, value);
+            component.getAttributes().put(attribute, value);
         }
     }
 
@@ -176,26 +184,26 @@ public class ComponentUtils {
         List<SelectItem> items = new ArrayList<SelectItem>();
         Iterator<UIComponent> children = component.getChildren().iterator();
 
-        while(children.hasNext()) {
+        while (children.hasNext()) {
             UIComponent child = children.next();
 
-            if(child instanceof UISelectItem) {
+            if (child instanceof UISelectItem) {
                 UISelectItem selectItem = (UISelectItem) child;
 
                 items.add(new SelectItem(selectItem.getItemValue(), selectItem.getItemLabel()));
-            } else if(child instanceof UISelectItems) {
+            } else if (child instanceof UISelectItems) {
                 Object selectItems = ((UISelectItems) child).getValue();
 
-                if(selectItems instanceof SelectItem[]) {
+                if (selectItems instanceof SelectItem[]) {
                     SelectItem[] itemsArray = (SelectItem[]) selectItems;
 
-                    for(SelectItem item : itemsArray)
+                    for (SelectItem item : itemsArray)
                         items.add(new SelectItem(item.getValue(), item.getLabel()));
 
-                } else if(selectItems instanceof Collection) {
+                } else if (selectItems instanceof Collection) {
                     Collection<SelectItem> collection = (Collection<SelectItem>) selectItems;
 
-                    for(SelectItem item : collection)
+                    for (SelectItem item : collection)
                         items.add(new SelectItem(item.getValue(), item.getLabel()));
                 }
             }
@@ -208,51 +216,49 @@ public class ComponentUtils {
         return "#" + id.replaceAll(":", "\\\\\\\\:");
     }
 
-    public static String formatKeywords(FacesContext facesContext, UIComponent component, String processRequest) {
-        String process = processRequest;
-
-        if(process.indexOf("@this") != -1)
-            process = process.replaceFirst("@this", component.getClientId(facesContext));
-        if(process.indexOf("@form") != -1) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, component);
-            if(form == null)
-                throw new FacesException("Component " + component.getClientId(facesContext) + " needs to be enclosed in a form");
-
-            process = process.replaceFirst("@form", form.getClientId(facesContext));
-        }
-        if(process.indexOf("@parent") != -1)
-            process = process.replaceFirst("@parent", component.getParent().getClientId(facesContext));
-
-        return process;
-    }
-
     public static String findClientIds(FacesContext context, UIComponent component, String list) {
-        if(list == null)
+        if (list == null) {
             return "@none";
+        }
 
-        String formattedList = formatKeywords(context, component, list);
-        String[] ids = formattedList.split("[,\\s]+");
+        String[] ids = list.split("[,\\s]+");
         StringBuilder buffer = new StringBuilder();
 
-        for(int i = 0; i < ids.length; i++) {
-            if(i != 0)
+        for (int i = 0; i < ids.length; i++) {
+            if (i != 0) {
                 buffer.append(" ");
+            }
 
             String id = ids[i].trim();
 
-            if(id.equals("@all") || id.equals("@none"))
+            if (id.equals("@all") || id.equals("@none")) {
                 buffer.append(id);
-            else {
-                UIComponent comp = component.findComponent(id);
-                if(comp != null) {
-                    buffer.append(comp.getClientId(context));
+            } else if (id.equals("@this")) {
+                buffer.append(component.getClientId(context));
+            } else if (id.equals("@form")) {
+                UIComponent form = ComponentUtils.findParentForm(context, component);
+                if (form == null) {
+                    throw new FacesException("Component " + component.getClientId(context)
+                            + " needs to be enclosed in a form");
                 }
-                else {
-                    if(context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
-                        logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
-                        ClientIdHelper.reportBadClientId(component, id);
-                    }
-                    buffer.append(id);
+
+                buffer.append(form.getClientId(context));
+            } else if (id.equals("@parent")) {
+                buffer.append(component.getParent().getClientId(context));
+            } else if (id.equals("@namingcontainer")) {
+                UIComponent container = ComponentUtils.findParentNamingContainer(component);
+
+                if (container != null) {
+                    buffer.append(container.getClientId(context));
+                }
+            } else {
+                UIComponent comp = component.findComponent(id);
+                if (comp != null) {
+                    buffer.append(comp.getClientId(context));
+                } else {
+                    ClientIdHelper.reportBadClientId(component, id);
+                    throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from \""
+                            + component.getClientId(context) + "\".");
                 }
             }
         }
@@ -271,21 +277,21 @@ public class ComponentUtils {
 
     public static UIComponent findComponent(UIComponent base, String id) {
         if (id.equals(base.getId()))
-          return base;
+            return base;
 
         UIComponent kid = null;
         UIComponent result = null;
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext() && (result == null)) {
-          kid = (UIComponent) kids.next();
-          if (id.equals(kid.getId())) {
-            result = kid;
-            break;
-          }
-          result = findComponent(kid, id);
-          if (result != null) {
-            break;
-          }
+            kid = (UIComponent) kids.next();
+            if (id.equals(kid.getId())) {
+                result = kid;
+                break;
+            }
+            result = findComponent(kid, id);
+            if (result != null) {
+                break;
+            }
         }
         return result;
     }
@@ -293,9 +299,9 @@ public class ComponentUtils {
     public static String getWidgetVar(String id) {
         UIComponent component = findComponent(FacesContext.getCurrentInstance().getViewRoot(), id);
 
-        if(component == null) {
+        if (component == null) {
             throw new FacesException("Cannot find component " + id + " in view.");
-        } else if(component instanceof Widget) {
+        } else if (component instanceof Widget) {
             return ((Widget) component).resolveWidgetVar();
         } else {
             throw new FacesException("Component with id " + id + " is not a Widget");
@@ -311,40 +317,104 @@ public class ComponentUtils {
      * Implementation from Apache Commons Lang
      */
     public static Locale toLocale(String str) {
-        if(str == null) {
+        if (str == null) {
             return null;
         }
         int len = str.length();
-        if(len != 2 && len != 5 && len < 7) {
+        if (len != 2 && len != 5 && len < 7) {
             throw new IllegalArgumentException("Invalid locale format: " + str);
         }
         char ch0 = str.charAt(0);
         char ch1 = str.charAt(1);
-        if(ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
             throw new IllegalArgumentException("Invalid locale format: " + str);
         }
-        if(len == 2) {
+        if (len == 2) {
             return new Locale(str, "");
         } else {
-            if(str.charAt(2) != '_') {
+            if (str.charAt(2) != '_') {
                 throw new IllegalArgumentException("Invalid locale format: " + str);
             }
             char ch3 = str.charAt(3);
-            if(ch3 == '_') {
+            if (ch3 == '_') {
                 return new Locale(str.substring(0, 2), "", str.substring(4));
             }
             char ch4 = str.charAt(4);
-            if(ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+            if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
                 throw new IllegalArgumentException("Invalid locale format: " + str);
             }
-            if(len == 5) {
+            if (len == 5) {
                 return new Locale(str.substring(0, 2), str.substring(3, 5));
             } else {
-                if(str.charAt(5) != '_') {
+                if (str.charAt(5) != '_') {
                     throw new IllegalArgumentException("Invalid locale format: " + str);
                 }
                 return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
             }
         }
+    }
+
+    public static boolean validateEmptyFields(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
+
+        if (null == value) {
+            value = (String) externalContext.getApplicationMap().get(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
+        }
+
+        if (value == null || value.equals("auto")) {
+            return isBeansValidationAvailable(context);
+        } else {
+            return Boolean.valueOf(value);
+        }
+    }
+
+    public static boolean isBeansValidationAvailable(FacesContext context) {
+        boolean result = false;
+        String beanValidationAvailableKey = "javax.faces.private.BEANS_VALIDATION_AVAILABLE";
+
+        Map<String, Object> appMap = context.getExternalContext().getApplicationMap();
+
+        if (appMap.containsKey(beanValidationAvailableKey)) {
+            result = (Boolean) appMap.get(beanValidationAvailableKey);
+        } else {
+            try {
+                new BeanValidator();
+                appMap.put(beanValidationAvailableKey, result = true);
+            } catch (Throwable t) {
+                appMap.put(beanValidationAvailableKey, Boolean.FALSE);
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean isPartialSubmitEnabled(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
+
+        return (value == null) ? false : value.equalsIgnoreCase("partial");
+    }
+
+    public static boolean isValueBlank(String value) {
+        if (value == null)
+            return true;
+
+        return value.trim().equals("");
+    }
+
+    public static boolean isRTL(FacesContext context, RTLAware component) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(Constants.DIRECTION_PARAM);
+        boolean globalValue = (value == null) ? false : value.equalsIgnoreCase("rtl");
+
+        return globalValue || component.isRTL();
+    }
+
+    public static boolean considerEmptyStringAsNull(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(Constants.INTERPRET_EMPTY_STRING_AS_NULL);
+
+        return (value == null) ? false : Boolean.valueOf(value);
     }
 }

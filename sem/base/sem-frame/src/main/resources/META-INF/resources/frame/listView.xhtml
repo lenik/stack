@@ -73,9 +73,9 @@
                                     <f:attribute name="smooth" value="${cc.attrs.smooth}" />
 
                                     <!-- mbean not work, must be cc.attrs.mbean here. -->
-                                    <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}" process=":@this"
+                                    <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}" process="@this"
                                         update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more, ${cc.attrs.indexView}:indexForm:dataTable" />
-                                    <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}" process=":@this"
+                                    <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}" process="@this"
                                         update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more, ${cc.attrs.indexView}:indexForm:dataTable" />
 
                                     <p:column headerText="ID">
@@ -87,7 +87,7 @@
                                     <p:column headerText="操作" rendered="${cc.attrs.inlineEdit}">
                                         <p:commandLink id="view" title="查看"
                                             styleClass="icon-button" action="${mbean.showEditForm}"
-                                            process=":@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                            process="@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                             onclick="waitbox.show()"
                                             oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}"
                                             rendered="${cc.attrs.editable and (editPopup or copyMode) and cc.attrs.readonly}">
@@ -98,7 +98,7 @@
                                         </p:commandLink>
                                         <p:commandLink id="edit" title="修改"
                                             styleClass="icon-button" action="${mbean.showEditForm}"
-                                            process=":@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                            process="@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                             onclick="waitbox.show()"
                                             oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}"
                                             rendered="${cc.attrs.editable and (editPopup or copyMode) and not cc.attrs.readonly}">
@@ -109,9 +109,9 @@
                                         </p:commandLink>
                                         <p:commandLink id="remove" title="移除"
                                             styleClass="icon-button"
-                                            action="${mbean.removeSelection}" process=":@form" onclick="waitbox.show()"
+                                            action="${mbean.removeSelection}" process="@form" onclick="waitbox.show()"
                                             oncomplete="waitbox.hide()"
-                                            update=":@form, ${cc.attrs.indexView}:indexForm:body, ${cc.attrs.editView}:more"
+                                            update="@form, ${cc.attrs.indexView}:indexForm:body, ${cc.attrs.editView}:more"
                                             rendered="${cc.attrs.removable and picker == null}">
                                             <f:setPropertyActionListener target="#{mbean.selection}" value="#{entry}" />
                                             <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
@@ -127,7 +127,7 @@
                                 <td align="left">
                                     <p:commandButton rendered="${cc.attrs.creatable}" id="create" value="添加"
                                         actionListener="${mbean.showCreateForm}"
-                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                        update="@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         onclick="waitbox.show()"
                                         oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}" />
                                     <p:commandButton rendered="${picker != null}" id="link" value="连接到…"
@@ -137,7 +137,7 @@
                                     <p:commandButton rendered="${cc.attrs.removable and picker != null}"
                                         id="unlink" value="断开" disabled="${not mbean.selectionRemovable}"
                                         actionListener="${mbean.removeSelection}" onclick="waitbox.show()" oncomplete="waitbox.hide()"
-                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
+                                        update="@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
                                     <cc:insertRawFacet name="index-buttons.left" />
                                 </td>
                                 <td align="center">
@@ -147,7 +147,7 @@
                                     <p:commandButton rendered="${cc.attrs.editable and (editPopup or copyMode)}"
                                         id="edit" value="${cc.attrs.readonly ? '查看' : '修改'}"
                                         styleClass="locker-bypass" disabled="${not mbean.selectionEditable}" action="${mbean.showEditForm}"
-                                        process=":@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                        process="@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         onclick="waitbox.show()"
                                         oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
@@ -155,9 +155,9 @@
                                     </p:commandButton>
                                     <p:commandButton rendered="${cc.attrs.removable and picker == null}"
                                         id="remove" value="移除" disabled="${not mbean.selectionRemovable}"
-                                        actionListener="${mbean.removeSelection}" process=":@form" onclick="waitbox.show()"
+                                        actionListener="${mbean.removeSelection}" process="@form" onclick="waitbox.show()"
                                         oncomplete="waitbox.hide()"
-                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
+                                        update="@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
                                     <cc:insertRawFacet name="index-buttons.right" />
                                     <p:commandButton id="close" value="关闭"
                                         onclick="${cc.attrs.indexDialogVar}.hide(); return false;" ajax="false"
@@ -199,7 +199,7 @@
                                     value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(copyMode ? '' : '*')}"
                                     title="${(not editPopup) and cc.attrs.smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
                                     disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
-                                    process=":@form" onclick="waitbox.show()"
+                                    process="@form" onclick="waitbox.show()"
                                     oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
                                     update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                     <f:setPropertyActionListener target="${mbean.copyMode}"

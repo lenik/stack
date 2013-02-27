@@ -160,7 +160,7 @@
                                     <td width="30">
                                         <p:commandLink id="deleteURL" title="删除此链接" rendered="${editable != false}"
                                             icon="ui-icon-close" actionListener="${bean.removeAttachment(a.id, '链接')}"
-                                            update=":@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
+                                            update="@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
                                             <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
                                         </p:commandLink>
                                     </td>
@@ -201,7 +201,7 @@
                                     <td width="30">
                                         <p:commandLink id="deleteFile" title="删除此附件" rendered="${editable != false}"
                                             icon="ui-icon-close" actionListener="${bean.removeAttachment(a.id, '附件')}"
-                                            update=":@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
+                                            update="@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
                                             <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
                                         </p:commandLink>
                                     </td>
@@ -231,7 +231,7 @@
                         <p:inputText id="comment" label="评论内容" value="${bean.commentText}" size="40" />
                         <p:watermark for="comment" value="输入评论内容" />
                         <p:commandButton id="addCommentButton" value="发送" onclick="waitbox.show()"
-                            oncomplete="waitbox.hide()" actionListener="${bean.addComment}" update=":@form" />
+                            oncomplete="waitbox.hide()" actionListener="${bean.addComment}" update="@form" />
                     </div>
                 </ui:fragment>
                 <table width="100%" border="0">
