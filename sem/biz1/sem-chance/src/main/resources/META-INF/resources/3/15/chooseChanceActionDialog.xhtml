@@ -60,6 +60,10 @@
 
                 <cc:renderFacet name="columns" />
             </ui:define>
+            <ui:define name="searchPanel.keyword.1">
+                <p:commandButton id="contentSearchButton" value="限定行动内容" actionListener="${dialogBean.addContentRestricion}"
+                    update="searchForm, :${dialogForm}" />
+            </ui:define>
         </ui:decorate>
     </cc:implementation>
 </html>
