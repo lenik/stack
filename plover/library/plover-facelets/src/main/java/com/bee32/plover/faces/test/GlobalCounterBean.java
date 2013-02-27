@@ -1,6 +1,7 @@
 package com.bee32.plover.faces.test;
 
-import org.primefaces.context.RequestContext;
+import org.primefaces.push.PushContext;
+import org.primefaces.push.PushContextFactory;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,7 +19,9 @@ public class GlobalCounterBean {
 
     public synchronized void increment() {
         count++;
-        RequestContext.getCurrentInstance().push("counter", count);
+
+        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
+        pushContext.push("/counter", count);
     }
 
 }

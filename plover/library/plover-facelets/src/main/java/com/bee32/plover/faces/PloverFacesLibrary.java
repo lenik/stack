@@ -2,7 +2,6 @@ package com.bee32.plover.faces;
 
 import com.bee32.plover.faces.component.Locker;
 import com.bee32.plover.faces.component.SelectOneObjectMenu;
-import com.bee32.plover.faces.primefaces.PloverPush;
 import com.bee32.plover.faces.tag.DisableHandler;
 
 public class PloverFacesLibrary
@@ -19,7 +18,7 @@ public class PloverFacesLibrary
         addComponent("locker", Locker.COMPONENT_TYPE, Locker.DEFAULT_RENDERER_TYPE);
 
         // PrimeFaces enhancements.
-        addComponent("push", PloverPush.COMPONENT_TYPE, PloverPush.DEFAULT_RENDERER_TYPE);
+        // addComponent("push", PloverPush.COMPONENT_TYPE, PloverPush.DEFAULT_RENDERER_TYPE);
     }
 
 }
