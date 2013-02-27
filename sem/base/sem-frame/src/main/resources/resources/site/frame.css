@@ -132,11 +132,6 @@ label {
     word-wrap: break-word;
 }
 
-.ui-sysmsg {
-    color: #ffcc00;
-    font-size: large;
-}
-
 .ui-toolbox {
     position: absolute;
     top: 3px;
@@ -244,6 +239,10 @@ label {
     font-size: large;
 }
 
+.f-tiny-button .ui-button-text {
+    padding: 0em;
+}
+
 .f-red {
     color: red;
 }
@@ -291,4 +290,10 @@ label {
     background-image: url('https://st1.cdn.bee32.com:444/style/default/icons/obj16/inst_ptr.gif');
     background-repeat: no-repeat;
     background-position-y: 1px;
+}
+
+.ui-notificationbar {
+    left: 0;
+    right: 0;
+    width: auto;
 }

@@ -78,15 +78,15 @@ public class C_FaceletsWac
 
         if (pushServerEnabled) {
             // Prime Push Server: must be load-on-startup.
-            ServletHolder pushServlet = stl.addServlet(PushServlet.class, "/prime-push/*");
+            ServletHolder pushServlet = stl.addServlet(PushServlet.class, "/primepush/*");
             pushServlet.setInitOrder(1);
-            pushServlet.setInitParameter("channels", "system, mail, counter");
+            pushServlet.setInitParameter("channels", "system, user, group");
 
             // This context-param is used by PushRenderer
-            context.addInitParam("primefaces.PUSH_SERVER_URL", //
-                    // "ws://localhost:" + stl.getPort() + "/prime-push" //
-                    "/prime-push" // See: PloverPushRenderer.
-            );
+            // context.addInitParam("primefaces.PUSH_SERVER_URL", //
+            // // "ws://localhost:" + stl.getPort() + "/prime-push" //
+            // "/primepush" // See: PloverPushRenderer.
+            // );
         }
     }
 

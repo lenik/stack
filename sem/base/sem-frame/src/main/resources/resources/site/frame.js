@@ -102,13 +102,24 @@ function showXrefs() {
     location.href = document.WEB_APP + "/" + xrefLoc;
 }
 
-function bcastSystem(evt, data) {
-    var div = $('#sysmsg');
-    div.text(data);
-    sysbar.show();
+function bcastSystem(data) {
+    var style = "font-size: 2em; font-style: italic;";
+    var mesg = data;
+    var sep = data.indexOf(';;');
+    if (sep != -1) {
+        style += data.substring(0, sep);
+        mesg = data.substring(sep + 2);
+    }
+
+    var div = $('#bottomNDiv');
+    div.html("<span style='" + style + "'>" + mesg + "</span>");
+    bottomNBar.show();
 }
 
-function bcastUserMail(evt, data) {
+function bcastSite(data) {
+}
+
+function bcastUser(data) {
 }
 
 function print(node, parent) {

@@ -1,5 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/template/newsite.xhtml">
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:pf="http://bee32.com/plover/faces"
+    template="/template/newsite.xhtml">
 
     <ui:define name="pageTitle" />
 
@@ -38,12 +39,20 @@
                 <p style="font-size: 120%">服务正在处理中，请耐心等待……</p>
             </div>
         </p:dialog>
-        <ui:remove>
-            <p:push onmessage="bcastSystem" channel="system" />
-            <p:push onmessage="bcastUserMail" channel="mail" />
-        </ui:remove>
-        <p:notificationBar position="bottom" effect="slide" widgetVar="sysbar">
-            <div id="sysmsg" styleClass="ui-sysmsg">(No Message)</div>
+
+        <p:socket onMessage="bcastSystem" channel="/system" />
+        <p:socket onMessage="bcastSite" channel="/site/${site.name}" />
+        <p:socket onMessage="bcastUser" channel="/site/${site.name}/${sessionUser.name}" />
+
+        <p:notificationBar id="topNotificationBar" position="top" effect="slide" widgetVar="topNBar">
+            <p:commandLink styleClass="ui-icon ui-icon-closethick" onclick="bottomNBar.hide()" style="float:right" />
+            <div id="topNDiv" />
+        </p:notificationBar>
+
+        <p:notificationBar id="bottomNotificationBar" position="bottom" effect="slide" widgetVar="bottomNBar"
+            style="opacity: 0.85">
+            <p:commandLink styleClass="ui-icon ui-icon-closethick" onclick="bottomNBar.hide()" style="float:right" />
+            <div id="bottomNDiv" />
         </p:notificationBar>
     </ui:define>
 
