@@ -2,6 +2,9 @@ package com.bee32.plover.servlet.test;
 
 public interface IQuitListener {
 
-    void quit();
+    /**
+     * @return Seconds to be delayed.
+     */
+    int quit();
 
 }

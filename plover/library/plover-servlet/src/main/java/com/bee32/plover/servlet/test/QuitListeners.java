@@ -10,9 +10,14 @@ public class QuitListeners {
         listeners = ServiceLoader.load(IQuitListener.class);
     }
 
-    public void quit() {
-        for (IQuitListener listener : listeners)
-            listener.quit();
+    public int quit() {
+        int maxDelay = 0;
+        for (IQuitListener listener : listeners) {
+            int delay = listener.quit();
+            if (delay > maxDelay)
+                maxDelay = delay;
+        }
+        return maxDelay;
     }
 
     static QuitListeners instance;

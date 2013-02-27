@@ -24,6 +24,7 @@ import javax.free.IndentedOutImpl;
 import javax.free.Stdio;
 import javax.free.StringPart;
 import javax.free.SystemProperties;
+import javax.free.UnexpectedException;
 import javax.servlet.http.HttpServlet;
 
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -362,7 +363,23 @@ public class ServletTestLibrary
                 break;
 
             case QUIT_SAFE:
-                QuitListeners.getInstance().quit();
+                logger.info("Prepare to quit...");
+                int delay = 0;
+                try {
+                    delay = QuitListeners.getInstance().quit();
+                } catch (Exception e) {
+                    logger.warn("Something wrong happened, quit is canceled.", e);
+                    break;
+                }
+
+                logger.info("Wait for " + delay + " seconds...");
+                try {
+                    Thread.sleep(delay * 1000);
+                } catch (InterruptedException e) {
+                    throw new UnexpectedException(e);
+                }
+
+                logger.info("Quit...");
                 break;
 
             case QUIT:
