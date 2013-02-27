@@ -380,7 +380,6 @@ public class ServletTestLibrary
                 }
 
                 logger.info("Quit...");
-                break;
 
             case QUIT:
                 try {
