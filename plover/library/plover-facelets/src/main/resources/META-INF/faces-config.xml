@@ -33,21 +33,11 @@
         <component-class>com.bee32.plover.faces.component.SelectOneObjectMenu</component-class>
     </component>
 
-    <component>
-        <component-type>plover.faces.Push</component-type>
-        <component-class>com.bee32.plover.faces.primefaces.PloverPush</component-class>
-    </component>
-
     <render-kit>
         <renderer>
             <component-family>plover.faces.preprocessor</component-family>
             <renderer-type>javax.faces.Group</renderer-type>
             <renderer-class>org.apache.myfaces.renderkit.html.HtmlGroupRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>plover.faces.PushRenderer</renderer-type>
-            <renderer-class>com.bee32.plover.faces.primefaces.PloverPushRenderer</renderer-class>
         </renderer>
     </render-kit>
 
