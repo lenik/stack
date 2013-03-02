@@ -1,3 +1,62 @@
+SEM-2.5.1 (谢继雷, 2013-03-02)
+	* Released SEM-2.5.0.
+
+SEM-2.5.0 (朱挺峰, 谢继雷, 2013-03-01)
+	* NLS updated.
+	* 在资源文件中加入类名。
+	* 在资源文件中加入类名。
+	* 在资源文件中加入类名。
+
+SEM-2.4.18 (谢继雷, 2013-02-28)
+	* Fixed listView: set h:panelGrid to full width. (primefaces 3.5)
+
+SEM-2.4.17 (谢继雷, 朱挺峰, 2013-02-27)
+	* 增加行动日志内容搜索。
+	* Broadcast shutdown message for QUIT_SAFE.
+	* Added system notification broadcast support.
+	* Upgraded to Primefaces 3.5.
+
+SEM-2.4.16 (朱挺峰, 2013-02-26)
+	* 物料导入界面修改。
+
+SEM-2.4.15 (谢继雷, 朱挺峰, 2013-02-25)
+	* UserAdminBean: fixed password NPE. (2)
+	* 物料导入界面修改。
+	* UserAdminBean: fixed password NPE.
+	* 增加物料导入菜单。
+	* Hidden away role principal admins.
+	* Prepare to add icons to primefaces menus.
+	* Implements process views.
+	* task template: contrable instead of editable for fine control.
+
+SEM-2.4.14 (金卫林, 2013-02-23)
+	* 用户管理，修改密码功能，input组件的validator上的方法取其他组件值时，需要用findComponent方法来取，不能直接取绑定的值
+
+SEM-2.4.13 (谢继雷, 2013-02-22)
+	* Implement process/model integrated views.
+	* Moved my tasks above the inbox.
+	* Added generic task/historic base class.
+
+SEM-2.4.12 (谢继雷, 2013-02-21)
+	* Implemented task attachments/comments functions.
+
+SEM-2.4.11 (朱挺峰, 谢继雷, 2013-02-20)
+	* Materail add rescource.
+	* 增加限定有效属主功能。
+	* Added OA- task menus.
+	* NLS updated.
+	* Integrated plain task inbox/archived support.
+	* Sevb: Declared simple-entity view concerns in ISimpleEntityView.
+	* 销售机会显示针对性方案。
+	* 生成凭证时，会计科目必须为末级科目。
+
+SEM-2.4.10 (朱挺峰, 谢继雷, 2013-02-19)
+	* 添加物料导入功能。
+	* sem-chance modual test: set local.
+	* gps tracking: get started.
+	* Fixed SimpleNameDictViewBean: currentView is protected.
+	* [FIX] Refactor Sevb: separated generic data object support to DataViewBean.
+
 SEM-2.4.9 (谢继雷, 2013-02-18)
 	* Released SEM-2.4.9.
 	* Added GeneralFormatter.toString static method.
