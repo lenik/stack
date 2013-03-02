@@ -54,6 +54,7 @@ public class SiteManagerServlet
         pages.add(Create.class);
         pages.add(Delete.class);
         pages.add(Reload.class);
+        pages.add(Restart.class);
         pages.add(DataMaintainance.class);
         pages.add(CacheManager.class);
         pages.add(SiteMonitorPage.class);
@@ -90,6 +91,7 @@ public class SiteManagerServlet
                     text("站点：" + label);
                     a().href("config?site=" + name).text("配置").end();
                     a().href("reload?site=" + name).text("更新").end();
+                    a().href("restart?site=" + name).text("重启").end();
                     end();
 
                     div().classAttr("tcf").style("margein-left: 1em;");
@@ -390,6 +392,30 @@ public class SiteManagerServlet
             manager.addSite(site);
 
             li().text("更新完成。").a().href("index").text("返回站点列表").end(2);
+            end();
+        }
+
+    }
+
+    @Doc("重新启动站点")
+    static class Restart
+            extends SiteTemplate {
+
+        public Restart(Map<String, ?> _args) {
+            super(_args);
+        }
+
+        @Override
+        protected void _content()
+                throws Exception {
+            ul();
+            li().text("停止站点……").end();
+            site.stop();
+
+            li().text("启动站点……").end();
+            site.start();
+
+            li().text("站点已重新启动，下次访问时将自动安排数据装载。").a().href("index").text("返回站点列表").end(2);
             end();
         }
 
