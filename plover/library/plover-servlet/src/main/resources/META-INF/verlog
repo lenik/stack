@@ -1,3 +1,29 @@
+Plover-3.9.0 (谢继雷, 2013-03-01)
+	* NLS updated.
+	* EntityInfo/Column NLS.
+
+Plover-3.8.9 (谢继雷, 2013-02-28)
+	* Removed PloverPush, PloverPushRenderer: unnecessary for prime-push 3.5.
+
+Plover-3.8.8 (谢继雷, 2013-02-27)
+	* Fixed not quitting: Do quit in SAFE_QUIT.
+	* Broadcast shutdown message for QUIT_SAFE.
+	* Added system notification broadcast support.
+	* Upgraded plover-push for Prime-Push 3.5.
+	* Upgraded to Primefaces 3.5.
+
+Plover-3.8.7 (谢继雷, 2013-02-21)
+	* plover-model: Prepared @ImmutableWhen state variant supports.
+
+Plover-3.8.6 (谢继雷, 朱挺峰, 2013-02-20)
+	* 增加限定有效属主功能。
+	* NLS updated.
+	* Integrated plain task inbox/archived support.
+	* Enhanced pf:Locker to support "never-disable" feature.
+
+Plover-3.8.5 (谢继雷, 2013-02-19)
+	* Avoid of two open session in IcsfMembershipEntityManager by introducing UserService.
+
 Plover-3.8.4 (谢继雷, 2013-02-18)
 	* Released Plover-3.8.4.
 	* Added GeneralFormatter.toString static method.

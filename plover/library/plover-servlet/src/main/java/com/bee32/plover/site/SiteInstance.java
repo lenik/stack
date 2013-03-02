@@ -77,6 +77,7 @@ public class SiteInstance
     private SiteInstance() {
         properties = new FormatProperties();
 
+        setTheme(PrimefacesTheme.redmond);
         setVerboseLevel(VerboseLevel.SQL);
         setOptimizationLevel(OptimizationLevel.MEDIUM);
         setDbDialect(DBDialect.PostgreSQL);
