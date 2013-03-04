@@ -16,7 +16,7 @@ public class SystemQuitListener
     public int quit() {
         logger.info("Send shutdown message...");
         SystemMessenger.sendMessage(String.format(//
-                "color: red;; 通知：正在准备日常维护工作，系统将在 %d 秒钟后停止服务，本次维护时间大概需要15分钟，给您带来的不便请谅解！", //
+                "正在准备日常维护工作，系统将在 %d 秒钟后停止服务，本次维护时间大概需要15分钟，给您带来的不便请谅解！", //
                 TIMEOUT));
         return TIMEOUT;
     }

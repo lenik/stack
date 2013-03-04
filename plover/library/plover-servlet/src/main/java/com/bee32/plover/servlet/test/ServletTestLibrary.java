@@ -11,12 +11,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import javax.free.IIndentedOut;
 import javax.free.IllegalUsageException;
@@ -305,21 +305,6 @@ public class ServletTestLibrary
         return url;
     }
 
-    static enum Command {
-        HELP, SHOW_LOCATION, BROWSE, QUIT_SAFE, QUIT
-    }
-
-    static Map<String, Command> commands = new TreeMap<String, Command>();
-    static {
-        commands.put("", Command.HELP);
-        commands.put("h", Command.HELP);
-        commands.put("?", Command.HELP);
-        commands.put("l", Command.SHOW_LOCATION);
-        commands.put("b", Command.BROWSE);
-        commands.put("q", Command.QUIT_SAFE);
-        commands.put("qq", Command.QUIT);
-    }
-
     public void mainLoop()
             throws IOException {
         mainLoop("/");
@@ -332,37 +317,73 @@ public class ServletTestLibrary
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
         while (true) {
+            System.out.print("$ ");
             String line = stdin.readLine();
             if (line == null)
                 break;
+            line = line.trim();
 
-            Command command = commands.get(line.trim());
-            if (command == null) {
-                System.err.println("No such command: " + line);
-                continue;
+            int sep = line.indexOf(' ');
+            String cmd;
+            if (sep != -1) {
+                cmd = line.substring(0, sep).trim();
+                line = line.substring(sep + 1).trim();
+            } else {
+                cmd = line;
+                line = "";
             }
 
-            switch (command) {
-            case SHOW_LOCATION:
-                System.out.println("<<URL>> :: " + url);
-                System.out.println("<<WebApp>> :: " + location);
+            switch (cmd) {
+            case "?":
+            case "h":
+            case "help":
+                System.out.println("browse: Open browser at current location.");
+                System.out.println("stack:  Dump stack trace.");
+                System.out.println("status: Show current status.");
+                System.out.println("help:   Show this help page.");
+                System.out.println("quit:   Broadcast quit message, and exit.");
+                System.out.println("exit:   Exit immediately.");
                 break;
 
-            case BROWSE:
-                browse(location);
+            case "b":
+            case "browse":
+                if (line.isEmpty())
+                    browse(location);
+                else
+                    browse(line);
                 break;
 
-            case HELP:
-                System.out.println("Shortcuts: ");
-                for (Entry<String, Command> cmd : commands.entrySet()) {
-                    String key = cmd.getKey();
-                    if (key.isEmpty())
-                        key = "(empty)";
-                    System.out.println("    " + key + ": " + cmd.getValue());
+            case "st":
+            case "status":
+                System.out.println("url = " + url);
+                System.out.println("location = " + location);
+                break;
+
+            case "send":
+                SystemBcastMessageListeners.bcastSystemMessage(line);
+                break;
+
+            case "stack":
+                Map<Thread, StackTraceElement[]> stackMap = Thread.getAllStackTraces();
+                List<Thread> threads = new ArrayList<Thread>(stackMap.keySet());
+
+                Collections.sort(threads, ThreadNameComparator.getInstance());
+
+                for (Thread thread : threads) {
+                    StackTraceElement[] stack = stackMap.get(thread);
+                    System.out.println("Stack for thread " + thread.getName() + ": ");
+                    for (StackTraceElement frame : stack) {
+                        System.out.printf("    %s.%s (%s:%d)\n", //
+                                frame.getClassName(), //
+                                frame.getMethodName(), //
+                                frame.getFileName(), //
+                                frame.getLineNumber());
+                    }
                 }
                 break;
 
-            case QUIT_SAFE:
+            case "q":
+            case "quit":
                 logger.info("Prepare to quit...");
                 int delay = 0;
                 try {
@@ -381,16 +402,19 @@ public class ServletTestLibrary
 
                 logger.info("Quit...");
 
-            case QUIT:
+            case "exit":
                 try {
                     shutdown();
                 } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
                 return;
-            }
-        }
 
+            default:
+                System.err.println("No such command: " + line);
+                continue;
+            } // switch cmd.
+        } // while true.
     }
 
     public void browse()
