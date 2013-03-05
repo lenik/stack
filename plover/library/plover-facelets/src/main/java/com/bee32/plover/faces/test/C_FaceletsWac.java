@@ -7,6 +7,7 @@ import javax.free.StringArray;
 
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.primefaces.push.PushServlet;
+import org.primefaces.util.Constants;
 import org.primefaces.webapp.filter.FileUploadFilter;
 
 import com.bee32.plover.faces.ClassResourceResolver;
@@ -80,13 +81,15 @@ public class C_FaceletsWac
             // Prime Push Server: must be load-on-startup.
             ServletHolder pushServlet = stl.addServlet(PushServlet.class, "/primepush/*");
             pushServlet.setInitOrder(1);
-            pushServlet.setInitParameter("channels", "system, user, group");
 
-            // This context-param is used by PushRenderer
-            // context.addInitParam("primefaces.PUSH_SERVER_URL", //
-            // // "ws://localhost:" + stl.getPort() + "/prime-push" //
-            // "/primepush" // See: PloverPushRenderer.
-            // );
+            // dynamic named channels.
+            // pushServlet.setInitParameter("channels", "/system, /site");
+
+            // See: org.primefaces.util.Constants.PUSH_SERVER_URL
+            // This context-param is used by SocketRenderer
+            context.addInitParam(Constants.PUSH_SERVER_URL + ".PORT", //
+                    // "ws://localhost:" + stl.getPort() + "/prime-push" //
+                    "10001");
         }
     }
 
