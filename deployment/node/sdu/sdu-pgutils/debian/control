@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-pgutils
 
 Package: sdu-pgutils
 Architecture: all
-Depends: postgresql
+Depends: postgresql | postgresql-8.4
 Description: PostgreSQL utilities
