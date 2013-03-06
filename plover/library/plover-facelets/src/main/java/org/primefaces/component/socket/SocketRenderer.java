@@ -41,14 +41,14 @@ public class SocketRenderer
         String url = getResourceURL(context, channelUrl);
 
         String pushServer = context.getExternalContext().getInitParameter(Constants.PUSH_SERVER_URL);
-        String pushPort = context.getExternalContext().getInitParameter(Constants.PUSH_SERVER_URL + ".PORT");
+        String reverseProxyMode = context.getExternalContext().getInitParameter("reverse_proxy_mode");
 
         if (pushServer != null) {
             url = pushServer + url;
         }
 
-        if (pushPort != null) {
-            url = PortProxyHack.portRewrite(url, pushPort);
+        if ("auto".equals(reverseProxyMode)) {
+            url = PortProxyHack.portRewrite(url);
         }
 
         logger.info("SocketRenderer url=" + url);

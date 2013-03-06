@@ -7,7 +7,6 @@ import javax.free.StringArray;
 
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.primefaces.push.PushServlet;
-import org.primefaces.util.Constants;
 import org.primefaces.webapp.filter.FileUploadFilter;
 
 import com.bee32.plover.faces.ClassResourceResolver;
@@ -87,9 +86,7 @@ public class C_FaceletsWac
 
             // See: org.primefaces.util.Constants.PUSH_SERVER_URL
             // This context-param is used by SocketRenderer
-            context.addInitParam(Constants.PUSH_SERVER_URL + ".PORT", //
-                    // "ws://localhost:" + stl.getPort() + "/prime-push" //
-                    "10001");
+            context.addInitParam("reverse_proxy_mode", "auto");
         }
     }
 
