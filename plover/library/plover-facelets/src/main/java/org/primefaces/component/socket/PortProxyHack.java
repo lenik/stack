@@ -16,7 +16,7 @@ public class PortProxyHack {
             return url;
 
         int serverPort = request.getServerPort();
-        url = "wss://" + xForwardedHost + ":" + serverPort + url;
+        url = "ws://" + xForwardedHost + ":" + serverPort + url;
         return url;
     }
 
