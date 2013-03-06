@@ -97,7 +97,7 @@
                 <p:commandButton onclick="waitbox.show();"
                     oncomplete="waitbox.hide();generateProcessesDialog.show();"
                     value="生成工艺流转单" styleClass="locker-invert"
-                    rendered="#{entry.process.id == null}"
+                    rendered="#{fn:length(entry.processes) le 0}"
                     disabled="${not bean.itemsMBean.selectionEditable}"
                     action="#{bean.newHolderList}"
                     update=":generateProcessesDialogForm" />
