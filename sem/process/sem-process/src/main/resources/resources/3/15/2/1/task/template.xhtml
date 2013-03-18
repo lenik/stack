@@ -194,7 +194,9 @@
 
                     <ui:fragment rendered="${editable != false}">
                         <div align="right">
-                            <p:commandLink id="addURL" value="添加链接" onclick="addURLDialog.show()" />
+                            <p:commandLink id="addURL" value="添加链接" onclick="addURLDialog.show()">
+                                <f:attribute name="locking" value="never" />
+                            </p:commandLink>
                         </div>
                     </ui:fragment>
 
@@ -236,7 +238,9 @@
                     <ui:fragment rendered="${contrable != false}">
                         <div align="right">
                             <p:commandLink id="addFile" value="添加附件" actionListener="${bean.newFile}"
-                                oncomplete="addFileDialog.show()" />
+                                oncomplete="addFileDialog.show()">
+                                <f:attribute name="locking" value="never" />
+                            </p:commandLink>
                         </div>
                     </ui:fragment>
                 </div>
@@ -247,10 +251,15 @@
                     <div>
                         <b>${bean.loggedInUserDisplayName}</b>
                         说：
-                        <p:inputText id="comment" label="评论内容" value="${bean.commentText}" size="40" />
+                        <p:inputText id="comment" label="评论内容" value="${bean.commentText}" size="40">
+                            <f:attribute name="locking" value="never" />
+                        </p:inputText>
                         <p:watermark for="comment" value="输入评论内容" />
-                        <p:commandButton id="addCommentButton" value="发送" onclick="waitbox.show()"
-                            oncomplete="waitbox.hide()" actionListener="${bean.addComment}" update="@form" />
+                        <p:commandButton id="addCommentButton" value="发送" styleClass="locker-bypass"
+                            onclick="waitbox.show()" oncomplete="waitbox.hide()" actionListener="${bean.addComment}"
+                            update="@form">
+                            <f:attribute name="locking" value="never" />
+                        </p:commandButton>
                     </div>
                 </ui:fragment>
                 <table width="100%" border="0">
