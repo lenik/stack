@@ -6,14 +6,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.NaturalId;

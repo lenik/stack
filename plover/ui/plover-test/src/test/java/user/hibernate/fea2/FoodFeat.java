@@ -4,14 +4,14 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.orm.unit.Using;
+import com.bee32.plover.orm.util.WiredDaoFeat;
+import com.bee32.plover.test.ICoordinator;
+
 import user.hibernate.fea2.ext.Banana;
 import user.hibernate.fea2.ext.BananaDao;
 import user.hibernate.fea2.ext.Food;
 import user.hibernate.fea2.ext.FoodDao;
-
-import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.WiredDaoFeat;
-import com.bee32.plover.test.ICoordinator;
 
 @Using(Fea2Unit.class)
 public class FoodFeat

@@ -10,12 +10,12 @@ import java.util.Map;
 import javax.validation.ConstraintValidator;
 import javax.validation.spi.ConfigurationState;
 
+import org.hibernate.validator.engine.ValidatorFactoryImpl;
+import org.hibernate.validator.metadata.ConstraintHelper;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-
-import org.hibernate.validator.engine.ValidatorFactoryImpl;
-import org.hibernate.validator.metadata.ConstraintHelper;
 
 import com.bee32.plover.model.validation.ValidationSwitcherManager;
 

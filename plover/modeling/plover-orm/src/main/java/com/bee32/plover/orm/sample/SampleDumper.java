@@ -1,14 +1,8 @@
 package com.bee32.plover.orm.sample;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
 
 import javax.free.IdentityHashSet;
 

@@ -2,13 +2,7 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import org.hibernate.annotations.DefaultValue;
 

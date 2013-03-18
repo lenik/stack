@@ -3,10 +3,10 @@ package user.war.dto;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import user.war.entity.AttackMission;
-
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.process.base.ProcessEntityDto;
+
+import user.war.entity.AttackMission;
 
 public class AttackMissionDto
         extends ProcessEntityDto<AttackMission> {

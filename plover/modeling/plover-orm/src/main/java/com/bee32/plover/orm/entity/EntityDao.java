@@ -6,13 +6,7 @@ import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.inject.Inject;
-import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
-import javax.persistence.PostUpdate;
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -28,13 +22,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
-import com.bee32.plover.criteria.hibernate.AvgProjection;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.MaxProjection;
-import com.bee32.plover.criteria.hibernate.MinProjection;
-import com.bee32.plover.criteria.hibernate.ProjectionElement;
-import com.bee32.plover.criteria.hibernate.SumProjection;
+import com.bee32.plover.criteria.hibernate.*;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
 import com.bee32.plover.orm.dao.HibernateTemplate;

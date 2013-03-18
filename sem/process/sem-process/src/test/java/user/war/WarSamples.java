@@ -2,14 +2,14 @@ package user.war;
 
 import java.util.Date;
 
-import user.war.entity.AttackMission;
-import user.war.entity.BuildMission;
-
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
+
+import user.war.entity.AttackMission;
+import user.war.entity.BuildMission;
 
 public class WarSamples
         extends NormalSamples {

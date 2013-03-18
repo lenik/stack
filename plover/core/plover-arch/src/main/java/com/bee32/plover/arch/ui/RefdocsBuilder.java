@@ -1,12 +1,6 @@
 package com.bee32.plover.arch.ui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * 构建型帮助索引，支持帮助条目的更改，用于中间变量的目的。

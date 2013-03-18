@@ -1,12 +1,6 @@
 package com.bee32.plover.scheduler.fp;
 
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleTrigger;
+import org.quartz.*;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

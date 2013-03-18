@@ -24,14 +24,7 @@ import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.UniqueIdVendor;
-import javax.faces.component.ValueHolder;
+import javax.faces.component.*;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

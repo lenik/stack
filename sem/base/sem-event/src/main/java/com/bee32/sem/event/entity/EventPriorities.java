@@ -1,9 +1,6 @@
 package com.bee32.sem.event.entity;
 
-import static com.bee32.sem.event.entity.EventPriority.P_HIGH;
-import static com.bee32.sem.event.entity.EventPriority.P_LOW;
-import static com.bee32.sem.event.entity.EventPriority.P_NORMAL;
-import static com.bee32.sem.event.entity.EventPriority.P_URGENT;
+import static com.bee32.sem.event.entity.EventPriority.*;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 

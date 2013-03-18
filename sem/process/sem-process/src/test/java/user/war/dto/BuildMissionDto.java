@@ -3,11 +3,11 @@ package user.war.dto;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import user.war.entity.BuildMission;
-
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
+
+import user.war.entity.BuildMission;
 
 public class BuildMissionDto
         extends ProcessEntityDto<BuildMission>

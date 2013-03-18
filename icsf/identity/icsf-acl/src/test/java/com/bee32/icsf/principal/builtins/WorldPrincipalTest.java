@@ -4,8 +4,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.bee32.icsf.principal.builtins.WorldPrincipal;
-
 public class WorldPrincipalTest {
 
     WorldPrincipal world;

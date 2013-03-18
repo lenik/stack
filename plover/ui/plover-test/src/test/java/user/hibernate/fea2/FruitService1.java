@@ -7,9 +7,9 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import user.hibernate.fea2.ext.Banana;
-
 import com.bee32.plover.orm.dao.HibernateTemplate;
+
+import user.hibernate.fea2.ext.Banana;
 
 public class FruitService1 {
 

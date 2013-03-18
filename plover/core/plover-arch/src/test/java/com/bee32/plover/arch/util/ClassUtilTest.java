@@ -1,8 +1,6 @@
 package com.bee32.plover.arch.util;
 
-import static com.bee32.plover.arch.util.ClassUtil.getTypeArgs;
-import static com.bee32.plover.arch.util.ClassUtil.mapTypeArgs;
-import static com.bee32.plover.arch.util.ClassUtil.traceBounds;
+import static com.bee32.plover.arch.util.ClassUtil.*;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;

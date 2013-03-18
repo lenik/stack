@@ -1,12 +1,6 @@
 package com.bee32.icsf.access.resource;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.Set;
+import java.util.*;
 
 import javax.free.IllegalUsageException;
 

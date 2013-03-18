@@ -1,15 +1,8 @@
 package com.bee32.plover.orm.config;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.ServiceLoader;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;

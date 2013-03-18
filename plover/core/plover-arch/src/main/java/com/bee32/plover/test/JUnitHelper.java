@@ -9,18 +9,18 @@ import java.util.Set;
 import javax.free.AnnotationUtil;
 import javax.free.IllegalUsageException;
 
-import net.sf.cglib.core.NamingPolicy;
-import net.sf.cglib.core.Predicate;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.cglib.core.NamingPolicy;
+import net.sf.cglib.core.Predicate;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 public class JUnitHelper {
 

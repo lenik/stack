@@ -2,15 +2,7 @@ package com.bee32.plover.scheduler;
 
 import javax.inject.Inject;
 
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
+import org.quartz.*;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.slf4j.Logger;

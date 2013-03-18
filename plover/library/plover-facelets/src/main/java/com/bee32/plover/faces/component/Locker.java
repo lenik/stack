@@ -10,13 +10,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentAccessor;
-import javax.faces.component.html.HtmlCommandButton;
-import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlInputTextarea;
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.component.html.HtmlSelectManyMenu;
-import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 
 import org.slf4j.Logger;

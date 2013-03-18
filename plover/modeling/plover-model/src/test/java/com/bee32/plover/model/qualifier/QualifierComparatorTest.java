@@ -1,9 +1,6 @@
 package com.bee32.plover.model.qualifier;
 
-import static com.bee32.plover.model.qualifier.PriorityTest.center;
-import static com.bee32.plover.model.qualifier.PriorityTest.high;
-import static com.bee32.plover.model.qualifier.PriorityTest.low;
-import static com.bee32.plover.model.qualifier.PriorityTest.middle;
+import static com.bee32.plover.model.qualifier.PriorityTest.*;
 
 import org.junit.Assert;
 import org.junit.Test;

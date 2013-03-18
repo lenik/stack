@@ -4,14 +4,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryUsage;
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.free.Dates;
 import javax.free.Doc;
@@ -27,14 +21,7 @@ import com.bee32.plover.html.PageDefMap;
 import com.bee32.plover.html.SimpleForm;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.plover.site.cfg.DBAutoDDL;
-import com.bee32.plover.site.cfg.DBDialect;
-import com.bee32.plover.site.cfg.ISiteConfigBlock;
-import com.bee32.plover.site.cfg.OptimizationLevel;
-import com.bee32.plover.site.cfg.PrimefacesTheme;
-import com.bee32.plover.site.cfg.SamplesSelection;
-import com.bee32.plover.site.cfg.SiteConfigBlocks;
-import com.bee32.plover.site.cfg.VerboseLevel;
+import com.bee32.plover.site.cfg.*;
 import com.bee32.plover.site.scope.SiteNaming;
 
 public class SiteManagerServlet

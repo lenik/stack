@@ -4,26 +4,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.IGroupPrincipal;
-import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.IRolePrincipal;
-import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.*;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 

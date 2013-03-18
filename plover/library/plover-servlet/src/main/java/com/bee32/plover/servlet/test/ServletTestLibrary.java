@@ -10,21 +10,10 @@ import java.net.BindException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.EventListener;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
-import javax.free.IIndentedOut;
-import javax.free.IllegalUsageException;
-import javax.free.IndentedOutImpl;
-import javax.free.Stdio;
-import javax.free.StringPart;
-import javax.free.SystemProperties;
-import javax.free.UnexpectedException;
+import javax.free.*;
 import javax.servlet.http.HttpServlet;
 
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -451,6 +440,8 @@ public class ServletTestLibrary
                 throw new RuntimeException("No available browser.");
             logger.debug("Launch browser: " + browser + " for " + uri);
             Runtime.getRuntime().exec(new String[] { browser, uri.toString() }, null);
+        } catch (UnsatisfiedLinkError e) {
+            throw e;
         }
 
         return url;

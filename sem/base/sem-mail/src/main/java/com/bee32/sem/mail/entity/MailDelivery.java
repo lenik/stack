@@ -1,12 +1,6 @@
 package com.bee32.sem.mail.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;

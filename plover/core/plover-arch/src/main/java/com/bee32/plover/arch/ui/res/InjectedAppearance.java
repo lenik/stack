@@ -10,13 +10,7 @@ import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
 import com.bee32.plover.arch.ui.LazyAppearance;
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.res.ClassResourceProperties;
-import com.bee32.plover.arch.util.res.IPropertyAcceptor;
-import com.bee32.plover.arch.util.res.IPropertyDispatcher;
-import com.bee32.plover.arch.util.res.IPropertyDispatcherAware;
-import com.bee32.plover.arch.util.res.IPropertyRefreshListener;
-import com.bee32.plover.arch.util.res.PropertyDispatcher;
-import com.bee32.plover.arch.util.res.PropertyRefreshEvent;
+import com.bee32.plover.arch.util.res.*;
 
 /**
  * 从资源中提取的用户界面信息。

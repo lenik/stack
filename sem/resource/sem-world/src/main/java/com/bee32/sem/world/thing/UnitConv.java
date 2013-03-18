@@ -3,15 +3,7 @@ package com.bee32.sem.world.thing;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
 

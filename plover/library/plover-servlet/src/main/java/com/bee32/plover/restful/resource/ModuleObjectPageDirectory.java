@@ -2,13 +2,8 @@ package com.bee32.plover.restful.resource;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.pub.oid.OidUtil;

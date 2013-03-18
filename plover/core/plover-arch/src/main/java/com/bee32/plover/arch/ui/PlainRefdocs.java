@@ -2,13 +2,7 @@ package com.bee32.plover.arch.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import javax.free.IllegalUsageException;
 

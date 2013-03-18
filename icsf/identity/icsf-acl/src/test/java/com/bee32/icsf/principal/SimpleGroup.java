@@ -3,9 +3,6 @@ package com.bee32.icsf.principal;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.User;
-
 @Entity
 @DiscriminatorValue("G1")
 public class SimpleGroup

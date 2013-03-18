@@ -1,9 +1,9 @@
 package user.war.web;
 
+import com.bee32.sem.misc.SimpleEntityViewBean;
+
 import user.war.dto.BuildMissionDto;
 import user.war.entity.BuildMission;
-
-import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class BuildMissionBean
         extends SimpleEntityViewBean {
