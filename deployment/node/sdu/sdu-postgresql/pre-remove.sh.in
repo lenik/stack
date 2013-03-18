@@ -2,7 +2,8 @@
 
 # master-file
 
-hba=/etc/postgresql/8.4/main/pg_hba.conf
+#hba=/etc/postgresql/8.4/main/pg_hba.conf
+hba=/etc/postgresql/9.1/main/pg_hba.conf
 
 echo "Remove entries from $hba"
     lineconf -tk SDUC-1-192    $hba

@@ -1,6 +1,6 @@
 include libauto/coolauto.am
 
-dist_sbin_SCRIPTS = \
+dist_bin_SCRIPTS = \
 	pg-create-shortcuts \
 	rm-pglibsyms
 

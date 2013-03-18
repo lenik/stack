@@ -2,7 +2,8 @@
 
 # master-file
 
-hba=/etc/postgresql/8.4/main/pg_hba.conf
+# hba=/etc/postgresql/8.4/main/pg_hba.conf
+hba=/etc/postgresql/9.1/main/pg_hba.conf
 
 lineconf -tm "Add host auth 192.* by password" \
     $hba SDUC-1-192    "host all all 192.168.1.0/24 password"
