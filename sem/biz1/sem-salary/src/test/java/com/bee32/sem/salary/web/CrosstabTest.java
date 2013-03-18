@@ -4,9 +4,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JasperRunManager;
-
 import org.junit.Assert;
+
+import net.sf.jasperreports.engine.JasperRunManager;
 
 public class CrosstabTest
         extends Assert {

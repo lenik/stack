@@ -1,12 +1,6 @@
 package com.bee32.plover.ox1.principal.web;
 
-import com.bee32.icsf.principal.GroupDto;
-import com.bee32.icsf.principal.PrincipalCheckException;
-import com.bee32.icsf.principal.PrincipalCriteria;
-import com.bee32.icsf.principal.PrincipalDiag;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.RoleDto;
-import com.bee32.icsf.principal.UserDto;
+import com.bee32.icsf.principal.*;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.misc.TreeEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;

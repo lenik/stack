@@ -3,15 +3,7 @@ package com.bee32.sem.people.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.GroupDto;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.PrincipalCriteria;
-import com.bee32.icsf.principal.PrincipalDto;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.RoleDto;
-import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.UserDto;
+import com.bee32.icsf.principal.*;
 import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChoosePrincipalDialogBean

@@ -2,13 +2,7 @@ package com.bee32.sem.people;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
-import com.bee32.sem.hr.entity.EmployeeInfo;
-import com.bee32.sem.hr.entity.JobPerformance;
-import com.bee32.sem.hr.entity.JobPost;
-import com.bee32.sem.hr.entity.JobTitle;
-import com.bee32.sem.hr.entity.PersonEducationType;
-import com.bee32.sem.hr.entity.PersonSkill;
-import com.bee32.sem.hr.entity.PersonSkillCategory;
+import com.bee32.sem.hr.entity.*;
 import com.bee32.sem.module.EnterpriseModule;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Org;

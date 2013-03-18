@@ -18,14 +18,7 @@ import com.bee32.sem.hr.entity.JobPosts;
 import com.bee32.sem.hr.entity.JobTitles;
 import com.bee32.sem.hr.entity.PersonEducationTypes;
 import com.bee32.sem.hr.entity.PersonSkill;
-import com.bee32.sem.people.entity.Contact;
-import com.bee32.sem.people.entity.ContactCategories;
-import com.bee32.sem.people.entity.Org;
-import com.bee32.sem.people.entity.OrgTypes;
-import com.bee32.sem.people.entity.PartySidTypes;
-import com.bee32.sem.people.entity.PartyTagnames;
-import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonRole;
+import com.bee32.sem.people.entity.*;
 
 public class SEMPeopleSamples
         extends NormalSamples {
