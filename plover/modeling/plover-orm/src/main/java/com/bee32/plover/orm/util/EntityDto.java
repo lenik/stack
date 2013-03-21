@@ -729,11 +729,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         this.altId = altId;
     }
 
-    public int getState() {
+    public/* final */int getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public/* final */void setState(int state) {
         if (this.state != state) {
             this.state = state;
             pfm = null;

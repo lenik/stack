@@ -8,17 +8,17 @@ import com.bee32.plover.arch.util.EnumAlt;
  * 库存项状态
  */
 public class StockItemState
-        extends EnumAlt<Character, StockItemState> {
+        extends EnumAlt<Integer, StockItemState> {
 
     private static final long serialVersionUID = 1L;
 
     final boolean abnormal;
 
-    StockItemState(char value, String name) {
+    StockItemState(int value, String name) {
         this(value, name, false);
     }
 
-    StockItemState(char value, String name, boolean abnormal) {
+    StockItemState(int value, String name, boolean abnormal) {
         super(value, name);
         this.abnormal = abnormal;
     }
@@ -35,12 +35,12 @@ public class StockItemState
         return values(StockItemState.class);
     }
 
-    public static StockItemState forValue(Character value) {
+    public static StockItemState forValue(Integer value) {
         return forValue(StockItemState.class, value);
     }
 
-    public static StockItemState forValue(char value) {
-        return forValue(new Character(value));
+    public static StockItemState forValue(int value) {
+        return forValue(new Integer(value));
     }
 
     /** 正常 */

@@ -7,7 +7,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 
@@ -40,7 +53,6 @@ public class Event
 
     private final EventFlags flags = new EventFlags();
     private boolean closed;
-    private int _state;
     private EventStatus status; // status -> flags, closed, state.
 
     private User actor;
@@ -88,7 +100,6 @@ public class Event
         priority = o.priority;
         flags.bits = o.flags.bits;
         closed = o.closed;
-        _state = o._state;
         status = o.status;
         actor = o.actor;
         subject = o.subject;
@@ -201,19 +212,14 @@ public class Event
         this.closed = closed;
     }
 
-    @Index(name = "##_state")
-    @Column(nullable = false)
-    @Override
-    public int getState() {
-        return _state;
+    public EventState<?> getEventState() {
+        int state = getState();
+        EventState<?> eventState = EventState.forValue(state);
+        return eventState;
     }
 
-    public void setState(int stateVal) {
-        this._state = stateVal;
-    }
-
-    public void setState(EventState<?> state) {
-        this._state = state == null ? 0 : state.getValue();
+    public void setEventState(EventState<?> state) {
+        setState(state.getValue());
     }
 
     @ManyToOne

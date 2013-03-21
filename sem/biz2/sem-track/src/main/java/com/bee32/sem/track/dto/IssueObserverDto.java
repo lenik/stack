@@ -8,11 +8,11 @@ import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.track.entity.IssueObserver;
 
 public class IssueObserverDto
-        extends EntityDto<IssueObserver, Long> {
+        extends UIEntityDto<IssueObserver, Long> {
 
     IssueDto issue;
     UserDto user;
@@ -23,8 +23,8 @@ public class IssueObserverDto
 
     @Override
     protected void _marshal(IssueObserver source) {
-        issue = marshal(IssueDto.class, 0, source.getIssue());
-        user = marshal(UserDto.class, source.getUser());
+        issue = mref(IssueDto.class, source.getIssue());
+        user = mref(UserDto.class, source.getUser());
         manager = source.isManager();
     }
 

@@ -49,7 +49,6 @@ public class IssueDto
 
     @Override
     protected void _marshal(Issue source) {
-        state = source.getState();
         priority = source.getPriority();
         text = source.getText();
         replay = source.getReplay();
@@ -78,7 +77,6 @@ public class IssueDto
 
     @Override
     protected void _unmarshalTo(Issue target) {
-        target.setState(state);
         target.setPriority(priority);
         target.setText(text);
         target.setReplay(replay);
@@ -98,14 +96,6 @@ public class IssueDto
 
     public void addReply(IssueReplyDto reply) {
         replies.add(reply);
-    }
-
-    public Character getStateValue() {
-        return state.getValue();
-    }
-
-    public void setStateValue(Character stateValue) {
-        state = IssueState.forValue(stateValue);
     }
 
     public String getStateName() {

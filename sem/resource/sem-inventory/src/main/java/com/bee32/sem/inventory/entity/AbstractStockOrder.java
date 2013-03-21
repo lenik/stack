@@ -365,7 +365,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
             peer.items.addAll(items);
             // 初始化对等单的项目状态为挂起。
             for (StockOrderItem peerItem : peer.items)
-                peerItem.setState(StockItemState.PENDING);
+                peerItem.setStockItemState(StockItemState.PENDING);
         }
         return peer;
     }

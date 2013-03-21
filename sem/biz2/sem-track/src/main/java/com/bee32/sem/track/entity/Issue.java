@@ -3,7 +3,17 @@ package com.bee32.sem.track.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -32,7 +42,6 @@ public class Issue
     public static final int COMMITISH_LENGTH = 32;
     public static final int TAGS_LENGTH = 100;
 
-    IssueState state = IssueState.NEW;
     IssuePriority priority = IssuePriority.normal;
 
     String text = "";
@@ -44,7 +53,6 @@ public class Issue
     List<UserFile> attachments = new ArrayList<UserFile>();
     List<IssueReply> replies = new ArrayList<IssueReply>();
     List<IssueObserver> observers = new ArrayList<IssueObserver>();
-    List<IssueFav> favs = new ArrayList<IssueFav>();
 
     Chance chance;
     StockOrder order;
@@ -55,21 +63,15 @@ public class Issue
      * 问题的当前状态，如已解决、挂起等。
      */
     @Transient
-    public IssueState getState() {
-        return state;
+    public IssueState getIssueState() {
+        int state = getState();
+        IssueState issueState = IssueState.forValue((char) state);
+        return issueState;
     }
 
-    public void setState(IssueState state) {
-        this.state = state;
-    }
-
-    @Column(name = "state", nullable = false)
-    char get_state() {
-        return state.getValue();
-    }
-
-    void set_state(char _state) {
-        state = IssueState.forValue(_state);
+    public void setIssueState(IssueState issueState) {
+        int state = issueState.getValue();
+        setState(state);
     }
 
     @Transient
@@ -81,12 +83,12 @@ public class Issue
         this.priority = priority;
     }
 
-    @Column(name="priority_order")
-    public int get_priority(){
+    @Column(name = "priority_order")
+    public int get_priority() {
         return priority.getValue();
     }
 
-    public void set_priority(int value){
+    public void set_priority(int value) {
         this.priority = IssuePriority.forValue(value);
     }
 
@@ -197,16 +199,6 @@ public class Issue
 
     public void setObservers(List<IssueObserver> observers) {
         this.observers = observers;
-    }
-
-    @OneToMany(mappedBy = "issue", orphanRemoval = true)
-    @Cascade({ CascadeType.DELETE, CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
-    public List<IssueFav> getFavs() {
-        return favs;
-    }
-
-    public void setFavs(List<IssueFav> favs) {
-        this.favs = favs;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

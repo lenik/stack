@@ -35,7 +35,6 @@ public class StockOrderItemDto
     BatchArray batchArray;
     Date expirationDate;
     StockLocationDto location;
-    StockItemState state;
     char stateChar;
 
     public StockOrderItemDto() {
@@ -82,7 +81,6 @@ public class StockOrderItemDto
 
         expirationDate = source.getExpirationDate();
         location = mref(StockLocationDto.class, source.getLocation());
-        state = source.getState();
     }
 
     @Override
@@ -95,7 +93,6 @@ public class StockOrderItemDto
         target.setBatchArray(batchArray.reduce());
         target.setExpirationDate(expirationDate);
         merge(target, "location", location);
-        target.setState(state);
     }
 
     @Override
@@ -195,26 +192,20 @@ public class StockOrderItemDto
         this.location = location;
     }
 
-    public StockItemState getState() {
-        return state;
+    public StockItemState getStockItemState() {
+        int state = getState();
+        return StockItemState.forValue(state);
     }
 
-    public void setState(StockItemState state) {
-        if (state == null)
-            throw new NullPointerException("state");
-        this.state = state;
-    }
-
-    public char getStateChar() {
-        return state.getValue();
-    }
-
-    public void setStateChar(char stateChar) {
-        this.stateChar = stateChar;
-        state = StockItemState.forValue(stateChar);
+    public void setState(StockItemState stockItemState) {
+        if (stockItemState == null)
+            throw new NullPointerException("stockItemState");
+        int state = stockItemState.getValue();
+        setState(state);
     }
 
     public String getStateText() {
+        StockItemState state = getStockItemState();
         return state.getDisplayName();
     }
 

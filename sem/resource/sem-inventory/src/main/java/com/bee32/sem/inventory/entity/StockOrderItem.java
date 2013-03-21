@@ -2,7 +2,6 @@ package com.bee32.sem.inventory.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
@@ -49,7 +48,6 @@ public class StockOrderItem
     BatchArray batchArray = new BatchArray();
     Date expirationDate;
     StockLocation location;
-    StockItemState state = StockItemState.NORMAL;
 
     public StockOrderItem() {
     }
@@ -58,6 +56,10 @@ public class StockOrderItem
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;
+    }
+
+    {
+        setStockItemState(StockItemState.NORMAL);
     }
 
     @Override
@@ -75,7 +77,6 @@ public class StockOrderItem
         batchArray = o.batchArray.clone();
         expirationDate = o.expirationDate;
         location = o.location;
-        state = o.state;
     }
 
     /**
@@ -197,26 +198,15 @@ public class StockOrderItem
      * 在条目上标志的附加状态。
      */
     @Transient
-    public StockItemState getState() {
-        return state;
+    public StockItemState getStockItemState() {
+        int state = getState();
+        StockItemState stockItemState = StockItemState.forValue(state);
+        return stockItemState;
     }
 
-    public void setState(StockItemState state) {
-        this.state = state;
-    }
-
-    /**
-     * 项目状态
-     *
-     * 在条目上标志的附加状态。
-     */
-    @Column(name = "state", nullable = false)
-    public char get_state() {
-        return state.getValue();
-    }
-
-    public void set_state(char _state) {
-        this.state = StockItemState.forValue(_state);
+    public void setStockItemState(StockItemState stockItemState) {
+        int state = stockItemState.getValue();
+        setState(state);
     }
 
     @Override

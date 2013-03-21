@@ -18,11 +18,10 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.track.dto.IssueDto;
-import com.bee32.sem.track.dto.IssueFavDto;
 import com.bee32.sem.track.dto.IssueObserverDto;
 import com.bee32.sem.track.dto.IssueReplyDto;
 import com.bee32.sem.track.entity.Issue;
-import com.bee32.sem.track.entity.IssueFav;
+import com.bee32.sem.track.entity.IssueObserver;
 import com.bee32.sem.track.entity.IssuePriority;
 import com.bee32.sem.track.entity.IssueReply;
 import com.bee32.sem.track.entity.IssueState;
@@ -36,6 +35,7 @@ public class IssueAdminBean
     public IssueReplyDto reply = new IssueReplyDto().create();
     public int favNum;
     public boolean fav;
+
     /**
      * editing = -1, new issue
      *
@@ -72,7 +72,8 @@ public class IssueAdminBean
             Issue issue = DATA(Issue.class).getUnique(IssueCriteria.getUniqueById(issueId));
             issueDto = DTOs.marshal(IssueDto.class, IssueDto.REPLIES + IssueDto.OBSERVERS, issue);
             List<IssueObserverDto> observers = issueDto.getObservers();
-            IssueFav issueFav = DATA(IssueFav.class).getUnique(
+
+            IssueFav issueFav = DATA(IssueObserver.class).getUnique(
                     IssueCriteria.getUniqueByIssueAndUser(issueId, currentUser.getId()));
 
             if (issueFav == null)

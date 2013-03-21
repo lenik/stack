@@ -29,7 +29,7 @@ public class SEMTrackSamples
         reply2.setReplier(peoples.jack);
 
         issue1.setLabel("test issue");
-        issue1.setState(IssueState.DUP);
+        issue1.setIssueState(IssueState.DUP);
         issue1.setText("test track sample");
         issue1.setTags("what's the token?");
         issue1.setCommitish("commitish?");

@@ -9,7 +9,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 问题观察员
@@ -19,13 +19,14 @@ import com.bee32.plover.orm.entity.EntityAuto;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "issue_observer_seq", allocationSize = 1)
 public class IssueObserver
-        extends EntityAuto<Long> {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     Issue issue;
     User user;
     boolean manager;
+    boolean fav;
 
     /**
      * 问题
@@ -72,6 +73,14 @@ public class IssueObserver
 
     public void setManager(boolean manager) {
         this.manager = manager;
+    }
+
+    public boolean isFav() {
+        return fav;
+    }
+
+    public void setFav(boolean fav) {
+        this.fav = fav;
     }
 
 }

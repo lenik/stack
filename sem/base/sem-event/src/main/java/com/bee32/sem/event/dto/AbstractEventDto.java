@@ -207,14 +207,6 @@ public abstract class AbstractEventDto<E extends Event>
         this.flags = flags;
     }
 
-    public int getState() {
-        return stateIndex;
-    }
-
-    public void setState(int state) {
-        this.stateIndex = state;
-    }
-
     public boolean isClosed() {
         return closed;
     }

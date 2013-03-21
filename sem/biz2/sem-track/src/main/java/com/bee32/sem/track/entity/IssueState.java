@@ -6,7 +6,7 @@ import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.arch.util.IPriority;
 
 public class IssueState
-        extends EnumAlt<Character, IssueState>
+        extends EnumAlt<Integer, IssueState>
         implements IPriority {
 
     private static final long serialVersionUID = 1L;
@@ -18,7 +18,7 @@ public class IssueState
     private final boolean _final;
     private final boolean negative;
 
-    public IssueState(char value, String name, int priority, int flags) {
+    public IssueState(int value, String name, int priority, int flags) {
         super(value, name);
         this.priority = priority;
         _final = (flags & FINAL) != 0;
@@ -46,12 +46,8 @@ public class IssueState
         return values(IssueState.class);
     }
 
-    public static IssueState forValue(Character value) {
+    public static IssueState forValue(int value) {
         return forValue(IssueState.class, value);
-    }
-
-    public static IssueState forValue(char value) {
-        return forValue(new Character(value));
     }
 
     /** 新创建的问题 */

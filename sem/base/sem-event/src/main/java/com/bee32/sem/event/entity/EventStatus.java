@@ -61,13 +61,4 @@ public class EventStatus
         this.closed = closed;
     }
 
-    @Column(nullable = false)
-    public int getState() {
-        return state.getValue();
-    }
-
-    public void setState(int state) {
-        // this.state = EventState.valueOf(state);
-    }
-
 }

@@ -235,11 +235,11 @@ public abstract class Entity<K extends Serializable>
 
     @DefaultValue("0")
     @Column(nullable = false)
-    public final int getState() {
+    public/* final */int getState() {
         return state;
     }
 
-    public final void setState(int state) {
+    public/* final */void setState(int state) {
         this.state = state;
     }
 
