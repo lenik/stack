@@ -12,6 +12,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.icsf.principal.Users;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.DTOs;
@@ -73,8 +74,9 @@ public class IssueAdminBean
             issueDto = DTOs.marshal(IssueDto.class, IssueDto.REPLIES + IssueDto.OBSERVERS, issue);
             List<IssueObserverDto> observers = issueDto.getObservers();
 
-            IssueFav issueFav = DATA(IssueObserver.class).getUnique(
-                    IssueCriteria.getUniqueByIssueAndUser(issueId, currentUser.getId()));
+            IssueObserver issueFav = DATA(IssueObserver.class).getUnique(
+                    IssueCriteria.getUniqueByIssueAndUser(issueId, currentUser.getId()), //
+                    new Equals("fav", true));
 
             if (issueFav == null)
                 fav = false;
@@ -91,7 +93,9 @@ public class IssueAdminBean
             if (implies)
                 operatable = true;
 
-            favNum = DATA(IssueFav.class).count(IssueCriteria.getObserverCount(issueId));
+            favNum = DATA(IssueObserver.class).count(//
+                    IssueCriteria.getObserverCount(issueId), //
+                    new Equals("fav", true));
             editMode = 0;
             issueDto.setContentEditable(false);
         }
@@ -103,17 +107,19 @@ public class IssueAdminBean
         UserDto userDto = SessionUser.getInstance().getUser();
         IssueDto openedIssue = (IssueDto) getOpenedObject();
         if (!favFlag) {
-            IssueFavDto favorite = new IssueFavDto().create();
+            IssueObserverDto favorite = new IssueObserverDto().create();
             favorite.setUser(userDto);
             favorite.setIssue(openedIssue);
-            IssueFav entity = favorite.unmarshal();
-            DATA(IssueFav.class).save(entity);
+            favorite.setFav(true);
+            IssueObserver entity = favorite.unmarshal();
+            DATA(IssueObserver.class).save(entity);
             fav = true;
             favNum++;
         } else {
-            IssueFav favorite = DATA(IssueFav.class).getUnique(
-                    IssueCriteria.getUniqueByIssueAndUser(openedIssue.getId(), userDto.getId()));
-            DATA(IssueFav.class).delete(favorite);
+            IssueObserver favorite = DATA(IssueObserver.class).getUnique(
+                    IssueCriteria.getUniqueByIssueAndUser(openedIssue.getId(), userDto.getId()),
+                    new Equals("fav", true));
+            DATA(IssueObserver.class).delete(favorite);
             fav = false;
             favNum--;
         }

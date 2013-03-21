@@ -16,8 +16,9 @@ public class IssueObserverDto
 
     IssueDto issue;
     UserDto user;
-    boolean manager = false;
-    boolean selected = false;
+    boolean manager;
+    boolean selected;
+    boolean fav;
 
     private static final long serialVersionUID = 1L;
 
@@ -70,6 +71,14 @@ public class IssueObserverDto
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public boolean isFav() {
+        return fav;
+    }
+
+    public void setFav(boolean fav) {
+        this.fav = fav;
     }
 
     @Override
