@@ -28,6 +28,9 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
+    public static final int STATE_APPROVED = 1;
+    public static final int STATE_REJECTED = 2;
+
     public static final int SUBJECT_LENGTH = 100;
     public static final int CONTENT_LENGTH = 500;
     public static final int ADDRESS_LENGTH = 200;
@@ -170,7 +173,6 @@ public class Chance
     public void setAnticipationEnd(Date anticipationEnd) {
         this.anticipationEnd = anticipationEnd;
     }
-
 
     /**
      * 对应客户

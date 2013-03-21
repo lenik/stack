@@ -25,6 +25,8 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.BaseDto_Skel;
 import com.bee32.plover.arch.util.dto.MarshalType;
+import com.bee32.plover.model.state.PropetyFlagsMap;
+import com.bee32.plover.model.state.StatePropertyFlagsMapMap;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBase;
@@ -60,12 +62,15 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     boolean _skipId;
     Integer version;
     String altId;
+    int state;
     Date createdDate;
     Date lastModified;
     boolean createdDateDirty;
     boolean lastModifiedDirty;
 
     EntityFlags entityFlags;
+
+    transient PropetyFlagsMap pfm;
 
     public EntityDto() {
         super();
@@ -189,6 +194,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         version = source.getVersion();
         _skipId = version == -1;
         altId = source.getAltId();
+
+        setState(source.getState());
+
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
         setEntityFlags(EntityAccessor.getFlags(source).bits);
@@ -208,6 +216,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             EntityAccessor.setVersion(target, version);
 
         target.setAltId(altId);
+        target.setState(state);
 
         if (createdDateDirty)
             EntityAccessor.setCreatedDate(target, createdDate);
@@ -710,6 +719,46 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public String getAltId() {
+        return altId;
+    }
+
+    public void setAltId(String altId) {
+        this.altId = altId;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        if (this.state != state) {
+            this.state = state;
+            pfm = null;
+        }
+    }
+
+    public PropetyFlagsMap getPfm() {
+        if (pfm == null) {
+            Class<? extends E> entityType = getEntityType();
+            StatePropertyFlagsMapMap stateMap = StatePropertyFlagsMapMap.forClass(entityType);
+            pfm = stateMap.getPropertyFlagsMap(state);
+            fillPropertyFlagsMap(state, pfm);
+        }
+        return pfm;
+    }
+
+    /**
+     * Example:
+     *
+     * <pre>
+     * if (state == STATE_FIN_DONE)
+     *     pfm.setLockedForAllProperties(true);
+     * </pre>
+     */
+    protected void fillPropertyFlagsMap(int state, PropetyFlagsMap pfm) {
     }
 
     protected String getName() {

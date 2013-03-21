@@ -48,10 +48,18 @@ public abstract class Entity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The initial state.
+     */
+    public static final int STATE_INITIAL = 0;
+    public static final int STATE_FINALIZED = -1;
+    public static final int STATE_INVALID = -2;
+
     public static final int ALT_ID_LENGTH = 20;
 
     int version;
     String altId;
+    int state;
 
     Date createdDate = new Date();
     Date lastModified = createdDate;
@@ -223,6 +231,16 @@ public abstract class Entity<K extends Serializable>
 
     public void setAltId(String altId) {
         this.altId = altId;
+    }
+
+    @DefaultValue("0")
+    @Column(nullable = false)
+    public final int getState() {
+        return state;
+    }
+
+    public final void setState(int state) {
+        this.state = state;
     }
 
     /**
