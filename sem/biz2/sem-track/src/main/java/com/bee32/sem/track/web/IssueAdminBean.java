@@ -43,7 +43,7 @@ public class IssueAdminBean
      *
      * editing = 1, editing issue
      */
-    public int editing = -1;
+    public int editMode = -1;
     public boolean operatable;
     public IssueDto temp;
     public List<IssueObserverDto> availableObservers;
@@ -66,7 +66,7 @@ public class IssueAdminBean
             fav = false;
             favNum = 0;
             operatable = true;
-            editing = -1;
+            editMode = -1;
         } else {
             long issueId = Long.parseLong(param);
             Issue issue = DATA(Issue.class).getUnique(IssueCriteria.getUniqueById(issueId));
@@ -91,7 +91,7 @@ public class IssueAdminBean
                 operatable = true;
 
             favNum = DATA(IssueFav.class).count(IssueCriteria.getObserverCount(issueId));
-            editing = 0;
+            editMode = 0;
             issueDto.setContentEditable(false);
         }
         setOpenedObject(issueDto);
@@ -184,7 +184,7 @@ public class IssueAdminBean
         DATA(Issue.class).saveOrUpdate(entity);
         temp = DTOs.marshal(IssueDto.class, IssueDto.REPLIES + IssueDto.OBSERVERS, entity);
         setOpenedObject(temp);
-        editing = 0;
+        editMode = 0;
     }
 
     public void deselectObserver(IssueObserverDto observer) {
@@ -222,13 +222,13 @@ public class IssueAdminBean
     public void startEditing() {
         IssueDto oo = (IssueDto) getOpenedObject();
         temp = oo.copy();
-        editing = 1;
+        editMode = 1;
         oo.setContentEditable(true);
     }
 
     public void cancelEditing() {
         setOpenedObject(temp);
-        editing = 0;
+        editMode = 0;
     }
 
     public SelectableList<IssueState> getIssueStates() {
@@ -265,12 +265,12 @@ public class IssueAdminBean
         this.fav = fav;
     }
 
-    public int getEditing() {
-        return editing;
+    public int getEditMode() {
+        return editMode;
     }
 
-    public void setEditing(int editing) {
-        this.editing = editing;
+    public void setEditMode(int editing) {
+        this.editMode = editing;
     }
 
     public boolean isOperatable() {
