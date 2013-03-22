@@ -56,6 +56,7 @@ public class ChineseCodec {
         return encoded.toString();
     }
 
+    @SuppressWarnings("resource")
     public static String decode(String s) {
         return new Decoder().process(s);
     }

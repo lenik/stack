@@ -129,7 +129,8 @@ public class TaskMenuBar extends ToolBar {
     archivedEntry.setCount(archivedCount);
   }
 
-  protected void initActions() {
+  @SuppressWarnings("serial")
+protected void initActions() {
     Button newCaseButton = new Button();
     newCaseButton.setCaption(i18nManager.getMessage(Messages.TASK_NEW));
     newCaseButton.setIcon(Images.TASK_16);

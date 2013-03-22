@@ -7,6 +7,7 @@ import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFilter;
 import com.bee32.sem.mail.entity.MailFolder;
+import com.bee32.sem.mail.entity.Message;
 
 @ImportUnit(IcsfAccessUnit.class)
 public class SEMMailUnit
@@ -14,6 +15,8 @@ public class SEMMailUnit
 
     @Override
     protected void preamble() {
+        add(Message.class);
+
         add(Mail.class);
         add(MailDelivery.class);
         add(MailFolder.class);

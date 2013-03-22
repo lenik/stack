@@ -371,6 +371,7 @@ public class RadixTreeImpl<T>
         formatNodeTo(new Formatter(System.out), 0, root);
     }
 
+    @SuppressWarnings("unused")
     @Deprecated
     private void display(int level, RadixTreeNode<T> node) {
         formatNodeTo(new Formatter(System.out), level, node);

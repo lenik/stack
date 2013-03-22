@@ -4,7 +4,6 @@ import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
 import com.bee32.sem.track.entity.Issue;
-import com.bee32.sem.track.entity.IssueReply;
 
 @Oid({ 3, 15, SEMOids.Biz2, SEMOids.biz2.Track })
 public class SEMTrackModule
@@ -16,7 +15,6 @@ public class SEMTrackModule
     @Override
     protected void preamble() {
         declareEntityPages(Issue.class, "issue");
-        declareEntityPages(IssueReply.class, "issueReply");
     }
 
 }

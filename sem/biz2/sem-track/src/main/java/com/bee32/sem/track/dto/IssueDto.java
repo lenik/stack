@@ -1,133 +1,100 @@
 package com.bee32.sem.track.dto;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.CopyUtils;
-import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
+import com.bee32.sem.mail.dto.MessageDto;
+import com.bee32.sem.mail.entity.Message;
 import com.bee32.sem.track.entity.Issue;
-import com.bee32.sem.track.entity.IssuePriority;
 import com.bee32.sem.track.entity.IssueState;
 
 public class IssueDto
-        extends MomentIntervalDto<Issue> {
+        extends MessageDto {
 
     private static final long serialVersionUID = 1L;
+
     public static final int ATTACHMENTS = 1;
-    public static final int REPLIES = 2;
-    public static final int OBSERVERS = 4;
+    public static final int OBSERVERS = 2;
 
-    IssueState state = IssueState.NEW;
-    IssuePriority priority = IssuePriority.normal;
-
-    String text = "";
-    String replay = "";
+    IssueState state;
+    int priority;
 
     String tags = "";
     String commitish;
 
     List<UserFileDto> attachments;
-    List<IssueReplyDto> replies;
     List<IssueObserverDto> observers;
+
     ChanceDto chance;
-    StockOrderDto order;
+    StockOrderDto stockOrder;
 
     boolean contentEditable = true;
 
     @Override
     protected void _copy() {
-        replies = CopyUtils.copyList(replies);
+        super._copy();
         observers = CopyUtils.copyList(observers);
     }
 
     @Override
-    protected void _marshal(Issue source) {
+    protected void _marshal(Message _source) {
+        super._marshal(_source);
+        Issue source = (Issue) _source;
+
         priority = source.getPriority();
-        text = source.getText();
-        replay = source.getReplay();
         tags = source.getTags();
         commitish = source.getCommitish();
-        if (source.getChance() != null)
-            chance = marshal(ChanceDto.class, 0, source.getChance());
-        if (source.getOrder() != null)
-            order = marshal(StockOrderDto.class, 0, source.getOrder());
+
         if (selection.contains(ATTACHMENTS))
             attachments = marshalList(UserFileDto.class, source.getAttachments());
         else
             attachments = Collections.emptyList();
 
-        if (selection.contains(REPLIES))
-            replies = marshalList(IssueReplyDto.class, source.getReplies());
-        else
-            replies = Collections.emptyList();
-
         if (selection.contains(OBSERVERS))
             observers = marshalList(IssueObserverDto.class, source.getObservers());
         else
-            observers = new ArrayList<IssueObserverDto>();
+            observers = Collections.emptyList();
 
+        if (source.getChance() != null)
+            chance = mref(ChanceDto.class, source.getChance());
+        if (source.getStockOrder() != null)
+            stockOrder = mref(StockOrderDto.class, source.getStockOrder());
     }
 
     @Override
-    protected void _unmarshalTo(Issue target) {
+    protected void _unmarshalTo(Message _target) {
+        super._unmarshalTo(_target);
+        Issue target = (Issue) _target;
+
         target.setPriority(priority);
-        target.setText(text);
-        target.setReplay(replay);
         target.setTags(tags);
         target.setCommitish(commitish);
-        mergeList(target, "attachments", attachments);
-        mergeList(target, "replies", replies);
-        mergeList(target, "observers", observers);
+
+        if (selection.contains(ATTACHMENTS))
+            mergeList(target, "attachments", attachments);
+        if (selection.contains(OBSERVERS))
+            mergeList(target, "observers", observers);
+
         merge(target, "chance", chance);
-        merge(target, "order", order);
+        merge(target, "order", stockOrder);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-    }
-
-    public void addReply(IssueReplyDto reply) {
-        replies.add(reply);
+        throw new NotImplementedException();
     }
 
     public String getStateName() {
         return state.getName();
-    }
-
-    public String getPriorityName() {
-        return priority.getName();
-    }
-
-    public int getPriorityOrder() {
-        return priority.getValue();
-    }
-
-    public void setPriorityOrder(int priorityOrder) {
-        priority = IssuePriority.forValue(priorityOrder);
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getReplay() {
-        return replay;
-    }
-
-    public void setReplay(String replay) {
-        this.replay = replay;
     }
 
     public String getTags() {
@@ -154,14 +121,6 @@ public class IssueDto
         this.attachments = attachments;
     }
 
-    public List<IssueReplyDto> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(List<IssueReplyDto> replies) {
-        this.replies = replies;
-    }
-
     public boolean isContentEditable() {
         return contentEditable;
     }
@@ -186,10 +145,10 @@ public class IssueDto
     }
 
     public String getOrderSubject() {
-        if (order == null)
+        if (stockOrder == null)
             return "无";
         else
-            return order.getSubject().getDisplayName();
+            return stockOrder.getSubject().getDisplayName();
     }
 
     public ChanceDto getChance() {
@@ -200,12 +159,12 @@ public class IssueDto
         this.chance = chance;
     }
 
-    public StockOrderDto getOrder() {
-        return order;
+    public StockOrderDto getStockOrder() {
+        return stockOrder;
     }
 
-    public void setOrder(StockOrderDto order) {
-        this.order = order;
+    public void setStockOrder(StockOrderDto stockOrder) {
+        this.stockOrder = stockOrder;
     }
 
 }

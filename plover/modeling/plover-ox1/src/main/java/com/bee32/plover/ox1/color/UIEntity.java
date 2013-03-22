@@ -24,8 +24,8 @@ public abstract class UIEntity<K extends Serializable>
     public static final int LABEL_LENGTH = 100;
     public static final int DESCRIPTION_LENGTH = 200;
 
-    protected String label;
-    protected String description;
+    protected String label = "";
+    protected String description = "";
 
     // IconRef
 

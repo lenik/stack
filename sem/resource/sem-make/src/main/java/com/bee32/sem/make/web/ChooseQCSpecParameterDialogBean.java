@@ -3,8 +3,6 @@ package com.bee32.sem.make.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.criteria.hibernate.Or;
-import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.make.dto.QCSpecParameterDto;
 import com.bee32.sem.make.entity.QCSpecParameter;
 import com.bee32.sem.make.util.BomCriteria;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,17 +12,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.mail.entity.Message;
 
 /**
  * 问题
@@ -31,31 +30,23 @@ import com.bee32.sem.inventory.entity.StockOrder;
  * -- 用 issue 而不用 topic, question，以突出这个问题是需要解决的具有任务性质的。
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "issue_seq", allocationSize = 1)
+@DiscriminatorValue("ISSU")
 public class Issue
-        extends MomentInterval {
+        extends Message {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int TEXT_LENGTH = 10000;
-    public static final int REPLAY_LENGTH = 500;
     public static final int COMMITISH_LENGTH = 32;
     public static final int TAGS_LENGTH = 100;
-
-    IssuePriority priority = IssuePriority.normal;
-
-    String text = "";
-    String replay = "";
 
     String tags = "";
     String commitish;
 
     List<UserFile> attachments = new ArrayList<UserFile>();
-    List<IssueReply> replies = new ArrayList<IssueReply>();
     List<IssueObserver> observers = new ArrayList<IssueObserver>();
 
     Chance chance;
-    StockOrder order;
+    StockOrder stockOrder;
 
     /**
      * 状态
@@ -74,54 +65,18 @@ public class Issue
         setState(state);
     }
 
-    @Transient
-    public IssuePriority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(IssuePriority priority) {
-        this.priority = priority;
-    }
-
-    @Column(name = "priority_order")
-    public int get_priority() {
-        return priority.getValue();
-    }
-
-    public void set_priority(int value) {
-        this.priority = IssuePriority.forValue(value);
-    }
-
     /**
      * 详细信息
      *
      * 详细描述当前存在的问题。
      */
-    @Column(length = TEXT_LENGTH)
-    public String getText() {
-        return text;
+    @Transient
+    public String getIssueText() {
+        return getText();
     }
 
-    public void setText(String text) {
-        if (text == null)
-            throw new NullPointerException("problem");
-        this.text = text;
-    }
-
-    /**
-     * 问题重现
-     *
-     * 描述使问题重现的具体的操作步骤。
-     */
-    @Column(length = REPLAY_LENGTH)
-    public String getReplay() {
-        return replay;
-    }
-
-    public void setReplay(String replay) {
-        if (replay == null)
-            throw new NullPointerException("replay");
-        this.replay = replay;
+    public void setIssueText(String issueText) {
+        setText(issueText);
     }
 
     /**
@@ -173,24 +128,6 @@ public class Issue
         this.attachments = attachments;
     }
 
-    /**
-     * 回复信息
-     *
-     * 对本问题的跟踪回复。
-     */
-    @OneToMany(mappedBy = "issue", orphanRemoval = true)
-    @Cascade({ CascadeType.DELETE, CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
-    @OrderBy("createdDate ASC")
-    public List<IssueReply> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(List<IssueReply> replies) {
-        if (replies == null)
-            throw new NullPointerException("replies");
-        this.replies = replies;
-    }
-
     @OneToMany(mappedBy = "issue", orphanRemoval = true)
     @Cascade({ CascadeType.DELETE, CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
     public List<IssueObserver> getObservers() {
@@ -211,12 +148,12 @@ public class Issue
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    public StockOrder getOrder() {
-        return order;
+    public StockOrder getStockOrder() {
+        return stockOrder;
     }
 
-    public void setOrder(StockOrder order) {
-        this.order = order;
+    public void setStockOrder(StockOrder stockOrder) {
+        this.stockOrder = stockOrder;
     }
 
 }

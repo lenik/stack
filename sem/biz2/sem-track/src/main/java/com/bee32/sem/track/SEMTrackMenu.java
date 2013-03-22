@@ -15,5 +15,8 @@ public class SEMTrackMenu
 
     public transient MenuNode TRACK = _frame_.SUPPORT;
 
-    MenuNode track = entry(TRACK, 10, "track", prefix.join("/track/"));
+    MenuNode my = entry(TRACK, 10, "my", prefix.join("/issue/my"));
+    MenuNode inbox = entry(TRACK, 20, "inbox", prefix.join("/issue/inbox"));
+    MenuNode archived = entry(TRACK, 30, "archived", prefix.join("/issue/archievd"));
+
 }

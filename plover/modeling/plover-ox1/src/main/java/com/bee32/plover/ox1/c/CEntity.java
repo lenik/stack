@@ -16,6 +16,9 @@ import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.util.zh.ZhUtil;
 
+/**
+ * Access controlled entity.
+ */
 @ModelTemplate
 @MappedSuperclass
 public abstract class CEntity<K extends Serializable>

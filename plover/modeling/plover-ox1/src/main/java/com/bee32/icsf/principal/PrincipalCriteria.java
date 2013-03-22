@@ -52,14 +52,15 @@ public class PrincipalCriteria
         return inImSet(propertyName, idSet);
     }
 
-    public static CriteriaElement inImSet(String propertyName, Collection<Integer> imSet) {
-        if (propertyName == null)
-            propertyName = "id";
+    public static CriteriaElement inImSet(String userPropertyName, Collection<Integer> imSet) {
+        String idPropertyName;
+        if (userPropertyName == null)
+            idPropertyName = "id";
         else
-            propertyName += ".id";
+            idPropertyName = userPropertyName + ".id";
         return or(//
-                isNull(propertyName), //
-                in(propertyName, imSet));
+                isNull(idPropertyName), //
+                in(idPropertyName, imSet));
     }
 
     public static CriteriaElement inInvSet(String propertyName, Principal principal) {
