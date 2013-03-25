@@ -11,80 +11,37 @@
 
     <ui:define name="content">
 
-        <div style="background-color:white;height:400px;overflow-y:auto;">
+        <div style="background-color:white;overflow-y:auto;">
 
             <h:form id="mainForm">
-
-                <p>
-                    <h:outputText value="选择销售机会:" />
-                    <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
-                    <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
-                </p>
-                <p>
-                    <h:outputText value="选择材料表文件:" />
-                    <input type="file" id="fileinput" />
-                    <div class="bubble">
-                        导出为csv文件前，excel格式要求：
-                        <table border="1px solid;">
-                            <tr>
-                                <td colspan="8" style="text-align:center;">某某材料表</td>
-                            </tr>
-                            <tr>
-                                <td>编号</td>
-                                <td>规格（mm）</td>
-                                <td>长度（mm）</td>
-                                <td>数量</td>
-                                <td>单重（kg）</td>
-                                <td>表面积（m²）</td>
-                                <td>材质</td>
-                                <td>备注</td>
-                            </tr>
-                            <tr>
-                                <td colspan="8" style="text-align:center;">材料表数据...</td>
-                            </tr>
-                            <tr>
-                                <td colspan="8" style="text-align:center;">材料表数据...</td>
-                            </tr>
-                        </table>
-                    </div>
-                </p>
-                <p:separator />
-
-                <t:div id="test">
-
-                    <p>
-                        <h:outputText value="构件" class="prompt" />
-                        <table id="component">
-                            <tbody></tbody>
-                        </table>
-                    </p>
-                    <p>
-                        <h:outputText value="零件" class="prompt" />
-                        <table id="part">
-                            <tbody></tbody>
-                        </table>
-                    </p>
-                    <p>
-                        <h:outputText value="原材料" class="prompt" />
-                        <table id="raw">
-                            <tbody></tbody>
-                        </table>
-                    </p>
+                <t:div id="choosetarget">
+                    <p:fieldset legend="STEP1:选择销售机会" toggleable="true" toggleSpeed="500">
+                        <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
+                        <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
+                    </p:fieldset>
                 </t:div>
 
-                <h:inputHidden id="part" value="${bean.partData}" />
-
-                <p:commandButton id="start_import" value="开始导入" actionListener="${bean.doImport}" />
-
-                <script>
-                    $(".prompt").hide();
-                    $("#mainForm\\:start_import").hide();
-                </script>
+                <t:div id="uploadView">
+                    <p:fieldset legend="STEP2:选择导入文件" toggleable="true" toggleSpeed="500" rendered="#{bean.target != null}">
+                        <h:outputText value="已上传文件：" rendered="#{bean.upload}" />
+                        <h:outputText value="#{bean.uploadedFileName}" rendered="#{bean.upload}" />
+                        <p:fileUpload fileUploadListener="#{bean.handleFileUpload}" mode="advanced"
+                            update=":mainForm:analysis, :mainForm:uploadView" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/" />
+                    </p:fieldset>
+                </t:div>
+                <t:div id="analysis">
+                    <p:fieldset legend="SETP3:分析文件" toggleable="true" toogleSpeed="500" rendered="#{bean.upload}">
+                        <p:commandButton value="开始分析" actionListener="#{bean.doAnalysis}" update=":mainForm:import" />
+                    </p:fieldset>
+                </t:div>
+                <t:div id="import">
+                    <p:fieldset legend="SETP4:导入数据" toggleable="true" toogleSpeed="500" rendered="#{bean.analysis}">
+                        <p:commandButton value="导入数据" actionListener="#{bean.doImport}" />
+                    </p:fieldset>
+                </t:div>
             </h:form>
-
-            <script type="text/javascript" src="./cus_analysis.js">
-            </script>
-            <sem:chooseChanceDialog id="chooseChanceDialog" target="${bean.target}" update=":mainForm:chance" />
+            <sem:chooseChanceDialog id="chooseChanceDialog" target="${bean.target}"
+                update=":mainForm:chance, :mainForm:uploadView" />
 
         </div>
     </ui:define>
