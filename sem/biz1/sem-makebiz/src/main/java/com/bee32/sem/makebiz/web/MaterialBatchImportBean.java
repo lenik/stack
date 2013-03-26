@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +21,6 @@ import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
 import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.material.entity.MaterialCategories;
-import com.bee32.sem.material.entity.MaterialCategory;
 import com.bee32.sem.world.thing.Units;
 
 public class MaterialBatchImportBean
@@ -78,110 +76,123 @@ public class MaterialBatchImportBean
         if (null != parts_toImport && parts_toImport.size() > 0)
             for (String partString : parts_toImport) {
                 int index = partString.indexOf("{");
-                String part = partString.substring(0, index);
+                String materialPattern = partString.substring(0, index);
 
-                String[] partItems = part.split(",");
+                String[] partItems = materialPattern.split(",");
                 String string = partItems[0];
-                Material m = cacheMaterial.get(string);
+                System.out.println("part level1 material " + string);
+                Material material = cacheMaterial.get(string);
+                if (null == material)
+                    System.out.println("mmmmmm is nulllllllll");
 
-                Part parent = new Part();
-                parent.setTarget(m);
-                parent.setCategory(category.component);
+                Part partLevel1 = new Part();
+                partLevel1.setTarget(material);
+                partLevel1.setCategory(category.component);
 
                 String children = partString.substring(index + 1);
                 String[] split = children.split("/");
 
-                List<PartItem> ch = new ArrayList<PartItem>();
+                List<PartItem> level1PartItems = new ArrayList<PartItem>();
                 for (String child : split) {
 
                     int cIndex = child.indexOf("{");
                     String cPart = child.substring(0, cIndex);
-                    String cchinred = child.substring(cIndex + 1);
+                    String cchildren = child.substring(cIndex + 1);
                     String[] strings = cPart.split(",");
                     String key = strings[0];
+                    System.out.println("part  level2 material" + key);
                     BigDecimal quantity = new BigDecimal(strings[1]);
 
-                    Part firstChild = new Part();
-                    firstChild.setTarget(cacheMaterial.get(key));
-                    MaterialCategory cate = category.rawMaterial;
-// switch (strings[2]) {
-// case "c":
-// cate = MaterialCategories.component;
-// case "p":
-// cate = MaterialCategories.part;
-// case "r":
-// cate = MaterialCategories.rawMaterial;
-// default:
-// cate = MaterialCategories.rawMaterial;
-// }
-                    firstChild.setCategory(cate);
+                    Part partLevel2 = new Part();
+                    partLevel2.setTarget(cacheMaterial.get(key));
+                    partLevel2.setCategory(category.rawMaterial);
 
-                    PartItem item = new PartItem();
-                    item.setPart(firstChild);
-                    item.setQuantity(quantity);
-                    item.setParent(parent);
+                    PartItem partItemLevel1 = new PartItem();
+                    partItemLevel1.setPart(partLevel2);
+                    partItemLevel1.setQuantity(quantity);
+                    partItemLevel1.setParent(partLevel1);
 
-                    parts.add(firstChild);
-
-                    ch.add(item);
-
-                    if (cchinred.indexOf(";") <= 0) {
-                        cchinred = cchinred.replace("}", "");
-                        String[] cSplit = cchinred.split(",");
+                    List<PartItem> level2PartItems = new ArrayList<PartItem>();
+// TODO
+                    if (cchildren.indexOf(";") <= 0) {
+                        cchildren = cchildren.replace("}", "");
+                        String[] cSplit = cchildren.split(",");
                         BigDecimal cquantity = new BigDecimal(cSplit[1]);
-
-                        PartItem cItem = new PartItem();
                         Material cMaterial = cacheMaterial.get(cSplit[0]);
-                        cItem.setMaterial(cMaterial);
-                        cItem.setQuantity(cquantity);
-                        cItem.setParent(firstChild);
+                        if (null == cMaterial)
+                            System.out.println("cmaterial ----------- null");
 
-                        firstChild.setChildren(Arrays.asList(cItem));
-                        parts.add(firstChild);
+                        PartItem partItemLevel2 = new PartItem();
+                        partItemLevel2.setMaterial(cMaterial);
+                        partItemLevel2.setQuantity(cquantity);
+                        partItemLevel2.setParent(partLevel2);
+
+                        level2PartItems.add(partItemLevel2);
                     } else {
-                        List<PartItem> ch2 = new ArrayList<PartItem>();
-                        String[] split2 = cchinred.split(";");
+                        String[] split2 = cchildren.split(";");
+
                         for (String s : split2) {
+
+                            System.out.println("-----------" + s);
                             int dIndex = s.indexOf("{");
                             String dPart = s.substring(0, dIndex);
                             String[] dSplit = dPart.split(",");
                             Material dMaterial = cacheMaterial.get(dSplit[0]);
+                            if (null == dMaterial)
+                                System.out.println("dMaterial ======== null");
                             BigDecimal dquantity = new BigDecimal(dSplit[1]);
 
-                            PartItem dItem1 = new PartItem();
-                            Part dPart_ = new Part();
-                            dPart_.setTarget(dMaterial);
-                            dPart_.setCategory(category.rawMaterial);
+                            Part partLevel3 = new Part();
+                            partLevel3.setTarget(dMaterial);
+                            partLevel3.setCategory(category.rawMaterial);
 
-                            dItem1.setQuantity(dquantity);
-                            dItem1.setParent(firstChild);
-
-                            PartItem dItem2 = new PartItem();
-                            // TODO
+                            System.out.println("PART LEVEL 3:::" + partLevel3.getTarget().getLabel());
                             String dchildren = s.substring(dIndex + 1);
                             dchildren = dchildren.replace("}", "");
 
                             String[] dcSplit = dchildren.split(",");
                             Material dcMaterial = cacheMaterial.get(dcSplit[0]);
-                            BigDecimal dcquantity = new BigDecimal(dcSplit[1]);
-                            dItem2.setQuantity(dcquantity);
-                            dItem2.setMaterial(dcMaterial);
-                            dItem2.setParent(dPart_);
-                            dPart_.setChildren(Arrays.asList(dItem2));
+                            if (null == dcMaterial)
+                                System.out.println("dcccMaterial ======== null");
 
-                            dItem1.setPart(dPart_);
-                            ch2.add(dItem1);
-                            parts.add(dPart_);
+                            PartItem partItemLevel3 = new PartItem();
+                            partItemLevel3.setQuantity(new BigDecimal(1));
+                            partItemLevel3.setParent(partLevel3);
+                            partItemLevel3.setMaterial(dcMaterial);
+
+                            List<PartItem> level3PartItems = new ArrayList<PartItem>();
+                            level3PartItems.add(partItemLevel3);
+                            partLevel3.setChildren(level3PartItems);
+
+                            PartItem partItemLevel2 = new PartItem();
+                            partItemLevel2.setPart(partLevel3);
+                            partItemLevel2.setQuantity(dquantity);
+                            partItemLevel2.setParent(partLevel2);
+
+                            level2PartItems.add(partItemLevel2);
+                            parts.add(0, partLevel3);
                         }
-                        firstChild.setChildren(ch2);
                     }
+
+                    partLevel2.setChildren(level2PartItems);
+                    parts.add(partLevel2);
+                    level1PartItems.add(partItemLevel1);
                 }
-                parent.setChildren(ch);
-                parts.add(parent);
+                partLevel1.setChildren(level1PartItems);
+                parts.add(partLevel1);
             }
 
+        int size = parts.get(7).getChildren().size();
+        System.out.println("children size::::::" + size);
         DATA(Material.class).saveAll(cacheMaterial.values());
-        DATA(Part.class).saveAll(parts);
+
+        int coun = 0;
+        for (Part p : parts) {
+            System.out.println(p);
+            System.out.println(">>>>>>>>>>>>>>>>" + coun++);
+            DATA(Part.class).save(p);
+        }
+
         uiLogger.info("导入物料成功");
     }
 
@@ -248,12 +259,12 @@ public class MaterialBatchImportBean
         materials_toImport = materials;
         parts_toImport = parts;
 
-        for (String s : materials_toImport) {
-            System.out.println(s);
-        }
-        for (String s : parts_toImport) {
-            System.out.println(s);
-        }
+// for (String s : materials_toImport) {
+// System.out.println(s);
+// }
+// for (String s : parts_toImport) {
+// System.out.println(s);
+// }
     }
 
     public void handleFileUpload(FileUploadEvent event)
@@ -319,7 +330,9 @@ public class MaterialBatchImportBean
             break;
         case "BOX":
             items = partModule.split("\\*");
-            materialAssemblerBox(prefix, type, str);
+            List<String> box = materialAssemblerBox(prefix, type, str);
+
+            materials.addAll(box);
             materials.add(materialAssemblerPL(str[7], type, items[2]));
             materials.add(materialAssemblerPL(str[7], type, items[3]));
 
@@ -339,9 +352,10 @@ public class MaterialBatchImportBean
                 m = partModule.split("#")[0];
             else
                 m = partModule;
-            materialString = str[7] + type + "," + m + "号,k";
+            m = m + "号";
+            materialString = str[7] + type + "," + m + ",k";
             materials.add(materialString);
-            part = partAssemblerComm(prefix, type, partModule, str);
+            part = partAssemblerComm(prefix, type, m, str);
             break;
         case "CC":
             type = "C型钢";
@@ -500,6 +514,7 @@ public class MaterialBatchImportBean
         }
         result.add(flangeLabel + "," + flangeModule + ",g");
         result.add(webLabel + "," + webModule + ",g");
+        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
 
         return result;
     }
@@ -512,8 +527,9 @@ public class MaterialBatchImportBean
         int i = Integer.parseInt(split[0]);
         int j = Integer.parseInt(split[3]);
         int k = i - j * 2;
-        result.add(prefix + "-" + strings[0] + "-腹版" + "," + split[2] + "*" + k + ",k");
-        result.add(prefix + "-" + strings[0] + "-翼缘" + "," + split[3] + "*" + split[1] + ",k");
+        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
+        result.add(prefix + "-" + strings[0] + "-腹版,PL" + split[2] + "*" + k + ",k");
+        result.add(prefix + "-" + strings[0] + "-翼缘,PL" + split[3] + "*" + split[1] + ",k");
         result.add(materialAssemblerPL(strings[7], type, split[2]));
         result.add(materialAssemblerPL(strings[7], type, split[3]));
         return result;
