@@ -94,7 +94,7 @@ public class MaterialBatchImportBean
             if (null == m) {
                 materialService.save(mate);
                 countMaterial_save++;
-            } else{
+            } else {
                 cacheMaterial.put(label + module, m);
                 countMaterial_exsit++;
             }
@@ -224,6 +224,7 @@ public class MaterialBatchImportBean
         int ccccc = 0;
         int countPart_save = 0;
         int countPart_exsit = 0;
+//        partService.saveAll(parts);
         for (Part part : parts) {
             System.out.println(">>>>>>>>>>>" + ccccc++);
 
@@ -590,7 +591,7 @@ public class MaterialBatchImportBean
         }
         result.add(flangeLabel + "," + flangeModule + ",g");
         result.add(webLabel + "," + webModule + ",g");
-        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
+//        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
 
         return result;
     }
@@ -603,7 +604,7 @@ public class MaterialBatchImportBean
         int i = Integer.parseInt(split[0]);
         int j = Integer.parseInt(split[3]);
         int k = i - j * 2;
-        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
+//        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
         result.add(prefix + "-" + strings[0] + "-腹版,PL" + split[2] + "*" + k + ",k");
         result.add(prefix + "-" + strings[0] + "-翼缘,PL" + split[3] + "*" + split[1] + ",k");
         result.add(materialAssemblerPL(strings[7], type, split[2]));
