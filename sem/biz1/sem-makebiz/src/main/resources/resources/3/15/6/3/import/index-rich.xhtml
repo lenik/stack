@@ -30,13 +30,44 @@
                     </p:fieldset>
                 </t:div>
                 <t:div id="analysis">
-                    <p:fieldset legend="SETP3:分析文件" toggleable="true" toogleSpeed="500" rendered="#{bean.upload}">
-                        <p:commandButton value="开始分析" actionListener="#{bean.doAnalysis}" update=":mainForm:import" />
+                    <p:fieldset legend="SETP3:解析文件" toggleable="true" toogleSpeed="500" rendered="#{bean.upload}">
+                        <p:commandButton value="开始解析" actionListener="#{bean.doAnalysis}"
+                            update=":mainForm:import, :mainForm:analysis" rendered="#{!bean.analysis}" />
+                        <t:panelGrid columns="2" rendered="#{bean.analysis}">
+                            <h:outputText value="解析得：" />
+                            <h:outputText value="" />
+
+                            <h:outputText value="物料 :" />
+                            <h:outputText value="#{bean.materialSize}" />
+
+                            <h:outputText value="构件 :" />
+                            <h:outputText value="#{bean.compSize}" />
+
+                            <h:outputText value="零件 :" />
+                            <h:outputText value="#{bean.partSize}" />
+                        </t:panelGrid>
                     </p:fieldset>
                 </t:div>
                 <t:div id="import">
                     <p:fieldset legend="SETP4:导入数据" toggleable="true" toogleSpeed="500" rendered="#{bean.analysis}">
-                        <p:commandButton value="导入数据" actionListener="#{bean.doImport}" />
+                        <p:commandButton value="导入数据" actionListener="#{bean.doImport}" update=":mainForm:import"
+                            rendered="#{!bean.imported}" />
+                        <t:panelGrid columns="2" rendered="#{bean.imported}">
+                            <h:outputText value="导入结果：" />
+                            <h:outputText value="" />
+
+                            <h:outputText value="导入物料：" />
+                            <h:outputText value="#{bean.saveMaterialCount}" />
+
+                            <h:outputText value="重复物料：" />
+                            <h:outputText value="#{bean.existMaterialCount}(未导入)" />
+
+                            <h:outputText value="导入BOM：" />
+                            <h:outputText value="#{bean.savePartCount}" />
+
+                            <h:outputText value="导入BOM：" />
+                            <h:outputText value="#{bean.existPartCount}(未导入)" />
+                        </t:panelGrid>
                     </p:fieldset>
                 </t:div>
             </h:form>
