@@ -58,7 +58,8 @@ public class PartAdminBean
         return new MaterialCategoryTreeModel(//
                 MaterialCriteria.categoryType(//
                         MaterialType.PRODUCT, //
-                        MaterialType.SEMI));
+                        MaterialType.SEMI,//
+                        MaterialType.RAW));
     }
 
     @Override
