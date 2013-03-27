@@ -95,7 +95,7 @@
                     </t:panelGrid>
 
                     <h:outputText value="物料名称:" />
-                    <p:inputText value="#{obj.label}" style="width:40em;" label="物料名称" />
+                    <p:inputText value="#{obj.label}" style="width:30em;" label="物料名称" />
 
                     <h:outputText value="主单位:" styleClass="e-link" onclick="#{obj.unit.clickAction}" />
                     <t:panelGrid columns="4">
@@ -109,18 +109,21 @@
                                 onclick="addUnitDialog.show()" />
                         </t:panelGrid>
                         <h:outputText value="单位提示:" />
-                        <p:inputText value="#{obj.unitHint}" label="单位提示" />
+                        <p:inputText value="#{obj.unitHint}" style="width:10em;" label="单位提示" />
                         <h:outputText value="(重量,长度等)" />
                     </t:panelGrid>
 
+                    <h:outputText value="物料编码:" />
+                    <p:inputText value="#{obj.serial}" style="width:30em;" label="物料编码" />
+
                     <h:outputText value="条形码:" />
-                    <p:inputText value="#{obj.barCode}" label="条形码" />
+                    <p:inputText value="#{obj.barCode}" style="width:30em;" label="条形码" />
 
                     <h:outputText value="规格型号:" />
-                    <p:inputText value="#{obj.modelSpec}" style="width:40em;" label="规格型号" />
+                    <p:inputText value="#{obj.modelSpec}" style="width:30em;" label="规格型号" />
 
                     <h:outputText value="备注:" />
-                    <p:inputText value="#{obj.description}" style="width:40em;" label="备注" />
+                    <p:inputText value="#{obj.description}" style="width:30em;" label="备注" />
                 </t:panelGrid>
             </p:tab>
             <p:tab title="公共" disabled="true">
