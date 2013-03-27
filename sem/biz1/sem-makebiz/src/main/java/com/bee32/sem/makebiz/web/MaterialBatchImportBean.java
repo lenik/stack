@@ -94,11 +94,14 @@ public class MaterialBatchImportBean
             if (null == m) {
                 materialService.save(mate);
                 countMaterial_save++;
-            } else
+            } else{
                 cacheMaterial.put(label + module, m);
-            countMaterial_exsit++;
+                countMaterial_exsit++;
+            }
         }
 
+        saveMaterialCount = countMaterial_save;
+        existMaterialCount = countMaterial_exsit;
         uiLogger.info(countMaterial_exsit + "个物料已存在 <未导入>");
         uiLogger.info("本次导入" + countMaterial_save + "个物料");
 
@@ -218,22 +221,18 @@ public class MaterialBatchImportBean
                 parts.add(partLevel1);
             }
 
-        IEntityAccessService<Part, Integer> partService = DATA(Part.class);
         int ccccc = 0;
         int countPart_save = 0;
         int countPart_exsit = 0;
-//        partService.saveAll(parts);
         for (Part part : parts) {
             System.out.println(">>>>>>>>>>>" + ccccc++);
 
             Material material = part.getTarget();
             String label = material.getLabel();
             String module = material.getModelSpec();
-            System.out.println(label);
-            System.out.println(module);
-            Part p = partService.getUnique(MakebizCriteria.existingPartCheck(label, module));
+            Part p = DATA(Part.class).getUnique(MakebizCriteria.existingPartCheck(label, module));
             if (null == p) {
-                partService.saveOrUpdate(part);
+                DATA(Part.class).saveOrUpdate(part);
                 countPart_save++;
             } else
                 countPart_exsit++;
