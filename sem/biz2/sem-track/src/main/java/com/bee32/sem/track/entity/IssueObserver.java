@@ -1,14 +1,16 @@
 package com.bee32.sem.track.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
@@ -24,7 +26,7 @@ public class IssueObserver
     private static final long serialVersionUID = 1L;
 
     Issue issue;
-    User user;
+    Principal observer;
     boolean manager;
     boolean fav;
 
@@ -33,8 +35,8 @@ public class IssueObserver
      *
      * 相关的问题。
      */
+    @NaturalId
     @ManyToOne(optional = false)
-    @Cascade(CascadeType.REFRESH)
     public Issue getIssue() {
         return issue;
     }
@@ -50,19 +52,20 @@ public class IssueObserver
      *
      * 对问题感兴趣的用户。
      */
+    @NaturalId
     @ManyToOne(optional = false)
-    public User getUser() {
-        return user;
+    public Principal getObserver() {
+        return observer;
     }
 
-    public void setUser(User user) {
-        if (user == null)
-            throw new NullPointerException("user");
-        this.user = user;
+    public void setObserver(Principal observer) {
+        if (observer == null)
+            throw new NullPointerException("observer");
+        this.observer = observer;
     }
 
     /**
-     * 管理员状态
+     * 管理标志
      *
      * 用户是否对问题有管理权。
      */
@@ -75,12 +78,25 @@ public class IssueObserver
         this.manager = manager;
     }
 
+    /**
+     * 收藏标志
+     *
+     * 用户是否收藏了该问题。
+     */
+    @Column(nullable = false)
     public boolean isFav() {
         return fav;
     }
 
     public void setFav(boolean fav) {
         this.fav = fav;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        return new IdComposite(//
+                naturalId(issue), //
+                naturalId(observer));
     }
 
 }

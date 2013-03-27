@@ -22,7 +22,6 @@ import overlay.Overlay;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.bean.ReflectLocks;
 import com.bee32.plover.arch.util.ICopyable;
-import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.Conjunction;
@@ -441,7 +440,7 @@ public abstract class Entity<K extends Serializable>
      *
      * @return 返回 <code>true</code>或 <code>false</code> 表示自然键等价或不等价。返回<code>null</code>
      *         表示无法判定是否自然键等价。
-     * @see IdComposite
+     * @see com.bee32.plover.arch.util.IdComposite
      */
     protected Serializable naturalId() {
         if (altId != null)
