@@ -11,7 +11,7 @@ public class SEMPurchaseMenu
     static Location __ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
     SEMMakebizMenu _makebiz_ = require(SEMMakebizMenu.class);
 
-    public transient MenuNode PURCHASE = _makebiz_.MAKEBIZ;
+    public transient MenuNode PURCHASE = _makebiz_.PURCHASE;
 
     MenuNode purchaseRequest = entry(PURCHASE, 30, "purchaseRequest", __.join("request/"));
     MenuNode purchaseRequestItem = entry(PURCHASE, 40, "purchaseRequestItem", __.join("request-item/"));

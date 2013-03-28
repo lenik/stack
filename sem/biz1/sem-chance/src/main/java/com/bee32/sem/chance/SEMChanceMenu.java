@@ -19,12 +19,9 @@ public class SEMChanceMenu
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
     static Location prefix = WEB_APP.join(SEMChanceModule.PREFIX_);
 
-    public transient MenuNode CHANCE = _frame_.BIZ1;
+    public MenuNode SALEMGMT = menu(_frame_.MAIN, 350, "SALEMGMT");
 
-    MenuNode chance = entry(CHANCE, 30, "chance", prefix.join("chance/"));
-    MenuNode action = entry(CHANCE, 31, "action", prefix.join("action/"));
-
-    public MenuNode CHANCE_DICT = menu(CHANCE, 32, "CHANCE_DICT");
+    public MenuNode CHANCE_DICT = menu(SALEMGMT, 1, "CHANCE_DICT");
     /*    */MenuNode category = entry(CHANCE_DICT, 1, "category",
             simpleDictIndex("机会分类", ChanceCategory.class));
     /*    */MenuNode sourceType = entry(CHANCE_DICT, 2, "sourceType",
@@ -38,7 +35,9 @@ public class SEMChanceMenu
     /*    */MenuNode stage = entry(CHANCE_DICT, 6, "stage",
             customDictIndex(prefix.join("stage/"), "机会阶段", ChanceStage.class));
 
-    public MenuNode PRICE = menu(CHANCE, 32, "PRICE");
+    MenuNode chance = entry(SALEMGMT, 10, "chance", prefix.join("chance/"));
+    MenuNode action = entry(SALEMGMT, 11, "action", prefix.join("action/"));
+
 
     // MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/ "));
 

@@ -22,11 +22,10 @@ public class SEMPeopleMenu
 
     public transient MenuNode PARENT = _frame_.BIZ1;
 
-    MenuNode personAdmin = entry(PARENT, 10, "personAdmin", prefix.join("person/"));
-    MenuNode orgAdmin = entry(PARENT, 11, "orgAdmin", prefix.join("org/"));
-    MenuNode orgPersonAdmin = entry(PARENT, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
 
-    public MenuNode SETTINGS = menu(PARENT, 12, "SETTINGS");
+
+
+    public MenuNode SETTINGS = menu(PARENT, 10, "SETTINGS");
     /**/MenuNode partyTag = entry(SETTINGS, 1, "partyTag", simpleDictIndex("涉众分类标签", PartyTagname.class));
     /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", simpleDictIndex("涉众身份类型", PartySidType.class));
     /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", simpleDictIndex("组织机构类型", OrgType.class));
@@ -34,6 +33,10 @@ public class SEMPeopleMenu
             simpleDictIndex("联系信息分组", ContactCategory.class));
     /**/MenuNode partyRecordCategory = mode(X_RECORDS) ? entry(SETTINGS, 5, "partyRecordCategory",
             simpleDictIndex("社会档案记录分类", PartyRecordCategory.class)) : null;
+
+    MenuNode orgPersonAdmin = entry(PARENT, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
+    MenuNode personAdmin = entry(PARENT, 30, "personAdmin", prefix.join("person/"));
+    MenuNode orgAdmin = entry(PARENT, 40, "orgAdmin", prefix.join("org/"));
 
     public MenuNode EMPLOYEE = menu(_frame_.HR, 25, "EMPLOYEE");
     /**/MenuNode employeeAdmin = entry(EMPLOYEE, 1, "employeeAdmin", prefix.join("employee/"));
