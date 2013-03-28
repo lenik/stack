@@ -1,10 +1,11 @@
 package com.bee32.sem.track.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -30,20 +35,26 @@ import com.bee32.sem.mail.entity.Message;
  * -- 用 issue 而不用 topic, question，以突出这个问题是需要解决的具有任务性质的。
  */
 @Entity
-@DiscriminatorValue("ISSU")
+@Pink
+@SequenceGenerator(name = "idgen", sequenceName = "issue_seq", allocationSize = 1)
 public class Issue
-        extends Message {
+        extends Message<Issue> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int COMMITISH_LENGTH = 32;
     public static final int TAGS_LENGTH = 100;
 
+    Date dueDate;
+    Date endDate;
+
     String tags = "";
     String commitish;
 
     List<UserFile> attachments = new ArrayList<UserFile>();
     List<IssueObserver> observers = new ArrayList<IssueObserver>();
+    List<IssueCcGroup> ccGroups = new ArrayList<IssueCcGroup>();
+    List<IssueReply> replies = new ArrayList<IssueReply>();
 
     Chance chance;
     StockOrder stockOrder;
@@ -65,18 +76,24 @@ public class Issue
         setState(state);
     }
 
-    /**
-     * 详细信息
-     *
-     * 详细描述当前存在的问题。
-     */
-    @Transient
-    public String getIssueText() {
-        return getText();
+    @Temporal(TemporalType.DATE)
+    @Basic(optional = true)
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setIssueText(String issueText) {
-        setText(issueText);
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @Basic(optional = true)
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     /**
@@ -129,13 +146,39 @@ public class Issue
     }
 
     @OneToMany(mappedBy = "issue", orphanRemoval = true)
-    @Cascade({ CascadeType.DELETE, CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
+    @Cascade(CascadeType.ALL)
     public List<IssueObserver> getObservers() {
         return observers;
     }
 
     public void setObservers(List<IssueObserver> observers) {
+        if (observers == null)
+            throw new NullPointerException("observers");
         this.observers = observers;
+    }
+
+    @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<IssueCcGroup> getCcGroups() {
+        return ccGroups;
+    }
+
+    public void setCcGroups(List<IssueCcGroup> ccGroups) {
+        if (ccGroups == null)
+            throw new NullPointerException("ccGroups");
+        this.ccGroups = ccGroups;
+    }
+
+    @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<IssueReply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<IssueReply> replies) {
+        if (replies == null)
+            throw new NullPointerException("replies");
+        this.replies = replies;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

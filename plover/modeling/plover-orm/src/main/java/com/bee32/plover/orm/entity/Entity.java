@@ -234,6 +234,7 @@ public abstract class Entity<K extends Serializable>
 
     @DefaultValue("0")
     @Column(nullable = false)
+    // @Transient
     public/* final */int getState() {
         return state;
     }

@@ -39,9 +39,9 @@
                             <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/task-50.png" />
                         </td>
                         <td>
-                            <p:inplace emptyLabel="没有设置问题名称" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
-                                <p:inputText id="name" label="名称" value="${oo.name}" style="font-size: x-large; width: 100%" />
-                                <p:watermark for="name" value="输入问题的简短名称" />
+                            <p:inplace emptyLabel="没有设置问题标题" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
+                                <p:inputText id="subject" label="标题" value="${oo.subject}" style="font-size: x-large; width: 100%" />
+                                <p:watermark for="subject" value="输入问题的标题" />
                             </p:inplace>
                         </td>
                     </tr>
@@ -82,9 +82,9 @@
                 </table>
 
                 <p:separator />
-                <p:inplace emptyLabel="此问题没有描述。" editor="true" toggleable="${_toggleable}">
-                    <p:inputTextarea id="description" label="描述" value="${oo.description}" style="width: 100%;" />
-                    <p:watermark for="description" value="输入问题的描述信息" />
+                <p:inplace emptyLabel="此问题没有内容。" editor="true" toggleable="${_toggleable}">
+                    <p:inputTextarea id="text" label="内容" value="${oo.text}" style="width: 100%;" />
+                    <p:watermark for="text" value="输入问题的内容" />
                 </p:inplace>
 
                 <p:separator />
@@ -110,51 +110,32 @@
                             actionListener="${bean.assignToMe}" update="${_contentUpdate}" />
                     </p:inplace>
                 </h:panelGrid>
-
-                <ui:fragment rendered="${completable != false}">
-                    <p:separator />
-                    <h3>动作</h3>
-                    <table border="0" width="100%">
-                        <tr>
-                            <td align="left">
-                                <p:commandButton id="completeButton" value="完成/提交" styleClass="locker-bypass"
-                                    rendered="${ (completable != null ? completable : true) and not bean.creating}"
-                                    actionListener="${bean.complete}" onclick="waitbox.show()"
-                                    oncomplete="waitbox.hide(); editdlg.hideValidated(args)" update="${_indexUpdate} ${mirrorTargets}">
-                                    <f:attribute name="locking" value="never" />
-                                </p:commandButton>
-                            </td>
-                        </tr>
-                    </table>
-                </ui:fragment>
             </p:tab>
 
             <p:tab title="相关内容">
                 <div style="max-height: 30em; overflow-y: auto">
                     <h3>参考链接</h3>
                     <table border="0" style="width: 100%">
-                        <ui:repeat value="${bean.attachments}" var="a">
-                            <ui:fragment rendered="${a.url != null}">
-                                <tr>
-                                    <td width="20">
-                                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_world.png" />
-                                    </td>
-                                    <td>
-                                        <a href="${a.url}" target="_blank">${a.name}</a>
-                                    </td>
-                                    <td width="30">
-                                        <p:commandLink id="deleteURL" title="删除此链接" rendered="${editable != false}"
-                                            icon="ui-icon-close" actionListener="${bean.removeAttachment(a.id, '链接')}"
-                                            update="@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
-                                            <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
-                                        </p:commandLink>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan="2" style="color: gray">${a.description}</td>
-                                </tr>
-                            </ui:fragment>
+                        <ui:repeat value="${oo.hrefs}" var="a">
+                            <tr>
+                                <td width="20">
+                                    <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_world.png" />
+                                </td>
+                                <td>
+                                    <a href="${a.url}" target="_blank">${a.label}</a>
+                                </td>
+                                <td width="30">
+                                    <p:commandLink id="deleteURL" title="删除此链接" rendered="${editable != false}"
+                                        icon="ui-icon-close" actionListener="${bean.removeHref(a.id)}" update="@form"
+                                        onclick="waitbox.show()" oncomplete="waitbox.hide()">
+                                        <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                                    </p:commandLink>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2" style="color: gray">${a.description}</td>
+                            </tr>
                         </ui:repeat>
                     </table>
 
@@ -169,35 +150,33 @@
                     <p:separator />
                     <h3>附件</h3>
                     <table border="0" style="width: 100%">
-                        <ui:repeat value="${bean.attachments}" var="a">
-                            <ui:fragment rendered="${a.url == null}">
-                                <tr>
-                                    <td width="20">
-                                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_get.png"
-                                            style="display: none" />
-                                        <img src="${location.ICON}/etool16/save_edit.gif" />
-                                    </td>
-                                    <td>
-                                        <p:commandLink id="downloadLink" value="${a.name}" ajax="false"
-                                            styleClass="locker-bypass">
-                                            <f:attribute name="locking" value="never" />
-                                            <p:fileDownload value="${bean.downloadFile(a)}"
-                                                contentDisposition="${bean.contentDisposition(a)}" />
-                                        </p:commandLink>
-                                    </td>
-                                    <td width="30">
-                                        <p:commandLink id="deleteFile" title="删除此附件" rendered="${editable != false}"
-                                            icon="ui-icon-close" actionListener="${bean.removeAttachment(a.id, '附件')}"
-                                            update="@form" onclick="waitbox.show()" oncomplete="waitbox.hide()">
-                                            <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
-                                        </p:commandLink>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan="2" style="color: gray">${a.description}</td>
-                                </tr>
-                            </ui:fragment>
+                        <ui:repeat value="${oo.attachments}" var="a">
+                            <tr>
+                                <td width="20">
+                                    <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_get.png"
+                                        style="display: none" />
+                                    <img src="${location.ICON}/etool16/save_edit.gif" />
+                                </td>
+                                <td>
+                                    <p:commandLink id="downloadLink" value="${a.label}" ajax="false"
+                                        styleClass="locker-bypass">
+                                        <f:attribute name="locking" value="never" />
+                                        <p:fileDownload value="${bean.downloadFile(a)}"
+                                            contentDisposition="${bean.contentDisposition(a)}" />
+                                    </p:commandLink>
+                                </td>
+                                <td width="30">
+                                    <p:commandLink id="deleteFile" title="删除此附件" rendered="${editable != false}"
+                                        icon="ui-icon-close" actionListener="${bean.removeAttachment(a.id)}" update="@form"
+                                        onclick="waitbox.show()" oncomplete="waitbox.hide()">
+                                        <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                                    </p:commandLink>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2" style="color: gray">${a.description}</td>
+                            </tr>
                         </ui:repeat>
                     </table>
 
@@ -217,19 +196,18 @@
                     <div>
                         <b>${bean.loggedInUserDisplayName}</b>
                         说：
-                        <p:inputText id="comment" label="评论内容" value="${bean.commentText}" size="40">
+                        <p:inputText id="replyText" label="评论内容" value="${bean.replyText}" size="40">
                             <f:attribute name="locking" value="never" />
                         </p:inputText>
-                        <p:watermark for="comment" value="输入评论内容" />
-                        <p:commandButton id="addCommentButton" value="发送" styleClass="locker-bypass"
-                            onclick="waitbox.show()" oncomplete="waitbox.hide()" actionListener="${bean.addComment}"
-                            update="@form">
+                        <p:watermark for="replyText" value="输入评论内容" />
+                        <p:commandButton id="replyButton" value="发送" styleClass="locker-bypass" onclick="waitbox.show()"
+                            oncomplete="waitbox.hide()" actionListener="${bean.addReplyText}" update="@form">
                             <f:attribute name="locking" value="never" />
                         </p:commandButton>
                     </div>
                 </ui:fragment>
                 <table width="100%" border="0">
-                    <ui:repeat var="c" value="${bean.comments}">
+                    <ui:repeat var="c" value="${oo.replies}">
                         <tr>
                             <td colspan="2">
                                 <p:separator />
@@ -241,12 +219,12 @@
                             </td>
                             <td>
                                 <div>
-                                    <b>${c.userId}</b>
+                                    <b>${c.owner.displayName}</b>
                                     说：
-                                    ${c.message}
+                                    ${c.text}
                                 </div>
                                 <div style="color: gray; font-style: italic">
-                                    ${bean.relativeDateTo(c.time)}
+                                    ${bean.relativeDateTo(c.createdDate)}
                                 </div>
                             </td>
                         </tr>
@@ -254,47 +232,12 @@
                 </table>
             </p:tab>
 
-            <p:tab title="事件" rendered="${bean.events != null}">
-                <div style="max-height: 25em; overflow-y: auto">
-                    <table width="100%" border="0">
-                        <ui:repeat var="e" value="${bean.events}">
-                            <ui:fragment rendered="${e.action != 'AddComment'}">
-                                <tr>
-                                    <td colspan="2">
-                                        <p:separator />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="40">
-                                        <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/user-32.png" />
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <b>${e.userId}</b>
-                                            ${e.action}: ${e.message}
-                                        </div>
-                                        <div style="color: gray; font-style: italic">
-                                            ${bean.relativeDateTo(e.time)}
-                                        </div>
-                                    </td>
-                                </tr>
-                            </ui:fragment>
-                        </ui:repeat>
-                    </table>
-                </div>
-            </p:tab>
-
-            <p:tab title="参数">
-                此问题未定义任何参数。
-            </p:tab>
         </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
         <ui:insert name="dialogs.taskTemplate" />
 
-        <icsf:choosePrincipalDialog id="chooseOwnerDialog" var="chooseOwnerDialog" header="选择被转让问题的用户"
-            stereo="U" target="${bean.newOwner}" update=":editDialog:form" />
         <icsf:choosePrincipalDialog id="chooseAssigneeDialog" var="chooseAssigneeDialog"
             header="选择问题的执行者" stereo="U" target="${bean.newAssignee}" update=":editDialog:form" />
 

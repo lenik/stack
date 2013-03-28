@@ -11,38 +11,39 @@ import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.mail.entity.Message;
 
-public class MessageDto
-        extends UIEntityDto<Message, Long> {
+public class MessageDto<E extends Message<E>, self_t extends MessageDto<E, self_t>>
+        extends UIEntityDto<E, Long> {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int FOLLOWS = 1;
+    public static final int FOLLOWS = 0x00800000;
 
     int priority;
     String text;
-    MessageDto prev;
-    List<MessageDto> follows;
+    self_t prev;
+    List<self_t> follows;
 
     @Override
     protected void _copy() {
         follows = CopyUtils.copyList(follows);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected void _marshal(Message source) {
+    protected void _marshal(E source) {
         priority = source.getPriority();
         text = source.getText();
 
-        prev = mref(MessageDto.class, source.getPrev());
+        prev = (self_t) mref(getClass(), selection.bits, source.getPrev());
 
         if (selection.contains(FOLLOWS))
-            follows = mrefList(MessageDto.class, source.getFollows());
+            follows = mrefList(getClass(), selection.bits, source.getFollows());
         else
             follows = Collections.emptyList();
     }
 
     @Override
-    protected void _unmarshalTo(Message target) {
+    protected void _unmarshalTo(E target) {
         target.setPriority(priority);
         target.setText(text);
 
@@ -75,19 +76,19 @@ public class MessageDto
         this.text = text;
     }
 
-    public MessageDto getPrev() {
+    public self_t getPrev() {
         return prev;
     }
 
-    public void setPrev(MessageDto prev) {
+    public void setPrev(self_t prev) {
         this.prev = prev;
     }
 
-    public List<MessageDto> getFollows() {
+    public List<self_t> getFollows() {
         return follows;
     }
 
-    public void setFollows(List<MessageDto> follows) {
+    public void setFollows(List<self_t> follows) {
         this.follows = follows;
     }
 

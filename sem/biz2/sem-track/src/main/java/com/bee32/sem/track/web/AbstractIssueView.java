@@ -30,4 +30,14 @@ public abstract class AbstractIssueView
         return humanTime;
     }
 
+    private String replyText;
+
+    public String getReplyText() {
+        return replyText;
+    }
+
+    public void setReplyText(String replyText) {
+        this.replyText = replyText;
+    }
+
 }

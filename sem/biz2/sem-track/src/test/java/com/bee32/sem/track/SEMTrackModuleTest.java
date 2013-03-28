@@ -10,11 +10,6 @@ public class SEMTrackModuleTest
         extends SEMTestCase {
 
     @Override
-    protected boolean isDebugMode() {
-        return super.isDebugMode();
-    }
-
-    @Override
     protected int getRefreshPeriod() {
         return 10;
     }
@@ -23,4 +18,5 @@ public class SEMTrackModuleTest
             throws IOException {
         new SEMTrackModuleTest().browseAndWait(SEMTrackModule.PREFIX_ + "issue/");
     }
+
 }
