@@ -15,17 +15,12 @@ public class SEMTrackModuleTest
     }
 
     @Override
-    protected String getLoggedInUser() {
-        return "admin";
-    }
-
-    @Override
     protected int getRefreshPeriod() {
         return 10;
     }
 
     public static void main(String[] args)
             throws IOException {
-        new SEMTrackModuleTest().browseAndWait(SEMTrackModule.PREFIX_ + "track/");
+        new SEMTrackModuleTest().browseAndWait(SEMTrackModule.PREFIX_ + "issue/");
     }
 }

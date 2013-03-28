@@ -8,8 +8,11 @@
     <ui:param name="_toggleable" value="${editable != false and bean.editing}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="标题" sortBy="${entry.description}">
-            <h:outputText value="${entry.description}" />
+        <p:column headerText="优先级" sortBy="${entry.priority}">
+            <h:outputText value="${entry.priority}" />
+        </p:column>
+        <p:column headerText="标题" sortBy="${entry.subject}">
+            <h:outputText value="${entry.subject}" />
         </p:column>
         <p:column headerText="到期时间" sortBy="${entry.dueDate}">
             <h:outputText value="${entry.dueDate}" />
@@ -17,6 +20,14 @@
         <p:column headerText="结束时间" sortBy="${entry.endTime}">
             <h:outputText value="${entry.endTime}" />
         </p:column>
+        <ui:remove>
+            <p:column headerText="内容" sortBy="${entry.text}">
+                <h:outputText value="${entry.text}" />
+            </p:column>
+            <p:column headerText="标签" sortBy="${entry.tags}">
+                <h:outputText value="${entry.tags}" />
+            </p:column>
+        </ui:remove>
     </ui:define>
 
     <ui:define name="editDialogContent">

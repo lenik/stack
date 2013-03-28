@@ -1,4 +1,4 @@
-package com.bee32.sem.track.random;
+package user.ztf;
 
 import javassist.ClassPool;
 

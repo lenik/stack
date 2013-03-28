@@ -26,11 +26,13 @@
             <groupId>com.bee32.sem</groupId>
             <artifactId>sem-chance</artifactId>
             <version>0.3.2-SNAPSHOT</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.bee32.sem</groupId>
             <artifactId>sem-makebiz</artifactId>
             <version>0.3.2-SNAPSHOT</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
     <name>SEM :: Biz2 :: Track</name>

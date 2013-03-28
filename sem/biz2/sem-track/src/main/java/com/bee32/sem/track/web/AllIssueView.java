@@ -1,12 +1,11 @@
 package com.bee32.sem.track.web;
 
-public class EndedIssueView
+public class AllIssueView
         extends AbstractIssueView {
 
     private static final long serialVersionUID = 1L;
 
-    // TODO ended criteria.
-    public EndedIssueView() {
+    public AllIssueView() {
         super();
     }
 
