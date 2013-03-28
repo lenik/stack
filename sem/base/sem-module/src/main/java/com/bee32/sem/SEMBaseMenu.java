@@ -9,6 +9,6 @@ public class SEMBaseMenu
 
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    MenuNode security = entry(_frame_.EDIT, 50, "xrefs", JAVASCRIPT.join("showXrefs()"));
+    MenuNode security = entry(_frame_.SYSTEM, 50, "xrefs", JAVASCRIPT.join("showXrefs()"));
 
 }

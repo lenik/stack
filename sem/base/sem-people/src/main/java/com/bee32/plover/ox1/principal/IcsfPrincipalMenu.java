@@ -12,12 +12,10 @@ public class IcsfPrincipalMenu
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
     static Location prefix = WEB_APP.join(IcsfPrincipalModule.PREFIX_);
 
-    public transient MenuNode IDENTITY = _frame_.SECURITY;
-
-    MenuNode userAdmin = entry(IDENTITY, 10, "userAdmin", prefix.join("user/index-rich.jsf"));
-    MenuNode groupAdmin = entry(IDENTITY, 11, "groupAdmin", prefix.join("group/index-rich.jsf"));
+    MenuNode userAdmin = entry(_frame_.SYSTEM, 10, "userAdmin", prefix.join("user/index-rich.jsf"));
+    MenuNode groupAdmin = entry(_frame_.SYSTEM, 11, "groupAdmin", prefix.join("group/index-rich.jsf"));
     // MenuNode roleAdmin = entry(IDENTITY, 12, "roleAdmin", prefix.join("role/index-rich.jsf"));
 
-    MenuNode modifyPassword = entry(_frame_.CONTROL, 50, "modifyPassword", prefix.join("modifyPassword.jsf"));
+    MenuNode modifyPassword = entry(_frame_.SYSTEM, 50, "modifyPassword", prefix.join("modifyPassword.jsf"));
 
 }

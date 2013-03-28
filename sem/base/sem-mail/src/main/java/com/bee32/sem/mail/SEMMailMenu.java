@@ -11,7 +11,7 @@ public class SEMMailMenu
     static ILocationContext __ = WEB_APP.join(SEMMailModule.PREFIX + "/");
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode MAIL = menu(_frame_.START, 20, "MAIL");
+    public MenuNode MAIL = menu(_frame_.OA, 20, "MAIL");
     public MenuNode SETTINGS = menu(MAIL, 100, "SETTINGS");
 
     MenuNode folder = entry(SETTINGS, 10, "mailbox", __.join("folder/index.do"));

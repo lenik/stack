@@ -12,11 +12,17 @@ public class IcsfAccessMenu
 
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    MenuNode security = entry(_frame_.ATTRIBUTES, 100, "security", //
+
+
+    public MenuNode SECURITY = menu(_frame_.SYSTEM, 200, "SECURITY");
+
+    MenuNode acl = entry(SECURITY, 31, "acl", BASE_.join("acl/"));
+    MenuNode aclPref = entry(SECURITY, 32, "aclPref", BASE_.join("acl-pref/"));
+    MenuNode recordSecurity = entry(SECURITY, 33, "recordSecurity", //
             JAVASCRIPT.join("loadAclAndShow(securityDialog)"));
-    MenuNode acl = entry(_frame_.SECURITY, 31, "acl", BASE_.join("acl/"));
-    MenuNode aclPref = entry(_frame_.SECURITY, 32, "aclPref", BASE_.join("acl-pref/"));
-    MenuNode r_ace = entry(_frame_.SECURITY, 33, "r_ace", BASE_.join("r-ace/"));
+
+
+    MenuNode r_ace = entry(_frame_.SYSTEM, 33, "r_ace", BASE_.join("r-ace/"));
 
     @Override
     protected void preamble() {

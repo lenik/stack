@@ -22,13 +22,10 @@ public class SEMFrameMenu
 
     public MenuNode MAIN = menu("MAIN");
 
-    public MenuNode START = menu(MAIN, 10, "START");
-    /**/public MenuNode CONTROL = menu(START, 100, "CONTROL");
-    /*    */public MenuNode SECURITY = menu(CONTROL, 100, "SECURITY");
-    /*    */public MenuNode THEME = menu(CONTROL, 200, "THEME");
+    public MenuNode SYSTEM = menu(MAIN, 10, "SYSTEM");
+    /*    */public MenuNode THEME = menu(SYSTEM, 200, "THEME");
 
-    public MenuNode EDIT = menu(MAIN, 200, "EDIT");
-    /**/public MenuNode ATTRIBUTES = menu(EDIT, 100, "ATTRIBUTES");
+    public MenuNode ATTRIBUTES = menu(SYSTEM, 100, "ATTRIBUTES");
 
     public MenuNode DATA = menu(MAIN, 300, "DATA");
 
@@ -39,10 +36,10 @@ public class SEMFrameMenu
           * static MenuNode contract = entry(BIZ1, 10, "contract",
           * JAVASCRIPT.join("alert('under development')"));
           */
+    public MenuNode OA = menu(MAIN, 325, "OA");
 
     public MenuNode HR = menu(MAIN, 330, "HR");
 
-    public MenuNode PROCESS = menu(MAIN, 600, "PROCESS");
     public MenuNode SUPPORT = menu(MAIN, 700, "SUPPORT");
 
     public MenuNode HELP = menu(MAIN, 10000, "HELP");
