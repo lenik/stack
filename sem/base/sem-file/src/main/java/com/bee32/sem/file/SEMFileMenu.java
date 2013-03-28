@@ -11,7 +11,7 @@ public class SEMFileMenu
     static Location __ = WEB_APP.join(SEMFileModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    MenuNode FILE = menu(_frame_.MAIN, 1000, "FILE");
+    MenuNode FILE = menu(_frame_.OA, 10, "FILE");
     /**/MenuNode folder = entry(FILE, 200, "folder", __.join("folder/"));
     /**/MenuNode userFile = entry(FILE, 300, "userFile", __.join("file/"));
 
