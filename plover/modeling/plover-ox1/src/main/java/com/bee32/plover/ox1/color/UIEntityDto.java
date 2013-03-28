@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import org.hibernate.validator.constraints.Length;
-
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
@@ -27,7 +25,6 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
     public UIEntityDto(int fmask) {
         super(fmask);
     }
-
 
     @Override
     protected void __marshal(E source) {
@@ -60,15 +57,13 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         this.label = TextUtil.normalizeSpace(label);
     }
 
-    @Length(max = UIEntity.DESCRIPTION_LENGTH)
+    @NLength(max = UIEntity.DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
-        if (description != null)
-            description = description.trim();
-        this.description = description;
+        this.description = TextUtil.normalizeSpace(description);
     }
 
 }

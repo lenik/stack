@@ -7,6 +7,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.mail.entity.Message;
@@ -66,6 +67,15 @@ public class MessageDto<E extends Message<E>, self_t extends MessageDto<E, self_
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    @NLength(max = Message.SUBJECT_LENGTH)
+    public String getSubject() {
+        return getDescription();
+    }
+
+    public void setSubject(String subject) {
+        setDescription(subject);
     }
 
     public String getText() {
