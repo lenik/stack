@@ -1,0 +1,8 @@
+com.bee32.sem.track.entity.Issue
+com.bee32.sem.track.entity.IssueCcGroup
+com.bee32.sem.track.entity.IssueHref
+com.bee32.sem.track.entity.IssueObserver
+com.bee32.sem.track.entity.IssueReply
+com.bee32.sem.track.sw.entity.Product
+com.bee32.sem.track.sw.entity.ProductComponent
+com.bee32.sem.track.sw.entity.ProductVersion

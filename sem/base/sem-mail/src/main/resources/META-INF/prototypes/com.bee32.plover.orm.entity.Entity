@@ -2,3 +2,4 @@ com.bee32.sem.mail.entity.Mail
 com.bee32.sem.mail.entity.MailDelivery
 com.bee32.sem.mail.entity.MailFilter
 com.bee32.sem.mail.entity.MailFolder
+com.bee32.sem.mail.entity.Message
