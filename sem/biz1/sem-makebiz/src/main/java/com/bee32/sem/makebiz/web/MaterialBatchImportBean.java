@@ -67,9 +67,25 @@ public class MaterialBatchImportBean
                 String materialLabel = split[0];
                 String materialModule = split[1];
                 String materialUnit = split[2];
+                String materialCategory = split[3];
                 Material mate = new Material();
                 mate.setLabel(materialLabel);
                 mate.setModelSpec(materialModule);
+
+                switch (materialCategory) {
+                case "c":
+                    mate.setCategory(category.component);
+                    break;
+                case "p":
+                    mate.setCategory(category.part);
+                    break;
+                case "r":
+                    mate.setCategory(category.rawMaterial);
+                    break;
+                default:
+                    mate.setCategory(category.rawMaterial);
+                }
+
                 switch (materialUnit) {
                 case "g":
                     mate.setUnit(units.PIECE);
@@ -78,7 +94,6 @@ public class MaterialBatchImportBean
                 default:
                     mate.setUnit(units.PIECE);
                 }
-                mate.setCategory(category.rawMaterial);
 
                 cacheMaterial.put(materialLabel + materialModule, mate);
             }
@@ -120,7 +135,7 @@ public class MaterialBatchImportBean
 
                 Part partLevel1 = new Part();
                 partLevel1.setTarget(material);
-                partLevel1.setCategory(category.component);
+//                partLevel1.setCategory(category.component);
 
                 String children = partString.substring(index + 1);
                 String[] split = children.split("/");
@@ -144,7 +159,7 @@ public class MaterialBatchImportBean
                         System.out.println(key);
                     }
                     partLevel2.setTarget(material2);
-                    partLevel2.setCategory(category.rawMaterial);
+//                    partLevel2.setCategory(category.rawMaterial);
 
                     PartItem partItemLevel1 = new PartItem();
                     partItemLevel1.setPart(partLevel2);
@@ -183,7 +198,7 @@ public class MaterialBatchImportBean
 
                             Part partLevel3 = new Part();
                             partLevel3.setTarget(dMaterial);
-                            partLevel3.setCategory(category.rawMaterial);
+//                            partLevel3.setCategory(category.rawMaterial);
 
                             System.out.println("PART LEVEL 3:::" + partLevel3.getTarget().getLabel());
                             String dchildren = s.substring(dIndex + 1);
@@ -221,13 +236,10 @@ public class MaterialBatchImportBean
                 parts.add(partLevel1);
             }
 
-        int ccccc = 0;
         int countPart_save = 0;
         int countPart_exsit = 0;
-//        partService.saveAll(parts);
+// partService.saveAll(parts);
         for (Part part : parts) {
-            System.out.println(">>>>>>>>>>>" + ccccc++);
-
             Material material = part.getTarget();
             String label = material.getLabel();
             String module = material.getModelSpec();
@@ -237,7 +249,6 @@ public class MaterialBatchImportBean
                 countPart_save++;
             } else
                 countPart_exsit++;
-
         }
 
         savePartCount = countPart_save;
@@ -280,7 +291,7 @@ public class MaterialBatchImportBean
                 String prefix = globalPrefix + "-" + split[0];
                 prefixs.add(prefix);
                 System.out.println(line);
-                String compMaterial = prefix + "," + split[1] + "," + "g" + "," + split[4] + "," + split[6];
+                String compMaterial = prefix + "," + split[1] + ",g,c," + split[4] + "," + split[6];
                 materials.add(compMaterial);
 
                 // part string
@@ -307,6 +318,9 @@ public class MaterialBatchImportBean
 
         if (temp_parts.values().size() > 0)
             parts.addAll(temp_parts.values());
+        for (String s : materials) {
+            System.out.println(s);
+        }
 
         materials_toImport = materials;
         parts_toImport = parts;
@@ -324,6 +338,15 @@ public class MaterialBatchImportBean
         upload = true;
         analysis = false;
         imported = false;
+
+        materialSize = 0;
+        saveMaterialCount = 0;
+        existMaterialCount = 0;
+        compSize = 0;
+        partSize = 0;
+        savePartCount = 0;
+        existPartCount = 0;
+
         uiLogger.info("上传文件" + uploadedFileName + "成功");
         uiLogger.info("该文件导入后不会被保存");
     }
@@ -338,7 +361,7 @@ public class MaterialBatchImportBean
         String[] items;
         String materialString = null;
 
-        String part_material = prefix + "-" + str[0] + "," + str[1] + ",g," + str[3] + "," + str[4] + "," + str[6];
+        String part_material = prefix + "-" + str[0] + "," + str[1] + ",g,p," + str[3] + "," + str[4] + "," + str[6];
         materials.add(part_material);
 
         String part = null;
@@ -414,7 +437,7 @@ public class MaterialBatchImportBean
             else
                 m = partModule;
             m = m + "号";
-            materialString = str[7] + type + "," + m + ",k";
+            materialString = str[7] + type + "," + m + ",k,r";
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, m, str);
@@ -488,12 +511,12 @@ public class MaterialBatchImportBean
 
     static String materialAssemblerPL(String label, String type, String module) {
         // 物料名称，规格，单位
-        return label + type + "," + module + "mm, k";
+        return label + type + "," + module + "mm, k,r";
     }
 
     static String materialAssemblerComm(String prefix, String label, String module) {
         // 物料名称，规格，单位
-        return prefix + label + "," + module + ",k";
+        return prefix + label + "," + module + ",k,r";
     }
 
     static String partAssemblerPL(String prefix, String type, String thick, String[] strings) {
@@ -589,9 +612,9 @@ public class MaterialBatchImportBean
             int k = i - j * 2;
             webModule = "PL" + split[2] + "*" + k;
         }
-        result.add(flangeLabel + "," + flangeModule + ",g");
-        result.add(webLabel + "," + webModule + ",g");
-//        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
+        result.add(flangeLabel + "," + flangeModule + ",g,p");
+        result.add(webLabel + "," + webModule + ",g,p");
+// result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
 
         return result;
     }
@@ -604,9 +627,9 @@ public class MaterialBatchImportBean
         int i = Integer.parseInt(split[0]);
         int j = Integer.parseInt(split[3]);
         int k = i - j * 2;
-//        result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
-        result.add(prefix + "-" + strings[0] + "-腹版,PL" + split[2] + "*" + k + ",k");
-        result.add(prefix + "-" + strings[0] + "-翼缘,PL" + split[3] + "*" + split[1] + ",k");
+// result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
+        result.add(prefix + "-" + strings[0] + "-腹版,PL" + split[2] + "*" + k + ",k,p");
+        result.add(prefix + "-" + strings[0] + "-翼缘,PL" + split[3] + "*" + split[1] + ",k,p");
         result.add(materialAssemblerPL(strings[7], type, split[2]));
         result.add(materialAssemblerPL(strings[7], type, split[3]));
         return result;

@@ -26,7 +26,8 @@
                         <h:outputText value="已上传文件：" rendered="#{bean.upload}" />
                         <h:outputText value="#{bean.uploadedFileName}" rendered="#{bean.upload}" />
                         <p:fileUpload fileUploadListener="#{bean.handleFileUpload}" mode="advanced"
-                            update=":mainForm:analysis, :mainForm:uploadView" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/" />
+                            update=":mainForm:analysis, :mainForm:uploadView, :mainForm:import," sizeLimit="100000"
+                            allowTypes="/(\.|\/)(csv)$/" />
                     </p:fieldset>
                 </t:div>
                 <t:div id="analysis">
@@ -51,7 +52,7 @@
                 <t:div id="import">
                     <p:fieldset legend="SETP4:导入数据" toggleable="true" toogleSpeed="500" rendered="#{bean.analysis}">
                         <p:commandButton value="导入数据" actionListener="#{bean.doImport}" update=":mainForm:import"
-                            rendered="#{!bean.imported}" />
+                            rendered="#{!bean.imported}" onclick="waitbox.show();" oncomplete="waitbox.hide()"/>
                         <t:panelGrid columns="2" rendered="#{bean.imported}">
                             <h:outputText value="导入结果：" />
                             <h:outputText value="" />
@@ -71,6 +72,7 @@
                     </p:fieldset>
                 </t:div>
             </h:form>
+
             <sem:chooseChanceDialog id="chooseChanceDialog" target="${bean.target}"
                 update=":mainForm:chance, :mainForm:uploadView" />
 
