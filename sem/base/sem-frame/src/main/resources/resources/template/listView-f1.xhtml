@@ -49,4 +49,46 @@
         <ui:insert name="indexDialog" />
         <ui:insert name="editDialog" />
     </c:if>
+
+    <c:if test="${style == 'panel-bare'}">
+        <h:panelGroup id="fieldset">
+            <c:if test="${orientation == 'lr'}">
+                <table>
+                    <tr>
+                        <td valign="top">
+                            <h:panelGroup id="indexPanel">
+                                <ui:insert name="indexForm" />
+                            </h:panelGroup>
+                        </td>
+                        <td />
+                        <td valign="top">
+                            <h:panelGroup id="editPanel">
+                                <ui:insert name="editForm" />
+                            </h:panelGroup>
+                        </td>
+                    </tr>
+                </table>
+            </c:if>
+            <c:if test="${orientation == 'td'}">
+                <h:panelGrid id="panelGrid" columns="1">
+                    <h:panelGroup id="indexPanel">
+                        <ui:insert name="indexForm" />
+                    </h:panelGroup>
+                    <p:separator />
+                    <h:panelGroup id="editPanel">
+                        <ui:insert name="editForm" />
+                    </h:panelGroup>
+                </h:panelGrid>
+            </c:if>
+        </h:panelGroup>
+    </c:if>
+
+    <c:if test="${style == 'indexPanel-bare'}">
+        <h:panelGroup id="fieldset">
+            <h:panelGroup id="indexPanel">
+                <ui:insert name="indexForm" />
+            </h:panelGroup>
+        </h:panelGroup>
+    </c:if>
+
 </ui:component>
