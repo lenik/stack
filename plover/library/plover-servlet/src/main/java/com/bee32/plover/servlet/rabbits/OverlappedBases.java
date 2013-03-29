@@ -2,10 +2,11 @@ package com.bee32.plover.servlet.rabbits;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.jetty.util.ConcurrentHashSet;
 
 public class OverlappedBases {
 
@@ -63,7 +64,7 @@ public class OverlappedBases {
         return searchBases.iterator();
     }
 
-    static Set<String> notFound = new HashSet<String>();
+    static Set<String> notFound = new ConcurrentHashSet<String>();
 
     /**
      * Search resource.
