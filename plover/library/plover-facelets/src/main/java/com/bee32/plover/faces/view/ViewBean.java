@@ -54,7 +54,11 @@ public abstract class ViewBean
     public ViewBean() {
         // wire();
         createTransients();
-        getMetadata().addViewBean(this);
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext != null) {
+            getMetadata().addViewBean(this);
+        }
     }
 
     private void readObject(ObjectInputStream in)
