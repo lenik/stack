@@ -6,13 +6,11 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,7 +21,6 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.mail.entity.Message;
 
@@ -46,12 +43,13 @@ public class Issue
     public static final int TAGS_LENGTH = 100;
 
     Date dueDate;
-    Date endDate;
+    Date endTime;
 
     String tags = "";
     String commitish;
 
-    List<UserFile> attachments = new ArrayList<UserFile>();
+    List<IssueHref> hrefs = new ArrayList<IssueHref>();
+    List<IssueAttachment> attachments = new ArrayList<IssueAttachment>();
     List<IssueObserver> observers = new ArrayList<IssueObserver>();
     List<IssueCcGroup> ccGroups = new ArrayList<IssueCcGroup>();
     List<IssueReply> replies = new ArrayList<IssueReply>();
@@ -88,12 +86,12 @@ public class Issue
 
     @Temporal(TemporalType.DATE)
     @Basic(optional = true)
-    public Date getEndDate() {
-        return endDate;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     /**
@@ -126,20 +124,30 @@ public class Issue
         this.commitish = commitish;
     }
 
+    @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<IssueHref> getHrefs() {
+        return hrefs;
+    }
+
+    public void setHrefs(List<IssueHref> hrefs) {
+        if (hrefs == null)
+            throw new NullPointerException("hrefs");
+        this.hrefs = hrefs;
+    }
+
     /**
      * 相关附件
      *
      * 和问题相关的附件，如屏幕截图、产品缺陷照片等等。
      */
-    @ElementCollection
-    @JoinTable(name = "IssueAttachment", //
-    /*        */joinColumns = @JoinColumn(name = "issue"),
-    /*        */inverseJoinColumns = @JoinColumn(name = "userFile"))
-    public List<UserFile> getAttachments() {
+    @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<IssueAttachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(List<UserFile> attachments) {
+    public void setAttachments(List<IssueAttachment> attachments) {
         if (attachments == null)
             throw new NullPointerException("attachments");
         this.attachments = attachments;
@@ -170,6 +178,7 @@ public class Issue
     }
 
     @OneToMany(mappedBy = "issue", orphanRemoval = true)
+    @OrderBy("createdDate ASC")
     @Cascade(CascadeType.ALL)
     public List<IssueReply> getReplies() {
         return replies;

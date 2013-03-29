@@ -5,22 +5,20 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.track.entity.IssueHref;
+import com.bee32.sem.file.dto.FileBlobDto;
+import com.bee32.sem.track.entity.IssueAttachment;
 
-/**
- * 问题参考链接
- */
-public class IssueHrefDto
-        extends UIEntityDto<IssueHref, Long>
+public class IssueAttachmentDto
+        extends UIEntityDto<IssueAttachment, Long>
         implements IEnclosedObject<IssueDto> {
 
     private static final long serialVersionUID = 1L;
 
+    public static final int MREF = 1;
+
     private IssueDto issue;
-    private String url;
+    private FileBlobDto fileBlob;
 
     @Override
     public IssueDto getEnclosingObject() {
@@ -39,15 +37,19 @@ public class IssueHrefDto
     }
 
     @Override
-    protected void _marshal(IssueHref source) {
-        issue = mref(IssueDto.class, source.getIssue());
-        url = source.getUrl();
+    protected void _marshal(IssueAttachment source) {
+        if (selection.contains(MREF)) {
+            issue = mref(IssueDto.class, source.getIssue());
+            fileBlob = mref(FileBlobDto.class, source.getFileBlob());
+        }
     }
 
     @Override
-    protected void _unmarshalTo(IssueHref target) {
-        merge(target, "issue", issue);
-        target.setUrl(url);
+    protected void _unmarshalTo(IssueAttachment target) {
+        if (selection.contains(MREF)) {
+            merge(target, "issue", issue);
+            merge(target, "fileBlob", fileBlob);
+        }
     }
 
     @Override
@@ -56,24 +58,24 @@ public class IssueHrefDto
         throw new NotImplementedException();
     }
 
-    // @NotNullId
     public IssueDto getIssue() {
         return issue;
     }
 
     public void setIssue(IssueDto issue) {
+        if (issue == null)
+            throw new NullPointerException("issue");
         this.issue = issue;
     }
 
-    @NLength(max = IssueHref.URL_LENGTH)
-    public String getUrl() {
-        return url;
+    public FileBlobDto getFileBlob() {
+        return fileBlob;
     }
 
-    public void setUrl(String url) {
-        if (url == null)
-            throw new NullPointerException("url");
-        this.url = TextUtil.normalizeSpace(url);
+    public void setFileBlob(FileBlobDto fileBlob) {
+        if (fileBlob == null)
+            throw new NullPointerException("fileBlob");
+        this.fileBlob = fileBlob;
     }
 
 }

@@ -12,7 +12,6 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.dto.ChanceDto;
-import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.mail.dto.MessageDto;
 import com.bee32.sem.track.entity.Issue;
@@ -23,21 +22,22 @@ public class IssueDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int ATTACHMENTS = 1;
-    public static final int HREFS = 2;
-    public static final int REPLIES = 4;
+    public static final int HREFS = 1;
+    public static final int ATTACHMENTS = 2;
     public static final int OBSERVERS = 16;
     public static final int CC_GROUPS = 32;
     public static final int EXT_MISC = 64;
 
+    public static final int REPLIES = 0x0100_0000; // EXT, not included in F_MORE.
+
     private Date dueDate;
-    private Date endDate;
+    private Date endTime;
 
     private String tags = "";
     private String commitish;
 
-    private List<UserFileDto> attachments;
     private List<IssueHrefDto> hrefs;
+    private List<IssueAttachmentDto> attachments;
     private List<IssueObserverDto> observers;
     private List<IssueCcGroupDto> ccGroups;
     private List<IssueReplyDto> replies;
@@ -57,20 +57,20 @@ public class IssueDto
         super._marshal(source);
 
         dueDate = source.getDueDate();
-        endDate = source.getEndDate();
+        endTime = source.getEndTime();
 
         tags = source.getTags();
         commitish = source.getCommitish();
 
+        if (selection.contains(HREFS))
+            hrefs = marshalList(IssueHrefDto.class, source.getHrefs());
+        else
+            hrefs = Collections.emptyList();
+
         if (selection.contains(ATTACHMENTS))
-            attachments = marshalList(UserFileDto.class, source.getAttachments());
+            attachments = marshalList(IssueAttachmentDto.class, source.getAttachments());
         else
             attachments = Collections.emptyList();
-
-        if (selection.contains(REPLIES))
-            replies = marshalList(IssueReplyDto.class, source.getReplies());
-        else
-            replies = Collections.emptyList();
 
         if (selection.contains(OBSERVERS))
             observers = marshalList(IssueObserverDto.class, source.getObservers());
@@ -86,6 +86,11 @@ public class IssueDto
             chance = mref(ChanceDto.class, source.getChance());
             stockOrder = mref(StockOrderDto.class, source.getStockOrder());
         }
+
+        if (selection.contains(REPLIES))
+            replies = marshalList(IssueReplyDto.class, source.getReplies());
+        else
+            replies = Collections.emptyList();
     }
 
     @Override
@@ -93,7 +98,7 @@ public class IssueDto
         super._unmarshalTo(target);
 
         target.setDueDate(dueDate);
-        target.setEndDate(endDate);
+        target.setEndTime(endTime);
         target.setTags(tags);
         target.setCommitish(commitish);
 
@@ -112,7 +117,7 @@ public class IssueDto
 
         if (selection.contains(EXT_MISC)) {
             merge(target, "chance", chance);
-            merge(target, "order", stockOrder);
+            merge(target, "stockOrder", stockOrder);
         }
     }
 
@@ -141,12 +146,12 @@ public class IssueDto
         this.dueDate = dueDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndTime(Date endDate) {
+        this.endTime = endDate;
     }
 
     @NLength(max = Issue.TAGS_LENGTH)
@@ -167,16 +172,6 @@ public class IssueDto
         this.commitish = TextUtil.normalizeSpace(commitish);
     }
 
-    public List<UserFileDto> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(List<UserFileDto> attachments) {
-        if (attachments == null)
-            throw new NullPointerException("attachments");
-        this.attachments = attachments;
-    }
-
     public List<IssueHrefDto> getHrefs() {
         return hrefs;
     }
@@ -185,6 +180,16 @@ public class IssueDto
         if (hrefs == null)
             throw new NullPointerException("hrefs");
         this.hrefs = hrefs;
+    }
+
+    public List<IssueAttachmentDto> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<IssueAttachmentDto> attachments) {
+        if (attachments == null)
+            throw new NullPointerException("attachments");
+        this.attachments = attachments;
     }
 
     public List<IssueReplyDto> getReplies() {
@@ -202,21 +207,19 @@ public class IssueDto
     }
 
     public void setObservers(List<IssueObserverDto> observers) {
+        if (observers == null)
+            throw new NullPointerException("observers");
         this.observers = observers;
     }
 
-    public String getChanceSubject() {
-        if (chance == null)
-            return "无";
-        else
-            return chance.getSubject();
+    public List<IssueCcGroupDto> getCcGroups() {
+        return ccGroups;
     }
 
-    public String getOrderSubject() {
-        if (stockOrder == null)
-            return "无";
-        else
-            return stockOrder.getSubject().getDisplayName();
+    public void setCcGroups(List<IssueCcGroupDto> ccGroups) {
+        if (ccGroups == null)
+            throw new NullPointerException("ccGroups");
+        this.ccGroups = ccGroups;
     }
 
     public ChanceDto getChance() {

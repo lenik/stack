@@ -1,9 +1,13 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
 
     <ui:param name="oo" value="${bean.openedObject}" />
+    <ui:param name="observerObj" value="${bean.observersMBean.openedObject}" />
+    <ui:param name="ccGroupObj" value="${bean.ccGroupsMBean.openedObject}" />
+    <ui:param name="hrefObj" value="${bean.hrefsMBean.openedObject}" />
+    <ui:param name="replyObj" value="${bean.repliesMBean.openedObject}" />
 
     <ui:param name="_toggleable" value="${editable != false and bean.editing}" />
 
@@ -11,7 +15,7 @@
         <p:column headerText="优先级" sortBy="${entry.priority}">
             <h:outputText value="${entry.priority}" />
         </p:column>
-        <p:column headerText="标题" sortBy="${entry.subject}">
+        <p:column headerText="标题" sortBy="${entry.description}">
             <h:outputText value="${entry.subject}" />
         </p:column>
         <p:column headerText="到期时间" sortBy="${entry.dueDate}">
@@ -32,7 +36,7 @@
 
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
-            <p:tab title="问题信息">
+            <p:tab id="basicTab" title="问题信息">
                 <table width="100%">
                     <tr>
                         <td width="60" rowspan="2">
@@ -59,8 +63,7 @@
                                 </li>
                                 <li style="float: left; margin: 0 2em 0 0">
                                     <img
-                                        src="${location.WEB_APP}/VAADIN/themes/activiti/img/priority-${
-                        oo.priority > 50 ? 'high' : oo.priority > 0 ? 'medium' : 'low' }-16.png" />
+                                        src="${location.WEB_APP}/VAADIN/themes/activiti/img/priority-${oo.priority > 50 ? 'high' : oo.priority > 0 ? 'medium' : 'low' }-16.png" />
                                     优先级：
                                     <p:inplace editor="true" toggleable="${_toggleable}">
                                         <p:selectOneMenu value="${oo.priority}" style="width: 6em">
@@ -73,7 +76,7 @@
                                 <c:if test="${not _historicMode}">
                                     <li style="float: left; margin: 0 2em 0 0">
                                         <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/create-time-16.png" />
-                                        创建于：${bean.relativeDateTo(oo.createTime)}
+                                        创建于：${bean.relativeDateTo(oo.createdDate)}
                                     </li>
                                 </c:if>
                             </ul>
@@ -82,37 +85,84 @@
                 </table>
 
                 <p:separator />
-                <p:inplace emptyLabel="此问题没有内容。" editor="true" toggleable="${_toggleable}">
-                    <p:inputTextarea id="text" label="内容" value="${oo.text}" style="width: 100%;" />
+                <p:inplace emptyLabel="此问题没有内容。" editor="true" toggleable="${_toggleable}" style="display: block; min-height: 10em">
+                    <p:inputTextarea id="text" label="内容" value="${oo.text}" style="width: 100%; min-height: 10em" />
                     <p:watermark for="text" value="输入问题的内容" />
                 </p:inplace>
 
                 <p:separator />
-                <h3>参与人</h3>
-                <h:panelGrid id="headerGrid" columns="2" columnClasses="f-right, f-left">
-                    <h:outputText value="所属人：" />
-                    <p:inplace emptyLabel="无属主" editor="true" toggleable="${_toggleable}">
-                        <p:inputText id="owner" value="${oo.owner}" readonly="true" />
-                        <p:commandButton value="转让" oncomplete="chooseOwnerDialog.show()">
-                            <f:setPropertyActionListener target="${chooseOwnerDialog.stereo}"
-                                value="U" />
-                        </p:commandButton>
-                    </p:inplace>
-
-                    <h:outputText value="执行：" />
-                    <p:inplace emptyLabel="尚未分配执行者。" editor="true" toggleable="${_toggleable}">
-                        <p:inputText id="assignee" value="${oo.assignee}" readonly="true" />
-                        <p:commandButton value="重新分配" oncomplete="chooseAssigneeDialog.show()">
-                            <f:setPropertyActionListener target="${chooseAssigneeDialog.stereo}"
-                                value="U" />
-                        </p:commandButton>
-                        <p:commandButton value="分配给自己执行" onclick="waitbox.show()" oncomplete="waitbox.hide()"
-                            actionListener="${bean.assignToMe}" update="${_contentUpdate}" />
-                    </p:inplace>
-                </h:panelGrid>
+                问题状态：
+                <p:selectOneMenu id="state" label="问题状态" value="${oo.state}" style="width: 10em;">
+                    <f:selectItems value="${trackDicts.states}" var="it" itemLabel="${it.label}"
+                        itemValue="${it.value}" />
+                </p:selectOneMenu>
             </p:tab>
 
-            <p:tab title="相关内容">
+            <p:tab id="bizTab" title="业务">
+                <h3>
+                    销售机会
+                    <h:outputText value="..." styleClass="e-link" onclick="#{oo.chance.clickAction}" />
+                </h3>
+                <p:inplace emptyLabel="没有相关的销售机会。" editor="true" toggleable="${_toggleable}">
+                    <p:inputText id="chanceLabel" label="销售机会" value="${bean.chanceText}" size="40"
+                        readonly="true" />
+                    <p:commandButton id="chooseChance" value="..." onclick="chooseChanceDialog.show()" />
+                </p:inplace>
+
+                <p:separator />
+                <h3>
+                    库存单据
+                    <h:outputText value="..." styleClass="e-link" onclick="#{oo.stockOrder.clickAction}" />
+                </h3>
+                <p:inplace emptyLabel="没有相关的库存单据。" editor="true" toggleable="${_toggleable}">
+                    <p:inputText id="orderLabel" label="库存单据" value="${bean.stockOrderText}" size="40"
+                        readonly="true" />
+                    <p:commandButton id="chooseStockOrder" value="..." onclick="chooseStockOrderDialog.show()" />
+                </p:inplace>
+            </p:tab>
+
+            <p:tab biz="teamTab" title="参与者">
+                <h3>团队</h3>
+                <fr:listView id="observersIndexView" header="成员" style="indexPanel-bare" mbean="${bean.observersMBean}"
+                    editView=":observersEditView" nested="true" paginator="false" readonly="#{not bean.editing}">
+                    <f:facet name="columns">
+                        <p:column headerText="用户">
+                            <h:outputText value="${entry.observer.displayName}" />
+                        </p:column>
+                        <p:column headerText="角色">
+                            <h:outputText value="${entry.label}" />
+                        </p:column>
+                        <p:column headerText="管理权">
+                            <h:outputText value="${entry.manager ? '☑' : ''}" />
+                        </p:column>
+                        <p:column headerText="权重">
+                            <h:outputText value="${entry.rank}" />
+                        </p:column>
+                        <p:column headerText="来宾">
+                            <h:outputText value="${entry.rank &lt;= 0 ? '🐵' : ''}" />
+                        </p:column>
+                        <p:column headerText="收藏">
+                            <h:outputText value="${entry.fav ? '❤' : ''}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+
+                <p:separator />
+                <h3>抄送组</h3>
+                <fr:listView id="ccGroupsIndexView" header="用户组" style="indexPanel-bare" mbean="${bean.ccGroupsMBean}"
+                    editView=":ccGroupsEditView" nested="true" paginator="false" readonly="#{not bean.editing}">
+                    <f:facet name="columns">
+                        <p:column headerText="用户组">
+                            <h:outputText value="${entry.group.displayName}" />
+                        </p:column>
+                        <p:column headerText="备注">
+                            <h:outputText value="${entry.description}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+
+            <p:tab id="resTab" title="相关内容">
                 <div style="max-height: 30em; overflow-y: auto">
                     <h3>参考链接</h3>
                     <table border="0" style="width: 100%">
@@ -125,7 +175,7 @@
                                     <a href="${a.url}" target="_blank">${a.label}</a>
                                 </td>
                                 <td width="30">
-                                    <p:commandLink id="deleteURL" title="删除此链接" rendered="${editable != false}"
+                                    <p:commandLink id="deleteHref" title="删除此链接" rendered="${editable != false}"
                                         icon="ui-icon-close" actionListener="${bean.removeHref(a.id)}" update="@form"
                                         onclick="waitbox.show()" oncomplete="waitbox.hide()">
                                         <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
@@ -141,7 +191,8 @@
 
                     <ui:fragment rendered="${editable != false}">
                         <div align="right">
-                            <p:commandLink id="addURL" value="添加链接" onclick="addURLDialog.show()">
+                            <p:commandLink id="addURL" value="添加链接" actionListener="${bean.newHref}"
+                                update=":addHrefForm" oncomplete="addHrefDialog.show()">
                                 <f:attribute name="locking" value="never" />
                             </p:commandLink>
                         </div>
@@ -183,7 +234,7 @@
                     <ui:fragment rendered="${contrable != false}">
                         <div align="right">
                             <p:commandLink id="addFile" value="添加附件" actionListener="${bean.newFile}"
-                                oncomplete="addFileDialog.show()">
+                                update=":addFileForm" oncomplete="addFileDialog.show()">
                                 <f:attribute name="locking" value="never" />
                             </p:commandLink>
                         </div>
@@ -191,61 +242,139 @@
                 </div>
             </p:tab>
 
-            <p:tab title="评论">
+            <p:tab id="replyTab" title="评论">
+                <div id="repliesBox" style="max-height: 25em; overflow: auto">
+                    <table width="100%" border="0">
+                        <ui:repeat var="c" value="${bean.replies}">
+                            <tr>
+                                <td colspan="2">
+                                    <p:separator />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="40">
+                                    <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/user-32.png" />
+                                </td>
+                                <td>
+                                    <div>
+                                        <b>${c.user.displayName}</b>
+                                        说：
+                                        ${c.text}
+                                    </div>
+                                    <div style="color: gray; font-style: italic">
+                                        ${bean.relativeDateTo(c.createdDate)}
+                                    </div>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </table>
+                </div>
+
                 <ui:fragment rendered="${contrable != false}">
-                    <div>
-                        <b>${bean.loggedInUserDisplayName}</b>
-                        说：
-                        <p:inputText id="replyText" label="评论内容" value="${bean.replyText}" size="40">
-                            <f:attribute name="locking" value="never" />
-                        </p:inputText>
-                        <p:watermark for="replyText" value="输入评论内容" />
-                        <p:commandButton id="replyButton" value="发送" styleClass="locker-bypass" onclick="waitbox.show()"
-                            oncomplete="waitbox.hide()" actionListener="${bean.addReplyText}" update="@form">
-                            <f:attribute name="locking" value="never" />
-                        </p:commandButton>
-                    </div>
-                </ui:fragment>
-                <table width="100%" border="0">
-                    <ui:repeat var="c" value="${oo.replies}">
+                    <table width="100%">
                         <tr>
-                            <td colspan="2">
-                                <p:separator />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="40">
-                                <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/user-32.png" />
+                            <td>
+                                <b>${bean.loggedInUserDisplayName}</b>
+                                说：
                             </td>
                             <td>
-                                <div>
-                                    <b>${c.owner.displayName}</b>
-                                    说：
-                                    ${c.text}
-                                </div>
-                                <div style="color: gray; font-style: italic">
-                                    ${bean.relativeDateTo(c.createdDate)}
-                                </div>
+                                <p:inputText id="replyText" label="评论内容" value="${bean.replyText}" size="40">
+                                    <f:attribute name="locking" value="never" />
+                                </p:inputText>
+                                <p:watermark for="replyText" value="输入评论内容" />
+                            </td>
+                            <td>
+                                <p:commandButton id="replyButton" value="发送" styleClass="locker-bypass"
+                                    onclick="waitbox.show()"
+                                    oncomplete="waitbox.hide(); rbox=$('#repliesBox'); rbox.scrollTop(rbox[0].scrollHeight);"
+                                    actionListener="${bean.addReply}" update="@form">
+                                    <f:attribute name="locking" value="never" />
+                                </p:commandButton>
+                            </td>
+                            <td>
+                                <p:commandButton id="refreshButton" value="刷新" styleClass="locker-bypass"
+                                    onclick="waitbox.show()"
+                                    oncomplete="waitbox.hide(); rbox=$('#repliesBox'); rbox.scrollTop(rbox[0].scrollHeight);"
+                                    actionListener="${bean.refreshReplies}" update="@form">
+                                    <f:attribute name="locking" value="never" />
+                                </p:commandButton>
                             </td>
                         </tr>
-                    </ui:repeat>
-                </table>
+                    </table>
+                </ui:fragment>
+
+                <script language="javascript">
+                    var rbox=$('#repliesBox');
+                    rbox.scrollTop(rbox[0].scrollHeight);
+                </script>
             </p:tab>
 
+            <ui:remove>
+                <p:tab id="statingTab" title="表态">
+                </p:tab>
+            </ui:remove>
         </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
         <ui:insert name="dialogs.taskTemplate" />
 
-        <icsf:choosePrincipalDialog id="chooseAssigneeDialog" var="chooseAssigneeDialog"
-            header="选择问题的执行者" stereo="U" target="${bean.newAssignee}" update=":editDialog:form" />
+        <icsf:choosePrincipalDialog id="chooseObserverDialog" var="chooseObserverDialog"
+            header="选择参与的用户" stereo="U" target="${observerObj.observer}" update=":observersEditView:editForm" />
 
-        <sem:uploadFileDialog id="uploadFileDialog" var="uploadFileDialog"
-            fileUploadListener="${bean.uploadFileListener.handleFileUpload}" update=":addFileForm" />
+        <icsf:choosePrincipalDialog id="chooseCcGroupDialog" var="chooseCcGroupDialog"
+            header="选择抄送的用户组" stereo="G" target="${ccGroupObj.group}" update=":ccGroupsEditView:editForm" />
 
-        <p:dialog header="添加链接" widgetVar="addURLDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
-            <h:form id="addURLForm" style="" rendered="${historicMode != true}">
+        <sem:chooseChanceDialog id="chooseChanceDialog" var="chooseChanceDialog" header="选择销售机会"
+            target="${oo.chance}" update=":editDialog:form:tv:bizTab" />
+
+        <sem:chooseStockOrderDialog id="chooseStockOrderDialog" var="chooseStockOrderDialog"
+            header="选择库存单据" target="${oo.stockOrder}" update=":editDialog:form:tv:bizTab" />
+
+        <fr:listView id="observersEditView" header="成员" style="editDialog" indexView=":editDialog:form:tv:observersIndexView"
+            mbean="${bean.observersMBean}" readonly="#{not bean.editing}">
+            <h:panelGrid columns="2">
+                <h:outputText value="用户：" styleClass="e-link" onclick="#{item.observer.clickAction}" />
+                <h:panelGroup>
+                    <h:inputHidden id="observer" label="用户" value="${item.observer.id_RZ}" />
+                    <h:outputText value="${item.observer.displayName}" />
+                    <p:commandButton id="chooseObserver" value="..." oncomplete="chooseObserverDialog.show()">
+                        <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                            value="U" />
+                    </p:commandButton>
+                </h:panelGroup>
+
+                <h:outputLabel for="label" value="角色：" />
+                <p:inputText id="label" label="角色" value="${item.label}" />
+
+                <h:outputLabel for="manager" value="管理权：" />
+                <p:selectBooleanCheckbox id="manager" value="${item.manager}" />
+
+                <h:outputLabel for="rank" value="权重：" />
+                <p:spinner id="rank" value="${item.rank}" min="0" max="10" />
+            </h:panelGrid>
+        </fr:listView>
+
+        <fr:listView id="ccGroupsEditView" header="抄送组" style="editDialog" indexView=":editDialog:form:tv:ccGroupsIndexView"
+            mbean="${bean.ccGroupsMBean}" readonly="#{not bean.editing}">
+            <h:panelGrid columns="2">
+                <h:outputText value="用户组：" styleClass="e-link" onclick="#{item.group.clickAction}" />
+                <h:panelGroup>
+                    <h:inputHidden id="group" label="用户组" value="${item.group.id_RZ}" />
+                    <h:outputText value="${item.group.displayName}" />
+                    <p:commandButton id="chooseGroup" value="..." oncomplete="chooseCcGroupDialog.show()">
+                        <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                            value="G" />
+                    </p:commandButton>
+                </h:panelGroup>
+
+                <h:outputLabel for="description" value="备注：" />
+                <p:inputText id="description" label="备注" value="${item.description}" />
+            </h:panelGrid>
+        </fr:listView>
+
+        <p:dialog header="添加链接" widgetVar="addHrefDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="addHrefForm" style="" rendered="${historicMode != true}">
                 <h:panelGrid id="urlGrid" columns="2" columnClasses="f-right, f-left" style="width: 100%">
                     <ui:fragment>
                         <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/page_white_world.png" />
@@ -253,22 +382,25 @@
                     </ui:fragment>
                     <p:inputText id="url" label="链接地址" value="${bean.url}" style="width: 100%" />
                     <h:outputText value="名称：" />
-                    <p:inputText id="urlName" label="名称" value="${bean.urlName}" style="width: 100%" />
+                    <p:inputText id="urlLabel" label="名称" value="${bean.urlLabel}" style="width: 100%" />
                     <h:outputText value="描述：" />
                     <p:inputTextarea id="urlDescription" label="描述" value="${bean.urlDescription}"
                         style="width: 100%" />
                 </h:panelGrid>
                 <p:watermark for="url" value="输入链接地址" />
-                <p:watermark for="urlName" value="输入链接名称" />
+                <p:watermark for="urlLabel" value="输入链接名称" />
                 <p:watermark for="urlDescription" value="输入链接描述" />
                 <p:separator />
                 <div align="right">
-                    <p:commandButton id="addButton" value="确定" onclick="waitbox.show()" actionListener="${bean.addURL}"
-                        oncomplete="waitbox.hide(); addURLDialog.hideValidated(args)" update=":editDialog:form" />
-                    <p:commandButton id="cancelButton" value="取消" onclick="addURLDialog.hide()" />
+                    <p:commandButton id="addButton" value="确定" onclick="waitbox.show()" actionListener="${bean.addHref}"
+                        oncomplete="waitbox.hide(); addHrefDialog.hideValidated(args)" update=":editDialog:form" />
+                    <p:commandButton id="cancelButton" value="取消" onclick="addHrefDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>
+
+        <sem:uploadFileDialog id="uploadFileDialog" var="uploadFileDialog"
+            fileUploadListener="${bean.uploadFileListener.handleFileUpload}" update=":addFileForm" />
 
         <p:dialog header="添加附件" widgetVar="addFileDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="addFileForm" style="" rendered="${historicMode != true}">
@@ -278,18 +410,18 @@
                         <h:outputText value="文件名：" />
                     </ui:fragment>
                     <h:panelGroup>
-                        <h:outputText value="${bean.filePath}" />
+                        <h:outputLabel for="uploadButton" value="${bean.filePath}" />
                         <p:commandButton id="uploadButton" value="上传" onclick="uploadFileDialog.show()" />
                     </h:panelGroup>
 
-                    <h:outputText value="名称：" />
-                    <p:inputText id="fileName" label="名称" value="${bean.fileName}" style="width: 100%" />
+                    <h:outputLabel for="fileLabel" value="名称：" />
+                    <p:inputText id="fileLabel" label="名称" value="${bean.fileLabel}" style="width: 100%" />
 
-                    <h:outputText value="描述：" />
+                    <h:outputLabel for="fileDescription" value="描述：" />
                     <p:inputTextarea id="fileDescription" label="描述" value="${bean.fileDescription}"
                         style="width: 100%" />
                 </h:panelGrid>
-                <p:watermark for="fileName" value="输入附件名称" />
+                <p:watermark for="fileLabel" value="输入附件名称" />
                 <p:watermark for="fileDescription" value="输入附件描述" />
                 <p:separator />
                 <div align="right">

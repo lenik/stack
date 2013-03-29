@@ -4,18 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.icsf.principal.User;
-import com.bee32.sem.mail.entity.Message;
+import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.sem.file.entity.FileBlob;
 
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "issue_reply_seq", allocationSize = 1)
-public class IssueReply
-        extends Message<IssueReply> {
+@SequenceGenerator(name = "idgen", sequenceName = "issue_attachment_seq", allocationSize = 1)
+public class IssueAttachment
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     private Issue issue;
-    private User user;
+    private FileBlob fileBlob;
 
     @ManyToOne(optional = false)
     public Issue getIssue() {
@@ -29,14 +29,14 @@ public class IssueReply
     }
 
     @ManyToOne(optional = false)
-    public User getUser() {
-        return user;
+    public FileBlob getFileBlob() {
+        return fileBlob;
     }
 
-    public void setUser(User user) {
-        if (user == null)
-            throw new NullPointerException("user");
-        this.user = user;
+    public void setFileBlob(FileBlob fileBlob) {
+        if (fileBlob == null)
+            throw new NullPointerException("fileBlob");
+        this.fileBlob = fileBlob;
     }
 
 }

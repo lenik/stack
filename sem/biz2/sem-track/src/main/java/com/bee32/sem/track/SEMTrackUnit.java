@@ -9,6 +9,7 @@ import com.bee32.sem.mail.SEMMailUnit;
 import com.bee32.sem.makebiz.SEMMakebizUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.track.entity.Issue;
+import com.bee32.sem.track.entity.IssueAttachment;
 import com.bee32.sem.track.entity.IssueCcGroup;
 import com.bee32.sem.track.entity.IssueHref;
 import com.bee32.sem.track.entity.IssueObserver;
@@ -23,9 +24,10 @@ public class SEMTrackUnit
     protected void preamble() {
         add(Issue.class);
         add(IssueHref.class);
-        add(IssueReply.class);
+        add(IssueAttachment.class);
         add(IssueObserver.class);
         add(IssueCcGroup.class);
+        add(IssueReply.class);
     }
 
 }

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.free.ParseException;
 
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
@@ -13,16 +14,33 @@ import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.track.entity.IssueObserver;
 
 public class IssueObserverDto
-        extends UIEntityDto<IssueObserver, Long> {
-
-    IssueDto issue;
-    UserDto observer;
-    int rank;
-    boolean manager;
-    boolean fav;
-    String stateText;
+        extends UIEntityDto<IssueObserver, Long>
+        implements IEnclosedObject<IssueDto> {
 
     private static final long serialVersionUID = 1L;
+
+    private IssueDto issue;
+    private UserDto observer;
+    private int rank;
+    private boolean manager;
+    private boolean fav;
+    private String stateText;
+
+    @Override
+    public IssueDto getEnclosingObject() {
+        return getIssue();
+    }
+
+    @Override
+    public void setEnclosingObject(IssueDto enclosingObject) {
+        setIssue(enclosingObject);
+    }
+
+    @Override
+    protected Object clone()
+            throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     @Override
     protected void _marshal(IssueObserver source) {

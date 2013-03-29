@@ -1,5 +1,6 @@
 package com.bee32.sem.mail.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ public abstract class Message<self_t extends Message<?>>
     // private Message template;
     private String text = "";
     private self_t prev;
-    private List<self_t> follows;
+    private List<self_t> follows = new ArrayList<self_t>();
 
     /**
      * 优先级
