@@ -13,10 +13,10 @@ public class SEMTrackMenu
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
     static Location prefix = WEB_APP.join(SEMTrackModule.PREFIX);
 
-    public transient MenuNode TRACK = _frame_.SUPPORT;
+    public MenuNode TRACK = menu(_frame_.OA, 30, "TRACK");
 
     MenuNode my = entry(TRACK, 10, "my", prefix.join("/issue/my"));
     MenuNode inbox = entry(TRACK, 20, "inbox", prefix.join("/issue/inbox"));
-    MenuNode archived = entry(TRACK, 30, "archived", prefix.join("/issue/archievd"));
+    MenuNode archived = entry(TRACK, 30, "archived", prefix.join("/issue/archived"));
 
 }
