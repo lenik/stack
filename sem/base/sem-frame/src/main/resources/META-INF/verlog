@@ -1,7 +1,56 @@
+SEM-2.5.11 (谢继雷, 2013-03-29)
+	* listView: Added new panel-bare, indexPanel-bare styles without fieldset/legends.
+
+SEM-2.5.10 (金卫林, 朱挺峰, 2013-03-28)
+	* 菜单调整
+	* 菜单调整
+	* 调整菜单
+	* 菜单调整
+	* bom中不显示原材料分类。
+	* 物料导入基本完成。
+
+SEM-2.5.9 (朱挺峰, 金卫林, 2013-03-27)
+	* 物料加入编码输入
+	* 修改BOM导入后不能显示。
+	* 物料导入临时提交。
+	* 修改BOM查询错误。
+	* 物料导入临时提交。
+
+SEM-2.5.8 (朱挺峰, 2013-03-26)
+	* sem-makebiz: 修改物料导入不能导入。
+
+SEM-2.5.7 (朱挺峰, 2013-03-25)
+	* sem-makebiz: 物料导入错误修改。
+
+SEM-2.5.6 (谢继雷, 2013-03-22)
+	* sem-track: Refactor issue design, reused some Apex views.
+
+SEM-2.5.5 (朱挺峰, 2013-03-21)
+	* sem-track: 问题跟踪菜单修正。
+	* sem-track: 重命名重复的 editing 属性。
+	* sem-uber: 添加到sem-track的数据依赖.
+	* sem-track: 添加菜单裁剪信息.
+	* uber添加到sem-track模块的依赖.
+
+SEM-2.5.4 (谢继雷, 2013-03-19)
+	* Organized imports.
+	* sem-process: Rearrange the dependencies: sem-frame/apex.
+	* Version management: jackson/json mapper, commons-collections are conflicted: apex/jreport.
+	* sem-process: Use CommentEntity.message to display i18n strings.
+	* sem-process: Fixed locked inputs in task-related pages.
+
+SEM-2.5.3 (金卫林, 2013-03-06)
+	* fix "MakeTaskItemDto  doesn't have property named process" problem
+	* 用户管理编辑对话框加入描述
+
+SEM-2.5.2 (谢继雷, 2013-03-04)
+	* Refactor STL commands, added stack-trace and bcast functions.
+
 SEM-2.5.1 (谢继雷, 2013-03-02)
-	* Released SEM-2.5.0.
+	* Released SEM-2.5.1.
 
 SEM-2.5.0 (朱挺峰, 谢继雷, 2013-03-01)
+	* Added missing resources.
 	* NLS updated.
 	* 在资源文件中加入类名。
 	* 在资源文件中加入类名。
