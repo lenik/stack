@@ -15,7 +15,7 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.mail.dto.MessageDto;
 import com.bee32.sem.track.entity.Issue;
-import com.bee32.sem.track.entity.IssueState;
+import com.bee32.sem.track.util.IssueState;
 
 public class IssueDto
         extends MessageDto<Issue, IssueDto> {

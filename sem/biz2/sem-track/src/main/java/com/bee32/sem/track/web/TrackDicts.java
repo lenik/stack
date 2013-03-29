@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DataViewBean;
-import com.bee32.sem.track.entity.IssueState;
+import com.bee32.sem.track.util.IssueState;
 
 public class TrackDicts
         extends DataViewBean {

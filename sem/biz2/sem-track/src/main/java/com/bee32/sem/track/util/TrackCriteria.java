@@ -11,7 +11,6 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.entity.IssueReply;
-import com.bee32.sem.track.entity.IssueState;
 
 public class TrackCriteria
         extends CriteriaSpec {

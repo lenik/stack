@@ -1,4 +1,4 @@
-package com.bee32.sem.track.entity;
+package com.bee32.sem.track.util;
 
 import java.util.Collection;
 

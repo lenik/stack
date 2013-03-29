@@ -6,7 +6,7 @@ import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.entity.IssueReply;
-import com.bee32.sem.track.entity.IssueState;
+import com.bee32.sem.track.util.IssueState;
 
 public class SEMTrackSamples
         extends NormalSamples {
