@@ -51,7 +51,7 @@ public class SocketRenderer
             url = PortProxyHack.portRewrite(url);
         }
 
-        logger.info("SocketRenderer url=" + url);
+        // logger.info("SocketRenderer url=" + url);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
