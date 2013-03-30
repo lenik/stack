@@ -58,9 +58,6 @@ public class MaterialBatchImportBean
     int countExistedBom = 0;
     int countErrorBom = 0;
 
-    int globalTemp = 0;
-    String currentLabel = "currentLabel";
-    int progress = 0;
     private Map<String, Material> cacheMaterial;
     private List<Part> cachePart;
 
@@ -81,7 +78,6 @@ public class MaterialBatchImportBean
                 try {
                     materialService.saveOrUpdate(mate);
                     countSavedMaterial++;
-                    currentLabel = "正在导入物料：" + label + "规格：" + modelSpec;
                 } catch (Exception e) {
                     uiLogger.warn("导入物料：" + label + "，规格：" + modelSpec + "时发生未知错误");
                     countErrorMaterial++;
@@ -90,7 +86,6 @@ public class MaterialBatchImportBean
                 cacheMaterial.put(label + modelSpec, toImport);
                 countExistedMaterial++;
             }
-            globalTemp++;
         }
 
         importedMaterial = true;
@@ -115,15 +110,13 @@ public class MaterialBatchImportBean
             if (null == p) {
                 try {
                     partService.saveOrUpdate(part);
-                    currentLabel = "正在导入BOM：" + label;
                     countSavedBom++;
                 } catch (Exception e) {
-                    uiLogger.warn("导入BOM:" + label + "型号：" + module + "时发生未知错误");
                     countErrorBom++;
+                    uiLogger.warn("导入BOM:" + label + "型号：" + module + "时发生未知错误");
                 }
             } else
                 countExistedBom++;
-            globalTemp++;
         }
 
         importedBom = true;
@@ -247,8 +240,10 @@ public class MaterialBatchImportBean
                 switch (materialUnit) {
                 case "g":
                     mate.setUnit(units.PIECE);
+                    break;
                 case "k":
                     mate.setUnit(units.KILOGRAM);
+                    break;
                 default:
                     mate.setUnit(units.PIECE);
                 }
@@ -761,21 +756,6 @@ public class MaterialBatchImportBean
 
     public int getCountErrorBom() {
         return countErrorBom;
-    }
-
-    public String getCurrentLabel() {
-        return currentLabel;
-    }
-
-    public int getProgress() {
-        if (materialSize == 0 || partSize == 0)
-            return 0;
-        System.out.println(">>>>>>>>>>" + globalTemp);
-        progress = (int) (globalTemp / (materialSize + partSize)) * 100;
-        System.out.println(">>>>>>>>>" + progress);
-        if (progress > 100)
-            progress = 100;
-        return progress;
     }
 
 }
