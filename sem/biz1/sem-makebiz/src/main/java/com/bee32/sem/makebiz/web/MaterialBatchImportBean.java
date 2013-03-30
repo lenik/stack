@@ -1,6 +1,9 @@
 package com.bee32.sem.makebiz.web;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,9 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -30,41 +33,196 @@ public class MaterialBatchImportBean
 
     private static final long serialVersionUID = 1L;
     static String regex = "(?=([\\d]))(?<=([A-Z\\[Φ]))";
+    static Pattern emptyLinePattern = Pattern.compile("[0-9]");
 
     ChanceDto target;
     boolean upload = false;
     boolean analysis = false;
-    boolean imported = false;
+    boolean importedMaterial = false;
+    boolean importedBom = false;
+
     String uploadedFileName;
-    UploadedFile file;
+    private File tempFile;
 
-    Set<String> materials_toImport;
-    Set<String> parts_toImport;
+    Set<String> partsToImport;
 
-    int materialSize;
-    int saveMaterialCount;
-    int existMaterialCount;
-    int compSize;
-    int partSize;
-    int savePartCount;
-    int existPartCount;
+    int materialSize; // 物料总数
+    int compSize; // 构件总数
+    int partSize; // 零件总数
 
-    public void doImport() {
-        if (target == null) {
-            uiLogger.warn("请选择对应销售机会");
-            return;
+    int countSavedMaterial = 0;
+    int countExistedMaterial = 0;
+    int countErrorMaterial = 0;
+
+    int countSavedBom = 0;
+    int countExistedBom = 0;
+    int countErrorBom = 0;
+
+    int globalTemp = 0;
+    String currentLabel = "currentLabel";
+    int progress = 0;
+    private Map<String, Material> cacheMaterial;
+    private List<Part> cachePart;
+
+    // 导入物料
+    public void importMaterial() {
+
+        countSavedMaterial = 0;
+        countExistedMaterial = 0;
+        countErrorMaterial = 0;
+
+        for (Material mate : cacheMaterial.values()) {
+
+            String label = mate.getLabel();
+            String modelSpec = mate.getModelSpec();
+            IEntityAccessService<Material, Long> materialService = DATA(Material.class);
+            Material toImport = materialService.getUnique(MakebizCriteria.existingMaterialCheck(label, modelSpec));
+            if (null == toImport) {
+                try {
+                    materialService.saveOrUpdate(mate);
+                    countSavedMaterial++;
+                    currentLabel = "正在导入物料：" + label + "规格：" + modelSpec;
+                } catch (Exception e) {
+                    uiLogger.warn("导入物料：" + label + "，规格：" + modelSpec + "时发生未知错误");
+                    countErrorMaterial++;
+                }
+            } else {
+                cacheMaterial.put(label + modelSpec, toImport);
+                countExistedMaterial++;
+            }
+            globalTemp++;
         }
 
-        Map<String, Material> cacheMaterial = new HashMap<String, Material>();
-        List<Part> parts = new ArrayList<Part>();
+        importedMaterial = true;
+        uiLogger.info("已有" + countExistedMaterial + "个物料已存在 <未导入>");
+        uiLogger.info("本次导入" + countSavedMaterial + "个物料");
 
+    }
+
+    // 导入bom
+    public void importBom() {
+
+        countSavedBom = 0;
+        countExistedBom = 0;
+        countErrorBom = 0;
+
+        for (Part part : cachePart) {
+            Material material = part.getTarget();
+            String label = material.getLabel();
+            String module = material.getModelSpec();
+            IEntityAccessService<Part, Integer> partService = DATA(Part.class);
+            Part p = partService.getUnique(MakebizCriteria.existingPartCheck(label, module));
+            if (null == p) {
+                try {
+                    partService.saveOrUpdate(part);
+                    currentLabel = "正在导入BOM：" + label;
+                    countSavedBom++;
+                } catch (Exception e) {
+                    uiLogger.warn("导入BOM:" + label + "型号：" + module + "时发生未知错误");
+                    countErrorBom++;
+                }
+            } else
+                countExistedBom++;
+            globalTemp++;
+        }
+
+        importedBom = true;
+        uiLogger.info("本次BOM导入完毕");
+    }
+
+    public void doAnalysis() {
+
+        Set<String> materials = new HashSet<String>(); // materials
+        Set<String> parts = new HashSet<String>(); // parts
+        Map<String, String> temp_parts = new HashMap<String, String>(); // tmp_parts
+        List<String> prefixs = new ArrayList<String>();
+
+        boolean tempStatus = true; // true is the default value, if the value is false, result is
+// broken
+        int countLine = 0;
+        String globalPrefix = String.valueOf(target.getId());
+        InputStream inputstream = null;
+        BufferedReader bufferedReader = null;
+
+        // 生成特定格式的物料和bom字符集
+        try {
+            inputstream = new FileInputStream(tempFile);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputstream, "gbk");
+            bufferedReader = new BufferedReader(inputStreamReader);
+            int partCount = 0;
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                countLine++;
+                if (line.indexOf("材料表") >= 0)
+                    continue;
+                if (line.indexOf("编号") >= 0) {
+                    prefixs.clear();
+                    parts.addAll(temp_parts.values());
+                    temp_parts.clear();
+                    continue;
+                }
+                if (line.length() <= 10)
+                    continue;
+                if (!emptyLinePattern.matcher(line).find())
+                    continue;
+                if (line.indexOf("VALUE") >= 0) {
+                    tempStatus = false;
+                    uiLogger.error("解析文件" + countLine + "行时发现错误，本行记录不会进入分析结果");
+                    uiLogger.info("本次解析即将停止");
+                    break;
+                }
+
+                String[] split = line.split(",");
+                if (split[2].length() == 0) {// 是构件
+                    String prefix = globalPrefix + "-" + split[0];
+                    prefixs.add(prefix);
+                    String compMaterial = prefix + "," + split[1] + ",g,c," + split[4] + "," + split[6];
+                    materials.add(compMaterial);
+
+                    // part string
+                    String string_part = prefix + split[1] + ",c,{";
+                    temp_parts.put(globalPrefix + "-" + split[0], string_part);
+
+                } else {// 是零件
+                    for (String pre : prefixs) {
+                        Object[] convertedArray = convertMaterial(split, pre);
+                        List<String> result = (List<String>) convertedArray[0];
+                        String convertPart = (String) convertedArray[1];
+                        partCount = partCount + (int) convertedArray[2];
+
+                        materials.addAll(result);
+
+                        String temp_part_string = temp_parts.get(pre);
+                        temp_part_string = temp_part_string + convertPart + "/";
+                        temp_parts.put(pre, temp_part_string);
+                    }
+                }
+            }
+
+            if (temp_parts.values().size() > 0)
+                parts.addAll(temp_parts.values());
+
+            bufferedReader.close();
+            partSize = partCount;
+
+        } catch (Exception e) {
+            analysis = false;
+            uiLogger.warn("文件格式不正确");
+            uiLogger.warn("错误发生在" + countLine + "行,请检查您的文件是否符合规范");
+        }
+
+        // 由特定的格式转化成物料
+        cacheMaterial = new HashMap<String, Material>();
         Units units = BEAN(Units.class);
         MaterialCategories category = BEAN(MaterialCategories.class);
-        // import materials
-        if (null != materials_toImport && materials_toImport.size() > 0)
-            for (String material : materials_toImport) {
+
+        for (String material : materials) {
+            String materialLabel = null;
+            try {
                 String[] split = material.split(",");
-                String materialLabel = split[0];
+                materialLabel = split[0];
+                if (null == materialLabel)
+                    materialLabel = "unknowMaterial";
                 String materialModule = split[1];
                 String materialUnit = split[2];
                 String materialCategory = split[3];
@@ -96,46 +254,28 @@ public class MaterialBatchImportBean
                 }
 
                 cacheMaterial.put(materialLabel + materialModule, mate);
+            } catch (Exception e) {
+                tempStatus = false;
+                uiLogger.warn("生成物料时" + materialLabel + "时发生错误" + e.getMessage());
             }
 
-        IEntityAccessService<Material, Long> materialService = DATA(Material.class);
-
-        int countMaterial_save = 0; // 存如数据库的物料 个数
-        int countMaterial_exsit = 0; // 已经存在的物料 个数
-        for (Material mate : cacheMaterial.values()) {
-            String label = mate.getLabel();
-            String module = mate.getModelSpec();
-            Material m = materialService.getUnique(MakebizCriteria.existingMaterialCheck(label, module));
-            if (null == m) {
-                materialService.save(mate);
-                countMaterial_save++;
-            } else {
-                cacheMaterial.put(label + module, m);
-                countMaterial_exsit++;
-            }
         }
 
-        saveMaterialCount = countMaterial_save;
-        existMaterialCount = countMaterial_exsit;
-        uiLogger.info(countMaterial_exsit + "个物料已存在 <未导入>");
-        uiLogger.info("本次导入" + countMaterial_save + "个物料");
-
-        // 导入BOM
-        if (null != parts_toImport && parts_toImport.size() > 0)
-            for (String partString : parts_toImport) {
+        // 由特定的格式转化成BOM
+        cachePart = new ArrayList<Part>();
+        for (String partString : parts) {
+            try {
                 int index = partString.indexOf("{");
                 String materialPattern = partString.substring(0, index);
 
                 String[] partItems = materialPattern.split(",");
                 String string = partItems[0];
-                System.out.println("part level1 material " + string);
                 Material material = cacheMaterial.get(string);
                 if (null == material)
                     System.out.println("mmmmmm is nulllllllll");
 
                 Part partLevel1 = new Part();
                 partLevel1.setTarget(material);
-//                partLevel1.setCategory(category.component);
 
                 String children = partString.substring(index + 1);
                 String[] split = children.split("/");
@@ -145,21 +285,18 @@ public class MaterialBatchImportBean
 
                     int cIndex = child.indexOf("{");
                     String cPart = child.substring(0, cIndex);
-                    System.out.println("========" + cPart + "========");
                     String cchildren = child.substring(cIndex + 1);
                     String[] strings = cPart.split(",");
                     String key = strings[0];
-                    System.out.println("part  level2 material" + key);
                     BigDecimal quantity = new BigDecimal(strings[1]);
 
                     Part partLevel2 = new Part();
-                    Material material2 = cacheMaterial.get(key);
-                    if (null == material2) {
-                        System.out.println("|||||||  material2 is null");
+                    Material targetPartLevel2 = cacheMaterial.get(key);
+                    if (null == targetPartLevel2) {
+                        System.out.println(">>>>> target of partLevel2 is null");
                         System.out.println(key);
                     }
-                    partLevel2.setTarget(material2);
-//                    partLevel2.setCategory(category.rawMaterial);
+                    partLevel2.setTarget(targetPartLevel2);
 
                     PartItem partItemLevel1 = new PartItem();
                     partItemLevel1.setPart(partLevel2);
@@ -172,12 +309,12 @@ public class MaterialBatchImportBean
                         cchildren = cchildren.replace("}", "");
                         String[] cSplit = cchildren.split(",");
                         BigDecimal cquantity = new BigDecimal(cSplit[1]);
-                        Material cMaterial = cacheMaterial.get(cSplit[0]);
-                        if (null == cMaterial)
-                            System.out.println("cmaterial ----------- null");
+                        Material partItemLevel3 = cacheMaterial.get(cSplit[0]);
+                        if (null == partItemLevel3)
+                            System.out.println(">>>>> material of partItemLevel2 is null");
 
                         PartItem partItemLevel2 = new PartItem();
-                        partItemLevel2.setMaterial(cMaterial);
+                        partItemLevel2.setMaterial(partItemLevel3);
                         partItemLevel2.setQuantity(cquantity);
                         partItemLevel2.setParent(partLevel2);
 
@@ -187,32 +324,29 @@ public class MaterialBatchImportBean
 
                         for (String s : split2) {
 
-                            System.out.println("-----------" + s);
                             int dIndex = s.indexOf("{");
                             String dPart = s.substring(0, dIndex);
                             String[] dSplit = dPart.split(",");
-                            Material dMaterial = cacheMaterial.get(dSplit[0]);
-                            if (null == dMaterial)
-                                System.out.println("dMaterial ======== null");
+                            Material targetPartLevel3 = cacheMaterial.get(dSplit[0]);
+                            if (null == targetPartLevel3)
+                                System.out.println(">>>>> target of partLevel3 is null");
                             BigDecimal dquantity = new BigDecimal(dSplit[1]);
 
                             Part partLevel3 = new Part();
-                            partLevel3.setTarget(dMaterial);
-//                            partLevel3.setCategory(category.rawMaterial);
+                            partLevel3.setTarget(targetPartLevel3);
 
-                            System.out.println("PART LEVEL 3:::" + partLevel3.getTarget().getLabel());
                             String dchildren = s.substring(dIndex + 1);
                             dchildren = dchildren.replace("}", "");
 
                             String[] dcSplit = dchildren.split(",");
-                            Material dcMaterial = cacheMaterial.get(dcSplit[0]);
-                            if (null == dcMaterial)
-                                System.out.println("dcccMaterial ======== null");
+                            Material partItemLevel3Material = cacheMaterial.get(dcSplit[0]);
+                            if (null == partItemLevel3Material)
+                                System.out.println(">>>>> material of partItemLevel3 is null");
 
                             PartItem partItemLevel3 = new PartItem();
                             partItemLevel3.setQuantity(new BigDecimal(1));
                             partItemLevel3.setParent(partLevel3);
-                            partItemLevel3.setMaterial(dcMaterial);
+                            partItemLevel3.setMaterial(partItemLevel3Material);
 
                             List<PartItem> level3PartItems = new ArrayList<PartItem>();
                             level3PartItems.add(partItemLevel3);
@@ -224,128 +358,58 @@ public class MaterialBatchImportBean
                             partItemLevel2.setParent(partLevel2);
 
                             level2PartItems.add(partItemLevel2);
-                            parts.add(0, partLevel3);
+                            cachePart.add(0, partLevel3);
                         }
                     }
-
                     partLevel2.setChildren(level2PartItems);
-                    parts.add(partLevel2);
+                    cachePart.add(partLevel2);
                     level1PartItems.add(partItemLevel1);
                 }
                 partLevel1.setChildren(level1PartItems);
-                parts.add(partLevel1);
-            }
+                cachePart.add(partLevel1);
 
-        int countPart_save = 0;
-        int countPart_exsit = 0;
-// partService.saveAll(parts);
-        for (Part part : parts) {
-            Material material = part.getTarget();
-            String label = material.getLabel();
-            String module = material.getModelSpec();
-            Part p = DATA(Part.class).getUnique(MakebizCriteria.existingPartCheck(label, module));
-            if (null == p) {
-                DATA(Part.class).saveOrUpdate(part);
-                countPart_save++;
-            } else
-                countPart_exsit++;
-        }
-
-        savePartCount = countPart_save;
-        existPartCount = countPart_exsit;
-        imported = true;
-        uiLogger.info("本次物料导入完毕");
-    }
-
-    public void doAnalysis()
-            throws IOException {
-
-        String globalPrefix = String.valueOf(target.getId());
-        InputStream inputstream = file.getInputstream();
-        InputStreamReader inputStreamReader = new InputStreamReader(inputstream, "gbk");
-
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-        Set<String> materials = new HashSet<String>(); // materials
-        Set<String> parts = new HashSet<String>(); // parts
-        Map<String, String> temp_parts = new HashMap<String, String>(); // tmp_parts
-
-        List<String> prefixs = new ArrayList<String>();
-
-        int partCount = 0;
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            if (line.indexOf("材料表") >= 0)
-                continue;
-            if (line.indexOf("编号") >= 0) {
-                prefixs.clear();
-                parts.addAll(temp_parts.values());
-                temp_parts.clear();
-                continue;
-            }
-            if (line.length() <= 10)
-                continue;
-
-            String[] split = line.split(",");
-            if (split[2].length() == 0) {// 是构件
-                String prefix = globalPrefix + "-" + split[0];
-                prefixs.add(prefix);
-                System.out.println(line);
-                String compMaterial = prefix + "," + split[1] + ",g,c," + split[4] + "," + split[6];
-                materials.add(compMaterial);
-
-                // part string
-                String string_part = prefix + split[1] + ",c,{";
-                temp_parts.put(globalPrefix + "-" + split[0], string_part);
-
-            } else {// 是零件
-                for (String pre : prefixs) {
-                    Object[] convertedArray = convertMaterial(split, pre);
-                    List<String> result = (List<String>) convertedArray[0];
-                    String convertPart = (String) convertedArray[1];
-                    partCount = partCount + (int) convertedArray[2];
-
-                    materials.addAll(result);
-
-                    String temp_part_string = temp_parts.get(pre);
-                    temp_part_string = temp_part_string + convertPart + "/";
-                    temp_parts.put(pre, temp_part_string);
-                }
+            } catch (Exception e) {
+                tempStatus = false;
+                uiLogger.warn("动态生成《BOM根节点》时发生未知错误" + e.getMessage());
             }
         }
 
-        bufferedReader.close();
-
-        if (temp_parts.values().size() > 0)
-            parts.addAll(temp_parts.values());
-        for (String s : materials) {
-            System.out.println(s);
+        if (tempStatus) {
+            materialSize = materials.size();
+            compSize = parts.size();
+            analysis = true;
+            tempFile.delete();
+            uiLogger.info("解析完毕");
+        } else {
+            materialSize = 0;
+            compSize = 0;
+            analysis = false;
+            uiLogger.info("文件解析过程中发生错误, 请检查文件格式，解析完毕");
         }
-
-        materials_toImport = materials;
-        parts_toImport = parts;
-        materialSize = materials.size();
-        compSize = parts.size();
-        partSize = partCount;
-        analysis = true;
-        uiLogger.info("解析完毕");
     }
 
     public void handleFileUpload(FileUploadEvent event)
             throws IOException {
-        file = event.getFile();
-        uploadedFileName = file.getFileName();
+        uploadedFileName = event.getFile().getFileName();
+
+        tempFile = File.createTempFile(uploadedFileName, "csv");
+        try (InputStream in = event.getFile().getInputstream()) {
+            try (FileOutputStream out = new FileOutputStream(tempFile)) {
+                byte[] block = new byte[4096];
+                int countBlock;
+                while ((countBlock = in.read(block)) != -1)
+                    out.write(block, 0, countBlock);
+            }
+        }
+
         upload = true;
         analysis = false;
-        imported = false;
+        importedMaterial = false;
+        importedBom = false;
 
         materialSize = 0;
-        saveMaterialCount = 0;
-        existMaterialCount = 0;
         compSize = 0;
         partSize = 0;
-        savePartCount = 0;
-        existPartCount = 0;
 
         uiLogger.info("上传文件" + uploadedFileName + "成功");
         uiLogger.info("该文件导入后不会被保存");
@@ -647,88 +711,71 @@ public class MaterialBatchImportBean
         return upload;
     }
 
-    public void setUpload(boolean upload) {
-        this.upload = upload;
-    }
-
     public boolean isAnalysis() {
         return analysis;
     }
 
-    public void setAnalysis(boolean analysis) {
-        this.analysis = analysis;
+    public boolean isImportedMaterial() {
+        return importedMaterial;
     }
 
-    public boolean isImported() {
-        return imported;
-    }
-
-    public void setImported(boolean imported) {
-        this.imported = imported;
+    public boolean isImportedBom() {
+        return importedBom;
     }
 
     public String getUploadedFileName() {
         return uploadedFileName;
     }
 
-    public void setUploadedFileName(String uploadedFileName) {
-        this.uploadedFileName = uploadedFileName;
-    }
-
     public int getMaterialSize() {
         return materialSize;
-    }
-
-    public void setMaterialSize(int materialSize) {
-        this.materialSize = materialSize;
-    }
-
-    public int getSaveMaterialCount() {
-        return saveMaterialCount;
-    }
-
-    public void setSaveMaterialCount(int saveMaterialCount) {
-        this.saveMaterialCount = saveMaterialCount;
-    }
-
-    public int getExistMaterialCount() {
-        return existMaterialCount;
-    }
-
-    public void setExistMaterialCount(int existMaterialCount) {
-        this.existMaterialCount = existMaterialCount;
     }
 
     public int getCompSize() {
         return compSize;
     }
 
-    public void setCompSize(int compSize) {
-        this.compSize = compSize;
-    }
-
     public int getPartSize() {
         return partSize;
     }
 
-    public void setPartSize(int partSize) {
-        this.partSize = partSize;
+    public int getCountSavedMaterial() {
+        return countSavedMaterial;
     }
 
-    public int getSavePartCount() {
-        return savePartCount;
+    public int getCountExistedMaterial() {
+        return countExistedMaterial;
     }
 
-    public void setSavePartCount(int savePartCount) {
-        this.savePartCount = savePartCount;
+    public int getCountErrorMaterial() {
+        return countErrorMaterial;
     }
 
-    public int getExistPartCount() {
-        return existPartCount;
+    public int getCountSavedBom() {
+        return countSavedBom;
     }
 
-    public void setExistPartCount(int existPartCount) {
-        this.existPartCount = existPartCount;
+    public int getCountExistedBom() {
+        return countExistedBom;
+    }
+
+    public int getCountErrorBom() {
+        return countErrorBom;
+    }
+
+    public String getCurrentLabel() {
+        return currentLabel;
+    }
+
+    public int getProgress() {
+        if (materialSize == 0 || partSize == 0)
+            return 0;
+        System.out.println(">>>>>>>>>>" + globalTemp);
+        progress = (int) (globalTemp / (materialSize + partSize)) * 100;
+        System.out.println(">>>>>>>>>" + progress);
+        if (progress > 100)
+            progress = 100;
+        return progress;
     }
 
 }

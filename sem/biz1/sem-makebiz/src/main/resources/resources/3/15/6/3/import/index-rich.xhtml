@@ -2,8 +2,10 @@
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="物料导入" />
     <ui:param name="bean" value="${materialBatchImportBean}" />
+
+    <ui:define name="title">材料表导入</ui:define>
+
 
     <ui:define name="styles">
         <link rel="stylesheet" type="text/css" href="bubble.css" />
@@ -25,15 +27,15 @@
                     <p:fieldset legend="STEP2:选择导入文件" toggleable="true" toggleSpeed="500" rendered="#{bean.target != null}">
                         <h:outputText value="已上传文件：" rendered="#{bean.upload}" />
                         <h:outputText value="#{bean.uploadedFileName}" rendered="#{bean.upload}" />
-                        <p:fileUpload fileUploadListener="#{bean.handleFileUpload}" mode="advanced"
-                            update=":mainForm:analysis, :mainForm:uploadView, :mainForm:import," sizeLimit="100000"
-                            allowTypes="/(\.|\/)(csv)$/" />
+                        <p:fileUpload fileUploadListener="#{bean.handleFileUpload}" mode="advanced" label="选择文件"
+                            uploadLabel="开始上传" cancelLabel="取消" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/"
+                            update=":mainForm:analysis, :mainForm:uploadView, :mainForm:importMaterial, :mainForm:importBom," />
                     </p:fieldset>
                 </t:div>
                 <t:div id="analysis">
                     <p:fieldset legend="SETP3:解析文件" toggleable="true" toogleSpeed="500" rendered="#{bean.upload}">
                         <p:commandButton value="开始解析" actionListener="#{bean.doAnalysis}"
-                            update=":mainForm:import, :mainForm:analysis" rendered="#{!bean.analysis}" />
+                            update=":mainForm:importMaterial, :mainForm:analysis" rendered="#{!bean.analysis}" />
                         <t:panelGrid columns="2" rendered="#{bean.analysis}">
                             <h:outputText value="解析得：" />
                             <h:outputText value="" />
@@ -49,34 +51,50 @@
                         </t:panelGrid>
                     </p:fieldset>
                 </t:div>
-                <t:div id="import">
-                    <p:fieldset legend="SETP4:导入数据" toggleable="true" toogleSpeed="500" rendered="#{bean.analysis}">
-                        <p:commandButton value="导入数据" actionListener="#{bean.doImport}" update=":mainForm:import"
-                            rendered="#{!bean.imported}" onclick="waitbox.show();" oncomplete="waitbox.hide()"/>
-                        <t:panelGrid columns="2" rendered="#{bean.imported}">
-                            <h:outputText value="导入结果：" />
+                <t:div id="importMaterial">
+                    <p:fieldset legend="SETP4:导入物料" toggleable="true" toggleSpeed="500" rendered="#{bean.analysis}">
+                        <p:commandButton value="导入物料" actionListener="#{bean.importMaterial}"
+                            update=":mainForm:importMaterial, :mainForm:importBom" rendered="#{!bean.importedMaterial}" />
+                        <t:panelGrid columns="2" rendered="#{bean.importedMaterial}">
+                            <h:outputText value="物料导入结果:" />
                             <h:outputText value="" />
 
-                            <h:outputText value="导入物料：" />
-                            <h:outputText value="#{bean.saveMaterialCount}" />
+                            <h:outputText value="已导入物料：" />
+                            <h:outputText value="#{bean.countSavedMaterial}" />
 
-                            <h:outputText value="重复物料：" />
-                            <h:outputText value="#{bean.existMaterialCount}(未导入)" />
+                            <h:outputText value="已存在物料(未导入)：" />
+                            <h:outputText value="#{bean.countExistedMaterial}" />
+
+                            <h:outputText value="错误记录：" />
+                            <h:outputText value="#{bean.countErrorMaterial}" />
+                        </t:panelGrid>
+                    </p:fieldset>
+                </t:div>
+                <t:div id="importBom">
+                    <p:fieldset legend="SETP5:导入BOM" toggleable="true" toogleSpeed="500" rendered="#{bean.importedMaterial}">
+                        <p:commandButton value="导入BOM" actionListener="#{bean.importBom}" update=":mainForm:importBom"
+                            rendered="#{!bean.importedBom}" />
+                        <t:panelGrid columns="2" rendered="#{bean.importedBom}">
+                            <h:outputText value="BOM导入结果：" />
+                            <h:outputText value="" />
 
                             <h:outputText value="导入BOM：" />
-                            <h:outputText value="#{bean.savePartCount}" />
+                            <h:outputText value="#{bean.countSavedBom}" />
 
-                            <h:outputText value="导入BOM：" />
-                            <h:outputText value="#{bean.existPartCount}(未导入)" />
+                            <h:outputText value="已存在BOM(未导入)：" />
+                            <h:outputText value="#{bean.countExistedBom}" />
+
+                            <h:outputText value="错误记录(未导入)：" />
+                            <h:outputText value="#{bean.countErrorBom}" />
                         </t:panelGrid>
                     </p:fieldset>
                 </t:div>
             </h:form>
 
-            <sem:chooseChanceDialog id="chooseChanceDialog" target="${bean.target}"
-                update=":mainForm:chance, :mainForm:uploadView" />
-
         </div>
+
+        <sem:chooseChanceDialog id="chooseChanceDialog" target="${bean.target}"
+            update=":mainForm:chance, :mainForm:uploadView" />
     </ui:define>
 
 </ui:composition>
