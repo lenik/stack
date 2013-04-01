@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
@@ -27,6 +28,10 @@ public class MaterialCategory
         extends TreeEntityAuto<Integer, MaterialCategory> {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int SERIAL_LENGTH = 32;
+
+    String serial;
 
     CodeGenerator codeGenerator = CodeGenerator.NONE;
     MaterialType materialType = MaterialType.OTHER;
@@ -62,6 +67,7 @@ public class MaterialCategory
 
     protected void _populate(MaterialCategory o) {
         super._populate(o);
+        serial = o.serial;
         codeGenerator = o.codeGenerator;
         materialType = o.materialType;
         materials = new ArrayList<Material>(materials);
@@ -72,6 +78,21 @@ public class MaterialCategory
     @Transient
     protected boolean isUniqueChildren() {
         return true;
+    }
+
+    /**
+     * 编码
+     *
+     * 物料分类编码、物料分类序列号等。
+     */
+    @NaturalId(mutable = true)
+    @Column(length = SERIAL_LENGTH)
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 
     /**

@@ -6,7 +6,9 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.material.entity.CodeGenerator;
 import com.bee32.sem.material.entity.MaterialCategory;
 import com.bee32.sem.material.entity.MaterialType;
@@ -19,6 +21,8 @@ public class MaterialCategoryDto
     public static final int MATERIALS = 0x01000000;
     public static final int PART_COUNTS = 0x02000000;
 
+    String serial;
+
     String name;
     List<MaterialDto> materials;
     int materialCount;
@@ -29,6 +33,7 @@ public class MaterialCategoryDto
 
     @Override
     protected void _marshal(MaterialCategory source) {
+        serial = source.getSerial();
         this.codeGenerator = source.getCodeGenerator();
         this.materialType = source.getMaterialType();
 
@@ -51,6 +56,7 @@ public class MaterialCategoryDto
 
     @Override
     protected void _unmarshalTo(MaterialCategory target) {
+        target.setSerial(serial);
         target.setCodeGenerator(codeGenerator);
         target.setMaterialType(materialType);
 
@@ -61,6 +67,9 @@ public class MaterialCategoryDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+
+        serial = map.getString("serial");
+
         char _cg = map.getChar("codeGenerator");
         codeGenerator = CodeGenerator.forValue(_cg);
         char _materialType = map.getChar("materialType");
@@ -125,6 +134,16 @@ public class MaterialCategoryDto
         for (MaterialCategoryDto child : getChildren())
             total += child.getTotalTopPartCount();
         return total;
+    }
+
+    @NLength(max = MaterialCategory.SERIAL_LENGTH)
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        serial = TextUtil.normalizeSpace(serial, true);
+        this.serial = serial;
     }
 
     public CodeGenerator getCodeGenerator() {
