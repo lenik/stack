@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.chance.entity.Chance;
@@ -44,13 +45,13 @@ public class Issue
     private List<IssueHref> hrefs = new ArrayList<IssueHref>();
     private List<IssueAttachment> attachments = new ArrayList<IssueAttachment>();
     private List<IssueObserver> observers = new ArrayList<IssueObserver>();
-    private List<IssueCcGroup> ccGroups = new ArrayList<IssueCcGroup>();
     private List<IssueReply> replies = new ArrayList<IssueReply>();
 
     private Chance chance;
     private StockOrder stockOrder;
 
     @Column(name = "type", nullable = false)
+    @DefaultValue("I")
     public char getTypeChar() {
         return issueType.getValue();
     }
@@ -176,18 +177,6 @@ public class Issue
         if (observers == null)
             throw new NullPointerException("observers");
         this.observers = observers;
-    }
-
-    @OneToMany(mappedBy = "issue", orphanRemoval = true)
-    @Cascade(CascadeType.ALL)
-    public List<IssueCcGroup> getCcGroups() {
-        return ccGroups;
-    }
-
-    public void setCcGroups(List<IssueCcGroup> ccGroups) {
-        if (ccGroups == null)
-            throw new NullPointerException("ccGroups");
-        this.ccGroups = ccGroups;
     }
 
     @OneToMany(mappedBy = "issue", orphanRemoval = true)

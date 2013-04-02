@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.free.ParseException;
 
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
@@ -20,7 +21,7 @@ public class IssueObserverDto
     private static final long serialVersionUID = 1L;
 
     private IssueDto issue;
-    private UserDto observer;
+    private PrincipalDto observer;
     private int rank;
     private boolean manager;
     private boolean fav;
@@ -79,11 +80,11 @@ public class IssueObserverDto
     }
 
     // @NotNullId
-    public UserDto getObserver() {
+    public PrincipalDto getObserver() {
         return observer;
     }
 
-    public void setObserver(UserDto observer) {
+    public void setObserver(PrincipalDto observer) {
         if (observer == null)
             throw new NullPointerException("observer");
         this.observer = observer;

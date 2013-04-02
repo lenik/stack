@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
@@ -28,7 +28,7 @@ public class IssueObserver
     public static final int STATE_TEXT_LENGTH = 100;
 
     Issue issue;
-    User observer;
+    Principal observer;
     int rank = 1;
     boolean manager;
     boolean fav;
@@ -58,11 +58,11 @@ public class IssueObserver
      */
     @NaturalId
     @ManyToOne(optional = false)
-    public User getObserver() {
+    public Principal getObserver() {
         return observer;
     }
 
-    public void setObserver(User observer) {
+    public void setObserver(Principal observer) {
         if (observer == null)
             throw new NullPointerException("observer");
         this.observer = observer;

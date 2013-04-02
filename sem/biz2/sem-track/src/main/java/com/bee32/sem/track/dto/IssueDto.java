@@ -1,5 +1,6 @@
 package com.bee32.sem.track.dto;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.CopyUtils;
@@ -41,7 +43,7 @@ public class IssueDto
     private List<IssueHrefDto> hrefs;
     private List<IssueAttachmentDto> attachments;
     private List<IssueObserverDto> observers;
-    private List<IssueCcGroupDto> ccGroups;
+    private List<IssueObserverDto> ccGroups;
     private List<IssueReplyDto> replies;
 
     private ChanceDto chance;
@@ -51,7 +53,6 @@ public class IssueDto
     protected void _copy() {
         super._copy();
         observers = CopyUtils.copyList(observers);
-        ccGroups = CopyUtils.copyList(ccGroups);
     }
 
     @Override
@@ -75,15 +76,19 @@ public class IssueDto
         else
             attachments = Collections.emptyList();
 
-        if (selection.contains(OBSERVERS))
-            observers = marshalList(IssueObserverDto.class, source.getObservers());
-        else
+        if (selection.contains(OBSERVERS)) {
+            observers = new ArrayList<IssueObserverDto>();
+            ccGroups = new ArrayList<IssueObserverDto>();
+            for (IssueObserverDto dto : marshalList(IssueObserverDto.class, source.getObservers())) {
+                if (dto.getObserver() instanceof UserDto)
+                    observers.add(dto);
+                else
+                    ccGroups.add(dto);
+            }
+        } else {
             observers = Collections.emptyList();
-
-        if (selection.contains(CC_GROUPS))
-            ccGroups = marshalList(IssueCcGroupDto.class, source.getCcGroups());
-        else
             ccGroups = Collections.emptyList();
+        }
 
         if (selection.contains(EXT_MISC)) {
             chance = mref(ChanceDto.class, source.getChance());
@@ -114,10 +119,12 @@ public class IssueDto
         if (selection.contains(REPLIES))
             mergeList(target, "replies", replies);
 
-        if (selection.contains(OBSERVERS))
-            mergeList(target, "observers", observers);
-        if (selection.contains(CC_GROUPS))
-            mergeList(target, "ccGroups", ccGroups);
+        if (selection.contains(OBSERVERS)) {
+            List<IssueObserverDto> list = new ArrayList<IssueObserverDto>();
+            list.addAll(observers);
+            list.addAll(ccGroups);
+            mergeList(target, "observers", list);
+        }
 
         if (selection.contains(EXT_MISC)) {
             merge(target, "chance", chance);
@@ -158,6 +165,10 @@ public class IssueDto
         if (type == null)
             throw new NullPointerException("type");
         this.type = type;
+    }
+
+    public void switchType() {
+        type = type.next();
     }
 
     public Date getDueDate() {
@@ -234,11 +245,11 @@ public class IssueDto
         this.observers = observers;
     }
 
-    public List<IssueCcGroupDto> getCcGroups() {
+    public List<IssueObserverDto> getCcGroups() {
         return ccGroups;
     }
 
-    public void setCcGroups(List<IssueCcGroupDto> ccGroups) {
+    public void setCcGroups(List<IssueObserverDto> ccGroups) {
         if (ccGroups == null)
             throw new NullPointerException("ccGroups");
         this.ccGroups = ccGroups;

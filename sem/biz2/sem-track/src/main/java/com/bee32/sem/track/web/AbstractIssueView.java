@@ -32,7 +32,6 @@ import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.track.dto.IssueAttachmentDto;
-import com.bee32.sem.track.dto.IssueCcGroupDto;
 import com.bee32.sem.track.dto.IssueDto;
 import com.bee32.sem.track.dto.IssueHrefDto;
 import com.bee32.sem.track.dto.IssueObserverDto;
@@ -368,8 +367,8 @@ public abstract class AbstractIssueView
      *************************************************************************/
     final ListMBean<IssueObserverDto> observersMBean = ListMBean.fromEL(this,//
             "openedObject.observers", IssueObserverDto.class);
-    final ListMBean<IssueCcGroupDto> ccGroupsMBean = ListMBean.fromEL(this,//
-            "openedObject.ccGroups", IssueCcGroupDto.class);
+    final ListMBean<IssueObserverDto> ccGroupsMBean = ListMBean.fromEL(this,//
+            "openedObject.ccGroups", IssueObserverDto.class);
     final ListMBean<IssueHrefDto> hrefsMBean = ListMBean.fromEL(this,//
             "openedObject.hrefs", IssueHrefDto.class);
     final ListMBean<UserFileDto> attachmentsMBean = ListMBean.fromEL(this,//
@@ -381,7 +380,7 @@ public abstract class AbstractIssueView
         return observersMBean;
     }
 
-    public ListMBean<IssueCcGroupDto> getCcGroupsMBean() {
+    public ListMBean<IssueObserverDto> getCcGroupsMBean() {
         return ccGroupsMBean;
     }
 
@@ -416,7 +415,7 @@ public abstract class AbstractIssueView
         return subject + " " + stockOrder.getId() + ": " + stockOrder.getLabel();
     }
 
-//    public void setStockOrderText(String stockOrderText) {
-//    }
+// public void setStockOrderText(String stockOrderText) {
+// }
 
 }
