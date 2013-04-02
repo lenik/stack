@@ -4,18 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Index;
 
@@ -365,7 +354,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
             peer.items.addAll(items);
             // 初始化对等单的项目状态为挂起。
             for (StockOrderItem peerItem : peer.items)
-                peerItem.setStockItemState(StockItemState.PENDING);
+                peerItem.setState(StockItemState.PENDING);
         }
         return peer;
     }

@@ -14,7 +14,6 @@ public class EventStatusDto
 
     private int flagsMask;
     private boolean closed;
-    private int state;
 
     public EventStatusDto() {
         super();
@@ -28,14 +27,12 @@ public class EventStatusDto
     protected void _marshal(EventStatus source) {
         flagsMask = source.getFlagsMask();
         closed = source.isClosed();
-        state = source.getState();
     }
 
     @Override
     protected void _unmarshalTo(EventStatus target) {
         target.setFlagsMask(flagsMask);
         target.setClosed(closed);
-        target.setState(state);
     }
 
     @Override
@@ -43,7 +40,6 @@ public class EventStatusDto
             throws ParseException, TypeConvertException {
         flagsMask = map.getInt("flagsMask");
         closed = map.getBoolean("closed");
-        state = map.getInt("state");
     }
 
 }

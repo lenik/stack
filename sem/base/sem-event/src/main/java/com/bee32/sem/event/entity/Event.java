@@ -7,20 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Index;
 
@@ -212,14 +199,14 @@ public class Event
         this.closed = closed;
     }
 
-    public EventState<?> getEventState() {
-        int state = getState();
-        EventState<?> eventState = EventState.forValue(state);
+    public EventState<?> getState() {
+        int stateInt = getStateInt();
+        EventState<?> eventState = EventState.forValue(stateInt);
         return eventState;
     }
 
-    public void setEventState(EventState<?> state) {
-        setState(state.getValue());
+    public void setState(EventState<?> state) {
+        setStateInt(state.getValue());
     }
 
     @ManyToOne

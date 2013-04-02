@@ -27,18 +27,7 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriorities;
 import com.bee32.sem.event.entity.EventType;
-import com.bee32.sem.process.verify.AbstractVerifyContext;
-import com.bee32.sem.process.verify.DummyVerifyProcessHandler;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.IVerifyPolicy;
-import com.bee32.sem.process.verify.IVerifyProcessAware;
-import com.bee32.sem.process.verify.IVerifyProcessHandler;
-import com.bee32.sem.process.verify.VerifyContextAccessor;
-import com.bee32.sem.process.verify.VerifyEvalState;
-import com.bee32.sem.process.verify.VerifyException;
-import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.VerifyPolicyDao;
-import com.bee32.sem.process.verify.VerifyResult;
+import com.bee32.sem.process.verify.*;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class VerifyService
@@ -175,7 +164,7 @@ public class VerifyService
 
             event.setPriority(eventPriorities.HIGH);
             event.setClosed(state.isFinalized());
-            event.setEventState(state);
+            event.setState(state);
             event.setActor(op);
 
             StringBuilder subjectBuf = new StringBuilder();

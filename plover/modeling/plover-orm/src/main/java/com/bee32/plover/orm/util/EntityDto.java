@@ -62,7 +62,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     boolean _skipId;
     Integer version;
     String altId;
-    int state;
+    int stateInt;
     Date createdDate;
     Date lastModified;
     boolean createdDateDirty;
@@ -195,7 +195,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         _skipId = version == -1;
         altId = source.getAltId();
 
-        setState(source.getState());
+        setStateInt(source.getStateInt());
 
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
@@ -216,7 +216,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             EntityAccessor.setVersion(target, version);
 
         target.setAltId(altId);
-        target.setState(state);
+        target.setStateInt(stateInt);
 
         if (createdDateDirty)
             EntityAccessor.setCreatedDate(target, createdDate);
@@ -729,13 +729,13 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         this.altId = altId;
     }
 
-    public/* final */int getState() {
-        return state;
+    public/* final */int getStateInt() {
+        return stateInt;
     }
 
-    public/* final */void setState(int state) {
-        if (this.state != state) {
-            this.state = state;
+    public/* final */void setStateInt(int stateInt) {
+        if (this.stateInt != stateInt) {
+            this.stateInt = stateInt;
             pfm = null;
         }
     }
@@ -744,8 +744,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (pfm == null) {
             Class<? extends E> entityType = getEntityType();
             StatePropertyFlagsMapMap stateMap = StatePropertyFlagsMapMap.forClass(entityType);
-            pfm = stateMap.getPropertyFlagsMap(state);
-            fillPropertyFlagsMap(state, pfm);
+            pfm = stateMap.getPropertyFlagsMap(stateInt);
+            fillPropertyFlagsMap(stateInt, pfm);
         }
         return pfm;
     }

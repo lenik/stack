@@ -2,17 +2,7 @@ package com.bee32.sem.inventory.entity;
 
 import java.util.Date;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.BatchSize;
 
@@ -59,7 +49,7 @@ public class StockOrderItem
     }
 
     {
-        setStockItemState(StockItemState.NORMAL);
+        setState(StockItemState.NORMAL);
     }
 
     @Override
@@ -198,15 +188,15 @@ public class StockOrderItem
      * 在条目上标志的附加状态。
      */
     @Transient
-    public StockItemState getStockItemState() {
-        int state = getState();
-        StockItemState stockItemState = StockItemState.forValue(state);
-        return stockItemState;
+    public StockItemState getState() {
+        int stateInt = getStateInt();
+        StockItemState state = StockItemState.forValue(stateInt);
+        return state;
     }
 
-    public void setStockItemState(StockItemState stockItemState) {
-        int state = stockItemState.getValue();
-        setState(state);
+    public void setState(StockItemState state) {
+        int stateInt = state.getValue();
+        setStateInt(stateInt);
     }
 
     @Override

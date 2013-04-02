@@ -58,7 +58,7 @@ public abstract class Entity<K extends Serializable>
 
     int version;
     String altId;
-    int state;
+    int stateInt;
 
     Date createdDate = new Date();
     Date lastModified = createdDate;
@@ -233,14 +233,14 @@ public abstract class Entity<K extends Serializable>
     }
 
     @DefaultValue("0")
-    @Column(nullable = false)
+    @Column(name = "state", nullable = false)
     // @Transient
-    public/* final */int getState() {
-        return state;
+    public/* final */int getStateInt() {
+        return stateInt;
     }
 
-    public/* final */void setState(int state) {
-        this.state = state;
+    public/* final */void setStateInt(int stateInt) {
+        this.stateInt = stateInt;
     }
 
     /**

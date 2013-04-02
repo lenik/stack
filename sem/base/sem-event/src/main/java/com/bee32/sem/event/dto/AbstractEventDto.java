@@ -32,7 +32,6 @@ public abstract class AbstractEventDto<E extends Event>
     private int priority;
 
     private int flags;
-    private int stateIndex;
     private boolean closed;
 
     private EventStatusDto status;
@@ -65,7 +64,6 @@ public abstract class AbstractEventDto<E extends Event>
         sourceClass = source.getSourceClass();
 
         priority = source.getPriority();
-        stateIndex = source.getState();
 
         status = mref(EventStatusDto.class, source.getStatus());
         actor = mref(UserDto.class, source.getActor());
@@ -95,7 +93,6 @@ public abstract class AbstractEventDto<E extends Event>
             target.setSourceClass(sourceClass);
 
         target.setPriority(priority);
-        target.setState(stateIndex);
 
         target.setSubject(subject);
         target.setMessage(message);
@@ -126,7 +123,6 @@ public abstract class AbstractEventDto<E extends Event>
         priority = map.getInt("priority");
 
         flags = map.getInt("flags");
-        stateIndex = map.getInt("state");
         closed = map.getBoolean("closed");
 
         status = new EventStatusDto().parseRef(map.getString("statusId"));
@@ -228,10 +224,10 @@ public abstract class AbstractEventDto<E extends Event>
         if (status != null)
             statusText = status.getLabel();
 
-        if (statusText == null && stateIndex != 0) {
+        if (statusText == null && getStateInt() != 0) {
             EventState<?> eventState;
             try {
-                eventState = EventState.forValue(stateIndex);
+                eventState = EventState.forValue(getStateInt());
                 statusText = eventState.getName();
             } catch (NoSuchEnumException e) {
                 statusText = "???";

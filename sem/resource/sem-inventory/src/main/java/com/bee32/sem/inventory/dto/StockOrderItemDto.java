@@ -35,7 +35,6 @@ public class StockOrderItemDto
     BatchArray batchArray;
     Date expirationDate;
     StockLocationDto location;
-    char stateChar;
 
     public StockOrderItemDto() {
         super();
@@ -192,21 +191,16 @@ public class StockOrderItemDto
         this.location = location;
     }
 
-    public StockItemState getStockItemState() {
-        int state = getState();
-        return StockItemState.forValue(state);
+    public StockItemState getState() {
+        int stateInt = getStateInt();
+        return StockItemState.forValue(stateInt);
     }
 
-    public void setState(StockItemState stockItemState) {
-        if (stockItemState == null)
-            throw new NullPointerException("stockItemState");
-        int state = stockItemState.getValue();
-        setState(state);
-    }
-
-    public String getStateText() {
-        StockItemState state = getStockItemState();
-        return state.getDisplayName();
+    public void setState(StockItemState state) {
+        if (state == null)
+            throw new NullPointerException("state");
+        int stateInt = state.getValue();
+        setStateInt(stateInt);
     }
 
 }

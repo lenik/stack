@@ -1,13 +1,7 @@
 package com.bee32.sem.inventory.web;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -121,7 +115,7 @@ public class UnqualifiedQueryBean
 
         sb.append("select ");
         sb.append("    date_trunc('day', a.created_date) as d_day, ");
-        sb.append("	   a.state, ");
+        sb.append("	   a.stateInt, ");
         sb.append("	   sum(a.quantity) as quantity ");
         sb.append("from stock_order_item a ");
         sb.append("left join stock_order b ");
@@ -134,7 +128,7 @@ public class UnqualifiedQueryBean
         }
         sb.append("group by ");
         sb.append("	   date_trunc('day', a.created_date), ");
-        sb.append("	   a.state ");
+        sb.append("	   a.stateInt ");
         sb.append("order by date_trunc('day', a.created_date) ");
 
         Session session = SessionFactoryUtils.getSession(sessionFactory, false);

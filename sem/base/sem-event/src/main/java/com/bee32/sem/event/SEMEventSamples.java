@@ -34,7 +34,7 @@ public class SEMEventSamples
         rain.setAltId("rain" + (++rainIndex));
         rain.setCategory(weather);
         rain.setPriority(eventPriorities.LOW);
-        rain.setEventState(GenericState.UNKNOWN);
+        rain.setState(GenericState.UNKNOWN);
         rain.setClosed(duration != null);
 
         long beginMs = (long) (System.currentTimeMillis() + relativeDay * 86400 * 1000);
@@ -64,7 +64,7 @@ public class SEMEventSamples
         killAngel.setCategory(special);
         killAngel.setSourceClass(SEMEventSamples.class);
         killAngel.setPriority(eventPriorities.HIGH);
-        killAngel.setEventState(GenericState.RUNNING);
+        killAngel.setState(GenericState.RUNNING);
         killAngel.setClosed(false);
         killAngel.setSubject(PREFIX + "EVA 奉命去消灭第18使徒");
         killAngel.setMessage("[绝密] 最好能活捉。");

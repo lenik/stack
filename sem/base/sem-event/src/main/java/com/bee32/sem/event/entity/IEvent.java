@@ -56,7 +56,7 @@ public interface IEvent {
      *
      * @return Internal event state.
      */
-    int getState();
+    int getStateInt();
 
     /**
      * Get the user event status
