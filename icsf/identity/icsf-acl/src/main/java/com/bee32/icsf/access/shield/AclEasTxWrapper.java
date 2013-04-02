@@ -35,6 +35,7 @@ import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.*;
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.inject.spring.Prototype;
 import com.bee32.plover.orm.builtin.PloverConf;
 import com.bee32.plover.orm.config.SiteSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
@@ -44,11 +45,10 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.meta.EntityColumn;
 import com.bee32.plover.ox1.meta.EntityInfo;
-import com.bee32.plover.site.scope.PerSite;
 
 @Service
 @Primary
-@PerSite
+@Prototype
 @Order(0)
 public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         extends EasTxWrapperCat<E, K>

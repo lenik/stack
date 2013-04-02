@@ -37,4 +37,9 @@ public class GenericEntityDao<E extends Entity<? extends K>, K extends Serializa
         this.keyType = keyType;
     }
 
+    @Override
+    public String toString() {
+        return "GenericDAO for " + objectType;
+    }
+
 }
