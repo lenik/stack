@@ -439,7 +439,7 @@ public class MaterialBatchImportBean
         String[] items;
         String materialString = null;
 
-        String part_material = prefix + "-" + str[0] + "," + str[1] + ",g,p," + str[3] + "," + str[4] + "," + str[6];
+        String part_material = prefix + "-" + str[0] + "," + str[1] + ",g,p," + str[4] + "," + str[6];
         materials.add(part_material);
 
         String part = null;
@@ -589,7 +589,7 @@ public class MaterialBatchImportBean
 
     static String materialAssemblerPL(String label, String type, String module) {
         // 物料名称，规格，单位
-        return label + type + "," + module + "mm, k,r";
+        return label + type + "," + module + "mm,k,r";
     }
 
     static String materialAssemblerComm(String prefix, String label, String module) {
