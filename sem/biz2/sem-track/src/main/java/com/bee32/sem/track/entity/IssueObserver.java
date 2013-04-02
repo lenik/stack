@@ -14,9 +14,9 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
- * 问题参与者
+ * 事务参与者
  *
- * 对问题感兴趣或负责的用户列表。
+ * 对事务感兴趣或负责的用户列表。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "issue_observer_seq", allocationSize = 1)
@@ -35,9 +35,9 @@ public class IssueObserver
     String stateText = "";
 
     /**
-     * 问题
+     * 事务
      *
-     * 相关的问题。
+     * 相关的事务。
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -54,7 +54,7 @@ public class IssueObserver
     /**
      * 用户
      *
-     * 对问题感兴趣的用户。
+     * 对事务感兴趣的用户。
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -85,7 +85,7 @@ public class IssueObserver
     /**
      * 管理标志
      *
-     * 用户是否对问题有管理权。
+     * 用户是否对事务有管理权。
      */
     @Column(nullable = false)
     public boolean isManager() {
@@ -99,7 +99,7 @@ public class IssueObserver
     /**
      * 收藏标志
      *
-     * 用户是否收藏了该问题。
+     * 用户是否收藏了该事务。
      */
     @Column(nullable = false)
     public boolean isFav() {

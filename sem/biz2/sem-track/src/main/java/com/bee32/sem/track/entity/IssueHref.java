@@ -8,7 +8,7 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
- * 问题参考链接
+ * 事务参考链接
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "issue_href_seq", allocationSize = 1)

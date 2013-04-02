@@ -4,13 +4,13 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:fr="http://java.sun.com/jsf/composite/frame">
 
     <ui:param name="bean" value="${trackAdminBean}" />
-    <ui:define name="title" value="问题跟踪" />
+    <ui:define name="title" value="事务跟踪" />
 
     <ui:define name="toolbar.left">
         <p:toolbarGroup>
-            <p:commandButton value="新问题" actionListener="${bean.gotoCreateView}" />
+            <p:commandButton value="新事务" actionListener="${bean.gotoCreateView}" />
             <p:separator />
-            <h:outputText value="按问题阶段搜索：" />
+            <h:outputText value="按事务阶段搜索：" />
             <p:selectOneMenu value="${bean.globalState}" panelStyle="width:150px;margin-top:10px;">
                 <p:ajax update=":mainForm:toolbar, :mainForm:dataContainer" />
                 <f:selectItem itemLabel="all" itemValue="" />
@@ -19,9 +19,9 @@
             <p:separator />
             <p:commandButton value="显示全部" disabled="${bean.userId == -1}" actionListener="${bean.allFilter}"
                 update=":mainForm:toolbar, :mainForm:dataContainer" />
-            <p:commandButton value="我关注的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.favfilter}"
+            <p:commandButton value="我关注的事务" disabled="${!(bean.userId == -1)}" actionListener="${bean.favfilter}"
                 update=":mainForm:toolbar, :mainForm:dataContainer" />
-            <p:commandButton value="我负责的问题" disabled="${!(bean.userId == -1)}" actionListener="${bean.oberverfilter}"
+            <p:commandButton value="我负责的事务" disabled="${!(bean.userId == -1)}" actionListener="${bean.oberverfilter}"
                 update=":mainForm:toolbar, :mainForm:dataContainer" />
         </p:toolbarGroup>
     </ui:define>
@@ -34,7 +34,7 @@
         <p:column headerText="优先级" sortBy="${entry._priority}">
             <h:outputText value="${entry.priorityName}" />
         </p:column>
-        <p:column headerText="问题状态">
+        <p:column headerText="事务状态">
             <h:outputText value="${entry.stateName}" />
         </p:column>
         <p:column headerText="标题">

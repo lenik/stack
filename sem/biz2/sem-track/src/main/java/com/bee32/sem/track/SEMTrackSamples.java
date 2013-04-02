@@ -31,7 +31,7 @@ public class SEMTrackSamples
 
         issue1.setLabel("test issue");
         issue1.setIssueState(IssueState.DUP);
-        issue1.setText("test track sample\n\n问题重现: \n无。。");
+        issue1.setText("test track sample\n\n事务重现: \n无。。");
         issue1.setTags("what's the token?");
         issue1.setCommitish("commitish?");
         issue1.setOwner(peoples.jack);
