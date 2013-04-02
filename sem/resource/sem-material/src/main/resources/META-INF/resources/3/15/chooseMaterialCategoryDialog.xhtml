@@ -35,6 +35,9 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
+                <p:column headerText="分类编码">
+                    <h:outputText value="${entry.serial}" />
+                </p:column>
                 <p:column headerText="分类名称">
                     <h:outputText value="${entry.label}" />
                 </p:column>

@@ -86,7 +86,7 @@ public class MaterialCategory
      * 物料分类编码、物料分类序列号等。
      */
     @NaturalId(mutable = true)
-    @Column(length = SERIAL_LENGTH)
+    @Column(length = SERIAL_LENGTH, unique = true)
     public String getSerial() {
         return serial;
     }

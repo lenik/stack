@@ -93,7 +93,7 @@ public abstract class Thing<X extends XPool<?>>
      * 物品编码、物品序列号等。
      */
     @NaturalId(mutable = true)
-    @Column(length = SERIAL_LENGTH)
+    @Column(length = SERIAL_LENGTH, unique = true)
     public String getSerial() {
         return serial;
     }

@@ -36,6 +36,9 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
+                <p:column headerText="物料编码" styleClass="f-wrappable">
+                    <h:outputText value="${entry.serial}" />
+                </p:column>
                 <p:column headerText="物料名称" styleClass="f-wrappable">
                     <h:outputText value="${entry.label}" />
                 </p:column>

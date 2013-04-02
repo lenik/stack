@@ -26,6 +26,10 @@
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
                 <p:ajax event="unselect" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
+                <p:column headerText="分类编码" styleClass="f-wrappable" style="width:15em;">
+                    <h:outputText value="#{category.serial}" />
+                </p:column>
+
                 <p:column headerText="分类名称" styleClass="f-wrappable" style="width:15em;">
                     <h:outputText value="#{category.label}" />
                 </p:column>
@@ -38,6 +42,10 @@
     </ui:define>
 
     <ui:define name="dataColumns">
+        <p:column headerText="物料编码" sortBy="#{entry.serial}">
+            <h:outputText value="#{entry.serial}" />
+        </p:column>
+
         <p:column headerText="物料名称" sortBy="#{entry.label}">
             <h:outputText value="#{entry.label}" />
         </p:column>

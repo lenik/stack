@@ -8,6 +8,9 @@
     <ui:param name="mirrorTargets" value=":c_category:form" />
 
     <ui:define name="dataColumns">
+        <p:column headerText="分类编码">
+            <h:outputText value="${entry.serial}" />
+        </p:column>
         <p:column headerText="分类名称">
             <h:outputText value="${entry.label}" />
         </p:column>
@@ -26,6 +29,10 @@
                 <p:inputText value="${obj.parent.label}" readonly="true" label="上级分类" />
                 <p:commandButton value="..." title="选择上级分类" onclick="chooseMaterialCategoryDialog.show()" />
             </h:panelGroup>
+
+            <h:outputText value="分类编码:" />
+            <p:inputText id="serial" value="${obj.serial}" label="分类编码" />
+
             <h:outputText value="分类名称:" />
             <p:inputText id="label" value="${obj.label}" label="分类名称" />
 
