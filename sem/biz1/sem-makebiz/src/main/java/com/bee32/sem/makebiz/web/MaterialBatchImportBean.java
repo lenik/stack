@@ -193,8 +193,9 @@ public class MaterialBatchImportBean
 
 // System.out.println(">>>" + dchildren);
 
+                                BigDecimal itemquantity = new BigDecimal(dcSplit[1]);
                                 PartItem partItemLevel3 = new PartItem();
-                                partItemLevel3.setQuantity(new BigDecimal(1));
+                                partItemLevel3.setQuantity(itemquantity);
                                 partItemLevel3.setParent(partLevel3);
                                 partItemLevel3.setMaterial(partItemLevel3Material);
 
@@ -373,6 +374,7 @@ public class MaterialBatchImportBean
                 }
                 mate.setUnit(unit);
 
+                System.out.println(material);
                 if (split.length > 4) {
                     mate.addUnitConv(units.KILOGRAM, Double.valueOf(split[4]));
                     mate.addUnitConv(units.SQUARE_METER, Double.valueOf(split[5]));
@@ -605,13 +607,13 @@ public class MaterialBatchImportBean
 
         String partLabel = prefix + "-" + strings[0];
         String rawLabeL = strings[7] + type;
-        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabeL + thick + "mm," + strings[3] + ",r}";
+        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabeL + thick + "mm," + strings[4] + ",r}";
     }
 
     static String partAssemblerComm(String prefix, String type, String partModule, String[] strings) {
         String partLabel = prefix + "-" + strings[0];
         String rawLabel = strings[7] + type;
-        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabel + partModule + "," + strings[3] + ",r}";
+        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabel + partModule + "," + strings[4] + ",r}";
     }
 
     static String partAssemblerH(String prefix, String type, String partModule, String[] strings) {
