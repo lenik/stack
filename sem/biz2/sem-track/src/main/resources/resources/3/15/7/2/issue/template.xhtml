@@ -12,8 +12,9 @@
     <ui:param name="_toggleable" value="${editable != false and bean.editing}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="类型" sortBy="${entry.type}">
-            <h:outputText value="${entry.issueType.label}" />
+        <p:column headerText="类型" sortBy="${entry.typeChar}">
+            <img src="../${entry.type.name}.png" width="24" height="24" />
+            <h:outputText value="${entry.type.label}" />
         </p:column>
         <p:column headerText="标题" sortBy="${entry.description}">
             <h:outputText value="${entry.subject}" />
@@ -37,17 +38,25 @@
         </ui:remove>
     </ui:define>
 
+    <ui:define name="scripts.user">
+        <script language="javascript" src="../issue.js"></script>
+    </ui:define>
+
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
             <p:tab id="basicTab" title="问题信息">
                 <table width="100%">
                     <tr>
                         <td width="60" rowspan="2" align="center">
-                            <h:inputHidden id="issueType" label="类型" value="${oo.type}" />
-                            <img src="${location.WEB_APP}/3/15/7/2/issue/image/${oo.issueType.name}.png" width="50"
-                                height="50" onclick="" />
-                            <br />
-                            ${oo.issueType.label}
+                            <h:panelGroup id="typePanel">
+                                <h:inputHidden id="issueType" label="类型" value="${oo.typeChar}" />
+                                <p:commandLink styleClass="icon-button" title="切换谓词" onclick="waitbox.show();"
+                                    actionListener="${oo.switchType}" oncomplete="waitbox.hide();" update="typePanel">
+                                    <img src="../${oo.type.name}.png" width="50" height="50" />
+                                </p:commandLink>
+                                <br />
+                                <b>${oo.type.label}</b>
+                            </h:panelGroup>
                         </td>
                         <td>
                             <p:inplace emptyLabel="没有设置问题标题" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
