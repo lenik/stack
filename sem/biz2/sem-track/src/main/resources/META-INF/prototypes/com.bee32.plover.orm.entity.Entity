@@ -1,4 +1,5 @@
 com.bee32.sem.track.entity.Issue
+com.bee32.sem.track.entity.IssueAttachment
 com.bee32.sem.track.entity.IssueCcGroup
 com.bee32.sem.track.entity.IssueHref
 com.bee32.sem.track.entity.IssueObserver

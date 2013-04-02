@@ -16,6 +16,7 @@ import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.mail.dto.MessageDto;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.util.IssueState;
+import com.bee32.sem.track.util.IssueType;
 
 public class IssueDto
         extends MessageDto<Issue, IssueDto> {
@@ -30,6 +31,7 @@ public class IssueDto
 
     public static final int REPLIES = 0x0100_0000; // EXT, not included in F_MORE.
 
+    private IssueType type;
     private Date dueDate;
     private Date endTime;
 
@@ -56,6 +58,7 @@ public class IssueDto
     protected void _marshal(Issue source) {
         super._marshal(source);
 
+        type = source.getType();
         dueDate = source.getDueDate();
         endTime = source.getEndTime();
 
@@ -97,6 +100,7 @@ public class IssueDto
     protected void _unmarshalTo(Issue target) {
         super._unmarshalTo(target);
 
+        target.setType(type);
         target.setDueDate(dueDate);
         target.setEndTime(endTime);
         target.setTags(tags);
@@ -127,15 +131,33 @@ public class IssueDto
         throw new NotImplementedException();
     }
 
-    public IssueState getIssueState() {
-        int state = getState();
-        IssueState issueState = IssueState.forValue((char) state);
-        return issueState;
+    public IssueState getState() {
+        int stateInt = getStateInt();
+        IssueState state = IssueState.forValue((char) stateInt);
+        return state;
     }
 
-    public void setIssueState(IssueState issueState) {
-        int state = issueState.getValue();
-        setState(state);
+    public void setState(IssueState issueState) {
+        int stateInt = issueState.getValue();
+        setStateInt(stateInt);
+    }
+
+    public char getTypeChar() {
+        return type.getValue();
+    }
+
+    public void setTypeChar(char typeChar) {
+        type = IssueType.forValue(typeChar);
+    }
+
+    public IssueType getType() {
+        return type;
+    }
+
+    public void setType(IssueType type) {
+        if (type == null)
+            throw new NullPointerException("type");
+        this.type = type;
     }
 
     public Date getDueDate() {

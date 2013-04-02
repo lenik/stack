@@ -4,17 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -24,6 +14,7 @@ import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.mail.entity.Message;
 import com.bee32.sem.track.util.IssueState;
+import com.bee32.sem.track.util.IssueType;
 
 /**
  * 问题
@@ -43,20 +34,41 @@ public class Issue
     public static final int COMMITISH_LENGTH = 32;
     public static final int TAGS_LENGTH = 100;
 
-    Date dueDate;
-    Date endTime;
+    private IssueType issueType = IssueType.ISSUE;
+    private Date dueDate;
+    private Date endTime;
 
-    String tags = "";
-    String commitish;
+    private String tags = "";
+    private String commitish;
 
-    List<IssueHref> hrefs = new ArrayList<IssueHref>();
-    List<IssueAttachment> attachments = new ArrayList<IssueAttachment>();
-    List<IssueObserver> observers = new ArrayList<IssueObserver>();
-    List<IssueCcGroup> ccGroups = new ArrayList<IssueCcGroup>();
-    List<IssueReply> replies = new ArrayList<IssueReply>();
+    private List<IssueHref> hrefs = new ArrayList<IssueHref>();
+    private List<IssueAttachment> attachments = new ArrayList<IssueAttachment>();
+    private List<IssueObserver> observers = new ArrayList<IssueObserver>();
+    private List<IssueCcGroup> ccGroups = new ArrayList<IssueCcGroup>();
+    private List<IssueReply> replies = new ArrayList<IssueReply>();
 
-    Chance chance;
-    StockOrder stockOrder;
+    private Chance chance;
+    private StockOrder stockOrder;
+
+    @Column(name = "type", nullable = false)
+    public char getTypeChar() {
+        return issueType.getValue();
+    }
+
+    public void setTypeChar(char type) {
+        this.issueType = IssueType.forValue(type);
+    }
+
+    @Transient
+    public IssueType getType() {
+        return issueType;
+    }
+
+    public void setType(IssueType type) {
+        if (type == null)
+            throw new NullPointerException("type");
+        this.issueType = type;
+    }
 
     /**
      * 状态
@@ -65,14 +77,14 @@ public class Issue
      */
     @Transient
     public IssueState getIssueState() {
-        int state = getState();
-        IssueState issueState = IssueState.forValue((char) state);
-        return issueState;
+        int stateInt = getStateInt();
+        IssueState state = IssueState.forValue((char) stateInt);
+        return state;
     }
 
     public void setIssueState(IssueState issueState) {
-        int state = issueState.getValue();
-        setState(state);
+        int stateInt = issueState.getValue();
+        setStateInt(stateInt);
     }
 
     @Temporal(TemporalType.DATE)

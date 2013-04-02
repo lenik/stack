@@ -12,11 +12,14 @@
     <ui:param name="_toggleable" value="${editable != false and bean.editing}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="优先级" sortBy="${entry.priority}">
-            <h:outputText value="${entry.priority}" />
+        <p:column headerText="类型" sortBy="${entry.type}">
+            <h:outputText value="${entry.issueType.label}" />
         </p:column>
         <p:column headerText="标题" sortBy="${entry.description}">
             <h:outputText value="${entry.subject}" />
+        </p:column>
+        <p:column headerText="优先级" sortBy="${entry.priority}">
+            <h:outputText value="${entry.priority}" />
         </p:column>
         <p:column headerText="到期时间" sortBy="${entry.dueDate}">
             <h:outputText value="${entry.dueDate}" />
@@ -39,8 +42,12 @@
             <p:tab id="basicTab" title="问题信息">
                 <table width="100%">
                     <tr>
-                        <td width="60" rowspan="2">
-                            <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/task-50.png" />
+                        <td width="60" rowspan="2" align="center">
+                            <h:inputHidden id="issueType" label="类型" value="${oo.type}" />
+                            <img src="${location.WEB_APP}/3/15/7/2/issue/image/${oo.issueType.name}.png" width="50"
+                                height="50" onclick="" />
+                            <br />
+                            ${oo.issueType.label}
                         </td>
                         <td>
                             <p:inplace emptyLabel="没有设置问题标题" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
@@ -92,7 +99,7 @@
 
                 <p:separator />
                 问题状态：
-                <p:selectOneMenu id="state" label="问题状态" value="${oo.state}" style="width: 10em;">
+                <p:selectOneMenu id="state" label="问题状态" value="${oo.stateInt}" style="width: 10em;">
                     <f:selectItems value="${trackDicts.states}" var="it" itemLabel="${it.label}"
                         itemValue="${it.value}" />
                 </p:selectOneMenu>
