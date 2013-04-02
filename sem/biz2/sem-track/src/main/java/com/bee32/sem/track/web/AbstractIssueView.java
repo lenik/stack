@@ -81,6 +81,12 @@ public abstract class AbstractIssueView
     private String replyText;
     private List<IssueReplyDto> replies;
 
+    @Override
+    protected void openSelection(int fmask) {
+        super.openSelection(fmask);
+        replies = null;
+    }
+
     @NLength(max = IssueReply.TEXT_LENGTH)
     public String getReplyText() {
         return replyText;

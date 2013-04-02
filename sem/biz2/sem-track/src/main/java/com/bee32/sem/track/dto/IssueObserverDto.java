@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.free.ParseException;
 
 import com.bee32.icsf.principal.PrincipalDto;
-import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
@@ -46,7 +45,7 @@ public class IssueObserverDto
     @Override
     protected void _marshal(IssueObserver source) {
         issue = mref(IssueDto.class, source.getIssue());
-        observer = mref(UserDto.class, source.getObserver());
+        observer = mref(PrincipalDto.class, source.getObserver());
         rank = source.getRank();
         manager = source.isManager();
         fav = source.isFav();

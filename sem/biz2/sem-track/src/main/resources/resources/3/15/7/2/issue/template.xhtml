@@ -169,7 +169,7 @@
                     editView=":ccGroupsEditView" nested="true" paginator="false" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="用户组">
-                            <h:outputText value="${entry.group.displayName}" />
+                            <h:outputText value="${entry.observer.displayName}" />
                         </p:column>
                         <p:column headerText="备注">
                             <h:outputText value="${entry.description}" />
@@ -339,7 +339,7 @@
             header="选择参与的用户" stereo="U" target="${observerObj.observer}" update=":observersEditView:editForm" />
 
         <icsf:choosePrincipalDialog id="chooseCcGroupDialog" var="chooseCcGroupDialog"
-            header="选择抄送的用户组" stereo="G" target="${ccGroupObj.group}" update=":ccGroupsEditView:editForm" />
+            header="选择抄送的用户组" stereo="G" target="${ccGroupObj.observer}" update=":ccGroupsEditView:editForm" />
 
         <sem:chooseChanceDialog id="chooseChanceDialog" var="chooseChanceDialog" header="选择销售机会"
             target="${oo.chance}" update=":editDialog:form:tv:bizTab" />
@@ -374,10 +374,10 @@
         <fr:listView id="ccGroupsEditView" header="抄送组" style="editDialog" indexView=":editDialog:form:tv:ccGroupsIndexView"
             mbean="${bean.ccGroupsMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2">
-                <h:outputText value="用户组：" styleClass="e-link" onclick="#{item.group.clickAction}" />
+                <h:outputText value="用户组：" styleClass="e-link" onclick="#{item.observer.clickAction}" />
                 <h:panelGroup>
-                    <h:inputHidden id="group" label="用户组" value="${item.group.id_RZ}" />
-                    <h:outputText value="${item.group.displayName}" />
+                    <h:inputHidden id="group" label="用户组" value="${item.observer.id_RZ}" />
+                    <h:outputText value="${item.observer.displayName}" />
                     <p:commandButton id="chooseGroup" value="..." oncomplete="chooseCcGroupDialog.show()">
                         <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
                             value="G" />
