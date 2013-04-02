@@ -1,3 +1,25 @@
+SEM-2.6.1 (谢继雷, 朱挺峰, 2013-04-02)
+	* SEM: Released 2.6.1.
+	* sem-track: 问题(issue) 改名为事务。
+	* sem-track: Refresh replied messages on issue selection change.
+	* sem-track: issue type switching and cc group dispatch.
+	* sem-track: Split issue cc groups from observers in the DTO, instead of two tables.
+	* sem-process: 将Apex的任务改名为作业。
+	* sem-track: Fixed type image url.
+	* NLS updated.
+	* sem-track: Added switchable issue type property.
+	* plover-orm: Renamed the internal state property to stateInt.
+	* 物料导入加入单位和单位换算表。
+	* sem-inventory: Changed stateChar to state.
+
+SEM-2.6.0 (金卫林, 2013-04-01)
+	* 物料分类模型中加入编码
+
+SEM-2.5.12 (朱挺峰, 金卫林, 2013-03-30)
+	* sem-makebiz : 拆分物料导入和bom导入。
+	* 更新采购菜单资源
+	* 材料表导入修改。
+
 SEM-2.5.11 (谢继雷, 2013-03-29)
 	* listView: Added new panel-bare, indexPanel-bare styles without fieldset/legends.
 
