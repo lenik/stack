@@ -199,6 +199,7 @@ public class Event
         this.closed = closed;
     }
 
+    @Transient
     public EventState<?> getState() {
         int stateInt = getStateInt();
         EventState<?> eventState = EventState.forValue(stateInt);

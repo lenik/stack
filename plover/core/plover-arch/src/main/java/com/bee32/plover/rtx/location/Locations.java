@@ -1,6 +1,5 @@
 package com.bee32.plover.rtx.location;
 
-
 public class Locations
         implements ILocationConstants {
 
@@ -21,6 +20,9 @@ public class Locations
         return locationContext.join(relativePath);
     }
 
+    /**
+     * @example Servlet-Context::/parent/child/dir/test.png
+     */
     public static Location parse(String qualifiedLocation) {
         int delim = qualifiedLocation.indexOf("::");
         if (delim != -1) {
