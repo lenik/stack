@@ -531,6 +531,8 @@ public class SiteInstance
 
             long cost = (int) (new Date().getTime() - startupTime);
             stats.addStartup(cost);
+
+            state = SiteState.STARTED;
         }
     }
 

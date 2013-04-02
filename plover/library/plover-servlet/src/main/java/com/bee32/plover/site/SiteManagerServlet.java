@@ -396,13 +396,32 @@ public class SiteManagerServlet
         protected void _content()
                 throws Exception {
             ul();
-            li().text("停止站点……").end();
-            site.stop();
 
-            li().text("启动站点……").end();
-            site.start();
+            switch (site.getState()) {
+            case STARTING:
+                li().text("站点尚在启动中，必须启动完成后才能停止。");
+                break;
 
-            li().text("站点已重新启动，下次访问时将自动安排数据装载。").a().href("index").text("返回站点列表").end(2);
+            case STOPPING:
+                li().text("站点正在停止中。");
+                break;
+
+            case STOPPED:
+                li().text("站点已经停止。");
+                break;
+
+            case STARTED:
+            default:
+                li().text("停止站点……").end();
+                site.stop();
+
+                li().text("启动站点……").end();
+                site.start();
+
+                li().text("站点已重新启动，下次访问时将自动安排数据装载。").a().href("index").text("返回站点列表").end(2);
+                break;
+            }
+
             end();
         }
 
