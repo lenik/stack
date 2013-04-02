@@ -50,34 +50,34 @@ public class IssueState
         return forValue(IssueState.class, value);
     }
 
-    /** 新创建的事务 */
+    /** 新创建的事件 */
     public static final IssueState NEW = new IssueState(0, "new", 0, 0);
 
-    /** 事务已被接受，正在分配资源中 */
+    /** 事件已被接受，正在分配资源中 */
     public static final IssueState ACCEPTED = new IssueState('a', "accepted", 1, 0);
 
-    /** 已开始处理事务 */
+    /** 已开始处理事件 */
     public static final IssueState STARTED = new IssueState('s', "started", 2, 0);
 
     /** 缺陷已经被修复 */
     public static final IssueState FIXED = new IssueState('F', "fixed", 10, FINAL);
 
-    /** 事务已经通过其它途径解决 */
+    /** 事件已经通过其它途径解决 */
     public static final IssueState DONE = new IssueState('V', "done", 11, FINAL);
 
-    /** 事务已关闭，没有具体的原因 */
+    /** 事件已关闭，没有具体的原因 */
     public static final IssueState CLOSED = new IssueState('-', "closed", 12, FINAL);
 
-    /** 事务已被搁置 */
+    /** 事件已被搁置 */
     public static final IssueState PENDING = new IssueState('p', "pending", 3, 0);
 
-    /** 重复的事务 */
+    /** 重复的事件 */
     public static final IssueState DUP = new IssueState('D', "dup", 30, FINAL | NEGATIVE);
 
-    /** 事务是有效的，但不会被考虑和解决 */
+    /** 事件是有效的，但不会被考虑和解决 */
     public static final IssueState WONT_FIX = new IssueState('Y', "wontfix", 31, FINAL | NEGATIVE);
 
-    /** 无效的事务 */
+    /** 无效的事件 */
     public static final IssueState INVALID = new IssueState('X', "invalid", 32, FINAL | NEGATIVE);
 
 }

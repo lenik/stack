@@ -120,14 +120,14 @@ public abstract class AbstractIssueView
         IssueDto issue = getOpenedObject();
         Long issueId = issue.getId();
         if (issueId == null) {
-            uiLogger.error("事务尚未建立。");
+            uiLogger.error("事件尚未建立。");
             return;
         }
 
         try {
             Issue _issue = DATA(Issue.class).get(issueId);
             if (_issue == null) {
-                uiLogger.error("事务已被其他人删除。");
+                uiLogger.error("事件已被其他人删除。");
                 return;
             }
 

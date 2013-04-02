@@ -11,7 +11,7 @@
             <t:div style="width:100%; background-color:#FFFFFF;">
                 <t:div styleClass="north layout" style="height:50px;">
                     <t:div id="layout-header" valign="center">
-                        <h:outputText value="事务" rendered="${bean.editMode ==  0}" />
+                        <h:outputText value="事件" rendered="${bean.editMode ==  0}" />
                         <span class="issue-id">
                             <h:outputText value="${obj.id}" rendered="${bean.editMode == 0}" />
                         </span>
@@ -159,7 +159,7 @@
                                 cols="80" autoResize="false" />
                         </t:div>
                         <t:div style="margin-left:5em;width:650px;">
-                            <h:outputText value="事务状态：" />
+                            <h:outputText value="事件状态：" />
                             <p:selectOneMenu rendered="${bean.operatable}" value="${obj.stateValue}"
                                 panelStyle="width:150px;margin-top:10px;">
                                 <f:selectItems value="${bean.issueStates}" var="item" itemLabel="${item.name}"

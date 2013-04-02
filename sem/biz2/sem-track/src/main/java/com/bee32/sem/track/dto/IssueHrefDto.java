@@ -11,7 +11,7 @@ import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.track.entity.IssueHref;
 
 /**
- * 事务参考链接
+ * 事件参考链接
  */
 public class IssueHrefDto
         extends UIEntityDto<IssueHref, Long>

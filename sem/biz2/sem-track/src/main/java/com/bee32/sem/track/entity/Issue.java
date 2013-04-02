@@ -18,11 +18,11 @@ import com.bee32.sem.track.util.IssueState;
 import com.bee32.sem.track.util.IssueType;
 
 /**
- * 事务
+ * 事件
  *
- * 需要解决的事务。
+ * 需要解决的事件。
  *
- * -- 用 issue 而不用 topic, question，以突出这个事务是需要解决的具有任务性质的。
+ * -- 用 issue 而不用 topic, question，以突出这个事件是需要解决的具有任务性质的。
  */
 @Entity
 @Pink
@@ -74,7 +74,7 @@ public class Issue
     /**
      * 状态
      *
-     * 事务的当前状态，如已解决、挂起等。
+     * 事件的当前状态，如已解决、挂起等。
      */
     @Transient
     public IssueState getIssueState() {
@@ -111,7 +111,7 @@ public class Issue
     /**
      * 标签集
      *
-     * 事务关联的标签集，用空格分隔。
+     * 事件关联的标签集，用空格分隔。
      */
     @Column(length = TAGS_LENGTH)
     public String getTags() {
@@ -127,7 +127,7 @@ public class Issue
     /**
      * 提交标识
      *
-     * 和事务相关的提交标识。（未使用）
+     * 和事件相关的提交标识。（未使用）
      */
     @Column(length = COMMITISH_LENGTH)
     public String getCommitish() {
@@ -153,7 +153,7 @@ public class Issue
     /**
      * 相关附件
      *
-     * 和事务相关的附件，如屏幕截图、产品缺陷照片等等。
+     * 和事件相关的附件，如屏幕截图、产品缺陷照片等等。
      */
     @OneToMany(mappedBy = "issue", orphanRemoval = true)
     @Cascade(CascadeType.ALL)

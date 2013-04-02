@@ -44,7 +44,7 @@
 
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
-            <p:tab id="basicTab" title="事务信息">
+            <p:tab id="basicTab" title="事件信息">
                 <table width="100%">
                     <tr>
                         <td width="60" rowspan="2" align="center">
@@ -59,9 +59,9 @@
                             </h:panelGroup>
                         </td>
                         <td>
-                            <p:inplace emptyLabel="没有设置事务标题" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
+                            <p:inplace emptyLabel="没有设置事件标题" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
                                 <p:inputText id="subject" label="标题" value="${oo.subject}" style="font-size: x-large; width: 100%" />
-                                <p:watermark for="subject" value="输入事务的标题" />
+                                <p:watermark for="subject" value="输入事件的标题" />
                             </p:inplace>
                         </td>
                     </tr>
@@ -101,14 +101,14 @@
                 </table>
 
                 <p:separator />
-                <p:inplace emptyLabel="此事务没有内容。" editor="true" toggleable="${_toggleable}" style="display: block; min-height: 10em">
+                <p:inplace emptyLabel="此事件没有内容。" editor="true" toggleable="${_toggleable}" style="display: block; min-height: 10em">
                     <p:inputTextarea id="text" label="内容" value="${oo.text}" style="width: 100%; min-height: 10em" />
-                    <p:watermark for="text" value="输入事务的内容" />
+                    <p:watermark for="text" value="输入事件的内容" />
                 </p:inplace>
 
                 <p:separator />
-                事务状态：
-                <p:selectOneMenu id="state" label="事务状态" value="${oo.stateInt}" style="width: 10em;">
+                事件状态：
+                <p:selectOneMenu id="state" label="事件状态" value="${oo.stateInt}" style="width: 10em;">
                     <f:selectItems value="${trackDicts.states}" var="it" itemLabel="${it.label}"
                         itemValue="${it.value}" />
                 </p:selectOneMenu>
