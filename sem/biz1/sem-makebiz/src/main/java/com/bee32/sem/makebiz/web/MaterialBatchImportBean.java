@@ -110,6 +110,7 @@ public class MaterialBatchImportBean
         List<Part> cacheParts = new ArrayList<Part>();
         if (null != partsToImport)
             for (String partString : partsToImport) {
+
                 try {
                     int index = partString.indexOf("{");
                     String materialPattern = partString.substring(0, index);
@@ -154,8 +155,8 @@ public class MaterialBatchImportBean
                         if (cchildren.indexOf(";") <= 0) {
                             cchildren = cchildren.replace("}", "");
                             String[] cSplit = cchildren.split(",");
-                            System.out.println(cchildren);
-                            BigDecimal cquantity = new BigDecimal(cSplit[1]);
+                            double quantityString = Double.parseDouble(cSplit[1]);
+                            BigDecimal cquantity = new BigDecimal(quantityString);
                             Material partItemLevel3 = cacheMaterial.get(cSplit[0]);
                             if (null == partItemLevel3)
                                 System.out.println(">>>>> material of partItemLevel2 is null");
@@ -218,6 +219,7 @@ public class MaterialBatchImportBean
                     cacheParts.add(partLevel1);
 
                 } catch (Exception e) {
+                    importedBom = false;
                     uiLogger.warn("动态生成《BOM根节点》时发生未知错误" + e.getMessage());
                 }
             }
@@ -229,13 +231,13 @@ public class MaterialBatchImportBean
             IEntityAccessService<Part, Integer> partService = DATA(Part.class);
             Part p = partService.getUnique(MakebizCriteria.existingPartCheck(label, module));
             if (null == p) {
-// try {
-                partService.saveOrUpdate(part);
-                countSavedBom++;
-// } catch (Exception e) {
-// countErrorBom++;
-// uiLogger.warn("导入BOM:" + label + "型号：" + module + "时发生未知错误");
-// }
+                try {
+                    partService.saveOrUpdate(part);
+                    countSavedBom++;
+                } catch (Exception e) {
+                    countErrorBom++;
+                    uiLogger.warn("导入BOM:" + label + "型号：" + module + "时发生未知错误");
+                }
             } else
                 countExistedBom++;
         }
@@ -331,7 +333,6 @@ public class MaterialBatchImportBean
         MaterialCategories category = BEAN(MaterialCategories.class);
 
         for (String material : materials) {
-            System.out.println("MM" + material);
             String materialLabel = null;
             try {
                 String[] split = material.split(",");
@@ -371,8 +372,6 @@ public class MaterialBatchImportBean
                     unit = units.PIECE;
                 }
                 mate.setUnit(unit);
-                System.out.println("Label >>>" + materialLabel);
-                System.out.println("unit >>>" + unit);
 
                 if (split.length > 4) {
                     mate.addUnitConv(units.KILOGRAM, Double.valueOf(split[4]));
@@ -440,7 +439,7 @@ public class MaterialBatchImportBean
         String[] items;
         String materialString = null;
 
-        String part_material = prefix + "-" + str[0] + "," + str[1] + ",g,p," + str[4] + "," + str[6];
+        String part_material = prefix + "-" + str[0] + "," + str[1] + ",g,p," + str[3] + "," + str[4] + "," + str[6];
         materials.add(part_material);
 
         String part = null;
@@ -574,7 +573,7 @@ public class MaterialBatchImportBean
             break;
         case "SD":
             type = "栓钉";
-            materialString = materialAssemblerSD(str[7], type, partModule);
+            materialString = materialAssemblerComm(str[7], type, partModule);
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
@@ -590,7 +589,7 @@ public class MaterialBatchImportBean
 
     static String materialAssemblerPL(String label, String type, String module) {
         // 物料名称，规格，单位
-        return label + type + "," + module + "mm,k,r";
+        return label + type + "," + module + "mm, k,r";
     }
 
     static String materialAssemblerComm(String prefix, String label, String module) {
@@ -606,13 +605,13 @@ public class MaterialBatchImportBean
 
         String partLabel = prefix + "-" + strings[0];
         String rawLabeL = strings[7] + type;
-        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabeL + thick + "mm," + strings[4] + ",r}";
+        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabeL + thick + "mm," + strings[3] + ",r}";
     }
 
     static String partAssemblerComm(String prefix, String type, String partModule, String[] strings) {
         String partLabel = prefix + "-" + strings[0];
         String rawLabel = strings[7] + type;
-        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabel + partModule + "," + strings[4] + ",r}";
+        return partLabel + strings[1] + "," + strings[3] + ",p,{" + rawLabel + partModule + "," + strings[3] + ",r}";
     }
 
     static String partAssemblerH(String prefix, String type, String partModule, String[] strings) {
