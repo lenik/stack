@@ -89,8 +89,8 @@ public class MaterialBatchImportBean
                 }
             } else {
                 countExistedMaterial++;
+                cacheMaterial.put(label + modelSpec, toImport);
             }
-            cacheMaterial.put(label + modelSpec, toImport);
         }
 
         importedMaterial = true;
