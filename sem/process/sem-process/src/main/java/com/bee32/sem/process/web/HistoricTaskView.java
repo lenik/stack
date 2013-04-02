@@ -65,7 +65,7 @@ public class HistoricTaskView
                 taskService.deleteTask(task.getId());
                 historyService.deleteHistoricTaskInstance(task.getId());
             } catch (Exception e) {
-                uiLogger.error("无法删除任务 " + task.getId(), e);
+                uiLogger.error("无法删除作业 " + task.getId(), e);
                 return;
             }
         }

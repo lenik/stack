@@ -20,10 +20,10 @@
         <p:column headerText="执行" sortBy="${entry.assignee}">
             <h:outputText value="${entry.assignee}" />
         </p:column>
-        <p:column headerText="任务名称" sortBy="${entry.name}">
+        <p:column headerText="作业名称" sortBy="${entry.name}">
             <h:outputText value="${entry.name}" />
         </p:column>
-        <p:column headerText="任务描述" sortBy="${entry.description}" styleClass="f-wrappable">
+        <p:column headerText="作业描述" sortBy="${entry.description}" styleClass="f-wrappable">
             <h:outputText value="${entry.description}" />
         </p:column>
         <p:column headerText="创建时间" sortBy="${entry.createTime}" rendered="${not _historicMode}">
@@ -66,16 +66,16 @@
 
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
-            <p:tab title="任务信息">
+            <p:tab title="作业信息">
                 <table width="100%">
                     <tr>
                         <td width="60" rowspan="2">
                             <img src="${location.WEB_APP}/VAADIN/themes/activiti/img/task-50.png" />
                         </td>
                         <td>
-                            <p:inplace emptyLabel="没有设置任务名称" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
+                            <p:inplace emptyLabel="没有设置作业名称" editor="true" toggleable="${_toggleable}" style="font-size: x-large;">
                                 <p:inputText id="name" label="名称" value="${oo.name}" style="font-size: x-large; width: 100%" />
-                                <p:watermark for="name" value="输入任务的简短名称" />
+                                <p:watermark for="name" value="输入作业的简短名称" />
                             </p:inplace>
                         </td>
                     </tr>
@@ -116,9 +116,9 @@
                 </table>
 
                 <p:separator />
-                <p:inplace emptyLabel="此任务没有描述。" editor="true" toggleable="${_toggleable}">
+                <p:inplace emptyLabel="此作业没有描述。" editor="true" toggleable="${_toggleable}">
                     <p:inputTextarea id="description" label="描述" value="${oo.description}" style="width: 100%;" />
-                    <p:watermark for="description" value="输入任务的描述信息" />
+                    <p:watermark for="description" value="输入作业的描述信息" />
                 </p:inplace>
 
                 <p:separator />
@@ -319,7 +319,7 @@
             </p:tab>
 
             <p:tab title="参数">
-                此任务未定义任何参数。
+                此作业未定义任何参数。
             </p:tab>
         </p:tabView>
     </ui:define>
@@ -327,10 +327,10 @@
     <ui:define name="dialogs">
         <ui:insert name="dialogs.taskTemplate" />
 
-        <icsf:choosePrincipalDialog id="chooseOwnerDialog" var="chooseOwnerDialog" header="选择被转让任务的用户"
+        <icsf:choosePrincipalDialog id="chooseOwnerDialog" var="chooseOwnerDialog" header="选择被转让作业的用户"
             stereo="U" target="${bean.newOwner}" update=":editDialog:form" />
         <icsf:choosePrincipalDialog id="chooseAssigneeDialog" var="chooseAssigneeDialog"
-            header="选择任务的执行者" stereo="U" target="${bean.newAssignee}" update=":editDialog:form" />
+            header="选择作业的执行者" stereo="U" target="${bean.newAssignee}" update=":editDialog:form" />
 
         <sem:uploadFileDialog id="uploadFileDialog" var="uploadFileDialog"
             fileUploadListener="${bean.uploadFileListener.handleFileUpload}" update=":addFileForm" />

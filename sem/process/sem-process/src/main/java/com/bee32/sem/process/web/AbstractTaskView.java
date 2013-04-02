@@ -108,7 +108,7 @@ public abstract class AbstractTaskView
     public void complete() {
         Task task = getOpenedObject();
         if (task == null)
-            uiLogger.error("未选择要提交的任务。");
+            uiLogger.error("未选择要提交的作业。");
 
         TaskService service = BEAN(TaskService.class);
         try {
@@ -144,7 +144,7 @@ public abstract class AbstractTaskView
         try {
             if (task.getId() == null) {
                 taskService.saveTask(task);
-                uiLogger.info("新任务已创建。");
+                uiLogger.info("新作业已创建。");
             }
 
             taskService.addComment(task.getId(), task.getProcessInstanceId(), commentText);
@@ -233,7 +233,7 @@ public abstract class AbstractTaskView
         try {
             if (task.getId() == null) {
                 taskService.saveTask(task);
-                uiLogger.info("新任务已创建。");
+                uiLogger.info("新作业已创建。");
             }
 
             String contentType = "text/html";
@@ -319,7 +319,7 @@ public abstract class AbstractTaskView
         try {
             if (task.getId() == null) {
                 taskService.saveTask(task);
-                uiLogger.info("新任务已创建。");
+                uiLogger.info("新作业已创建。");
             }
 
             InputStream fakeContent = new ByteArrayInputStream(fileBlobId.getBytes());
@@ -353,7 +353,7 @@ public abstract class AbstractTaskView
         try {
             taskService.saveTask(task);
         } catch (Exception e) {
-            uiLogger.error("无法保存任务", e);
+            uiLogger.error("无法保存作业", e);
             return false;
         }
         uiLogger.info("保存成功");
@@ -370,7 +370,7 @@ public abstract class AbstractTaskView
             try {
                 taskService.deleteTask(task.getId(), true);
             } catch (Exception e) {
-                uiLogger.error("无法删除任务 " + task.getId(), e);
+                uiLogger.error("无法删除作业 " + task.getId(), e);
                 return;
             }
         }
