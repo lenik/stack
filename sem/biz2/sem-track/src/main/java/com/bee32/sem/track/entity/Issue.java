@@ -50,8 +50,8 @@ public class Issue
     private Chance chance;
     private StockOrder stockOrder;
 
+    @DefaultValue("'I'")
     @Column(name = "type", nullable = false)
-    @DefaultValue("I")
     public char getTypeChar() {
         return issueType.getValue();
     }
