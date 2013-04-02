@@ -11,14 +11,6 @@ public class SEMProcessMenu
     static Location __ = WEB_APP.join(SEMProcessModule.PREFIX + "/");
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode WORKFLOW = menu(_frame_.OA, 30, "WORKFLOW");
-    MenuNode my = entry(WORKFLOW, 10, "my", __.join("task/my"));
-    MenuNode inbox = entry(WORKFLOW, 20, "inbox", __.join("task/inbox"));
-    MenuNode queued = entry(WORKFLOW, 30, "queued", __.join("task/queued"));
-    MenuNode archived = entry(WORKFLOW, 40, "archived", __.join("task/archived"));
-    // MenuNode __1 = _separator_(WORKFLOW, 100);
-    // MenuNode processModel= entry(WORKFLOW, 110, "processModel", __.join("process/model"));
-
     public MenuNode VERIFY_POLICY = menu(_frame_.SYSTEM, 700, "VERIFY_POLICY");
 
     MenuNode preference = entry(_frame_.SYSTEM, 800, "preference", __.join("pref"));
