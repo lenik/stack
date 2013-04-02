@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.MissingResourceException;
 
 import com.bee32.plover.arch.util.res.INlsBundle;
@@ -132,6 +133,22 @@ public abstract class EnumAlt<V extends Serializable, self_t extends EnumAlt<V, 
 
     public Location getIcon() {
         return icon;
+    }
+
+    public self_t next() {
+        String myName = getName();
+        self_t first = null;
+        boolean returnNext = false;
+
+        for (Entry<String, self_t> entry : getNameMap().entrySet()) {
+            if (returnNext)
+                return entry.getValue();
+            if (first == null)
+                first = entry.getValue();
+            if (myName.equals(entry.getKey()))
+                returnNext = true;
+        }
+        return first;
     }
 
     @Override
