@@ -61,7 +61,7 @@ public class TrackCriteria
 
     @LeftHand(Issue.class)
     public static ICriteriaElement finalized() {
-        return in("state", FINALIZED_STATES);
+        return in("stateInt", FINALIZED_STATES);
     }
 
 }
