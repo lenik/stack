@@ -75,6 +75,8 @@ public class PartDto
 
     @Override
     protected void _marshal(Part source) {
+        chance = mref(ChanceDto.class, source.getChance());
+
         obsolete = new PartDto().ref(source.getObsolete());
 
         target = mref(MaterialDto.class, //
