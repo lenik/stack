@@ -467,4 +467,22 @@
             update="@form, :mainForm" />
     </ui:define>
 
+    <ui:define name="searchPanels.1">
+        <ui:insert name="searchPanel.chance">
+            <p:panel header="按机会搜索" toggleable="true">
+                <div align="center">
+                    <p:inputText id="chance" readonly="true" value="${bean.searchChance.subject}" />
+                    <p:commandButton id="chooseChance" value="..." onclick="chooseChanceToSearchDialog.show()" />
+                    <p:commandButton id="filterChance" value="限定机会" actionListener="${bean.addChanceRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                </div>
+            </p:panel>
+        </ui:insert>
+    </ui:define>
+
+    <ui:define name="searchSupport.1">
+        <sem:chooseChanceDialog id="c_searchChance" var="chooseChanceToSearchDialog" target="${bean.searchChance}"
+            update=":searchForm" />
+    </ui:define>
+
 </ui:composition>

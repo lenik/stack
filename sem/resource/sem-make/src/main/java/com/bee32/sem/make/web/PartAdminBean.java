@@ -15,6 +15,7 @@ import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.make.dto.MakeStepInputDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
@@ -94,6 +95,24 @@ public class PartAdminBean
     public void addDescriptionRestriction() {
         setSearchFragment("name", "描述含有 " + searchPattern, //
                 BomCriteria.targetDescriptionLike(searchPattern));
+    }
+
+    ChanceDto searchChance;
+
+    public ChanceDto getSearchChance() {
+        return searchChance;
+    }
+
+    public void setSearchChance(ChanceDto searchChance) {
+        this.searchChance = searchChance;
+    }
+
+    public void addChanceRestriction() {
+        if (searchChance != null) {
+            setSearchFragment("chance", "机会为 " + searchChance.getSubject(), //
+                    new Equals("chance.id", searchChance.getId()));
+            searchChance = null;
+        }
     }
 
     public void setPartMaterial() {
