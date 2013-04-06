@@ -232,11 +232,8 @@
         <p:dialog id="d_bomTree" header="BOM树" widgetVar="bomTreeDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="bomTreeForm">
                 <p:treeTable
-                    id="bomTree"
-                    value="#{bean.bomTree.rootNode}"
-                    var="entry"
-                    scrollable="true"
-                    scrollHeight="500">
+                    id="bomTree" value="#{bean.bomTree.rootNode}"
+                    var="entry" scrollable="true" scrollHeight="500">
                     <p:column headerText="物料" sortBy="#{entry.material.label}" width="100">
                         <h:outputText value="#{entry.material.label}" />
                     </p:column>
@@ -251,6 +248,17 @@
                             <f:convertNumber pattern="#0.00" />
                         </h:outputText>
                     </p:column>
+
+	                <p:column headerText="其他单位">
+	                    <h:panelGroup rendered="#{entry.material.unitConv.id != null}">
+	                        <p:dataList var="attr" value="#{entry.material.unitConv.itemList}" effectSpeed="fast">
+	                            <p:column>
+	                                <h:outputText value="${attr.unit.name}:${attr.scale};" />
+	                            </p:column>
+	                        </p:dataList>
+	                    </h:panelGroup>
+	                </p:column>
+
                     <p:column headerText="设置工艺" width="50">
                         <p:commandButton value="设置" rendered="#{entry.makeStep}" oncomplete="stepListDialog.show();">
                             <f:setPropertyActionListener target="#{bean.makeStepTarget}"

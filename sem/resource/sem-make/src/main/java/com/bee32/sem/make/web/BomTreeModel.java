@@ -11,6 +11,7 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.PartItemDto;
+import com.bee32.sem.material.dto.MaterialDto;
 
 @NotAComponent
 public class BomTreeModel
@@ -41,7 +42,7 @@ public class BomTreeModel
 
             BomTreeNode bomTreeNode = new BomTreeNode();
             bomTreeNode.setId(topPart.getId());
-            bomTreeNode.setMaterial(topPart.getTarget());
+            bomTreeNode.setMaterial(ctx.data.reload(topPart.getTarget(), MaterialDto.CONV_MAP));
             bomTreeNode.setPart(topPart);
             bomTreeNode.setQuantity(new BigDecimal(1));
             bomTreeNode.setMakeStep(true);
@@ -66,7 +67,7 @@ public class BomTreeModel
             } else {
                 //半成品
                 bomTreeNode.setId(childPart.getId());
-                bomTreeNode.setMaterial(childPart.getTarget());
+                bomTreeNode.setMaterial(ctx.data.reload(childPart.getTarget(), MaterialDto.CONV_MAP));
                 bomTreeNode.setPart(childPart);
                 bomTreeNode.setMakeStep(true);
 
