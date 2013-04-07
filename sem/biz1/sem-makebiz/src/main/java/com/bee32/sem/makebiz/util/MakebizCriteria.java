@@ -39,4 +39,9 @@ public class MakebizCriteria
     public static ICriteriaElement dateRangeRestriction(String propertyName, Date start, Date end) {
         return and(greaterOrEquals(propertyName, start), lessThan(propertyName, end));
     }
+
+    public static ICriteriaElement exsitingMakeOrderItemCheck(String label, String modelSpec) {
+        return compose(alias("material", "material"), equals("material.label", label),
+                equals("material.modelSpec", modelSpec));
+    }
 }

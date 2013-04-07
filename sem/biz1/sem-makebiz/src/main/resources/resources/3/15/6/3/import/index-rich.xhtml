@@ -92,6 +92,16 @@
                         </t:panelGrid>
                     </p:fieldset>
                 </t:div>
+
+                <t:div id="importOrder">
+                    <p:fieldset legend="SETP5:导入BOM" toggleable="true" toogleSpeed="500" rendered="#{bean.importedBom}">
+                        <p:commandButton value="导入生产订单" actionListener="#{bean.importMakeOrder()}"
+                            update=":mainForm:importOrder" rendered="#{!bean.importedOrder}" onclick="waitbox.show()"
+                            oncomplete="waitbox.hide()" />
+
+                        <h:outputText value="导入流程完毕" rendered="#{bean.importedOrder}" />
+                    </p:fieldset>
+                </t:div>
             </h:form>
 
         </div>
