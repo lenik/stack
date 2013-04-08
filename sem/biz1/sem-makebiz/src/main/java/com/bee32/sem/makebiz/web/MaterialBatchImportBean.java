@@ -20,13 +20,16 @@ import java.util.regex.Pattern;
 import org.primefaces.event.FileUploadEvent;
 
 import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.ChanceDto;
+import com.bee32.sem.chance.dto.ChancePartyDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
+import com.bee32.sem.makebiz.util.ImportAssembler;
 import com.bee32.sem.makebiz.util.MakebizCriteria;
 import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.material.entity.MaterialCategories;
@@ -41,7 +44,6 @@ public class MaterialBatchImportBean
         extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
-    static String regex = "(?=([\\d]))(?<=([A-Z\\[Φ]))";
     static Pattern emptyLinePattern = Pattern.compile("[0-9]");
 
     ChanceDto target;
@@ -110,6 +112,7 @@ public class MaterialBatchImportBean
     // 导入bom
     public void importBom() {
 
+        boolean state = true;
         countSavedBom = 0;
         countExistedBom = 0;
         countErrorBom = 0;
@@ -127,10 +130,8 @@ public class MaterialBatchImportBean
                     String string = partItems[0];
 
                     Material material = cacheMaterial.get(string);
-                    if (null == material) {
-                        System.out.println("mmmmmm is nulllllllll");
-                        System.out.println(string);
-                    }
+                    if (null == material)
+                        throw new NullPointerException("target of partLevel1 is null");
 
                     Part partLevel1 = new Part();
                     partLevel1.setTarget(material);
@@ -145,7 +146,7 @@ public class MaterialBatchImportBean
                         String[] first = children.split(",");
                         Material m = cacheMaterial.get(first[0]);
                         if (null == m)
-                            System.out.println("part item material is null");
+                            throw new NullPointerException("material of partItemLevel1 is null");
                         double quantity = Double.parseDouble(first[1]);
                         item.setParent(partLevel1);
                         item.setMaterial(m);
@@ -166,10 +167,8 @@ public class MaterialBatchImportBean
 
                             Part partLevel2 = new Part();
                             Material targetPartLevel2 = cacheMaterial.get(key);
-                            if (null == targetPartLevel2) {
-                                System.out.println(">>>>> target of partLevel2 is null");
-                                System.out.println(key);
-                            }
+                            if (null == targetPartLevel2)
+                                throw new NullPointerException("target of partLevel2 is null");
                             partLevel2.setTarget(targetPartLevel2);
 
                             PartItem partItemLevel1 = new PartItem();
@@ -186,7 +185,7 @@ public class MaterialBatchImportBean
                                 BigDecimal cquantity = new BigDecimal(quantityString);
                                 Material partItemLevel3 = cacheMaterial.get(cSplit[0]);
                                 if (null == partItemLevel3)
-                                    System.out.println(">>>>> material of partItemLevel2 is null");
+                                    throw new NullPointerException("material of partItemLevel2 is null");
 
                                 PartItem partItemLevel2 = new PartItem();
                                 partItemLevel2.setMaterial(partItemLevel3);
@@ -204,7 +203,7 @@ public class MaterialBatchImportBean
                                     String[] dSplit = dPart.split(",");
                                     Material targetPartLevel3 = cacheMaterial.get(dSplit[0]);
                                     if (null == targetPartLevel3)
-                                        System.out.println(">>>>> target of partLevel3 is null");
+                                        throw new NullPointerException("target of partLevel3 is null");
                                     BigDecimal dquantity = new BigDecimal(dSplit[1]);
 
                                     Part partLevel3 = new Part();
@@ -216,9 +215,7 @@ public class MaterialBatchImportBean
                                     String[] dcSplit = dchildren.split(",");
                                     Material partItemLevel3Material = cacheMaterial.get(dcSplit[0]);
                                     if (null == partItemLevel3Material)
-                                        System.out.println(">>>>> material of partItemLevel3 is null");
-
-// System.out.println(">>>" + dchildren);
+                                        throw new NullPointerException("material of partItemLevel3 is null");
 
                                     BigDecimal itemquantity = new BigDecimal(dcSplit[1]);
                                     PartItem partItemLevel3 = new PartItem();
@@ -248,36 +245,42 @@ public class MaterialBatchImportBean
                     cacheParts.add(partLevel1);
                 }
             } catch (Exception e) {
+                state = false;
                 uiLogger.warn("二次分析BOM时发生错误" + e.getMessage());
             }
-        for (Part part : cacheParts) {
-            Material material = part.getTarget();
-            String label = material.getLabel();
-            String module = material.getModelSpec();
-            IEntityAccessService<Part, Integer> partService = DATA(Part.class);
-            Part p = partService.getUnique(MakebizCriteria.existingPartCheck(label, module));
-            if (null == p) {
-                try {
-                    partService.saveOrUpdate(part);
-                    countSavedBom++;
-                } catch (Exception e) {
-                    countErrorBom++;
-                    uiLogger.warn("导入BOM时发生错误" + e.getMessage());
-                }
-            } else
-                countExistedBom++;
+        if (state) {
+            for (Part part : cacheParts) {
+                Material material = part.getTarget();
+                String label = material.getLabel();
+                String module = material.getModelSpec();
+                IEntityAccessService<Part, Integer> partService = DATA(Part.class);
+                Part p = partService.getUnique(MakebizCriteria.existingPartCheck(label, module));
+                if (null == p) {
+                    try {
+                        partService.saveOrUpdate(part);
+                        countSavedBom++;
+                    } catch (Exception e) {
+                        countErrorBom++;
+                        uiLogger.warn("导入BOM时发生错误" + e.getMessage());
+                    }
+                } else
+                    countExistedBom++;
+            }
+            importedBom = true;
+            uiLogger.info("本次BOM导入完毕");
+        } else {
+            importedBom = false;
+            uiLogger.warn("发生错误，导入未开始执行");
         }
-
-        importedBom = true;
-        uiLogger.info("本次BOM导入完毕");
     }
 
     public void importMakeOrder() {
-        // TODO makeorder
         MakeOrder order = new MakeOrder();
 
         Chance chance = target.unmarshal();
-        Party party = target.getParties().get(0).getParty().unmarshal();
+        target = DTOs.marshal(ChanceDto.class, ChanceDto.PARTIES, chance);
+        ChancePartyDto chanceParty = target.getParties().get(0);
+        Party party = chanceParty.getParty().unmarshal();
 
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -295,38 +298,35 @@ public class MaterialBatchImportBean
 
                 Material material = cacheMaterial.get(string);
                 if (null == material)
-                    System.out.println("mmmmmm is nulllllllll");
+                    throw new NullPointerException("material of MakeOrderItem is null");
 
                 MakeOrderItem orderItem = DATA(MakeOrderItem.class).getUnique(
                         MakebizCriteria.exsitingMakeOrderItemCheck(material.getLabel(), material.getModelSpec()));
                 if (null == orderItem) {
-                    double d = Double.parseDouble(partItems[2]);
-                    orderItem.setQuantity(d);
+                    orderItem = new MakeOrderItem();
+                    BigDecimal quantity = new BigDecimal(partItems[2]);
+                    orderItem.setQuantity(quantity);
                     orderItem.setMaterial(material);
+                    orderItem.setParent(order);
                     items.add(orderItem);
                 }
             }
         order.setItems(items);
-        order.setLabel(year + "年" + month + "月" + day + "日导入生产订单");
+        order.setLabel(year + "年" + month + "月" + day + "日生产订单(导入)");
 
         order.setCustomer(party);
         order.setChance(chance);
 
-        try {
-
-            if (order.getItems().size() > 0) {
-                try {
-                    DATA(MakeOrder.class).saveOrUpdate(order);
-                } catch (Exception e) {
-                    importedOrder = false;
-                    uiLogger.warn("导入订单时发生错误。");
-                }
-            } else {
-                uiLogger.info("没有需要导入的生产订单。");
+        if (order.getItems().size() > 0) {
+            try {
+                DATA(MakeOrder.class).saveOrUpdate(order);
+                importedOrder = true;
+            } catch (Exception e) {
+                importedOrder = false;
+                uiLogger.warn("导入生产订单时发生错误，导入失败。");
             }
-            importedOrder = true;
-        } catch (Exception e) {
-            importedOrder = false;
+        } else {
+            uiLogger.info("没有需要导入的生产订单。");
         }
 
     }
@@ -388,7 +388,7 @@ public class MaterialBatchImportBean
 
                     if (prefixs.size() > 0)
                         for (String pre : prefixs) {
-                            Object[] convertedArray = convert(split, pre, true);
+                            Object[] convertedArray = ImportAssembler.convert(split, pre, true);
                             List<String> resultMaterials = (List<String>) convertedArray[0];
                             String resultPart = (String) convertedArray[1];
                             partCount = partCount + (int) convertedArray[2];
@@ -401,7 +401,7 @@ public class MaterialBatchImportBean
                         }
                     else { // 散件 ==>> 构件
                            // TODO
-                        Object[] convert = convert(split, globalPrefix, false);
+                        Object[] convert = ImportAssembler.convert(split, globalPrefix, false);
                         List<String> resultMaterials = (List<String>) convert[0];
                         String resultPart = (String) convert[1];
 
@@ -490,12 +490,6 @@ public class MaterialBatchImportBean
 
         partsToImport = parts;
 
-        for (String s : parts)
-            System.out.println(s);
-
-        for (String m : materials)
-            System.out.println(m);
-
         if (tempStatus) {
             materialSize = materials.size();
             compSize = parts.size();
@@ -535,313 +529,6 @@ public class MaterialBatchImportBean
 
         uiLogger.info("上传文件" + uploadedFileName + "成功");
         uiLogger.info("该文件导入后不会被保存");
-    }
-
-    static Object[] convert(String[] str, String prefix, boolean ispart) {
-
-        List<String> materials = new ArrayList<String>();
-        String module = str[1];
-        String[] split = module.split(regex);
-        String pattern = split[0];
-        String partModule = split[1];
-        String[] items;
-        String materialString = null;
-
-        String part_material = prefix + "-" + str[0] + "," + str[1] + "*" + str[2] + ",g,p," + str[4] + "," + str[6];
-        materials.add(part_material);
-
-        String part = null;
-
-        int partCount = 0;
-        String type = "钢板";
-        switch (pattern) {
-        case "PL":
-            items = partModule.split("\\*");
-            materialString = materialAssemblerPL(str[7], type, items[0]);
-            materials.add(materialString);
-
-            part = partAssemblerPL(prefix, type, items[0], str);
-            partCount = 1;
-            break;
-        case "H":
-            items = partModule.split("\\*");
-            List<String> hs = materialAssemblerH(prefix, str, partModule);
-            String pl1 = materialAssemblerPL(str[7], type, items[2]);
-            String pl2 = materialAssemblerPL(str[7], type, items[3]);
-            materials.add(pl1);
-            materials.add(pl2);
-            materials.addAll(hs);
-
-            part = partAssemblerH(prefix, type, partModule, str, ispart);
-            partCount = 3;
-            break;
-        case "HN":
-        case "HM":
-        case "HW":
-        case "HB":
-        case "HC":
-            type = "成品H型钢";
-            materialString = materialAssemblerComm(str[7], type, partModule, "H型钢");
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "T":
-            type = "T型钢";
-            materialString = materialAssemblerComm(str[7], type, partModule, type);
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "BOX":
-            items = partModule.split("\\*");
-            List<String> box = materialAssemblerBox(prefix, type, str);
-
-            materials.addAll(box);
-            materials.add(materialAssemblerPL(str[7], type, items[2]));
-            materials.add(materialAssemblerPL(str[7], type, items[3]));
-
-            part = partAsemblerBox(prefix, type, partModule, str, ispart);
-            partCount = 3;
-            break;
-        case "I":
-            type = "工字钢";
-            materialString = materialAssemblerComm(str[7], type, partModule, type);
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "[":
-        case "C":
-            type = "槽钢";
-            String m;
-            if (partModule.indexOf("#") >= 0)
-                m = partModule.split("#")[0];
-            else
-                m = partModule;
-            m = m + "号";
-            materialString = str[7] + type + "," + m + ",k,r";
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, m, str);
-            partCount = 1;
-            break;
-        case "CC":
-            type = "C型钢";
-            materialString = materialAssemblerComm(str[7], type, partModule, type);
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "ZZ":
-            type = "Z型钢";
-            materialString = materialAssemblerComm(str[7], type, partModule, type);
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "L":
-            type = "角钢";
-            materialString = materialAssemblerComm(str[7], type, partModule, type);
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "TUB":
-        case "口":
-            type = "方管";
-            materialString = materialAssemblerComm(str[7], type, partModule, type);
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "PIP":
-        case "Φ":
-            type = "钢管";
-            materialString = materialAssemblerComm(str[7], type, partModule, "无缝管");
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "D":
-            type = "圆钢";
-            materialString = materialAssemblerComm(str[7], type, partModule, type);
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        case "SD":
-            type = "栓钉";
-            materialString = materialAssemblerComm(str[7], type, partModule, "r");
-            materials.add(materialString);
-
-            part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
-            break;
-        default:
-            System.out.println("----没有匹配的材料类型----");
-        }
-
-        Object[] result = { materials, part, partCount };
-        return result;
-    }
-
-    static String materialAssemblerPL(String label, String type, String module) {
-        String category = null;
-        if (label.indexOf("235") >= 0)
-            category = "Q235钢板";
-        if (label.indexOf("345") >= 0)
-            category = "Q345钢板";
-        if (label.indexOf("GJ") >= 0)
-            return label + "高强度钢板" + module + "mm,k,高强度钢板";
-        // 物料名称，规格，单位
-        else
-            return label + type + "," + module + "mm,k," + category;
-    }
-
-    static String materialAssemblerComm(String prefix, String label, String module, String category) {
-        // 物料名称，规格，单位
-        return prefix + label + "," + module + ",k," + category;
-    }
-
-    static String materialAssemblerSD(String prefix, String label, String modle) {
-        return prefix + label + "," + modle + ",g,r";
-    }
-
-    static String partAssemblerPL(String prefix, String type, String thick, String[] strings) {
-
-        String partLabel = prefix + "-" + strings[0];
-        String rawLabeL = strings[7] + type;
-        String modelSpec = strings[1] + "*" + strings[2];
-        return partLabel + modelSpec + "," + strings[3] + ",p,{" + rawLabeL + thick + "mm," + strings[4] + ",r}";
-    }
-
-    static String partAssemblerComm(String prefix, String type, String partModule, String[] strings) {
-        String partLabel = prefix + "-" + strings[0];
-        String rawLabel = strings[7] + type;
-        String partModel = strings[1] + "*" + strings[2];
-        return partLabel + partModel + "," + strings[3] + ",p,{" + rawLabel + partModule + "," + strings[4] + ",r}";
-    }
-
-    static String partAssemblerH(String prefix, String type, String partModule, String[] strings, boolean part) {
-
-        String partLabel = prefix + "-" + strings[0];
-        String flangeLabel = partLabel + "-翼缘";
-        String websLabel = partLabel + "-腹版";
-        String[] moduleItems = partModule.split("\\*");
-
-        String flangeModule = "PL" + moduleItems[3] + "*" + moduleItems[1];
-        String webModule;
-        if (moduleItems[0].indexOf("~") >= 0) {
-            String[] items = moduleItems[0].split("~");
-            int i = Integer.parseInt(items[0]);
-            int j = Integer.parseInt(items[1]);
-
-            int k = Integer.parseInt(moduleItems[3]); // 翼缘厚
-            int l = i - k * 2;
-            int m = j - k * 2;
-            webModule = "PL" + moduleItems[2] + "*" + l + "~" + m;
-        } else {
-            int i = Integer.parseInt(moduleItems[0]); // 截面高
-            int k = Integer.parseInt(moduleItems[3]);
-            int m = i - k * 2;
-            webModule = "PL" + moduleItems[2] + "*" + m;
-        }
-
-        String flange = flangeLabel + flangeModule + ",2,p,{" + strings[7] + type + moduleItems[3] + "mm,1,r}";
-        String web = websLabel + webModule + ",1,p,{" + strings[7] + type + moduleItems[2] + "mm,1,r}";
-
-        String partModel = strings[1] + "*" + strings[2];
-        String result;
-        if (part)
-            result = partLabel + partModel + "," + strings[3] + ",p,{" + flange + ";" + web + "}";
-        else
-            result = partLabel + partModel + "," + strings[3] + ",p,{" + flange + "/" + web + "}";
-
-        return result;
-    }
-
-    static String partAsemblerBox(String prefix, String type, String partModule, String[] strings, boolean part) {
-
-        String partLabel = prefix + "-" + strings[0];
-        String flangeLabel = partLabel + "-翼缘";
-        String websLabel = partLabel + "-腹版";
-        String[] moduleItems = partModule.split("\\*");
-
-        String flangeModule = "PL" + moduleItems[3] + "*" + moduleItems[1];
-        int i = Integer.parseInt(moduleItems[0]); // 截面高
-        int k = Integer.parseInt(moduleItems[3]);
-        int m = i - k * 2;
-        String webModule = "PL" + moduleItems[2] + "*" + m;
-
-        String flange = flangeLabel + flangeModule + ",2,p,{" + strings[7] + type + moduleItems[3] + "mm,1,r}";
-        String web = websLabel + webModule + ",2,p,{" + strings[7] + type + moduleItems[2] + "mm,1,r}";
-
-        String partModel = strings[1] + "*" + strings[2];
-        String result;
-        if (part)
-            result = partLabel + partModel + "," + strings[3] + ",p,{" + flange + ";" + web + "}";
-        else
-            result = partLabel + partModel + "," + strings[3] + ",p,{" + flange + "/" + web + "}";
-
-        return result;
-    }
-
-    static List<String> materialAssemblerH(String prefix, String[] strings, String module) {
-        List<String> result = new ArrayList<String>();
-        String[] split = module.split("\\*");
-        String first = split[0];
-
-        String flangeLabel = prefix + "-" + strings[0] + "-翼缘";
-        String webLabel = prefix + "-" + strings[0] + "-腹版";
-
-        String flangeModule = "PL" + split[3] + "*" + split[1];
-
-        String webModule;
-        if (first.indexOf("~") >= 0) {
-            String[] split2 = first.split("~");
-            int i = Integer.parseInt(split2[0]);
-            int j = Integer.parseInt(split2[1]);
-            int k = Integer.parseInt(split[3]);
-            int l = i - k * 2;
-            int m = j - k * 2;
-            webModule = "PL" + split[2] + "*" + l + "~" + m;
-        } else {
-            int i = Integer.parseInt(split[0]);
-            int j = Integer.parseInt(split[3]);
-            int k = i - j * 2;
-            webModule = "PL" + split[2] + "*" + k;
-        }
-        result.add(flangeLabel + "," + flangeModule + ",g,p");
-        result.add(webLabel + "," + webModule + ",g,p");
-// result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
-
-        return result;
-    }
-
-    static List<String> materialAssemblerBox(String prefix, String type, String[] strings) {
-        List<String> result = new ArrayList<String>();
-        String[] pattern = strings[1].split(regex);
-        String module = pattern[1];
-        String[] split = module.split("\\*");
-        int i = Integer.parseInt(split[0]);
-        int j = Integer.parseInt(split[3]);
-        int k = i - j * 2;
-// result.add(prefix + "-" + strings[0] + "," + strings[1] + ",g");
-        result.add(prefix + "-" + strings[0] + "-腹版,PL" + split[2] + "*" + k + ",g,p");
-        result.add(prefix + "-" + strings[0] + "-翼缘,PL" + split[3] + "*" + split[1] + ",g,p");
-        result.add(materialAssemblerPL(strings[7], type, split[2]));
-        result.add(materialAssemblerPL(strings[7], type, split[3]));
-        return result;
     }
 
     public ChanceDto getTarget() {
