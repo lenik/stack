@@ -222,7 +222,12 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         E first = getFirst(selector);
         if (first != null)
             throw new DataIntegrityViolationException("Already existed: natural id = " + entity.getNaturalId());
-        getHibernateTemplate().save(entity);
+
+        preSave(entity);
+
+        HibernateTemplate template = getHibernateTemplate();
+        // template.delete(first);
+        template.save(entity);
     }
 
     @Override
@@ -236,7 +241,11 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
             EntityAccessor.setId(_entity, first.getId());
             evict(first);
         }
-        getHibernateTemplate().saveOrUpdate(entity);
+
+        preSave(entity);
+
+        HibernateTemplate template = getHibernateTemplate();
+        template.saveOrUpdate(entity);
     }
 
     @Override
