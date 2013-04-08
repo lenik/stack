@@ -56,7 +56,7 @@ public class MaterialBatchImportBean
     String uploadedFileName;
     private File tempFile;
 
-    Set<String> partsToImport;
+    Set<String> partsToImport = null;
 
     int materialSize; // 物料总数
     int compSize; // 构件总数
@@ -70,7 +70,7 @@ public class MaterialBatchImportBean
     int countExistedBom = 0;
     int countErrorBom = 0;
 
-    private Map<String, Material> cacheMaterial;
+    private Map<String, Material> cacheMaterial = null;
 
     // 导入物料
     public void importMaterial() {
@@ -527,8 +527,8 @@ public class MaterialBatchImportBean
         materialSize = 0;
         compSize = 0;
         partSize = 0;
-        cacheMaterial.clear();
-        partsToImport.clear();
+        cacheMaterial = null;
+        partsToImport = null;
 
         uiLogger.info("上传文件" + uploadedFileName + "成功");
         uiLogger.info("该文件导入后不会被保存");
