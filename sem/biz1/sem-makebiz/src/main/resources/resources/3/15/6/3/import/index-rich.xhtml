@@ -29,7 +29,7 @@
                         <h:outputText value="#{bean.uploadedFileName}" rendered="#{bean.upload}" />
                         <p:fileUpload fileUploadListener="#{bean.handleFileUpload}" mode="advanced" label="选择文件"
                             uploadLabel="开始上传" cancelLabel="取消" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/"
-                            update=":mainForm:analysis, :mainForm:uploadView, :mainForm:importMaterial, :mainForm:importBom," />
+                            update=":mainForm:analysis, :mainForm:uploadView, :mainForm:importMaterial, :mainForm:importBom, :mainForm:importOrder" />
                     </p:fieldset>
                 </t:div>
                 <t:div id="analysis">
