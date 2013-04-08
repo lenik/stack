@@ -47,15 +47,8 @@ public class Issue
     private List<IssueObserver> observers = new ArrayList<IssueObserver>();
     private List<IssueReply> replies = new ArrayList<IssueReply>();
 
-    private IssueCounter counter;
-
     private Chance chance;
     private StockOrder stockOrder;
-
-    public Issue() {
-        counter = new IssueCounter();
-        counter.setIssue(this);
-    }
 
     @DefaultValue("'I'")
     @Column(name = "type", nullable = false)
@@ -197,15 +190,6 @@ public class Issue
         if (replies == null)
             throw new NullPointerException("replies");
         this.replies = replies;
-    }
-
-    @OneToOne(mappedBy = "issue", optional = false)
-    public IssueCounter getCounter() {
-        return counter;
-    }
-
-    public void setCounter(IssueCounter counter) {
-        this.counter = counter;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

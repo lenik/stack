@@ -52,25 +52,25 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     static Logger logger = LoggerFactory.getLogger(EntityDto.class);
 
-    private transient Object _source; // Only used to get parameterized type name.
+    transient Object _source; // Only used to get parameterized type name.
     LocationVmap defaultPage;
 
-    private int _index;
-    private Boolean _checked;
+    int _index;
+    Boolean _checked;
 
     protected K id;
-    private boolean _skipId;
-    private Integer version;
-    private String altId;
-    private int stateInt;
-    private Date createdDate;
-    private Date lastModified;
-    private boolean createdDateDirty;
-    private boolean lastModifiedDirty;
+    boolean _skipId;
+    Integer version;
+    String altId;
+    int stateInt;
+    Date createdDate;
+    Date lastModified;
+    boolean createdDateDirty;
+    boolean lastModifiedDirty;
 
-    private EntityFlags entityFlags;
+    EntityFlags entityFlags;
 
-    private transient PropetyFlagsMap pfm;
+    transient PropetyFlagsMap pfm;
 
     public EntityDto() {
         super();
