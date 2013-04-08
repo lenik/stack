@@ -522,10 +522,13 @@ public class MaterialBatchImportBean
         analysis = false;
         importedMaterial = false;
         importedBom = false;
+        importedOrder = false;
 
         materialSize = 0;
         compSize = 0;
         partSize = 0;
+        cacheMaterial.clear();
+        partsToImport.clear();
 
         uiLogger.info("上传文件" + uploadedFileName + "成功");
         uiLogger.info("该文件导入后不会被保存");
