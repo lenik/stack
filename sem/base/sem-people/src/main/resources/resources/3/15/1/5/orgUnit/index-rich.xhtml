@@ -30,7 +30,7 @@
             <h:outputText value="上级部门:" styleClass="e-link" onclick="#{obj.parent.clickAction}" />
             <h:panelGroup>
                 <p:inputText id="parent" value="${obj.parent.label}" readonly="true" label="上级部门" />
-                <p:commandButton value="..." title="选择上级部门" onclick="chooseOrgUnitDialog.show()" />
+                <p:commandButton value="..." title="选择上级部门" onclick="chooseOrgUnitDialog.show()"/>
             </h:panelGroup>
 
             <h:outputText value="部门名称:" />
@@ -44,7 +44,7 @@
 
     <ui:define name="dialogs">
         <sem:chooseOrgDialog id="c_org" target="${obj.org}" update=":editDialog:form:org" />
-        <sem:chooseOrgUnitDialog id="c_orgUnit" target="${obj.parent}" update=":editDialog:form:parent" />
+        <sem:chooseOrgUnitDialog id="c_orgUnit" target="${obj.parent}" update=":editDialog:form:parent"/>
     </ui:define>
 
 

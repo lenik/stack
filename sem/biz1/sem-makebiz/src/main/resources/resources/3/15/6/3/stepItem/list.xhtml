@@ -93,7 +93,9 @@
                     <h:outputText value="部门:" styleClass="e-link" onclick="#{obj.orgUnit.clickAction}"/>
                     <t:panelGroup colspan="3">
                         <p:inputText id="orgUnit" label="对应部门" value="#{obj.orgUnit.path}" readonly="true" style="width:30em;"/>
-                        <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" />
+                        <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()">
+                            <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}" value="-1" />
+                        </p:commandButton>
                     </t:panelGroup>
                 </t:panelGrid>
 

@@ -29,13 +29,15 @@ public class ChooseOrgUnitDialogBean
 
     @Override
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
-        if (orgId != null)
-            // 如果前面选中了某个公司，则查找该公司中的部门
-            elements.add(new Equals("org.id", orgId));
-        else {
-            // 如果没有选择公司，则查找本公司内部
-            elements.add(new Alias("org", "org"));
-            elements.add(new Equals("org.employee", true));
+        if (orgId != null) {
+            if (orgId == -1) {
+                // 如果等于-1，则查找本公司内部
+                elements.add(new Alias("org", "org"));
+                elements.add(new Equals("org.employee", true));
+            } else {
+                // 如果前面选中了某个公司，则查找该公司中的部门
+                elements.add(new Equals("org.id", orgId));
+            }
         }
     }
 
