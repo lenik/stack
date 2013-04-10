@@ -1,0 +1,52 @@
+<ui:composition template="/template/simple-tree-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="部门" />
+    <ui:param name="bean" value="${orgUnitAdminBean}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
+    <ui:param name="mirrorTargets" value=":c_orgUnit:form" />
+
+    <ui:define name="dataColumns">
+        <p:column headerText="部门名称">
+            <h:outputText value="${entry.label}" />
+        </p:column>
+        <p:column headerText="部门描述">
+            <h:outputText value="${entry.description}" />
+        </p:column>
+        <p:column headerText="所属组织机构">
+            <h:outputText value="${entry.org.displayName}" />
+        </p:column>
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+        <h:panelGrid columns="2">
+            <h:outputText value="所属组织机构:" styleClass="e-link" onclick="#{obj.org.clickAction}" />
+            <h:panelGroup>
+                <p:inputText id="org" value="${obj.org.label}" readonly="true" label="所属组织机构" />
+                <p:commandButton value="..." title="选择所属组织机构" onclick="chooseOrgDialog.show()" />
+            </h:panelGroup>
+
+            <h:outputText value="上级部门:" styleClass="e-link" onclick="#{obj.parent.clickAction}" />
+            <h:panelGroup>
+                <p:inputText id="parent" value="${obj.parent.label}" readonly="true" label="上级部门" />
+                <p:commandButton value="..." title="选择上级部门" onclick="chooseOrgUnitDialog.show()" />
+            </h:panelGroup>
+
+            <h:outputText value="部门名称:" />
+            <p:inputText id="label" value="${obj.label}" label="部门名称" />
+
+            <h:outputText value="部门描述:" />
+            <p:inputText id="description" value="${obj.description}" label="部门描述" />
+
+        </h:panelGrid>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:chooseOrgDialog id="c_org" target="${obj.org}" update=":editDialog:form:org" />
+        <sem:chooseOrgUnitDialog id="c_orgUnit" target="${obj.parent}" update=":editDialog:form:parent" />
+    </ui:define>
+
+
+
+</ui:composition>

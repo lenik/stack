@@ -37,11 +37,11 @@
             <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="所属组织机构">
-                    <h:outputText value="${entry.org.displayName}" />
-                </p:column>
                 <p:column headerText="名称">
                     <h:outputText value="${entry.label}" />
+                </p:column>
+                <p:column headerText="所属组织机构">
+                    <h:outputText value="${entry.org.displayName}" />
                 </p:column>
                 <cc:renderFacet name="columns" />
             </ui:define>

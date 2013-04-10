@@ -37,6 +37,7 @@ public class SEMPeopleMenu
     MenuNode orgPersonAdmin = entry(PARENT, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
     MenuNode personAdmin = entry(PARENT, 30, "personAdmin", prefix.join("person/"));
     MenuNode orgAdmin = entry(PARENT, 40, "orgAdmin", prefix.join("org/"));
+    MenuNode orgUnitAdmin = entry(PARENT, 50, "orgUnitAdmin", prefix.join("orgUnit/"));
 
     public MenuNode EMPLOYEE = menu(_frame_.HR, 25, "EMPLOYEE");
     /**/MenuNode employeeAdmin = entry(EMPLOYEE, 1, "employeeAdmin", prefix.join("employee/"));
