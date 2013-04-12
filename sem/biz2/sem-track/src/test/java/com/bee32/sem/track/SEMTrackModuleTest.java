@@ -16,7 +16,7 @@ public class SEMTrackModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMTrackModuleTest().browseAndWait(SEMTrackModule.PREFIX_ + "issue/");
+        new SEMTrackModuleTest().browseAndWait(SEMTrackModule.PREFIX_ + "issue/my");
     }
 
 }

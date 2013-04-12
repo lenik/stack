@@ -45,6 +45,7 @@ public class IssueDto
     private List<IssueObserverDto> observers;
     private List<IssueObserverDto> ccGroups;
     private List<IssueReplyDto> replies;
+    private IssueCounterDto counter;
 
     private ChanceDto chance;
     private StockOrderDto stockOrder;
@@ -90,15 +91,17 @@ public class IssueDto
             ccGroups = Collections.emptyList();
         }
 
-        if (selection.contains(EXT_MISC)) {
-            chance = mref(ChanceDto.class, source.getChance());
-            stockOrder = mref(StockOrderDto.class, source.getStockOrder());
-        }
-
         if (selection.contains(REPLIES))
             replies = marshalList(IssueReplyDto.class, source.getReplies());
         else
             replies = Collections.emptyList();
+
+        counter = marshal(IssueCounterDto.class, source.getCounter());
+
+        if (selection.contains(EXT_MISC)) {
+            chance = mref(ChanceDto.class, source.getChance());
+            stockOrder = mref(StockOrderDto.class, source.getStockOrder());
+        }
     }
 
     @Override
@@ -253,6 +256,14 @@ public class IssueDto
         if (ccGroups == null)
             throw new NullPointerException("ccGroups");
         this.ccGroups = ccGroups;
+    }
+
+    public IssueCounterDto getCounter() {
+        return counter;
+    }
+
+    public void setCounter(IssueCounterDto counter) {
+        this.counter = counter;
     }
 
     public ChanceDto getChance() {

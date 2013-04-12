@@ -38,7 +38,10 @@
         </ui:remove>
 
         <p:column headerText="回复/阅读">
-            ${entry.replyCount} / ${entry.readCount}
+            ${entry.counter.replyCount} / ${entry.counter.readCount}
+        </p:column>
+        <p:column headerText="下载">
+            ${entry.counter.downloadCount}
         </p:column>
     </ui:define>
 

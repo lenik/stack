@@ -31,6 +31,7 @@ import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.track.dto.IssueAttachmentDto;
 import com.bee32.sem.track.dto.IssueDto;
 import com.bee32.sem.track.dto.IssueHrefDto;
@@ -39,6 +40,8 @@ import com.bee32.sem.track.dto.IssueReplyDto;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.entity.IssueHref;
 import com.bee32.sem.track.entity.IssueReply;
+import com.bee32.sem.track.util.CounterType;
+import com.bee32.sem.track.util.IssueService;
 import com.bee32.sem.track.util.TrackCriteria;
 
 public abstract class AbstractIssueView
@@ -74,6 +77,12 @@ public abstract class AbstractIssueView
         return humanTime;
     }
 
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
     /*************************************************************************
      * Section: Reply / Comment
      *************************************************************************/
@@ -85,6 +94,14 @@ public abstract class AbstractIssueView
     protected void openSelection(int fmask) {
         super.openSelection(fmask);
         replies = null;
+    }
+
+    @Override
+    public void showContent() {
+        IssueDto issue = (IssueDto) getSingleSelection();
+        IssueService issueService = BEAN(IssueService.class);
+        issueService.addCounter(issue.getId(), CounterType.READ, 1);
+        super.showContent();
     }
 
     @NLength(max = IssueReply.TEXT_LENGTH)
@@ -150,6 +167,10 @@ public abstract class AbstractIssueView
 
         refreshReplies();
         replyText = "";
+
+        int replyCount = issue.getReplies().size();
+        IssueService issueService = BEAN(IssueService.class);
+        issueService.addCounter(issue.getId(), CounterType.REPLY, replyCount + 1);
     }
 
     /*************************************************************************
@@ -345,6 +366,11 @@ public abstract class AbstractIssueView
         String contentType = fileBlob.getContentType();
         InputStream in = fileBlob.newInputStream();
         StreamedContent stream = new DefaultStreamedContent(in, contentType, attachment.getLabel());
+
+        IssueDto issue = (IssueDto) getSingleSelection();
+        IssueService issueService = BEAN(IssueService.class);
+        issueService.addCounter(issue.getId(), CounterType.DOWNLOAD, 1);
+
         return stream;
     }
 

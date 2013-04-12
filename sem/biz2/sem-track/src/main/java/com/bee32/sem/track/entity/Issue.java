@@ -46,7 +46,6 @@ public class Issue
     private List<IssueAttachment> attachments = new ArrayList<IssueAttachment>();
     private List<IssueObserver> observers = new ArrayList<IssueObserver>();
     private List<IssueReply> replies = new ArrayList<IssueReply>();
-
     private IssueCounter counter;
 
     private Chance chance;
@@ -199,12 +198,17 @@ public class Issue
         this.replies = replies;
     }
 
-    @OneToOne(mappedBy = "issue", optional = false)
+    @OneToOne(mappedBy = "issue", optional = false, orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public IssueCounter getCounter() {
         return counter;
     }
 
     public void setCounter(IssueCounter counter) {
+        if (counter == null) {
+            counter = new IssueCounter();
+            counter.setIssue(this);
+        }
         this.counter = counter;
     }
 
