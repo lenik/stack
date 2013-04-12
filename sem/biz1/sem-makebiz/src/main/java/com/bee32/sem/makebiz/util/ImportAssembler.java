@@ -31,7 +31,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerPL(prefix, type, items[0], str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "H":
             items = partModule.split("\\*");
@@ -43,7 +44,10 @@ public class ImportAssembler {
             materials.addAll(hs);
 
             part = partAssemblerH(prefix, type, partModule, str, ispart);
-            partCount = 3;
+            if (ispart)
+                partCount = 3;
+            else
+                partCount = 2;
             break;
         case "HN":
         case "HM":
@@ -55,7 +59,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "T":
             type = "T型钢";
@@ -63,7 +68,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "BOX":
             items = partModule.split("\\*");
@@ -74,7 +80,10 @@ public class ImportAssembler {
             materials.add(materialAssemblerPL(str[7], type, items[3]));
 
             part = partAsemblerBox(prefix, type, partModule, str, ispart);
-            partCount = 3;
+            if (ispart)
+                partCount = 3;
+            else
+                partCount = 2;
             break;
         case "I":
             type = "工字钢";
@@ -82,7 +91,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "[":
         case "C":
@@ -97,7 +107,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, m, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "CC":
             type = "C型钢";
@@ -105,7 +116,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "ZZ":
             type = "Z型钢";
@@ -121,7 +133,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "TUB":
         case "口":
@@ -130,7 +143,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "PIP":
         case "Φ":
@@ -139,7 +153,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "D":
             type = "圆钢";
@@ -147,7 +162,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         case "SD":
             type = "栓钉";
@@ -155,7 +171,8 @@ public class ImportAssembler {
             materials.add(materialString);
 
             part = partAssemblerComm(prefix, type, partModule, str);
-            partCount = 1;
+            if (ispart)
+                partCount = 1;
             break;
         default:
             System.out.println("----没有匹配的材料类型----");

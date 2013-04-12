@@ -6,7 +6,6 @@
 
     <ui:define name="title">材料表导入</ui:define>
 
-
     <ui:define name="styles">
         <link rel="stylesheet" type="text/css" href="bubble.css" />
     </ui:define>
@@ -19,7 +18,7 @@
                 <t:div id="choosetarget">
                     <p:fieldset legend="STEP1:选择销售机会" toggleable="true" toggleSpeed="500">
                         <p:inputText id="chance" value="#{bean.target.subject}" readonly="true" />
-                        <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
+                        <p:commandButton value="..." onclick="chooseChanceDialog.show();" disabled="#{bean.analysis}" />
                     </p:fieldset>
                 </t:div>
 
@@ -29,13 +28,14 @@
                         <h:outputText value="#{bean.uploadedFileName}" rendered="#{bean.upload}" />
                         <p:fileUpload fileUploadListener="#{bean.handleFileUpload}" mode="advanced" label="选择文件"
                             uploadLabel="开始上传" cancelLabel="取消" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/"
-                            update=":mainForm:analysis, :mainForm:uploadView, :mainForm:importMaterial, :mainForm:importBom, :mainForm:importOrder" />
+                            update=":mainForm:analysis, :mainForm:uploadView, :mainForm:importMaterial, :mainForm:importBom, :mainForm:importOrder"
+                            disabled="#{bean.analysis}" />
                     </p:fieldset>
                 </t:div>
                 <t:div id="analysis">
                     <p:fieldset legend="SETP3:解析文件" toggleable="true" toogleSpeed="500" rendered="#{bean.upload}">
-                        <p:commandButton value="开始解析" actionListener="#{bean.doAnalysis}"
-                            update=":mainForm:importMaterial, :mainForm:analysis" rendered="#{!bean.analysis}" />
+                        <p:commandButton value="开始解析" actionListener="#{bean.doAnalysis}" rendered="#{!bean.analysis}"
+                            update=":mainForm:importMaterial, :mainForm:analysis, :mainForm:uploadView, :mainForm:choosetarget" />
                         <t:panelGrid columns="2" rendered="#{bean.analysis}">
                             <h:outputText value="解析得：" />
                             <h:outputText value="" />
@@ -54,9 +54,9 @@
                 <t:div id="importMaterial">
                     <p:fieldset legend="SETP4:导入物料" toggleable="true" toggleSpeed="500" rendered="#{bean.analysis}">
 
-                        <p:commandButton value="导入物料" onclick="waitbox.show()" actionListener="#{bean.importMaterial}"
-                            update=":mainForm:importMaterial, :mainForm:importBom" rendered="#{!bean.importedMaterial}"
-                            oncomplete="waitbox.hide()" />
+                        <p:commandButton value="导入物料" onclick="waitboxMaterial.show(); materialProgresBar.start()"
+                            actionListener="#{bean.importMaterial}" update=":mainForm:importMaterial, :mainForm:importBom"
+                            rendered="#{!bean.importedMaterial}" oncomplete="waitboxMaterial.hide(); materialProgresBar.cancel();" />
 
                         <t:panelGrid columns="2" rendered="#{bean.importedMaterial}">
                             <h:outputText value="物料导入结果:" />
@@ -76,7 +76,9 @@
                 <t:div id="importBom">
                     <p:fieldset legend="SETP5:导入BOM" toggleable="true" toogleSpeed="500" rendered="#{bean.importedMaterial}">
                         <p:commandButton value="导入BOM" actionListener="#{bean.importBom}" rendered="#{!bean.importedBom}"
-                            update=":mainForm:importBom, :mainForm:importOrder" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
+                            update=":mainForm:importBom, :mainForm:importOrder" onclick="waitboxBom.show(); bomProgresBar.start()"
+                            oncomplete="bomProgresBar.cancel(); waitboxBom.hide()" />
+
                         <t:panelGrid columns="2" rendered="#{bean.importedBom}">
                             <h:outputText value="BOM导入结果：" />
                             <h:outputText value="" />
@@ -94,15 +96,43 @@
                 </t:div>
 
                 <t:div id="importOrder">
-                    <p:fieldset legend="SETP5:导入BOM" toggleable="true" toogleSpeed="500" rendered="#{bean.importedBom}">
+                    <p:fieldset legend="SETP5:导入订单" toggleable="true" toogleSpeed="500" rendered="#{bean.importedBom}">
                         <p:commandButton value="导入生产订单" actionListener="#{bean.importMakeOrder}" update=":mainForm:importOrder"
                             rendered="#{!bean.importedOrder}" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
+                        <t:panelGrid columns="1">
+                            <h:outputText value="导入订单成功" rendered="#{bean.importedOrder}" />
 
-                        <h:outputText value="导入订单成功" rendered="#{bean.importedOrder}" />
-                        <h:outputText value="整个导入流程完毕" rendered="#{bean.importedOrder}" />
+                            <h:outputText value="整个导入流程完毕" rendered="#{bean.importedOrder}" />
+
+                            <p:commandButton value="重新导入" actionListener="#{bean.reset}" update=":mainForm"
+                                rendered="#{bean.importedOrder}" />
+                        </t:panelGrid>
                     </p:fieldset>
                 </t:div>
+
+                <p:dialog header="正在处理中……" id="waitDialogMaterial" styleClass="ui-dialog-system" widgetVar="waitboxMaterial"
+                    modal="true">
+                    <div class="ui-dialog-form " align="center">
+                        <p style="font-size: 120%">服务正在处理中，请耐心等待……</p>
+                        <p:progressBar id="materialProgresBar" widgetVar="materialProgresBar" ajax="true"
+                            value="#{bean.progresMaterial}" labelTemplate="{value}%" styleClass="animated" interval="3000">
+                            <p:ajax event="complete" listener="#{bean.progresComplete}" update=":mainForm:materialProgresBar" />
+                        </p:progressBar>
+                    </div>
+                </p:dialog>
+
+                <p:dialog header="正在处理中……" id="waitDialogBom" styleClass="ui-dialog-system" widgetVar="waitboxBom"
+                    modal="true">
+                    <div class="ui-dialog-form " align="center">
+                        <p style="font-size: 120%">服务正在处理中，请耐心等待……</p>
+                        <p:progressBar id="bomProgresBar" widgetVar="bomProgresBar" ajax="true"
+                            value="#{bean.progresBom}" labelTemplate="{value}%" styleClass="animated" interval="3000">
+                            <p:ajax event="complete" listener="#{bean.progresComplete}" update=":mainForm:bomProgresBar" />
+                        </p:progressBar>
+                    </div>
+                </p:dialog>
             </h:form>
+
 
         </div>
 
