@@ -25,11 +25,12 @@ import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
 import com.bee32.sem.chance.entity.Chance;
+import com.bee32.sem.make.entity.MakeStepModel;
+import com.bee32.sem.make.entity.MakeStepNames;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
-import com.bee32.sem.makebiz.util.ErrorInfoModel;
 import com.bee32.sem.makebiz.util.ImportAssembler;
 import com.bee32.sem.makebiz.util.MakebizCriteria;
 import com.bee32.sem.makebiz.util.MaterialImportThread;
@@ -112,136 +113,189 @@ public class MaterialBatchImportBean
 
         Chance chance = target.unmarshal();
 
-        List<ErrorInfoModel> errorList = new ArrayList<ErrorInfoModel>();
+        MakeStepNames stepNames = BEAN(MakeStepNames.class);
+// List<ErrorInfoModel> errorList = new ArrayList<ErrorInfoModel>();
 
         List<Part> cacheParts = new ArrayList<Part>();
         if (null != partsToImport)
-// try {
-            for (String partString : partsToImport) {
-                int index = partString.indexOf("{");
-                String materialPattern = partString.substring(0, index);
-                String[] partItems = materialPattern.split(",");
-                String string = partItems[0];
+            try {
+                for (String partString : partsToImport) {
+                    int index = partString.indexOf("{");
+                    String materialPattern = partString.substring(0, index);
+                    String[] partItems = materialPattern.split(",");
+                    String string = partItems[0];
 
-                Material material = cacheMaterial.get(string);
-                if (null == material)
-                    throw new NullPointerException("target of partLevel1 is null");
+                    Material material = cacheMaterial.get(string);
+                    if (null == material)
+                        throw new NullPointerException("target of partLevel1 is null");
 
-                Part partLevel1 = new Part();
-                partLevel1.setTarget(material);
-                partLevel1.setChance(chance);
+                    Part partLevel1 = new Part();
+                    partLevel1.setTarget(material);
+                    partLevel1.setChance(chance);
 
-                List<PartItem> level1PartItems = new ArrayList<PartItem>();
-                String children = partString.substring(index + 1);
+                    List<MakeStepModel> steps = new ArrayList<MakeStepModel>();
 
-                if (children.indexOf("/") <= 0) {
-                    PartItem item = new PartItem();
-                    children = children.replace("/", "").replace("}", "");
-                    String[] first = children.split(",");
-                    Material m = cacheMaterial.get(first[0]);
-                    if (null == m)
-                        throw new NullPointerException("material of partItemLevel1 is null");
-                    double quantity = Double.parseDouble(first[1]);
-                    item.setParent(partLevel1);
-                    item.setMaterial(m);
-                    item.setQuantity(quantity);
-                    level1PartItems.add(item);
-                } else {
+                    MakeStepModel step1 = new MakeStepModel();
+                    step1.setStepName(stepNames.cutting);
+                    step1.setOutput(partLevel1);
+                    step1.setOrder(1);
+                    steps.add(step1);
 
-                    String[] split = children.split("/");
+                    MakeStepModel step2 = new MakeStepModel();
+                    step2.setStepName(stepNames.drilling);
+                    step2.setOutput(partLevel1);
+                    step2.setOrder(2);
+                    steps.add(step2);
 
-                    for (String child : split) {
+                    MakeStepModel step3 = new MakeStepModel();
+                    step3.setStepName(stepNames.assembly);
+                    step3.setOutput(partLevel1);
+                    step3.setOrder(3);
+                    steps.add(step3);
 
-                        int cIndex = child.indexOf("{");
-                        String cPart = child.substring(0, cIndex);
-                        String cchildren = child.substring(cIndex + 1);
-                        String[] strings = cPart.split(",");
-                        String key = strings[0];
-                        BigDecimal quantity = new BigDecimal(strings[1]);
+                    MakeStepModel step4 = new MakeStepModel();
+                    step4.setStepName(stepNames.welding);
+                    step4.setOutput(partLevel1);
+                    step4.setOrder(4);
+                    steps.add(step4);
 
-                        Part partLevel2 = new Part();
-                        Material targetPartLevel2 = cacheMaterial.get(key);
-                        if (null == targetPartLevel2)
-                            throw new NullPointerException("target of partLevel2 is null");
-                        partLevel2.setTarget(targetPartLevel2);
+                    MakeStepModel step5 = new MakeStepModel();
+                    step5.setStepName(stepNames.metalPlating);
+                    step5.setOutput(partLevel1);
+                    step5.setOrder(5);
+                    steps.add(step5);
 
-                        PartItem partItemLevel1 = new PartItem();
-                        partItemLevel1.setPart(partLevel2);
-                        partItemLevel1.setQuantity(quantity);
-                        partItemLevel1.setParent(partLevel1);
+                    MakeStepModel step6 = new MakeStepModel();
+                    step6.setStepName(stepNames.sandblast);
+                    step6.setOutput(partLevel1);
+                    step6.setOrder(6);
+                    steps.add(step6);
 
-                        List<PartItem> level2PartItems = new ArrayList<PartItem>();
+                    MakeStepModel step7 = new MakeStepModel();
+                    step7.setStepName(stepNames.painting);
+                    step7.setOutput(partLevel1);
+                    step7.setOrder(7);
+                    steps.add(step7);
 
-                        if (cchildren.indexOf(";") <= 0) {
-                            cchildren = cchildren.replace("}", "");
-                            String[] cSplit = cchildren.split(",");
-                            double quantityString = Double.parseDouble(cSplit[1]);
-                            BigDecimal cquantity = new BigDecimal(quantityString);
-                            Material partItemLevel3 = cacheMaterial.get(cSplit[0]);
-                            if (null == partItemLevel3)
-                                throw new NullPointerException("material of partItemLevel2 is null");
+                    MakeStepModel step8 = new MakeStepModel();
+                    step8.setStepName(stepNames.loading);
+                    step8.setOutput(partLevel1);
+                    step8.setOrder(8);
+                    steps.add(step8);
 
-                            PartItem partItemLevel2 = new PartItem();
-                            partItemLevel2.setMaterial(partItemLevel3);
-                            partItemLevel2.setQuantity(cquantity);
-                            partItemLevel2.setParent(partLevel2);
+                    partLevel1.setSteps(steps);
 
-                            level2PartItems.add(partItemLevel2);
-                        } else {
-                            String[] split2 = cchildren.split(";");
+                    List<PartItem> level1PartItems = new ArrayList<PartItem>();
+                    String children = partString.substring(index + 1);
 
-                            for (String s : split2) {
+                    if (children.indexOf("/") <= 0) {
+                        PartItem item = new PartItem();
+                        children = children.replace("/", "").replace("}", "");
+                        String[] first = children.split(",");
+                        Material m = cacheMaterial.get(first[0]);
+                        if (null == m)
+                            throw new NullPointerException("material of partItemLevel1 is null");
+                        double quantity = Double.parseDouble(first[1]);
+                        item.setParent(partLevel1);
+                        item.setMaterial(m);
+                        item.setQuantity(quantity);
+                        level1PartItems.add(item);
+                    } else {
 
-                                int dIndex = s.indexOf("{");
-                                String dPart = s.substring(0, dIndex);
-                                String[] dSplit = dPart.split(",");
-                                Material targetPartLevel3 = cacheMaterial.get(dSplit[0]);
-                                if (null == targetPartLevel3)
-                                    throw new NullPointerException("target of partLevel3 is null");
-                                BigDecimal dquantity = new BigDecimal(dSplit[1]);
+                        String[] split = children.split("/");
 
-                                Part partLevel3 = new Part();
-                                partLevel3.setTarget(targetPartLevel3);
+                        for (String child : split) {
 
-                                String dchildren = s.substring(dIndex + 1);
-                                dchildren = dchildren.replace("}", "");
+                            int cIndex = child.indexOf("{");
+                            String cPart = child.substring(0, cIndex);
+                            String cchildren = child.substring(cIndex + 1);
+                            String[] strings = cPart.split(",");
+                            String key = strings[0];
+                            BigDecimal quantity = new BigDecimal(strings[1]);
 
-                                String[] dcSplit = dchildren.split(",");
-                                Material partItemLevel3Material = cacheMaterial.get(dcSplit[0]);
-                                if (null == partItemLevel3Material)
-                                    throw new NullPointerException("material of partItemLevel3 is null");
+                            Part partLevel2 = new Part();
+                            Material targetPartLevel2 = cacheMaterial.get(key);
+                            if (null == targetPartLevel2)
+                                throw new NullPointerException("target of partLevel2 is null");
+                            partLevel2.setTarget(targetPartLevel2);
 
-                                BigDecimal itemquantity = new BigDecimal(dcSplit[1]);
-                                PartItem partItemLevel3 = new PartItem();
-                                partItemLevel3.setQuantity(itemquantity);
-                                partItemLevel3.setParent(partLevel3);
-                                partItemLevel3.setMaterial(partItemLevel3Material);
+                            PartItem partItemLevel1 = new PartItem();
+                            partItemLevel1.setPart(partLevel2);
+                            partItemLevel1.setQuantity(quantity);
+                            partItemLevel1.setParent(partLevel1);
 
-                                List<PartItem> level3PartItems = new ArrayList<PartItem>();
-                                level3PartItems.add(partItemLevel3);
-                                partLevel3.setChildren(level3PartItems);
+                            List<PartItem> level2PartItems = new ArrayList<PartItem>();
+
+                            if (cchildren.indexOf(";") <= 0) {
+                                cchildren = cchildren.replace("}", "");
+                                String[] cSplit = cchildren.split(",");
+                                double quantityString = Double.parseDouble(cSplit[1]);
+                                BigDecimal cquantity = new BigDecimal(quantityString);
+                                Material partItemLevel3 = cacheMaterial.get(cSplit[0]);
+                                if (null == partItemLevel3)
+                                    throw new NullPointerException("material of partItemLevel2 is null");
 
                                 PartItem partItemLevel2 = new PartItem();
-                                partItemLevel2.setPart(partLevel3);
-                                partItemLevel2.setQuantity(dquantity);
+                                partItemLevel2.setMaterial(partItemLevel3);
+                                partItemLevel2.setQuantity(cquantity);
                                 partItemLevel2.setParent(partLevel2);
 
                                 level2PartItems.add(partItemLevel2);
-                                cacheParts.add(0, partLevel3);
+                            } else {
+                                String[] split2 = cchildren.split(";");
+
+                                for (String s : split2) {
+
+                                    int dIndex = s.indexOf("{");
+                                    String dPart = s.substring(0, dIndex);
+                                    String[] dSplit = dPart.split(",");
+                                    Material targetPartLevel3 = cacheMaterial.get(dSplit[0]);
+                                    if (null == targetPartLevel3)
+                                        throw new NullPointerException("target of partLevel3 is null");
+                                    BigDecimal dquantity = new BigDecimal(dSplit[1]);
+
+                                    Part partLevel3 = new Part();
+                                    partLevel3.setTarget(targetPartLevel3);
+
+                                    String dchildren = s.substring(dIndex + 1);
+                                    dchildren = dchildren.replace("}", "");
+
+                                    String[] dcSplit = dchildren.split(",");
+                                    Material partItemLevel3Material = cacheMaterial.get(dcSplit[0]);
+                                    if (null == partItemLevel3Material)
+                                        throw new NullPointerException("material of partItemLevel3 is null");
+
+                                    BigDecimal itemquantity = new BigDecimal(dcSplit[1]);
+                                    PartItem partItemLevel3 = new PartItem();
+                                    partItemLevel3.setQuantity(itemquantity);
+                                    partItemLevel3.setParent(partLevel3);
+                                    partItemLevel3.setMaterial(partItemLevel3Material);
+
+                                    List<PartItem> level3PartItems = new ArrayList<PartItem>();
+                                    level3PartItems.add(partItemLevel3);
+                                    partLevel3.setChildren(level3PartItems);
+
+                                    PartItem partItemLevel2 = new PartItem();
+                                    partItemLevel2.setPart(partLevel3);
+                                    partItemLevel2.setQuantity(dquantity);
+                                    partItemLevel2.setParent(partLevel2);
+
+                                    level2PartItems.add(partItemLevel2);
+                                    cacheParts.add(0, partLevel3);
+                                }
                             }
+                            partLevel2.setChildren(level2PartItems);
+                            cacheParts.add(partLevel2);
+                            level1PartItems.add(partItemLevel1);
                         }
-                        partLevel2.setChildren(level2PartItems);
-                        cacheParts.add(partLevel2);
-                        level1PartItems.add(partItemLevel1);
                     }
+                    partLevel1.setChildren(level1PartItems);
+                    cacheParts.add(partLevel1);
                 }
-                partLevel1.setChildren(level1PartItems);
-                cacheParts.add(partLevel1);
+            } catch (Exception e) {
+                state = false;
+                uiLogger.warn("二次分析BOM时发生错误" + e.getMessage());
             }
-// } catch (Exception e) {
-// state = false;
-// uiLogger.warn("二次分析BOM时发生错误" + e.getMessage());
-// }
 
         if (state) {
 
@@ -260,10 +314,10 @@ public class MaterialBatchImportBean
                         DATA(Part.class).saveOrUpdate(part);
                         countSavedBom++;
                     } catch (Exception e) {
-// state = false;
-                        String errorLabel = "物料:" + label + "规格:" + model;
-                        ErrorInfoModel errorModel = new ErrorInfoModel(bomProgres.get(), errorLabel, e.getMessage());
-                        errorList.add(errorModel);
+                        state = false;
+// String errorLabel = "物料:" + label + "规格:" + model;
+// ErrorInfoModel errorModel = new ErrorInfoModel(bomProgres.get(), errorLabel, e.getMessage());
+// errorList.add(errorModel);
                         countErrorBom++;
                     }
                 } else
@@ -558,6 +612,60 @@ public class MaterialBatchImportBean
     public void progresComplete() {
         materialProgres = new AtomicInteger(0);
         bomProgres = new AtomicInteger(0);
+    }
+
+    static List<MakeStepModel> getSteps(Part part) {
+        List<MakeStepModel> steps = new ArrayList<MakeStepModel>();
+        MakeStepNames stepNames = BEAN(MakeStepNames.class);
+        MakeStepModel step1 = new MakeStepModel();
+        step1.setStepName(stepNames.cutting);
+        step1.setOutput(part);
+        step1.setOrder(1);
+        steps.add(step1);
+
+        MakeStepModel step2 = new MakeStepModel();
+        step2.setStepName(stepNames.drilling);
+        step2.setOutput(part);
+        step1.setOrder(2);
+        steps.add(step2);
+
+        MakeStepModel step3 = new MakeStepModel();
+        step3.setStepName(stepNames.assembly);
+        step3.setOutput(part);
+        step1.setOrder(3);
+        steps.add(step3);
+
+        MakeStepModel step4 = new MakeStepModel();
+        step4.setStepName(stepNames.welding);
+        step4.setOutput(part);
+        step1.setOrder(4);
+        steps.add(step4);
+
+        MakeStepModel step5 = new MakeStepModel();
+        step5.setStepName(stepNames.metalPlating);
+        step5.setOutput(part);
+        step1.setOrder(5);
+        steps.add(step5);
+
+        MakeStepModel step6 = new MakeStepModel();
+        step6.setStepName(stepNames.sandblast);
+        step6.setOutput(part);
+        step1.setOrder(6);
+        steps.add(step6);
+
+        MakeStepModel step7 = new MakeStepModel();
+        step7.setStepName(stepNames.painting);
+        step7.setOutput(part);
+        step1.setOrder(7);
+        steps.add(step7);
+
+        MakeStepModel step8 = new MakeStepModel();
+        step8.setStepName(stepNames.loading);
+        step8.setOutput(part);
+        step1.setOrder(8);
+        steps.add(step8);
+
+        return steps;
     }
 
     public ChanceDto getTarget() {
