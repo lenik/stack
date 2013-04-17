@@ -106,6 +106,7 @@ public class MakeTaskItem
      *
      * @return
      */
+    @NaturalId
     @ManyToOne
     public Material getMaterial() {
         return material;
