@@ -44,4 +44,13 @@ public class MakebizCriteria
         return compose(alias("material", "material"), equals("material.label", label),
                 equals("material.modelSpec", modelSpec));
     }
+
+    public static ICriteriaElement getMakeOrderByChanceId(long chanceId) {
+        return compose(alias("chance", "chance"), equals("chance.id", chanceId));
+    }
+
+    public static ICriteriaElement listMakeTaskItemsByChance(Long chanceId) {
+        return null;
+    }
+
 }
