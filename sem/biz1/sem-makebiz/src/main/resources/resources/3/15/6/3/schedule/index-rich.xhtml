@@ -9,19 +9,27 @@
     <ui:define name="content">
         <div>
             <h:form id="mainForm">
-                <t:panelGrid columns="4">
-                    <h:outputText value="选择需要查询的工程" />
-                    <p:inputText value="${bean.project.subject}" id="selectedProject" />
-                    <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
-                    <p:commandButton value="查看" actionListener="${bean.buildProjectTree}" update=":mainForm:process_tree_view" />
-                </t:panelGrid>
+
+                <t:div id="targetProject">
+                    <p:fieldset legend="选择销售机会" toggleable="true" toggleSpeed="500">
+                        <t:panelGrid columns="4">
+                            <h:outputText value="选择需要查询的工程" />
+                            <p:inputText value="${bean.project.subject}" id="selectedProject" />
+                            <p:commandButton value="..." onclick="chooseChanceDialog.show();" />
+                            <p:commandButton value="查看" actionListener="${bean.buildProjectTree}"
+                                update=":mainForm:process_tree_view" />
+                        </t:panelGrid>
+                    </p:fieldset>
+                </t:div>
 
                 <t:div id="process_tree_view">
-                    <p:tree value="#{bean.root}" var="node" id="tree" renderedr="#{bean.project != null}">
-                        <p:treeNode id="treeNode">
-                            <h:outputText value="#{node.material}(#{node.total})" />
-                        </p:treeNode>
-                    </p:tree>
+                    <p:fieldset legend="查看生产进度" toggleable="true" toggleSpeed="500" rendered="#{bean.project != null}">
+                        <p:tree value="#{bean.root}" var="node" id="tree">
+                            <p:treeNode id="treeNode">
+                                <h:outputText value="#{node}" />
+                            </p:treeNode>
+                        </p:tree>
+                    </p:fieldset>
                 </t:div>
             </h:form>
 
