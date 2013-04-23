@@ -42,8 +42,7 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.Units;
 
-public class MaterialBatchImportBean
-        extends EntityViewBean {
+public class MaterialBatchImportBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
     static Pattern emptyLinePattern = Pattern.compile("[0-9]");
@@ -114,7 +113,7 @@ public class MaterialBatchImportBean
         Chance chance = target.unmarshal();
 
         MakeStepNames stepNames = BEAN(MakeStepNames.class);
-// List<ErrorInfoModel> errorList = new ArrayList<ErrorInfoModel>();
+        // List<ErrorInfoModel> errorList = new ArrayList<ErrorInfoModel>();
 
         List<Part> cacheParts = new ArrayList<Part>();
         if (null != partsToImport)
@@ -315,9 +314,11 @@ public class MaterialBatchImportBean
                         countSavedBom++;
                     } catch (Exception e) {
                         state = false;
-// String errorLabel = "物料:" + label + "规格:" + model;
-// ErrorInfoModel errorModel = new ErrorInfoModel(bomProgres.get(), errorLabel, e.getMessage());
-// errorList.add(errorModel);
+                        // String errorLabel = "物料:" + label + "规格:" + model;
+                        // ErrorInfoModel errorModel = new
+                        // ErrorInfoModel(bomProgres.get(), errorLabel,
+                        // e.getMessage());
+                        // errorList.add(errorModel);
                         countErrorBom++;
                     }
                 } else
@@ -330,7 +331,7 @@ public class MaterialBatchImportBean
             uiLogger.warn("导入时发生错误，导入为开始");
         }
 
-// uiLogger.info("物料导入BOM过程完毕。");
+        // uiLogger.info("物料导入BOM过程完毕。");
 
     }
 
@@ -400,8 +401,9 @@ public class MaterialBatchImportBean
         Map<String, String> temp_parts = new HashMap<String, String>(); // tmp_parts
         List<String> prefixs = new ArrayList<String>();
 
-        boolean tempStatus = true; // true is the default value, if the value is false, result is
-// broken
+        boolean tempStatus = true; // true is the default value, if the value is
+                                   // false, result is
+        // broken
         int countLine = 0;
 
         String globalPrefix = String.valueOf(target.getId());
@@ -577,8 +579,7 @@ public class MaterialBatchImportBean
         }
     }
 
-    public void handleFileUpload(FileUploadEvent event)
-            throws IOException {
+    public void handleFileUpload(FileUploadEvent event) throws IOException {
         uploadedFileName = event.getFile().getFileName();
 
         tempFile = File.createTempFile(uploadedFileName, "csv");
@@ -612,60 +613,6 @@ public class MaterialBatchImportBean
     public void progresComplete() {
         materialProgres = new AtomicInteger(0);
         bomProgres = new AtomicInteger(0);
-    }
-
-    static List<MakeStepModel> getSteps(Part part) {
-        List<MakeStepModel> steps = new ArrayList<MakeStepModel>();
-        MakeStepNames stepNames = BEAN(MakeStepNames.class);
-        MakeStepModel step1 = new MakeStepModel();
-        step1.setStepName(stepNames.cutting);
-        step1.setOutput(part);
-        step1.setOrder(1);
-        steps.add(step1);
-
-        MakeStepModel step2 = new MakeStepModel();
-        step2.setStepName(stepNames.drilling);
-        step2.setOutput(part);
-        step1.setOrder(2);
-        steps.add(step2);
-
-        MakeStepModel step3 = new MakeStepModel();
-        step3.setStepName(stepNames.assembly);
-        step3.setOutput(part);
-        step1.setOrder(3);
-        steps.add(step3);
-
-        MakeStepModel step4 = new MakeStepModel();
-        step4.setStepName(stepNames.welding);
-        step4.setOutput(part);
-        step1.setOrder(4);
-        steps.add(step4);
-
-        MakeStepModel step5 = new MakeStepModel();
-        step5.setStepName(stepNames.metalPlating);
-        step5.setOutput(part);
-        step1.setOrder(5);
-        steps.add(step5);
-
-        MakeStepModel step6 = new MakeStepModel();
-        step6.setStepName(stepNames.sandblast);
-        step6.setOutput(part);
-        step1.setOrder(6);
-        steps.add(step6);
-
-        MakeStepModel step7 = new MakeStepModel();
-        step7.setStepName(stepNames.painting);
-        step7.setOutput(part);
-        step1.setOrder(7);
-        steps.add(step7);
-
-        MakeStepModel step8 = new MakeStepModel();
-        step8.setStepName(stepNames.loading);
-        step8.setOutput(part);
-        step1.setOrder(8);
-        steps.add(step8);
-
-        return steps;
     }
 
     public ChanceDto getTarget() {
