@@ -26,8 +26,7 @@ public class ChooseUserFileDialogBean
 
     @Override
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
-        if (pending)
-            elements.add(new IsNull("chance.id"));
+
     }
 
     public boolean isPending() {
