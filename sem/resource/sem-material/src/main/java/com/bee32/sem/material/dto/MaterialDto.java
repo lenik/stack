@@ -141,11 +141,6 @@ public class MaterialDto
             prices.set(existingIndex, price);
     }
 
-    public void addAttachment(UserFileDto attachment) {
-        if (attachment == null)
-            throw new NullPointerException("attachment");
-        attachments.add(attachment);
-    }
 
     public MaterialCategoryDto getCategory() {
         return category;
@@ -223,6 +218,12 @@ public class MaterialDto
         if (attachments == null)
             throw new NullPointerException("attachments");
         this.attachments = attachments;
+    }
+
+    public void addAttachment(UserFileDto attachment) {
+        if (attachment == null)
+            throw new NullPointerException("attachment");
+        attachments.add(attachment);
     }
 
     public List<MaterialWarehouseOptionDto> getOptions() {

@@ -10,6 +10,7 @@
     <ui:param name="actionObj" value="${bean.actionsMBean.openedObject}" />
     <ui:param name="productObj" value="${bean.productsMBean.openedObject}" />
     <ui:param name="competitorObj" value="${bean.competitoriesMBean.openedObject}" />
+    <ui:param name="attachmentObj" value="${bean.attachmentsMBean.openedObject}" />
     <ui:param name="dicts" value="${chanceDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
@@ -181,6 +182,53 @@
                     </f:facet>
                 </fr:listView>
             </p:panel>
+
+            <p:panel header="附件" toggleable="true">
+                <fr:listView id="attachmentsIndexView" header="附件" style="panel" picker="chooseUserFileDialog"
+                    mbean="#{bean.attachmentsMBean}" paginator="false" nested="true" editable="false">
+                    <f:facet name="columns">
+                        <p:column headerText="档案日期" sortBy="${entry.fileDate}">
+				            <h:outputText value="${entry.fileDate}">
+				                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+				            </h:outputText>
+                        </p:column>
+                        <p:column headerText="客户" sortBy="${entry.party}">
+				<h:outputText value="${entry.party.displayName}" />
+                        </p:column>
+                        <p:column headerText="文件"  sortBy="${entry.label}">
+				            <div class="entry">
+				                <span>
+				                    <a target="_blank" href="${entry.viewHref}">${entry.labelOrName}</a>
+				                </span>
+				                <span>
+				                    <a class="ui-icon ui-icon-arrowthickstop-1-s" target="_blank" href="${entry.downloadHref}" />
+				                </span>
+				                <span class="ui-icon ui-icon-circle-triangle-e" onclick="toggleDetailPanel(event)" />
+				                <span class="ui-icon ui-icon-circle-triangle-s" onclick="toggleDetailPanel(event)" style="display: none" />
+
+				            </div>
+				            <h:panelGrid styleClass="detailPanel" columns="2" cellpadding="10" columnClasses="ui-state-default, text"
+				                style="display: none">
+				                <h:outputText value="文件名：" />
+				                <h:outputText value="${entry.name}" />
+
+				                <h:outputText value="标题：" />
+				                <h:outputText value="${entry.label}" />
+
+				                <h:outputText value="描述信息：" />
+				                <h:outputText value="${entry.description}" />
+				            </h:panelGrid>
+                        </p:column>
+                        <p:column headerText="所属分类">
+                            <h:outputText value="${entry.folder.name}" />
+                        </p:column>
+                        <p:column headerText="经办人">
+                            <h:outputText value="${entry.operator.displayName}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+            </p:panel>
+
         </f:subview>
     </ui:define>
 
@@ -194,6 +242,8 @@
             update=":pEditView:editForm:tv:decidedMaterial" />
         <sem:choosePartyDialog id="c_competitor" header="选择竞争对手" var="chooseCompetitorDialog"
             target="${competitorObj.party}" update=":competitorEditView:editForm:competitor" />
+        <sem:chooseUserFileDialog id="c_userfile" header="选择要关联的文件" target="#{bean.attachmentToAttach}"
+            update=":editDialog:form:tv:attachmentsIndexView:indexForm:body" />
 
 
         <fr:listView id="actionsEditView" header="行动记录" style="editDialog" picker="chooseChanceActionDialog"
@@ -419,7 +469,6 @@
                 <p:inputText id="role" label="角色" value="${item.role}" />
             </h:panelGrid>
         </fr:listView>
-
     </ui:define>
 
     <ui:define name="searchPanels.1">

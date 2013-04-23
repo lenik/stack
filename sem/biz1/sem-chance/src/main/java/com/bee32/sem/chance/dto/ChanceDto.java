@@ -19,6 +19,7 @@ import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.ChanceStages;
 import com.bee32.sem.chance.util.DateToRange;
+import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 
 public class ChanceDto
@@ -27,6 +28,7 @@ public class ChanceDto
     private static final long serialVersionUID = 1L;
 
     public static final int PARTIES = 1;
+    public static final int ATTACHMENTS = 2;
     public static final int ACTIONS = 4;
     public static final int COMPETITORIES = 8;
     public static final int PRODUCTS = 16;
@@ -45,6 +47,7 @@ public class ChanceDto
     List<ChanceCompetitorDto> competitories;
     List<ChanceActionDto> actions;
     List<WantedProductDto> products;
+    List<UserFileDto> attachments;
 
     ChanceStageDto stage;
     ProcurementMethodDto procurementMethod;
@@ -66,6 +69,7 @@ public class ChanceDto
         products = CopyUtils.copyList(products, this);
         competitories = CopyUtils.copyList(competitories, this);
         actions = new ArrayList<ChanceActionDto>(actions);
+        attachments = new ArrayList<UserFileDto>(attachments);
     }
 
     @Override
@@ -99,6 +103,11 @@ public class ChanceDto
         else
             products = Collections.emptyList();
 
+        if (selection.contains(ATTACHMENTS))
+            attachments = mrefList(UserFileDto.class, source.getAttachments());
+        else
+            attachments = Collections.emptyList();
+
         stage = mref(ChanceStageDto.class, source.getStage());
         procurementMethod = mref(ProcurementMethodDto.class, source.getProcurementMethod());
         purchaseRegulation = mref(PurchaseRegulationDto.class, source.getPurchaseRegulation());
@@ -122,6 +131,8 @@ public class ChanceDto
             mergeList(target, "actions", actions);
         if (selection.contains(PRODUCTS))
             mergeList(target, "products", products);
+        if (selection.contains(ATTACHMENTS))
+            mergeList(target, "attachments", attachments);
 
         merge(target, "procurementMethod", procurementMethod);
         merge(target, "purchaseRegulation", purchaseRegulation);
@@ -286,6 +297,26 @@ public class ChanceDto
 
     public boolean removeProduct(WantedProductDto product) {
         return products.remove(product);
+    }
+
+    public List<UserFileDto> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<UserFileDto> attachments) {
+        if (attachments == null)
+            throw new NullPointerException("attachments");
+        this.attachments = attachments;
+    }
+
+    public void addAttachment(UserFileDto attachment) {
+        if (attachment == null)
+            throw new NullPointerException("attachment");
+        attachments.add(attachment);
+    }
+
+    public boolean removeAttachment(UserFileDto attachment) {
+        return attachments.remove(attachments);
     }
 
     public ChanceStageDto getStage() {

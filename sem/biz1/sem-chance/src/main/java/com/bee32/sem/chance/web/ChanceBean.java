@@ -9,12 +9,21 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.Identities;
 import com.bee32.plover.orm.util.RefsDiff;
 import com.bee32.plover.ox1.util.CommonCriteria;
-import com.bee32.sem.chance.dto.*;
+import com.bee32.sem.chance.dto.ChanceActionDto;
+import com.bee32.sem.chance.dto.ChanceCompetitorDto;
+import com.bee32.sem.chance.dto.ChanceDto;
+import com.bee32.sem.chance.dto.ChancePartyDto;
+import com.bee32.sem.chance.dto.ChanceSourceTypeDto;
+import com.bee32.sem.chance.dto.ChanceStageDto;
+import com.bee32.sem.chance.dto.WantedProductAttributeDto;
+import com.bee32.sem.chance.dto.WantedProductDto;
+import com.bee32.sem.chance.dto.WantedProductQuotationDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
+import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -32,6 +41,18 @@ public class ChanceBean
 
     public ChanceBean() {
         super(Chance.class, ChanceDto.class, 0);
+    }
+
+    /**
+     * 用户每选择一次userFile,都调用本方法。 由ChanceDto.addAttachment()来记录多次选择的结果
+     */
+    public void setAttachmentToAttach(UserFileDto attachment) {
+        if (attachment == null)
+            return;
+
+        ChanceDto chance = getOpenedObject();
+
+        chance.addAttachment(attachment);
     }
 
     /*************************************************************************
@@ -79,6 +100,9 @@ public class ChanceBean
             "openedObject.attributes", WantedProductAttributeDto.class);
     final ListMBean<WantedProductQuotationDto> productQuotationsMBean = ListMBean.fromEL(productsMBean,
             "openedObject.quotations", WantedProductQuotationDto.class);
+    final ListMBean<UserFileDto> attachmentsMBean = ListMBean.fromEL(this,//
+            "openedObject.attachments", UserFileDto.class);
+
 
     public ListMBean<ChancePartyDto> getPartiesMBean() {
         return partiesMBean;
@@ -101,6 +125,10 @@ public class ChanceBean
 
     public ListMBean<WantedProductQuotationDto> getProductQuotationsMBean() {
         return productQuotationsMBean;
+    }
+
+    public ListMBean<UserFileDto> getAttachmentsMBean() {
+        return attachmentsMBean;
     }
 
     /*************************************************************************

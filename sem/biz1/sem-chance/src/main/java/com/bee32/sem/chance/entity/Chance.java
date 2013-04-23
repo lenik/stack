@@ -12,6 +12,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.Green;
+import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
@@ -46,6 +47,7 @@ public class Chance
     List<ChanceCompetitor> competitories = new ArrayList<ChanceCompetitor>();
     List<WantedProduct> products = new ArrayList<WantedProduct>();
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
+    List<UserFile> attachments = new ArrayList<UserFile>();
 
     ChanceStage stage = predefined(ChanceStages.class).INIT;
     ProcurementMethod procurementMethod = predefined(ProcurementMethods.class).OTHER;
@@ -248,6 +250,25 @@ public class Chance
         if (actions == null)
             throw new NullPointerException("actions");
         this.actions = actions;
+    }
+
+    /**
+     * 附件
+     *
+     * 附加的相关文件列表。
+     */
+    @OneToMany
+    @JoinTable(name = "ChanceAttachment",//
+    /*            */joinColumns = @JoinColumn(name = "chance"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "user_file"))
+    public List<UserFile> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<UserFile> attachments) {
+        if (attachments == null)
+            throw new NullPointerException("attachments");
+        this.attachments = attachments;
     }
 
     /**
