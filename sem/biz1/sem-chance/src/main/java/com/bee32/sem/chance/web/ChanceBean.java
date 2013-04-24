@@ -55,6 +55,12 @@ public class ChanceBean
         chance.addAttachment(attachment);
     }
 
+    public void setActionToAdd(ChanceActionDto action) {
+        if (isCreating())
+            save();
+        actionsMBean.setAddition(action);
+    }
+
     /*************************************************************************
      * Section: Search
      *************************************************************************/
@@ -103,7 +109,6 @@ public class ChanceBean
     final ListMBean<UserFileDto> attachmentsMBean = ListMBean.fromEL(this,//
             "openedObject.attachments", UserFileDto.class);
 
-
     public ListMBean<ChancePartyDto> getPartiesMBean() {
         return partiesMBean;
     }
@@ -112,9 +117,10 @@ public class ChanceBean
         return actionsMBean;
     }
 
-    public ListMBean<ChanceCompetitorDto> getCompetitoriesMBean(){
+    public ListMBean<ChanceCompetitorDto> getCompetitoriesMBean() {
         return competitoriesMBean;
     }
+
     public ListMBean<WantedProductDto> getProductsMBean() {
         return productsMBean;
     }
