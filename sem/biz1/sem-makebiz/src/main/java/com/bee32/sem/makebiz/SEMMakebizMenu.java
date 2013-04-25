@@ -37,7 +37,7 @@ public class SEMMakebizMenu
     /**/MenuNode makeStepItemListAdmin = entry(PRODUCTION, 70, "makeStepItemListAdmin", __.join("stepItem/list.jsf"));
 
     /**/MenuNode batchImport = entry(PRODUCTION, 80, "batchImport", __.join("import/"));
-    /**/MenuNode productionSchedule = entry(PRODUCTION, 90, "productionSchedule", __.join("schedule/"));
+    /**/MenuNode productionSchedule = entry(PRODUCTION, 90, "productionSchedule", __.join("yield/"));
 
     static Location __Inv = WEB_APP.join(SEMInventoryModule.PREFIX_);
 
