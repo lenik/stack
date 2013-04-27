@@ -23,8 +23,7 @@ import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(MakeTask.class)
-public class MakeTaskAdminBean
-        extends ScrollEntityViewBean {
+public class MakeTaskAdminBean extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,8 +41,7 @@ public class MakeTaskAdminBean
         return splitToProcessHolders;
     }
 
-    public void setSplitToProcessHolders(
-            List<SplitToProcessHolder> splitToProcessHolders) {
+    public void setSplitToProcessHolders(List<SplitToProcessHolder> splitToProcessHolders) {
         this.splitToProcessHolders = splitToProcessHolders;
     }
 
@@ -80,44 +78,49 @@ public class MakeTaskAdminBean
             makeTask.setLabel(makeOrder.getLabel());
     }
 
-	public void generateProcess() {
+    public void generateProcess() {
 
-	    MakeTaskItemDto item = itemsMBean.getSelection();
+        MakeTaskItemDto item = itemsMBean.getSelection();
 
-		MakebizService service = BEAN(MakebizService.class);
-		try {
-			service.generateProcess(item, splitToProcessHolders);
-			item = reload(item);
-			uiLogger.info("生成成功，进入\"工世流转单\"功能进行下一步操作.");
-		} catch (Exception e) {
-			uiLogger.error("生成失败!", e);
-		}
-	}
+        MakebizService service = BEAN(MakebizService.class);
+        try {
+            service.generateProcess(item, splitToProcessHolders);
+            item = reload(item);
+            uiLogger.info("生成成功，进入\"工世流转单\"功能进行下一步操作.");
+        } catch (Exception e) {
+            uiLogger.error("生成失败!", e);
+        }
+    }
 
-	public void newHolderList() {
-	    splitToProcessHolders = new ArrayList<SplitToProcessHolder>();
-	}
+    public void setMbeanSelection(MakeTaskItemDto entry) {
+        itemsMBean.setSelection(entry);
+        newHolderList();
+    }
 
-	public void newHolder() {
-	    holder = new SplitToProcessHolder();
-	}
+    public void newHolderList() {
+        splitToProcessHolders = new ArrayList<SplitToProcessHolder>();
+    }
 
-	public void removeHolder(SplitToProcessHolder holder) {
-	    splitToProcessHolders.remove(holder);
-	}
+    public void newHolder() {
+        holder = new SplitToProcessHolder();
+    }
 
-	public void addHolder() {
-	    for(SplitToProcessHolder _holder : splitToProcessHolders) {
-	        if(holder.getBatchNumber().equals(_holder.getBatchNumber())) {
-	            uiLogger.error("批号已经存在!");
+    public void removeHolder(SplitToProcessHolder holder) {
+        splitToProcessHolders.remove(holder);
+    }
 
-	            return;
-	        }
-	    }
-	    splitToProcessHolders.add(holder);
-	}
+    public void addHolder() {
+        for (SplitToProcessHolder _holder : splitToProcessHolders) {
+            if (holder.getBatchNumber().equals(_holder.getBatchNumber())) {
+                uiLogger.error("批号已经存在!");
 
-	/*************************************************************************
+                return;
+            }
+        }
+        splitToProcessHolders.add(holder);
+    }
+
+    /*************************************************************************
      * Section: MBeans
      *************************************************************************/
     final ListMBean<MakeTaskItemDto> itemsMBean = ListMBean.fromEL(this, //
@@ -131,8 +134,7 @@ public class MakeTaskAdminBean
      * Section: Persistence
      *************************************************************************/
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
+    protected boolean preUpdate(UnmarshalMap uMap) throws Exception {
         for (MakeTask _task : uMap.<MakeTask> entitySet()) {
             MakeOrder order = _task.getOrder();
             if (!order.getTasks().contains(_task)) {

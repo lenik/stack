@@ -13,7 +13,7 @@
             <h:outputText value="#{entry.id}" />
         </p:column>
         <p:column headerText="时间" sortBy="#{entry.createDate}">
-            <h:outputText value="#{entry.createDate}" >
+            <h:outputText value="#{entry.createDate}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
@@ -45,25 +45,25 @@
 
                 <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:30em;"/>
+                    <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:30em;" />
                     <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
                 </t:panelGroup>
 
                 <h:outputText value="简要:" />
                 <t:panelGroup colspan="3">
-                    <p:inputText label="简要" value="#{obj.label}" style="width:30em;"/>
+                    <p:inputText label="简要" value="#{obj.label}" style="width:30em;" />
                 </t:panelGroup>
 
                 <h:outputText value="备注:" />
                 <t:panelGroup colspan="3">
-                    <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
-                        label="备注" />
+                    <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}"
+                        readonly="#{not bean.editing}" label="备注" />
                 </t:panelGroup>
             </t:panelGrid>
         </p:fieldset>
 
         <fr:listView id="itemsIndexView" header="生产项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}" inlineEdit="true">
+            nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}" inlineEdit="false">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="#{entry.material.label}" />
@@ -87,20 +87,36 @@
                     </h:outputText>
                 </p:column>
                 <p:column headerText="工艺单数">
-                    <h:outputText value="#{fn:length(entry.processes)}"/>
+                    <h:outputText value="#{fn:length(entry.processes)}" />
                 </p:column>
                 <p:column headerText="备注" styleClass="f-wrappable">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
-            </f:facet>
-            <f:facet name="index-buttons">
-                <p:commandButton onclick="waitbox.show();"
-                    oncomplete="waitbox.hide();generateProcessesDialog.show();"
-                    value="生成工艺流转单" styleClass="locker-invert"
-                    rendered="#{fn:length(entry.processes) le 0}"
-                    disabled="${not bean.itemsMBean.selectionEditable}"
-                    action="#{bean.newHolderList}"
-                    update=":generateProcessesDialogForm" />
+                <p:column headerText="操作">
+                    <p:commandButton onclick="waitbox.show();" oncomplete="waitbox.hide();generateProcessesDialog.show();"
+                        value="流转单" styleClass="locker-invert" rendered="#{fn:length(entry.processes) le 0}" action="#{bean.setMbeanSelection(entry)}"
+                        update=":generateProcessesDialogForm" />
+                    <p:commandButton icon="ui-icon-search" styleClass="locker-invert" action="${mbean.showEditForm}"
+                        update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" onclick="waitbox.show()"
+                        oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}; waitbox.hide();"
+                        rendered="${cc.attrs.editable and (editPopup or copyMode) and cc.attrs.readonly}">
+                        <f:setPropertyActionListener target="${mbean.copyMode}" value="${copyMode}" />
+                        <f:setPropertyActionListener target="#{mbean.selection}" value="#{entry}" />
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-pencil" title="修改" action="${mbean.showEditForm}"
+                        process="@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" onclick="waitbox.show()"
+                        oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}; waitbox.hide();"
+                        rendered="${cc.attrs.editable and (editPopup or copyMode) and not cc.attrs.readonly}">
+                        <f:setPropertyActionListener target="${mbean.copyMode}" value="${copyMode}" />
+                        <f:setPropertyActionListener target="#{mbean.selection}" value="#{entry}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-closethick" title="移除" action="${mbean.removeSelection}"
+                        process="@form" onclick="waitbox.show()" oncomplete="waitbox.hide()"
+                        update="@form, ${cc.attrs.indexView}:indexForm:body, ${cc.attrs.editView}:more" rendered="${cc.attrs.editable and (editPopup or copyMode) and not cc.attrs.readonly}">
+                        <f:setPropertyActionListener target="#{mbean.selection}" value="#{entry}" />
+                    </p:commandButton>
+                </p:column>
             </f:facet>
         </fr:listView>
     </ui:define>
@@ -116,24 +132,22 @@
                 <h:outputText value="#{item.material.label}" />
 
                 <h:outputLabel value="数量" />
-                <p:inputText value="#{item.quantity}" label="数量"/>
+                <p:inputText value="#{item.quantity}" label="数量" />
 
                 <h:outputText value="完工时间:" />
                 <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{item.deadline}"
-                    showOn="button" label="完工时间"/>
+                    showOn="button" label="完工时间" />
 
                 <h:outputLabel value="备注" />
-                <p:inputText value="#{item.description}" label="备注"/>
+                <p:inputText value="#{item.description}" label="备注" />
 
             </t:panelGrid>
         </fr:listView>
 
         <p:dialog widgetVar="generateProcessesDialog" modal="true">
             <h:form id="generateProcessesDialogForm">
-                <p:dataTable var="holder" value="#{bean.splitToProcessHolders}"
-                    scrollable="true" scrollHeight="150"
-                    resizableColumns="true" id="holderTable"
-                    rowIndexVar="index">
+                <p:dataTable var="holder" value="#{bean.splitToProcessHolders}" scrollable="true"
+                    scrollHeight="150" resizableColumns="true" id="holderTable" rowIndexVar="index">
 
                     <p:column headerText="序号" width="10">
                         <h:outputText value="#{index+1}" />
@@ -144,32 +158,23 @@
                     </p:column>
 
                     <p:column headerText="数量" width="80">
-                        <h:outputText value="#{holder.quantity}" >
+                        <h:outputText value="#{holder.quantity}">
                             <f:convertNumber pattern="#0.00" />
                         </h:outputText>
                     </p:column>
 
                     <p:column headerText="动作" width="80">
-                        <p:commandButton
-                            value="删除"
-                            onclick="waitbox.show();"
-                            oncomplete="waitbox.hide();"
-                            update=":generateProcessesDialogForm:holderTable"
-                            actionListener="#{bean.removeHolder(holder)}"/>
+                        <p:commandButton value="删除" onclick="waitbox.show();" oncomplete="waitbox.hide();"
+                            update=":generateProcessesDialogForm:holderTable" actionListener="#{bean.removeHolder(holder)}" />
                     </p:column>
 
                 </p:dataTable>
 
                 <t:panelGrid columns="3">
-                    <p:commandButton value="增加"
-                        onclick="editHolderDialog.show();"
-                        actionListener="#{bean.newHolder}"
-                        update=":editHolderForm"/>
-                    <p:commandButton value="生成"
-                        actionListener="#{bean.generateProcess}"
-                        onclick="waitbox.show();"
-                        oncomplete="waitbox.hide();generateProcessesDialog.hide();"
-                        update=":editDialog:form:itemsIndexView:indexForm:content" />
+                    <p:commandButton value="增加" onclick="editHolderDialog.show();" actionListener="#{bean.newHolder}"
+                        update=":editHolderForm" />
+                    <p:commandButton value="生成" actionListener="#{bean.generateProcess}" onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();generateProcessesDialog.hide();" update=":editDialog:form:itemsIndexView:indexForm:content" />
                 </t:panelGrid>
 
             </h:form>
@@ -178,21 +183,18 @@
         <p:dialog widgetVar="editHolderDialog" modal="true">
             <h:form id="editHolderForm">
                 <t:panelGrid columns="2">
-                    <h:outputText value="批号"/>
-                    <p:inputText value="#{bean.holder.batchNumber}"/>
+                    <h:outputText value="批号" />
+                    <p:inputText value="#{bean.holder.batchNumber}" />
 
-                    <h:outputText value="数量"/>
+                    <h:outputText value="数量" />
                     <p:inputText value="#{bean.holder.quantity}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </p:inputText>
                 </t:panelGrid>
                 <t:panelGrid columns="2">
-                    <p:commandButton value="确定"
-                        onclick="waitbox.show();"
-                        oncomplete="waitbox.hide();editHolderDialog.hide();"
-                        update=":generateProcessesDialogForm:holderTable"
-                        actionListener="#{bean.addHolder}"/>
-                    <p:commandButton value="关闭" onclick="editHolderDialog.hide()"/>
+                    <p:commandButton value="确定" onclick="waitbox.show();" oncomplete="waitbox.hide();editHolderDialog.hide();"
+                        update=":generateProcessesDialogForm:holderTable" actionListener="#{bean.addHolder}" />
+                    <p:commandButton value="关闭" onclick="editHolderDialog.hide()" />
                 </t:panelGrid>
             </h:form>
         </p:dialog>
