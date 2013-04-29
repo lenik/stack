@@ -12,8 +12,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 
-public class UnitConvDto
-        extends UIEntityDto<UnitConv, Long> {
+public class UnitConvDto extends UIEntityDto<UnitConv, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -85,8 +84,7 @@ public class UnitConvDto
     }
 
     @Override
-    protected void _parse(TextMap map)
-            throws ParseException {
+    protected void _parse(TextMap map) throws ParseException {
         unit = new UnitDto().ref(map.getString("unit"));
 
         if (selection.contains(MAP)) {
@@ -132,7 +130,8 @@ public class UnitConvDto
 
     public Double getScale(String unitId) {
         for (Entry<UnitDto, Double> entry : scaleMap.entrySet()) {
-            if (entry.getKey().getId() == unitId)
+            String key = entry.getKey().getId();
+            if (key.equals(unitId))
                 return entry.getValue();
         }
         return null;
