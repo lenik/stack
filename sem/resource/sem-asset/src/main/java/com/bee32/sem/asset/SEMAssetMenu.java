@@ -24,9 +24,9 @@ public class SEMAssetMenu
     MenuNode accountTicketListAdmin = entry(ASSET, 40, "accountTicketListAdmin", __.join("ticket/list.jsf"));
     MenuNode accountTicketAdmin = entry(ASSET, 41, "accountTicketAdmin", __.join("ticket/"));
 
-    MenuNode assetQuery = entry(ASSET, 7, "assetQuery", __.join("query/"));
+    MenuNode assetQuery = entry(ASSET, 50, "assetQuery", __.join("query/"));
 
-    public MenuNode CA = menu(ASSET, 100, "CA");   /*往来账 current account*/
+    public MenuNode CA = menu(ASSET, 60, "CA");   /*往来账 current account*/
     /**/public MenuNode balanceCategory = menu(CA, 1, "balanceCategory");
     /*    */MenuNode subjectBalance = entry(balanceCategory, 1, "subjectBalance", __.join("CA/subjectBalance/"));
     /*    */MenuNode balance = entry(balanceCategory, 2, "balance", __.join("CA/balance/"));
@@ -35,7 +35,8 @@ public class SEMAssetMenu
     /*    */MenuNode detail = entry(CA, 10, "detail", __.join("CA/detail/"));
 
 
-
+    MenuNode balanceSheet = entry(ASSET, 70, "balanceSheet", __.join("balanceSheet/"));
+    MenuNode profitSheet = entry(ASSET, 80, "profitSheet", __.join("profitSheet/"));
 
 
 

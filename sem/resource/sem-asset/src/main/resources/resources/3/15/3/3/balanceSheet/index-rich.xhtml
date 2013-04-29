@@ -1,0 +1,113 @@
+<ui:composition template="/template/custom-rich.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:define name="title">资产负债表</ui:define>
+    <ui:param name="bean" value="#{profitSheetBean}" />
+
+    <ui:define name="content">
+
+        <h:form id="mainForm">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:separator />
+                    <h:outputText value="时间：" />
+                    <p:calendar id="queryDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                        value="#{bean.queryDate}" showOn="button" />
+                    <p:selectBooleanCheckbox value="#{bean.verified}" />
+                    <h:outputText value="审核" />
+                    <p:separator />
+                    <p:commandButton
+                        id="query"
+                        value="查询"
+                        update=":mainForm:result"
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();"
+                        actionListener="#{bean.query}"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <t:panelGrid columns="8" id="result">
+                <t:panelGroup colspan="8">资产负债表</t:panelGroup>
+
+                <t:panelGroup>编制单位:</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>x年x月x日</t:panelGroup>
+                <t:panelGroup>单位:元</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+
+                <t:panelGroup>资产</t:panelGroup>
+                <t:panelGroup>行次</t:panelGroup>
+                <t:panelGroup>期末余额</t:panelGroup>
+                <t:panelGroup>年初余额</t:panelGroup>
+                <t:panelGrid columns="1">
+                    <t:panelGroup>负    债</t:panelGroup>
+                    <t:panelGroup>和所有者权益</t:panelGroup>
+                </t:panelGrid>
+                <t:panelGroup>行次</t:panelGroup>
+                <t:panelGroup>期末余额</t:panelGroup>
+                <t:panelGroup>年初余额</t:panelGroup>
+
+                <t:panelGroup>流动资产:</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>流动负债:</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>货币资金</t:panelGroup>
+                <t:panelGroup>1</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>短期借款</t:panelGroup>
+                <t:panelGroup>31</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>短期投资</t:panelGroup>
+                <t:panelGroup>2</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>应付票据</t:panelGroup>
+                <t:panelGroup>32</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>应收票据</t:panelGroup>
+                <t:panelGroup>3</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>应付账款</t:panelGroup>
+                <t:panelGroup>33</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>应收账款</t:panelGroup>
+                <t:panelGroup>4</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>预收账款</t:panelGroup>
+                <t:panelGroup>34</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>预付账款</t:panelGroup>
+                <t:panelGroup>5</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>应付职工薪酬</t:panelGroup>
+                <t:panelGroup>35</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></0t:panelGroup>
+
+            </t:panelGrid>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
