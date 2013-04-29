@@ -2,12 +2,17 @@ package com.bee32.sem.makebiz.util;
 
 public class YieldDataModel {
     int quantity;
-    int total;
+    int totalQuantity;
+    double weight;
+    double totalWeight;
+    double square;
+    double totalSquare;
     double time;
+    double totalTime;
 
-    public YieldDataModel(int quantity, int total, double time) {
+    public YieldDataModel(int quantity, int totalQuantity, double time) {
         this.quantity = quantity;
-        this.total = total;
+        this.totalQuantity = totalQuantity;
         this.time = time;
     }
 
@@ -19,12 +24,44 @@ public class YieldDataModel {
         this.quantity = quantity;
     }
 
-    public int getTotal() {
-        return total;
+    public int getTotalQuantity() {
+        return totalQuantity;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public double getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(double totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
+    public double getSquare() {
+        return square;
+    }
+
+    public void setSquare(double square) {
+        this.square = square;
+    }
+
+    public double getTotalSquare() {
+        return totalSquare;
+    }
+
+    public void setTotalSquare(double totalSquare) {
+        this.totalSquare = totalSquare;
     }
 
     public double getTime() {
@@ -33,6 +70,14 @@ public class YieldDataModel {
 
     public void setTime(double time) {
         this.time = time;
+    }
+
+    public double getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(double totalTime) {
+        this.totalTime = totalTime;
     }
 
 }
