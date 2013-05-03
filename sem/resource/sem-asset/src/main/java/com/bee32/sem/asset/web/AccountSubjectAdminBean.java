@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
@@ -20,7 +21,8 @@ public class AccountSubjectAdminBean
     AccountSubjectDto parentSubject;
 
     public AccountSubjectAdminBean() {
-        super(AccountSubject.class, AccountSubjectDto.class, 0);
+        super(AccountSubject.class, AccountSubjectDto.class, 0, //
+                Order.asc("id"));
     }
 
     public void addSubjectCodeRestriction() {
