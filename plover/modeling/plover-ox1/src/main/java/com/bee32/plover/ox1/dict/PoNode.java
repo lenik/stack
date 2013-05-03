@@ -54,8 +54,10 @@ public class PoNode<T>
         return children;
     }
 
-    static class PoNodeComparator extends AbstractNonNullComparator<PoNode<?>> {
+    static class PoNodeComparator
+            extends AbstractNonNullComparator<PoNode<?>> {
         static final Comparator<Object> cc = ComparableComparator.getRawInstance();
+
         @Override
         public int compareNonNull(PoNode<?> o1, PoNode<?> o2) {
             Object k1 = o1.getKey();
@@ -65,14 +67,16 @@ public class PoNode<T>
                 cmp = compareIdentity(o1, o2);
             return cmp;
         }
+
         static final PoNodeComparator INSTANCE = new PoNodeComparator();
     }
 
     public void addChild(PoNode<T> child) {
         // pos = -i - 1, -i = pos + 1, i = -pos - 1
         int pos = Collections.binarySearch(children, child, PoNodeComparator.INSTANCE);
-        int insert = -pos - 1;
-        children.add(insert, child);
+        if (pos < 0)
+            pos = -pos - 1;
+        children.add(pos, child);
     }
 
     public void removeChild(PoNode<T> child) {

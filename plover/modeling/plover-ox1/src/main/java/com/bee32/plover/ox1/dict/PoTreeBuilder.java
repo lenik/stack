@@ -43,13 +43,18 @@ public class PoTreeBuilder<T, K> {
         if (node == null) {
             K parentKey = preorder.getPreceding(key);
             PoNode<T> parentNode = getOrCreateVirtualNode(parentKey);
+
             node = createNode();
+            node.setKey(key);
+            node.setData(obj);
+
             node.attach(parentNode);
+
             nodes.put(key, node);
+        } else {
+            if (node.getData() != null)
+                throw new IllegalStateException("node duplicated...");
         }
-        // else if (node.getData() != null) throw new IllegalStateException("node duplicated...");
-        node.setKey(key);
-        node.setData(obj);
         return node;
     }
 
