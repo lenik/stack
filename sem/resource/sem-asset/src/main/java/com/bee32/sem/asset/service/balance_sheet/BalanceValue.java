@@ -41,6 +41,7 @@ public abstract class BalanceValue {
 
         value = (BigDecimal) sqlQuery.uniqueResult();
         if(value == null) value = new BigDecimal(0);
+        value = value.abs();
     }
 
 

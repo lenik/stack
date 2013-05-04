@@ -3,7 +3,7 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:define name="title">资产负债表</ui:define>
-    <ui:param name="bean" value="#{profitSheetBean}" />
+    <ui:param name="bean" value="#{balanceSheetBean}" />
 
     <ui:define name="content">
 
@@ -85,24 +85,60 @@
                 <t:panelGroup>#{bean.v3B}</t:panelGroup>
                 <t:panelGroup><p:spacer width="15"/>应付账款</t:panelGroup>
                 <t:panelGroup>33</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v33A}</t:panelGroup>
+                <t:panelGroup>#{bean.v33B}</t:panelGroup>
 
                 <t:panelGroup><p:spacer width="15"/>应收账款</t:panelGroup>
                 <t:panelGroup>4</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v4A}</t:panelGroup>
+                <t:panelGroup>#{bean.v4B}</t:panelGroup>
                 <t:panelGroup><p:spacer width="15"/>预收账款</t:panelGroup>
                 <t:panelGroup>34</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v34A}</t:panelGroup>
+                <t:panelGroup>#{bean.v34B}</t:panelGroup>
 
                 <t:panelGroup><p:spacer width="15"/>预付账款</t:panelGroup>
                 <t:panelGroup>5</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v5A}</t:panelGroup>
+                <t:panelGroup>#{bean.v5B}</t:panelGroup>
                 <t:panelGroup><p:spacer width="15"/>应付职工薪酬</t:panelGroup>
                 <t:panelGroup>35</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>应收股利</t:panelGroup>
+                <t:panelGroup>6</t:panelGroup>
+                <t:panelGroup>#{bean.v6A}</t:panelGroup>
+                <t:panelGroup>#{bean.v6B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>应交税费</t:panelGroup>
+                <t:panelGroup>36</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>应收利息</t:panelGroup>
+                <t:panelGroup>7</t:panelGroup>
+                <t:panelGroup>#{bean.v7A}</t:panelGroup>
+                <t:panelGroup>#{bean.v7B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>应付利息</t:panelGroup>
+                <t:panelGroup>37</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>其他应收款</t:panelGroup>
+                <t:panelGroup>8</t:panelGroup>
+                <t:panelGroup>#{bean.v8A}</t:panelGroup>
+                <t:panelGroup>#{bean.v8B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>应付利润</t:panelGroup>
+                <t:panelGroup>38</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15"/>存货</t:panelGroup>
+                <t:panelGroup>9</t:panelGroup>
+                <t:panelGroup>#{bean.v9A}</t:panelGroup>
+                <t:panelGroup>#{bean.v9B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15"/>其他应付款</t:panelGroup>
+                <t:panelGroup>39</t:panelGroup>
                 <t:panelGroup></t:panelGroup>
                 <t:panelGroup></t:panelGroup>
 
