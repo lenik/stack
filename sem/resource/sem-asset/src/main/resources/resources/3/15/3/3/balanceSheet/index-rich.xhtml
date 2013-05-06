@@ -6,6 +6,16 @@
     <ui:param name="bean" value="#{balanceSheetBean}" />
 
     <ui:define name="content">
+        <style type="text/css">
+	        table{
+			  border-collapse:collapse;
+			}
+
+            table, th, td {
+		      border: 1px solid;
+		    }
+        </style>
+
         <h:form id="mainForm">
             <p:toolbar>
                 <p:toolbarGroup>
@@ -27,23 +37,21 @@
             </p:toolbar>
 
             <t:panelGrid columns="8" id="result">
-                <t:panelGroup colspan="8">资产负债表</t:panelGroup>
+                <t:panelGroup colspan="8" style="text-align:center;">资产负债表</t:panelGroup>
 
-                <t:panelGroup>编制单位:</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup>x年x月x日</t:panelGroup>
-                <t:panelGroup>单位:元</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup colspan="6"></t:panelGroup>
+                <t:panelGroup colspan="2">会小企01表</t:panelGroup>
+
+                <t:panelGroup colspan="4">编制单位:#{bean.selfOrg}</t:panelGroup>
+                <t:panelGroup colspan="2">#{bean.queryDateText}</t:panelGroup>
+                <t:panelGroup colspan="2">单位:元</t:panelGroup>
 
 
                 <t:panelGroup>资产</t:panelGroup>
                 <t:panelGroup>行次</t:panelGroup>
                 <t:panelGroup>期末余额</t:panelGroup>
                 <t:panelGroup>年初余额</t:panelGroup>
-                <t:panelGrid columns="1">负债和所有者权益</t:panelGrid>
+                <t:panelGroup>负债和所有者权益</t:panelGroup>
                 <t:panelGroup>行次</t:panelGroup>
                 <t:panelGroup>期末余额</t:panelGroup>
                 <t:panelGroup>年初余额</t:panelGroup>

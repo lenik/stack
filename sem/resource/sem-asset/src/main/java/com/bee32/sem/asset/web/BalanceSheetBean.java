@@ -1,6 +1,7 @@
 package com.bee32.sem.asset.web;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -91,6 +92,8 @@ import com.bee32.sem.asset.service.balance_sheet.Value8A;
 import com.bee32.sem.asset.service.balance_sheet.Value8B;
 import com.bee32.sem.asset.service.balance_sheet.Value9A;
 import com.bee32.sem.asset.service.balance_sheet.Value9B;
+import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.service.PeopleService;
 
 public class BalanceSheetBean
         extends EntityViewBean {
@@ -251,8 +254,19 @@ public class BalanceSheetBean
     BigDecimal v53A;
     BigDecimal v53B;
 
+    public String getSelfOrg() {
+        Org selfOrg = BEAN(PeopleService.class).getSelfOrg();
+
+        return selfOrg.getDisplayName();
+    }
+
     public Date getQueryDate() {
         return queryDate;
+    }
+
+    public String getQueryDateText() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(queryDate);
     }
 
     public void setQueryDate(Date queryDate) {
