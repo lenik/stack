@@ -6,7 +6,6 @@
     <ui:param name="bean" value="#{balanceSheetBean}" />
 
     <ui:define name="content">
-
         <h:form id="mainForm">
             <p:toolbar>
                 <p:toolbarGroup>
@@ -44,10 +43,7 @@
                 <t:panelGroup>行次</t:panelGroup>
                 <t:panelGroup>期末余额</t:panelGroup>
                 <t:panelGroup>年初余额</t:panelGroup>
-                <t:panelGrid columns="1">
-                    <t:panelGroup>负    债</t:panelGroup>
-                    <t:panelGroup>和所有者权益</t:panelGroup>
-                </t:panelGrid>
+                <t:panelGrid columns="1">负债和所有者权益</t:panelGrid>
                 <t:panelGroup>行次</t:panelGroup>
                 <t:panelGroup>期末余额</t:panelGroup>
                 <t:panelGroup>年初余额</t:panelGroup>
@@ -61,87 +57,284 @@
                 <t:panelGroup></t:panelGroup>
                 <t:panelGroup></t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>货币资金</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>货币资金</t:panelGroup>
                 <t:panelGroup>1</t:panelGroup>
                 <t:panelGroup>#{bean.v1A}</t:panelGroup>
                 <t:panelGroup>#{bean.v1B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>短期借款</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>短期借款</t:panelGroup>
                 <t:panelGroup>31</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v31A}</t:panelGroup>
+                <t:panelGroup>#{bean.v31B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>短期投资</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>短期投资</t:panelGroup>
                 <t:panelGroup>2</t:panelGroup>
                 <t:panelGroup>#{bean.v2A}</t:panelGroup>
                 <t:panelGroup>#{bean.v2B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>应付票据</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应付票据</t:panelGroup>
                 <t:panelGroup>32</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v32A}</t:panelGroup>
+                <t:panelGroup>#{bean.v32B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>应收票据</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应收票据</t:panelGroup>
                 <t:panelGroup>3</t:panelGroup>
                 <t:panelGroup>#{bean.v3A}</t:panelGroup>
                 <t:panelGroup>#{bean.v3B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>应付账款</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应付账款</t:panelGroup>
                 <t:panelGroup>33</t:panelGroup>
                 <t:panelGroup>#{bean.v33A}</t:panelGroup>
                 <t:panelGroup>#{bean.v33B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>应收账款</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应收账款</t:panelGroup>
                 <t:panelGroup>4</t:panelGroup>
                 <t:panelGroup>#{bean.v4A}</t:panelGroup>
                 <t:panelGroup>#{bean.v4B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>预收账款</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>预收账款</t:panelGroup>
                 <t:panelGroup>34</t:panelGroup>
                 <t:panelGroup>#{bean.v34A}</t:panelGroup>
                 <t:panelGroup>#{bean.v34B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>预付账款</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>预付账款</t:panelGroup>
                 <t:panelGroup>5</t:panelGroup>
                 <t:panelGroup>#{bean.v5A}</t:panelGroup>
                 <t:panelGroup>#{bean.v5B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>应付职工薪酬</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应付职工薪酬</t:panelGroup>
                 <t:panelGroup>35</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v35A}</t:panelGroup>
+                <t:panelGroup>#{bean.v35B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>应收股利</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应收股利</t:panelGroup>
                 <t:panelGroup>6</t:panelGroup>
                 <t:panelGroup>#{bean.v6A}</t:panelGroup>
                 <t:panelGroup>#{bean.v6B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>应交税费</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应交税费</t:panelGroup>
                 <t:panelGroup>36</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v36A}</t:panelGroup>
+                <t:panelGroup>#{bean.v36B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>应收利息</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应收利息</t:panelGroup>
                 <t:panelGroup>7</t:panelGroup>
                 <t:panelGroup>#{bean.v7A}</t:panelGroup>
                 <t:panelGroup>#{bean.v7B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>应付利息</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应付利息</t:panelGroup>
                 <t:panelGroup>37</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v37A}</t:panelGroup>
+                <t:panelGroup>#{bean.v37B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>其他应收款</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>其他应收款</t:panelGroup>
                 <t:panelGroup>8</t:panelGroup>
                 <t:panelGroup>#{bean.v8A}</t:panelGroup>
                 <t:panelGroup>#{bean.v8B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>应付利润</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>应付利润</t:panelGroup>
                 <t:panelGroup>38</t:panelGroup>
-                <t:panelGroup></t:panelGroup>
-                <t:panelGroup></t:panelGroup>
+                <t:panelGroup>#{bean.v38A}</t:panelGroup>
+                <t:panelGroup>#{bean.v38B}</t:panelGroup>
 
-                <t:panelGroup><p:spacer width="15"/>存货</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>存货</t:panelGroup>
                 <t:panelGroup>9</t:panelGroup>
                 <t:panelGroup>#{bean.v9A}</t:panelGroup>
                 <t:panelGroup>#{bean.v9B}</t:panelGroup>
-                <t:panelGroup><p:spacer width="15"/>其他应付款</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>其他应付款</t:panelGroup>
                 <t:panelGroup>39</t:panelGroup>
+                <t:panelGroup>#{bean.v39A}</t:panelGroup>
+                <t:panelGroup>#{bean.v39B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="30" height="10"/>其中：原材料</t:panelGroup>
+                <t:panelGroup>10</t:panelGroup>
+                <t:panelGroup>#{bean.v10A}</t:panelGroup>
+                <t:panelGroup>#{bean.v10B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>其他流动负债</t:panelGroup>
+                <t:panelGroup>40</t:panelGroup>
                 <t:panelGroup></t:panelGroup>
                 <t:panelGroup></t:panelGroup>
 
+                <t:panelGroup><p:spacer width="68" height="10"/>在产品</t:panelGroup>
+                <t:panelGroup>11</t:panelGroup>
+                <t:panelGroup>#{bean.v11A}</t:panelGroup>
+                <t:panelGroup>#{bean.v11B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="30" height="10"/>流动负债合计</t:panelGroup>
+                <t:panelGroup>41</t:panelGroup>
+                <t:panelGroup>#{bean.v41A}</t:panelGroup>
+                <t:panelGroup>#{bean.v41B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="68" height="10"/>库存商品</t:panelGroup>
+                <t:panelGroup>12</t:panelGroup>
+                <t:panelGroup>#{bean.v12A}</t:panelGroup>
+                <t:panelGroup>#{bean.v12B}</t:panelGroup>
+                <t:panelGroup>非流动负债合计</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="68" height="10"/>周转材料</t:panelGroup>
+                <t:panelGroup>13</t:panelGroup>
+                <t:panelGroup>#{bean.v13A}</t:panelGroup>
+                <t:panelGroup>#{bean.v13B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>长期借款</t:panelGroup>
+                <t:panelGroup>42</t:panelGroup>
+                <t:panelGroup>#{bean.v42A}</t:panelGroup>
+                <t:panelGroup>#{bean.v42B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>其他流动资产</t:panelGroup>
+                <t:panelGroup>14</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>长期应付款</t:panelGroup>
+                <t:panelGroup>43</t:panelGroup>
+                <t:panelGroup>#{bean.v43A}</t:panelGroup>
+                <t:panelGroup>#{bean.v43B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="30" height="10"/>流动资产合计</t:panelGroup>
+                <t:panelGroup>15</t:panelGroup>
+                <t:panelGroup>#{bean.v15A}</t:panelGroup>
+                <t:panelGroup>#{bean.v15B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>递延收益</t:panelGroup>
+                <t:panelGroup>44</t:panelGroup>
+                <t:panelGroup>#{bean.v44A}</t:panelGroup>
+                <t:panelGroup>#{bean.v44B}</t:panelGroup>
+
+                <t:panelGroup>非流动资产：</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>其他非流动负债</t:panelGroup>
+                <t:panelGroup>45</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>长期债券投资</t:panelGroup>
+                <t:panelGroup>16</t:panelGroup>
+                <t:panelGroup>#{bean.v16A}</t:panelGroup>
+                <t:panelGroup>#{bean.v16B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="30" height="10"/>非流动负债合计</t:panelGroup>
+                <t:panelGroup>46</t:panelGroup>
+                <t:panelGroup>#{bean.v46A}</t:panelGroup>
+                <t:panelGroup>#{bean.v46B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>长期股权投资</t:panelGroup>
+                <t:panelGroup>17</t:panelGroup>
+                <t:panelGroup>#{bean.v17A}</t:panelGroup>
+                <t:panelGroup>#{bean.v17B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="45" height="10"/>负债合计</t:panelGroup>
+                <t:panelGroup>47</t:panelGroup>
+                <t:panelGroup>#{bean.v47A}</t:panelGroup>
+                <t:panelGroup>#{bean.v47B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>固定资产原价</t:panelGroup>
+                <t:panelGroup>18</t:panelGroup>
+                <t:panelGroup>#{bean.v18A}</t:panelGroup>
+                <t:panelGroup>#{bean.v18B}</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>减：累计折旧</t:panelGroup>
+                <t:panelGroup>19</t:panelGroup>
+                <t:panelGroup>#{bean.v19A}</t:panelGroup>
+                <t:panelGroup>#{bean.v19B}</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>固定资产账面价值</t:panelGroup>
+                <t:panelGroup>20</t:panelGroup>
+                <t:panelGroup>#{bean.v20A}</t:panelGroup>
+                <t:panelGroup>#{bean.v20B}</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>在建工程</t:panelGroup>
+                <t:panelGroup>21</t:panelGroup>
+                <t:panelGroup>#{bean.v21A}</t:panelGroup>
+                <t:panelGroup>#{bean.v21B}</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>工程物资</t:panelGroup>
+                <t:panelGroup>22</t:panelGroup>
+                <t:panelGroup>#{bean.v22A}</t:panelGroup>
+                <t:panelGroup>#{bean.v22B}</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>固定资产清理</t:panelGroup>
+                <t:panelGroup>23</t:panelGroup>
+                <t:panelGroup>#{bean.v23A}</t:panelGroup>
+                <t:panelGroup>#{bean.v23B}</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>生产性生物资产</t:panelGroup>
+                <t:panelGroup>24</t:panelGroup>
+                <t:panelGroup>#{bean.v24A}</t:panelGroup>
+                <t:panelGroup>#{bean.v24B}</t:panelGroup>
+                <t:panelGroup>所有者权益(或股东权益)：</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>无形资产</t:panelGroup>
+                <t:panelGroup>25</t:panelGroup>
+                <t:panelGroup>#{bean.v25A}</t:panelGroup>
+                <t:panelGroup>#{bean.v25B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>实收资本(或股本)</t:panelGroup>
+                <t:panelGroup>48</t:panelGroup>
+                <t:panelGroup>#{bean.v48A}</t:panelGroup>
+                <t:panelGroup>#{bean.v48B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>无形资产</t:panelGroup>
+                <t:panelGroup>26</t:panelGroup>
+                <t:panelGroup>#{bean.v26A}</t:panelGroup>
+                <t:panelGroup>#{bean.v26B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>资本公积</t:panelGroup>
+                <t:panelGroup>49</t:panelGroup>
+                <t:panelGroup>#{bean.v49A}</t:panelGroup>
+                <t:panelGroup>#{bean.v49B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>长期待摊费用</t:panelGroup>
+                <t:panelGroup>27</t:panelGroup>
+                <t:panelGroup>#{bean.v27A}</t:panelGroup>
+                <t:panelGroup>#{bean.v27B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>盈余公积</t:panelGroup>
+                <t:panelGroup>50</t:panelGroup>
+                <t:panelGroup>#{bean.v50A}</t:panelGroup>
+                <t:panelGroup>#{bean.v50B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="15" height="10"/>其他非流动资产</t:panelGroup>
+                <t:panelGroup>28</t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup></t:panelGroup>
+                <t:panelGroup><p:spacer width="15" height="10"/>未分配利润</t:panelGroup>
+                <t:panelGroup>51</t:panelGroup>
+                <t:panelGroup>#{bean.v51A}</t:panelGroup>
+                <t:panelGroup>#{bean.v51B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="30" height="10"/>非流动资产合计</t:panelGroup>
+                <t:panelGroup>29</t:panelGroup>
+                <t:panelGroup>#{bean.v29A}</t:panelGroup>
+                <t:panelGroup>#{bean.v29B}</t:panelGroup>
+                <t:panelGroup><p:spacer width="30" height="10"/>所有者权益(或股东权益)合计</t:panelGroup>
+                <t:panelGroup>52</t:panelGroup>
+                <t:panelGroup>#{bean.v52A}</t:panelGroup>
+                <t:panelGroup>#{bean.v52B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="45" height="10"/>资产总计</t:panelGroup>
+                <t:panelGroup>30</t:panelGroup>
+                <t:panelGroup>#{bean.v30A}</t:panelGroup>
+                <t:panelGroup>#{bean.v30B}</t:panelGroup>
+                <t:panelGroup>负债和所有者权益(或股东权益)总计</t:panelGroup>
+                <t:panelGroup>53</t:panelGroup>
+                <t:panelGroup>#{bean.v53A}</t:panelGroup>
+                <t:panelGroup>#{bean.v53B}</t:panelGroup>
             </t:panelGrid>
         </h:form>
 
