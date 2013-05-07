@@ -1,0 +1,77 @@
+<ui:composition template="/template/custom-rich.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:define name="title">利润表</ui:define>
+    <ui:param name="bean" value="#{profitSheetBean}" />
+
+    <ui:define name="content">
+        <style type="text/css">
+	        table{
+			  border-collapse:collapse;
+			}
+
+            table, th, td {
+		      border: 1px solid;
+		    }
+        </style>
+
+        <h:form id="mainForm">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:separator />
+                    <h:outputText value="时间：" />
+                    <p:calendar id="queryDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                        value="#{bean.queryDate}" showOn="button" />
+                    <p:selectBooleanCheckbox value="#{bean.verified}" />
+                    <h:outputText value="审核" />
+                    <p:separator />
+                    <p:commandButton
+                        id="query"
+                        value="查询"
+                        update=":mainForm:result"
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();"
+                        actionListener="#{bean.query}"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <t:panelGrid columns="4" id="result">
+                <t:panelGroup colspan="4" style="text-align:center;">利润表</t:panelGroup>
+
+                <t:panelGroup colspan="2"></t:panelGroup>
+                <t:panelGroup colspan="2">会小企01表</t:panelGroup>
+
+                <t:panelGroup colspan="2">编制单位:#{bean.selfOrg}<p:spacer width="30" height="10"/>#{bean.queryDateText}</t:panelGroup>
+                <t:panelGroup colspan="2">单位:元</t:panelGroup>
+
+
+                <t:panelGroup>项目</t:panelGroup>
+                <t:panelGroup>行次</t:panelGroup>
+                <t:panelGroup>本年累计金额</t:panelGroup>
+                <t:panelGroup>本月余额</t:panelGroup>
+
+                <t:panelGroup>一、营业收入</t:panelGroup>
+                <t:panelGroup>1</t:panelGroup>
+                <t:panelGroup>#{bean.v1A}</t:panelGroup>
+                <t:panelGroup>#{bean.v1B}</t:panelGroup>
+
+                <t:panelGroup>减：营业成本</t:panelGroup>
+                <t:panelGroup>2</t:panelGroup>
+                <t:panelGroup>#{bean.v2A}</t:panelGroup>
+                <t:panelGroup>#{bean.v2B}</t:panelGroup>
+
+                <t:panelGroup><p:spacer width="26" height="10"/>营业税金及附加</t:panelGroup>
+                <t:panelGroup>3</t:panelGroup>
+                <t:panelGroup>#{bean.v3A}</t:panelGroup>
+                <t:panelGroup>#{bean.v3B}</t:panelGroup>
+
+
+
+
+
+            </t:panelGrid>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
