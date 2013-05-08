@@ -16,6 +16,8 @@ import com.bee32.sem.asset.service.profit_sheet.ProfitValue1A;
 import com.bee32.sem.asset.service.profit_sheet.ProfitValue1B;
 import com.bee32.sem.asset.service.profit_sheet.ProfitValue2A;
 import com.bee32.sem.asset.service.profit_sheet.ProfitValue2B;
+import com.bee32.sem.asset.service.profit_sheet.ProfitValue3A;
+import com.bee32.sem.asset.service.profit_sheet.ProfitValue3B;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.service.PeopleService;
 
@@ -124,6 +126,22 @@ public class ProfitSheetBean
         value2B.setSession(session);
         value2B.calc();
         v2B = value2B.getValue();
+
+
+
+        ProfitValue3A value3A = new ProfitValue3A();
+        value3A.setDate(queryDate);
+        value3A.setVerified(verified);
+        value3A.setSession(session);
+        value3A.calc();
+        v3A = value3A.getValue();
+
+        ProfitValue3B value3B = new ProfitValue3B();
+        value3B.setDate(queryDate);
+        value3B.setVerified(verified);
+        value3B.setSession(session);
+        value3B.calc();
+        v3B = value3B.getValue();
 
     }
 
