@@ -31,8 +31,13 @@ public class IssueCounter
      * 事件
      *
      * 相关的事件。
+     *
+     * NOTICE: Nullable issue column: need to be nullable, otherwise new issue/counter won't be
+     * allowed.
+     *
+     * MAINTAINCE: alter table issue_counter alter column issue drop not null;
      */
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = true, fetch = FetchType.LAZY)
     public Issue getIssue() {
         return issue;
     }

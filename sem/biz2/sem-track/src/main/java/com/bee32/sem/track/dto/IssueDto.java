@@ -27,6 +27,8 @@ public class IssueDto
 
     public static final int HREFS = 1;
     public static final int ATTACHMENTS = 2;
+    public static final int COUNTER = 4;
+
     public static final int OBSERVERS = 16;
     public static final int CC_GROUPS = 32;
     public static final int EXT_MISC = 64;
@@ -96,7 +98,8 @@ public class IssueDto
         else
             replies = Collections.emptyList();
 
-        counter = marshal(IssueCounterDto.class, source.getCounter());
+        if (selection.contains(COUNTER))
+            counter = marshal(IssueCounterDto.class, source.getCounter());
 
         if (selection.contains(EXT_MISC)) {
             chance = mref(ChanceDto.class, source.getChance());

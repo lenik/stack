@@ -87,7 +87,8 @@ public class IssueService
             break;
         }
 
-        DATA(IssueCounter.class).saveOrUpdate(counter);
+        //DATA(IssueCounter.class).saveOrUpdate(counter);
+        //DATA(IssueCounter.class).evict(counter);
     }
 
 }
