@@ -131,6 +131,7 @@ public class IssueService
         return issueStat;
     }
 
+    @Transactional(readOnly = false)
     public void setReadFlag(long issueId, int userId, boolean read) {
         IssueObserver observer = DATA(IssueObserver.class).getUnique(//
                 new Equals("issue.id", issueId), //

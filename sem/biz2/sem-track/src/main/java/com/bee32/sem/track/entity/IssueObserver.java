@@ -36,6 +36,10 @@ public class IssueObserver
     boolean read;
     String stateText = "";
 
+    public IssueObserver() {
+        setLabel("成员");
+    }
+
     /**
      * 事件
      *

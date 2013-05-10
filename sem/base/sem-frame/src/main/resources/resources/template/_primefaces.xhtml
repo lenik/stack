@@ -5,10 +5,13 @@
     <ui:define name="pageTitle" />
 
     <ui:define name="pageStatus">
+        <h:panelGroup rendered="${sessionUser.id != null}">
+            <h:form id="__messages">
+                ■ 您有 ${issueService.issueStat.currentUserStat.unreadCount} 个事件待处理。
+                <a href="${location.WEB_APP}/3/15/7/2/issue/inbox/">(进入)</a>
+            </h:form>
+        </h:panelGroup>
 
-        <h:form id="__messages">
-            ■ 您有 ${issueService.issueStat.currentUserStat.unreadCount} 个事件待处理。
-        </h:form>
         <h:form id="__tips">
             <ui:insert name="growl">
                 <p:growl id="growl" showDetail="true" autoUpdate="true" escape="false" />
