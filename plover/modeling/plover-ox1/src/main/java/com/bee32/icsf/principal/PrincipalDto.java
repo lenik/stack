@@ -31,6 +31,10 @@ public class PrincipalDto
 
     String name;
 
+    boolean user;
+    boolean group;
+    boolean role;
+
     public PrincipalDto() {
         super();
     }
@@ -47,6 +51,10 @@ public class PrincipalDto
     @Override
     protected void _marshal(Principal source) {
         name = source.getName();
+
+        user = source instanceof User;
+        group = source instanceof Group;
+        role = source instanceof Role;
     }
 
     @Override
@@ -85,6 +93,18 @@ public class PrincipalDto
             return getFullName();
         else
             return getName();
+    }
+
+    public boolean isUser() {
+        return user;
+    }
+
+    public boolean isGroup() {
+        return group;
+    }
+
+    public boolean isRole() {
+        return role;
     }
 
 }
