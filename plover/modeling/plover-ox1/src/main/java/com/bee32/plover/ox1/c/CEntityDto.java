@@ -22,6 +22,7 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
     static Logger logger = LoggerFactory.getLogger(CEntityDto.class);
 
     public static final int OWNER_SKIP = 0x8000_0000;
+    public static final int SET_ACL = 0x4000_0000;
 
     UserDto owner;
     Integer aclId;
@@ -59,8 +60,9 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         if (!selection.contains(OWNER_SKIP))
             merge(target, "owner", owner);
 
-        if (aclId != null)
-            CEntityAccessor.setAclId(target, aclId);
+        if (selection.contains(SET_ACL))
+            if (aclId != null)
+                CEntityAccessor.setAclId(target, aclId);
     }
 
     @Override
