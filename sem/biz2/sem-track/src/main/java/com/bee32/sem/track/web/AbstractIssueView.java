@@ -42,6 +42,7 @@ import com.bee32.sem.track.entity.IssueHref;
 import com.bee32.sem.track.entity.IssueReply;
 import com.bee32.sem.track.util.CounterType;
 import com.bee32.sem.track.util.IssueService;
+import com.bee32.sem.track.util.IssueStat;
 import com.bee32.sem.track.util.TrackCriteria;
 
 public abstract class AbstractIssueView
@@ -50,7 +51,7 @@ public abstract class AbstractIssueView
     private static final long serialVersionUID = 1L;
 
     public AbstractIssueView(ICriteriaElement... criteriaElements) {
-        super(Issue.class, IssueDto.class, 0, criteriaElements);
+        super(Issue.class, IssueDto.class, IssueDto.COUNTER, criteriaElements);
     }
 
     @Override
@@ -83,6 +84,16 @@ public abstract class AbstractIssueView
         return true;
     }
 
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        IssueService issueService = BEAN(IssueService.class);
+        IssueStat issueStat = issueService.getIssueStat();
+        for (Issue issue : uMap.<Issue> entitySet()) {
+            issueStat.updateIssue(issue);
+        }
+    }
+
     /*************************************************************************
      * Section: Reply / Comment
      *************************************************************************/
@@ -100,7 +111,13 @@ public abstract class AbstractIssueView
     public void showContent() {
         IssueDto issue = (IssueDto) getSingleSelection();
         IssueService issueService = BEAN(IssueService.class);
+
         issueService.addCounter(issue.getId(), CounterType.READ, 1);
+
+        Integer userId = SessionUser.getInstance().getId();
+        if (userId != null)
+            issueService.setReadFlag(issue.getId(), userId, true);
+
         super.showContent();
     }
 

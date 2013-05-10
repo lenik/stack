@@ -1,25 +1,21 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/_primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template/_primefaces.xhtml">
+    <ui:define name="login">
+    </ui:define>
 
-        <ui:define name="login">
-        </ui:define>
+    <ui:define name="content">
 
-        <ui:define name="content">
+        <h:form>
+            <p:commandButton value="Show Dialog" onclick="dlg.show()" />
+        </h:form>
 
-            <h:form>
-                <p:commandButton value="Show Dialog" onclick="dlg.show()" />
-            </h:form>
+        <p:dialog header="Very long title" widgetVar="dlg" modal="true">
+            <div style="width:300px; height:200px;">
+                <h:outputText value="This is a Modal Dialog." />
+            </div>
+        </p:dialog>
 
-            <p:dialog header="Very long title" widgetVar="dlg" modal="true">
-                <div style="width:300px; height:200px;">
-                    <h:outputText value="This is a Modal Dialog." />
-                </div>
-            </p:dialog>
+    </ui:define>
 
-        </ui:define>
-
-    </ui:composition>
-
-</html>
+</ui:composition>

@@ -5,6 +5,10 @@
     <ui:define name="pageTitle" />
 
     <ui:define name="pageStatus">
+
+        <h:form id="__messages">
+            ■ 您有 ${issueService.issueStat.currentUserStat.unreadCount} 个事件待处理。
+        </h:form>
         <h:form id="__tips">
             <ui:insert name="growl">
                 <p:growl id="growl" showDetail="true" autoUpdate="true" escape="false" />

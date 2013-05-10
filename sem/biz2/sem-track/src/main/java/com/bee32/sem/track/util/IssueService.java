@@ -1,14 +1,23 @@
 package com.bee32.sem.track.util;
 
+import javax.free.UnexpectedException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.sem.track.entity.Issue;
 import com.bee32.sem.track.entity.IssueCounter;
+import com.bee32.sem.track.entity.IssueObserver;
 
 public class IssueService
         extends DataService {
+
+    static Logger logger = LoggerFactory.getLogger(IssueService.class);
+
+    IssueStat issueStat;
 
     @Transactional(readOnly = false)
     public void setCounter(long issueId, CounterType counterType, int count) {
@@ -25,15 +34,21 @@ public class IssueService
         case READ:
             counter.setReadCount(count);
             break;
+
         case UPDATE:
             counter.setUpdateCount(count);
             break;
+
         case REPLY:
             counter.setReplyCount(count);
             break;
+
         case DOWNLOAD:
             counter.setDownloadCount(count);
             break;
+
+        default:
+            throw new UnexpectedException();
         }
 
         DATA(IssueCounter.class).saveOrUpdate(counter);
@@ -68,6 +83,9 @@ public class IssueService
         case DOWNLOAD:
             count = counter.getDownloadCount();
             break;
+
+        default:
+            throw new UnexpectedException();
         }
 
         count += delta;
@@ -76,19 +94,57 @@ public class IssueService
         case READ:
             counter.setReadCount(count);
             break;
+
         case UPDATE:
             counter.setUpdateCount(count);
             break;
+
         case REPLY:
             counter.setReplyCount(count);
             break;
+
         case DOWNLOAD:
             counter.setDownloadCount(count);
             break;
+
+        default:
+            throw new UnexpectedException();
         }
 
-        //DATA(IssueCounter.class).saveOrUpdate(counter);
-        //DATA(IssueCounter.class).evict(counter);
+        DATA(IssueCounter.class).saveOrUpdate(counter);
+        // DATA(IssueCounter.class).evict(counter);
+    }
+
+    boolean forceRefresh = true;
+
+    public IssueStat getIssueStat() {
+        if (issueStat == null || forceRefresh) {
+            synchronized (this) {
+                if (issueStat == null || forceRefresh) {
+                    issueStat = new IssueStat();
+
+                    for (Issue issue : DATA(Issue.class).list())
+                        issueStat.updateIssue(issue);
+                }
+            }
+        }
+        return issueStat;
+    }
+
+    public void setReadFlag(long issueId, int userId, boolean read) {
+        IssueObserver observer = DATA(IssueObserver.class).getUnique(//
+                new Equals("issue.id", issueId), //
+                new Equals("observer.id", userId));
+
+        // user isn't an observer, do nothing.
+        if (observer == null) {
+            logger.warn("User isn't in observer list..");
+            return;
+        }
+
+        observer.setRead(read);
+
+        DATA(IssueObserver.class).update(observer);
     }
 
 }

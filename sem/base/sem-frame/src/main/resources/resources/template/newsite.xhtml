@@ -95,8 +95,8 @@
 
     <h:panelGroup id="pageFooter" layout="block">
         <ui:insert name="pageFooter">
-            <div class="site-page-footer">
-                <div style=" padding: 0.5em;" title="Effective-Implication: ${sessionUser.imIdSet} :: ${sessionUser.imNameSet}">
+            <div class="site-page-footer" style=" padding: 0.5em;">
+                <div title="Effective-Implication: ${sessionUser.imIdSet} :: ${sessionUser.imNameSet}">
                     ■ 当前用户：
                     <span title="${site.name} - ${site.description}">${site.label}</span> ⚛
                     <ui:repeat var="node" value="${sessionPerson.chain}">
@@ -104,7 +104,7 @@
                     </ui:repeat>
                     （<a id="aQuit" name="aQuit" href="#" title="当您不需要使用本系统时，请及时退出以免被他人非法使用。">退出</a>）
                 </div>
-                <div id="pageStatus" style=" padding: 0.5em;">
+                <div id="pageStatus">
                     <ui:insert name="pageStatus" />
                 </div>
             </div>

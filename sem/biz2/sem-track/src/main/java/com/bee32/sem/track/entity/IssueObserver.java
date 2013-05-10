@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.principal.Principal;
@@ -32,6 +33,7 @@ public class IssueObserver
     int rank = 1;
     boolean manager;
     boolean fav;
+    boolean read;
     String stateText = "";
 
     /**
@@ -108,6 +110,21 @@ public class IssueObserver
 
     public void setFav(boolean fav) {
         this.fav = fav;
+    }
+
+    /**
+     * 阅读标志
+     *
+     * 用户是否阅读/打开了该事件。
+     */
+    @Column(nullable = false)
+    @DefaultValue("false")
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
     @Column(nullable = false, length = STATE_TEXT_LENGTH)

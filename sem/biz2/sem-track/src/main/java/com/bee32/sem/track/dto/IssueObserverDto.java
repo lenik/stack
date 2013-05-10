@@ -2,6 +2,7 @@ package com.bee32.sem.track.dto;
 
 import java.io.Serializable;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.icsf.principal.PrincipalDto;
@@ -24,6 +25,7 @@ public class IssueObserverDto
     private int rank;
     private boolean manager;
     private boolean fav;
+    private boolean read;
     private String stateText;
 
     @Override
@@ -49,6 +51,7 @@ public class IssueObserverDto
         rank = source.getRank();
         manager = source.isManager();
         fav = source.isFav();
+        read = source.isRead();
         stateText = source.getStateText();
     }
 
@@ -59,12 +62,14 @@ public class IssueObserverDto
         target.setRank(rank);
         target.setManager(manager);
         target.setFav(fav);
+        target.setRead(read);
         target.setStateText(stateText);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        throw new NotImplementedException();
     }
 
     // @NotNullId
@@ -111,6 +116,14 @@ public class IssueObserverDto
 
     public void setFav(boolean fav) {
         this.fav = fav;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
     @NLength(max = IssueObserver.STATE_TEXT_LENGTH)

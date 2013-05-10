@@ -8,7 +8,7 @@ import java.util.List;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.UserDto;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.CopyUtils;
@@ -83,7 +83,8 @@ public class IssueDto
             observers = new ArrayList<IssueObserverDto>();
             ccGroups = new ArrayList<IssueObserverDto>();
             for (IssueObserverDto dto : marshalList(IssueObserverDto.class, source.getObservers())) {
-                if (dto.getObserver() instanceof UserDto)
+                PrincipalDto observer = dto.getObserver();
+                if (observer.isUser())
                     observers.add(dto);
                 else
                     ccGroups.add(dto);
