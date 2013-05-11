@@ -12,7 +12,6 @@ public class UserFolderAdminBean
 
     private static final long serialVersionUID = 1L;
 
-
     public UserFolderAdminBean() {
         super(UserFolder.class, UserFolderDto.class, 0);
     }
@@ -23,4 +22,5 @@ public class UserFolderAdminBean
         super.postUpdate(uMap);
         BEAN(ChooseUserFolderDialogBean.class).refreshTree();
     }
+
 }

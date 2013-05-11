@@ -82,7 +82,8 @@ public class UserFolderTreeModel
                     // (disabled)
 
                     // acl in (currentUser.visibleACLs)
-                    ACLCriteria.aclWithin(me.getACLs(visiblePermission), true)));
+                    ACLCriteria.aclWithin(me.getACLs(visiblePermission), true))//
+            );
 
             join.addAll(Arrays.asList(userCriteria));
             ICriteriaElement[] criteriaElements = join.toArray(new ICriteriaElement[0]);
@@ -91,9 +92,11 @@ public class UserFolderTreeModel
             // Remove dangling children.
 
             List<UserFolderDto> folders = DTOs.mrefList(UserFolderDto.class, //
-                    TreeEntityDto.PARENT, //
+                    TreeEntityDto.PARENT, // Without children...
                     _folders);
             index = DTOs.index(folders);
+
+            // children will be rebuilt here.
             Set<UserFolderDto> roots = TreeEntityUtils.rebuildTree(index);
 
             rootNode = new DefaultTreeNode("folderRoot", null);

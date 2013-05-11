@@ -9,8 +9,8 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.sem.file.entity.UserFolder;
 
-public class UserFolderDto extends
-        TreeEntityDto<UserFolder, Integer, UserFolderDto> {
+public class UserFolderDto
+        extends TreeEntityDto<UserFolder, Integer, UserFolderDto> {
     private static final long serialVersionUID = 1L;
 
     public static final int FILES = 0x01000000;
@@ -41,7 +41,8 @@ public class UserFolderDto extends
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
 
     }
 
