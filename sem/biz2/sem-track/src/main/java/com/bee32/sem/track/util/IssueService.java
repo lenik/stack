@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.access.UnauthorizedAccessException;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.sem.track.entity.Issue;
@@ -123,8 +124,12 @@ public class IssueService
                 if (issueStat == null || forceRefresh) {
                     issueStat = new IssueStat();
 
-                    for (Issue issue : DATA(Issue.class).list())
-                        issueStat.updateIssue(issue);
+                    try {
+                        for (Issue issue : DATA(Issue.class).list())
+                            issueStat.updateIssue(issue);
+                    } catch (UnauthorizedAccessException e) {
+                        logger.error("Unauthorized to access Issue data.");
+                    }
                 }
             }
         }
