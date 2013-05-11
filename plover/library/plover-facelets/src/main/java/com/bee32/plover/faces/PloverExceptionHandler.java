@@ -51,7 +51,8 @@ public class PloverExceptionHandler
             ExceptionQueuedEventContext eqeContext = event.getContext();
             Throwable exception = eqeContext.getException();
 
-            for (Entry<IExceptionHandler, Throwable> entry : ExceptionHandlerManager.searchHandlers(exception).entrySet()) {
+            for (Entry<IExceptionHandler, Throwable> entry : ExceptionHandlerManager.searchHandlers(exception)
+                    .entrySet()) {
                 IExceptionHandler handler = entry.getKey();
                 Throwable exceptionInStack = entry.getValue();
 
@@ -64,7 +65,11 @@ public class PloverExceptionHandler
                     continue;
 
                 case ExceptionHandleResult.TYPE_HANDLED:
-                    iter.remove();
+                    try {
+                        iter.remove();
+                    } catch (IllegalStateException e) {
+                         logger.warn("Failed to remove the already handled exception.");
+                    }
                     continue;
 
                 case ExceptionHandleResult.TYPE_REDIRECT:
