@@ -39,7 +39,7 @@ public class IssueStat
         return userStat;
     }
 
-    public void updateIssue(Issue issue) {
+    public void addIssueToStat(Issue issue) {
         long issueId = issue.getId();
         int ownerId = issue.getOwner().getId();
         UserIssueStat userStat = getUserStat(ownerId);

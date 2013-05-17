@@ -90,7 +90,7 @@ public abstract class AbstractIssueView
         IssueService issueService = BEAN(IssueService.class);
         IssueStat issueStat = issueService.getIssueStat();
         for (Issue issue : uMap.<Issue> entitySet()) {
-            issueStat.updateIssue(issue);
+            issueStat.addIssueToStat(issue);
         }
     }
 

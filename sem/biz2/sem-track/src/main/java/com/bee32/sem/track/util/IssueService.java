@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.access.UnauthorizedAccessException;
+import com.bee32.icsf.access.shield.AclFrameHandler;
+import com.bee32.icsf.access.shield.AclOptionManager;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.sem.track.entity.Issue;
@@ -52,7 +54,12 @@ public class IssueService
             throw new UnexpectedException();
         }
 
-        DATA(IssueCounter.class).saveOrUpdate(counter);
+        AclFrameHandler handler = AclOptionManager.newAclDisabler();
+        try {
+            DATA(IssueCounter.class).saveOrUpdate(counter);
+        } finally {
+            handler.close();
+        }
     }
 
     @Transactional(readOnly = false)
@@ -112,8 +119,13 @@ public class IssueService
             throw new UnexpectedException();
         }
 
-        DATA(IssueCounter.class).saveOrUpdate(counter);
-        // DATA(IssueCounter.class).evict(counter);
+        AclFrameHandler handler = AclOptionManager.newAclDisabler();
+        try {
+            DATA(IssueCounter.class).saveOrUpdate(counter);
+            // DATA(IssueCounter.class).evict(counter);
+        } finally {
+            handler.close();
+        }
     }
 
     boolean forceRefresh = true;
@@ -126,7 +138,7 @@ public class IssueService
 
                     try {
                         for (Issue issue : DATA(Issue.class).list())
-                            issueStat.updateIssue(issue);
+                            issueStat.addIssueToStat(issue);
                     } catch (UnauthorizedAccessException e) {
                         logger.error("Unauthorized to access Issue data.");
                     }
@@ -150,7 +162,12 @@ public class IssueService
 
         observer.setRead(read);
 
-        DATA(IssueObserver.class).update(observer);
+        AclFrameHandler handler = AclOptionManager.newAclDisabler();
+        try {
+            DATA(IssueObserver.class).update(observer);
+        } finally {
+            handler.close();
+        }
     }
 
 }
