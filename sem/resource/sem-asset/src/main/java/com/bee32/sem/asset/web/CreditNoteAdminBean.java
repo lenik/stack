@@ -60,8 +60,8 @@ public class CreditNoteAdminBean
         reportParams.put("party", note.getParty().getDisplayName());
         reportParams.put("chance", note.getChance().getSubject());
         reportParams.put("value", note.getNativeValue());
-        reportParams.put("label", note.getLabel());
         reportParams.put("description", note.getDescription());
+        reportParams.put("text", note.getText());
         doExport(report, reportParams, datasource, "creditNote", PDF);
     }
 

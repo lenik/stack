@@ -13,8 +13,10 @@
         <p:commandButton id="pay" value="付款" update=":payForm:whoPay" actionListener="#{bean.showPayDialog}"
             onclick="waitbox.show();" oncomplete="waitbox.hide();payDialog.show();" disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" />
         <p:separator />
+        <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false" />
+        <p:separator />
     </ui:define>
-
 
     <ui:define name="editDialogContent">
         <p:panel header="付款单管理">
