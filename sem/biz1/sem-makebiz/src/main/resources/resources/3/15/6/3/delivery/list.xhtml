@@ -14,7 +14,10 @@
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
+    <ui:param name="creatable" value="false" />
+    <ui:param name="editable" value="false" />
     <ui:param name="deletable" value="false" />
+    <ui:param name="readable" value="false" />
 
     <ui:define name="dataColumns">
         <p:column headerText="时间" sortBy="#{entry.createdDate}">

@@ -8,7 +8,10 @@
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
+    <ui:param name="creatable" value="false" />
+    <ui:param name="editable" value="false" />
     <ui:param name="deletable" value="false" />
+    <ui:param name="readable" value="false" />/>
 
 
     <ui:define name="dataColumns">
@@ -30,7 +33,9 @@
         </p:column>
 
         <p:column headerText="摘要" sortBy="#{entry.summary}">
-            <h:outputText value="#{entry.summary}" />
+            <p:commandLink onclick="return _open('#{location.WEB_APP}/3/15/3/3/ticket/index-rich.jsf?id=#{entry.id}');">
+                <h:outputText value="#{entry.summary}" />
+            </p:commandLink>
         </p:column>
     </ui:define>
 </ui:composition>
