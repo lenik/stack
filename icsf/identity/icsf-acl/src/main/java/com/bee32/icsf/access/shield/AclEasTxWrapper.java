@@ -32,7 +32,14 @@ import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.login.UserPassword;
-import com.bee32.icsf.principal.*;
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
+import com.bee32.icsf.principal.UserOption;
+import com.bee32.icsf.principal.UserPreference;
+import com.bee32.icsf.principal.Users;
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.spring.Prototype;
@@ -45,8 +52,10 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.meta.EntityColumn;
 import com.bee32.plover.ox1.meta.EntityInfo;
+import com.bee32.plover.site.scope.PerSite;
 
 @Service
+@PerSite
 @Primary
 @Prototype
 @Order(0)
@@ -55,6 +64,20 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         implements InitializingBean {
 
     static Logger logger = LoggerFactory.getLogger(AclEasTxWrapper.class);
+
+    static boolean ACL_DISABLED = false;
+    static {
+        File home = new File(SystemProperties.getUserHome());
+        File aclFile = new File(home, ".data/acl");
+        if (aclFile.exists()) {
+            try {
+                String s = new JavaioFile(aclFile).forRead().readTextContents().trim();
+                if ("0".equals(s))
+                    ACL_DISABLED = true;
+            } catch (IOException e) {
+            }
+        }
+    }
 
     @Inject
     ScannedResourceRegistry registry;
@@ -73,20 +96,6 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     public void afterPropertiesSet()
             throws Exception {
         entityNS = registry.getNamespace(EntityResourceNS.NS);
-    }
-
-    static boolean enabled = true;
-    static {
-        File home = new File(SystemProperties.getUserHome());
-        File aclFile = new File(home, ".data/acl");
-        if (aclFile.exists()) {
-            try {
-                String s = new JavaioFile(aclFile).forRead().readTextContents().trim();
-                if ("0".equals(s))
-                    enabled = false;
-            } catch (IOException e) {
-            }
-        }
     }
 
     public static Map<Class<?>, Permission> defaults = new HashMap<>();
@@ -124,7 +133,15 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     @Override
     protected void require(Class<? extends Entity<?>> entityType, Collection<? extends E> entities,
             Permission requiredPermission) {
-        if (!enabled || aclService == null)
+        if (aclService == null)
+            return;
+        if (ACL_DISABLED) // global disabled
+            return;
+
+        AclOptionManager aclOptionManager = AclOptionManager.getInstance();
+        AclOptionStack aclOptionStack = aclOptionManager.getAclOptionStack();
+        AclOption aclOption = aclOptionStack.peek();
+        if (!aclOption.isEnabled())
             return;
 
         // Damn.. could be proxy classes..??
