@@ -156,6 +156,8 @@ public abstract class Party
     public String getDisplayName() {
         if (fullName != null && !fullName.isEmpty())
             return fullName;
+        if (label != null && !label.isEmpty())
+            return label;
         return name;
     }
 
