@@ -35,6 +35,10 @@ public class Issue
     public static final int COMMITISH_LENGTH = 32;
     public static final int TAGS_LENGTH = 100;
 
+    // public static final int STATE_OPEN = 1;
+    // public static final int STATE_ACCEPTED = 2;
+    // public static final int STATE_CLOSED = 3;
+
     private IssueType issueType = IssueType.ISSUE;
     private Date dueDate;
     private Date endTime;
