@@ -53,7 +53,7 @@ public class Chance
     ProcurementMethod procurementMethod = predefined(ProcurementMethods.class).OTHER;
     PurchaseRegulation purchaseRegulation = predefined(PurchaseRegulations.class).OTHER;
 
-    String address;
+    String address = "";
 
     @Override
     public void populate(Object source) {

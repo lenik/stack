@@ -207,21 +207,21 @@
                             <h:outputText value="${entry.operator.displayName}" />
                         </p:column>
 
-				        <p:column headerText="下载" styleClass="f-wrappable" style="min-width: 30em">
-				            <div class="entry">
-				                <span>
-				                    <a target="_blank" href="${entry.viewHref}">查看</a>
-				                </span>
-				                <span>
-				                    <a class="ui-icon ui-icon-arrowthickstop-1-s" target="_blank" href="${entry.downloadHref}">下载</a>
-				                </span>
-				            </div>
+                        <p:column headerText="下载" styleClass="f-wrappable" style="min-width: 30em">
+                            <div class="entry">
+                                <span>
+                                    <a target="_blank" href="${entry.viewHref}">查看</a>
+                                </span>
+                                <span>
+                                    <a class="ui-icon ui-icon-arrowthickstop-1-s" target="_blank" href="${entry.downloadHref}">下载</a>
+                                </span>
+                            </div>
                         </p:column>
                     </f:facet>
                 </fr:listView>
-            </p:panel>
+            </p:tab>
 
-        </f:subview>
+        </p:tabView>
     </ui:define>
 
 
