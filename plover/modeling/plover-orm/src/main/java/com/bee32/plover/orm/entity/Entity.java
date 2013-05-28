@@ -48,17 +48,25 @@ public abstract class Entity<K extends Serializable>
     private static final long serialVersionUID = 1L;
 
     /**
-     * The initial state.
+     * 状态的初始值。
      */
-    public static final int STATE_INITIAL = 0;
-    public static final int STATE_FINALIZED = -1;
-    public static final int STATE_INVALID = -2;
+    protected static final int _STATE_0 = 0;
+
+    /**
+     * 一般正常的终止状态。
+     */
+    protected static final int _STATE_NORMAL_END = -1;
+
+    /**
+     * 一般异常的终止状态。
+     */
+    protected static final int _STATE_ABNORMAL_END = -2;
 
     public static final int ALT_ID_LENGTH = 20;
 
     int version;
     String altId;
-    int stateInt;
+    int stateInt = _STATE_0;
 
     Date createdDate = new Date();
     Date lastModified = createdDate;
@@ -232,15 +240,32 @@ public abstract class Entity<K extends Serializable>
         this.altId = altId;
     }
 
+    /**
+     * 状态
+     *
+     * 对象当前所处的状态。
+     */
     @DefaultValue("0")
     @Column(name = "state", nullable = false)
     // @Transient
     public/* final */int getStateInt() {
+        Integer newState = stateCode();
+        if (newState != null)
+            stateInt = newState;
         return stateInt;
     }
 
     public/* final */void setStateInt(int stateInt) {
         this.stateInt = stateInt;
+    }
+
+    /**
+     * 计算对象当前所处的状态。
+     *
+     * @return 返回对象当前的状态。若返回 <code>null</code> 表示维持当前状态不变。
+     */
+    protected Integer stateCode() {
+        return null;
     }
 
     /**
