@@ -44,12 +44,14 @@ public abstract class ProcessEntity
     /**
      * 审核上下文
      */
+    @Deprecated
     @Embedded
     @Override
     public SingleVerifierWithNumberSupport getVerifyContext() {
         return verifyContext;
     }
 
+    @Deprecated
     protected void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
         if (verifyContext == null)
             throw new NullPointerException("verifyContext");
@@ -57,12 +59,14 @@ public abstract class ProcessEntity
         this.verifyContext.bind(this);
     }
 
+    @Deprecated
     @Transient
     @Override
     public String getNumberDescription() {
         return "amount";
     }
 
+    @Deprecated
     @Transient
     @Override
     public final Number getJudgeNumber() {
@@ -73,6 +77,7 @@ public abstract class ProcessEntity
         }
     }
 
+    @Deprecated
     protected Number computeJudgeNumber()
             throws Exception {
         return null;
