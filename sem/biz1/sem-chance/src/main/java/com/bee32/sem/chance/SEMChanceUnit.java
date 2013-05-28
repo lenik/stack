@@ -7,10 +7,11 @@ import com.bee32.sem.chance.entity.*;
 import com.bee32.sem.event.SEMEventUnit;
 import com.bee32.sem.material.SEMMaterialUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
+import com.bee32.sem.process.SEMProcessUnit;
 import com.bee32.sem.world.SEMWorldUnit;
 
 @ImportUnit({ IcsfPrincipalUnit.class, SEMEventUnit.class, SEMPeopleUnit.class, SEMWorldUnit.class,
-        SEMMaterialUnit.class })
+        SEMMaterialUnit.class, SEMProcessUnit.class })
 public class SEMChanceUnit
         extends PersistenceUnit {
 
