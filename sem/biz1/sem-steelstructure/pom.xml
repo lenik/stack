@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.bee32.sem</groupId>
+        <artifactId>biz1</artifactId>
+        <version>0.3.2-SNAPSHOT</version>
+    </parent>
+    <artifactId>sem-steelstructure</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-chance</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <name>SEM :: Biz1 :: Steel Structure</name>
+</project>
