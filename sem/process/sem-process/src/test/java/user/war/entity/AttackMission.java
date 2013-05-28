@@ -5,6 +5,7 @@ import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.process.base.ProcessEntity;
+import com.bee32.sem.process.state.util.StateInt;
 
 @Entity
 @Pink
@@ -41,5 +42,21 @@ public class AttackMission
     protected void formatEntryText(StringBuilder buf) {
         buf.append(getId() + ": " + target);
     }
+
+    /*************************************************************************
+     * Section: State Management
+     *************************************************************************/
+
+    @StateInt
+    public static final int STATE_REQUEST = _STATE_0;
+
+    @StateInt
+    public static final int STATE_START = 1;
+
+    @StateInt
+    public static final int STATE_DONE = _STATE_NORMAL_END;
+
+    @StateInt
+    public static final int STATE_CANCELED = _STATE_ABNORMAL_END;
 
 }
