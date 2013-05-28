@@ -8,12 +8,15 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.process.base.ProcessEntity;
+import com.bee32.sem.process.state.util.StateInt;
 
 /**
  * 销售机会
@@ -29,12 +32,10 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
-    public static final int STATE_APPROVED = 1;
-    public static final int STATE_REJECTED = 2;
-
     public static final int SUBJECT_LENGTH = 100;
     public static final int CONTENT_LENGTH = 500;
     public static final int ADDRESS_LENGTH = 200;
+    public static final int APPROVE_MESSAGE_LENGTH = 200;
 
     ChanceCategory category = null;
     ChanceSourceType source = predefined(ChanceSourceTypes.class).OTHER;
@@ -71,14 +72,21 @@ public class Chance
         content = o.content;
         anticipationBegin = o.anticipationBegin;
         anticipationEnd = o.anticipationEnd;
+
         parties = CopyUtils.copyList(o.parties);
         competitories = CopyUtils.copyList(o.competitories);
         products = CopyUtils.copyList(o.products);
         actions = new ArrayList<ChanceAction>(o.actions);
+        attachments = new ArrayList<UserFile>(o.attachments);
+
         stage = o.stage;
         procurementMethod = o.procurementMethod;
         purchaseRegulation = o.purchaseRegulation;
         address = o.address;
+
+        approveUser = o.approveUser;
+        approved = o.approved;
+        approveMessage = o.approveMessage;
     }
 
     /**
@@ -386,6 +394,92 @@ public class Chance
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /*************************************************************************
+     * Section: State Management
+     *************************************************************************/
+
+    /**
+     * 初始状态
+     *
+     * 机会刚刚被建立，尚未通过初核。
+     */
+    /**
+     * 已审核状态
+     *
+     * 机会已通过审核，表示机会中的信息正确。
+     */
+    /**
+     * 审核未通过状态
+     */
+    @StateInt
+    public static final int STATE_INIT = _STATE_0;
+
+    @StateInt
+    public static final int STATE_APPROVED = _STATE_NORMAL_END;
+
+    @StateInt
+    public static final int STATE_REJECTED = _STATE_ABNORMAL_END;
+
+    User approveUser;
+    boolean approved;
+    String approveMessage = "";
+
+    /**
+     * 审核人
+     *
+     * 执行审核的用户。
+     */
+    @ManyToOne
+    public User getApproveUser() {
+        return approveUser;
+    }
+
+    public void setApproveUser(User approveUser) {
+        this.approveUser = approveUser;
+    }
+
+    /**
+     * 审核状态
+     *
+     * 表示审核是否被通过。
+     */
+    @Column(nullable = false)
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    /**
+     * 审核消息
+     *
+     * 审核人提供的附加消息。
+     */
+    @Column(nullable = false, length = APPROVE_MESSAGE_LENGTH)
+    @DefaultValue("''")
+    public String getApproveMessage() {
+        return approveMessage;
+    }
+
+    public void setApproveMessage(String approveMessage) {
+        if (approveMessage == null)
+            throw new NullPointerException("approveMessage");
+        this.approveMessage = approveMessage;
+    }
+
+    @Override
+    protected Integer stateCode() {
+        if (approveUser == null)
+            return STATE_INIT;
+
+        if (approved)
+            return STATE_APPROVED;
+        else
+            return STATE_REJECTED;
     }
 
 }

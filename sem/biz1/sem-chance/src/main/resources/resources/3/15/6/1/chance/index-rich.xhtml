@@ -39,6 +39,13 @@
         <p:column headerText="机会阶段" sortBy="${entry.stage}">
             <h:outputText value="${entry.stage.label}" />
         </p:column>
+
+        <p:column headerText="审核" sortBy="${entry.approveUser}">
+            <h:outputText value="未审核" rendered="${entry.stateInt == 0}" />
+            <h:outputText value="${entry.approveUser.displayName}" style="color: green" rendered="${entry.stateInt == -1}" />
+            <h:outputText value="拒绝" style="color: red" rendered="${entry.stateInt == -2}" />
+        </p:column>
+
         <p:column headerText="操作">
             <p:commandLink onclick="return _open('#{location.WEB_APP}/3/15/6/3/order/list.jsf?chanceId=#{entry.id}');">
                 <h:outputText value="对应定单" />
@@ -220,6 +227,28 @@
                 </fr:listView>
             </p:tab>
 
+            <p:tab title="过程控制" rendered="${obj.stateOp}">
+                <h3>对象状态：${obj.stateInt}</h3>
+
+                <p:separator />
+                <h3>审核</h3>
+                <t:panelGrid columns="2" columnClasses="field-label, field-content" style="width:550px;">
+                    <h:outputLabel for="approveUser" value="审核人：" />
+                    <h:panelGroup>
+                        <h:outputText id="approveUser" label="审核人" value="${obj.approveUser.displayName}"
+                            style="width: 95%;" />
+                        <p:commandButton id="approveButton" value="我来审核" actionListener="${obj.approveByMe}"
+                            update="approveUser" />
+                    </h:panelGroup>
+
+                    <h:outputLabel for="approved" value="通过否：" />
+                    <p:selectBooleanCheckbox id="approved" label="通过否" value="${obj.approved}" />
+
+                    <h:outputLabel for="approveMessage" value="附加信息：" />
+                    <p:inputTextarea id="approveMessage" label="附加信息" value="${obj.approveMessage}"
+                        style="width: 90%;height: 8em;" maxlength="200" />
+                </t:panelGrid>
+            </p:tab>
         </p:tabView>
     </ui:define>
 

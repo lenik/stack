@@ -11,6 +11,8 @@ import javax.free.Strings;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.CopyUtils;
@@ -54,6 +56,10 @@ public class ChanceDto
     PurchaseRegulationDto purchaseRegulation;
 
     String address;
+
+    UserDto approveUser;
+    boolean approved;
+    String approveMessage = "";
 
     public ChanceDto() {
         super();
@@ -112,6 +118,10 @@ public class ChanceDto
         procurementMethod = mref(ProcurementMethodDto.class, source.getProcurementMethod());
         purchaseRegulation = mref(PurchaseRegulationDto.class, source.getPurchaseRegulation());
         address = source.getAddress();
+
+        approveUser = mref(UserDto.class, source.getApproveUser());
+        approved = source.isApproved();
+        approveMessage = source.getApproveMessage();
     }
 
     @Override
@@ -137,6 +147,10 @@ public class ChanceDto
         merge(target, "procurementMethod", procurementMethod);
         merge(target, "purchaseRegulation", purchaseRegulation);
         target.setAddress(address);
+
+        merge(target, "approveUser", approveUser);
+        target.setApproved(approved);
+        target.setApproveMessage(approveMessage);
     }
 
     @Override
@@ -367,6 +381,36 @@ public class ChanceDto
 
         if (maxOrder > cachedOrder)
             this.stage = maxStage;
+    }
+
+    public UserDto getApproveUser() {
+        return approveUser;
+    }
+
+    public void setApproveUser(UserDto approveUser) {
+        this.approveUser = approveUser;
+    }
+
+    public void approveByMe() {
+        UserDto loginUser = SessionUser.getInstance().getUser();
+        setApproveUser(loginUser);
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    @NLength(max = Chance.APPROVE_MESSAGE_LENGTH)
+    public String getApproveMessage() {
+        return approveMessage;
+    }
+
+    public void setApproveMessage(String approveMessage) {
+        this.approveMessage = TextUtil.normalizeSpace(approveMessage);
     }
 
 }
