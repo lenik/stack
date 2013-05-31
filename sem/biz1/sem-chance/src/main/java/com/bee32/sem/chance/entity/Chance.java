@@ -446,6 +446,7 @@ public class Chance
      * 表示审核是否被通过。
      */
     @Column(nullable = false)
+    @DefaultValue("false")
     public boolean isApproved() {
         return approved;
     }
