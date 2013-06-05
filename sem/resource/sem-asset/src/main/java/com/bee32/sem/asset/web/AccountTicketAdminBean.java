@@ -105,7 +105,7 @@ public class AccountTicketAdminBean
                 AccountSubjectDto subject = item.getSubject();
                 String name = subject.getName();
                 List<AccountSubject> list = DATA(AccountSubject.class).list(AssetCriteria.subjectWithPrefix(name));
-                if (list.size() > 0) {
+                if (list.size() != 1) {
                     uiLogger.warn(subject.getLabel() + "不是末级科目");
                     return false;
                 }
