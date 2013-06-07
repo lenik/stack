@@ -1,40 +1,75 @@
-<ui:composition template="/3/15/3/2/stock/stock-template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+<ui:composition template="/3/15/3/2/stock/stock-template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="bean" value="#{stockOrderBean_FACTORY_IN}" />
     <ui:param name="title" value="#{bean.subject.displayName}" />
     <ui:param name="stockOrder" value="#{bean.openedObject}" />
 
+    <ui:define name="toolbarPeripherals">
+        <h:outputText value="test" />
+    </ui:define>
+
+
     <ui:define name="edit-pre">
-        <p:panel id="job" header="生产入库作业信息">
-            <t:panelGrid columns="2">
-                <t:panelGroup colspan="2">
-                    <p:commandButton value="选择生产数据"
-			onclick="waitbox.show()"
-			oncomplete="waitbox.hide();chooseMakeStepItemDialog.show()"
-			disabled="#{not bean.editing}" />
-                </t:panelGroup>
 
-                <h:outputText value="作业简要:" />
-                <p:inputText id="jobLabel" value="#{stockOrder.job.label}" label="作业简要"/>
+        <p:tabView id="tabView">
+            <p:tab id="tab1" title="生产入库作业信息">
+                <t:panelGrid columns="2">
+                    <t:panelGroup colspan="2">
+                        <p:commandButton value="选择生产数据" onclick="waitbox.show()"
+                            oncomplete="waitbox.hide();chooseMakeStepItemDialog.show()" disabled="#{not bean.editing}" />
+                    </t:panelGroup>
 
-                <h:outputText value="作业描述:" />
-                <p:inputText id="jobDescription" value="#{stockOrder.job.description}" label="作业描述"/>
+                    <h:outputText value="作业简要:" />
+                    <p:inputText id="jobLabel" value="#{stockOrder.job.label}" label="作业简要" />
 
-                <t:panelGroup colspan="2">
-                    <p:commandButton
-			value="由生产数据生成成品/半成品入库单"
-			actionListener="${bean.importPart}"
-			update=":editDialog:form:itemsIndexView:indexForm:dataTable"
-			disabled="#{not bean.editing}" />
-                </t:panelGroup>
-            </t:panelGrid>
-        </p:panel>
+                    <h:outputText value="作业描述:" />
+                    <p:inputText id="jobDescription" value="#{stockOrder.job.description}" label="作业描述" />
+
+                    <t:panelGroup colspan="2">
+                        <p:commandButton value="由生产数据生成成品/半成品入库单" actionListener="${bean.importPart}"
+                            update=":editDialog:form:itemsIndexView:indexForm:dataTable" disabled="#{not bean.editing}" />
+                    </t:panelGroup>
+                </t:panelGrid>
+            </p:tab>
+
+            <p:tab id="tab2" title="生产订单入库">
+                <p:commandButton value="选择订单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseMakeOrderDialog.show()"
+                    disabled="#{not bean.editing}" />
+                <t:panelGrid columns="2">
+                    <h:outputText value="简要：" />
+                    <p:inputText id="orderLabel" value="#{bean.makeOrder.label}" readonly="true" />
+
+                    <h:outputText value="客户：" />
+                    <p:inputText id="orderCustomer" value="#{bean.makeOrder.customer.displayName}" readonly="true" />
+
+                </t:panelGrid>
+                <p:commandButton value="由订单入库" actionListener="#{bean.imFMakeOrder}"
+                    update=":editDialog:form:itemsIndexView:indexForm:dataTable" disabled="#{not bean.editing}" />
+            </p:tab>
+            <p:tab id="tab3" title="生产任务单入库">
+                <p:commandButton value="选择任务单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseMakeTaskDialog.show()"
+                    disabled="#{not bean.editing}" />
+                <t:panelGrid columns="2">
+                    <h:outputText value="对应订单：" />
+                    <p:inputText value="#{bean.makeTask.order.label}" />
+
+                    <h:outputText value="简要：" />
+                    <p:inputText value="#{bean.makeTask.label}" />
+                </t:panelGrid>
+                <p:commandButton value="由任务单入库" actionListener="#{bean.imFMakeTask}"
+                    update=":editDialog:form:itemsIndexView:indexForm:dataTable" disabled="#{not bean.editing}" />
+            </p:tab>
+        </p:tabView>
+
     </ui:define>
 
     <ui:define name="dialogs.stockTemplate">
         <sem:chooseMakeStepItemDialog id="c_makeStepItem" target="#{bean.stepItem}"
-            update=":editDialog:form:jobLabel :editDialog:form:jobDescription" />
+            update=":editDialog:form:tabView:tab1" />
+        <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.makeOrder}" update=":editDialog:form:tabView:tab2 " />
+        <sem:chooseMakeTaskDialog id="c_makeTask" target="#{bean.makeTask}" update=":editDialog:form:tabView:tab3" />
     </ui:define>
 </ui:composition>
