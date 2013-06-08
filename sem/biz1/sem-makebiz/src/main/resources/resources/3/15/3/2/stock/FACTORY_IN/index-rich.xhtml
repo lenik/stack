@@ -54,10 +54,10 @@
                     disabled="#{not bean.editing}" />
                 <t:panelGrid columns="2">
                     <h:outputText value="对应订单：" />
-                    <p:inputText value="#{bean.makeTask.order.label}" />
+                    <p:inputText id="taskOrder" value="#{bean.makeTask.order.label}" />
 
                     <h:outputText value="简要：" />
-                    <p:inputText value="#{bean.makeTask.label}" />
+                    <p:inputText id="taskLabel" value="#{bean.makeTask.label}" />
                 </t:panelGrid>
                 <p:commandButton value="由任务单入库" actionListener="#{bean.imFMakeTask}"
                     update=":editDialog:form:itemsIndexView:indexForm:dataTable" disabled="#{not bean.editing}" />
@@ -68,8 +68,10 @@
 
     <ui:define name="dialogs.stockTemplate">
         <sem:chooseMakeStepItemDialog id="c_makeStepItem" target="#{bean.stepItem}"
-            update=":editDialog:form:tabView:tab1" />
-        <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.makeOrder}" update=":editDialog:form:tabView:tab2 " />
-        <sem:chooseMakeTaskDialog id="c_makeTask" target="#{bean.makeTask}" update=":editDialog:form:tabView:tab3" />
+            update=":editDialog:form:tabView:jobDescription, :editDialog:form:tabView:jobLabel" />
+        <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.makeOrder}"
+            update=":editDialog:form:tabView:orderLabel, :editDialog:form:tabView:orderCustomer " />
+        <sem:chooseMakeTaskDialog id="c_makeTask" target="#{bean.makeTask}"
+            update=":editDialog:form:tabView:taskOrder, :editDialog:form:tabView:taskLabel" />
     </ui:define>
 </ui:composition>
