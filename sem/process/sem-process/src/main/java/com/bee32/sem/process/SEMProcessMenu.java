@@ -16,6 +16,7 @@ public class SEMProcessMenu
     MenuNode preference = entry(_frame_.SYSTEM, 800, "preference", __.join("pref"));
     MenuNode list = entry(VERIFY_POLICY, 1, "list", __.join("v1"));
     MenuNode level = entry(VERIFY_POLICY, 2, "level", __.join("v1x"));
+    MenuNode processStateOprator = entry(VERIFY_POLICY, 3, "processStateOprator", __.join("state"));
     // MenuNode p2next = entry(verifyPolicy, 3, "p2next", __.join("p2next/index.do"));
 
 }
