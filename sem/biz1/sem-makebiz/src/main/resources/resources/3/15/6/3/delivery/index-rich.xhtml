@@ -1,7 +1,7 @@
-<ui:composition template="/template/scroll-verifiable-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+<ui:composition template="/template/scroll-verifiable-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:fr="http://java.sun.com/jsf/composite/frame" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="送货单" />
     <ui:param name="bean" value="#{deliveryNoteAdminBean}" />
@@ -22,7 +22,7 @@
 
     <ui:define name="dataColumns">
         <p:column headerText="时间" sortBy="#{entry.createdDate}">
-            <h:outputText value="#{entry.createdDate}" >
+            <h:outputText value="#{entry.createdDate}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
@@ -41,6 +41,11 @@
         <p:column headerText="简要">
             <h:outputText value="#{entry.label}" />
         </p:column>
+        <p:column headerText="审核" sortBy="${entry.approveUser}">
+            <h:outputText value="未审核" rendered="${entry.stateInt == 0}" />
+            <h:outputText value="${entry.approveUser.displayName}" style="color: green" rendered="${entry.stateInt == -1}" />
+            <h:outputText value="拒绝" style="color: red" rendered="${entry.stateInt == -2}" />
+        </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
@@ -58,42 +63,44 @@
                 <h:outputText value="制单人:" />
                 <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
-                <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}"/>
+                <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:25em;"/>
+                    <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:25em;" />
                     <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
                 </t:panelGroup>
 
                 <h:outputText value="简要:" />
                 <t:panelGroup colspan="3">
-                    <p:inputText label="简要" value="#{obj.label}" style="width:30em;"/>
+                    <p:inputText label="简要" value="#{obj.label}" style="width:30em;" />
                 </t:panelGroup>
 
                 <h:outputText value="客户:" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" label="客户" style="width:30em;"/>
+                    <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" label="客户"
+                        style="width:30em;" />
                 </t:panelGroup>
 
                 <h:outputText value="备注:" />
                 <t:panelGroup colspan="3">
-                    <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
-                        label="备注" />
+                    <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}"
+                        readonly="#{not bean.editing}" label="备注" />
                 </t:panelGroup>
 
                 <h:outputText value="要求送达日期:" />
                 <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"
                     showOn="button" label="要求送达日期:" />
                 <h:outputText value="金额合计:" />
-                <h:outputText value="#{obj.nativeTotal}" >
-                    <f:convertNumber pattern="#0.00"/>
+                <h:outputText value="#{obj.nativeTotal}">
+                    <f:convertNumber pattern="#0.00" />
                 </h:outputText>
             </t:panelGrid>
         </p:fieldset>
 
         <p:tabView id="tv" activeIndex="#{bean.tabIndex}">
             <p:tab title="送货明细">
-                <fr:listView id="itemsIndexView" header="送货项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-                    nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}" inlineEdit="true">
+                <fr:listView id="itemsIndexView" header="送货项目" style="indexPanel" editView=":itemsEditView"
+                    mbean="#{bean.itemsMBean}" nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}"
+                    inlineEdit="true">
                     <f:facet name="columns">
                         <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.label}" />
@@ -139,8 +146,8 @@
             </p:tab>
             <p:tab title="销售出库">
                 <fr:listView id="takeOutsIndexView" header="出库项" style="indexPanel" editView=":takeOutsEditView"
-                    mbean="#{bean.takeOutsMBean}" nested="true" paginator="false"
-                    creatable="false" removable="false" readonly="true">
+                    mbean="#{bean.takeOutsMBean}" nested="true" paginator="false" creatable="false" removable="false"
+                    readonly="true">
                     <f:facet name="columns">
                         <p:column headerText="日期" styleClass="f-wrappable">
                             <h:outputText value="#{entry.stockOrder.createdDate}" />
@@ -157,12 +164,33 @@
                     </f:facet>
                     <f:facet name="index-buttons.left">
                         <p:commandButton id="generateTakeOut" value="生成销售出库单" actionListener="#{bean.generateTakeOutStockOrders}"
-                            update=":editDialog:form:tv:takeOutsIndexView:indexForm:dataTable"/>
+                            update=":editDialog:form:tv:takeOutsIndexView:indexForm:dataTable" />
                     </f:facet>
                 </fr:listView>
             </p:tab>
-        </p:tabView>
+            <p:tab title="过程控制" rendered="${obj.stateOp}">
+                <h3>对象状态：${obj.stateInt}</h3>
 
+                <p:separator />
+                <h3>审核</h3>
+                <t:panelGrid columns="2" columnClasses="field-label, field-content" style="width:550px;">
+                    <h:outputLabel for="approveUser" value="审核人：" />
+                    <h:panelGroup>
+                        <h:outputText id="approveUser" label="审核人" value="${obj.approveUser.displayName}"
+                            style="width: 95%;" />
+                        <p:commandButton id="approveButton" value="我来审核" actionListener="${obj.approveByMe}"
+                            update="approveUser" />
+                    </h:panelGroup>
+
+                    <h:outputLabel for="approved" value="通过否：" />
+                    <p:selectBooleanCheckbox id="approved" label="通过否" value="${obj.approved}" />
+
+                    <h:outputLabel for="approveMessage" value="附加信息：" />
+                    <p:inputTextarea id="approveMessage" label="附加信息" value="${obj.approveMessage}"
+                        style="width: 90%;height: 8em;" maxlength="200" />
+                </t:panelGrid>
+            </p:tab>
+        </p:tabView>
 
 
     </ui:define>
@@ -176,7 +204,7 @@
 
                 <h:outputLabel value="物料" />
                 <t:panelGroup colspan="3">
-                    <h:outputText id="material" value="#{item.material.label}"/>
+                    <h:outputText id="material" value="#{item.material.label}" />
                 </t:panelGroup>
 
                 <h:outputLabel value="单价" />
@@ -189,7 +217,7 @@
 
                 <h:outputLabel value="数量" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.quantity}" label="数量"/>
+                    <p:inputText value="#{item.quantity}" label="数量" />
                 </t:panelGroup>
 
                 <h:outputLabel for="warehouse" value="出库${tr.inventory.warehouse}：" />
@@ -202,14 +230,12 @@
 
                 <h:outputLabel value="备注" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.description}" label="备注" style="width:35em;"/>
+                    <p:inputText value="#{item.description}" label="备注" style="width:35em;" />
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>
 
-        <fr:listView
-            id="takeOutsEditView" header="出库项"
-            style="editDialog" indexView=":editDialog:form:tv:takeOutsIndexView"
+        <fr:listView id="takeOutsEditView" header="出库项" style="editDialog" indexView=":editDialog:form:tv:takeOutsIndexView"
             mbean="#{bean.takeOutsMBean}" readonly="#{not bean.editing}">
             <fr:listView id="orderItemsView" header="出库明细" style="panel" mbean="#{bean.orderItemsMBean}"
                 creatable="false" removable="false" editiable="false" nested="true" paginator="false">

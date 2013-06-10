@@ -16,13 +16,17 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.IAccountTicketSource;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.base.ProcessEntity;
+import com.bee32.sem.process.state.util.StateInt;
+import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
@@ -34,11 +38,10 @@ import com.bee32.sem.world.monetary.MCVector;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "delivery_note_seq", allocationSize = 1)
-public class DeliveryNote
-        extends ProcessEntity
-        implements IAccountTicketSource, DecimalConfig {
+public class DeliveryNote extends ProcessEntity implements IAccountTicketSource, DecimalConfig {
 
-    private static final long serialVersionUID = 1L;
+//    private static final long serialVersionUID = 1L;
+    public static final int APPROVE_MESSAGE_LENGTH = 200;
 
     MakeOrder order;
     Party customer;
@@ -50,6 +53,22 @@ public class DeliveryNote
 
     transient MCVector total; // Redundant
     BigDecimal nativeTotal; // Redundant.
+
+    @Override
+    public void populate(Object source) {
+        if (source instanceof DeliveryNote)
+            _populate((DeliveryNote) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(DeliveryNote o) {
+        super._populate(o);
+        verifyContext = (SingleVerifierWithNumberSupport) o.verifyContext.clone();
+        approveUser = o.approveUser;
+        approved = o.approved;
+        approveMessage = o.approveMessage;
+    }
 
     /**
      * 定单
@@ -149,7 +168,6 @@ public class DeliveryNote
             items.get(index).setIndex(index);
     }
 
-
     /**
      * 多币种金额
      *
@@ -177,8 +195,7 @@ public class DeliveryNote
      */
     @Redundant
     @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
-    public synchronized BigDecimal getNativeTotal()
-            throws FxrQueryException {
+    public synchronized BigDecimal getNativeTotal() throws FxrQueryException {
         if (nativeTotal == null) {
             synchronized (this) {
                 if (nativeTotal == null) {
@@ -208,7 +225,6 @@ public class DeliveryNote
         total = null;
         nativeTotal = null;
     }
-
 
     /**
      * 出库单
@@ -279,5 +295,60 @@ public class DeliveryNote
     @Override
     public BigDecimal getTicketSrcValue() throws FxrQueryException {
         return this.getNativeTotal();
+    }
+
+    @StateInt
+    public static final int STATE_INIT = _STATE_0;
+
+    @StateInt
+    public static final int STATE_APPROVED = _STATE_NORMAL_END;
+
+    @StateInt
+    public static final int STATE_REJECTED = _STATE_ABNORMAL_END;
+
+    User approveUser;
+    boolean approved;
+    String approveMessage = "";
+
+    @ManyToOne
+    public User getApproveUser() {
+        return approveUser;
+    }
+
+    public void setApproveUser(User approveUser) {
+        this.approveUser = approveUser;
+    }
+
+    @Column(nullable = false)
+    @DefaultValue("false")
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    @Column(nullable = false, length = APPROVE_MESSAGE_LENGTH)
+    @DefaultValue("''")
+    public String getApproveMessage() {
+        return approveMessage;
+    }
+
+    public void setApproveMessage(String approveMessage) {
+        if (approveMessage == null)
+            throw new NullPointerException("approveMessage");
+        this.approveMessage = approveMessage;
+    }
+
+    @Override
+    protected Integer stateCode() {
+        if (approveUser == null)
+            return STATE_INIT;
+
+        if (approved)
+            return STATE_APPROVED;
+        else
+            return STATE_REJECTED;
     }
 }

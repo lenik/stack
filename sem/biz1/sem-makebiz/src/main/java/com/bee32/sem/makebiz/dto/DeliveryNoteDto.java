@@ -10,9 +10,14 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
+import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.asset.dto.AccountTicketDto;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
@@ -20,9 +25,7 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
-public class DeliveryNoteDto
-        extends ProcessEntityDto<DeliveryNote>
-        implements DecimalConfig {
+public class DeliveryNoteDto extends ProcessEntityDto<DeliveryNote> implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +43,10 @@ public class DeliveryNoteDto
     MCVector total;
     BigDecimal nativeTotal;
 
+    UserDto approveUser;
+    boolean approved;
+    String approveMessage = "";
+
     @Override
     protected void _marshal(DeliveryNote source) {
         order = mref(MakeOrderDto.class, source.getOrder());
@@ -56,6 +63,9 @@ public class DeliveryNoteDto
                 selection.translate(TAKEOUT_ITEMS, DeliveryNoteTakeOutDto.ORDER_ITEMS), source.getTakeOut());
 
         ticket = mref(AccountTicketDto.class, source.getTicket());
+        approveUser = mref(UserDto.class, source.getApproveUser());
+        approved = source.isApproved();
+        approveMessage = source.getApproveMessage();
     }
 
     @Override
@@ -70,11 +80,13 @@ public class DeliveryNoteDto
 
         merge(target, "takeOut", takeOut);
         merge(target, "ticket", ticket);
+        merge(target, "approveUser", approveUser);
+        target.setApproved(approved);
+        target.setApproveMessage(approveMessage);
     }
 
     @Override
-    protected void _parse(TextMap map)
-            throws ParseException {
+    protected void _parse(TextMap map) throws ParseException {
         throw new NotImplementedException();
     }
 
@@ -141,7 +153,6 @@ public class DeliveryNoteDto
             items.get(index).setIndex(index);
     }
 
-
     public MCVector getTotal() {
         if (total == null) {
             total = new MCVector();
@@ -159,8 +170,7 @@ public class DeliveryNoteDto
         this.total = total;
     }
 
-    public BigDecimal getNativeTotal()
-            throws FxrQueryException {
+    public BigDecimal getNativeTotal() throws FxrQueryException {
         if (nativeTotal == null) {
             synchronized (this) {
                 if (nativeTotal == null) {
@@ -191,7 +201,6 @@ public class DeliveryNoteDto
         nativeTotal = null;
     }
 
-
     public PartyDto getCustomer() {
         return customer;
     }
@@ -220,6 +229,35 @@ public class DeliveryNoteDto
 
     public void setTicket(AccountTicketDto ticket) {
         this.ticket = ticket;
+    }
+    public UserDto getApproveUser() {
+        return approveUser;
+    }
+
+    public void setApproveUser(UserDto approveUser) {
+        this.approveUser = approveUser;
+    }
+
+    public void approveByMe() {
+        UserDto loginUser = SessionUser.getInstance().getUser();
+        setApproveUser(loginUser);
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    @NLength(max = Chance.APPROVE_MESSAGE_LENGTH)
+    public String getApproveMessage() {
+        return approveMessage;
+    }
+
+    public void setApproveMessage(String approveMessage) {
+        this.approveMessage = TextUtil.normalizeSpace(approveMessage);
     }
 
 }
