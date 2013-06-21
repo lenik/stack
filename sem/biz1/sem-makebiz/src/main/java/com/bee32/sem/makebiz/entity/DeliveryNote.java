@@ -64,7 +64,6 @@ public class DeliveryNote extends ProcessEntity implements IAccountTicketSource,
 
     protected void _populate(DeliveryNote o) {
         super._populate(o);
-        verifyContext = (SingleVerifierWithNumberSupport) o.verifyContext.clone();
         approveUser = o.approveUser;
         approved = o.approved;
         approveMessage = o.approveMessage;
