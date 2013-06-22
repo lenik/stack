@@ -157,7 +157,11 @@ public abstract class AbstractItemList<Item extends AbstractItem>
                     BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
                     for (Item item : items) {
                         BigDecimal itemNativeTotal = item.getNativePrice();
-                        sum = sum.add(itemNativeTotal);
+                        double d = itemNativeTotal.doubleValue();
+                        double q = item.getQuantity().doubleValue();
+                        double itemTotal = d * q;
+                        BigDecimal bit = new BigDecimal(itemTotal, MONEY_TOTAL_CONTEXT);
+                        sum = sum.add(bit);
                     }
                     nativeTotal = sum;
                 }
