@@ -8,10 +8,12 @@ public class ProfitValue1Assistant {
         sb.append("from account_ticket_item a ");
         sb.append("left join account_ticket b ");
         sb.append("on a.ticket=b.id ");
+        sb.append("left join account_init c ");
+        sb.append("on a.init=c.id ");
         sb.append("where (a.subject like '5001%' or a.subject like '5051%') ");
-        sb.append("and (a.debit_side is false) and (b.begin_time>=:beginDate and b.begin_time<=:endDate) ");
+        sb.append("and (a.debit_side is false) and ((b.begin_time>=:beginDate and b.begin_time<=:endDate) or (c.begin_time>=:beginDate and c.begin_time<=:endDate)) ");
         if(verified) {
-            sb.append("     and b.verify_eval_state='33554433' ");
+            sb.append("     and (b.verify_eval_state='33554433' and c.verify_eval_state='33554433') ");
         }
 
         return sb.toString();
