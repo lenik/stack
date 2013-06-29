@@ -19,7 +19,7 @@ public abstract class ProcessEntity
 
     private static final long serialVersionUID = 1L;
 
-    SingleVerifierWithNumberSupport verifyContext;
+    protected SingleVerifierWithNumberSupport verifyContext;
 
     @Override
     public void populate(Object source) {
