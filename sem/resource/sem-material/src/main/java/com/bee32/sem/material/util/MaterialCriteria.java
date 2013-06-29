@@ -16,8 +16,7 @@ import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.material.entity.MaterialCategory;
 import com.bee32.sem.material.entity.MaterialType;
 
-public class MaterialCriteria
-        extends CriteriaSpec {
+public class MaterialCriteria extends CriteriaSpec {
 
     @LeftHand(Material.class)
     public static ICriteriaElement categoryLike(String pattern) {
@@ -33,7 +32,8 @@ public class MaterialCriteria
             return null;
         else
             return
-// likeIgnoreCase("material.category.label", pattern, MatchMode.ANYWHERE);
+            // likeIgnoreCase("material.category.label", pattern,
+            // MatchMode.ANYWHERE);
             compose(alias("category", "materialCategory"),
                     likeIgnoreCase("materialCategory.label", pattern, MatchMode.ANYWHERE));
     }
@@ -101,6 +101,10 @@ public class MaterialCriteria
 
     public static ICriteriaElement equalsLabel(String label) {
         return equals("label", label);
+    }
+
+    public static ICriteriaElement uniqueRestriction(String label, String modelSpec, int categoryId) {
+        return compose(equals("label", label), equals("modelSpec", modelSpec), equals("category.id", categoryId));
     }
 
 }
