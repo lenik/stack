@@ -138,7 +138,15 @@ public class AccountTicketAdminBean
             throws Exception {
         for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
             AccountTicketDto dto = uMap.getSourceDto(me);
-            Class ticketSourceType = dto.getTicketSource().getClassType();
+
+            AccountTicketSource tsHolder = dto.getTicketSource();
+            if(tsHolder == null) {
+                //凭证没有对应的凭证源，可以直接删除，所以直接返回true
+                return true;
+            }
+
+            Class ticketSourceType = tsHolder.getClassType();
+
             IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(
                     dto.getTicketSource().getId());
             ticketSource.setTicket(null);
