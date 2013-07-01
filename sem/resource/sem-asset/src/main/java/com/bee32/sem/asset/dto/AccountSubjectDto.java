@@ -39,6 +39,7 @@ public class AccountSubjectDto
 
     public void setDebitSign(boolean debitSign) {
         this.debitSign = debitSign;
+        this.creditSign = !debitSign;
     }
 
     public boolean isCreditSign() {
@@ -47,6 +48,7 @@ public class AccountSubjectDto
 
     public void setCreditSign(boolean creditSign) {
         this.creditSign = creditSign;
+        this.debitSign = !creditSign;
     }
 
 }

@@ -29,6 +29,12 @@
 
             <h:outputLabel value="名称" />
             <p:inputText id="label" value="#{obj.label}" label="名称" />
+
+            <h:outputLabel value="科目性质(余额方向)" />
+            <p:selectOneRadio value="#{obj.debitSign}" style="width:200px;" label="科目性质(余额方向)">
+                <f:selectItem itemValue="true" itemLabel="借方" />
+                <f:selectItem itemValue="false" itemLabel="贷方" />
+            </p:selectOneRadio>
         </h:panelGrid>
     </ui:define>
 
