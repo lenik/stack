@@ -50,7 +50,7 @@
 
     <ui:define name="editDialogContent">
         <p:fieldset legend="基本信息" toggleable="true" toggleSpeed="100">
-            <t:panelGrid id="basic" columns="4">
+            <t:panelGrid id="basic" columns="8">
                 <h:outputText value="标识:" />
                 <t:panelGroup colspan="3">
                     <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
@@ -61,7 +61,9 @@
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="制单人:" />
-                <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+                </t:panelGroup>
 
                 <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
                 <t:panelGroup colspan="3">
@@ -80,8 +82,13 @@
                         style="width:30em;" />
                 </t:panelGroup>
 
-                <h:outputText value="备注:" />
+                <h:outputText value="业务员:" />
                 <t:panelGroup colspan="3">
+                    <p:inputText value="#{obj.order.salesman.displayName}" style="width:30em;" disabled="true" />
+                </t:panelGroup>
+
+                <h:outputText value="备注:" />
+                <t:panelGroup colspan="7">
                     <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}"
                         readonly="#{not bean.editing}" label="备注" />
                 </t:panelGroup>
