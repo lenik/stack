@@ -18,6 +18,7 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.world.thing.AbstractItemListDto;
@@ -40,6 +41,7 @@ public class MakeOrderDto
     PartyDto customer;
     String status;
     ChanceDto chance;
+    PersonDto salesman;
     boolean valid;
 
     List<MakeTaskDto> tasks;
@@ -75,6 +77,7 @@ public class MakeOrderDto
         customer = mref(PartyDto.class, source.getCustomer());
         status = source.getStatus();
         chance = mref(ChanceDto.class, source.getChance());
+        salesman = mref(PersonDto.class, source.getSalesman());
         valid = source.isValid();
 
         if (selection.contains(TASKS))
@@ -117,6 +120,7 @@ public class MakeOrderDto
         merge(target, "customer", customer);
         target.setStatus(status);
         merge(target, "chance", chance);
+        merge(target, "salesman", salesman);
         target.setValid(valid);
 
         if (selection.contains(TASKS))
@@ -162,6 +166,14 @@ public class MakeOrderDto
 
     public void setChance(ChanceDto chance) {
         this.chance = chance;
+    }
+
+    public PersonDto getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(PersonDto salesman) {
+        this.salesman = salesman;
     }
 
     public boolean isValid() {

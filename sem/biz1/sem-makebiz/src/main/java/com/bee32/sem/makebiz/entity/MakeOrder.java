@@ -25,6 +25,7 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
@@ -48,6 +49,7 @@ public class MakeOrder
     Party customer;
     String status;
     Chance chance;
+    Person salesman;
 
     boolean valid = true;
 
@@ -68,6 +70,7 @@ public class MakeOrder
         customer = o.customer;
         status = o.status;
         chance = o.chance;
+        salesman = o.salesman;
         valid = o.valid;
         tasks = new ArrayList<MakeTask>(o.tasks);
         plans = new ArrayList<MaterialPlan>(o.plans);
@@ -176,13 +179,27 @@ public class MakeOrder
      *
      * @return
      */
-    @OneToOne
+    @ManyToOne
     public Chance getChance() {
         return chance;
     }
 
     public void setChance(Chance chance) {
         this.chance = chance;
+    }
+
+    /**
+     * 业务员
+     *
+     * 定单对应的业务员
+     */
+    @ManyToOne
+    public Person getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(Person salesman) {
+        this.salesman = salesman;
     }
 
     /**
