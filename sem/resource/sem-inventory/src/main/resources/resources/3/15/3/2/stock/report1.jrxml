@@ -82,7 +82,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="158" y="0" width="329" height="32"/>
 				<textElement textAlignment="Center">
-					<font size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
 			</textField>

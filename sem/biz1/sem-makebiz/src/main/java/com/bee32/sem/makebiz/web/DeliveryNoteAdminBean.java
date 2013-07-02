@@ -40,6 +40,8 @@ import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
+import com.bee32.sem.service.IPeopleService;
+import com.bee32.sem.service.PeopleService;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @ForEntity(DeliveryNote.class)
@@ -126,6 +128,10 @@ public class DeliveryNoteAdminBean
 
         Map<String, Object> reportParams = new HashMap<String, Object>();
         reportParams.put("id", note.getId());
+
+        IPeopleService peopleService = BEAN(PeopleService.class);
+        reportParams.put("title", peopleService.getSelfOrg().getDisplayName() + "送货单");
+
         reportParams.put("createDate", note.getCreatedDate());
         reportParams.put("arrivalDate", note.getArrivalDate());
         reportParams.put("owner", note.getOwnerDisplayName());
@@ -146,6 +152,10 @@ public class DeliveryNoteAdminBean
 
         Map<String, Object> reportParams = new HashMap<String, Object>();
         reportParams.put("id", note.getId());
+
+        IPeopleService peopleService = BEAN(PeopleService.class);
+        reportParams.put("title", peopleService.getSelfOrg().getDisplayName() + "送货单");
+
         reportParams.put("createDate", note.getCreatedDate());
         reportParams.put("arrivalDate", note.getArrivalDate());
         reportParams.put("owner", note.getOwnerDisplayName());

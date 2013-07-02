@@ -36,6 +36,8 @@ import com.bee32.sem.material.dto.StockWarehouseDto;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
+import com.bee32.sem.service.IPeopleService;
+import com.bee32.sem.service.PeopleService;
 
 @ForEntity(StockOrder.class)
 public abstract class AbstractStockOrderBean
@@ -174,7 +176,10 @@ public abstract class AbstractStockOrderBean
         try {
             JasperReport report = JasperCompileManager.compileReport(reportStream);
             Map<String, Object> reportParams = new HashMap<String, Object>();
-            reportParams.put("title", subject.getDisplayName());
+
+            IPeopleService peopleService = BEAN(PeopleService.class);
+            reportParams.put("title", peopleService.getSelfOrg().getDisplayName() + subject.getDisplayName());
+
             reportParams.put("createDate", order.getCreatedDate());
             reportParams.put("label", order.getLabel());
             reportParams.put("party", order.getOrg().getDisplayName());

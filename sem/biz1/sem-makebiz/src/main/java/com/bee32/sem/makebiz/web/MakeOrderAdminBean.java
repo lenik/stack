@@ -40,6 +40,8 @@ import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.makebiz.util.MakebizCriteria;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.service.IPeopleService;
+import com.bee32.sem.service.PeopleService;
 
 @ForEntity(MakeOrder.class)
 public class MakeOrderAdminBean
@@ -88,6 +90,10 @@ public class MakeOrderAdminBean
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", makeOrder.getId());
+
+        IPeopleService peopleService = BEAN(PeopleService.class);
+        params.put("title", peopleService.getSelfOrg().getDisplayName() + "定单");
+
         params.put("createDate", makeOrder.getCreatedDate());
         params.put("owner", makeOrder.getOwnerDisplayName());
         params.put("label", makeOrder.getLabel());
@@ -105,6 +111,10 @@ public class MakeOrderAdminBean
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", makeOrder.getId());
+
+        IPeopleService peopleService = BEAN(PeopleService.class);
+        params.put("title", peopleService.getSelfOrg().getDisplayName() + "定单");
+
         params.put("createDate", makeOrder.getCreatedDate());
         params.put("owner", makeOrder.getOwnerDisplayName());
         params.put("label", makeOrder.getLabel());

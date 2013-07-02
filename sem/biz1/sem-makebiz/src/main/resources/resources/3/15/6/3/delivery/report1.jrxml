@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="780" pageHeight="595" orientation="Landscape" columnWidth="740" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -11,6 +11,7 @@
 	<parameter name="description" class="java.lang.String"/>
 	<parameter name="arrivalDate" class="java.util.Date"/>
 	<parameter name="nativeTotal" class="java.math.BigDecimal"/>
+	<parameter name="title" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="quantity" class="java.math.BigDecimal"/>
 	<field name="description" class="java.lang.String"/>
@@ -26,13 +27,6 @@
 	</title>
 	<pageHeader>
 		<band height="85" splitType="Stretch">
-			<staticText>
-				<reportElement x="313" y="0" width="117" height="26"/>
-				<textElement>
-					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[送货单]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="428" y="47" width="225" height="20"/>
 				<textElement>
@@ -117,6 +111,13 @@
 				</textElement>
 				<text><![CDATA[要求送达日期:]]></text>
 			</staticText>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="146" y="0" width="401" height="26"/>
+				<textElement textAlignment="Center">
+					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
