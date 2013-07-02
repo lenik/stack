@@ -437,6 +437,6 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     @Transient
     @Override
     public BigDecimal getTicketSrcValue() throws FxrQueryException {
-        return this.getNativeTotal();
+        return this.getNativeTotal().abs();
     }
 }
