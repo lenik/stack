@@ -1,4 +1,4 @@
-package com.bee32.sem.makebiz.web;
+package com.bee32.xem.zjhf.web;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,13 +18,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.primefaces.event.FileUploadEvent;
 
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.sem.makebiz.util.ModelCombiner;
 import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.material.entity.MaterialAttribute;
 import com.bee32.sem.material.entity.MaterialCategory;
 import com.bee32.sem.material.util.MaterialCriteria;
+import com.bee32.xem.zjhf.util.ModelCombiner;
 
-public class FanImportBean extends EntityViewBean {
+public class QuoteImportBean extends EntityViewBean {
 
     /**
      *
@@ -77,7 +77,6 @@ public class FanImportBean extends EntityViewBean {
 
                 String[] split = line.split(",");
                 String type = split[0];
-                material.setLabel(split[1]);
                 String modelSpec = null;
                 String description = null;
 
@@ -109,9 +108,10 @@ public class FanImportBean extends EntityViewBean {
 
                 switch (type) {
                 case "风口":
+                    material.setLabel(split[1]);
+                    material.setModelSpec(split[5]);
 
                     if (split[2].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[2], modelSpec);
                         MaterialAttribute a1 = new MaterialAttribute();
                         a1.setMaterial(material);
                         a1.setName("形状");
@@ -120,7 +120,6 @@ public class FanImportBean extends EntityViewBean {
                     }
 
                     if (split[3].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[3], modelSpec);
                         MaterialAttribute a2 = new MaterialAttribute();
                         a2.setMaterial(material);
                         a2.setName("是否带阀");
@@ -129,21 +128,15 @@ public class FanImportBean extends EntityViewBean {
                     }
 
                     if (split[4].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[4], modelSpec);
                         MaterialAttribute a3 = new MaterialAttribute();
                         a3.setMaterial(material);
-                        a3.setName("网");
+                        a3.setName("是否带网");
                         a3.setValue(split[4]);
                         attributes.add(a3);
                     }
 
-                    if (split[5].length() > 0)
-                        description = split[5];
-
                     break;
                 case "风阀":
-                    attributes.clear();
-
                     if (split[2].length() > 0) {
                         modelSpec = ModelCombiner.combine(split[2], modelSpec);
                         MaterialAttribute ironMagnesium = new MaterialAttribute();
@@ -229,8 +222,7 @@ public class FanImportBean extends EntityViewBean {
                         description = split[11];
 
                     break;
-                case "消声器":
-                case "静压箱":
+                case "消声器静压箱":
                     if (split[2].length() > 0) {
                         modelSpec = split[2];
                         MaterialAttribute thick = new MaterialAttribute();

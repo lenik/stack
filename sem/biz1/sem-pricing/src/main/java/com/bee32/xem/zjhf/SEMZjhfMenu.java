@@ -17,4 +17,6 @@ public class SEMZjhfMenu
     MenuNode motorType = entry(PRICING, 1, "motorType", __.join("motorType/"));
     MenuNode valveType = entry(PRICING, 1, "valveType", __.join("valveType/"));
 
+    MenuNode quoteImport = entry(PRICING, 1, "quoteImport", __.join("quoteImport/"));
+
 }
