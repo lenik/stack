@@ -136,165 +136,84 @@ public class QuoteImportBean extends EntityViewBean {
                     }
 
                     break;
+
+
                 case "风阀":
+                    material.setLabel(split[1]);
+                    material.setModelSpec(split[6]);
+
                     if (split[2].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[2], modelSpec);
-                        MaterialAttribute ironMagnesium = new MaterialAttribute();
-                        ironMagnesium.setMaterial(material);
-                        ironMagnesium.setName("铁皮/镁璃钢");
-                        ironMagnesium.setValue(split[2]);
-                        attributes.add(ironMagnesium);
+                        MaterialAttribute a1 = new MaterialAttribute();
+                        a1.setMaterial(material);
+                        a1.setName("材质");
+                        a1.setValue(split[2]);
+                        attributes.add(a1);
                     }
 
                     if (split[3].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[3], modelSpec);
-                        MaterialAttribute shap = new MaterialAttribute();
-                        shap.setMaterial(material);
-                        shap.setName("形状");
-                        shap.setValue(split[3]);
-                        attributes.add(shap);
+                        MaterialAttribute a2 = new MaterialAttribute();
+                        a2.setMaterial(material);
+                        a2.setName("形状");
+                        a2.setValue(split[3]);
+                        attributes.add(a2);
                     }
 
                     if (split[4].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[4], modelSpec);
-                        MaterialAttribute thermostat = new MaterialAttribute();
-                        thermostat.setMaterial(material);
-                        thermostat.setName("温控");
-                        thermostat.setValue(split[4]);
-                        attributes.add(thermostat);
+                        MaterialAttribute a3 = new MaterialAttribute();
+                        a3.setMaterial(material);
+                        a3.setName("开闭");
+                        a3.setValue(split[4]);
+                        attributes.add(a3);
                     }
 
                     if (split[5].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[5], modelSpec);
-                        MaterialAttribute aaf = new MaterialAttribute();
-                        aaf.setMaterial(material);
-                        aaf.setName("调风量");
-                        aaf.setValue(split[5]);
-                        attributes.add(aaf);
+                        MaterialAttribute a4 = new MaterialAttribute();
+                        a4.setMaterial(material);
+                        a4.setName("附加功能");
+                        a4.setValue(split[5]);
+                        attributes.add(a4);
                     }
-
-                    if (split[6].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[6], modelSpec);
-                        MaterialAttribute oc = new MaterialAttribute();
-                        oc.setMaterial(material);
-                        oc.setName("常开/常闭");
-                        oc.setValue(split[6]);
-                        attributes.add(oc);
-                    }
-
-                    if (split[7].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[7], modelSpec);
-                        MaterialAttribute rc = new MaterialAttribute();
-                        rc.setMaterial(material);
-                        rc.setName("钢线远控");
-                        rc.setValue(split[7]);
-                        attributes.add(rc);
-                    }
-
-                    if (split[8].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[8], modelSpec);
-                        MaterialAttribute es = new MaterialAttribute();
-                        es.setMaterial(material);
-                        es.setName("电控/二次动作");
-                        es.setValue(split[8]);
-                        attributes.add(es);
-                    }
-
-                    if (split[9].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[9], modelSpec);
-                        MaterialAttribute ar = new MaterialAttribute();
-                        ar.setMaterial(material);
-                        ar.setName("自动复位");
-                        ar.setValue(split[9]);
-                        attributes.add(ar);
-                    }
-
-                    if (split[10].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[10], modelSpec);
-                        MaterialAttribute d = new MaterialAttribute();
-                        d.setMaterial(material);
-                        d.setName("电动调节阀");
-                        d.setValue(split[10]);
-                        attributes.add(d);
-                    }
-
-                    if (split[11].length() > 0)
-                        description = split[11];
 
                     break;
+
+
                 case "消声器静压箱":
-                    if (split[2].length() > 0) {
-                        modelSpec = split[2];
-                        MaterialAttribute thick = new MaterialAttribute();
-                        thick.setMaterial(material);
-                        thick.setName("消声层厚度");
-                        thick.setValue(split[2]);
-                        attributes.add(thick);
-                    }
+                    material.setLabel(split[1]);
+                    material.setModelSpec(split[4]);
 
-                    if (split[3].length() > 0)
-                        description = split[3];
-                    break;
-                case "风机":
-                    modelSpec = split[2] + split[3] + split[4] + split[5] + split[6] + split[7] + split[8];
                     if (split[2].length() > 0) {
-                        MaterialAttribute mn = new MaterialAttribute();
-                        mn.setMaterial(material);
-                        mn.setName("机号");
-                        mn.setValue(split[2]);
-                        attributes.add(mn);
+                        MaterialAttribute a1 = new MaterialAttribute();
+                        a1.setMaterial(material);
+                        a1.setName("消声层厚");
+                        a1.setValue(split[2]);
+                        attributes.add(a1);
                     }
 
                     if (split[3].length() > 0) {
-                        MaterialAttribute zy = new MaterialAttribute();
-                        zy.setMaterial(material);
-                        zy.setName("左/右");
-                        zy.setValue(split[3]);
-                        attributes.add(zy);
+                        MaterialAttribute a2 = new MaterialAttribute();
+                        a2.setMaterial(material);
+                        a2.setName("隔板数");
+                        a2.setValue(split[3]);
+                        attributes.add(a2);
                     }
 
-                    if (split[4].length() > 0) {
-                        MaterialAttribute outlet = new MaterialAttribute();
-                        outlet.setMaterial(material);
-                        outlet.setName("进出风口编号");
-                        outlet.setValue(split[4]);
-                        attributes.add(outlet);
+                    break;
+
+
+                case "风机":
+                    material.setLabel(split[1]);
+                    material.setModelSpec(split[2] + "," + split[8]);   //规格形号为机号加功率
+
+                    if (split[2].length() > 0) {
+                        MaterialAttribute a1 = new MaterialAttribute();
+                        a1.setMaterial(material);
+                        a1.setName("左右");
+                        a1.setValue(split[3]);
+                        attributes.add(a1);
                     }
 
-                    if (split[5].length() > 0) {
-                        MaterialAttribute angle = new MaterialAttribute();
-                        angle.setMaterial(material);
-                        angle.setName("角度");
-                        angle.setValue(split[5]);
-                        attributes.add(angle);
-                    }
 
-                    if (split[6].length() > 0) {
-                        MaterialAttribute drive = new MaterialAttribute();
-                        drive.setMaterial(material);
-                        drive.setName("驱动方式");
-                        drive.setValue(split[6]);
-                        attributes.add(drive);
-                    }
 
-                    if (split[7].length() > 0) {
-                        MaterialAttribute speed = new MaterialAttribute();
-                        speed.setMaterial(material);
-                        speed.setName("风机转速");
-                        speed.setValue(split[7]);
-                        attributes.add(speed);
-                    }
-
-                    if (split[8].length() > 0) {
-                        MaterialAttribute motor = new MaterialAttribute();
-                        motor.setMaterial(material);
-                        motor.setName("电机");
-                        motor.setValue(split[8]);
-                        attributes.add(motor);
-                    }
-
-                    if (split[9].length() > 0)
-                        description = split[9];
 
                     break;
                 case "软接":
