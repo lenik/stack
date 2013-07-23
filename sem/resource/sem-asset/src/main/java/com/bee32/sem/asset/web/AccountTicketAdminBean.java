@@ -120,6 +120,7 @@ public class AccountTicketAdminBean
             throws Exception {
         for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
             AccountTicketDto dto = uMap.getSourceDto(me);
+            if(dto.getTicketSource() == null) return;
             Class ticketSourceType = dto.getTicketSource().getClassType();
             IAccountTicketSource ticketSource = (IAccountTicketSource) DATA(ticketSourceType).get(
                     dto.getTicketSource().getId());
