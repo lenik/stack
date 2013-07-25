@@ -77,8 +77,6 @@ public class QuoteImportBean extends EntityViewBean {
 
                 String[] split = line.split(",");
                 String type = split[0];
-                String modelSpec = null;
-                String description = null;
 
                 // Set MaterialCategory
                 MaterialCategory product = DATA(MaterialCategory.class).getUnique(MaterialCriteria.equalsLabel("产成品"));
@@ -208,78 +206,107 @@ public class QuoteImportBean extends EntityViewBean {
                         MaterialAttribute a1 = new MaterialAttribute();
                         a1.setMaterial(material);
                         a1.setName("左右");
-                        a1.setValue(split[3]);
+                        a1.setValue(split[2]);
                         attributes.add(a1);
                     }
 
+                    if (split[3].length() > 0) {
+                        MaterialAttribute a2 = new MaterialAttribute();
+                        a2.setMaterial(material);
+                        a2.setName("进出风品编号");
+                        a2.setValue(split[3]);
+                        attributes.add(a2);
+                    }
 
+                    if (split[4].length() > 0) {
+                        MaterialAttribute a3 = new MaterialAttribute();
+                        a3.setMaterial(material);
+                        a3.setName("风机角度");
+                        a3.setValue(split[4]);
+                        attributes.add(a3);
+                    }
 
+                    if (split[5].length() > 0) {
+                        MaterialAttribute a4 = new MaterialAttribute();
+                        a4.setMaterial(material);
+                        a4.setName("驱动方式");
+                        a4.setValue(split[5]);
+                        attributes.add(a4);
+                    }
+
+                    if (split[6].length() > 0) {
+                        MaterialAttribute a5 = new MaterialAttribute();
+                        a5.setMaterial(material);
+                        a5.setName("转速");
+                        a5.setValue(split[6]);
+                        attributes.add(a5);
+                    }
+
+                    if (split[7].length() > 0) {
+                        MaterialAttribute a6 = new MaterialAttribute();
+                        a6.setMaterial(material);
+                        a6.setName("转速");
+                        a6.setValue(split[7]);
+                        attributes.add(a6);
+                    }
+
+                    if (split[9].length() > 0) {
+                        MaterialAttribute a7 = new MaterialAttribute();
+                        a7.setMaterial(material);
+                        a7.setName("风量");
+                        a7.setValue(split[9]);
+                        attributes.add(a7);
+                    }
+
+                    if (split[10].length() > 0) {
+                        MaterialAttribute a8 = new MaterialAttribute();
+                        a8.setMaterial(material);
+                        a8.setName("风压");
+                        a8.setValue(split[10]);
+                        attributes.add(a8);
+                    }
 
                     break;
+
                 case "软接":
+                    material.setLabel(split[3]+split[1]);   //名称为材质加软件名称
+                    material.setModelSpec(split[4]);
 
                     if (split[2].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[2], modelSpec);
-                        MaterialAttribute xz = new MaterialAttribute();
-                        xz.setMaterial(material);
-                        xz.setName("形状");
-                        xz.setValue(split[2]);
-                        attributes.add(xz);
+                        MaterialAttribute a1 = new MaterialAttribute();
+                        a1.setMaterial(material);
+                        a1.setName("形状");
+                        a1.setValue(split[2]);
+                        attributes.add(a1);
                     }
 
-                    if (split[3].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[3], modelSpec);
-                        MaterialAttribute textile = new MaterialAttribute();
-                        textile.setMaterial(material);
-                        textile.setName("布料");
-                        textile.setValue(split[3]);
-                        attributes.add(textile);
-                    }
-
-                    if (split[4].length() > 0)
-                        description = split[4];
                     break;
+
+
                 case "法兰":
+                    material.setLabel(split[2]+split[1]);
+                    material.setModelSpec(split[3]);
 
-                    if (split[2].length() > 0) {
-                        modelSpec = ModelCombiner.combine(split[2], modelSpec);
-                        MaterialAttribute flxz = new MaterialAttribute();
-                        flxz.setMaterial(material);
-                        flxz.setName("形状");
-                        flxz.setValue(split[2]);
-                    }
-                    if (split[3].length() > 0)
-                        description = split[3];
                     break;
+
+
                 case "减震吊钩":
+                    material.setLabel(split[1]);
                     material.setModelSpec(split[2]);
 
-                    if (split[3].length() > 0) {
-                        MaterialAttribute loads = new MaterialAttribute();
-                        loads.setMaterial(material);
-                        loads.setName("载荷");
-                        loads.setValue(split[3]);
-                        attributes.add(loads);
-                    }
-                    if (split[4].length() > 0)
-                        description = split[4];
-
                     break;
+
+
                 case "人防":
+                    material.setLabel(split[1]);
                     material.setModelSpec(split[2]);
-                    if (split[3].length() > 0)
-                        description = split[3];
+
                     break;
+
+
                 default:
                     break;
                 }
-
-                if (null == modelSpec)
-                    modelSpec = "Unspecified Model";
-                material.setModelSpec(modelSpec);
-
-                if (null != description)
-                    material.setDescription(description);
 
                 if (attributes.size() > 0)
                     material.setAttributes(attributes);
