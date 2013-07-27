@@ -335,53 +335,39 @@
 				<textFieldExpression><![CDATA[$P{owner}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="153" y="3" width="76" height="20"/>
-				<textElement textAlignment="Left">
-					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[签收单位盖章]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="237" y="3" width="43" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[签收人:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="365" y="3" width="92" height="20"/>
+				<reportElement x="310" y="23" width="92" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[签收人身份证号:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="7" y="27" width="40" height="20"/>
+				<reportElement x="150" y="3" width="83" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[承运人:]]></text>
+				<text><![CDATA[承运人及车牌号:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="157" y="27" width="83" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[承运人证件号码:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="355" y="27" width="73" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[承运人车牌号:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="506" y="27" width="43" height="20"/>
+				<reportElement x="386" y="3" width="43" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[经办人:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="23" width="43" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[签收人:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="23" width="76" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[签收单位盖章]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
