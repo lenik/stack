@@ -133,11 +133,9 @@ public class DeliveryNoteAdminBean
         reportParams.put("title", peopleService.getSelfOrg().getDisplayName() + "送货单");
 
         reportParams.put("createDate", note.getCreatedDate());
-        reportParams.put("arrivalDate", note.getArrivalDate());
         reportParams.put("owner", note.getOwnerDisplayName());
         reportParams.put("label", note.getLabel());
         reportParams.put("customer", note.getCustomer().getDisplayName());
-        reportParams.put("description", note.getDescription());
         reportParams.put("nativeTotal", note.getNativeTotal());
         doExport(report, reportParams, beanCollectionDataSource, "deliveryNote", PDF);
     }
@@ -157,11 +155,9 @@ public class DeliveryNoteAdminBean
         reportParams.put("title", peopleService.getSelfOrg().getDisplayName() + "送货单");
 
         reportParams.put("createDate", note.getCreatedDate());
-        reportParams.put("arrivalDate", note.getArrivalDate());
         reportParams.put("owner", note.getOwnerDisplayName());
         reportParams.put("label", note.getLabel());
         reportParams.put("customer", note.getCustomer().getDisplayName());
-        reportParams.put("description", note.getDescription());
         reportParams.put("nativeTotal", note.getNativeTotal());
 
         doExport(report, reportParams, beanCollectionDataSource, "deliveryNode", PDF);
