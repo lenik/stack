@@ -23,12 +23,14 @@ import com.bee32.sem.process.verify.util.VerifyCriteria;
 public class AssetCriteria
         extends CriteriaSpec {
 
+    static final String TX_TIME = "beginTime";
+
     @LeftHand(AccountSnapshot.class)
     public static ICriteriaElement latestSnapshotBefore(Date date) {
         return compose(//
                 limit(0, 1), //
-                lessThan("endTime", date), //
-                descOrder("endTime"));
+                lessThan(TX_TIME, date), //
+                descOrder(TX_TIME));
     }
 
     @LeftHand(FundFlow.class)
@@ -62,8 +64,8 @@ public class AssetCriteria
         return compose(//
                 // alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
                 options.isVerifiedOnly() ? VerifyCriteria.verified() : null, //
-                _greaterThan("endTime", optBaseTime), //
-                lessOrEquals("endTime", options.getTimestamp()), //
+                _greaterThan(TX_TIME, optBaseTime), //
+                lessOrEquals(TX_TIME, options.getTimestamp()), //
 
                 subjectSelection, //
 
