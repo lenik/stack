@@ -23,7 +23,8 @@ import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(MakeTask.class)
-public class MakeTaskAdminBean extends ScrollEntityViewBean {
+public class MakeTaskAdminBean
+        extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -80,7 +81,7 @@ public class MakeTaskAdminBean extends ScrollEntityViewBean {
 
     public void generateProcess() {
 
-        MakeTaskItemDto item = itemsMBean.getSelection();
+        MakeTaskItemDto item = itemsMBean.getLastSelection();
 
         MakebizService service = BEAN(MakebizService.class);
         try {
@@ -93,7 +94,7 @@ public class MakeTaskAdminBean extends ScrollEntityViewBean {
     }
 
     public void setMbeanSelection(MakeTaskItemDto entry) {
-        itemsMBean.setSelection(entry);
+        itemsMBean.setLastSelection(entry);
         newHolderList();
     }
 
@@ -134,7 +135,8 @@ public class MakeTaskAdminBean extends ScrollEntityViewBean {
      * Section: Persistence
      *************************************************************************/
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap) throws Exception {
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
         for (MakeTask _task : uMap.<MakeTask> entitySet()) {
             MakeOrder order = _task.getOrder();
             if (!order.getTasks().contains(_task)) {
