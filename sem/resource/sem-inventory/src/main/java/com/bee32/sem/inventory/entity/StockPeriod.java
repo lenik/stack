@@ -132,7 +132,7 @@ public class StockPeriod
     }
 
     /**
-     * 获取指定小结科目的小结定单
+     * 获取指定小结科目的小结订单
      */
     public AbstractStockOrder<?> getPackOrder(StockOrderSubject packSubject) {
         if (packSubject == null)

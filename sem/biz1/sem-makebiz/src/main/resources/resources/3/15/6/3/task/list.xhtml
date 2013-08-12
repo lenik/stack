@@ -31,7 +31,7 @@
                 <h:outputText value="${entry.label}" />
             </p:commandLink>
         </p:column>
-        <p:column headerText="对应定单" sortBy="#{entry.order}">
+        <p:column headerText="对应订单" sortBy="#{entry.order}">
             <h:outputText value="#{entry.order.label}" />
         </p:column>
         <p:column headerText="操作" >
@@ -43,11 +43,11 @@
 
     <ui:define name="searchPanels.1">
         <ui:insert name="searchPanel.order">
-            <p:panel header="按定单搜索" toggleable="true">
+            <p:panel header="按订单搜索" toggleable="true">
                 <div align="center">
                     <p:inputText id="order" readonly="true" value="${bean.searchOrder.label}" />
                     <p:commandButton id="chooseOrder" value="..." onclick="chooseOrderToSearchDialog.show()" />
-                    <p:commandButton id="filterOrder" value="限定定单" actionListener="${bean.addOrderRestriction}"
+                    <p:commandButton id="filterOrder" value="限定订单" actionListener="${bean.addOrderRestriction}"
                         update="@form, ${_searchUpdates}" />
                 </div>
             </p:panel>

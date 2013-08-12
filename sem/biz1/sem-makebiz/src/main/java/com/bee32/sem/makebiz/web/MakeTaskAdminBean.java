@@ -63,14 +63,14 @@ public class MakeTaskAdminBean
 
         for (MakeOrderItemDto item : makeOrder.getItems()) {
             if (item.getMaterial().isNull()) {
-                uiLogger.error("定单明细没有指定物料.");
+                uiLogger.error("订单明细没有指定物料.");
                 return;
             }
         }
 
         List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
         if (taskItems.isEmpty()) {
-            uiLogger.error("此定单上的产品已经全部安排为[生产任务]或[外购物料计划]或[没有BOM而不能按排生产]!");
+            uiLogger.error("此订单上的产品已经全部安排为[生产任务]或[外购物料计划]或[没有BOM而不能按排生产]!");
             return;
         }
         makeTask.setOrder(makeOrderRef);
@@ -151,7 +151,7 @@ public class MakeTaskAdminBean
                     message.append(entry.getValue());
                     message.append("; ");
                 }
-                uiLogger.error("生产数量超过定单中的数量: " + message);
+                uiLogger.error("生产数量超过订单中的数量: " + message);
                 return false;
             }
         }

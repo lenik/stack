@@ -32,7 +32,7 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
- * 定单
+ * 订单
  *
  * 和客户签定销售合同后，客户所购产品的单据。本质是合同的一部份。
  */
@@ -88,7 +88,7 @@ public class MakeOrder
     /**
      * 客户
      *
-     * 定单对应的客户。
+     * 订单对应的客户。
      */
     @ManyToOne(optional = false)
     public Party getCustomer() {
@@ -104,7 +104,7 @@ public class MakeOrder
     /**
      * 状态
      *
-     * 定单当前状态。
+     * 订单当前状态。
      *
      * @return
      */
@@ -120,7 +120,7 @@ public class MakeOrder
     /**
      * 生产任务
      *
-     * 本定单对应的生产任务列表。一个定单可能对应多个生产任务。
+     * 本订单对应的生产任务列表。一个订单可能对应多个生产任务。
      *
      * @return
      */
@@ -139,7 +139,7 @@ public class MakeOrder
     /**
      * 物料计划
      *
-     * 外购产品不用生产，直接由定单生成物料计划，这里即为本定单对应的物料计划。
+     * 外购产品不用生产，直接由订单生成物料计划，这里即为本订单对应的物料计划。
      *
      * @return
      */
@@ -156,7 +156,7 @@ public class MakeOrder
     /**
      * 送货单
      *
-     * 本定单对应的送货单列表。
+     * 本订单对应的送货单列表。
      *
      * @return
      */
@@ -175,7 +175,7 @@ public class MakeOrder
     /**
      * 机会
      *
-     * 在销售过程是，是先有销售机会，再有定单。定单可以从销售机会的选型中取数，这里即为对应的销售机会。
+     * 在销售过程是，是先有销售机会，再有订单。订单可以从销售机会的选型中取数，这里即为对应的销售机会。
      *
      * @return
      */
@@ -191,7 +191,7 @@ public class MakeOrder
     /**
      * 业务员
      *
-     * 定单对应的业务员
+     * 订单对应的业务员
      */
     @ManyToOne
     public Person getSalesman() {
@@ -205,7 +205,7 @@ public class MakeOrder
     /**
      * 有效标志
      *
-     * true:有效定单; false:作废
+     * true:有效订单; false:作废
      */
     public boolean isValid() {
         return valid;
@@ -218,7 +218,7 @@ public class MakeOrder
     /**
      * 已按排生产或外购列表
      *
-     * 查找定单上已经按排生产名外购的产品列表。
+     * 查找订单上已经按排生产名外购的产品列表。
      *
      * Sum of part quantity in each task item.
      *
@@ -259,7 +259,7 @@ public class MakeOrder
     /**
      * 已按排送货列表
      *
-     * 通过查找本定单对应的送货单，来查找已经按排送的列表。
+     * 通过查找本订单对应的送货单，来查找已经按排送的列表。
      *
      * Sum of part quantity in each delivery note item(on orderItem).
      *
@@ -307,7 +307,7 @@ public class MakeOrder
             // 有对应的生产任务，生产剩下的部分
             BigDecimal remaining = orderItem.getQuantity().subtract(sum);
             if (remaining.longValue() > 0) {
-                // 生产任务的数量小于定单的数量
+                // 生产任务的数量小于订单的数量
                 MakeOrderItem remainingItem = new MakeOrderItem();
                 remainingItem.setParent(this);
                 remainingItem.setMaterial(orderItem.getMaterial());
@@ -343,7 +343,7 @@ public class MakeOrder
             // 有对应的送货单，安排剩下的部分
             BigDecimal remaining = orderItem.getQuantity().subtract(sum);
             if (remaining.longValue() > 0) {
-                // 送货单的数量小于定单的数量
+                // 送货单的数量小于订单的数量
 // MakeOrderItem remainingItem =
 // DefaultDataAssembledContext.data.access(MakeOrderItem.class).lazyLoad(orderItem.getId());
                 MakeOrderItem remainingItem = new MakeOrderItem();
@@ -364,7 +364,7 @@ public class MakeOrder
     /**
      * 生产或外购数量是否超限
      *
-     * 检查所有对应生产任务单的数量总合是否超过定单的数量。
+     * 检查所有对应生产任务单的数量总合是否超过订单的数量。
      *
      * @aka checkIfTaskQuantityFitOrder
      */
@@ -379,7 +379,7 @@ public class MakeOrder
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
                     BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
-                    // 生产任务中的数量大于定单中的数量
+                    // 生产任务中的数量大于订单中的数量
                     overloadParts.put(orderItem.getMaterial(), overloaded);
                 }
             }
@@ -390,7 +390,7 @@ public class MakeOrder
     /**
      * 送货数量是否超限
      *
-     * 检查所有对应送货单的数量总合是否超过定单的数量。
+     * 检查所有对应送货单的数量总合是否超过订单的数量。
      *
      * @aka checkIfDeliveryQuantityFitOrder
      */
@@ -403,7 +403,7 @@ public class MakeOrder
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
                     BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
-                    // 送货单中的数量大于定单中的数量
+                    // 送货单中的数量大于订单中的数量
                     overloadPartsDelivery.put(orderItem, overloaded);
                 }
             }

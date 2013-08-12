@@ -25,7 +25,7 @@
         <p:column headerText="对应生产任务" sortBy="#{entry.task}">
             <h:outputText value="#{entry.task.label}" />
         </p:column>
-        <p:column headerText="对应定单" sortBy="#{entry.order}">
+        <p:column headerText="对应订单" sortBy="#{entry.order}">
             <h:outputText value="#{entry.order.label}" />
         </p:column>
         <p:column headerText="简要">
@@ -59,11 +59,11 @@
                                 <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
                             </t:panelGrid>
                         </p:tab>
-                        <p:tab id="tab2" title="/或由定单生成(外购)">
+                        <p:tab id="tab2" title="/或由订单生成(外购)">
                             <t:panelGrid columns="2">
                                 <t:panelGroup>
-                                    <h:inputHidden label="定单" value="#{obj.order.id_OZL}" />
-                                    <p:inputText id="sourceOrder" value="#{obj.order.label}" disabled="true" label="定单" style="width:25em;"/>
+                                    <h:inputHidden label="订单" value="#{obj.order.id_OZL}" />
+                                    <p:inputText id="sourceOrder" value="#{obj.order.label}" disabled="true" label="订单" style="width:25em;"/>
                                 </t:panelGroup>
                                 <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
                              </t:panelGrid>

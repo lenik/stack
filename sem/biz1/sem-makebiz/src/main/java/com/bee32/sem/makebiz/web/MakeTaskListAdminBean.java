@@ -70,7 +70,7 @@ public class MakeTaskListAdminBean
 
     public void addOrderRestriction() {
         if (searchOrder != null) {
-            setSearchFragment("order", "定单为 " + searchOrder.getLabel(), //
+            setSearchFragment("order", "订单为 " + searchOrder.getLabel(), //
                     new Equals("order.id", searchOrder.getId()));
             searchOrder = null;
         }

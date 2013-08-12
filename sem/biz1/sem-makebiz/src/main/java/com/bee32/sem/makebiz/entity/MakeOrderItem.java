@@ -24,9 +24,9 @@ import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.world.thing.AbstractItem;
 
 /**
- * 定单明细
+ * 订单明细
  *
- * 定单上的明细项目。
+ * 订单上的明细项目。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_item_seq", allocationSize = 1)
@@ -74,9 +74,9 @@ public class MakeOrderItem
     }
 
     /**
-     * 定单
+     * 订单
      *
-     * 定单明细对应的主控类。
+     * 订单明细对应的主控类。
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -93,7 +93,7 @@ public class MakeOrderItem
     /**
      * 物料
      *
-     * 定单明细对应的物料（产品）。
+     * 订单明细对应的物料（产品）。
      */
     @NaturalId(mutable = true)
     @ManyToOne
@@ -204,7 +204,7 @@ public class MakeOrderItem
     /**
      * 送货明细项目
      *
-     * 一个定单明细对应多个送货明细项目，这样就可以看到送货情况了。
+     * 一个订单明细对应多个送货明细项目，这样就可以看到送货情况了。
      */
     @OneToMany(mappedBy = "orderItem")
     public List<DeliveryNoteItem> getDeliveryNoteItems() {

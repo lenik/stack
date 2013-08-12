@@ -258,7 +258,7 @@ public class MakeOrderDto
         }
 
         if (planItems.isEmpty())
-            throw new IllegalStateException("此定单上的产品已经全部安排为生产任务或外购物料计划!");
+            throw new IllegalStateException("此订单上的产品已经全部安排为生产任务或外购物料计划!");
 
         materialPlan.setOrder(this);
         materialPlan.setItems(planItems);

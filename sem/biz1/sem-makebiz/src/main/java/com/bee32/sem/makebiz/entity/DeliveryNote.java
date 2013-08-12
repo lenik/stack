@@ -70,9 +70,9 @@ public class DeliveryNote extends ProcessEntity implements IAccountTicketSource,
     }
 
     /**
-     * 定单
+     * 订单
      *
-     * 送货单对应的定单。
+     * 送货单对应的订单。
      *
      * @return
      */

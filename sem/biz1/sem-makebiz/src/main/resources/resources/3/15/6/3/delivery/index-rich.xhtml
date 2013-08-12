@@ -29,10 +29,10 @@
         <p:column headerText="制单人">
             <h:outputText value="#{entry.owner.displayName}" />
         </p:column>
-        <p:column headerText="对应定单标识" sortBy="#{entry.order}">
+        <p:column headerText="对应订单标识" sortBy="#{entry.order}">
             <h:outputText value="#{entry.order.id}" />
         </p:column>
-        <p:column headerText="对应定单" sortBy="#{entry.order}">
+        <p:column headerText="对应订单" sortBy="#{entry.order}">
             <h:outputText value="#{entry.order.label}" />
         </p:column>
         <p:column headerText="客户" sortBy="#{entry.customer}">
@@ -65,9 +65,9 @@
                     <p:inputText value="#{obj.owner.displayName}" disabled="true" />
                 </t:panelGroup>
 
-                <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
+                <h:outputText value="生产订单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:25em;" />
+                    <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单" style="width:25em;" />
                     <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
                 </t:panelGroup>
 
@@ -205,7 +205,7 @@
     <ui:define name="dialogs">
         <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
 
-        <fr:listView id="itemsEditView" header="定单项目" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
+        <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 

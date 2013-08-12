@@ -58,7 +58,7 @@ public class MaterialPlanAdminBean
     }
 
     /**
-     * 外购产品,则定单直接生成
+     * 外购产品,则订单直接生成
      */
     public void setMakeOrderToApply(MakeOrderDto order) {
         MaterialPlanDto materialPlan = getOpenedObject();

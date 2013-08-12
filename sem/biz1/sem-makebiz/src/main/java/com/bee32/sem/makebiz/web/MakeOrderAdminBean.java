@@ -60,7 +60,7 @@ public class MakeOrderAdminBean
 
 //        MakeOrder _checkSameChanceOrder = DATA(MakeOrder.class).getFirst(new Equals("chance.id", chance.getId()));
 //        if (_checkSameChanceOrder != null && !_checkSameChanceOrder.getId().equals(makeOrder.getId())) {
-//            uiLogger.error("此机会已经对应的定单!");
+//            uiLogger.error("此机会已经对应的订单!");
 //            return;
 //        }
 
@@ -92,7 +92,7 @@ public class MakeOrderAdminBean
         params.put("id", makeOrder.getId());
 
         IPeopleService peopleService = BEAN(PeopleService.class);
-        params.put("title", peopleService.getSelfOrg().getDisplayName() + "定单");
+        params.put("title", peopleService.getSelfOrg().getDisplayName() + "订单");
 
         params.put("createDate", makeOrder.getCreatedDate());
         params.put("owner", makeOrder.getOwnerDisplayName());
@@ -113,7 +113,7 @@ public class MakeOrderAdminBean
         params.put("id", makeOrder.getId());
 
         IPeopleService peopleService = BEAN(PeopleService.class);
-        params.put("title", peopleService.getSelfOrg().getDisplayName() + "定单");
+        params.put("title", peopleService.getSelfOrg().getDisplayName() + "订单");
 
         params.put("createDate", makeOrder.getCreatedDate());
         params.put("owner", makeOrder.getOwnerDisplayName());

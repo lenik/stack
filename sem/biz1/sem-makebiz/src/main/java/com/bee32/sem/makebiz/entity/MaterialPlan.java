@@ -65,9 +65,9 @@ public class MaterialPlan
     }
 
     /**
-     * [冗余]定单
+     * [冗余]订单
      *
-     * 外购产品，直接由定单生成。这里即为对应的定单。
+     * 外购产品，直接由订单生成。这里即为对应的订单。
      */
     @ManyToOne(fetch = FetchType.LAZY)
     public MakeOrder getOrder() {

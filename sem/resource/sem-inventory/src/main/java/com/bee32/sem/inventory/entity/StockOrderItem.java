@@ -70,9 +70,9 @@ public class StockOrderItem
     }
 
     /**
-     * 所属定单
+     * 所属订单
      *
-     * 列出本条目的上级定单对象。
+     * 列出本条目的上级订单对象。
      */
     @ManyToOne(optional = false)
     public AbstractStockOrder<?> getParent() {

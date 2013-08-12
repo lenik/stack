@@ -31,7 +31,7 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
- * 库存通用定单
+ * 库存通用订单
  */
 @Entity(name = "StockOrder")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -279,7 +279,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     /**
      * 主仓库。
      *
-     * 出入库的仓库。通常所有定单项目应该和本仓库一致。
+     * 出入库的仓库。通常所有订单项目应该和本仓库一致。
      */
     @ManyToOne(optional = false)
     public StockWarehouse getWarehouse() {

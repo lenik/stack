@@ -28,10 +28,10 @@
         <p:column headerText="制单人">
             <h:outputText value="#{entry.owner.displayName}" />
         </p:column>
-        <p:column headerText="对应定单标识" sortBy="#{entry.order}">
+        <p:column headerText="对应订单标识" sortBy="#{entry.order}">
             <h:outputText value="#{entry.order.id}" />
         </p:column>
-        <p:column headerText="对应定单" sortBy="#{entry.order}">
+        <p:column headerText="对应订单" sortBy="#{entry.order}">
             <h:outputText value="#{entry.order.label}" />
         </p:column>
         <p:column headerText="客户" sortBy="#{entry.customer}">
@@ -55,11 +55,11 @@
 
     <ui:define name="searchPanels.1">
         <ui:insert name="searchPanel.order">
-            <p:panel header="按定单搜索" toggleable="true">
+            <p:panel header="按订单搜索" toggleable="true">
                 <div align="center">
                     <p:inputText id="order" readonly="true" value="${bean.searchOrder.label}" />
                     <p:commandButton id="chooseOrder" value="..." onclick="chooseOrderToSearchDialog.show()" />
-                    <p:commandButton id="filterOrder" value="限定定单" actionListener="${bean.addOrderRestriction}"
+                    <p:commandButton id="filterOrder" value="限定订单" actionListener="${bean.addOrderRestriction}"
                         update="@form, ${_searchUpdates}" />
                 </div>
             </p:panel>
