@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -15,6 +22,8 @@ import com.bee32.plover.orm.entity.CopyUtils;
  * 用户
  *
  * 可登录到系统的用户帐户。
+ *
+ * 用户是一个孤立的安全主体，并且是唯一用做登录的安全主体类型。
  */
 @Entity
 @DiscriminatorValue("U")
@@ -306,6 +315,11 @@ public class User
         this.emails = emails;
     }
 
+    /**
+     * 缺省邮箱
+     *
+     * 主体的默认邮箱。
+     */
     @Transient
     public String getPreferredEmail() {
         if (emails.isEmpty())

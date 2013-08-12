@@ -5,6 +5,9 @@ import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 
+/**
+ * 普拉瓦 Apache-Velocity 变量上下文。
+ */
 public class PloverVelocityContext
         extends VelocityContext {
 

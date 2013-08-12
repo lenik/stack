@@ -7,6 +7,12 @@ import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 主机验证码
+ *
+ * <p lang="en">
+ * HMAC
+ */
 public class HMAC {
 
     static final Logger logger = LoggerFactory.getLogger("HMAC");

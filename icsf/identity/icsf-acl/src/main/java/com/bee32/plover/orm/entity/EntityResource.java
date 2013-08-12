@@ -10,6 +10,11 @@ import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 
 /**
+ * 数据对象
+ *
+ * <p lang="en">
+ * Entity
+ *
  * @see EntityResourceNS
  */
 public class EntityResource

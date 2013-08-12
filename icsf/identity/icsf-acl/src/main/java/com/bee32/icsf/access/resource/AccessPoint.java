@@ -7,6 +7,16 @@ import java.util.Map;
 
 import com.bee32.plover.arch.util.ClassUtil;
 
+/**
+ * 访问点
+ *
+ * 相关服务的访问控制点
+ *
+ * <p lang="en">
+ * Access Point
+ *
+ * Access control point for related service.
+ */
 public final class AccessPoint
         extends Resource {
 

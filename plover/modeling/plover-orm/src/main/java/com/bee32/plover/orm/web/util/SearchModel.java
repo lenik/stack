@@ -4,6 +4,9 @@ import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.entity.Entity;
 
+/**
+ * 搜索模型
+ */
 public class SearchModel
         extends CriteriaComposite {
 

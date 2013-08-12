@@ -11,6 +11,11 @@ import javax.free.ReadOnlyException;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
 
+/**
+ * 空ACL
+ *
+ * <p lang="en">
+ */
 public class EmptyACL
         implements IACL {
 

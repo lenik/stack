@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 父页面控制
+ *
  * 允许 AJAX 请求返回外层控制信息。
  *
  * 增加/修改了如下 ajax 调用参数 （通过 settings）：

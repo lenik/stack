@@ -19,6 +19,9 @@ import com.bee32.plover.orm.entity.EntityAuto;
  * 用户选项
  *
  * 用户设置的选项。
+ *
+ * <p lang="en">
+ * User Option
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "user_option_seq", allocationSize = 1)

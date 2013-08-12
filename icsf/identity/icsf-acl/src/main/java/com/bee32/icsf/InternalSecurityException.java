@@ -1,5 +1,8 @@
 package com.bee32.icsf;
 
+/**
+ * 内部安全异常
+ */
 public class InternalSecurityException
         // extends java.lang.SecurityException {
         extends RuntimeException {

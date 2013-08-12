@@ -41,21 +41,33 @@ public class OptimizationLevel
 
     /**
      * 调试模式: 无优化：低效、主要用于排错
+     *
+     * <p lang="en">
+     * None: very slow, mainly used for debug.
      */
     public static final OptimizationLevel NONE = new OptimizationLevel(0, "none");
 
     /**
      * 调试模式: 最小优化：仅启用至关重要的优化
+     *
+     * <p lang="en">
+     * Minimal: enable critical optimizations.
      */
     public static final OptimizationLevel LOW = new OptimizationLevel(1, "low");
 
     /**
      * 非调试模式: 中等优化：启用所有常规的优化
+     *
+     * <p lang="en">
+     * Medium: enable normal optimizations.
      */
     public static final OptimizationLevel MEDIUM = new OptimizationLevel(2, "medium");
 
     /**
      * 非调试模式: 高优化：高风险，可能导致潜在的数据不一致
+     *
+     * <p lang="en">
+     * High: fast, but maybe more inconsistent.
      */
     public static final OptimizationLevel HIGH = new OptimizationLevel(3, "high");
 

@@ -2,6 +2,11 @@ package com.bee32.icsf.access;
 
 import com.bee32.plover.arch.util.ClassUtil;
 
+/**
+ * 未授权的访问异常
+ *
+ * 访问所需要的权限未被满足。
+ */
 public class UnauthorizedAccessException
         extends AccessControlException {
 

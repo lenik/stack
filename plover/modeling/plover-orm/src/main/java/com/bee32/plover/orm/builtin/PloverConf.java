@@ -16,6 +16,14 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.util.TextUtil;
 
+/**
+ * Plover 配置项
+ *
+ * <p lang="en">
+ * Plover Configuration Entry
+ *
+ * Plover configuration entity.
+ */
 @Entity
 @BatchSize(size = 100)
 @SequenceGenerator(name = "idgen", sequenceName = "plover_conf_seq", allocationSize = 1)

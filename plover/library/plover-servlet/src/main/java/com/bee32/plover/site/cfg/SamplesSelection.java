@@ -28,13 +28,33 @@ public class SamplesSelection
     public static final int V_NORMAL = 2;
     public static final int V_BOUNDARIES = 3;
 
-    /** 无（全定制系统，不建议使用） */
+    /**
+     * 无（全定制系统，不建议使用）
+     *
+     * <p lang="en">
+     * None (Full-customized system, for test only)
+     */
     public static final SamplesSelection NONE = new SamplesSelection(V_NONE, "none");
-    /** 标准（建议） */
+    /**
+     * 标准（建议）
+     *
+     * <p lang="en">
+     * Standard Samples (Recommend)
+     */
     public static final SamplesSelection STANDARD = new SamplesSelection(V_STANDARD, "standard");
-    /** 常规测试样本（适用于集成测试） */
+    /**
+     * 常规测试样本（适用于集成测试）
+     *
+     * <p lang="en">
+     * Normal Samples (For integrating test)
+     */
     public static final SamplesSelection NORMAL = new SamplesSelection(V_NORMAL, "normal");
-    /** 边界样本（仅适用边界测试） */
+    /**
+     * 边界样本（仅适用边界测试）
+     *
+     * <p lang="en">
+     * Boundary Samples (For boundary test)
+     */
     public static final SamplesSelection BOUNDARIES = new SamplesSelection(V_BOUNDARIES, "boundaries");
 
 }

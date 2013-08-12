@@ -7,8 +7,11 @@ class Perm1 {
 
 public class AnnotatedAccessControlInfoTest {
 
+    /**
+     * Display 1
+     */
     @Test
-    public void testMethod() {
+    public void test1() {
 
     }
 

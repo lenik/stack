@@ -12,6 +12,9 @@ import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
 /**
+ * 列表处理器
+ *
+ *
  * 使用 Ajax/DataTable，所以在 index-handler 中实际不涉及任何数据访问。
  */
 public class IndexHandler<E extends Entity<K>, K extends Serializable>

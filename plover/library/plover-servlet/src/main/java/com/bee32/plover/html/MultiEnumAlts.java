@@ -9,6 +9,12 @@ import java.util.Set;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.arch.util.EnumAltRegistry;
 
+/**
+ * 多重/枚举替代
+ *
+ * <p lang="en">
+ * Multi Enum-Alternations
+ */
 public class MultiEnumAlts
         extends AbstractMultiSelectionModel<EnumAlt<?, ?>> {
 

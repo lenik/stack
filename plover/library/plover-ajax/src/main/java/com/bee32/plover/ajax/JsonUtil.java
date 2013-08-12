@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+/**
+ * JSON 工具
+ *
+ * <p lang="en">
+ * JSON Utility
+ */
 public class JsonUtil {
 
     static Gson gson = new Gson();

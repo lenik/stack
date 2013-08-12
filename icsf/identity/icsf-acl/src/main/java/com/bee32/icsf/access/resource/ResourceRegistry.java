@@ -1,9 +1,18 @@
 package com.bee32.icsf.access.resource;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.ServiceLoader;
+import java.util.Set;
 
 import javax.free.IllegalUsageException;
 
+/**
+ * 资源注册表
+ */
 public class ResourceRegistry {
 
     static Set<IResourceNamespace> namespaces;

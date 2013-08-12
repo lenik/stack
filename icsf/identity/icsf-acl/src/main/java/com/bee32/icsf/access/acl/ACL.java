@@ -1,9 +1,21 @@
 package com.bee32.icsf.access.acl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -12,6 +24,14 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.CopyUtils;
 
+/**
+ * 安全策略
+ *
+ * 形式为访问控制列表的安全策略定义。
+ *
+ * <p lang="en">
+ * Access Control List
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 3)
@@ -64,6 +84,9 @@ public class ACL
         return acl;
     }
 
+    /**
+     * 继承的ACL
+     */
     @Transient
     @Override
     public ACL getInheritedACL() {
@@ -74,6 +97,9 @@ public class ACL
         setParent(inheritedACL);
     }
 
+    /**
+     * 条目集
+     */
     @OneToMany(mappedBy = "ACL", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<ACLEntry> getEntries() {
@@ -86,6 +112,9 @@ public class ACL
         this.entries = entries;
     }
 
+    /**
+     * 声明的主体集
+     */
     @Transient
     @Override
     public Set<Principal> getDeclaredPrincipals() {
@@ -110,6 +139,9 @@ public class ACL
         return null;
     }
 
+    /**
+     * 长度
+     */
     @Override
     public int size() {
         return entries.size();

@@ -7,6 +7,10 @@ import java.security.NoSuchAlgorithmException;
 import javax.free.EncodeException;
 import javax.free.HexCodec;
 
+/**
+ * <p lang="zh-cn">
+ * MD5 实用工具
+ */
 public class MD5Util {
 
     static final MessageDigest MD5;

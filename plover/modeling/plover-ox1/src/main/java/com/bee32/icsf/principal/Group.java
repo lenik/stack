@@ -4,12 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  * 用户组
  *
  * 可被用户共享访问资源的用户组。
+ *
+ * <p lang="en">
+ * User Group
+ *
+ * Principal group.
  */
 @Entity
 @DiscriminatorValue("G")

@@ -12,6 +12,9 @@ import com.bee32.plover.orm.web.EntityHandler;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
+/**
+ * 删除处理器
+ */
 public class DeleteHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
 

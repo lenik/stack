@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
 
+/**
+ * 普拉瓦框架 Apache-Velocity 配置器
+ */
 @Component
 @Lazy
 public class PloverVelocityConfigurer

@@ -4,12 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
- * 角色
+ * 用户角色
+ *
+ * “角色”和“组”构成了授权的两种视角，通常角色并没有相应的物理存在。
  *
  * 共用角色的用户对资源具有相同的访问权限。
+ *
+ * <p lang="en">
+ * User Role
  */
 @Entity
 @DiscriminatorValue("R")

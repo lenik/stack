@@ -5,6 +5,12 @@ import java.util.ServiceLoader;
 
 import org.apache.commons.collections15.list.TreeList;
 
+/**
+ * 共享站点
+ *
+ * <p lang="en">
+ * Share Sites
+ */
 public class ShareSites {
 
     static TreeList<IShareSite> shareSites;

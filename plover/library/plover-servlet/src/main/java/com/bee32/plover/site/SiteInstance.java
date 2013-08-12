@@ -36,6 +36,12 @@ import com.bee32.plover.site.cfg.SamplesSelection;
 import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.site.scope.StartAndStatsSrl;
 
+/**
+ * 应用站点实例
+ *
+ * <p lang="en">
+ * Application Site Instance
+ */
 public class SiteInstance
         implements ILocationConstants {
 

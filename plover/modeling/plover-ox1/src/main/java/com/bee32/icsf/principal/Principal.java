@@ -6,7 +6,14 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.NaturalId;
@@ -19,6 +26,11 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
  * 安全主体
  *
  * 用于访问安全控制的主体对象。
+ *
+ * <p lang="en">
+ * Security Principal
+ *
+ * Abstract security principal object.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -99,6 +111,11 @@ public abstract class Principal
         this.name = name;
     }
 
+    /**
+     * 全名
+     *
+     * 真实名称。
+     */
     @Transient
     public String getFullName() {
         return getLabel();
@@ -113,6 +130,11 @@ public abstract class Principal
         setFullName(fullName);
     }
 
+    /**
+     * 显示名称
+     *
+     * 用于显示目的的名称。
+     */
     @Transient
     public String getDisplayName() {
         if (!StringUtils.isEmpty(getLabel()))
@@ -130,6 +152,11 @@ public abstract class Principal
     protected void invalidateRelations() {
     }
 
+    /**
+     * 蕴含方法
+     *
+     * 本主体是否蕴含有指定的主体。
+     */
     @Override
     public boolean implies(IPrincipal principal) {
         if (principal == null)
@@ -141,6 +168,11 @@ public abstract class Principal
         return false;
     }
 
+    /**
+     * 蕴含任一
+     *
+     * 本主体是否蕴含给定主体集的任一个。
+     */
     @Override
     public boolean impliesOneOf(Collection<? extends IPrincipal> principals) {
         if (principals != null)
@@ -151,6 +183,11 @@ public abstract class Principal
         return false;
     }
 
+    /**
+     * 蕴含所有
+     *
+     * 本主体是否蕴含所有给定的主体。
+     */
     @Override
     public boolean impliesAllOf(Collection<? extends IPrincipal> principals) {
         if (principals != null)
@@ -161,6 +198,11 @@ public abstract class Principal
         return true;
     }
 
+    /**
+     * 被任一蕴含
+     *
+     * 本主体被指定的主体的至少一个所蕴含。
+     */
     @Override
     public boolean impliedByOneOf(Collection<? extends IPrincipal> principals) {
         if (principals != null)
@@ -171,6 +213,11 @@ public abstract class Principal
         return false;
     }
 
+    /**
+     * 被全部蕴含
+     *
+     * 本主体被所有指定的主体所蕴含。
+     */
     @Override
     public boolean impliedByAllOf(Collection<? extends IPrincipal> principals) {
         if (principals != null)
@@ -203,6 +250,11 @@ public abstract class Principal
         invSet.add(this);
     }
 
+    /**
+     * 接受
+     *
+     * 用于访问器模式的接受方法。
+     */
     @Override
     public void accept(IPrincipalVisitor visitor) {
     }

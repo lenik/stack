@@ -4,6 +4,16 @@ import com.bee32.plover.orm.util.ERModule;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
 
+/**
+ * Plover ORM 框架
+ *
+ * Plover 关系对象表示（核心）数据单元
+ *
+ * <p lang="en">
+ * Plover ORM Module
+ *
+ * The kernel ORM support provided by Plover Framework.
+ */
 @Oid({ 3, 12, PloverOids.Library, PloverOids.library.ORM })
 public class PloverORMModule
         extends ERModule {

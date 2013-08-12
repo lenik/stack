@@ -1,6 +1,8 @@
 package com.bee32.plover.arch.util;
 
-import static com.bee32.plover.arch.util.ClassUtil.*;
+import static com.bee32.plover.arch.util.ClassUtil.getTypeArgs;
+import static com.bee32.plover.arch.util.ClassUtil.mapTypeArgs;
+import static com.bee32.plover.arch.util.ClassUtil.traceBounds;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -14,6 +16,9 @@ import java.util.jar.JarFile;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Class Util Test
+ */
 public class ClassUtilTest
         extends Assert {
 

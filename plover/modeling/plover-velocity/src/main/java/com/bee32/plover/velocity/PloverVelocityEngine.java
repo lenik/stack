@@ -8,6 +8,8 @@ import org.springframework.web.servlet.view.velocity.VelocityConfig;
 import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
 
 /**
+ * 普拉瓦 Apache-Velocity 引擎定制
+ *
  * @see VelocityConfig
  * @see VelocityConfigurer
  */

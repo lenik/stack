@@ -39,13 +39,36 @@ public class VerboseLevel
         return forValue(VerboseLevel.class, value);
     }
 
-    /** 安静 */
+    /**
+     * 安静
+     *
+     * <p * lang="en">
+     * Quiet
+     */
     public static final VerboseLevel QUIET = new VerboseLevel(0, "quiet");
-    /** 仅SQL */
+
+    /**
+     * 仅SQL
+     *
+     * <p lang="en">
+     * SQL-Only
+     */
     public static final VerboseLevel SQL = new VerboseLevel(1, "sql");
-    /** 调试模式 */
+
+    /**
+     * 调试模式
+     *
+     * <p lang="en">
+     * Debug Mode
+     */
     public static final VerboseLevel DEBUG = new VerboseLevel(4, "debug");
-    /** 跟踪模式 */
+
+    /**
+     * 跟踪模式
+     *
+     * <p lang="en">
+     * Trace Mode
+     */
     public static final VerboseLevel TRACE = new VerboseLevel(5, "trace");
 
 }

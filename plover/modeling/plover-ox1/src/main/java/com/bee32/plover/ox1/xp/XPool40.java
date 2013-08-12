@@ -6,7 +6,7 @@ import javax.persistence.MappedSuperclass;
 import com.bee32.plover.orm.entity.Entity;
 
 /**
- * 属性池-X40
+ * 扩展属性池-X40
  *
  * X40 属性池比 X30 属性池多出 10 个文本字段。
  *

@@ -54,6 +54,11 @@ import com.bee32.plover.ox1.meta.EntityColumn;
 import com.bee32.plover.ox1.meta.EntityInfo;
 import com.bee32.plover.site.scope.PerSite;
 
+/**
+ * ACL有效化实体访问服务事物封装器
+ *
+ * 用于实体访问服务中启用 ACL 检查。
+ */
 @Service
 @PerSite
 @Primary

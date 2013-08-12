@@ -4,6 +4,12 @@ import com.bee32.plover.orm.PloverORMUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
+/**
+ * ICSF 安全主体数据单元
+ *
+ * <p lang="en">
+ * ICSF Principal Unit
+ */
 @ImportUnit(PloverORMUnit.class)
 public class IcsfPrincipalUnit
         extends PersistenceUnit {

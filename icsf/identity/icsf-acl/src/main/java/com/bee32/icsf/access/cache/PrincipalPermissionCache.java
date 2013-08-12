@@ -9,6 +9,9 @@ import com.bee32.icsf.principal.IPrincipalChangeListener;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalChangeEvent;
 
+/**
+ * 主体权限缓存
+ */
 public class PrincipalPermissionCache
         implements IPrincipalChangeListener {
 

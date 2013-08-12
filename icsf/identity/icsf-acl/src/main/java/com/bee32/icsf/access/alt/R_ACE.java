@@ -23,6 +23,13 @@ import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
+/**
+ * 权限控制项
+ *
+ * 系统资源的权限控制项。
+ * <p lang="en">
+ * Resource ACE
+ */
 @Entity
 @Blue
 @BatchSize(size = 100)

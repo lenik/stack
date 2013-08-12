@@ -3,13 +3,17 @@ package com.bee32.icsf.principal;
 import javax.free.IdentityHashSet;
 
 /**
- * @test {@link com.bee32.icsf.principal.util.icsf.principal.util.PrincipalDiagTest}
+ * 安全主体检查工具
+ *
+ * 用于检查安全主体的内部结构，以便调试与排错。
  */
 public class PrincipalDiag {
 
     public static int maxRefDepth = 16;
 
     /**
+     * 死循环检查
+     *
      * 检查安全主体中是否存在引用回路。
      *
      * @throws PrincipalCheckException

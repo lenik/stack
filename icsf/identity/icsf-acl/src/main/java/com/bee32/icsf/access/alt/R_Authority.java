@@ -16,6 +16,12 @@ import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.IdUtils;
 
+/**
+ * Resource Authority
+ *
+ * <p lang="en">
+ * 资源权限的权威机构
+ */
 @Lazy
 @Service
 public class R_Authority

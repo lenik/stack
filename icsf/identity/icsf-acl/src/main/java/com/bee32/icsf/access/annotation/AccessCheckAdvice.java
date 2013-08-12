@@ -28,6 +28,8 @@ import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 
 /**
+ * 访问检查横切类
+ *
  * 权限控制aspect类,用spring aop来配置执行
  */
 @Aspect

@@ -6,6 +6,12 @@ import javax.free.ClassResource;
 import javax.free.IllegalUsageException;
 import javax.free.URLResource;
 
+/**
+ * 添加本页面
+ *
+ * <p lang="en">
+ * Add This
+ */
 public class AddThis {
 
     static String widgetHtml;

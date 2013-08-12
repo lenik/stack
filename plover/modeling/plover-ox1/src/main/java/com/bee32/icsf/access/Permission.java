@@ -129,6 +129,11 @@ public final class Permission
             this.denyBits |= bits;
     }
 
+    /**
+     * 蕴含
+     *
+     * 测试两个权限的蕴含关系。
+     */
     public boolean implies(int bits) {
         int m = bits & ~denyBits & allowBits;
         return m == bits;
@@ -149,6 +154,9 @@ public final class Permission
     }
 
     /**
+     * 合并
+     *
+     * <p lang="en">
      * Merge the given permission to this permission, so this permission will contain all the
      * allowed bits of the given permission.
      *
@@ -172,30 +180,51 @@ public final class Permission
         return new Permission(allowBits, denyBits);
     }
 
+    /**
+     * 管理
+     */
     public boolean isAdmin() {
         return test(OWN);
     }
 
+    /**
+     * 使用
+     */
     public boolean isUsable() {
         return test(USE);
     }
 
+    /**
+     * 读取
+     */
     public boolean isReadable() {
         return test(READ);
     }
 
+    /**
+     * 写入
+     */
     public boolean isWritable() {
         return test(WRITE);
     }
 
+    /**
+     * 执行
+     */
     public boolean isExecutable() {
         return test(EXECUTE);
     }
 
+    /**
+     * 创建
+     */
     public boolean isCreatable() {
         return test(CREATE);
     }
 
+    /**
+     * 删除
+     */
     public boolean isDeletable() {
         return test(DELETE);
     }

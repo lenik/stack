@@ -4,6 +4,12 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.TreeMap;
 
+/**
+ * 应用剪裁管理器
+ *
+ * <p lang="en">
+ * Application Profile Manager
+ */
 public class AppProfileManager {
 
     static final Map<String, IAppProfile> profileMap;

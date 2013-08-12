@@ -9,6 +9,12 @@ import javax.free.IContext;
 
 import com.bee32.plover.conf.ContextConf;
 
+/**
+ * 区域设置
+ *
+ * <p lang="en">
+ * Locale Preference
+ */
 public class LocalePreference
         extends ContextConf
         implements ILocalePreference {

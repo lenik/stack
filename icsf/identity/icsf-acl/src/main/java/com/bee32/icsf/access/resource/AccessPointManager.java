@@ -23,6 +23,11 @@ import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
+/**
+ * 访问点管理器
+ *
+ * 管理访问点集合
+ */
 @Component
 @Lazy
 public class AccessPointManager

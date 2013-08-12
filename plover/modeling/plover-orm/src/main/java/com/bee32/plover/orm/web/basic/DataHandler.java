@@ -21,6 +21,9 @@ import com.bee32.plover.orm.web.util.SearchModel;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
+/**
+ * 数据表处理器
+ */
 public class DataHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
 

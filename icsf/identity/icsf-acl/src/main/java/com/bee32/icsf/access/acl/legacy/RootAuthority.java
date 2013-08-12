@@ -10,6 +10,9 @@ import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.principal.Principal;
 
+/**
+ * 根权威机构
+ */
 public class RootAuthority
         extends Authority {
 

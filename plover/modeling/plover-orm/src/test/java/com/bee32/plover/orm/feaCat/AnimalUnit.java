@@ -4,6 +4,11 @@ import com.bee32.plover.orm.PloverORMUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
+/**
+ * 动物（测试）数据单元
+ *
+ * Animal (For Test) Unit
+ */
 @ImportUnit(PloverORMUnit.class)
 public class AnimalUnit
         extends PersistenceUnit {

@@ -10,6 +10,11 @@ import com.bee32.icsf.principal.IcsfPrincipalUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
+/**
+ * ICSF 访问安全数据单元
+ * <p lang="en">
+ * ICSF Access Security Unit
+ */
 @ImportUnit(IcsfPrincipalUnit.class)
 public class IcsfAccessUnit
         extends PersistenceUnit {

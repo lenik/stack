@@ -10,6 +10,10 @@ import java.lang.annotation.Target;
 import com.bee32.icsf.access.resource.AccessPoint;
 
 /**
+ * 访问点标注
+ *
+ * 访问控制点标注
+ * <p lang="en">
  * Checked access point.
  *
  * @see AccessCheckAdvice

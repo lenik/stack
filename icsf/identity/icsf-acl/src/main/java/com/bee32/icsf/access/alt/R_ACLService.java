@@ -13,16 +13,25 @@ import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.plover.arch.DataService;
 
+/**
+ * 权限设置服务
+ */
 public class R_ACLService
         extends DataService {
 
     @Inject
     R_ACLDao resourceACLDao;
 
+    /**
+     * 读取权限设置
+     */
     public R_ACL loadACL(Resource resource) {
         return resourceACLDao.loadACL(resource);
     }
 
+    /**
+     * 保存权限设置
+     */
     @AccessCheck
     @Transactional(readOnly = false)
     public void saveACL(R_ACL acl) {

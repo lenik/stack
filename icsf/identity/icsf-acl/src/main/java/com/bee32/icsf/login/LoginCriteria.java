@@ -5,6 +5,9 @@ import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 
+/**
+ * 登录滤集
+ */
 public class LoginCriteria
         extends CriteriaSpec {
 

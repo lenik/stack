@@ -22,6 +22,9 @@ import com.bee32.plover.ox1.color.Blue;
  * 用户邮箱
  *
  * 管理用户的邮箱地址。
+ *
+ * <p lang="en">
+ * User Email
  */
 @Entity
 @Blue

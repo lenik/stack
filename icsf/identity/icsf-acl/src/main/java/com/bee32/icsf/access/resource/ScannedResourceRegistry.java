@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
+ * 自动发现资源注册表
+ *
  * @see ResourceRegistry
  */
 @Component

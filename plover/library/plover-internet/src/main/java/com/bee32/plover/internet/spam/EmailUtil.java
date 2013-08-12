@@ -1,5 +1,11 @@
 package com.bee32.plover.internet.spam;
 
+/**
+ * 邮件工具
+ *
+ * <p lang="en">
+ * Email Utility
+ */
 public class EmailUtil {
 
     /**

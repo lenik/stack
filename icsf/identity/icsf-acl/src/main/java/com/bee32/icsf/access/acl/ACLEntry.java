@@ -19,6 +19,12 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.google.common.base.Function;
 
+/**
+ * 安全策略条目
+ *
+ * <p lang="en">
+ * ACE Entry
+ */
 @Entity(name = "acl_entry")
 @SequenceGenerator(name = "idgen", sequenceName = "acl_entry_seq", allocationSize = 1)
 public class ACLEntry

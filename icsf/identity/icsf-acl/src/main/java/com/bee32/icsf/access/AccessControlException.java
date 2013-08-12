@@ -2,6 +2,9 @@ package com.bee32.icsf.access;
 
 import com.bee32.icsf.InternalSecurityException;
 
+/**
+ * 访问控制异常
+ */
 public class AccessControlException
         extends InternalSecurityException {
 
@@ -34,6 +37,11 @@ public class AccessControlException
         this.resourceType = resourceType;
     }
 
+    /**
+     * 需权限
+     *
+     * 所需要的权限。
+     */
     public Permission getRequiredPermission() {
         return requiredPermission;
     }

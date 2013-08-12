@@ -4,6 +4,9 @@ import java.util.Set;
 
 import com.bee32.plover.arch.util.ClassCatalog;
 
+/**
+ * 映射资源实用工具
+ */
 public class MappingResourceUtil {
 
     /**

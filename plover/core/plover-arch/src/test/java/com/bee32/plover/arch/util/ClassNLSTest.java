@@ -3,6 +3,9 @@ package com.bee32.plover.arch.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Label 1
+ */
 public class ClassNLSTest
         extends Assert {
 

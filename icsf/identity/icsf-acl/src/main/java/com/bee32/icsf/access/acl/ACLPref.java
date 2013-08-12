@@ -6,6 +6,13 @@ import javax.persistence.ManyToOne;
 
 import com.bee32.plover.ox1.typePref.TypePrefEntity;
 
+/**
+ * 默认的记录安全策略
+ *
+ * 默认的记录安全策略配置项。
+ * <p lang="en">
+ * Entity/ACL Preference
+ */
 @Entity
 public class ACLPref
         extends TypePrefEntity {

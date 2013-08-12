@@ -2,6 +2,9 @@ package com.bee32.icsf.access.resource;
 
 import java.util.Collection;
 
+/**
+ * 访问点名字空间
+ */
 public class AccessPointNS
         implements IResourceNamespace {
 

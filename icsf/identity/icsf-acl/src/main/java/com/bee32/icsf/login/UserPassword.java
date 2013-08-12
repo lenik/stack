@@ -4,7 +4,15 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Random;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -13,6 +21,14 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
+/**
+ * 用户密码
+ *
+ * 定义二重加密了的用户密码。
+ *
+ * <p lang="en">
+ * User Password
+ */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_password_seq", allocationSize = 1)
@@ -84,6 +100,11 @@ public class UserPassword
         resetExpires = o.resetExpires;
     }
 
+    /**
+     * 用户
+     *
+     * 对应的用户
+     */
     @OneToOne
     @JoinColumn(nullable = false)
     public User getUser() {
@@ -94,6 +115,11 @@ public class UserPassword
         this.user = user;
     }
 
+    /**
+     * 哈希盐
+     *
+     * 用于密码的二级保护
+     */
     @Column(length = 10, nullable = false)
     public int getSalt() {
         return salt;
@@ -103,6 +129,9 @@ public class UserPassword
         this.salt = salt;
     }
 
+    /**
+     * 主密码
+     */
     @Transient
     public String getMaster() {
         return master;
@@ -123,6 +152,9 @@ public class UserPassword
         this.master = decrypt(master);
     }
 
+    /**
+     * 常规密码
+     */
     @Transient
     public String getPasswd() {
         return passwd;
@@ -151,6 +183,9 @@ public class UserPassword
         resetExpires = new Date(expires);
     }
 
+    /**
+     * 检验密码复位请求的有效性
+     */
     public boolean validateResetTicket() {
         if (resetExpires == null)
             return false;
@@ -163,6 +198,9 @@ public class UserPassword
         return true;
     }
 
+    /**
+     * 密码复位的预设问题
+     */
     @ManyToOne
     public PrivateQuestion getResetQ() {
         return resetQ;
@@ -172,6 +210,9 @@ public class UserPassword
         this.resetQ = resetQ;
     }
 
+    /**
+     * 密码复位的预设答案
+     */
     @Column(length = 30, nullable = false)
     public String getResetA() {
         return resetA;
@@ -181,6 +222,9 @@ public class UserPassword
         this.resetA = resetA;
     }
 
+    /**
+     * 密码复位请求的票据
+     */
     @Column(nullable = false)
     public int getResetTicket() {
         return resetTicket;
@@ -190,6 +234,9 @@ public class UserPassword
         this.resetTicket = resetTicket;
     }
 
+    /**
+     * 密码复位请求的过期时间
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getResetExpires() {
         return resetExpires;
@@ -199,6 +246,9 @@ public class UserPassword
         this.resetExpires = resetExpires;
     }
 
+    /**
+     * 密码复位请求的过期时间（以小时计）
+     */
     @Transient
     public int getResetExpiresHours() {
         if (resetExpires == null)

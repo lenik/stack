@@ -10,6 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.ajax.JsonUtil;
 
+/**
+ * Js-树 构建器
+ *
+ * <p lang="en">
+ * Js-Tree Builder
+ */
 public class JsTreeBuilder {
 
     public static <T> T dump(HttpServletResponse resp, IJsTreeNode node)
