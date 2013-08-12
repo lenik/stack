@@ -28,13 +28,13 @@ import com.bee32.sem.asset.dto.PaymentNoteDto;
 import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.asset.entity.PaymentNote;
 import com.bee32.sem.asset.service.AssetService;
-import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @ForEntity(FundFlow.class)
 public class PaymentNoteAdminBean
-        extends ScrollEntityViewBean {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -69,14 +69,14 @@ public class PaymentNoteAdminBean
         }
 
         PersonDto whoPayOld = null;
-        PaymentNoteDto note =  getOpenedObject();
+        PaymentNoteDto note = getOpenedObject();
         try {
-            whoPayOld = note.getWhoPay();   //保存原来的付款人
+            whoPayOld = note.getWhoPay(); // 保存原来的付款人
             note.setWhoPay(whoPay);
             BEAN(AssetService.class).pay(note);
             uiLogger.info("付款成功");
         } catch (Exception e) {
-            note.setWhoPay(whoPayOld);  //如果出错，则还原旧的付款人
+            note.setWhoPay(whoPayOld); // 如果出错，则还原旧的付款人
             uiLogger.error("付款错误", e);
         }
     }

@@ -3,16 +3,11 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:pf="http://bee32.com/plover/faces">
 
-    <ui:param name="title" value="凭证列表" />
-    <ui:param name="bean" value="${accountTicketListAdminBean}" />
+    <ui:param name="title" value="凭证" />
+    <ui:param name="bean" value="${accountTicketAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
-    <ui:param name="creatable" value="false" />
-    <ui:param name="editable" value="false" />
-    <ui:param name="deletable" value="false" />
-    <ui:param name="readable" value="false" />/>
-
 
     <ui:define name="dataColumns">
         <p:column headerText="创建时间" sortBy="${entry.createdDate}">
@@ -38,4 +33,190 @@
             </p:commandLink>
         </p:column>
     </ui:define>
+
+    <ui:define name="editDialogContent">
+        <t:panelGrid id="basic" columns="4">
+            <h:outputText value="标识:" />
+            <h:outputText value="#{obj.id}" />
+            <h:outputText value="状态" />
+            <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" label="状态" />
+
+            <h:outputText value="创建时间:" />
+            <p:inputText value="#{obj.createdDate}" readonly="true">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </p:inputText>
+            <h:outputText value="制单人:" />
+            <p:inputText value="#{obj.owner.displayName}" disabled="true" label="制单人" />
+
+            <h:outputText value="发生时间:" />
+            <t:panelGroup colspan="3">
+                <p:calendar id="beginTime" label="发生时间" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{obj.beginTime}" showOn="button" />
+            </t:panelGroup>
+        </t:panelGrid>
+
+        <fr:listView id="itemsIndexView" header="凭证项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
+            nested="true" readonly="#{not bean.editing}">
+            <f:facet name="columns">
+                <p:column headerText="摘要">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
+                <p:column headerText="会计科目">
+                    <h:outputText value="#{entry.subject.label}" />
+                </p:column>
+                <p:column headerText="往来单位">
+                    <h:outputText value="#{entry.party.displayName}" />
+                </p:column>
+                <p:column headerText="部门">
+                    <h:outputText value="#{entry.orgUnit.path}" />
+                </p:column>
+                <p:column headerText="经办人">
+                    <h:outputText value="#{entry.person.displayName}" />
+                </p:column>
+                <p:column headerText="借贷方向">
+                    <h:outputText value="#{entry.debitSide ? '借方' : '贷方'}" />
+                </p:column>
+                <p:column headerText="金额" styleClass="f-right">
+                    <h:outputText value="#{entry.value}" />
+                </p:column>
+                <p:column headerText="状态">
+                    <h:outputText value="#{entry.verifyContext.verifyEvalState}" />
+                </p:column>
+            </f:facet>
+        </fr:listView>
+
+        <p:fieldset id="ticketSource" legend="凭证源">
+            <t:panelGrid columns="1">
+                <t:panelGrid columns="5">
+                    <p:commandButton value="选择收款单" onclick="chooseCreditNoteDialog.show()" disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener target="${chooseCreditNoteDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                    <p:commandButton value="选择付款单" onclick="choosePaymentNoteDialog.show()" disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener target="${choosePaymentNoteDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                    <p:commandButton value="选择送货单" onclick="chooseDeliveryNoteDialog.show()" disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener target="${chooseDeliveryNoteDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                    <p:commandButton value="选择仓库单据" onclick="chooseStockOrderDialog.show()" disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener target="${chooseStockOrderDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                    <p:commandButton value="选择月度工资" onclick="chooseMonthSalaryDialog.show()" disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener target="${chooseMonthSalaryDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                </t:panelGrid>
+                <p:panelGrid id="source">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column>类型</p:column>
+                            <p:column>标识</p:column>
+                            <p:column>摘要</p:column>
+                            <p:column>金额</p:column>
+                        </p:row>
+                    </f:facet>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.type}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.id}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.label}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.value}" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </t:panelGrid>
+        </p:fieldset>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <fr:listView id="itemsEditView" header="凭证项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+            mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
+            <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
+
+                <h:outputLabel value="摘要" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.description}" label="摘要" />
+                </t:panelGroup>
+
+                <h:outputLabel value="会计科目" />
+                <t:panelGroup>
+                    <p:inputText id="accountSubject" value="#{item.pattern}" label="会计科目" />
+                    <p:commandButton value="..." onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();chooseAccountSubjectDialog.show();" update=":c_subject:searchForm">
+                        <f:setPropertyActionListener target="#{chooseAccountSubjectDialogBean.pattern}"
+                            value="#{item.pattern}" />
+                    </p:commandButton>
+                </t:panelGroup>
+                <h:outputLabel value="借贷方向" />
+                <p:selectOneRadio value="#{item.debitSide}" style="width:200px;" label="借贷方向">
+                    <f:selectItem itemValue="true" itemLabel="借方" />
+                    <f:selectItem itemValue="false" itemLabel="贷方" />
+                </p:selectOneRadio>
+
+                <h:outputLabel value="往来单位" />
+                <t:panelGroup colspan="3">
+                    <p:inputText id="party" value="#{item.party.name}" readonly="true" label="往来单位" />
+                    <p:commandButton value="..." onclick="choosePartyDialog.show();" />
+                </t:panelGroup>
+
+                <h:outputText value="部门" />
+                <t:panelGroup>
+                    <p:inputText id="orgUnit" label="部门" value="#{item.orgUnit.path}" readonly="true" />
+                    <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseOrgUnitDialog.show()">
+                        <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
+                            value="#{bean.selfOrgId}" />
+                    </p:commandButton>
+                </t:panelGroup>
+                <h:outputLabel for="person" value="经办人" />
+                <h:panelGroup>
+                    <p:inputText id="person" readonly="true" value="#{item.person.displayName}" label="业务员" />
+                    <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()"
+                        oncomplete="waitbox.hide();choosePersonDialog.show()">
+                        <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}"
+                            value="true" />
+                    </p:commandButton>
+                </h:panelGroup>
+
+                <h:outputLabel for="value" value="金额" />
+                <p:inputText id="value" value="#{item.value.value}" label="金额" />
+                <h:outputLabel value="币种" />
+                <p:selectOneMenu value="#{item.value.currencyCode}" style="width:200px;" label="币种">
+                    <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                    <f:selectItems value="#{monetary.currencySelectItems}" />
+                </p:selectOneMenu>
+            </t:panelGrid>
+        </fr:listView>
+
+        <sem:chooseAccountSubjectDialog id="c_subject" target="#{itemObj.subject}"
+            update=":itemsEditView:editForm:accountSubject" />
+        <sem:choosePartyDialog id="c_customer" header="往来单位" target="#{itemObj.party}"
+            update=":itemsEditView:editForm:party" />
+        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{itemObj.orgUnit}" update=":itemsEditView:editForm:orgUnit" />
+        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{itemObj.person}"
+            update=":itemsEditView:editForm:person" />
+
+
+
+        <sem:chooseCreditNoteDialog id="c_credit_note" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
+        <sem:choosePaymentNoteDialog id="c_payment_note" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
+        <sem:chooseDeliveryNoteDialog id="c_delivery_note" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
+        <sem:chooseStockOrderDialog id="c_stock_order" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
+        <sem:chooseMonthSalaryDialog id="c_month_salary" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
+    </ui:define>
+
 </ui:composition>
