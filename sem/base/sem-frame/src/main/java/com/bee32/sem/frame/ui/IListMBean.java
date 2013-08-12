@@ -19,13 +19,19 @@ public interface IListMBean<T> {
 
     boolean removeElement(T element);
 
-    T getSelection();
+    T[] getSelection();
 
-    void setSelection(T selection);
+    void setSelection(T[] selection);
 
-    int getSelectedIndex();
+    T getLastSelection();
 
-    void setSelectedIndex(int selectedIndex);
+    void setLastSelection(T selection);
+
+    int getLastIndex();
+
+    int[] getSelectedIndexes();
+
+    void setSelectedIndexes(int... selectedIndexes);
 
     void removeSelection();
 

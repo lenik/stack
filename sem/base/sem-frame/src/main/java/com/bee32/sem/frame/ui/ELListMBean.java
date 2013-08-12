@@ -9,8 +9,6 @@ import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 import javax.free.IllegalUsageException;
 
-import org.apache.commons.collections15.Factory;
-
 public class ELListMBean<T>
         extends ListMBean<T> {
 
@@ -20,12 +18,6 @@ public class ELListMBean<T>
     final String property;
 
     transient List<T> list;
-
-    public ELListMBean(Factory<T> elementFactory, Object root, String property) {
-        super(elementFactory, root);
-        this.root = root;
-        this.property = property; // "${obj." + property + "}";
-    }
 
     public ELListMBean(Class<T> elementType, Object root, String property) {
         super(elementType, root);
@@ -53,8 +45,8 @@ public class ELListMBean<T>
             }
             if (value == null) {
                 // throw new IllegalUsageException("Property resolved to null: " + property);
-		logger.debug("Property resolved to null: " + property + ", a read-only empty list is created.");
-		return Collections.emptyList();
+                logger.debug("Property resolved to null: " + property + ", a read-only empty list is created.");
+                return Collections.emptyList();
             }
 
             if (!(value instanceof List<?>))

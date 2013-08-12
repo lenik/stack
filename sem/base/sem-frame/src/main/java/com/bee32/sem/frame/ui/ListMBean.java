@@ -1,12 +1,13 @@
 package com.bee32.sem.frame.ui;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.faces.component.UIComponent;
 import javax.free.CreateException;
 
-import org.apache.commons.collections15.Factory;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -27,16 +28,14 @@ public abstract class ListMBean<T>
 
     static Logger logger = LoggerFactory.getLogger(ListMBean.class);
 
-    int selectedIndex = -1;
+    int[] selectedIndexes = {};
     int openedIndex = -1;
     boolean editing;
 
+    int[] EMPTY_SELECTION = {};
+
     public ListMBean(Class<T> elementType, Object context) {
         super(elementType, context);
-    }
-
-    public ListMBean(Factory<T> factory, Object context) {
-        super(factory, context);
     }
 
     @Override
@@ -58,32 +57,76 @@ public abstract class ListMBean<T>
     }
 
     @Override
-    public T getSelection() {
+    public synchronized T getLastSelection() {
         List<T> list = getList();
-        if (selectedIndex == -1)
+        if (selectedIndexes.length == 0)
             return null;
-        if (selectedIndex >= list.size())
+
+        int firstIndex = selectedIndexes[0];
+        if (firstIndex >= list.size())
             return null;
-        return list.get(selectedIndex);
+
+        return list.get(firstIndex);
     }
 
     @Override
-    public void setSelection(T selection) {
+    public synchronized void setLastSelection(T selection) {
         List<T> list = getList();
         int index = list.indexOf(selection);
-        setSelectedIndex(index);
+        setSelectedIndexes(index);
+    }
+
+    public int getLastIndex() {
+        int count = selectedIndexes.length;
+        if (count == 0)
+            return -1;
+        else
+            return selectedIndexes[count - 1];
     }
 
     @Override
-    public int getSelectedIndex() {
-        return selectedIndex;
+    public synchronized T[] getSelection() {
+        int length = selectedIndexes.length;
+        T[] selection = (T[]) Array.newInstance(elementType, length);
+        List<T> list = getList();
+        int off = 0;
+        for (int index : selectedIndexes) {
+            T element = list.get(index);
+            Array.set(selection, off++, element);
+        }
+        return selection;
     }
 
     @Override
-    public void setSelectedIndex(int selectedIndex) {
-        this.selectedIndex = selectedIndex;
+    public synchronized void setSelection(T[] selection) {
+        int length = selection.length;
+        int[] indexes = new int[length];
+        List<T> list = getList();
+        int off = 0;
+        for (T element : selection) {
+            int index = list.indexOf(element);
+            if (index == -1) {
+                logger.warn("Invalid element in the selection: " + element);
+                continue;
+            }
+            indexes[off++] = index;
+        }
+        if (off != length)
+            indexes = Arrays.copyOf(indexes, off);
+        this.selectedIndexes = indexes;
+    }
+
+    @Override
+    public int[] getSelectedIndexes() {
+        return selectedIndexes;
+    }
+
+    @Override
+    public void setSelectedIndexes(int... selectedIndexes) {
+        this.selectedIndexes = selectedIndexes;
+        int lastIndex = getLastIndex();
         if (copyMode)
-            if (selectedIndex != openedIndex) {
+            if (lastIndex != openedIndex) {
                 openedIndex = -1;
                 openedObject = null;
             }
@@ -91,39 +134,47 @@ public abstract class ListMBean<T>
 
     @Override
     public void removeSelection() {
-        if (selectedIndex != -1) {
+        Arrays.sort(selectedIndexes);
+        int count = selectedIndexes.length;
+        boolean containsOpenedObject = false;
+
+        for (int i = count - 1; i >= 0; i--) {
+            int index = selectedIndexes[i];
+
             List<T> list = getList();
-            if (selectedIndex < list.size())
-                list.remove(selectedIndex);
-            if (openedIndex == selectedIndex) {
-                openedIndex = -1;
-                openedObject = null;
-            }
-            selectedIndex = -1;
+            if (index < list.size())
+                list.remove(index);
+
+            if (openedIndex == index)
+                containsOpenedObject = true;
+        }
+
+        selectedIndexes = EMPTY_SELECTION;
+        if (containsOpenedObject) {
+            openedIndex = -1;
+            openedObject = null;
         }
     }
 
     public boolean isSelectionEditable() {
-        T selection = getSelection();
-        if (selection == null)
-            return false;
-        if (selection instanceof BaseDto<?>) {
-            BaseDto<?> dto = (BaseDto<?>) selection;
-            if (dto.isLocked())
-                return false;
-        }
+        T[] selection = getSelection();
+        for (T obj : selection)
+            if (obj instanceof BaseDto<?>) {
+                BaseDto<?> dto = (BaseDto<?>) obj;
+                if (dto.isLocked())
+                    return false;
+            }
         return true;
     }
 
     public boolean isSelectionRemovable() {
-        T selection = getSelection();
-        if (selection == null)
-            return false;
-        if (selection instanceof BaseDto<?>) {
-            BaseDto<?> dto = (BaseDto<?>) selection;
-            if (dto.isLocked())
-                return false;
-        }
+        T[] selection = getSelection();
+        for (T obj : selection)
+            if (obj instanceof BaseDto<?>) {
+                BaseDto<?> dto = (BaseDto<?>) obj;
+                if (dto.isLocked())
+                    return false;
+            }
         return true;
     }
 
@@ -168,7 +219,7 @@ public abstract class ListMBean<T>
 
     @Override
     public void showCreateForm() {
-        selectedIndex = -1;
+        selectedIndexes = EMPTY_SELECTION;
         try {
             openedObject = createElement();
             openedIndex = -1;
@@ -180,9 +231,9 @@ public abstract class ListMBean<T>
 
     @Override
     public void showEditForm() {
-        T selection = getSelection();
+        T selection = getLastSelection();
         openedObject = copyObject(selection);
-        openedIndex = getSelectedIndex();
+        openedIndex = getLastIndex();
         editing = true;
     }
 
@@ -207,6 +258,7 @@ public abstract class ListMBean<T>
     public void apply() {
         if (openedObject == null)
             return;
+
         List<T> list = getList();
         if (openedIndex == -1) { // create
             openedIndex = list.size();
@@ -214,7 +266,8 @@ public abstract class ListMBean<T>
         } else { // edit
             list.set(openedIndex, copyObject(openedObject));
         }
-        selectedIndex = openedIndex;
+
+        selectedIndexes = new int[] { openedIndex };
     }
 
     public void cancel() {
@@ -227,10 +280,6 @@ public abstract class ListMBean<T>
             return; // maybe nullable...?
         List<T> list = getList();
         list.add(picked);
-    }
-
-    public static <T> ListMBean<T> fromEL(Object root, String property, Factory<T> elementFactory) {
-        return new ELListMBean<T>(elementFactory, root, property);
     }
 
     public static <T> ListMBean<T> fromEL(Object root, String property, Class<T> elementType) {

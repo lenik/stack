@@ -31,22 +31,18 @@ public abstract class CollectionMBean<T>
 
     static Logger logger = LoggerFactory.getLogger(CollectionMBean.class);
 
-    final Object context;
+    protected final Class<T> elementType;
     final Factory<T> factory;
+
+    protected final Object context;
     boolean copyMode;
     T openedObject;
-
-    public CollectionMBean(Factory<T> factory, Object context) {
-        if (factory == null)
-            throw new NullPointerException("factory");
-        this.factory = factory;
-        this.context = context;
-    }
 
     public CollectionMBean(Class<T> elementType, Object context) {
         if (elementType == null)
             throw new NullPointerException("elementType");
         this.factory = InstantiateFactory.getInstance(elementType, null, null);
+        this.elementType = elementType;
         this.context = context;
     }
 

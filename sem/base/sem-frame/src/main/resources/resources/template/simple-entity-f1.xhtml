@@ -61,10 +61,11 @@
                             <h:panelGroup id="dataContainer" layout="block">
                                 <ui:insert name="dataContainer">
                                     <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}" lazy="true"
-                                        selection="${bean.singleSelection}" selectionMode="single" paginator="true"
+                                        selection="${bean.selection}" selectionMode="multiple" paginator="true"
                                         rows="${viewConfig.pageSize}" paginatorTemplate="${viewConfig.paginatorTemplate}"
                                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
-                                        rowIndexVar="rowIndex" sortBy="${entry.lastModified}" sortOrder="descending">
+                                        liveResize="true" draggableColumns="true" stickyHeader="true" rowIndexVar="rowIndex"
+                                        sortBy="${entry.lastModified}" sortOrder="descending">
 
                                         <p:ajax event="rowSelect" process="@this" update="${_entryUpdate}" />
                                         <p:ajax event="rowUnselect" process="@this" update="${_entryUpdate}" />
