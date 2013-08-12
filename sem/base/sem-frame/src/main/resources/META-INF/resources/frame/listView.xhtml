@@ -79,8 +79,7 @@
                                     <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}" process="@this"
                                         update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more, ${cc.attrs.indexView}:indexForm:dataTable" />
 
-                                    <p:column headerText="ID">
-                                        <!-- <h:outputText value="${entry.id}" sortBy="${entry.id}" /> -->
+                                    <p:column headerText="序号">
                                         <h:outputText value="${rowIndex + 1}" />
                                     </p:column>
 
