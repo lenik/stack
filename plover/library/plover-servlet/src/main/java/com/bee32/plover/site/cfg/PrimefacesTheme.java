@@ -36,6 +36,8 @@ public class PrimefacesTheme
         return forValue(PrimefacesTheme.class, value);
     }
 
+    public static final PrimefacesTheme aristo = new PrimefacesTheme("aristo");
+    public static final PrimefacesTheme cupertino = new PrimefacesTheme("cupertino");
     public static final PrimefacesTheme redmond = new PrimefacesTheme("redmond");
     public static final PrimefacesTheme humanity = new PrimefacesTheme("humanity");
     public static final PrimefacesTheme bluesky = new PrimefacesTheme("bluesky");

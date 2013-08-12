@@ -16,7 +16,7 @@ public class GuestPreferences
 
     private static final long serialVersionUID = 1L;
 
-    public static PrimefacesTheme defaultTheme = PrimefacesTheme.redmond;
+    public static PrimefacesTheme defaultTheme = PrimefacesTheme.aristo;
 
     PrimefacesTheme viewTheme;
 

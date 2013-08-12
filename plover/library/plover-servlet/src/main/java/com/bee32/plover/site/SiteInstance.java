@@ -2,7 +2,13 @@ package com.bee32.plover.site;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.free.FilePath;
 import javax.free.IFile;
@@ -21,7 +27,13 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.servlet.util.ThreadServletContext;
-import com.bee32.plover.site.cfg.*;
+import com.bee32.plover.site.cfg.DBAutoDDL;
+import com.bee32.plover.site.cfg.DBDialect;
+import com.bee32.plover.site.cfg.FormatProperties;
+import com.bee32.plover.site.cfg.OptimizationLevel;
+import com.bee32.plover.site.cfg.PrimefacesTheme;
+import com.bee32.plover.site.cfg.SamplesSelection;
+import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.site.scope.StartAndStatsSrl;
 
 public class SiteInstance
@@ -65,7 +77,7 @@ public class SiteInstance
     private SiteInstance() {
         properties = new FormatProperties();
 
-        setTheme(PrimefacesTheme.redmond);
+        setTheme(PrimefacesTheme.aristo);
         setVerboseLevel(VerboseLevel.SQL);
         setOptimizationLevel(OptimizationLevel.MEDIUM);
         setDbDialect(DBDialect.PostgreSQL);

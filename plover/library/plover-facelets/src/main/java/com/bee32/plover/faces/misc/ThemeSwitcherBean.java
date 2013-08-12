@@ -65,4 +65,12 @@ public class ThemeSwitcherBean
         preferences.setTheme(PrimefacesTheme.swankyPurse);
     }
 
+    public void switchToAristo() {
+        preferences.setTheme(PrimefacesTheme.aristo);
+    }
+
+    public void switchToCupertinoPurse() {
+        preferences.setTheme(PrimefacesTheme.cupertino);
+    }
+
 }
