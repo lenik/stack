@@ -24,7 +24,7 @@ public class PurchaseRequestItemAdminBean
 
     @Transactional
     public void acceptInquiry() {
-        PurchaseInquiryDto selectedInquiry = inquiriesMBean.getSelection();
+        PurchaseInquiryDto selectedInquiry = inquiriesMBean.getLastSelection();
         if (selectedInquiry == null) {
             uiLogger.error("没有选中的询价项。");
             return;
