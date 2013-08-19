@@ -8,6 +8,12 @@ import com.bee32.sem.make.entity.QCResultParameter;
 import com.bee32.sem.make.entity.QCSpec;
 import com.bee32.sem.make.entity.QCSpecParameter;
 
+/**
+ * 质检数据单元
+ *
+ * <p lang="en">
+ * SEM QC Unit
+ */
 @ImportUnit({ PloverOx1Unit.class })
 public class SEMQCUnit
         extends PersistenceUnit {

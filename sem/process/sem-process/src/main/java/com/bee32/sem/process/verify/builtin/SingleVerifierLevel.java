@@ -15,6 +15,12 @@ import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
+/**
+ * 分级审核的级定义
+ *
+ * <p lang="en">
+ * Single Verfier Level Definition
+ */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "single_verifier_level_seq", allocationSize = 1)

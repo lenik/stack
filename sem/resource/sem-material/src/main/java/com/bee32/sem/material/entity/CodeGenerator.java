@@ -5,9 +5,12 @@ import java.util.Collection;
 import com.bee32.plover.arch.util.EnumAlt;
 
 /**
+ * 代码生成策略
+ *
  * 根据物料名称生成物料代码
  *
- * 代码生成器（策略）
+ * <p lang="en">
+ * Code Generation Strategy
  */
 public class CodeGenerator
         extends EnumAlt<Character, CodeGenerator> {
@@ -34,10 +37,24 @@ public class CodeGenerator
         return forValue(new Character(value));
     }
 
-    /** 手动输入 */
+    /**
+     * 无代码生成器
+     *
+     * 手动输入
+     *
+     * <p lang="en">
+     * None
+     */
     public static final CodeGenerator NONE = new CodeGenerator('N', "none");
 
-    /** 生成 GUID 宇宙唯一代码 */
+    /**
+     * GUID 代码生成器
+     *
+     * 生成 GUID 宇宙唯一代码
+     *
+     * <p lang="en">
+     * GUID
+     */
     public static final CodeGenerator GUID = new CodeGenerator('G', "guid");
 
 }

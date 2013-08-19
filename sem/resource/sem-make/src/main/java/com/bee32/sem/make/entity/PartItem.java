@@ -27,8 +27,10 @@ import com.bee32.sem.material.entity.MaterialType;
 /**
  * 子部件
  *
- * 组成部件的明细项目。
+ * 组件结构项目，组成部件的明细项目。
  *
+ * <p lang="en">
+ * Child-Component
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "part_item_seq", allocationSize = 1)

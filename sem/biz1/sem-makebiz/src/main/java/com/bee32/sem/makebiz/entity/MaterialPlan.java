@@ -19,6 +19,10 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
  *
  * 作为库存作业的一种， stockOrders 对应为库存锁定。
  *
+ *
+ * <p lang="en">
+ * Material Plan
+ *
  * @see StockJob#getStockOrders()
  * @see StockPlanOrder
  */

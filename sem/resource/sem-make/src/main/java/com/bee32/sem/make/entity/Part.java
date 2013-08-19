@@ -38,6 +38,9 @@ import com.bee32.sem.world.monetary.FxrQueryException;
  * 部件
  *
  * 包括成品和半成品，组成BOM的基础元素。
+ *
+ * <p lang="en">
+ * Product Or Component
  */
 @Entity
 @Green

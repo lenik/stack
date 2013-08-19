@@ -11,7 +11,8 @@ import com.bee32.sem.pricing.entity.PricingFormula;
  */
 @Entity
 @DiscriminatorValue("VLV")
-public class ValvePricingFormula extends PricingFormula {
+public class ValvePricingFormula
+        extends PricingFormula {
     private static final long serialVersionUID = 1L;
 
     ValveType type;
@@ -27,6 +28,5 @@ public class ValvePricingFormula extends PricingFormula {
     public void setType(ValveType type) {
         this.type = type;
     }
-
 
 }

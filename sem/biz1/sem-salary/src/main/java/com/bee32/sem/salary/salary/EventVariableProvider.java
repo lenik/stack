@@ -11,6 +11,12 @@ import com.bee32.sem.attendance.util.EventBonusCriteria;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.salary.entity.EventBonus;
 
+/**
+ * 事件参数提供器
+ *
+ * <p lang="en">
+ * Event Variable Provider
+ */
 public class EventVariableProvider
         extends AbstractSalaryVariableProvider {
 

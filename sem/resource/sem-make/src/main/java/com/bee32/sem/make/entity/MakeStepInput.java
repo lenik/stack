@@ -15,7 +15,10 @@ import com.bee32.sem.material.entity.Material;
 /**
  * 消耗材料
  *
- * 工艺中的消耗材料。
+ * 工艺步骤输入，工艺中的消耗材料。
+ *
+ * <p lang="en">
+ * Make Step Input
  */
 @Entity
 @Green

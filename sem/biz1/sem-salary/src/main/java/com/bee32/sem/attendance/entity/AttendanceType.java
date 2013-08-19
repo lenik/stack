@@ -7,6 +7,12 @@ import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteInstance;
 
+/**
+ * 出勤类型
+ *
+ * <p lang="en">
+ * Attendance Type
+ */
 public class AttendanceType
         extends EnumAlt<Character, AttendanceType> {
 

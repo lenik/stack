@@ -14,8 +14,7 @@ import com.bee32.sem.people.entity.Org;
 /**
  * 票据基类
  *
- * @author jack 票据日期:beginTime 票据到期日:endTime
- *
+ * @rewrite 票据日期:beginTime 票据到期日:endTime
  */
 @Entity
 @DiscriminatorValue("NOTE")

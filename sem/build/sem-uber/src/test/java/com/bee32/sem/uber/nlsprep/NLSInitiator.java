@@ -3,12 +3,28 @@ package com.bee32.sem.uber.nlsprep;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.free.Strings;
 import javax.free.SystemProperties;
@@ -23,14 +39,13 @@ import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuEntry;
 
 /**
- * Usage:
+ * NLS Initiator
  *
+ * Usage:
  *
  * Post-collect:
  *
- *
  * Pre-merge:
- *
  */
 public class NLSInitiator {
 

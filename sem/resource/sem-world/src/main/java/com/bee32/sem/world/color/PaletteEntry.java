@@ -14,6 +14,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 调色板条目
  *
  * 调色板中的颜色条目的定义。
+ *
+ * <p lang="en">
+ * Palette Entry
  */
 @Entity
 @Blue

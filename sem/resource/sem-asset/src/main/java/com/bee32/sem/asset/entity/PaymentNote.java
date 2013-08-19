@@ -20,12 +20,13 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
  *
  * 企业支付款项时填制的单据。
  *
- * @author jack
- *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("PAY")
-public class PaymentNote extends FundFlow implements IVerifiable<ISingleVerifierWithNumber> {
+public class PaymentNote
+        extends FundFlow
+        implements IVerifiable<ISingleVerifierWithNumber> {
 
     private static final long serialVersionUID = 1L;
     public static final int APPROVE_MESSAGE_LENGTH = 200;

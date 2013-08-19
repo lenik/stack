@@ -13,6 +13,9 @@ import com.bee32.sem.people.entity.Person;
 
 /**
  * 库存调拨作业
+ *
+ * <p lang="en">
+ * Stock Transfer
  */
 @Entity
 public class StockTransfer
@@ -47,6 +50,7 @@ public class StockTransfer
      * 源仓库
      *
      * 调拨出库对应的源仓库。
+     *
      * @return
      */
     @ManyToOne
@@ -62,6 +66,7 @@ public class StockTransfer
      * 目标仓库
      *
      * 调拨入库对应的目标仓库。
+     *
      * @return
      */
     @ManyToOne

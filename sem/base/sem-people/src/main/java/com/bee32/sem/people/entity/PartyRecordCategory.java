@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
- * 社会档案记录分类
+ * 人事历史档案分类
  *
  * 用于对社会档案记录的分类。
+ *
+ * <p lang="en">
+ * Party Record Category
  */
 @Entity
 public class PartyRecordCategory

@@ -15,9 +15,11 @@ import com.bee32.sem.salary.util.SalaryDateUtil;
 /**
  * 出勤表
  *
- * 记录员工的出勤数据和一些其他信息
+ * 记录员工一个月的出勤数据和一些其他信息，
+ *
+ * <p lang="en">
+ * Attendance Mo/Record
  */
-
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_seq", allocationSize = 1)
 public class AttendanceMRecord

@@ -29,6 +29,9 @@ import com.bee32.sem.material.entity.Material;
  * 生产任务明细
  *
  * 生产任务明细项目。
+ *
+ * <p lang="en">
+ * Make Task Item
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_task_item_seq", allocationSize = 1)
@@ -166,10 +169,10 @@ public class MakeTaskItem
      *
      * @return
      */
-    @OneToMany(mappedBy="taskItem", orphanRemoval = true)
+    @OneToMany(mappedBy = "taskItem", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     @OrderBy("id ASC")
-	public List<MakeProcess> getProcesses() {
+    public List<MakeProcess> getProcesses() {
         return processes;
     }
 

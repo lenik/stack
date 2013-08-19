@@ -4,6 +4,12 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
+/**
+ * 事件分类
+ *
+ * <p lang="en">
+ * Event Category
+ */
 @Entity
 public class EventCategory
         extends ShortNameDict {

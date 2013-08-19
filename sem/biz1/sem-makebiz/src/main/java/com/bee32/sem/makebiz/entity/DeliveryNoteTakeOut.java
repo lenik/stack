@@ -9,6 +9,8 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
  * 出库单
  *
  * 送货时，对应产品出库，这里即为对应的销售出库单
+ *
+ * <p lang="en">
  */
 @Entity
 public class DeliveryNoteTakeOut

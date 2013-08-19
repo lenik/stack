@@ -23,6 +23,9 @@ import com.bee32.sem.people.Gender;
  * 自然人
  *
  * 一般自然人的关键信息。
+ *
+ * <p lang="en">
+ * Nature Person
  */
 @Entity
 @DiscriminatorValue("PER")

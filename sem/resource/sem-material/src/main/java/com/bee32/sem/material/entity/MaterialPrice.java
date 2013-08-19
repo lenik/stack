@@ -24,9 +24,11 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
- * 物料价格
+ * 物料基础价格
  *
  * 物料的基准价格（我方提供的基准报价）。
+ *
+ * <p lang="en">
  */
 @Entity
 @Blue

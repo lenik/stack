@@ -5,6 +5,12 @@ import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.dict.NumberDict;
 
+/**
+ * 事件优先级
+ *
+ * <p lang="en">
+ * Event Priority
+ */
 @Entity
 public class EventPriority
         extends NumberDict {
@@ -22,7 +28,6 @@ public class EventPriority
     public EventPriority(int priority, String alias, String description) {
         super(priority, alias, description);
     }
-
 
     @Override
     public void populate(Object source) {

@@ -20,9 +20,12 @@ import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
- * 物料仓库选项
+ * 物料${tr.inventory.warehouse}选项
  *
- * 物料对应各个仓库的选项。
+ * 物料对应各个${tr.inventory.warehouse}的选项。
+ *
+ * <p lang="en">
+ * Material Warehouse Option
  */
 @Entity
 @Blue

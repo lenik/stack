@@ -8,6 +8,9 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
  * 供货方式
  *
  * 产品供货方式字典类。
+ *
+ * <p lang="en">
+ * Procurement Method
  */
 @Entity
 public class ProcurementMethod

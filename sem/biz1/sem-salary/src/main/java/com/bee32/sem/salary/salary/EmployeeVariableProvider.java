@@ -10,6 +10,12 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.hr.entity.PersonSkill;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
+/**
+ * 雇员参数提供器
+ *
+ * <p lang="en">
+ * Employee Variable Provider
+ */
 public class EmployeeVariableProvider
         extends AbstractSalaryVariableProvider {
 

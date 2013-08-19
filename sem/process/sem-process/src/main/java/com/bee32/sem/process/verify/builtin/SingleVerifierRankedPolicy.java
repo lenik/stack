@@ -24,6 +24,12 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.util.Tuple;
 
+/**
+ * 分级审核策略
+ *
+ * <p lang="en">
+ * Ranked Single Verifier Verify Policy
+ */
 @Entity
 @DiscriminatorValue("V1X")
 @ForVerifyContext(ISingleVerifierWithNumber.class)

@@ -21,6 +21,9 @@ import com.bee32.plover.ox1.color.Yellow;
  * 人员登录属性
  *
  * 关联某个人与登录对应的帐号。
+ *
+ * <p lang="en">
+ * Person Login Credential
  */
 @Entity
 @Yellow

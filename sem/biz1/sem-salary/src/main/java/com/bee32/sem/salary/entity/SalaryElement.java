@@ -14,6 +14,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
  * 员工工资条目
  *
  * 若干个工资条目组成员工工资。
+ *
+ * <p lang="en">
+ * Salary Element
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_element_seq", allocationSize = 1)

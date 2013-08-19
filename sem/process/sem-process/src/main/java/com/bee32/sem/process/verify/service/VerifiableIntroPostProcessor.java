@@ -10,6 +10,11 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
 
+/**
+ * 审核信息后置处理器
+ *
+ * <p lang="en">
+ */
 public class VerifiableIntroPostProcessor
         extends AbstractPersistenceUnitPostProcessor {
 

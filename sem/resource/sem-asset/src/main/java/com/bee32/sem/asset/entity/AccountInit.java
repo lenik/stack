@@ -18,8 +18,8 @@ import com.bee32.sem.process.base.ProcessEntity;
  *
  * 账务系统初始化。
  *
- * @author jack
- *
+ * <p lang="en">
+ * Account Init
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_init_seq", allocationSize = 1)

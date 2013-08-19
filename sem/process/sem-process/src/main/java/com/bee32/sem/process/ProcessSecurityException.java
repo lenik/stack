@@ -1,5 +1,10 @@
 package com.bee32.sem.process;
 
+/**
+ * 过程安全异常
+ *
+ * <p lang="en">
+ */
 public class ProcessSecurityException
         extends Exception {
 

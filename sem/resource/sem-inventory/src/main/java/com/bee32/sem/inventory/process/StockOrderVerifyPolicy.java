@@ -23,6 +23,9 @@ import com.bee32.sem.process.verify.util.Tuple;
 
 /**
  * 库存单据审核策略
+ *
+ * <p lang="en">
+ * Stock Order Verify Policy
  */
 @Entity
 @DiscriminatorValue("STO")

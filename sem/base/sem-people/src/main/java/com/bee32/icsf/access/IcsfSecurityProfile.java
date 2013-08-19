@@ -3,6 +3,12 @@ package com.bee32.icsf.access;
 import com.bee32.plover.arch.AppProfile;
 import com.bee32.plover.ox1.principal.IcsfPrincipalMenu;
 
+/**
+ * ICSF 安全框架
+ *
+ * <p lang="en">
+ * ICSF Security Framework
+ */
 public class IcsfSecurityProfile
         extends AppProfile {
 

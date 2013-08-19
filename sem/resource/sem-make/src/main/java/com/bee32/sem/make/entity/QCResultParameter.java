@@ -13,8 +13,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  *
  * 包括质检的具本项目和具体质检值。
  *
- * @author jack
- *
+ * <p lang="en">
+ * QC Result Parameter
  */
 @Entity
 @Blue

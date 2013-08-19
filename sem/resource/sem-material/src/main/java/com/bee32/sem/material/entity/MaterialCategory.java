@@ -20,6 +20,9 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
  * 物料分类
  *
  * 物料的类别。
+ *
+ * <p lang="en">
+ * Material Category
  */
 @Entity
 @BatchSize(size = BatchConfig.TREE)

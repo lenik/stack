@@ -16,6 +16,8 @@ import com.bee32.plover.scheduler.util.Jobs;
 import com.bee32.plover.scheduler.util.Triggers;
 
 /**
+ * 汇率提交作业 Quartz 自动化
+ *
  * 本 Quartz 作业（配置项）用于触发 {@link FxrCommitJob}。
  *
  * FXR Updater Job:

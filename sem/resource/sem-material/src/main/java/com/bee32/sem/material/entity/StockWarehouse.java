@@ -16,9 +16,14 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Person;
 
 /**
- * 仓库
+ * ${tr.inventory.warehouse}
  *
  * 用于存放物料的容器。
+ *
+ * <p lang="en">
+ * ${tr.inventory.warehouse}
+ *
+ * A container for material instances.
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "stock_warehouse_seq", allocationSize = 1)

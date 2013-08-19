@@ -6,6 +6,11 @@ import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
+/**
+ * 物料管理
+ *
+ * <p lang="en">
+ */
 public class SEMMaterialMenu
         extends MenuComposite
         implements ITypeAbbrAware {
@@ -13,7 +18,18 @@ public class SEMMaterialMenu
     static Location __ = WEB_APP.join(SEMMaterialModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
+    /**
+     * 物料分类管理
+     *
+     * <p lang="en">
+     */
     /*    */MenuNode category = entry(_frame_.BIZ1, 100, "category", __.join("category/"));
+
+    /**
+     * 物料管理
+     *
+     * <p lang="en">
+     */
     /*    */MenuNode material = entry(_frame_.BIZ1, 101, "material", __.join("material/"));
 
 }

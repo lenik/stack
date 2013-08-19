@@ -12,6 +12,9 @@ import com.bee32.plover.ox1.dict.NameDict;
  * 涉众分类标签
  *
  * 用于对自然人或组织机构进行分类。
+ *
+ * <p lang="en">
+ * Party Tag
  */
 @Entity
 public class PartyTagname

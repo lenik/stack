@@ -6,7 +6,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -21,6 +28,9 @@ import com.bee32.sem.people.entity.Person;
  * 雇员信息
  *
  * 公司雇员的关键信息。
+ *
+ * <p lang="en">
+ * Employee Information
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "employee_info_seq", allocationSize = 1)

@@ -28,6 +28,9 @@ import com.bee32.sem.world.thing.Thing;
  * 物料
  *
  * 物品材料。
+ *
+ * <p lang="en">
+ * Material
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "material_seq", allocationSize = 1)

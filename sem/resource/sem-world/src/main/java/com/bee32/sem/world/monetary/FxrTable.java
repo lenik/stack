@@ -14,6 +14,12 @@ import com.bee32.plover.util.i18n.CurrencyOrder;
 import com.bee32.plover.util.i18n.ICurrencyAware;
 import com.bee32.plover.util.i18n.ILocaleAware;
 
+/**
+ * 汇率表
+ *
+ * <p lang="en">
+ * FXR Table
+ */
 public class FxrTable
         implements ICurrencyAware, ILocaleAware {
 

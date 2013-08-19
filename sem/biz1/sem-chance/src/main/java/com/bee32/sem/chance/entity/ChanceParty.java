@@ -17,9 +17,12 @@ import com.bee32.plover.ox1.color.Yellow;
 import com.bee32.sem.people.entity.Party;
 
 /**
- * 机会客户关联类
+ * 机会的参与方
  *
  * 一个销售机会对应很多客户，以本类建立起关联。
+ *
+ * <p lang="en">
+ * Chance Party
  */
 @Entity
 @Yellow
@@ -50,9 +53,8 @@ public class ChanceParty
         role = o.role;
     }
 
-
     /**
-     * 机会
+     * 对应机会
      *
      * 本关联对应的机会。
      *
@@ -72,7 +74,7 @@ public class ChanceParty
     }
 
     /**
-     * 客户
+     * 对应人员
      *
      * 本关联对应的公司或个人。
      *

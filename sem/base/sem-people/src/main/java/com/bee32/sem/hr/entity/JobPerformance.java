@@ -13,6 +13,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
  * 工作表现字典类
  *
  * 定义工作表现相关的词汇。
+ *
+ * <p lang="en">
+ * Job Performance
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "job_performance_seq", allocationSize = 1)

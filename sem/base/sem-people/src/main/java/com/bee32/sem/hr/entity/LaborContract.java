@@ -10,6 +10,9 @@ import com.bee32.sem.misc.Contract;
  * 劳动合同
  *
  * 雇员和公司签订的劳动合同。
+ *
+ * <p lang="en">
+ * Labor Contract
  */
 @Entity
 @DiscriminatorValue("LAB")

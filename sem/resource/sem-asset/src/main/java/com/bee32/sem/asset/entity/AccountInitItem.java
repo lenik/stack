@@ -4,14 +4,14 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-
 /**
  * 账务初始化明细
  *
  * 初始化时对应的科目明细，金额。
  *
- * @author jack
  *
+ * <p lang="en">
+ * Account Init Item
  */
 @Entity
 @DiscriminatorValue("INIT")

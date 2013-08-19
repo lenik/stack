@@ -22,6 +22,9 @@ import com.bee32.sem.process.base.ProcessEntity;
  * 采购请求
  *
  * 采购申请,采购计划。对应物料计划。
+ *
+ * <p lang="en">
+ * Purchase Request
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_seq", allocationSize = 1)

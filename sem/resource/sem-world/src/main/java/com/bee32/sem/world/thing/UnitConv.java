@@ -3,7 +3,15 @@ package com.bee32.sem.world.thing;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
@@ -11,6 +19,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 单位换算表
  *
  * 衡量单位的换算关系表。
+ *
+ * <p lang="en">
+ * Unit Conversion Table
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "unit_conv_seq", allocationSize = 1)

@@ -7,6 +7,11 @@ import com.bee32.plover.servlet.test.IWebAppConfigurer;
 import com.bee32.plover.test.ServiceCollector;
 
 /**
+ * Web-App 碎片收集器
+ *
+ * <p lang="en">
+ * Web-App fragment Collector
+ *
  * Please make {@link AbstractWac} be DI-component at first.
  *
  * @see AbstractWac

@@ -5,7 +5,14 @@ import java.io.IOException;
 import javax.free.IllegalUsageException;
 import javax.inject.Inject;
 
-import org.quartz.*;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.TriggerKey;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +22,12 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.scheduler.util.Triggers;
 import com.bee32.sem.world.monetary.impl.DiscreteFxrProvider;
 
+/**
+ * 汇率提交作业
+ *
+ * <p lang="en">
+ * FXR Commit Job
+ */
 public class FxrCommitJob
         extends DataService
         implements Job {

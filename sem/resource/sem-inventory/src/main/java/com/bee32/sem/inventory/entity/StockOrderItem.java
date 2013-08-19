@@ -2,7 +2,17 @@ package com.bee32.sem.inventory.entity;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
 
@@ -19,6 +29,9 @@ import com.bee32.sem.world.thing.AbstractItem;
  * 库存单据项目
  *
  * 库存单据的明细条目。
+ *
+ * <p lang="en">
+ * Stock Order Item
  */
 @BatchSize(size = 100)
 @Entity

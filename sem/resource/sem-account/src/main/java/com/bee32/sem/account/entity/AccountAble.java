@@ -10,8 +10,7 @@ import javax.persistence.TemporalType;
 /**
  * 应收单应付单基类
  *
- * @author jack
- *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("ABLE")

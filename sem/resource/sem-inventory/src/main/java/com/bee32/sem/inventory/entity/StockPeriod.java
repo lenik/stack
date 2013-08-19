@@ -22,6 +22,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 库存期结
  *
  * 库存运行一段时期的统计小结，用于提高系统的查询效率。
+ *
+ * <p lang="en">
+ * Stock Period
  */
 @Entity
 @Green

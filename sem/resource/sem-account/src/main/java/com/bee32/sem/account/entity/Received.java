@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 
 /**
  * 收款单
+ *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("RED")

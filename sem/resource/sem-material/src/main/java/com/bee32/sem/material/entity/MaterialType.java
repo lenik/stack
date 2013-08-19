@@ -9,7 +9,7 @@ import com.bee32.plover.arch.util.EnumAlt;
  *
  * 成品、半成品、原材料、其它
  *
- * @author jack
+ * <p lang="en">
  *
  */
 public class MaterialType
@@ -38,9 +38,37 @@ public class MaterialType
     }
 
     // public static final MaterialType ALL= new MaterialType('a', "all");
+
+    /**
+     * 成品
+     *
+     * <p lang="en">
+     * Product
+     */
     public static final MaterialType PRODUCT = new MaterialType('p', "product");
+
+    /**
+     * 半成品
+     *
+     * <p lang="en">
+     * Semi
+     */
     public static final MaterialType SEMI = new MaterialType('s', "semi");
+
+    /**
+     * 原材料
+     *
+     * <p lang="en">
+     * Raw
+     */
     public static final MaterialType RAW = new MaterialType('r', "raw");
+
+    /**
+     * 其它
+     *
+     * <p lang="en">
+     * Other
+     */
     public static final MaterialType OTHER = new MaterialType('x', "other");
 
 }

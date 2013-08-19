@@ -16,7 +16,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 @Entity
 @Table(name = "zjhf_air_blower_body_price")
 @SequenceGenerator(name = "idgen", sequenceName = "zjhf_air_blower_body_price_seq", allocationSize = 1)
-public class AirBlowerBodyPrice extends UIEntityAuto<Long> {
+public class AirBlowerBodyPrice
+        extends UIEntityAuto<Long> {
     private static final long serialVersionUID = 1L;
 
     public static final int NUMBER_LENGTH = 30;

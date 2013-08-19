@@ -11,7 +11,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -32,9 +31,12 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
- * 订单
+ * 生产订单
  *
  * 和客户签定销售合同后，客户所购产品的单据。本质是合同的一部份。
+ *
+ * <p lang="en">
+ * Make Order
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_seq", allocationSize = 1)

@@ -12,8 +12,25 @@ public class WarMenu
 
     static Location BASE = WEB_APP.join(WarModule.PREFIX_);
 
+    /**
+     *
+     *
+     * <p lang="en">
+     */
     MenuNode WAR = menu(_frame_.BIZ1, 0, "WAR");
+
+    /**
+     * 攻击作业
+     *
+     * <p lang="en">
+     */
     MenuNode attack = entry(WAR, 10, "attack", BASE.join("attack/index-rich.jsf"));
+
+    /**
+     *
+     *
+     * <p lang="en">
+     */
     MenuNode build = entry(WAR, 20, "build", BASE.join("build/index-rich.jsf"));
 
 }

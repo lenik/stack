@@ -19,6 +19,9 @@ import com.bee32.plover.orm.entity.CopyUtils;
 
 /**
  * 组织机构
+ *
+ * <p lang="en">
+ * Organization
  */
 @Entity
 @DiscriminatorValue("ORG")

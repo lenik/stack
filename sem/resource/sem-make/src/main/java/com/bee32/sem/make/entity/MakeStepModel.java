@@ -29,6 +29,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
  *
  * label = 工艺名称<br>
  * description = 工艺描述
+ *
+ * <p lang="en">
+ * Make Step Model
  */
 @Entity
 @Green
@@ -239,7 +242,7 @@ public class MakeStepModel
      *
      * @return
      */
-    @OneToMany(orphanRemoval = true, mappedBy="stepModel")
+    @OneToMany(orphanRemoval = true, mappedBy = "stepModel")
     @Cascade(CascadeType.ALL)
     public List<MakeStepInput> getInputs() {
         return inputs;
@@ -258,7 +261,7 @@ public class MakeStepModel
      *
      * @return
      */
-    @OneToOne(orphanRemoval=true)
+    @OneToOne(orphanRemoval = true)
     @Cascade(CascadeType.SAVE_UPDATE)
     public QCSpec getQcSpec() {
         return qcSpec;

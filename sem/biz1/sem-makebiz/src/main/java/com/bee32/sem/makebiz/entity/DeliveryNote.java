@@ -26,7 +26,6 @@ import com.bee32.sem.asset.entity.IAccountTicketSource;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.process.state.util.StateInt;
-import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
@@ -35,12 +34,17 @@ import com.bee32.sem.world.monetary.MCVector;
  * 送货单
  *
  * 送货单主控类。
+ *
+ * <p lang="en">
+ * Delivery Note
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "delivery_note_seq", allocationSize = 1)
-public class DeliveryNote extends ProcessEntity implements IAccountTicketSource, DecimalConfig {
+public class DeliveryNote
+        extends ProcessEntity
+        implements IAccountTicketSource, DecimalConfig {
 
-//    private static final long serialVersionUID = 1L;
+// private static final long serialVersionUID = 1L;
     public static final int APPROVE_MESSAGE_LENGTH = 200;
 
     MakeOrder order;
@@ -194,7 +198,8 @@ public class DeliveryNote extends ProcessEntity implements IAccountTicketSource,
      */
     @Redundant
     @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
-    public synchronized BigDecimal getNativeTotal() throws FxrQueryException {
+    public synchronized BigDecimal getNativeTotal()
+            throws FxrQueryException {
         if (nativeTotal == null) {
             synchronized (this) {
                 if (nativeTotal == null) {
@@ -292,7 +297,8 @@ public class DeliveryNote extends ProcessEntity implements IAccountTicketSource,
      */
     @Transient
     @Override
-    public BigDecimal getTicketSrcValue() throws FxrQueryException {
+    public BigDecimal getTicketSrcValue()
+            throws FxrQueryException {
         return this.getNativeTotal();
     }
 

@@ -15,6 +15,9 @@ import com.bee32.sem.people.entity.Org;
  *
  * 委外加工作业。
  *
+ * <p lang="en">
+ * Stock Outsourcing
+ *
  * @see StockOrderSubject#F_CHECKOUT
  * @see StockOrderSubject#F_CHECKIN
  */

@@ -23,6 +23,8 @@ import com.bee32.sem.world.monetary.MCValue;
  * 应收单，收款单，应付单，付款单基类
  *
  * 单据日期：beginTime
+ *
+ * <p lang="en">
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

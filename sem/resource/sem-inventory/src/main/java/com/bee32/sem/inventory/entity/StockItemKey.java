@@ -7,6 +7,12 @@ import javax.free.Nullables;
 import com.bee32.sem.inventory.util.BatchArray;
 import com.bee32.sem.material.entity.Material;
 
+/**
+ * 库存项目关键字
+ *
+ * <p lang="en">
+ * Stock Item Key
+ */
 public class StockItemKey
         implements Serializable {
 

@@ -7,6 +7,12 @@ import javax.free.LongComparator;
 
 import com.bee32.plover.collections.map.RangeToMap;
 
+/**
+ * 级区映射
+ *
+ * <p lang="en">
+ * Level Map
+ */
 public class LevelMap
         extends RangeToMap<Long, SingleVerifierLevel> {
 

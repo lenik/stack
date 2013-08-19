@@ -24,6 +24,9 @@ import com.bee32.plover.ox1.xp.EntityExt;
  * 提供一个地点的联系信息，如地址、电话、QQ等。
  *
  * 为“客户联系人”和“供应商联系人”的基类， 因为有共同的地方，所以提取本类
+ *
+ * <p lang="en">
+ * Contact Information
  */
 @Entity
 @Blue

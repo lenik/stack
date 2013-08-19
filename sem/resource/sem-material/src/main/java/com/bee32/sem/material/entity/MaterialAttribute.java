@@ -17,9 +17,12 @@ import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
- * 物料属性
+ * 物料自定义属性
  *
  * 用户定义的物料属性。 这些属性仅供查看用，即不用做搜索的关键字，也不能用于任何计算。 如果需要搜索和计算，需要在 MaterialXP 上做扩展。
+ *
+ * <p lang="en">
+ * Material Attribute
  */
 @Entity
 @Blue

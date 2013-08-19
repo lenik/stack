@@ -6,8 +6,7 @@ import javax.persistence.Entity;
 /**
  * 应付单
  *
- * @author jack
- *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("PABLE")

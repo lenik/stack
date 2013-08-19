@@ -11,6 +11,9 @@ import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
  * 合同
+ *
+ * <p lang="en">
+ * Contract
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

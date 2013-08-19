@@ -7,8 +7,7 @@ import javax.persistence.Entity;
 /**
  * 票据结算
  *
- * @author jack
- *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("BALA")

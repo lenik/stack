@@ -13,6 +13,9 @@ import com.bee32.plover.orm.entity.EmbeddablePiece;
  * 自然色
  *
  * 调色色彩或一般RGB色彩。
+ *
+ * <p lang="en">
+ * Natural Color
  */
 @Embeddable
 public class NaturalColor
@@ -92,6 +95,12 @@ public class NaturalColor
         trueColor.setLong(_trueColor);
     }
 
+    /**
+     * 名称
+     *
+     * <p lang="en">
+     * Name
+     */
     @Transient
     public String getName() {
         if (palette != null)

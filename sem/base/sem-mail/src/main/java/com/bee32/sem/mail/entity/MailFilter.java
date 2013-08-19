@@ -12,6 +12,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 邮件过滤器
  *
  * 用于对接收到的邮件进行自动分拣和处理。
+ *
+ * <p lang="en">
+ * Mail Filter
  */
 @Entity
 @Green

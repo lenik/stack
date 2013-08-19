@@ -8,6 +8,12 @@ import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
+/**
+ * 建筑作业
+ *
+ * <p lang="en">
+ * Build Mission
+ */
 @Entity
 @Pink
 @SequenceGenerator(name = "idgen", sequenceName = "build_mission_seq", allocationSize = 1)
@@ -37,6 +43,11 @@ public class BuildMission
         target = o.target;
     }
 
+    /**
+     *
+     *
+     * <p lang="en">
+     */
     public long getMoney() {
         return money;
     }
@@ -45,6 +56,11 @@ public class BuildMission
         this.money = money;
     }
 
+    /**
+     *
+     *
+     * <p lang="en">
+     */
     public String getTarget() {
         return target;
     }

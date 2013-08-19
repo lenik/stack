@@ -11,6 +11,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 序列号
  *
  * 对每个生产的产品进行编号，赋予一个唯一的号码。
+ *
+ * <p lang="en">
+ * Serial Number
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "serial_number_seq", allocationSize = 1)

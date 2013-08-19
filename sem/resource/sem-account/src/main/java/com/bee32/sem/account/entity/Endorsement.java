@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 /**
  * 票据背书
  *
- * @author jack
- *
+ * <p lang="en">
+ * Endorsement
  */
 @Entity
 @DiscriminatorValue("ENDO")

@@ -7,7 +7,8 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 /**
  * 机会来源
  *
- *
+ * <p lang="en">
+ * Chance Source Type
  */
 @Entity
 public class ChanceSourceType

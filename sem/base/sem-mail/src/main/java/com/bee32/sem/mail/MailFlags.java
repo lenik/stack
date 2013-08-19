@@ -4,6 +4,12 @@ import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.Flags32;
 
+/**
+ * 邮件标志
+ *
+ * <p lang="en">
+ * Mail Flags
+ */
 public class MailFlags
         extends Flags32 {
 

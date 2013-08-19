@@ -1,5 +1,11 @@
 package com.bee32.sem.people;
 
+/**
+ * 公司和人员管理
+ *
+ * <p lang="en">
+ * People Manggement
+ */
 public class SEMPeopleProfile
         extends SEMPeopleBaseProfile {
 

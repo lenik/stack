@@ -5,6 +5,12 @@ import java.util.Date;
 
 import com.bee32.icsf.principal.User;
 
+/**
+ * 审核事件
+ *
+ * <p lang="en">
+ * Verify Event
+ */
 public class VerifyEvent
         implements Serializable {
 
@@ -27,6 +33,12 @@ public class VerifyEvent
         this.user = user;
     }
 
+    /**
+     * 时间戳
+     *
+     * <p lang="en">
+     * Timestamp
+     */
     public Date getTimestamp() {
         return timestamp;
     }
@@ -35,6 +47,12 @@ public class VerifyEvent
         this.timestamp = timestamp;
     }
 
+    /**
+     * 是否允许
+     *
+     * <p lang="en">
+     * Allowed
+     */
     public boolean isAllowed() {
         return isAllowed;
     }
@@ -43,6 +61,12 @@ public class VerifyEvent
         this.isAllowed = isAllowed;
     }
 
+    /**
+     * 用户
+     *
+     * <p lang="en">
+     * User
+     */
     public User getUser() {
         return user;
     }
@@ -51,6 +75,12 @@ public class VerifyEvent
         this.user = user;
     }
 
+    /**
+     * 消息
+     *
+     * <p lang="en">
+     * Message
+     */
     public String getMessage() {
         return message;
     }

@@ -13,6 +13,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
  * 职称字典类
  *
  * 定义了职称相关的词汇。
+ *
+ * <p lang="en">
+ * Job TItle
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "job_title_seq", allocationSize = 1)

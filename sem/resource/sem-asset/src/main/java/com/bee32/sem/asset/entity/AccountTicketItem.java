@@ -30,6 +30,9 @@ import com.bee32.sem.world.monetary.MCValue;
  * 会计凭证明细
  *
  * 会计凭证上的明细科目，和会计科目对应 。
+ *
+ * <p lang="en">
+ * Account Ticket Item
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

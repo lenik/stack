@@ -19,6 +19,12 @@ import com.bee32.sem.material.entity.MaterialCategory;
 import com.bee32.sem.sandbox.ITreeNodeDecorator;
 import com.bee32.sem.sandbox.UIHelper;
 
+/**
+ * 物料分类树模型
+ *
+ * <p lang="en">
+ * Material Category Tree Model
+ */
 @NotAComponent
 public class MaterialCategoryTreeModel
         extends DataViewBean
@@ -38,11 +44,21 @@ public class MaterialCategoryTreeModel
         this.criteriaElements = criteriaElements;
     }
 
+    /**
+     * 根节点
+     *
+     * <p lang="en">
+     */
     public TreeNode getRootNode() {
         loadTree();
         return rootNode;
     }
 
+    /**
+     * 选中的节点
+     *
+     * <p lang="en">
+     */
     public TreeNode getSelectedNode() {
         return selectedNode;
     }

@@ -20,7 +20,12 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
 
 /**
+ * 白名单审核策略
+ *
  * 由任一管理员审核策略。
+ *
+ * <p lang="en">
+ * Single Verifier Verify Policy
  */
 @Entity
 @DiscriminatorValue("V1")

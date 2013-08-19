@@ -10,6 +10,12 @@ import com.bee32.sem.file.entity.UserFileTagname;
 import com.bee32.sem.file.entity.UserFolder;
 import com.bee32.sem.people.SEMPeopleUnit;
 
+/**
+ * SEM 文件管理数据单元
+ *
+ * <p lang="en">
+ * SEM File Unit
+ */
 @ImportUnit({ IcsfAccessUnit.class, SEMPeopleUnit.class })
 public class SEMFileUnit
         extends PersistenceUnit {

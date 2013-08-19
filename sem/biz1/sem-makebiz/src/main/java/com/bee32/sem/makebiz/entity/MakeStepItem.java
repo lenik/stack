@@ -28,17 +28,22 @@ import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Person;
 
 /**
- * 工艺点名细
+ * 生产数据
  *
- * beginTime作为发生日期
- * 同时，作为StockJob的子类，可以持人各类仓库单据StockOrder,因为生产数据中包含了成品，半成品，原材料的出入库
+ * 工艺点名细。
  *
+ * 作为StockJob的子类，可以持人各类仓库单据StockOrder,因为生产数据中包含了成品，半成品，原材料的出入库
+ *
+ * beginTime作为发生日期.
+ *
+ * <p lang="en">
+ * Make Step Item
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_step_item_seq", allocationSize = 1)
 public class MakeStepItem
-    extends StockJob
-    implements DecimalConfig {
+        extends StockJob
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +59,6 @@ public class MakeStepItem
     OrgUnit orgUnit;
     List<Person> operators = new ArrayList<Person>();
     QCResult qcResult = new QCResult();
-
 
     @Override
     public void populate(Object source) {
@@ -91,7 +95,6 @@ public class MakeStepItem
     public void setParent(MakeStep parent) {
         this.parent = parent;
     }
-
 
     /**
      * 计划数量
@@ -169,6 +172,7 @@ public class MakeStepItem
      * 不合格数量
      *
      * 实际数量减合格数量
+     *
      * @return
      */
     @Transient
@@ -252,8 +256,8 @@ public class MakeStepItem
      *
      * @return
      */
-    @OneToOne(orphanRemoval=true)
-    @Cascade(CascadeType.SAVE_UPDATE )
+    @OneToOne(orphanRemoval = true)
+    @Cascade(CascadeType.SAVE_UPDATE)
     public QCResult getQcResult() {
         return qcResult;
     }

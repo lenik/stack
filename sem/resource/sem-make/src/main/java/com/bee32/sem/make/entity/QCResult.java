@@ -23,8 +23,8 @@ import com.bee32.plover.ox1.color.MomentInterval;
  *
  * 具体生产过程中的质检结果主控类。
  *
- * @author jack
- *
+ * <p lang="en">
+ * QC Result
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

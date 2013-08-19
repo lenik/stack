@@ -2,6 +2,12 @@ package com.bee32.sem.world.monetary.impl;
 
 import org.apache.commons.httpclient.methods.GetMethod;
 
+/**
+ * 垃圾邮件辅助工具
+ *
+ * <p lang="en">
+ * Spam Helper
+ */
 public class SpamHelper {
 
     static String AGENT_MOZILLA = "Mozilla/5.0 (X11; U; Linux i686; en-US)";

@@ -6,8 +6,7 @@ import javax.persistence.Entity;
 /**
  * 付款单
  *
- * @author jack
- *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("PED")

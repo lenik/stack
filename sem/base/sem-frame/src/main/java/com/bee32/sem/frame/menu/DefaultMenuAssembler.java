@@ -2,6 +2,12 @@ package com.bee32.sem.frame.menu;
 
 import javax.free.ClassLocal;
 
+/**
+ * 缺省菜单汇编
+ *
+ * <p lang="en">
+ * Default Menu Assembler
+ */
 public class DefaultMenuAssembler
         implements IMenuAssembler {
 

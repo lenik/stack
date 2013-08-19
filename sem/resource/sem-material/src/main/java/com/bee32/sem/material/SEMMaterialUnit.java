@@ -14,7 +14,13 @@ import com.bee32.sem.material.entity.StockLocation;
 import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.world.SEMWorldUnit;
 
-@ImportUnit({SEMWorldUnit.class, SEMFileUnit.class })
+/**
+ * 物料数据单元
+ *
+ * <p lang="en">
+ * SEM Material Unit
+ */
+@ImportUnit({ SEMWorldUnit.class, SEMFileUnit.class })
 public class SEMMaterialUnit
         extends PersistenceUnit {
 

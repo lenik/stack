@@ -15,8 +15,10 @@ import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
 /**
- * 文件夹，文件分类
+ * 用户文件夹
  *
+ * <p lang="en">
+ * User Folder
  */
 @Entity
 @BatchSize(size = BatchConfig.TREE)
@@ -42,6 +44,12 @@ public class UserFolder
         setName(name);
     }
 
+    /**
+     * 名称
+     *
+     * <p lang="en">
+     * Name
+     */
     @Index(name = "user_folder_name")
     @Column(nullable = false)
     public String getName() {

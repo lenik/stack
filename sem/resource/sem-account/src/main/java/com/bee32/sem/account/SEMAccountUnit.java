@@ -26,6 +26,12 @@ import com.bee32.sem.inventory.SEMInventoryUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.world.SEMWorldUnit;
 
+/**
+ * SEM 应收应付单元
+ *
+ * <p lang="en">
+ * SEM Account Unit
+ */
 @ImportUnit({ SEMInventoryUnit.class, SEMPeopleUnit.class, SEMWorldUnit.class })
 public class SEMAccountUnit
         extends PersistenceUnit {

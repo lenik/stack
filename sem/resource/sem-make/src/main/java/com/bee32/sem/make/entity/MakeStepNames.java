@@ -2,6 +2,12 @@ package com.bee32.sem.make.entity;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 工艺点样本
+ *
+ * <p lang="en">
+ * Make Step Names
+ */
 public class MakeStepNames
         extends StandardSamples {
 

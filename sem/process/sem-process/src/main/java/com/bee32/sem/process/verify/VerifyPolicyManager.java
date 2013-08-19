@@ -13,6 +13,12 @@ import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.sem.process.verify.service.VerifiableIntroPostProcessor;
 
+/**
+ * 审核策略管理器
+ *
+ * <p lang="en">
+ * Verify Policy Manager
+ */
 public class VerifyPolicyManager {
 
     static Map<Class<? extends IVerifyPolicy>, VerifyPolicyMetadata> policyMetadataMap;

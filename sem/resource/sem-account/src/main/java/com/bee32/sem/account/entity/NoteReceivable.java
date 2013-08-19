@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 
 /**
  * 应收票据
+ *
+ * <p lang="en">
+ * Note Receivable
  */
 @Entity
 @DiscriminatorValue("RNOTE")

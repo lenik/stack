@@ -19,6 +19,11 @@ import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.service.VerifyService;
 
+/**
+ * 审核处理器
+ *
+ * <p lang="en">Verify Handler
+ */
 public class VerifyHandler<E extends Entity<K> & IVerifiable<C>, //
 /*        */K extends Number, C extends IVerifyContext, Dto extends EntityDto<E, K>>
         extends EntityHandler<E, K> {

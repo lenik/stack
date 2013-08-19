@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory;
 
-
 import static com.bee32.sem.inventory.entity.StockOrderSubject.FACTORY_IN;
 import static com.bee32.sem.inventory.entity.StockOrderSubject.FACTORY_OUT;
 import static com.bee32.sem.inventory.entity.StockOrderSubject.PLAN_OUT;
@@ -19,6 +18,12 @@ import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.test.DateSamples;
 import com.bee32.sem.world.thing.Units;
 
+/**
+ *
+ *
+ * <p lang="en">
+ * SEM Inventory Samples
+ */
 public class SEMInventorySamples
         extends NormalSamples {
 
@@ -48,8 +53,6 @@ public class SEMInventorySamples
         stockPolicy.setSubjectPolicy(StockOrderSubject.INIT, verifyPolicies.robotList);
         stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_IN, verifyPolicies.robotList);
         stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_OUT, verifyPolicies.robotList);
-
-
 
         cupx_I_1.setWarehouse(materials.rawWarehouse);
         cupx_I_1.setBeginTime(DateSamples.D_2010_07_20);

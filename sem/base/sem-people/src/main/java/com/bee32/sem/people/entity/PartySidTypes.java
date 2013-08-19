@@ -5,6 +5,12 @@ import static com.bee32.sem.people.entity.PartySidType.PERSON;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 涉众证件类型
+ *
+ * <p lang="en">
+ * Party Sid Types
+ */
 public class PartySidTypes
         extends StandardSamples {
 

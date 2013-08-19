@@ -9,6 +9,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 标准工艺名称
  *
  * 企业中所有的工艺可以给予一个标准备的工艺名称来命名。
+ *
+ * <p lang="en">
+ * Make Step Name
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_step_name_seq", allocationSize = 1)

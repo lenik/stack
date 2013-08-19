@@ -7,6 +7,11 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.sem.calendar.ICalendarSource;
 
+/**
+ * 销售机会的日历源
+ *
+ * <p lang="en">
+ */
 public class ChanceCalendarSource
         extends DataService
         implements ICalendarSource {

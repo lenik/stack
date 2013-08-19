@@ -20,6 +20,11 @@ import com.bee32.sem.makebiz.entity.SerialNumber;
 import com.bee32.sem.makebiz.entity.StockPlanOrder;
 import com.bee32.sem.material.SEMMaterialUnit;
 
+/**
+ * SEM 生产订单数据单元
+ *
+ * <p lang="en">
+ */
 @ImportUnit({ SEMMakeUnit.class, SEMChanceUnit.class, SEMMaterialUnit.class })
 public class SEMMakebizUnit
         extends PersistenceUnit {

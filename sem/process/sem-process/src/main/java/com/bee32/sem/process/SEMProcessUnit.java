@@ -12,6 +12,12 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 
+/**
+ * SEM 审核策略样本
+ *
+ * <p lang="en">
+ * SEM Process Unit
+ */
 @ImportUnit(SEMEventUnit.class)
 public class SEMProcessUnit
         extends PersistenceUnit {

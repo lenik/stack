@@ -10,8 +10,8 @@ import com.bee32.plover.orm.sample.StandardSamples;
  *
  * 预置会计科目,对应2013年小企业会计准则
  *
- * @author jack
- *
+ * <p lang="en">
+ * Predefined Account Subjects
  */
 public class AccountSubjects
         extends StandardSamples {
@@ -20,7 +20,7 @@ public class AccountSubjects
         return new AccountSubject(name, label, flags);
     }
 
-  //资产类
+    // 资产类
     public final AccountSubject s1001 = _("1001", "库存现金", DEBIT);
     public final AccountSubject s1002 = _("1002", "银行存款", DEBIT);
     public final AccountSubject s1012 = _("1012", "其他货币资金", DEBIT);
@@ -58,7 +58,7 @@ public class AccountSubjects
     public final AccountSubject s1801 = _("1801", "长期待摊费用", DEBIT);
     public final AccountSubject s1901 = _("1901", "待处理财产损溢", DEBIT);
 
-    //负债类
+    // 负债类
     public final AccountSubject s2001 = _("2001", "短期借款", CREDIT);
     public final AccountSubject s2201 = _("2201", "应付票据", CREDIT);
     public final AccountSubject s2202 = _("2202", "应付账款", CREDIT);
@@ -100,7 +100,7 @@ public class AccountSubjects
     public final AccountSubject s2501 = _("2501", "长期借款", CREDIT);
     public final AccountSubject s2701 = _("2701", "长期应付款", CREDIT);
 
-    //经益类
+    // 经益类
     public final AccountSubject s3001 = _("3001", "实收资本", CREDIT);
     public final AccountSubject s3002 = _("3002", "资本公积", CREDIT);
     public final AccountSubject s3101 = _("3101", "盈余公积", CREDIT);
@@ -116,15 +116,14 @@ public class AccountSubjects
     public final AccountSubject s310410 = _("310410", "应付利润", CREDIT);
     public final AccountSubject s310415 = _("310415", "未分配利润", CREDIT);
 
-
-    //成本类
+    // 成本类
     public final AccountSubject s4001 = _("4001", "生产成本", DEBIT);
     public final AccountSubject s4101 = _("4101", "制造费用", DEBIT);
     public final AccountSubject s4301 = _("4301", "研发支出", DEBIT);
     public final AccountSubject s4401 = _("4401", "工程施工", DEBIT);
     public final AccountSubject s4403 = _("4403", "机械作业", DEBIT);
 
-    //损益类
+    // 损益类
     public final AccountSubject s5001 = _("5001", "主营业务收入", CREDIT);
     public final AccountSubject s5051 = _("5051", "其他业务收入", CREDIT);
     public final AccountSubject s5111 = _("5111", "投资收益", CREDIT);

@@ -17,6 +17,8 @@ import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 核销
+ *
+ * <p lang="en">
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

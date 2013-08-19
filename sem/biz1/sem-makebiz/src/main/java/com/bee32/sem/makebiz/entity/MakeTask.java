@@ -21,6 +21,9 @@ import com.bee32.sem.process.base.ProcessEntity;
  * 生产任务
  *
  * 生产任务主控类。
+ *
+ * <p lang="en">
+ * Make Task
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_task_seq", allocationSize = 1)

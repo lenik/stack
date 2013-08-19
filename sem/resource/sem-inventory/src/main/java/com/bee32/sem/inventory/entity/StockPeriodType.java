@@ -6,6 +6,9 @@ import com.bee32.plover.arch.util.EnumAlt;
 
 /**
  * 库存快照类型
+ *
+ * <p lang="en">
+ * Stock Period Type
  */
 public class StockPeriodType
         extends EnumAlt<Character, StockPeriodType> {

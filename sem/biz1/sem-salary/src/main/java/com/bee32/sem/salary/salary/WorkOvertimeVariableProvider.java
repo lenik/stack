@@ -5,6 +5,12 @@ import java.math.BigDecimal;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.api.AbstractSalaryVariableProvider;
 
+/**
+ * 加班参数提供器
+ *
+ * <p lang="en">
+ * Work Overtime Variable Provider
+ */
 public class WorkOvertimeVariableProvider
         extends AbstractSalaryVariableProvider {
 

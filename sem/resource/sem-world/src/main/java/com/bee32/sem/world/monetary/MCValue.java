@@ -19,9 +19,9 @@ import com.bee32.plover.util.i18n.CurrencyConfig;
 /**
  * 多币种金额
  *
+ * <p lang="en">
  * Multi-currency value, or multi-currency amount.
  *
- * @see
  * @see http://stackoverflow.com/questions/331744/jpa-multiple-embedded-fields
  */
 @Embeddable

@@ -7,6 +7,12 @@ import com.bee32.sem.file.entity.UserFileTagname;
 import com.bee32.sem.file.entity.UserFolder;
 import com.bee32.sem.module.EnterpriseModule;
 
+/**
+ * SEM 文件模块
+ *
+ * <p lang="en">
+ * SEM File Module
+ */
 @Oid({ 3, 15, SEMOids.Base, SEMOids.base.File })
 public class SEMFileModule
         extends EnterpriseModule {

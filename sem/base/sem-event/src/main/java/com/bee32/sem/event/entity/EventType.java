@@ -4,6 +4,12 @@ import java.util.Collection;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
+/**
+ * 事件类型
+ *
+ * <p lang="en">
+ * Event Type
+ */
 public class EventType
         extends EnumAlt<Character, EventType> {
 

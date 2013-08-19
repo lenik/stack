@@ -8,6 +8,11 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 
+/**
+ * 企业过程模块
+ *
+ * <p lang="en">
+ */
 @Oid({ 3, 15, SEMOids.Process, SEMOids.process.Process })
 public class SEMProcessModule
         extends EnterpriseModule {

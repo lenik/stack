@@ -6,6 +6,9 @@ import com.bee32.plover.arch.util.EnumAlt;
 
 /**
  * 库存项状态
+ *
+ * <p lang="en">
+ * Stock Item State
  */
 public class StockItemState
         extends EnumAlt<Integer, StockItemState> {
@@ -46,7 +49,11 @@ public class StockItemState
     /** 正常 */
     public static final StockItemState NORMAL = new StockItemState('-', "normal", true);
 
-    /** 挂起/等待中，比如入库单中的项目正处于入库中，尚未完成入库的状态。 */
+    /**
+     * 挂起
+     *
+     * 等待中，比如入库单中的项目正处于入库中，尚未完成入库的状态。
+     */
     public static final StockItemState PENDING = new StockItemState('P', "pending");
 
     /** 盘点中 */
@@ -64,6 +71,10 @@ public class StockItemState
     /** 不合格 */
     public static final StockItemState UNQUALIFIED = new StockItemState('U', "unqualified");
 
-    /** 让步(勉强)／勉强合格，让步接收。 */
+    /**
+     * 让步
+     *
+     * 勉强合格，让步接收。
+     */
     public static final StockItemState RELUCTANCE = new StockItemState('R', "reluctance");
 }

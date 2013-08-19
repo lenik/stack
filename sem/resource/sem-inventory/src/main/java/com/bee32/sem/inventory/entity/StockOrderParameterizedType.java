@@ -7,6 +7,12 @@ import com.bee32.plover.orm.util.ParameterizedEntityType;
 import com.bee32.plover.restful.resource.ObjectURLFragmentType;
 import com.bee32.sem.inventory.SEMInventoryModule;
 
+/**
+ * 库存参数类型
+ *
+ * <p lang="en">
+ * Stock Order Parameterized Type
+ */
 public class StockOrderParameterizedType
         extends ParameterizedEntityType {
 

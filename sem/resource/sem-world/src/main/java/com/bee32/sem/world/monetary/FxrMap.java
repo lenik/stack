@@ -14,6 +14,12 @@ import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.util.date.LocalDateUtil;
 import com.bee32.sem.world.math.InterpolatedMap;
 
+/**
+ * 汇率插值表
+ *
+ * <p lang="en">
+ * FXR Interpolation Map
+ */
 public class FxrMap
         implements IFxrMap {
 

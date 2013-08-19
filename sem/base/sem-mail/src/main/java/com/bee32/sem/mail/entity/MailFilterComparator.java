@@ -2,6 +2,12 @@ package com.bee32.sem.mail.entity;
 
 import javax.free.AbstractNonNullComparator;
 
+/**
+ * 文件过滤比较器
+ *
+ * <p lang="en">
+ * Mail Filter Comparator
+ */
 public class MailFilterComparator
         extends AbstractNonNullComparator<MailFilter> {
 

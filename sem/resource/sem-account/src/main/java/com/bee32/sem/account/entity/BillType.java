@@ -7,6 +7,9 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
  * 票据类型
+ *
+ * <p lang="en">
+ * Bill Type
  */
 @Entity
 @Blue

@@ -26,6 +26,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * <li>label = 规范名称
  * <li>description = 规范描述
  * </ul>
+ *
+ * <p lang="en">
+ * QC Specification
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

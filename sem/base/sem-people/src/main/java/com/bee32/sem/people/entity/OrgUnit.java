@@ -18,6 +18,9 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
  * 组织部门
  *
  * 企业组织中的单位部门。
+ *
+ * <p lang="en">
+ * Organization Unit
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "org_unit_seq", allocationSize = 1)

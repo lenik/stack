@@ -7,6 +7,11 @@ import com.bee32.sem.world.monetary.AbstractFxrSource;
 import com.bee32.sem.world.monetary.IFxrSource;
 
 /**
+ * 汇率源收集器
+ *
+ * <p lang="en">
+ * FXR Source Collector
+ *
  * @see AbstractFxrSource
  */
 public class FxrSourceCollector

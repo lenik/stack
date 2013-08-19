@@ -20,6 +20,12 @@ import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.process.SEMProcessUnit;
 import com.bee32.sem.world.SEMWorldUnit;
 
+/**
+ * SEM 库存管理数据单元
+ *
+ * <p lang="en">
+ * SEM Inventory Unit
+ */
 @ImportUnit({ SEMProcessUnit.class, SEMPeopleUnit.class, SEMWorldUnit.class, SEMFileUnit.class, SEMAssetUnit.class,
         SEMMaterialUnit.class })
 public class SEMInventoryUnit

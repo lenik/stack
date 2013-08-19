@@ -13,6 +13,9 @@ import com.bee32.sem.hr.util.ScoreLevelMap;
  * 雇员技能字典类
  *
  * 定义员工技能和相关的等级。
+ *
+ * <p lang="en">
+ * Person Skill Category
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_skill_category_seq", allocationSize = 1)

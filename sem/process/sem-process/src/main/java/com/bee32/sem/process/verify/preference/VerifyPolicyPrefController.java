@@ -32,6 +32,12 @@ import com.bee32.sem.process.verify.VerifyPolicyManager;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 
+/**
+ * 审核策略预选项控制器
+ *
+ * <p lang="en">
+ * Verify Policy Preference Controller
+ */
 @RequestMapping(VerifyPolicyPrefController.PREFIX + "/*")
 public class VerifyPolicyPrefController
         // > TypePrefController ?

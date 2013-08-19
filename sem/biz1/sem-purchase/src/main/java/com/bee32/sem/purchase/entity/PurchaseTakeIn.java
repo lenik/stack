@@ -7,9 +7,12 @@ import javax.persistence.ManyToOne;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
- * 采购请求对应的采购入库单
+ * 采购请求入库单
  *
- * 在采购完成后，可根据采购请求的明细列表，自动生成入库单。
+ * 采购请求对应的采购入库单。在采购完成后，可根据采购请求的明细列表，自动生成入库单。
+ *
+ * <p lang="en">
+ * Purchase Stock Take-In
  */
 @Entity
 public class PurchaseTakeIn

@@ -2,6 +2,12 @@ package com.bee32.sem.world.city;
 
 import java.util.Collection;
 
+/**
+ * 城市
+ *
+ * <p lang="en">
+ * City
+ */
 public class City
         extends Region<City> {
 

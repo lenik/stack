@@ -6,6 +6,11 @@ import java.io.Serializable;
 import com.bee32.plover.arch.util.ICloneable;
 import com.bee32.plover.orm.entity.IPopulatable;
 
+/**
+ * 真彩色
+ *
+ * <p lang="en">
+ */
 public class TrueColor
         implements Serializable, ICloneable, IPopulatable {
 
@@ -64,6 +69,12 @@ public class TrueColor
         blue = o.blue;
     }
 
+    /**
+     * 长整型色彩值
+     *
+     * <p lang="en">
+     * Long
+     */
     public long getLong() {
         long lval = (alpha << 48) | (red << 32) | (green << 16) | (blue);
         return lval;
@@ -79,6 +90,12 @@ public class TrueColor
         alpha = (int) (lval & 0xffff);
     }
 
+    /**
+     * 红色
+     *
+     * <p lang="en">
+     * Red
+     */
     public int getRed() {
         return red;
     }
@@ -87,6 +104,12 @@ public class TrueColor
         this.red = red;
     }
 
+    /**
+     * 绿色
+     *
+     * <p lang="en">
+     * Green
+     */
     public int getGreen() {
         return green;
     }
@@ -95,6 +118,12 @@ public class TrueColor
         this.green = green;
     }
 
+    /**
+     * 蓝色
+     *
+     * <p lang="en">
+     * Blue
+     */
     public int getBlue() {
         return blue;
     }
@@ -103,6 +132,12 @@ public class TrueColor
         this.blue = blue;
     }
 
+    /**
+     * 透明度
+     *
+     * <p lang="en">
+     * Alpha
+     */
     public int getAlpha() {
         return alpha;
     }
@@ -155,6 +190,12 @@ public class TrueColor
         // alpha = scale;
     }
 
+    /**
+     * AWT色
+     *
+     * <p lang="en">
+     * AWT Color
+     */
     public Color getAwtColor() {
         Color awtColor = new Color(red / k256, green / k256, blue / k256, alpha / k256);
         return awtColor;
@@ -169,6 +210,12 @@ public class TrueColor
         alpha = awtColor.getAlpha() * k256;
     }
 
+    /**
+     * HTML色
+     *
+     * <p lang="en">
+     * HTML Color
+     */
     public String getHtmlColor() {
         StringBuilder sb = new StringBuilder(7);
         sb.append('#');

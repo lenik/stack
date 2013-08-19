@@ -12,6 +12,11 @@ import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 
+/**
+ * 工资数据单元
+ *
+ * <p lang="en">
+ */
 @ImportUnit({ SEMPeopleUnit.class, SEMProcessUnit.class, SEMAssetUnit.class })
 public class SEMSalaryUnit
         extends PersistenceUnit {

@@ -4,6 +4,12 @@ import com.bee32.plover.arch.AppProfile;
 import com.bee32.sem.frame.builtins.SEMContextMenu;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 
+/**
+ * 基本系统
+ *
+ * <p lang="en">
+ * Base System
+ */
 public class SEMBaseProfile
         extends AppProfile {
 

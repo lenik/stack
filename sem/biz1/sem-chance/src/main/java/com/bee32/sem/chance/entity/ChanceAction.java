@@ -7,7 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.free.Strings;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.DefaultValue;
 
@@ -19,12 +25,12 @@ import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
- * 行动记录,日志
+ * 行动日志
  *
  * 销售员每天记录的日志，计划。
  *
- * @author jack
- *
+ * <p lang="en">
+ * Chance Action
  */
 @Entity
 @Pink

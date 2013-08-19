@@ -10,6 +10,12 @@ import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 import com.bee32.sem.purchase.entity.PurchaseTakeIn;
 
+/**
+ * SEM 采购数据单元
+ *
+ * <p lang="en">
+ * SEM Purchase Unit
+ */
 @ImportUnit({ SEMMakeUnit.class, SEMChanceUnit.class, SEMMakebizUnit.class })
 public class SEMPurchaseUnit
         extends PersistenceUnit {
@@ -21,4 +27,5 @@ public class SEMPurchaseUnit
         add(PurchaseInquiry.class);
         add(PurchaseTakeIn.class);
     }
+
 }

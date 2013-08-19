@@ -4,6 +4,11 @@ import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 
+/**
+ *
+ *
+ * <p lang="en">
+ */
 public class SEMInventorySamples2
         extends NormalSamples {
 

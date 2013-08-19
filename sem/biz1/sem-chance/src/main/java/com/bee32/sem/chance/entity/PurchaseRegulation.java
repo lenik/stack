@@ -9,6 +9,8 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
  *
  * 产品采购原则字典类。
  *
+ * <p lang="en">
+ * Purchase Regulation
  */
 @Entity
 public class PurchaseRegulation

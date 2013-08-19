@@ -19,7 +19,7 @@ import com.bee32.sem.material.entity.StockWarehouse;
 import com.bee32.sem.world.thing.AbstractItem;
 
 /**
- * 送货明细
+ * 送货单明细
  *
  * 送货单明细项目。
  */
@@ -73,7 +73,6 @@ public class DeliveryNoteItem
     public void setMaterial(Material material) {
         this.material = material;
     }
-
 
     /**
      * 订单明细

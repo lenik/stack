@@ -10,6 +10,12 @@ import com.bee32.icsf.principal.User;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.VerifyEvent;
 
+/**
+ * 递进事件上下文
+ *
+ * <p lang="en">
+ * Pass Events
+ */
 @Embeddable
 public class PassEvents
         extends AbstractVerifyContext

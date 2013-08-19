@@ -5,6 +5,11 @@ import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 
+/**
+ * SEM 审核策略样本
+ *
+ * <p lang="en">
+ */
 public class SEMVerifyPolicySamples
         extends NormalSamples {
 

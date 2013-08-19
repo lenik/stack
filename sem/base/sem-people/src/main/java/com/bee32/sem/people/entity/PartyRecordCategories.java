@@ -2,6 +2,12 @@ package com.bee32.sem.people.entity;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 涉众记录分类
+ *
+ * <p lang="en">
+ * Party Record Categories
+ */
 public class PartyRecordCategories
         extends StandardSamples {
 

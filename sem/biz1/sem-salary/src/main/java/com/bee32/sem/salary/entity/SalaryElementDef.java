@@ -11,6 +11,9 @@ import com.bee32.plover.ox1.color.MomentInterval;
  * 工资元素
  *
  * 工资条上的元素（表达式）定义。
+ *
+ * <p lang="en">
+ * Salary Element Definition
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_element_type_seq", allocationSize = 1)

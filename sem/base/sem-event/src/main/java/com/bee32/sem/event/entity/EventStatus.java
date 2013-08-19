@@ -9,6 +9,8 @@ import com.bee32.sem.event.GenericState;
 
 /**
  * 事件状态
+ *
+ * <p lang="en">
  */
 @Entity
 public class EventStatus
@@ -43,6 +45,11 @@ public class EventStatus
         state = o.state;
     }
 
+    /**
+     * 标识掩码
+     *
+     * <p lang="en">
+     */
     @Column(nullable = false)
     public int getFlagsMask() {
         return flagsMask;
@@ -52,6 +59,11 @@ public class EventStatus
         this.flagsMask = flagsMask;
     }
 
+    /**
+     * 已关闭
+     *
+     * <p lang="en">
+     */
     @Column(nullable = false)
     public boolean isClosed() {
         return closed;

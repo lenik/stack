@@ -28,10 +28,12 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
- * 采购请求明细项目
+ * 采购请求明细
  *
  * 某个采购请求中所需要采购物料的明细列表。
  *
+ * <p lang="en">
+ * Purchase Request Item
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_item_seq", allocationSize = 1)
@@ -269,7 +271,6 @@ public class PurchaseRequestItem
     public void setInquiryCount(int inquiryCount) {
         this.inquiryCount = inquiryCount;
     }
-
 
     @Override
     protected Serializable naturalId() {

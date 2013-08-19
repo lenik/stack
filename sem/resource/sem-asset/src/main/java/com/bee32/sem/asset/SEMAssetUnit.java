@@ -17,6 +17,12 @@ import com.bee32.sem.event.SEMEventUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.world.SEMWorldUnit;
 
+/**
+ * SEM 资产管理数据单元
+ *
+ * <p lang="en">
+ * SEM Asset Unit
+ */
 @ImportUnit({ SEMPeopleUnit.class, SEMWorldUnit.class, SEMEventUnit.class, SEMChanceUnit.class })
 public class SEMAssetUnit
         extends PersistenceUnit {

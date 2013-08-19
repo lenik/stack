@@ -1,6 +1,12 @@
 package com.bee32.sem.file.entity;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +30,12 @@ import com.bee32.plover.ox1.digest.MD5Entity;
 import com.bee32.sem.file.io.LocalStorage;
 import com.bee32.sem.file.util.ImageBlob;
 
+/**
+ * 文件数据
+ *
+ * <p lang="en">
+ * File Blob
+ */
 @Entity
 @AttributeOverrides({//
 /*    */@AttributeOverride(name = "label", column = @Column(length = 100)) })
@@ -76,6 +88,9 @@ public class FileBlob
      * 文件长度
      *
      * 文件长度 （字节）。
+     *
+     * <p lang="en">
+     * File length in bytes
      */
     @Column(nullable = false)
     public long getLength() {
@@ -93,6 +108,10 @@ public class FileBlob
      *
      * 这里存放的文件头不会超过 {@link #HEADER_SIZE}。 当文件比较小时，可以直接从文件头获取整个文件内容。
      *
+     *
+     * <p lang="en">
+     * File Header
+     *
      * @see #HEADER_SIZE
      * @see #readContent()
      */
@@ -107,6 +126,12 @@ public class FileBlob
         this.header = header;
     }
 
+    /**
+     * 缩略图
+     *
+     * <p lang="en">
+     * Thumbnail Image
+     */
     @Transient
     public ImageBlob getThumbnail() {
         return thumbnail;
@@ -116,6 +141,12 @@ public class FileBlob
         this.thumbnail = thumbnail;
     }
 
+    /**
+     * 预览
+     *
+     * <p lang="en">
+     * Preview
+     */
     @Transient
     public ImageBlob getPreview() {
         return preview;
@@ -204,6 +235,9 @@ public class FileBlob
      * 文本编码
      *
      * 用于为文本文件指定字符编码。
+     *
+     * <p lang="en">
+     * File Encoding
      */
     @Column(length = ENCODING_LENGTH)
     public String getEncoding() {
@@ -225,6 +259,9 @@ public class FileBlob
      * 原始内容类型
      *
      * 文件上传时声明的内容类型。
+     *
+     * <p lang="en">
+     * Orig. Content Type
      */
     @Column(length = CONTENT_TYPE_LENGTH)
     public String getContentType() {

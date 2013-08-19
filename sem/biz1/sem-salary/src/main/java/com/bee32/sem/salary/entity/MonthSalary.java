@@ -19,7 +19,7 @@ import com.bee32.sem.asset.entity.IAccountTicketSource;
  *
  * 所有员工某月的工资合计数. beginTime代表月份
  *
- * @author jack
+ * <p lang="en">
  *
  */
 @Entity

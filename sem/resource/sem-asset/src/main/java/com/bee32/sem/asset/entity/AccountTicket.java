@@ -27,12 +27,12 @@ import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
 /**
- * 会计凭证
+ * 资产凭证
  *
  * 对应做账时的凭证。
  *
- * @author jack
- * @author lenik
+ * <p lang="en">
+ * Account Ticket
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_ticket_seq", allocationSize = 1)

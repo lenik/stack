@@ -6,6 +6,11 @@ import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.module.EnterpriseModule;
 
+/**
+ *
+ *
+ * <p lang="en">
+ */
 @Oid({ 3, 15, SEMOids.Base, SEMOids.base.Event })
 public class SEMEventModule
         extends EnterpriseModule {

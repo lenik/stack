@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 /**
  * 票据贴现
  *
- * @author jack
- *
  */
 @Entity
 @DiscriminatorValue("DISC")

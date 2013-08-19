@@ -11,9 +11,15 @@ import com.bee32.sem.track.SEMTrackUnit;
 import com.bee32.xem.zjhf.SEMZjhfUnit;
 
 /**
+ * SEM 总数据单元
+ *
+ * <p lang="en">
+ * SEM Uber Unit
+ *
  * Import units of biz1, biz2, etc..
  */
-@ImportUnit({ SEMChanceUnit.class, SEMPurchaseUnit.class, SEMAssetUnit.class, SEMAccountUnit.class, SEMSalaryUnit.class, SEMZjhfUnit.class, SEMTrackUnit.class })
+@ImportUnit({ SEMChanceUnit.class, SEMPurchaseUnit.class, SEMAssetUnit.class, SEMAccountUnit.class,
+        SEMSalaryUnit.class, SEMZjhfUnit.class, SEMTrackUnit.class })
 public class SEMUberUnit
         extends PersistenceUnit {
 

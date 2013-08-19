@@ -15,9 +15,12 @@ import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
- * 文件夹
+ * 邮箱文件夹
  *
  * 用于邮件分类的文件夹。
+ *
+ * <p lang="en">
+ * Mail Folder
  */
 @Entity
 @Green

@@ -2,6 +2,12 @@ package com.bee32.sem.people.entity;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 联系人分类样本
+ *
+ * <p lang="en">
+ * Contact Categories
+ */
 public class ContactCategories
         extends StandardSamples {
 

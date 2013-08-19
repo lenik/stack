@@ -7,6 +7,11 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.sem.asset.dto.PaymentNoteDto;
 import com.bee32.sem.asset.entity.PaymentNote;
 
+/**
+ * 资产服务
+ *
+ * <p lang="en">
+ */
 public class AssetService extends DataService {
 
     /**

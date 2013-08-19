@@ -34,9 +34,10 @@ import com.bee32.sem.world.monetary.MCValue;
  *
  * 收款单和付款单的基类。
  *
- * @author jack
- *  description: 摘要
+ * <p lang="en">
+ * Fund Flow
  *
+ * @rewrite description 摘要
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -45,10 +46,7 @@ import com.bee32.sem.world.monetary.MCValue;
 @SequenceGenerator(name = "idgen", sequenceName = "fund_flow_seq", allocationSize = 1)
 public class FundFlow
         extends MomentInterval
-        implements
-            DecimalConfig,
-            IJudgeNumber,
-            IAccountTicketSource {
+        implements DecimalConfig, IJudgeNumber, IAccountTicketSource {
 
     private static final long serialVersionUID = 1L;
 
@@ -82,7 +80,6 @@ public class FundFlow
 
         nativeValue = o.nativeValue;
     }
-
 
     /**
      * 销售机会
@@ -188,7 +185,6 @@ public class FundFlow
         this.nativeValue = nativeValue;
     }
 
-
     /**
      * 资金进出对应的凭证
      *
@@ -275,7 +271,8 @@ public class FundFlow
      */
     @Transient
     @Override
-    public BigDecimal getTicketSrcValue() throws FxrQueryException {
+    public BigDecimal getTicketSrcValue()
+            throws FxrQueryException {
         return this.getNativeValue();
     }
 

@@ -8,6 +8,11 @@ import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.inventory.SEMInventoryMenu;
 import com.bee32.sem.inventory.SEMInventoryModule;
 
+/**
+ *
+ *
+ * <p lang="en">
+ */
 public class SEMMakebizMenu
         extends MenuComposite {
 
@@ -16,31 +21,90 @@ public class SEMMakebizMenu
     SEMInventoryMenu _invMenu = require(SEMInventoryMenu.class);
     SEMChanceMenu _saleMenu = require(SEMChanceMenu.class);
 
+    /**
+     * 采购
+     *
+     * <p lang="en">
+     */
     public MenuNode PURCHASE = menu(_frame_.MAIN, 500, "PURCHASE");
 
+    /**
+     * 生产
+     *
+     * <p lang="en">
+     */
     public MenuNode PRODUCTION = menu(_frame_.MAIN, 600, "PRODUCTION");
 
-    /**/MenuNode makeOrderListAdmin = entry(_saleMenu.SALEMGMT, 20, "makeOrderListAdmin", __.join("order/list.jsf"));
-    /**/MenuNode makeOrderAdmin = entry(_saleMenu.SALEMGMT, 21, "makeOrderAdmin", __.join("order/"));
+    /**
+     * 生产订单
+     *
+     * <p lang="en">
+     */
+    /**/MenuNode makeOrderAdmin = entry(_saleMenu.SALEMGMT, 20, "makeOrderAdmin", __.join("order/"));
 
-    /**/MenuNode makeTaskListAdmin = entry(PRODUCTION, 10, "makeTaskListAdmin", __.join("task/list.jsf"));
+    /**
+     * 生产任务
+     *
+     * <p lang="en">
+     */
     /**/MenuNode makeTaskAdmin = entry(PRODUCTION, 11, "makeTaskAdmin", __.join("task/"));
 
+    /**
+     * 物料计划
+     *
+     * <p lang="en">
+     */
     /**/MenuNode materialPlanAdmin = entry(PURCHASE, 20, "materialPlanAdmin", __.join("plan/"));
 
-    /**/MenuNode deliveryNoteListAdmin = entry(_saleMenu.SALEMGMT, 50, "deliveryNoteListAdmin", __.join("delivery/list.jsf"));
+    /**
+     * 送货单
+     *
+     * <p lang="en">
+     */
     /**/MenuNode deliveryNoteAdmin = entry(_saleMenu.SALEMGMT, 51, "deliveryNoteAdmin", __.join("delivery/"));
 
-    /**/MenuNode makeProcessListAdmin = entry(PRODUCTION, 60, "makeProcessListAdmin", __.join("process/list.jsf"));
+    /**
+     * 工艺流转单
+     *
+     * <p lang="en">
+     */
     /**/MenuNode makeProcessAdmin = entry(PRODUCTION, 61, "makeProcessAdmin", __.join("process/"));
 
-    /**/MenuNode makeStepItemListAdmin = entry(PRODUCTION, 70, "makeStepItemListAdmin", __.join("stepItem/list.jsf"));
+    /**
+     * 生产数据
+     *
+     * <p lang="en">
+     */
+    /**/MenuNode makeStepItemAdmin = entry(PRODUCTION, 70, "makeStepItemAdmin", __.join("stepItem/"));
 
+    /**
+     * 材料表导入
+     *
+     * <p lang="en">
+     */
     /**/MenuNode batchImport = entry(PRODUCTION, 80, "batchImport", __.join("import/"));
+
+    /**
+     * 生产进度查询
+     *
+     * <p lang="en">
+     */
     /**/MenuNode productionSchedule = entry(PRODUCTION, 90, "productionSchedule", __.join("yield/"));
 
     static Location __Inv = WEB_APP.join(SEMInventoryModule.PREFIX_);
 
+    /**
+     * 生产入库
+     *
+     * <p lang="en">
+     */
     /**/MenuNode factoryTakeIn = entry(_invMenu.INVENTORY, 90, "factoryTakeIn", __Inv.join("stock/FACTORY_IN/"));
+
+    /**
+     * 生产出库
+     *
+     * <p lang="en">
+     */
     /**/MenuNode factoryTakeOut = entry(_invMenu.INVENTORY, 91, "factoryTakeOut", __Inv.join("stock/FACTORY_OUT/"));
+
 }

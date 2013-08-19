@@ -10,6 +10,11 @@ import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
+ * 资产期结快照
+ *
+ * <p lang="en">
+ * Account Snapshot
+ *
  * {@link #getEndTime() end-time} is used as the snapshot time.
  */
 @Entity

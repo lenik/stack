@@ -13,6 +13,9 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
+ * 资产期结快照条目
+ *
+ * <p lang="en">
  * Accounting summary snapshot.
  * <p>
  * beginTime is unused, endTime is for timestamp.

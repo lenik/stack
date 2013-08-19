@@ -9,6 +9,9 @@ import com.bee32.sem.material.entity.StockWarehouse;
  * 盘点单
  *
  * 仓库的盘点单据。
+ *
+ * <p lang="en">
+ * Stocktaking Order
  */
 @Entity
 @DiscriminatorValue("STK")

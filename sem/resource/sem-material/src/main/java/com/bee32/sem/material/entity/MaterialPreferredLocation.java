@@ -19,6 +19,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 物料预设库位
  *
  * 物料入库时的推荐的库存位置。
+ *
+ * <p lang="en">
+ * Material Preferred Location
  */
 @Entity
 @Blue

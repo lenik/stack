@@ -3,6 +3,11 @@ package com.bee32.sem.world.monetary;
 import java.io.Serializable;
 import java.util.Currency;
 
+/**
+ * 汇率插值表缓存键
+ *
+ * <p lang="en">
+ */
 public class FxrMapKey
         implements Serializable {
 

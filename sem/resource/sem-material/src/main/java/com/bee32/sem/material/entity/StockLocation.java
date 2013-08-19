@@ -16,7 +16,10 @@ import com.bee32.sem.world.thing.Unit;
 /**
  * 库位
  *
- * 在某空间划分下，仓库中的具体位置。
+ * 在某空间划分下，${tr.inventory.warehouse}中的位置，可以按树形组织。
+ *
+ * <p lang="en">
+ * Stock Location
  *
  * <p>
  * Usage:

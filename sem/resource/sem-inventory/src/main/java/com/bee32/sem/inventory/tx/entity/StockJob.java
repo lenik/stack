@@ -22,6 +22,9 @@ import com.bee32.sem.process.base.ProcessEntity;
  * 库存作业
  *
  * 库存相关的作业。
+ *
+ * <p lang="en">
+ * Stock Job
  */
 // @MappedSuperclass
 @Entity

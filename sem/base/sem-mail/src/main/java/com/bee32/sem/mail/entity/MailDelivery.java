@@ -1,6 +1,12 @@
 package com.bee32.sem.mail.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -10,9 +16,12 @@ import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.mail.MailFlags;
 
 /**
- * 邮件分发
+ * 邮件递送复本
  *
  * 分发邮件副本到相关用户。
+ *
+ * <p lang="en">
+ * Mail Delivery
  */
 @Entity
 @Pink

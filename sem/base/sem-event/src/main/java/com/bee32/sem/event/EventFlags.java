@@ -2,6 +2,11 @@ package com.bee32.sem.event;
 
 import com.bee32.plover.arch.util.Flags32;
 
+/**
+ * 事件标识位
+ *
+ * <p lang="en">
+ */
 public class EventFlags
         extends Flags32 {
 

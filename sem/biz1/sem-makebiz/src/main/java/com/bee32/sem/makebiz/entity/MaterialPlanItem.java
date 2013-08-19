@@ -19,9 +19,12 @@ import com.bee32.sem.material.entity.Material;
 import com.bee32.sem.people.entity.Party;
 
 /**
- * 明细
+ * 物料计划明细
  *
- * 物料计划明细项目。
+ * 物料计划的明细项目。
+ *
+ * <p lang="en">
+ * Material Plan Item
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "material_plan_item_seq", allocationSize = 1)

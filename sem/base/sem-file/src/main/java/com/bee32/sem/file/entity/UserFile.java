@@ -4,7 +4,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
@@ -18,6 +28,9 @@ import com.bee32.sem.people.entity.Party;
  * 用户管理的文件。
  *
  * label = 用户填写的文件标题（用于显示）。
+ *
+ * <p lang="en">
+ * User File
  */
 @Entity
 @Green
@@ -68,6 +81,9 @@ public class UserFile
      * 文件数据
      *
      * 大块的文件数据。
+     *
+     * <p lang="en">
+     * File Bllob
      */
     @ManyToOne(optional = false)
     public FileBlob getFileBlob() {
@@ -100,6 +116,9 @@ public class UserFile
      * 用于文件的分类。
      *
      * 若未指定，则在垃圾箱中。
+     *
+     * <p lang="en">
+     * Folder
      */
     @ManyToOne
     public UserFolder getFolder() {
@@ -114,6 +133,9 @@ public class UserFile
      * 文件日期
      *
      * 用于说明文件相关事件的日期（业务日期）。
+     *
+     * <p lang="en">
+     * File Date
      */
     @Temporal(TemporalType.DATE)
     public Date getFileDate() {
@@ -128,6 +150,9 @@ public class UserFile
      * 过期时间
      *
      * 用于说明文件相关事件的有效期。
+     *
+     * <p lang="en">
+     * Expired Date
      */
     @Temporal(TemporalType.DATE)
     public Date getExpiredDate() {
@@ -142,6 +167,9 @@ public class UserFile
      * 标签集
      *
      * 用户为文件添加的标签。
+     *
+     * <p lang="en">
+     * Tags
      */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "UserFileTags", //

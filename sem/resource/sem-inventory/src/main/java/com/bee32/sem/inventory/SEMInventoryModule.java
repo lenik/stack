@@ -5,6 +5,12 @@ import com.bee32.sem.SEMOids;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.module.EnterpriseModule;
 
+/**
+ * SEM 库存管理模块
+ *
+ * <p lang="en">
+ * SEM Inventory
+ */
 @Oid({ 3, 15, SEMOids.Resource, SEMOids.resource.Inventory })
 public class SEMInventoryModule
         extends EnterpriseModule {

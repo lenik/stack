@@ -9,6 +9,9 @@ import com.bee32.plover.ox1.xp.XPool30;
  * 物料属性池
  *
  * 用于提供附加的物料属性。
+ *
+ * <p lang="en">
+ * Material Attributes Pool
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "materialxp_seq", allocationSize = 1)

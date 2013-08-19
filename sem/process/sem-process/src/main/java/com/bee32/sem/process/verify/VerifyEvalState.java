@@ -8,6 +8,12 @@ import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.EventStateClass;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
+/**
+ * 审核状态
+ *
+ * <p lang="en">
+ * Verify State
+ */
 public class VerifyEvalState
         extends EventState<VerifyEvalState> {
 
@@ -107,11 +113,52 @@ public class VerifyEvalState
         return new VerifyEvalState(index, name, stagefinalized, eventFlags);
     }
 
+    /**
+     * 不可用
+     *
+     * <p lang="en">
+     * (n/a)
+     */
     public static final VerifyEvalState NOT_APPLICABLE = _(0, "NOT_APPLICABLE", INIT, EventFlags.WARNING);
+
+    /**
+     * 未知
+     *
+     * <p lang="en">
+     * Unknown
+     */
     public static final VerifyEvalState UNKNOWN = _(1, "UNKNOWN", INIT, 0);
+
+    /**
+     * 已审核
+     *
+     * <p lang="en">
+     * Verified
+     */
     public static final VerifyEvalState VERIFIED = _(2, "VERIFIED", END, EventFlags.NOTICE);
+
+    /**
+     * 拒绝
+     *
+     * <p lang="en">
+     * Rejected
+     */
     public static final VerifyEvalState REJECTED = _(3, "REJECTED", END, EventFlags.NOTICE);
+
+    /**
+     * 审核中
+     *
+     * <p lang="en">
+     * Pending
+     */
     public static final VerifyEvalState PENDING = _(4, "PENDING", RUNNING, 0);
+
+    /**
+     * 无效
+     *
+     * <p lang="en">
+     * Invalid
+     */
     public static final VerifyEvalState INVALID = _(5, "INVALID", END, EventFlags.ERROR);
 
     public static void main(String[] args) {

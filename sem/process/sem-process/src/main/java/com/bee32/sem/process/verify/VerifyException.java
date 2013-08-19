@@ -2,6 +2,12 @@ package com.bee32.sem.process.verify;
 
 import com.bee32.sem.process.ProcessSecurityException;
 
+/**
+ * 审核异常
+ *
+ * <p lang="en">
+ * Verify Exception
+ */
 public class VerifyException
         extends ProcessSecurityException {
 

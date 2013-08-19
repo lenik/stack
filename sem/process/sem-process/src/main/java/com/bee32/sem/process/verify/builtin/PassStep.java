@@ -13,6 +13,9 @@ import com.bee32.plover.util.PrettyPrintStream;
 
 /**
  * 审核步骤
+ *
+ * <p lang="en">
+ * Pass Step
  */
 @Entity
 @Blue

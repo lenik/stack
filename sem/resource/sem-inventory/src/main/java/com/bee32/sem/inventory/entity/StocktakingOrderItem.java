@@ -11,6 +11,9 @@ import javax.persistence.Transient;
  * 盘单明细
  *
  * 仓库盘点的明细条目。
+ *
+ * <p lang="en">
+ * Stocktaking Order Item
  */
 @Entity
 @DiscriminatorValue("STK")

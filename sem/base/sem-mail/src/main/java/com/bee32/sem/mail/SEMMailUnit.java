@@ -9,6 +9,12 @@ import com.bee32.sem.mail.entity.MailFilter;
 import com.bee32.sem.mail.entity.MailFolder;
 import com.bee32.sem.mail.entity.Message;
 
+/**
+ * SEM 邮件系统数据单元
+ *
+ * <p lang="en">
+ * SEM Mail Unit
+ */
 @ImportUnit(IcsfAccessUnit.class)
 public class SEMMailUnit
         extends PersistenceUnit {

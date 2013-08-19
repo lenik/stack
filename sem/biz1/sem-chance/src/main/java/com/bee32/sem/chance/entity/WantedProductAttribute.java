@@ -11,6 +11,8 @@ import com.bee32.plover.orm.entity.EntityAuto;
  * 选型产品的附加属性
  *
  * 除了规格型号外，其他的附加属性。
+ *
+ * <p lang="en">
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "wanted_product_attribute_seq", allocationSize = 1)

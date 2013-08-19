@@ -7,6 +7,12 @@ import com.bee32.sem.api.AbstractSalaryVariableProvider;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.hr.entity.PersonEducationType;
 
+/**
+ * 学历参数提供器
+ *
+ * <p lang="en">
+ * Education Variable Provider
+ */
 public class EducationTypeVariableProvider
         extends AbstractSalaryVariableProvider {
 

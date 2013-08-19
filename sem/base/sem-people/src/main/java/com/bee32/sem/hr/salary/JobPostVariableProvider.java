@@ -7,6 +7,12 @@ import com.bee32.sem.api.AbstractSalaryVariableProvider;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.hr.entity.JobPost;
 
+/**
+ * 工作岗位参数提供器
+ *
+ * <p lang="en">
+ * Job Post Variable Provider
+ */
 public class JobPostVariableProvider
         extends AbstractSalaryVariableProvider {
 

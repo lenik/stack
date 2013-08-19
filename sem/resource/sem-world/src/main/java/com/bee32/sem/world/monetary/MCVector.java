@@ -11,6 +11,12 @@ import java.util.TreeMap;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.plover.util.i18n.CurrencyOrder;
 
+/**
+ * 多币种金额矢量
+ *
+ * <p lang="en">
+ * Multi-Currency Vector
+ */
 public class MCVector
         implements Serializable, Iterable<MCValue> {
 

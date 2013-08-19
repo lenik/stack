@@ -20,6 +20,9 @@ import com.bee32.plover.ox1.xp.EntityExt;
  * 逻辑库存
  *
  * 相当于财务帐套的概念。通常一个企业只有一个库存（但有多个仓库）。
+ *
+ * <p lang="en">
+ * Stock Inventory
  */
 @Entity
 @Green

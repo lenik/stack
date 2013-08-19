@@ -17,6 +17,9 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
  * 调色板
  *
  * 用于色彩信息交换的标准调色板。
+ *
+ * <p lang="en">
+ * Palette
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "palette_seq", allocationSize = 1)

@@ -2,6 +2,11 @@ package com.bee32.sem.material.entity;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 物料分类样本
+ *
+ * <p lang="en">
+ */
 public class MaterialCategories
         extends StandardSamples {
 

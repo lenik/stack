@@ -25,6 +25,9 @@ import com.bee32.sem.make.entity.Part;
  * 工艺流转单
  *
  * 根据产品的BOM和预设的工艺参数，由生产任务形成工艺流转单。
+ *
+ * <p lang="en">
+ * Make Process
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_process_seq", allocationSize = 1)
@@ -54,27 +57,27 @@ public class MakeProcess
      */
     @ManyToOne(optional = false)
     public MakeTaskItem getTaskItem() {
-	return taskItem;
+        return taskItem;
     }
 
-	public void setTaskItem(MakeTaskItem taskItem) {
-	this.taskItem = taskItem;
+    public void setTaskItem(MakeTaskItem taskItem) {
+        this.taskItem = taskItem;
     }
 
-	public void setTaskItemEven(MakeTaskItem taskItem) {
-		this.taskItem = taskItem;
-		this.quantity = taskItem.getQuantity();
-		this.deadline = taskItem.deadline;
-	}
+    public void setTaskItemEven(MakeTaskItem taskItem) {
+        this.taskItem = taskItem;
+        this.quantity = taskItem.getQuantity();
+        this.deadline = taskItem.deadline;
+    }
 
-	/**
-	 * 产品
-	 *
-	 * 工艺流转单对应的产品。
-	 *
-	 * @return
-	 */
-	@ManyToOne(optional = false)
+    /**
+     * 产品
+     *
+     * 工艺流转单对应的产品。
+     *
+     * @return
+     */
+    @ManyToOne(optional = false)
     public Part getPart() {
         return part;
     }

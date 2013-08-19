@@ -16,9 +16,12 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
- * 社会档案记录
+ * 人事历史档案
  *
  * 在公司内部记录的自然人或组织机构发生的重要事件。
+ *
+ * <p lang="en">
+ * Party Record
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "party_record_seq", allocationSize = 1)

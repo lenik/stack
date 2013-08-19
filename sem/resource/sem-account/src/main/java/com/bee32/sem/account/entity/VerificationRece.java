@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 /**
  * 应收核销类
  *
- * @author jack
- *
  */
 @Entity
 @DiscriminatorValue("RECE")

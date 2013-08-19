@@ -6,6 +6,12 @@ import java.util.List;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
 
+/**
+ * 合成菜单管理器
+ *
+ * <p lang="en">
+ * Menu Composite Manager
+ */
 public class MenuCompositeManager {
 
     static List<Class<? extends MenuComposite>> mcClasses;

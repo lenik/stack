@@ -19,10 +19,7 @@ import com.bee32.sem.world.monetary.MCValue;
 /**
  * 票据三总结算方式的基类:贴现，背书，结算
  *
- * @author jack
- *
- *         票据结算日期：beginTime
- *
+ * @rewrite 票据结算日期：beginTime
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

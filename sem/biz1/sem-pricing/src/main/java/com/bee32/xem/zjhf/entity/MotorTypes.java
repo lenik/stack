@@ -2,6 +2,11 @@ package com.bee32.xem.zjhf.entity;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 电机类型样本
+ *
+ * <p lang="en">
+ */
 public class MotorTypes
         extends StandardSamples {
 

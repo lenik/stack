@@ -10,6 +10,12 @@ import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.attendance.util.AttendanceCriteria;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 
+/**
+ * 出勤参数提供器
+ *
+ * <p lang="en">
+ * Attendance Variable Provider
+ */
 public class AttendanceVariableProvider
         extends AbstractSalaryVariableProvider {
 

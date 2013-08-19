@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 /**
  * 应付核销类
  *
- * @author jack
+ * <p lang="en">
  *
  */
 @Entity

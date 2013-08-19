@@ -17,7 +17,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 @Entity
 @Table(name = "zjhf_motor")
 @SequenceGenerator(name = "idgen", sequenceName = "zjhf_motor_seq", allocationSize = 1)
-public class Motor extends UIEntityAuto<Long> {
+public class Motor
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,7 +62,5 @@ public class Motor extends UIEntityAuto<Long> {
     public void setValue(BigDecimal value) {
         this.value = value;
     }
-
-
 
 }

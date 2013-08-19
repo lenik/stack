@@ -7,6 +7,8 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 /**
  * 机会分类
  *
+ * <p lang="en">
+ * Chance Category
  */
 @Entity
 public class ChanceCategory

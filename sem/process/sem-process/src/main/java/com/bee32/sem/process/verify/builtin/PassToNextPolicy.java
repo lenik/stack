@@ -28,6 +28,9 @@ import com.bee32.sem.process.verify.VerifyResult;
 
 /**
  * 依序审核策略
+ *
+ * <p lang="en">
+ * Pass-To-Next Policy
  */
 @Entity
 @DiscriminatorValue("P2N")

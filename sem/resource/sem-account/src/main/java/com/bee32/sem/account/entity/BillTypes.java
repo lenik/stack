@@ -4,6 +4,8 @@ import com.bee32.plover.orm.sample.StandardSamples;
 
 /**
  * 票据类型样本
+ *
+ * <p lang="en">
  */
 public class BillTypes
         extends StandardSamples {

@@ -9,9 +9,12 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
- * 科目
+ * 资产会计科目
  *
  * 会计科目。
+ *
+ * <p lang="en">
+ * Account Subject
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_subject_seq", allocationSize = 1)

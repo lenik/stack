@@ -4,6 +4,12 @@ import java.util.Collection;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
+/**
+ * 邮件发送方向
+ *
+ * <p lang="en">
+ * Mail Orientation
+ */
 public class MailOrientation
         extends EnumAlt<Integer, MailOrientation> {
 

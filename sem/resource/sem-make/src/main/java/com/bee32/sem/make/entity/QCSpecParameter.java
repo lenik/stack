@@ -18,6 +18,10 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * <li>value = 标准值
  * <li>description = 标准描述
  * </ul>
+ *
+ *
+ * <p lang="en">
+ * QC Spec Parameter
  */
 @Entity
 @Blue

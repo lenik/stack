@@ -8,6 +8,12 @@ import javax.free.IFile;
 import javax.free.JavaioFile;
 import javax.free.SystemProperties;
 
+/**
+ *
+ *
+ * <p lang="en">
+ * Local Storage
+ */
 public class LocalStorage
         implements Serializable {
 

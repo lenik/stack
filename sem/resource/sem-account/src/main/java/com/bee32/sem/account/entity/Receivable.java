@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 
 /**
  * 应收单
+ *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("RABLE")

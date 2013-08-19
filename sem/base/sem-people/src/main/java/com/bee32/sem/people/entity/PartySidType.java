@@ -6,9 +6,12 @@ import javax.persistence.Entity;
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
- * 涉众身份类型
+ * 公司/自然人证件类型
  *
  * 用于对身份证件信息的分类。
+ *
+ * <p lang="en">
+ * Party SID Type
  */
 @Entity
 public class PartySidType

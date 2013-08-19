@@ -3,13 +3,18 @@ package com.bee32.sem.hr.entity;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 
 /**
  * 雇员技能等级
+ *
+ * <p lang="en">
+ * Person Skill Category Level
  */
+@Entity
 public class PersonSkillCategoryLevel
         extends EntityAuto<Integer>
         implements DecimalConfig {

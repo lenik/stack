@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 
 /**
  * 应付票据
+ *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("PNOTE")

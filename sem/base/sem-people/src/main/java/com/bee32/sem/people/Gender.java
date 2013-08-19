@@ -4,6 +4,11 @@ import java.util.Collection;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
+/**
+ *
+ *
+ * <p lang="en">
+ */
 public class Gender
         extends EnumAlt<Character, Gender> {
 
@@ -29,8 +34,28 @@ public class Gender
         return forValue(new Character(value));
     }
 
+    /**
+     * 男
+     *
+     * <p lang="en">
+     * Male
+     */
     public static final Gender MALE = new Gender('m', "male");
+
+    /**
+     * 女
+     *
+     * <p lang="en">
+     * Female
+     */
     public static final Gender FEMALE = new Gender('f', "female");
+
+    /**
+     * 其它
+     *
+     * <p lang="en">
+     * Other
+     */
     public static final Gender OTHER = new Gender('x', "other");
 
 }

@@ -13,6 +13,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
  * 学历字典类
  *
  * 定义学历相关的词汇。
+ *
+ * <p lang="en">
+ * Person Education Type
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_education_seq", allocationSize = 1)

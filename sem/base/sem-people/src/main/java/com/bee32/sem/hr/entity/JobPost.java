@@ -13,6 +13,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
  * 岗位字典类
  *
  * 定义了公司中存在的各种工作岗位。
+ *
+ * <p lang="en">
+ * Job Post
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "job_post_seq", allocationSize = 1)

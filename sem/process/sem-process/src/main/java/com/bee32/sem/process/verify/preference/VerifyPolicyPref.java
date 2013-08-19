@@ -7,6 +7,12 @@ import javax.persistence.ManyToOne;
 import com.bee32.plover.ox1.typePref.TypePrefEntity;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
+/**
+ * 审核策略配置项
+ *
+ * <p lang="en">
+ * Verify Policy Preference
+ */
 @Entity
 public class VerifyPolicyPref
         extends TypePrefEntity {
@@ -32,6 +38,11 @@ public class VerifyPolicyPref
         description = o.description;
     }
 
+    /**
+     * 应用策略
+     *
+     * <p lang="en">
+     */
     @ManyToOne
     public VerifyPolicy getPreferredPolicy() {
         return preferredPolicy;
@@ -41,6 +52,11 @@ public class VerifyPolicyPref
         this.preferredPolicy = preferredPolicy;
     }
 
+    /**
+     * 描述
+     *
+     * <p lang="en">
+     */
     @Column(length = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;

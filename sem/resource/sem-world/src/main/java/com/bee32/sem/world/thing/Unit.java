@@ -10,6 +10,9 @@ import com.bee32.plover.ox1.dict.NameDict;
  * 单位
  *
  * 衡量单位的标准定义。
+ *
+ * <p lang="en">
+ * Unit
  */
 @Entity
 public class Unit

@@ -3,7 +3,13 @@ package com.bee32.sem.hr.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -20,7 +26,11 @@ import com.bee32.sem.hr.util.ScoreLevelMap;
  * <li>技能的级别必须预先定义，如英语3级、4级，不能有”其它级别“这一选项。
  * </ul>
  *
- * 字段 {@link #getDescription() description} 中描述获得技能的附加信息。
+ *
+ * <p lang="en">
+ * Person Skill
+ *
+ * @rewrite description 描述获得技能的附加信息。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_skill_seq", allocationSize = 1)

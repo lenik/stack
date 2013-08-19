@@ -7,6 +7,11 @@ import com.bee32.plover.scheduler.quartz.IQuartzJobConfigurer;
 import com.bee32.plover.test.ServiceCollector;
 
 /**
+ * Quartz作业收集器
+ *
+ * <p lang="en">
+ * Quartz Job Collector
+ *
  * @see AbstractQuartzJobConfigurer
  */
 public class QjcCollector

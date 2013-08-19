@@ -19,7 +19,7 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.make.entity.MakeStepModel;
 
 /**
- * 工艺点
+ * 生产工艺
  *
  * 产品的每一个生产步骤所对应的信息都记录在本类和本类的items中
  *
@@ -92,7 +92,6 @@ public class MakeStep
         this.model = model;
     }
 
-
     /**
      * 是否完成
      *
@@ -120,7 +119,7 @@ public class MakeStep
     }
 
     public void setItems(List<MakeStepItem> items) {
-        if(items == null)
+        if (items == null)
             throw new NullPointerException("items");
         this.items = items;
     }

@@ -6,8 +6,7 @@ import javax.persistence.Entity;
 /**
  * 应付初始化
  *
- * @author jack
- *
+ * <p lang="en">
  */
 @Entity
 @DiscriminatorValue("PINIT")

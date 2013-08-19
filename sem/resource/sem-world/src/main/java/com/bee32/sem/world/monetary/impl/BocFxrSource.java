@@ -22,7 +22,10 @@ import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
 
 /**
- * @test BocFxrUpdaterTest
+ * 中国银行汇率源
+ *
+ * <p lang="en">
+ * BOC FXR Source
  */
 public class BocFxrSource
         extends OnlineFxrSource

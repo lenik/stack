@@ -1,6 +1,5 @@
 package com.bee32.xem.zjhf;
 
-
 import com.bee32.icsf.IcsfAccessUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -14,6 +13,11 @@ import com.bee32.xem.zjhf.entity.MotorType;
 import com.bee32.xem.zjhf.entity.ValvePricingFormula;
 import com.bee32.xem.zjhf.entity.ValveType;
 
+/**
+ * 风机报价
+ *
+ * <p lang="en">
+ */
 @ImportUnit({ IcsfAccessUnit.class, SEMWorldUnit.class })
 public class SEMZjhfUnit
         extends PersistenceUnit {

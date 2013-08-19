@@ -21,6 +21,9 @@ import com.bee32.plover.ox1.color.Blue;
  * 对上传共享的文件的描述
  *
  * Updated when * fileBlob.mtime > fileattr[*].mtime.
+ *
+ * <p lang="en">
+ * File Attribute
  */
 @Entity
 @Blue

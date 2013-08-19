@@ -7,11 +7,12 @@ import com.bee32.sem.pricing.entity.PricingFormula;
 
 /**
  * 风机价格公式
- *
  */
 @Entity
 @DiscriminatorValue("AIR")
-public class AirBlowerPricingFormula extends PricingFormula {
+public class AirBlowerPricingFormula
+        extends PricingFormula {
+
     private static final long serialVersionUID = 1L;
 
 }

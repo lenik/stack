@@ -11,9 +11,12 @@ import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
 
 /**
- * 职务关联
+ * 人员角色
  *
- * 某人在某个公司中的具体职务。
+ * 自然人在公司中的角色。
+ *
+ * <p lang="en">
+ * Person Role In Organization Unit
  */
 @Entity
 @Yellow

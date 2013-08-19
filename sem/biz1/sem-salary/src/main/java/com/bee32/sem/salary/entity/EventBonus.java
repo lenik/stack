@@ -15,6 +15,9 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
  * 特殊事件的工资增加或减少，eg:工伤等。
  *
  * beginTime
+ *
+ * <p lang="en">
+ * Event Bonus
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "event_bonus_seq", allocationSize = 1)

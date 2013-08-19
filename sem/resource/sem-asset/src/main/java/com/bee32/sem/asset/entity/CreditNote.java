@@ -8,12 +8,13 @@ import javax.persistence.Entity;
  *
  * 企业收到款项时填制的单据。
  *
- * @author jack
- *
+ * <p lang="en">
+ * Credit Note
  */
 @Entity
 @DiscriminatorValue("CRED")
-public class CreditNote extends FundFlow {
+public class CreditNote
+        extends FundFlow {
 
     private static final long serialVersionUID = 1L;
 
