@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.collections15.iterators.IteratorEnumeration;
 
 /**
- * @deprecated Please use request attributes instead of parameters.
+ * NOTICE: Please use request attributes instead of parameters.
  */
-@Deprecated
 public class ModifiableHttpServletRequest
         extends HttpServletRequestWrapper {
 
     private Map<String, String[]> copy;
+    private String pathInfo;
 
     public ModifiableHttpServletRequest(HttpServletRequest proxy) {
         super(proxy);
@@ -28,6 +28,7 @@ public class ModifiableHttpServletRequest
         Map<String, String[]> origMap = proxy.getParameterMap();
 
         copy = new TreeMap<String, String[]>(origMap);
+        pathInfo = proxy.getPathInfo();
     }
 
     @Override
@@ -61,6 +62,15 @@ public class ModifiableHttpServletRequest
 
     public void setParameterValues(String name, String[] values) {
         copy.put(name, values);
+    }
+
+    @Override
+    public String getPathInfo() {
+        return pathInfo;
+    }
+
+    public void setPathInfo(String pathInfo) {
+        this.pathInfo = pathInfo;
     }
 
     @Override
