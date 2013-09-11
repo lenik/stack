@@ -7,9 +7,9 @@ import java.util.Date;
 import javax.free.InputStreamSource;
 import javax.free.OutputStreamTarget;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.util.HTTPDates;
@@ -33,10 +33,8 @@ public class HttpBlobDumper {
      * <li>filename: Download as filename.
      * </ul>
      */
-    public static ActionResult dumpBlob(ActionRequest req, ActionResult result)
+    public static ActionResult dumpBlob(String actionName, HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-
-        HttpServletResponse response = result.getResponse();
 
         FileBlob blob = (FileBlob) req.getAttribute(ATTR_BLOB);
         if (blob == null)
@@ -48,26 +46,25 @@ public class HttpBlobDumper {
 
         String contentType = blob.getContentType();
         if (contentType != null)
-            response.setContentType(contentType);
+            resp.setContentType(contentType);
 
         long length = blob.getLength();
         if (length < Integer.MAX_VALUE)
-            response.setContentLength((int) length);
+            resp.setContentLength((int) length);
 
         /**
          * @see RFC 2183 2.10
          */
-        String actionName = req.getActionName();
         {
             String contentDisposition = ContentDisposition.format(filename, //
                     "download".equals(actionName), //
                     "view".equals(actionName));
 
             if (contentDisposition != null) {
-                response.setHeader("Content-Disposition", contentDisposition);
+                resp.setHeader("Content-Disposition", contentDisposition);
 
                 if (description != null)
-                    response.setHeader("Content-Description", description);
+                    resp.setHeader("Content-Description", description);
             }
         }
 
@@ -80,12 +77,12 @@ public class HttpBlobDumper {
          *      date values is not sufficient, or where the origin server wishes to avoid certain
          *      paradoxes that might arise from the use of modification dates.
          */
-        response.setHeader("ETag", "FileBlob/" + hash);
+        resp.setHeader("ETag", "FileBlob/" + hash);
 
         /**
          * @see RFC 2616 14.9: max-age=delta-seconds
          */
-        response.setHeader("Cache-Control", "max-age=" + 365 * 86400);
+        resp.setHeader("Cache-Control", "max-age=" + 365 * 86400);
 
         /**
          * @see RFC 2616 14.21
@@ -95,7 +92,7 @@ public class HttpBlobDumper {
          *      NOT send Expires dates more than one year in the future.
          */
         Date oneYear = new Date(new Date().getTime() + 365 * 86400 * 1000000);
-        response.setHeader("Expires", HTTPDates.RFC1123.format(oneYear));
+        resp.setHeader("Expires", HTTPDates.RFC1123.format(oneYear));
 
         /**
          * @see RFC 2616 14.29
@@ -103,14 +100,14 @@ public class HttpBlobDumper {
          *      HTTP/1.1 servers SHOULD send Last-Modified whenever feasible
          */
         Date lastModified = blob.getLastModified();
-        response.setHeader("Last-Modified", HTTPDates.RFC1123.format(lastModified));
+        resp.setHeader("Last-Modified", HTTPDates.RFC1123.format(lastModified));
 
         /**
          * Stream the content.
          */
         try {
             InputStream in = blob.newInputStream();
-            ServletOutputStream out = response.getOutputStream();
+            ServletOutputStream out = resp.getOutputStream();
 
             InputStreamSource source = new InputStreamSource(in);
             OutputStreamTarget target = new OutputStreamTarget(out);

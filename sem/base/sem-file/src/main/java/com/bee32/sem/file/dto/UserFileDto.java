@@ -100,8 +100,6 @@ public class UserFileDto
         this.fileBlob = fileBlob;
     }
 
-
-
     public UserFolderDto getFolder() {
         return folder;
     }
@@ -116,7 +114,6 @@ public class UserFileDto
         else
             return getName();
     }
-
 
     public FileName getFileName() {
         return fileName;
@@ -151,7 +148,7 @@ public class UserFileDto
     }
 
     public String getHref(String mode) {
-        Location location = WEB_APP.join(UserFileController.PREFIX + "/" + mode + ".do?id=" + id);
+        Location location = WEB_APP.join("/servlet/user-file/" + mode + "/" + id + "/" + fileName);
         String href = location.resolveAbsolute(ThreadHttpContext.getRequest());
         return href;
     }

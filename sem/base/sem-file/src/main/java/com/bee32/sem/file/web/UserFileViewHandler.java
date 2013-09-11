@@ -38,7 +38,7 @@ public class UserFileViewHandler
         req.setAttribute(HttpBlobDumper.ATTR_FILENAME, filename);
         req.setAttribute(HttpBlobDumper.ATTR_DESCRIPTION, description);
 
-        return HttpBlobDumper.dumpBlob(req, result);
+        return HttpBlobDumper.dumpBlob(req.getActionName(), req, result.getResponse());
     }
 
 }

@@ -30,7 +30,7 @@ public class FileBlobViewHandler
 
         req.setAttribute(HttpBlobDumper.ATTR_BLOB, blob);
 
-        return HttpBlobDumper.dumpBlob(req, result);
+        return HttpBlobDumper.dumpBlob(req.getActionName(), req, result.getResponse());
     }
 
 }
