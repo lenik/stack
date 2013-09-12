@@ -20,18 +20,11 @@
 
     <ui:insert name="styles"/>
 
-    <ui:remove>
-        <!-- ************************************************************ -->
-        <!-- 使用 Primefaces 内置的 jQuery。                                -->
-        <!-- 其中：                                                        -->
-        <!--  Primefaces 2.X 内置为 jQuery-1.4，并且默认开启 jQuery.noConflict -->
-        <!--  Primefaces 3.X 内置为 jQuery-1.5，并且默认关闭 jQuery.noConflict -->
-        <!-- ************************************************************ -->
-        <script language="javascript" src="http://code.jquery.com/jquery-1.4.4.js"></script>
-        <script language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
-    </ui:remove>
-
+    <script language="javascript" src="${location.LIB_JS}/jquery.min.js"></script>
+    <script language="javascript" src="${location.LIB_JS}/jquery-ui.min.js"></script>
     <script language="javascript">
+        var j$100 = jQuery.noConflict(true);
+
         document.contextPath = "${location.WEB_APP}";
         document.WEB_APP = "${location.WEB_APP}";
         document.sessionTimeout = ${viewConfig.sessionTimeout} - 10; // Prompt 10s before real timeout
@@ -133,22 +126,7 @@
 
     <div id="scriptsJQueryUI">
         <ui:insert name="scripts.jquery.ui">
-            <c:set var="JQUERY_UI" value="${location.LIB_3RDPARTY}/jquery-ui-1.8.2.custom/development-bundle" />
 
-            <ui:remove>
-                <!-- ************************************************************ -->
-                <!-- 使用下面的 dummy 来强制引入 primefaces 的库脚本。 -->
-                <!-- ************************************************************ -->
-                <link type="text/css" rel="stylesheet" href="${JQUERY_UI}/themes/base/jquery.ui.all.css" />
-                <script language="javascript" src="${JQUERY_UI}/external/jquery.bgiframe-2.1.1.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.core.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.widget.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.mouse.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.button.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.dialog.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.autocomplete.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.datepicker.js"></script>
-            </ui:remove>
             <h:form id="dm_form" style="display: none;">
                 A Dummy Form.
                 <p:dataTable id="tab" />
@@ -156,16 +134,6 @@
                     <p:tab title="" />
                 </p:tabView>
             </h:form>
-
-            <ui:remove>
-                <div id="scriptsJQueryUIDefault">
-                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.draggable.js"></script>
-                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.position.js"></script>
-                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.resizable.js"></script>
-                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.effects.core.js"></script>
-                    <script language="javascript" src="${JQUERY_UI}/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
-                </div>
-            </ui:remove>
 
             <div id="preScripts">
                 <ui:insert name="pre-scripts">
