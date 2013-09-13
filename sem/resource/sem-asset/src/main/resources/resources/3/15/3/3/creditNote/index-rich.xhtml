@@ -9,7 +9,7 @@
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
 
-    <ui:define name="toolbar.left">
+    <ui:define name="toolbar.left.1">
         <p:separator />
         <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
             disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false" />
