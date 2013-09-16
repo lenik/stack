@@ -20,6 +20,10 @@ public class SelectableList<T>
         this.list = list;
     }
 
+    public List<T> getList() {
+        return list;
+    }
+
     @Override
     public String getRowKey(T object) {
         int index = list.indexOf(object);
@@ -40,7 +44,8 @@ public class SelectableList<T>
         return new SelectableList<>(list);
     }
 
-    // Delegates
+    /** ⇱ Implementation Of {@link List}. */
+    ;
 
     @Override
     public int size() {
@@ -113,16 +118,6 @@ public class SelectableList<T>
     }
 
     @Override
-    public boolean equals(Object o) {
-        return list.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return list.hashCode();
-    }
-
-    @Override
     public T get(int index) {
         return list.get(index);
     }
@@ -165,6 +160,11 @@ public class SelectableList<T>
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return list.subList(fromIndex, toIndex);
+    }
+
+    @Override
+    public String toString() {
+        return list.toString();
     }
 
 }
