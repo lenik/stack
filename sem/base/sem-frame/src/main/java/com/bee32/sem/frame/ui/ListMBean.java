@@ -1,6 +1,6 @@
 package com.bee32.sem.frame.ui;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,8 +32,6 @@ public abstract class ListMBean<T>
     int openedIndex = -1;
     boolean editing;
 
-    int[] EMPTY_SELECTION = {};
-
     public ListMBean(Class<T> elementType, Object context) {
         super(elementType, context);
     }
@@ -63,7 +61,7 @@ public abstract class ListMBean<T>
             return null;
 
         int firstIndex = selectedIndexes[0];
-        if (firstIndex >= list.size())
+        if (firstIndex < 0 || firstIndex >= list.size())
             return null;
 
         return list.get(firstIndex);
@@ -73,7 +71,10 @@ public abstract class ListMBean<T>
     public synchronized void setLastSelection(T selection) {
         List<T> list = getList();
         int index = list.indexOf(selection);
-        setSelectedIndexes(index);
+        if (index == -1)
+            setSelectedIndexes(new int[0]);
+        else
+            setSelectedIndexes(index);
     }
 
     public int getLastIndex() {
@@ -85,21 +86,20 @@ public abstract class ListMBean<T>
     }
 
     @Override
-    public synchronized T[] getSelection() {
+    public synchronized List<T> getSelection() {
         int length = selectedIndexes.length;
-        T[] selection = (T[]) Array.newInstance(elementType, length);
+        List<T> selection = new ArrayList<T>(length);
         List<T> list = getList();
-        int off = 0;
         for (int index : selectedIndexes) {
             T element = list.get(index);
-            Array.set(selection, off++, element);
+            selection.add(element);
         }
         return selection;
     }
 
     @Override
-    public synchronized void setSelection(T[] selection) {
-        int length = selection.length;
+    public synchronized void setSelection(List<T> selection) {
+        int length = selection.size();
         int[] indexes = new int[length];
         List<T> list = getList();
         int off = 0;
@@ -149,7 +149,7 @@ public abstract class ListMBean<T>
                 containsOpenedObject = true;
         }
 
-        selectedIndexes = EMPTY_SELECTION;
+        selectedIndexes = new int[0];
         if (containsOpenedObject) {
             openedIndex = -1;
             openedObject = null;
@@ -157,7 +157,7 @@ public abstract class ListMBean<T>
     }
 
     public boolean isSelectionEditable() {
-        T[] selection = getSelection();
+        List<T> selection = getSelection();
         for (T obj : selection)
             if (obj instanceof BaseDto<?>) {
                 BaseDto<?> dto = (BaseDto<?>) obj;
@@ -168,7 +168,7 @@ public abstract class ListMBean<T>
     }
 
     public boolean isSelectionRemovable() {
-        T[] selection = getSelection();
+        List<T> selection = getSelection();
         for (T obj : selection)
             if (obj instanceof BaseDto<?>) {
                 BaseDto<?> dto = (BaseDto<?>) obj;
@@ -219,7 +219,7 @@ public abstract class ListMBean<T>
 
     @Override
     public void showCreateForm() {
-        selectedIndexes = EMPTY_SELECTION;
+        selectedIndexes = new int[0];
         try {
             openedObject = createElement();
             openedIndex = -1;

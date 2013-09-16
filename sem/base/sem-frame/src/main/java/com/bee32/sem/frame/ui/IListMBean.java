@@ -19,9 +19,9 @@ public interface IListMBean<T> {
 
     boolean removeElement(T element);
 
-    T[] getSelection();
+    List<T> getSelection();
 
-    void setSelection(T[] selection);
+    void setSelection(List<T> selection);
 
     T getLastSelection();
 
