@@ -65,11 +65,14 @@
                     <h:panelGroup id="content" layout="block">
                         <h:panelGroup id="dataContainer" layout="block" styleClass="${indexPopup ? 'ui-dialog-data' : ''}">
                             <ui:insert name="dataContainer">
+                                <ui:remove>
+                                    liveResize="true" doesn't work smoothly.
+                                    draggableColumns="true" is not stable.
+                                </ui:remove>
                                 <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
                                     selectionMode="multiple" var="entry" paginator="${cc.attrs.paginator}" rows="${cc.attrs.paginator ? 10 : 10000}"
                                     paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
-                                    resizableColumns="true" liveResize="true" draggableColumns="true" stickyHeader="true"
-                                    rowIndexVar="rowIndex">
+                                    resizableColumns="true" rowIndexVar="rowIndex">
 
                                     <f:attribute name="smooth" value="${cc.attrs.smooth}" />
 
