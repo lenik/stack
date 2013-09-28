@@ -27,9 +27,9 @@ import com.bee32.plover.util.Mimes;
 import com.bee32.sem.asset.dto.PaymentNoteDto;
 import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.asset.entity.PaymentNote;
-import com.bee32.sem.asset.service.AssetService;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @ForEntity(FundFlow.class)
@@ -58,7 +58,7 @@ public class PaymentNoteAdminBean
      * 显示付款对话框时，把付款人copy到临时变量中
      */
     public void showPayDialog() {
-        PaymentNoteDto note = getOpenedObject();
+        PaymentNoteDto note = (PaymentNoteDto) getSingleSelection();
         whoPay = note.getWhoPay();
     }
 
@@ -69,11 +69,16 @@ public class PaymentNoteAdminBean
         }
 
         PersonDto whoPayOld = null;
-        PaymentNoteDto note = getOpenedObject();
+        PaymentNoteDto note = (PaymentNoteDto) getSingleSelection();
         try {
             whoPayOld = note.getWhoPay(); // 保存原来的付款人
             note.setWhoPay(whoPay);
-            BEAN(AssetService.class).pay(note);
+
+            PaymentNote _note = (PaymentNote) note.unmarshal();
+            Person _whoPay = (Person) whoPay.unmarshal();
+            _note.setWhoPay(_whoPay);
+            DATA(PaymentNote.class).update(_note);
+
             uiLogger.info("付款成功");
         } catch (Exception e) {
             note.setWhoPay(whoPayOld); // 如果出错，则还原旧的付款人

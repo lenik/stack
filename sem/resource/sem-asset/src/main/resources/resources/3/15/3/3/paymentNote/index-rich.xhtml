@@ -149,8 +149,8 @@
                     </p:commandButton>
 
                     <t:panelGroup colspan="3">
-                        <p:commandButton value="保存" actionListener="#{bean.pay}" update=":editDialog:form:whoPay"
-                            onclick="waitbox.show();" oncomplete="waitbox.hide();payDialog.hide();" />
+                        <p:commandButton value="保存" actionListener="#{bean.pay}" onclick="waitbox.show();"
+                            oncomplete="waitbox.hide();payDialog.hide();" update=":mainForm ${_contentUpdate} ${mirrorTargets}" />
                     </t:panelGroup>
                 </t:panelGrid>
             </h:form>
