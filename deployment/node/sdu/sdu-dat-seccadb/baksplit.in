@@ -117,9 +117,13 @@ sub _main {
 
         open(IN, "<$file_bak")
             or die "Failed to read from $file_bak";
+
+        my $table;
+        my @buf;
+
         while (<IN>) {
             if (/^COPY\s+(.*?)\s+\(/) {
-                my $table = $1;
+                $table = $1;
                 _log1 "Table: $table";
 
                 unless (-d $outdir) {
@@ -127,17 +131,22 @@ sub _main {
                         or die "Failed to create dir $outdir";
                 }
 
-                my $table_file = "$outdir/$table.bak";
-                open(OUT, ">$table_file")
-                    or die "Failed to write table $table to $table_file";
                 $tee = 1;
             }
 
-            print OUT $_ if $tee;
+            push(@buf, $_) if $tee;
 
             if (/^\\\.$/) {
-                $tee = 0;
+                @buf = sort { copy_lcmp($a, $b) } @buf;
+
+                my $table_file = "$outdir/$table.bak";
+                open(OUT, ">$table_file")
+                    or die "Failed to write table $table to $table_file";
+
+                print OUT $_ for @buf;
                 close OUT;
+                @buf = ();
+                $tee = 0;
             }
         }
         close IN;
@@ -159,6 +168,25 @@ sub _main {
 
 =cut
 # (MODULE FUNCTIONS)
+sub copy_lcmp() {
+    my ($a, $b) = @_;
+
+    return -1 if substr($a, 0, 5) eq 'COPY ';
+    return 1 if $a eq "\\.\n";
+
+    return 1 if substr($b, 0, 5) eq 'COPY ';
+    return -1 if $b eq "\\.\n";
+
+    my $n1 = index($a, "\t");
+    my $n2 = index($b, "\t");
+    if ($n1 != $n2) {
+        return $n1 - $n2;
+    } else {
+        $n1 = substr($a, 0, $n1);
+        $n2 = substr($b, 0, $n2);
+        return int($n1) - int($n2);
+    }
+}
 
 =head1 HISTORY
 
