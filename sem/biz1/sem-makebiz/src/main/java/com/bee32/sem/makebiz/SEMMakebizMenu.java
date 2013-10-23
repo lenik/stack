@@ -43,6 +43,13 @@ public class SEMMakebizMenu
     /**/MenuNode makeOrderAdmin = entry(_saleMenu.SALEMGMT, 20, "makeOrderAdmin", __.join("order/"));
 
     /**
+     * 生产订单List
+     *
+     * <p lang="en">
+     */
+    /**/MenuNode makeOrderList = entry(_saleMenu.SALEMGMT, 19, "makeOrderList", __.join("order/list.jsf"));
+
+    /**
      * 生产任务
      *
      * <p lang="en">
