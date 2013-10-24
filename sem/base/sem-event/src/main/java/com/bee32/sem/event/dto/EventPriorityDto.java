@@ -12,30 +12,25 @@ public class EventPriorityDto
 
     private static final long serialVersionUID = 1L;
 
-    private int priority;
-
     @Override
     protected void _marshal(EventPriority source) {
-        priority = source.getPriority();
     }
 
     @Override
     protected void _unmarshalTo(EventPriority target) {
-        target.setPriority(priority);
     }
 
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-        priority = map.getInt("priority");
     }
 
     public int getPriority() {
-        return priority;
+        return getId_OZ();
     }
 
     public void setPriority(int priority) {
-        this.priority = priority;
+        setId(priority);
     }
 
 }
