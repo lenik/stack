@@ -3,8 +3,11 @@ package com.bee32.sem.chance.entity;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.dict.ShortNameDict;
@@ -23,6 +26,8 @@ public class ChanceStage
         extends ShortNameDict {
 
     private static final long serialVersionUID = 1L;
+
+    private boolean closed;
 
     static TreeMap<Integer, ChanceStage> stages = new TreeMap<Integer, ChanceStage>();
 
@@ -63,6 +68,21 @@ public class ChanceStage
             return null;
         else
             return entry.getValue();
+    }
+
+    /**
+     * 关闭状态
+     *
+     * 指示对应的机会是否已关闭。
+     */
+    @Column(nullable = false)
+    @DefaultValue("false")
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 
 }
