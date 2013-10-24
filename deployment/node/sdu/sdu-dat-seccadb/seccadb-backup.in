@@ -79,7 +79,7 @@ function main() {
         echo "--! DATNAME='$datname'"       >>"$out"
         echo "--! DATDBA='$dba'"            >>"$out"
         echo >>"$out"
-        $PG_DUMP "$datname" | grep -v '^--' >>"$out"
+        $PG_DUMP "$datname" | pg_dump_sort | grep -v '^--' >>"$out"
 
         # split tables
         git rm -r "$outdir/$datname"
