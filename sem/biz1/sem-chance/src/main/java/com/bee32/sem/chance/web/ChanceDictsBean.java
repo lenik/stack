@@ -4,18 +4,8 @@ import java.util.List;
 
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DataViewBean;
-import com.bee32.sem.chance.dto.ChanceActionStyleDto;
-import com.bee32.sem.chance.dto.ChanceCategoryDto;
-import com.bee32.sem.chance.dto.ChanceSourceTypeDto;
-import com.bee32.sem.chance.dto.ChanceStageDto;
-import com.bee32.sem.chance.dto.ProcurementMethodDto;
-import com.bee32.sem.chance.dto.PurchaseRegulationDto;
-import com.bee32.sem.chance.entity.ChanceActionStyle;
-import com.bee32.sem.chance.entity.ChanceCategory;
-import com.bee32.sem.chance.entity.ChanceSourceType;
-import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.entity.ProcurementMethod;
-import com.bee32.sem.chance.entity.PurchaseRegulation;
+import com.bee32.sem.chance.dto.*;
+import com.bee32.sem.chance.entity.*;
 
 public class ChanceDictsBean
         extends DataViewBean {
@@ -24,6 +14,7 @@ public class ChanceDictsBean
 
     List<ChanceCategoryDto> categories;
     List<ChanceSourceTypeDto> sourceTypes;
+    List<ChancePriorityDto> priorities;
     List<ChanceActionStyleDto> actionStyles;
     List<ChanceStageDto> stages;
     List<ProcurementMethodDto> methods;
@@ -49,6 +40,17 @@ public class ChanceDictsBean
             }
         }
         return SelectableList.decorate(sourceTypes);
+    }
+
+    public SelectableList<ChancePriorityDto> getPriorities() {
+        if (priorities == null) {
+            synchronized (this) {
+                if (priorities == null) {
+                    priorities = mrefList(ChancePriority.class, ChancePriorityDto.class, 0);
+                }
+            }
+        }
+        return SelectableList.decorate(priorities);
     }
 
     public SelectableList<ChanceActionStyleDto> getActionStyles() {
