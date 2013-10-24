@@ -22,8 +22,8 @@ public abstract class NumberDict
         super();
     }
 
-    public NumberDict(int number, String alias, String description) {
-        super(alias, description);
+    public NumberDict(int number, String label, String description) {
+        super(label, description);
         this.number = number;
     }
 

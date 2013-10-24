@@ -81,6 +81,7 @@ public abstract class DictEntity<K extends Serializable>
         this.description = description;
     }
 
+    @Override
     protected void formatEntryText(StringBuilder buf) {
         buf.append(getLabel());
         buf.append('/');
