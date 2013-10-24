@@ -15,6 +15,14 @@
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="thing" value="#{thingDictsBean}" />
 
+    <ui:define name="toolbar.right.1">
+        <p:separator />
+        <p:selectBooleanButton value="${bean.showTerminated}" onLabel="⭘" offLabel="⏳">
+            <p:ajax update="${_indexUpdate}" listener="#{bean.refreshRowCount}" />
+        </p:selectBooleanButton>
+        <p:separator />
+    </ui:define>
+
     <ui:define name="dataColumns">
         <p:column headerText="日期" sortBy="${entry.beginDate}" styleClass="f-wrappable">
             <h:outputText value="${entry.date}" />
@@ -61,53 +69,60 @@
             <p:tab title="基本信息">
                 <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content"
                     style="width:550px;">
-                    <h:outputLabel for="subject" value="机会标题:" />
+                    <h:outputLabel for="subject" value="机会标题: " />
                     <t:panelGroup colspan="3">
                         <p:inputText id="subject" label="机会标题" value="${obj.subject}" style="width: 95%;" />
                     </t:panelGroup>
 
-                    <h:outputLabel for="category" value="机会分类:" />
-                    <p:selectOneMenu id="category" label="机会分类" value="${obj.category.displayId}" style="width: 10em;">
-                        <f:selectItems value="${dicts.categories}" var="it" itemLabel="${it.label}"
-                            itemValue="${it.id}" />
-                    </p:selectOneMenu>
-                    <h:outputLabel for="source" value="机会来源:" />
-                    <p:selectOneMenu id="source" label="机会来源" value="${obj.source.id}" style="width: 10em;">
-                        <f:selectItems value="${dicts.sourceTypes}" var="it" itemLabel="${it.label}"
-                            itemValue="${it.id}" />
-                    </p:selectOneMenu>
+                    <h:outputLabel for="category" value="分类: " />
+                    <t:panelGroup colspan="3">
+                        <p:selectOneMenu id="category" label="分类" value="${obj.category.displayId}">
+                            <f:selectItems value="${dicts.categories}" var="it" itemLabel="${it.label}"
+                                itemValue="${it.id}" />
+                        </p:selectOneMenu>
+                        <h:outputLabel for="source" value="来源: " style="padding-left: 2em; " />
+                        <p:selectOneMenu id="source" label="机会来源" value="${obj.source.id}">
+                            <f:selectItems value="${dicts.sourceTypes}" var="it" itemLabel="${it.label}"
+                                itemValue="${it.id}" />
+                        </p:selectOneMenu>
+                        <h:outputLabel for="priority" value="优先级: " style="padding-left: 2em; " />
+                        <p:selectOneMenu id="priority" label="机会优先级" value="${obj.priority.id}">
+                            <f:selectItems value="${dicts.priorities}" var="it" itemLabel="${it.label}"
+                                itemValue="${it.id}" />
+                        </p:selectOneMenu>
+                    </t:panelGroup>
 
-                    <h:outputLabel for="address" value="机会地址:" />
+                    <h:outputLabel for="address" value="地址: " />
                     <t:panelGroup colspan="3">
                         <p:inputText id="address" label="机会地址" value="${obj.address}" style="width: 95%;" />
                     </t:panelGroup>
 
-                    <h:outputLabel for="content" value="机会内容:" />
+                    <h:outputLabel for="content" value="内容: " />
                     <t:panelGroup colspan="3">
                         <p:inputTextarea id="content" label="机会内容" value="${obj.content}" style="width: 95%;" />
                     </t:panelGroup>
 
-                    <h:outputText value="订货日期 (预期)" />
+                    <h:outputText value="订货日期 (预期): " />
                     <t:panelGroup colspan="3">
                         <p:calendar value="#{obj.anticipationBegin}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
                             showOn="button" />
-                        <h:outputText value="to" />
+                        到
                         <p:calendar value="#{obj.anticipationEnd}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
                             showOn="button" />
                     </t:panelGroup>
 
-                    <h:outputText value="采购方式" />
+                    <h:outputText value="采购方式: " />
                     <p:selectOneMenu id="procurement" value="${obj.procurementMethod.displayId}" label="采购方式">
                         <f:selectItems value="${dicts.methods}" var="it" itemLabel="${it.label}"
                             itemValue="${it.id}" />
                     </p:selectOneMenu>
-                    <h:outputText value="采购原则" />
+                    <h:outputText value="采购原则: " />
                     <p:selectOneMenu id="regulation" value="${obj.purchaseRegulation.displayId}" label="采购原则">
                         <f:selectItems value="${dicts.regulations}" var="it" itemLabel="${it.label}"
                             itemValue="${it.id}" />
                     </p:selectOneMenu>
 
-                    <h:outputLabel for="stage" value="机会阶段:" />
+                    <h:outputLabel for="stage" value="阶段: " />
                     <t:panelGroup colspan="3">
                         <p:selectOneMenu id="stage" label="机会阶段" value="${obj.stage.displayId}" style="width: 12em;"
                             disabled="true">
@@ -273,64 +288,64 @@
             indexView=":editDialog:form:tv:actionsIndexView" mbean="${bean.actionsMBean}" readonly="true">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
-                <h:outputText value="开始时间:" />
+                <h:outputText value="开始时间: " />
                 <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${item.beginTime}"
                     showOn="button" disabled="${true}" label="开始时间" />
-                <h:outputText value="结束时间:" />
+                <h:outputText value="结束时间: " />
                 <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${item.endTime}"
                     showOn="button" disabled="${true}" label="结束时间" />
 
-                <h:outputText value="日志类型:" />
+                <h:outputText value="日志类型: " />
                 <p:selectOneRadio id="actionStyle" value="${item.plan}" style="width: 10em;" disabled="${true}"
                     label="日志类型">
                     <f:selectItem itemLabel="计划" itemValue="${true}" />
                     <f:selectItem itemLabel="日志" itemValue="${false}" />
                 </p:selectOneRadio>
 
-                <h:outputText value="洽谈方式:" />
+                <h:outputText value="洽谈方式: " />
                 <p:selectOneMenu id="style" value="${item.style.displayId}" disabled="${true}" label="洽谈方式">
                     <f:selectItems value="${dicts.actionStyles}" var="it" itemLabel="${it.label}"
                         itemValue="${it.id}" />
                 </p:selectOneMenu>
 
-                <h:outputText value="拜访客户:" />
+                <h:outputText value="拜访客户: " />
                 <p:dataList var="party" value="${item.parties}" effectSpeed="fast">
                     <p:column>
                         <h:outputText value="${party.displayName}" />
                     </p:column>
                 </p:dataList>
-                <h:outputText value="工作伙伴:" />
+                <h:outputText value="工作伙伴: " />
                 <p:dataList id="partners" var="partner" value="${item.partners}" effectSpeed="fast">
                     <p:column>
                         <h:outputText value="${partner.displayName}" />
                     </p:column>
                 </p:dataList>
 
-                <h:outputText value="针对性方案:" />
+                <h:outputText value="针对性方案: " />
                 <t:panelGroup colspan="3">
                     <p:inputTextarea value="${item.suggestion}" style="width: 90%;height: 8em;"
                         readonly="${true}" />
                 </t:panelGroup>
 
-                <h:outputText value="内容描述:" />
+                <h:outputText value="内容描述: " />
                 <t:panelGroup colspan="3">
                     <p:inputTextarea id="description" value="${item.moreInfo}" style="width: 90%;height: 8em;"
                         readonly="${true}" label="内容描述" />
                 </t:panelGroup>
 
-                <h:outputText value="花费详细:" />
+                <h:outputText value="花费详细: " />
                 <t:panelGroup colspan="3">
                     <p:inputTextarea id="spending" value="${item.spending}" style="width: 90%;height: 2em;"
                         readonly="${true}" label="花费详细" />
                 </t:panelGroup>
 
-                <h:outputText value="机会标题:" />
+                <h:outputText value="机会标题: " />
                 <t:panelGroup colspan="3">
                     <p:inputText id="chanceSubject" readonly="true" value="${item.chance.subject}" style="width: 30em"
                         label="机会标题" />
                 </t:panelGroup>
 
-                <h:outputText value="机会阶段:" />
+                <h:outputText value="机会阶段: " />
                 <t:panelGroup colspan="3">
                     <p:selectOneMenu id="stage" value="${item.stage.displayId}" disabled="${true}"
                         style="width: 20em;" label="机会阶段">
@@ -386,17 +401,17 @@
                 <p:tab title="基本信息">
                     <t:panelGrid columns="2" columnClasses="field-label-long, field-content, field-label, field-content">
 
-                        <h:outputText value="定制产品名称:" />
+                        <h:outputText value="定制产品名称: " />
                         <p:inputText id="productName" value="#{item.productName}" label="定制产品名称" />
-                        <h:outputText value="定制产品型号:" />
+                        <h:outputText value="定制产品型号: " />
                         <p:inputText id="modelSpec" value="#{item.modelSpec}" label="定制产品型号" />
 
-                        <h:outputText value="单位:" />
+                        <h:outputText value="单位: " />
                         <p:selectOneMenu id="unit" value="#{item.unit.id_RE}" style="width:10em;" label="单位">
                             <f:selectItem itemLabel="--选择--" itemValue="" />
                             <f:selectItems value="#{thing.unitSelectItems}" />
                         </p:selectOneMenu>
-                        <h:outputText value="对应物料:" />
+                        <h:outputText value="对应物料: " />
                         <t:panelGrid columns="2">
                             <p:inputText id="decidedMaterial" readonly="true" value="#{item.decidedMaterial.label}" />
                             <p:commandButton id="chooseMaterial" value="..." onclick="chooseMaterialDialog.show()" />
@@ -416,9 +431,9 @@
                             </p:column>
                         </f:facet>
                         <h:panelGrid columns="2">
-                            <h:outputText value="属性名称:" />
+                            <h:outputText value="属性名称: " />
                             <p:inputText id="attributeName" value="#{item.name}" label="属性名称" />
-                            <h:outputText value="属性值:" />
+                            <h:outputText value="属性值: " />
                             <p:inputText id="attributeValue" value="#{item.value}" label="属性值" />
                         </h:panelGrid>
                     </fr:listView>
@@ -451,7 +466,7 @@
         <fr:listView id="quotationsEditView" header="报价" style="editDialog" indexView=":pEditView:editForm:tv:quotationsIndexView"
             mbean="${bean.productQuotationsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2" columnClasses="field-label, field-content">
-                <h:outputLabel value="单价:" />
+                <h:outputLabel value="单价: " />
                 <p:inputText value="#{item.price.value}" />
                 <h:outputLabel value="币种：" />
                 <p:selectOneMenu value="#{item.price.currencyCode}" style="width:20em;">
@@ -459,10 +474,10 @@
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputText value="数量:" />
+                <h:outputText value="数量: " />
                 <p:inputText id="quantity" value="#{item.quantity}" label="属性值" />
 
-                <h:outputText value="折扣:" />
+                <h:outputText value="折扣: " />
                 <h:panelGroup>
                     <p:slider for="discount" display="discountText" style="width:200px" />
                     <h:inputHidden id="discount" value="#{item.discountPercent}" />
@@ -470,7 +485,7 @@
                     <h:outputText value="%" />
                 </h:panelGroup>
 
-                <h:outputText value="备注:" />
+                <h:outputText value="备注: " />
                 <p:inputText id="description" value="#{item.description}" label="备注" />
             </t:panelGrid>
         </fr:listView>
@@ -479,16 +494,16 @@
         <fr:listView id="partiesEditView" header="客户" style="editDialog" indexView=":editDialog:form:tv:partiesIndexView"
             mbean="${bean.partiesMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2">
-                <h:outputText value="客户:" styleClass="e-link" onclick="#{item.party.clickAction}" />
+                <h:outputText value="客户: " styleClass="e-link" onclick="#{item.party.clickAction}" />
                 <h:panelGroup>
                     <h:outputText id="party" value="${item.party.displayName}" />
                     <p:commandButton id="chooseCustomer" value="..." onclick="chooseCustomerDialog.show()" />
                 </h:panelGroup>
 
-                <h:outputText value="备注:" />
+                <h:outputText value="备注: " />
                 <h:outputText value="${item.party.shortMemo}" />
 
-                <h:outputLabel for="role" value="角色:" />
+                <h:outputLabel for="role" value="角色: " />
                 <p:inputText id="role" label="角色" value="${item.role}" />
             </h:panelGrid>
         </fr:listView>

@@ -4,20 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.plover.arch.util.dto.Fmask;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.InCollection;
+import com.bee32.plover.criteria.hibernate.Not;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.Identities;
 import com.bee32.plover.orm.util.RefsDiff;
 import com.bee32.plover.ox1.util.CommonCriteria;
-import com.bee32.sem.chance.dto.ChanceActionDto;
-import com.bee32.sem.chance.dto.ChanceCompetitorDto;
-import com.bee32.sem.chance.dto.ChanceDto;
-import com.bee32.sem.chance.dto.ChancePartyDto;
-import com.bee32.sem.chance.dto.ChanceSourceTypeDto;
-import com.bee32.sem.chance.dto.ChanceStageDto;
-import com.bee32.sem.chance.dto.WantedProductAttributeDto;
-import com.bee32.sem.chance.dto.WantedProductDto;
-import com.bee32.sem.chance.dto.WantedProductQuotationDto;
+import com.bee32.sem.chance.dto.*;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceSourceType;
@@ -64,6 +60,27 @@ public class ChanceBean
     /*************************************************************************
      * Section: Search
      *************************************************************************/
+
+    boolean showTerminated = false;
+
+    public boolean isShowTerminated() {
+        return showTerminated;
+    }
+
+    public void setShowTerminated(boolean showTerminated) {
+        this.showTerminated = showTerminated;
+    }
+
+    @Override
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+        List<ChanceStage> closedStages = DATA(ChanceStage.class).list(new Equals("closed", true));
+        if (showTerminated) {
+            elements.add(new InCollection("stage", closedStages));
+        } else {
+            elements.add(Not.of(new InCollection("stage", closedStages)));
+        }
+    }
+
     @Override
     public void addNameOrLabelRestriction() {
         setSearchFragment("name", "名称含有 " + searchPattern, Or.of(//
@@ -98,8 +115,8 @@ public class ChanceBean
             "openedObject.competitories", ChanceCompetitorDto.class);
     final ListMBean<ChanceActionDto> actionsMBean = ListMBean.fromEL(this,//
             "openedObject.actions", ChanceActionDto.class);
-//    final ListMBean<ChanceCompetitorDto> competitories = ListMBean.fromEL(this,//
-//            "openedObject.competitories", ChanceCompetitorDto.class);
+// final ListMBean<ChanceCompetitorDto> competitories = ListMBean.fromEL(this,//
+// "openedObject.competitories", ChanceCompetitorDto.class);
     final ListMBean<WantedProductDto> productsMBean = ListMBean.fromEL(this, //
             "openedObject.products", WantedProductDto.class);
     final ListMBean<WantedProductAttributeDto> productAttributesMBean = ListMBean.fromEL(productsMBean,
