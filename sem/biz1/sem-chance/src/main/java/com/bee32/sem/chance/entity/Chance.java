@@ -4,15 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -50,6 +42,7 @@ public class Chance
 
     ChanceCategory category = null;
     ChanceSourceType source = predefined(ChanceSourceTypes.class).OTHER;
+    ChancePriority priority = predefined(ChancePriorities.class).NORMAL;
     String subject = "";
     String content = "";
     Date anticipationBegin;
@@ -79,6 +72,7 @@ public class Chance
         super._populate(o);
         category = o.category;
         source = o.source;
+        priority = o.priority;
         subject = o.subject;
         content = o.content;
         anticipationBegin = o.anticipationBegin;
@@ -146,6 +140,22 @@ public class Chance
         if (source == null)
             throw new NullPointerException("source");
         this.source = source;
+    }
+
+    /**
+     * 机会优先级
+     *
+     * 定义机会的优先等级。
+     */
+    @ManyToOne
+    public ChancePriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(ChancePriority priority) {
+        if (priority == null)
+            priority = predefined(ChancePriorities.class).NORMAL;
+        this.priority = priority;
     }
 
     /**

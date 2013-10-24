@@ -42,6 +42,7 @@ public class ChanceDto
     String date;
 
     ChanceSourceTypeDto source;
+    ChancePriorityDto priority;
     Date anticipationBegin;
     Date anticipationEnd;
 
@@ -83,6 +84,7 @@ public class ChanceDto
         date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
         category = mref(ChanceCategoryDto.class, source.getCategory());
         this.source = mref(ChanceSourceTypeDto.class, source.getSource());
+        priority = mref(ChancePriorityDto.class, source.getPriority());
         subject = source.getSubject();
         content = source.getContent();
 
@@ -128,6 +130,7 @@ public class ChanceDto
     protected void _unmarshalTo(Chance target) {
         merge(target, "category", category);
         merge(target, "source", source);
+        merge(target, "priority", priority);
         target.setSubject(subject);
         target.setContent(content);
         target.setAnticipationBegin(anticipationBegin);
@@ -185,6 +188,14 @@ public class ChanceDto
 
     public void setSource(ChanceSourceTypeDto source) {
         this.source = source;
+    }
+
+    public ChancePriorityDto getPriority() {
+        return priority;
+    }
+
+    public void setPriority(ChancePriorityDto priority) {
+        this.priority = priority;
     }
 
     @NLength(min = 1, max = Chance.SUBJECT_LENGTH)

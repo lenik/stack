@@ -1,45 +1,36 @@
 package com.bee32.sem.chance.entity;
 
-import java.util.Map.Entry;
-import java.util.TreeMap;
-
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.Blue;
-import com.bee32.plover.ox1.dict.ShortNameDict;
+import com.bee32.plover.ox1.dict.NumberDict;
 
 /**
- * 机会阶段
+ * 机会优先级
  *
- * 描述机会当前的阶段，如：初始化，交涉中，合同签订。
+ * 描述机会的优先级，用于排序。
  *
  * <p lang="en">
- * Chance Stage
+ * Chance Priority
  */
 @Entity
 @Blue
 public class ChancePriority
-        extends ShortNameDict {
+        extends NumberDict {
 
     private static final long serialVersionUID = 1L;
 
-    static TreeMap<Integer, ChancePriority> stages = new TreeMap<Integer, ChancePriority>();
+    public static final int P_URGENT = 10;
+    public static final int P_HIGH = 30;
+    public static final int P_NORMAL = 50;
+    public static final int P_LOW = 100;
 
     public ChancePriority() {
-        super();
     }
 
-    public ChancePriority(int order, String name, String label) {
-        super(order, name, label);
-    }
-
-    public ChancePriority(int order, String name, String label, String description) {
-        super(order, name, label, description);
-    }
-
-    {
-        stages.put(getOrder(), this);
+    public ChancePriority(int priority, String label, String description) {
+        super(priority, label, description);
     }
 
     @Override
@@ -55,14 +46,12 @@ public class ChancePriority
     }
 
     @Transient
-    public ChancePriority getPrevious() {
-        int order = getOrder();
-        int previous = order - 1;
-        Entry<Integer, ChancePriority> entry = stages.floorEntry(previous);
-        if (entry == null)
-            return null;
-        else
-            return entry.getValue();
+    public int getPriority() {
+        return getNumber();
+    }
+
+    public void setPriority(int priority) {
+        setNumber(priority);
     }
 
 }

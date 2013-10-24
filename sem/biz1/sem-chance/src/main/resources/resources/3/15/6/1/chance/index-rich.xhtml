@@ -22,6 +22,9 @@
         <p:column headerText="类型" sortBy="${entry.category}">
             <h:outputText value="${entry.category.label}" />
         </p:column>
+        <p:column headerText="优先级" sortBy="${entry.priority}">
+            <h:outputText value="${entry.priority.label}" />
+        </p:column>
         <p:column headerText="机会标题" sortBy="${entry.subject}" styleClass="f-wrappable">
             <h:outputText value="${entry.subject}" />
         </p:column>
