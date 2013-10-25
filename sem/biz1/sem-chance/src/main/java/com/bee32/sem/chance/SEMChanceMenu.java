@@ -5,7 +5,6 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
-import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.ProcurementMethod;
 import com.bee32.sem.chance.entity.PurchaseRegulation;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
@@ -86,8 +85,15 @@ public class SEMChanceMenu
      * <p lang="en">
      * Chance Stage
      */
-    /*    */MenuNode stage = entry(CHANCE_DICT, 6, "stage",
-            customDictIndex(prefix.join("stage/"), "机会阶段", ChanceStage.class));
+    /*    */MenuNode stage = entry(CHANCE_DICT, 6, "stage", prefix.join("stage/"));
+
+    /**
+     * 机会优先级
+     *
+     * <p lang="en">
+     * Chance Priority
+     */
+    /*    */MenuNode priority = entry(CHANCE_DICT, 7, "priority", prefix.join("priority/"));
 
     /**
      * 销售机会
