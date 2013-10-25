@@ -87,6 +87,7 @@ public class ChanceDto
         priority = mref(ChancePriorityDto.class, source.getPriority());
         subject = source.getSubject();
         content = source.getContent();
+        stage = mref(ChanceStageDto.class, source.getStage());
 
         anticipationBegin = source.getAnticipationBegin();
         anticipationEnd = source.getAnticipationEnd();
@@ -116,7 +117,6 @@ public class ChanceDto
         else
             attachments = Collections.emptyList();
 
-        stage = mref(ChanceStageDto.class, source.getStage());
         procurementMethod = mref(ProcurementMethodDto.class, source.getProcurementMethod());
         purchaseRegulation = mref(PurchaseRegulationDto.class, source.getPurchaseRegulation());
         address = source.getAddress();
@@ -131,6 +131,7 @@ public class ChanceDto
         merge(target, "category", category);
         merge(target, "source", source);
         merge(target, "priority", priority);
+        merge(target, "stage", stage);
         target.setSubject(subject);
         target.setContent(content);
         target.setAnticipationBegin(anticipationBegin);

@@ -336,7 +336,7 @@ public class Chance
         refreshStage();
     }
 
-    void refreshStage() {
+    private void refreshStage() {
         ChanceStage maxStage = predefined(ChanceStages.class).INIT;
         for (ChanceAction action : actions) {
             ChanceStage stage = action.getStage();
@@ -362,7 +362,7 @@ public class Chance
     }
 
     /**
-     * 机会进度只能通过日志项来改变，本对象中的进度为冗余。
+     * 机会进度可以通过日志项来改变，本对象中的进度为冗余。
      */
     public void setStage(ChanceStage stage) {
         this.stage = stage;
@@ -372,8 +372,6 @@ public class Chance
      * 供货方式
      *
      * 产品供货方式。
-     *
-     * @return
      */
     @ManyToOne
     public ProcurementMethod getProcurementMethod() {
