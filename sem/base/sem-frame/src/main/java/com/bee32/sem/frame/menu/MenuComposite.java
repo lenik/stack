@@ -173,21 +173,10 @@ public abstract class MenuComposite
         String entity = ABBR.abbr(entityClass);
         try {
             entity = URLEncoder.encode(entity, "UTF-8");
-        } catch (UnsupportedEncodingException e1) {
-            throw new RuntimeException(e1.getMessage(), e1);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
         Location index = DICT.join("?title=" + title + "&entityClass=" + entity);
-        return index;
-    }
-
-    protected static Location customDictIndex(Location prefix, String title, Class<? extends NameDict> entityClass) {
-        String entity = ABBR.abbr(entityClass);
-        try {
-            entity = URLEncoder.encode(entity, "UTF-8");
-        } catch (UnsupportedEncodingException e1) {
-            throw new RuntimeException(e1.getMessage(), e1);
-        }
-        Location index = prefix.join("?title=" + title + "&entityClass=" + entity);
         return index;
     }
 
