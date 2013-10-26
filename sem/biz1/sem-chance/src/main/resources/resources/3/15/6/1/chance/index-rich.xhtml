@@ -17,7 +17,7 @@
 
     <ui:define name="toolbar.right.1">
         <p:separator />
-        <p:selectBooleanButton value="${bean.showTerminated}" onLabel="⭘" offLabel="⏳">
+        <p:selectBooleanButton value="${bean.showTerminated}" onLabel="仅关闭" offLabel="进行中">
             <p:ajax update="${_indexUpdate}" listener="#{bean.refreshRowCount}" />
         </p:selectBooleanButton>
         <p:separator />
@@ -124,8 +124,7 @@
 
                     <h:outputLabel for="stage" value="阶段: " />
                     <t:panelGroup colspan="3">
-                        <p:selectOneMenu id="stage" label="机会阶段" value="${obj.stage.displayId}" style="width: 12em;"
-                            disabled="true">
+                        <p:selectOneMenu id="stage" label="机会阶段" value="${obj.stage.displayId}" style="width: 12em;">
                             <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}"
                                 itemValue="${it.id}" />
                         </p:selectOneMenu>
@@ -348,7 +347,7 @@
                 <h:outputText value="机会阶段: " />
                 <t:panelGroup colspan="3">
                     <p:selectOneMenu id="stage" value="${item.stage.displayId}" style="width: 20em;"
-                        label="机会阶段">
+                        label="机会阶段" disabled="true">
                         <f:selectItem itemLabel="请选择机会阶段" itemValue="" />
                         <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
                     </p:selectOneMenu>
