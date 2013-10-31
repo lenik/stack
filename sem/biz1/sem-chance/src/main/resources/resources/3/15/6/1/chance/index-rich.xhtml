@@ -149,6 +149,9 @@
                     editView=":actionsEditView" mbean="${bean.actionsMBean}" nested="true" readonly="#{not bean.editing}"
                     paginator="false">
                     <f:facet name="columns">
+                        <p:column headerText="行动">
+                            <h:outputText value="${entry.id}" styleClass="e-link" onclick="${entry.clickAction}" />
+                        </p:column>
                         <p:column headerText="日期">
                             <h:outputText value="${entry.date}" />
                         </p:column>
