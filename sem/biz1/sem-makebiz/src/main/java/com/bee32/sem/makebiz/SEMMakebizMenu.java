@@ -71,6 +71,13 @@ public class SEMMakebizMenu
     /**/MenuNode deliveryNoteAdmin = entry(_saleMenu.SALEMGMT, 51, "deliveryNoteAdmin", __.join("delivery/"));
 
     /**
+     * 送货单列表
+     *
+     * <p lang="en">
+     */
+    /**/MenuNode deliveryNoteList = entry(_saleMenu.SALEMGMT, 52, "deliveryNoteList", __.join("delivery/list.jsf"));
+
+    /**
      * 工艺流转单
      *
      * <p lang="en">
