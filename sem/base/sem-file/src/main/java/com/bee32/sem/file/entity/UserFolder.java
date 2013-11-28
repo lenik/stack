@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
@@ -34,6 +35,7 @@ public class UserFolder
     List<UserFile> files;
 
     int fileCount;
+    int fileCountRec;
 
     public UserFolder() {
         super();
@@ -87,6 +89,17 @@ public class UserFolder
 
     public void setFileCount(int fileCount) {
         this.fileCount = fileCount;
+    }
+
+    @Transient
+    public int getFileCountRec() {
+        if (fileCountRec == 0) {
+            int c = getFileCount();
+            for (UserFolder child : getChildren())
+                c += child.getFileCountRec();
+            fileCountRec = c;
+        }
+        return fileCountRec;
     }
 
 }

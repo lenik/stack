@@ -13,6 +13,8 @@ public class UserFolderDto
         extends TreeEntityDto<UserFolder, Integer, UserFolderDto> {
     private static final long serialVersionUID = 1L;
 
+    public static final int FILE_COUNT = 1;
+    public static final int FILE_COUNT_REC = 2;
     public static final int FILES = 0x01000000;
 
     String name;
@@ -28,8 +30,10 @@ public class UserFolderDto
         else
             this.files = Collections.emptyList();
 
-        this.fileCount = source.getFileCount();
-
+        if (selection.contains(FILE_COUNT_REC))
+            this.fileCount = source.getFileCountRec();
+        else
+            this.fileCount = source.getFileCount();
     }
 
     @Override

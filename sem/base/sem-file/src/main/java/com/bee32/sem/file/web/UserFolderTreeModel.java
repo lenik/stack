@@ -92,7 +92,9 @@ public class UserFolderTreeModel
             // Remove dangling children.
 
             List<UserFolderDto> folders = DTOs.mrefList(UserFolderDto.class, //
-                    TreeEntityDto.PARENT, // Without children...
+                    // Without children...
+                    TreeEntityDto.PARENT //
+                            | UserFolderDto.FILE_COUNT_REC, //
                     _folders);
             index = DTOs.index(folders);
 
