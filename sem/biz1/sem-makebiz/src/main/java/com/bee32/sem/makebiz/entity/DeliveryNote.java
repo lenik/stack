@@ -6,13 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -44,7 +38,8 @@ public class DeliveryNote
         extends ProcessEntity
         implements IAccountTicketSource, DecimalConfig {
 
-// private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+
     public static final int APPROVE_MESSAGE_LENGTH = 200;
 
     MakeOrder order;

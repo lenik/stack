@@ -8,13 +8,10 @@ import com.bee32.sem.makebiz.util.MakebizCriteria;
 
 /**
  * 送货单原始单据提供者
- *
- * @author jack
- *
  */
 public class DeliveryNoteSourceProvider
-    extends DataService
-    implements IAccountTicketSourceProvider {
+        extends DataService
+        implements IAccountTicketSourceProvider {
 
     /**
      * 取得原始单据
@@ -25,11 +22,12 @@ public class DeliveryNoteSourceProvider
      * @return
      */
     @Override
-    public IAccountTicketSource getSource(Long ticketId) {
+    public IAccountTicketSource getSource(long ticketId) {
 
-        DeliveryNote deliveryNote = DATA(DeliveryNote.class).getUnique(MakebizCriteria.correspondingTicket(ticketId));
+        DeliveryNote deliveryNote = DATA(DeliveryNote.class).getUnique(//
+                MakebizCriteria.correspondingTicket(ticketId));
 
-        return (IAccountTicketSource)deliveryNote;
+        return deliveryNote;
     }
 
 }

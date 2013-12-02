@@ -8,13 +8,10 @@ import com.bee32.sem.inventory.util.StockCriteria;
 
 /**
  * 仓库原始单据提供者
- *
- * @author jack
- *
  */
 public class StockOrderSourceProvider
-    extends DataService
-    implements IAccountTicketSourceProvider {
+        extends DataService
+        implements IAccountTicketSourceProvider {
 
     /**
      * 取得原始单据
@@ -25,11 +22,12 @@ public class StockOrderSourceProvider
      * @return
      */
     @Override
-    public IAccountTicketSource getSource(Long ticketId) {
+    public IAccountTicketSource getSource(long ticketId) {
 
-        StockOrder stockOrder = DATA(StockOrder.class).getUnique(StockCriteria.correspondingTicket(ticketId));
+        StockOrder stockOrder = DATA(StockOrder.class).getUnique(//
+                StockCriteria.correspondingTicket(ticketId));
 
-        return (IAccountTicketSource)stockOrder;
+        return (IAccountTicketSource) stockOrder;
     }
 
 }

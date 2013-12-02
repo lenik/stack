@@ -8,13 +8,10 @@ import com.bee32.sem.salary.entity.MonthSalary;
 
 /**
  * 月工资原始单据提供者
- *
- * @author jack
- *
  */
 public class MonthSalarySourceProvider
-    extends DataService
-    implements IAccountTicketSourceProvider {
+        extends DataService
+        implements IAccountTicketSourceProvider {
 
     /**
      * 取得原始单据
@@ -25,11 +22,12 @@ public class MonthSalarySourceProvider
      * @return
      */
     @Override
-    public IAccountTicketSource getSource(Long ticketId) {
+    public IAccountTicketSource getSource(long ticketId) {
 
-        MonthSalary monthSalary = DATA(MonthSalary.class).getUnique(SalaryCriteria.correspondingTicket(ticketId));
+        MonthSalary monthSalary = DATA(MonthSalary.class).getUnique(//
+                SalaryCriteria.correspondingTicket(ticketId));
 
-        return (IAccountTicketSource)monthSalary;
+        return (IAccountTicketSource) monthSalary;
     }
 
 }

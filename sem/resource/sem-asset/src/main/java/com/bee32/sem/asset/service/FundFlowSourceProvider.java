@@ -7,13 +7,10 @@ import com.bee32.sem.asset.util.AssetCriteria;
 
 /**
  * 资金流原始单据提供者
- *
- * @author jack
- *
  */
 public class FundFlowSourceProvider
-    extends DataService
-    implements IAccountTicketSourceProvider {
+        extends DataService
+        implements IAccountTicketSourceProvider {
 
     /**
      * 取得原始单据
@@ -24,11 +21,12 @@ public class FundFlowSourceProvider
      * @return
      */
     @Override
-    public IAccountTicketSource getSource(Long ticketId) {
+    public IAccountTicketSource getSource(long ticketId) {
 
-        FundFlow fundFlow = DATA(FundFlow.class).getUnique(AssetCriteria.correspondingTicket(ticketId));
+        FundFlow fundFlow = DATA(FundFlow.class).getUnique(//
+                AssetCriteria.correspondingTicket(ticketId));
 
-        return (IAccountTicketSource)fundFlow;
+        return (IAccountTicketSource) fundFlow;
     }
 
 }

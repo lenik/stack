@@ -150,8 +150,9 @@ public class StockCriteria
     }
 
     @LeftHand(StockOrder.class)
-    public static ICriteriaElement correspondingTicket(Long ticketId) {
+    public static ICriteriaElement correspondingTicket(long ticketId) {
         return compose(alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
                 new Equals("ticket.id", ticketId));
     }
+
 }

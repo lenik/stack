@@ -26,12 +26,11 @@ public class AccountTicketDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int SOURCE = 1;
     public static final int ITEMS = 0x10000;
 
     List<AccountTicketItemDto> items;
-
     SingleVerifierWithNumberSupportDto verifyContext;
-
     AccountTicketSource ticketSource;
 
     @Override
@@ -45,27 +44,31 @@ public class AccountTicketDto
             items = marshalList(AccountTicketItemDto.class, source.getItems());
         else
             items = Collections.emptyList();
+
         verifyContext = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
-        try{
-            ServiceLoader<IAccountTicketSourceProvider> providers = ServiceLoader.load(IAccountTicketSourceProvider.class);
-            for(IAccountTicketSourceProvider provider : providers) {
-                IAccountTicketSource ticketSource = provider.getSource(this.getId());
-                if (ticketSource != null) {
-                    this.ticketSource = new AccountTicketSource();
-                    this.ticketSource.setId(ticketSource.getTicketSrcId());
-                    this.ticketSource.setLabel(ticketSource.getTicketSrcLabel());
-                    this.ticketSource.setType(ticketSource.getTicketSrcType());
-                    try {
-                        this.ticketSource.setValue(ticketSource.getTicketSrcValue());
-                    } catch (FxrQueryException e) {
-                        throw new RuntimeException(e);
+
+        if (selection.contains(SOURCE))
+            try {
+                ServiceLoader<IAccountTicketSourceProvider> providers = ServiceLoader
+                        .load(IAccountTicketSourceProvider.class);
+                for (IAccountTicketSourceProvider provider : providers) {
+                    IAccountTicketSource ticketSource = provider.getSource(this.getId());
+                    if (ticketSource != null) {
+                        this.ticketSource = new AccountTicketSource();
+                        this.ticketSource.setId(ticketSource.getTicketSrcId());
+                        this.ticketSource.setLabel(ticketSource.getTicketSrcLabel());
+                        this.ticketSource.setType(ticketSource.getTicketSrcType());
+                        try {
+                            this.ticketSource.setValue(ticketSource.getTicketSrcValue());
+                        } catch (FxrQueryException e) {
+                            throw new RuntimeException(e);
+                        }
+                        this.ticketSource.setClassType((Class<? extends Entity<?>>) ticketSource.getClass());
                     }
-                    this.ticketSource.setClassType((Class<? extends Entity<?>>) ticketSource.getClass());
                 }
+            } catch (Exception e) {
+                new FacesUILogger(false).error("...", e);
             }
-        } catch (Exception e) {
-            new FacesUILogger(false).error("...", e);
-        }
     }
 
     @Override
@@ -138,7 +141,7 @@ public class AccountTicketDto
             else
                 creditTotal = creditTotal.add(itemNativeValue.abs());
         }
-        return debitTotal.compareTo(creditTotal)==0;
+        return debitTotal.compareTo(creditTotal) == 0;
     }
 
     @Override
@@ -159,7 +162,7 @@ public class AccountTicketDto
     }
 
     public String getSummary() {
-        if(items != null && items.size() > 0) {
+        if (items != null && items.size() > 0) {
             return items.get(0).getDescription();
         }
         return null;
