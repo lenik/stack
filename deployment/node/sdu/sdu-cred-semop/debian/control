@@ -7,7 +7,7 @@ Standards-Version: 3.8.3
 Homepage: http://sdu.secca-project.com/sdu-cred-semop
 
 Package: sdu-cred-semop
-Architecture: all
+Architecture: any
 Depends: sdu-semsutils, cls-users, mcrypt, cooltask, git-core
 Description: SEM operator.
     SEM operator user account.
