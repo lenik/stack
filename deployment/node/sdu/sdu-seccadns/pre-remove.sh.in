@@ -16,9 +16,9 @@ echo "Reload bind9"
     /etc/init.d/bind9 reload
 
 echo "Unload aliases site"
-    a2dissite bee32-copy.site
-    a2dissite bee32-reloc.site
-    a2dissite bee32-dns.site
+    a2dissite bee32-copy.conf
+    a2dissite bee32-reloc.conf
+    a2dissite bee32-dns.conf
     a2reload
 
 exit 0

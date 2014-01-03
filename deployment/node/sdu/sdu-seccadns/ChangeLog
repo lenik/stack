@@ -1,128 +1,142 @@
-2010-12-13  lenik
+[0.13.3] Lenik (2012-11-15)
+	* Updated bee32.db: www -> cdn.
 
-	* configure.ac: don't report portability warnings.
+[0.13.2] Lenik (2012-09-19)
+	* Fixed: ca.bee32.com -> cdn
 
-2010-12-08  lenik
+[0.13.1] Lenik (2012-07-27)
+	* Removed dns-update.php
+	* Service moved: m2 -> aut-dev -> shaoxing.
 
-	* .: add itree.tex to svn ignores
+[0.13.0] Lenik (2012-02-13)
+	* Fixed bee32.db: removed -fw which isn't used anymore.
 
-2010-11-29  lenik
+[0.12.0] Lenik (2012-02-12)
+	* polishing
+	* Refactor dns layout.
 
-	* README: create empty README files to be filled in future.
+[0.10.4] Lenik (2012-02-12)
+	* Bee32 dns changes.
 
-2010-11-03  lenik
+[0.10.1] Lenik (2012-02-01)
+	* Implemented cc:insertRawFacet.
 
-	* debian/changelog: switch to unstable.
+[0.10.0] Lenik (2012-02-01)
+	* Added RR demo.bee32.com.
+	* Domain *.hub for ddns uage.
 
-2010-10-31  lenik
+[0.8.1] Lenik (2011-12-03)
+	* Fixed: bee32.key isn't included.
 
-	* dnsgraph, seccaproject.db: something new added.
-	  and add more ignores
+[0.8.0] Lenik (2011-12-03)
+	* Prepare bee-32 dns client update in php.
 
-2010-10-20  lenik
+[0.7.8] Lenik (2011-12-03)
+	* Allow using bee32-key to do remote nsupdate.
 
-	* debian/changelog: Maverick redist.
+[0.7.7] Lenik (2011-11-16)
+	* Renamed dev-main to center-13
 
-2010-10-18  lenik
+[0.7.6] Lenik (2011-11-16)
+	* Separate *.x -> x CNAME forwards into bee32-fw.db.
 
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, bia.db, configure,
-	  configure.ac, debian/README.Debian, debian/README.source,
-	  debian/changelog, debian/compat, debian/control,
-	  debian/copyright, debian/docs, debian/postinst, debian/prerm,
-	  debian/rules, install-sh, libauto/coolauto.am, missing,
-	  named.conf, post-install.sh.in, pre-remove.sh.in, rad.db,
-	  secca-aliases.site, seccaproject.db, substs-db, substs-host: set
-	  eol-style to native
+[0.7.5] Lenik (2011-11-15)
+	* bee32 domains: bee32-private(-1*) => zjhn
 
-2010-10-07  lenik
+[0.7.2] Lenik (2011-09-22)
+	* Fixed -seccadns version
 
-	* VERSION.av, configure, configure.ac, debian/changelog,
-	  seccaproject.db: add static. domain
+[0.6.7] Lenik (2011-09-21)
+	* bee32 dns: *.cdn -> main.
 
-2010-09-29  lenik
+[0.6.6] Lenik (2011-09-21)
+	* bee32.com app clusters: 0=localnet, 1=bee32-private
 
-	* debian/changelog: add changelog
+[0.6.5] Lenik (2011-09-20)
+	* Added sdu.bee32.com for deb archives.
 
-2010-09-27  lenik
+[0.6.4] Lenik (2011-09-17)
+	* Relocate q.bee32.com -> google.
 
-	* VERSION.av, configure, configure.ac, seccaproject.db: ignores
-	* VERSION.av, configure, configure.ac, named.conf, rad.db,
-	  secca-aliases.site: add s.com.* alias.
+[0.6.3] Lenik (2011-09-16)
+	* [Fixed 23] bugs.bee32.com -> q.bee32.com.
 
-2010-09-26  lenik
+[0.6.2] Lenik (2011-09-07)
+	* Added static.cdn(.bee32.com) -> cdn -> main
 
-	* VERSION.av, configure, configure.ac, secca-aliases.site: add
-	  alias domains in site.
-	* Makefile.am, Makefile.in, VERSION.av, aliases.site, configure,
-	  configure.ac, named.conf, post-install.sh.in, pre-remove.sh.in,
-	  rad.db, secca-aliases.site: reset ssl certs.
-	  add rad.vapeak.com and secca.rad.. for workgroup purpose.
-	* VERSION.av, configure, configure.ac, named.conf: add *.secca.* to
-	  support alias names.
+[0.6.1] Lenik (2011-09-07)
+	* Renamed bee* to bee32*, and set main(orig. main-dev) to c617.
 
-2010-09-25  lenik
+[0.5.1] Lenik (2011-09-07)
+	* [Fixed #4] Add bugs.bee32.com relocation.
 
-	* VERSION.av, configure, configure.ac, seccaproject.db: sql ->
-	  aut-dev
-	* VERSION.av, aliases.site, configure, configure.ac, named.conf,
-	  seccaproject.db: add sql., webapp.
+[0.3.3] Lenik (2011-05-13)
+	* Refactor bee32 dns structure, to reflect the graph.
 
-2010-09-23  lenik
+[0.3.2] Lenik (2011-05-13)
+	* Add missing git.bee32.com
 
-	* .: set ignores.
-	* .: ignore *.gz
+[0.3.1] Lenik (2011-05-12)
+	* Update dns seccaproject.com => bee32.com
 
-2010-09-22  lenik
+[0.2.0] Lenik (2011-01-19)
+	* Fixed: main-dev server fault. Re-launched.
 
-	* Makefile.in, libauto/coolauto.am: auto updates.
+[0.1.20] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* uni refactor 1.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* something new added. and add more ignores
+	* Maverick redist.
+	* add static. domain
 
-2010-09-21  lenik
+[0.1.19] Lenik (2010-09-29)
+	* add changelog
+	* ignores
 
-	* Makefile.am, Makefile.in, libauto/coolauto.am: auto updates.
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in,
-	  seccaproject.db: pre-remove always exit 0
+[0.1.18] Lenik (2010-09-27)
+	* add s.com.* alias.
 
-2010-09-19  lenik
+[0.1.17] Lenik (2010-09-26)
+	* add alias domains in site.
 
-	* debian: ignore substvars
-	* debian/sdu-seccadns.substvars: exclude substvars.
+[0.1.16] Lenik (2010-09-26)
+	* reset ssl certs. add rad.vapeak.com and secca.rad.. for workgroup purpose.
 
-2010-09-18  lenik
+[0.1.11] Lenik (2010-09-26)
+	* add *.secca.* to support alias names.
 
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac:
-	  typo
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  post-install.sh.in, seccaproject.db, substs-db, substs-host:
-	  cname everything to main-dev, for conf purpose.
-	  do some substs configs.
+[0.1.10] Lenik (2010-09-25)
+	* sql -> aut-dev
 
-2010-09-17  lenik
+[0.1.9] Lenik (2010-09-25)
+	* add sql., webapp.
 
-	* debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/prerm, debian/rules,
-	  debian/sdu-seccadns.substvars: add debian control files.
+[0.1.8] Lenik (2010-09-22)
+	* auto updates.
+	* auto updates.
+	* pre-remove always exit 0
 
-2010-09-15  lenik
+[0.1.7] Lenik (2010-09-19)
+	* exclude substvars.
+	* typo
 
-	* VERSION.av, configure, configure.ac, seccaproject.db: group
-	  records by:
-	  node-type: main-dev, main-app, ...
-	  selector: mail, proxy, ...
-	  instance: svn, track, ...
+[0.1.6] Lenik (2010-09-18)
+	* cname everything to main-dev, for conf purpose. do some substs configs.
 
-2010-09-14  lenik
+[0.1.5] Lenik (2010-09-17)
+	* add debian control files.
+	* group records by:     node-type: main-dev, main-app, ...     selector:  mail, proxy, ...     instance:  svn, track, ...
 
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac:
-	  subst bindconfdir.
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, bia.db,
-	  configure, configure.ac, install-sh, libauto,
-	  libauto/coolauto.am, missing, named.conf, post-install.sh.in,
-	  pre-remove.sh.in, seccaproject.db: move assembly/dev/bind db to
-	  -seccadns.
+[0.1.4] Lenik (2010-09-14)
+	* subst bindconfdir.
 
-	  the sdc-dev will simply includes this sdu.
+[0.1.3] Lenik (2010-09-14)
+	* move assembly/dev/bind db to -seccadns.
 
-	  rename 1.dev to main-dev.

@@ -22,9 +22,9 @@ dist_seccadb_DATA = \
     layout.png
 
 dist_sites_DATA = \
-    bee32-copy.site \
-    bee32-reloc.site \
-    bee32-dns.site
+    bee32-copy.conf \
+    bee32-reloc.conf \
+    bee32-dns.conf
 
 dist_html_DATA = \
     dns-update.php
