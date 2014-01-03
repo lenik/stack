@@ -3,6 +3,7 @@ include libauto/coolauto.am
 dist_bin_SCRIPTS = \
 	pg-create-shortcuts \
 	pg_dump_sort \
+	pgsc \
 	rm-pglibsyms
 
 setup_SCRIPTS = \

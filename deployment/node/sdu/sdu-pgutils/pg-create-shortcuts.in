@@ -19,7 +19,7 @@
     user=postgres
     port=5432
 
-    BINUTILS=(
+    cmds=(
         clusterdb
         createdb
         createlang
@@ -70,14 +70,13 @@ function main() {
     fi
     bindir="$1"
 
-    for f in "${BINUTILS[@]}"; do
-        prog_file=/usr/lib/postgresql/9.1/bin/$f
-        shcut="$bindir/$name-$f"
+    for cmd in "${cmds[@]}"; do
+        shcut="$bindir/$name-$cmd"
 
         echo "Create shortcut $shcut"
         cat <<EOT >"$shcut"
 #!/bin/sh
-    sudo -u$user $prog_file -p$port "\$@"
+    exec sudo -u$user pgsc "$name" "$cmd" -p$port "\$@"
 EOT
         chmod a+x "$shcut"
     done

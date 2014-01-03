@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# pgsc linkname binname args...
+_category="$1"
+_cmd="$2"
+shift 2
+
+if [ -z "$_cmd" ]; then
+    echo "Cmdname isn't specified." >&2
+    exit 1
+fi
+
+PGVER=9.3
+
+shopt -s nullglob
+for pgdir in @libdir@/postgresql/*/; do
+    pgdir=${pgdir%/*}
+    PGVER=${pgdir##*/}
+    break
+done
+
+_catrc="@pkgdatadir@/pgscver/$_category"
+if [ -f "$_catrc" ]; then
+    . "$_catrc"
+fi
+
+cmdexe=@libdir@/postgresql/$PGVER/bin/$cmd
+
+exec $cmdexe "$@"
