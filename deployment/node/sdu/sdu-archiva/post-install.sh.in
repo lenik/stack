@@ -7,7 +7,7 @@ echo "Config apache to forward archiva"
     a2enmod proxy
     a2enmod proxy_http
     a2enmod rewrite
-    a2ensite sdu-archiva.site
+    a2ensite sdu-archiva.conf
     a2reload
 
 m2secf=/home/appserv/.m2/security.properties

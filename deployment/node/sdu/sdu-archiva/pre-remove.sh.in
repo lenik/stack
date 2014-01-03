@@ -30,7 +30,7 @@ echo "Unconfig resources on seccaj"
     fi
 
 echo "Unconfig apache2"
-    a2dissite sdu-archiva.site
+    a2dissite sdu-archiva.conf
     a2reload
 
 exit 0

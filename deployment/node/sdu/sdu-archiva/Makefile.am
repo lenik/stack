@@ -5,7 +5,7 @@ siteconfdir = ${sysconfdir}/apache2/sites-conf
 homedir     = /home/appserv
 
 sites_DATA = \
-	sdu-archiva.site
+	sdu-archiva.conf
 
 siteconf_DATA = \
 	archiva.rules
@@ -23,6 +23,7 @@ dist-hook:
 	find $(distdir)/owner -type d -name .svn -exec rm -fR {} \; -prune
 
 install-data-hook:
+	mkdir -p $(DESTDIR)$(homedir)
 	cp -RT $(srcdir)/owner $(DESTDIR)$(homedir)
 	find $(DESTDIR)$(homedir) -type d -name .svn -exec rm -fR {} \; -prune
 

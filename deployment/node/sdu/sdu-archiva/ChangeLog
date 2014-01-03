@@ -1,102 +1,51 @@
-2010-12-13  lenik
+[0.1.11] Lenik (2013-08-12)
+	* Keep empty dirs.
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* uni refactor 1.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* echox/echo-v -> echo-x
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* add changelog
+	* a2dissite in prerm.
 
-	* configure.ac: don't report portability warnings.
+[0.1.9] Lenik (2010-09-23)
+	* add security.properties
 
-2010-12-08  lenik
+[0.1.7] Lenik (2010-09-23)
+	* a2configs.
 
-	* .: add itree.tex to svn ignores
-	* debian/changelog: echox/echo-v -> echo-x
+[0.1.6] Lenik (2010-09-23)
+	* add a2site to AM. prepare owner/
 
-2010-11-29  lenik
+[0.1.5] Lenik (2010-09-23)
+	* introduce in archiva.rules.
 
-	* README: create empty README files to be filled in future.
+[0.1.4] Lenik (2010-09-22)
+	* auto updates.
+	* auto updates.
+	* pre-remove always exit 0
 
-2010-11-03  lenik
+[0.1.3] Lenik (2010-09-19)
+	* exclude substvars.
+	* seccaw/seccaj
+	* rename seccaw- to seccaj-
 
-	* debian/changelog: switch to unstable.
+[0.1.2] Lenik (2010-09-17)
+	* add debian control files.
+	* updates
+	* libauto updates.
+	* rename seccaw to seccajx
+	* fix remove order
 
-2010-10-20  lenik
+[0.1.1] Lenik (2010-09-10)
+	* initial release.
 
-	* debian/changelog: Maverick redist.
+[0.1.0] Lenik (2010-09-08)
+	* initial
 
-2010-10-18  lenik
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, archiva.rules, configure,
-	  configure.ac, debian/README.Debian, debian/README.source,
-	  debian/changelog, debian/compat, debian/control,
-	  debian/copyright, debian/docs, debian/postinst, debian/prerm,
-	  debian/rules, install-sh, libauto/coolauto.am, missing,
-	  owner/.m2/security.properties, post-install.sh.in,
-	  pre-remove.sh.in, sdu-archiva.site: set eol-style to native
-
-2010-09-29  lenik
-
-	* debian/changelog: add changelog
-
-2010-09-28  lenik
-
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: a2dissite
-	  in prerm.
-
-2010-09-23  lenik
-
-	* VERSION.av, configure, configure.ac,
-	  owner/.m2/security.properties, post-install.sh.in: add
-	  security.properties
-	* VERSION.av, configure, configure.ac, post-install.sh.in:
-	  a2configs.
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  owner, owner/.m2, post-install.sh.in: add a2site to AM.
-	  prepare owner/
-	* Makefile.am, Makefile.in, VERSION.av, archiva.rules, configure,
-	  configure.ac, debian/control, pre-remove.sh.in, sdu-archiva.site:
-	  introduce in archiva.rules.
-	* .: set ignores.
-	* .: ignore *.gz
-
-2010-09-22  lenik
-
-	* Makefile.in, libauto/coolauto.am: auto updates.
-
-2010-09-21  lenik
-
-	* Makefile.in, libauto/coolauto.am: auto updates.
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: pre-remove
-	  always exit 0
-
-2010-09-19  lenik
-
-	* debian: ignore substvars
-	* debian/sdu-archiva.substvars: exclude substvars.
-
-2010-09-17  lenik
-
-	* pre-remove.sh.in: seccaw/seccaj
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: rename
-	  seccaw- to seccaj-
-	* debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/prerm, debian/rules,
-	  debian/sdu-archiva.substvars: add debian control files.
-	* Makefile.am, Makefile.in, post-install.sh.in: updates
-	* libauto/coolauto.am: libauto updates.
-
-2010-09-15  lenik
-
-	* Makefile.am, Makefile.in, configure, configure.ac,
-	  libauto/subst.am: rename seccaw to seccajx
-
-2010-09-10  lenik
-
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: fix remove
-	  order
-	* VERSION.av, configure, configure.ac, post-install.sh.in,
-	  pre-remove.sh.in: initial release.
-
-2010-09-08  lenik
-
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
-	  configure.ac, install-sh, libauto, libauto/subst.am, missing,
-	  post-install.sh.in, pre-remove.sh.in: initial
