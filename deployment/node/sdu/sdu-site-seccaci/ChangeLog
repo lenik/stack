@@ -1,59 +1,19 @@
-2010-12-13  lenik
+[0.1.3] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* add changelog
+	* pre/post fix
 
-	* configure.ac: don't report portability warnings.
+[0.1.2] Lenik (2010-09-28)
+	* add secca-ci.site
 
-2010-12-08  lenik
+[0.1.1] Lenik (2010-09-23)
+	* transferred from sdc-stack-continuum
 
-	* .: add itree.tex to svn ignores
-
-2010-11-29  lenik
-
-	* README: create empty README files to be filled in future.
-
-2010-11-03  lenik
-
-	* debian/changelog: switch to unstable.
-
-2010-10-20  lenik
-
-	* debian/changelog: Maverick redist.
-
-2010-10-18  lenik
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
-	  debian/README.Debian, debian/README.source, debian/changelog,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/prerm, debian/rules, install-sh,
-	  libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in, secca-ci.site: set eol-style to native
-
-2010-09-29  lenik
-
-	* debian/changelog: add changelog
-
-2010-09-28  lenik
-
-	* VERSION.av, configure, configure.ac, debian/postinst,
-	  debian/prerm: pre/post fix
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  libauto/coolauto.am, libauto/subst.am, post-install.sh.in,
-	  pre-remove.sh.in, secca-ci.site: add secca-ci.site
-
-	  auto updates
-
-2010-09-23  lenik
-
-	* ., debian: set ignores.
-	* .: ignore *.gz
-	* ., VERSION.av, configure, configure.ac, debian/README.Debian,
-	  debian/README.source, debian/control, debian/postinst,
-	  debian/prerm: transferred from sdc-stack-continuum
-
-2010-09-19  lenik
-
-	* include debian/ and set ignores.
-
-2010-09-10  lenik
-
-	* Initial by sdu-creator
