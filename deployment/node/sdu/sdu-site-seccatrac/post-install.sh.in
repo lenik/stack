@@ -4,11 +4,11 @@
 
 # configure apache2/sites.available
 
-    echo "Config apache secca-trac.site"
+    echo "Config apache secca-trac site"
 
     a2enmod  auth_digest
     a2enmod  python
     a2enmod  rewrite
     a2enmod  ssl
-    a2ensite secca-trac.site
+    a2ensite secca-trac.conf
     a2reload

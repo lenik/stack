@@ -1,66 +1,30 @@
-2010-12-13  lenik
+[0.1.6] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* add changelog
+	* ignores
 
-	* configure.ac: don't report portability warnings.
+[0.1.5] Lenik (2010-09-22)
+	* devsite -> maindev
 
-2010-12-08  lenik
+[0.1.4] Lenik (2010-09-22)
+	* /node refactor.
 
-	* .: add itree.tex to svn ignores
+[0.1.2] Lenik (2010-09-22)
+	* a2dissite in prerm.
 
-2010-11-29  lenik
+[0.1.1] Lenik (2010-09-22)
+	* auto updates.
+	* initial.
 
-	* README: create empty README files to be filled in future.
+[0.1.0] Lenik (2010-09-22)
+	* authdb is moved to /etc/authdb/APP.GROUP.adb
+	* Initial
 
-2010-11-03  lenik
-
-	* debian/changelog: switch to unstable.
-
-2010-10-20  lenik
-
-	* debian/changelog: Maverick redist.
-
-2010-10-18  lenik
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
-	  debian/README.Debian, debian/README.source, debian/changelog,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
-	  install-sh, libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in, secca-trac.site: set eol-style to native
-
-2010-09-29  lenik
-
-	* debian/changelog: add changelog
-
-2010-09-27  lenik
-
-	* VERSION.av, configure, configure.ac, post-install.sh.in,
-	  secca-trac.site: ignores
-
-2010-09-23  lenik
-
-	* .: set ignores.
-	* .: ignore *.gz
-
-2010-09-22  lenik
-
-	* VERSION.av, configure, configure.ac, secca-trac.site: devsite ->
-	  maindev
-	* VERSION.av, configure, configure.ac, secca-trac.site: /node
-	  refactor.
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: a2dissite
-	  in prerm.
-	* Makefile.in, libauto/coolauto.am: auto updates.
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  debian/control, post-install.sh.in: initial.
-	* secca-trac.site: authdb is moved to /etc/authdb/APP.GROUP.adb
-
-2010-09-21  lenik
-
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
-	  configure.ac, debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
-	  install-sh, libauto, libauto/coolauto.am, missing,
-	  post-install.sh.in, pre-remove.sh.in: Initial
