@@ -9,7 +9,7 @@ echo "Unconfig svn-1030 service"
     fi
 
 echo "Unconfig apache2"
-    a2dissite secca-svn.site
+    a2dissite secca-svn.conf
     a2reload
 
 exit 0

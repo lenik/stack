@@ -6,7 +6,7 @@ siteconfdir	  = ${a2confdir}/sites-available
 xinetdconfdir = ${sysconfdir}/xinetd.d
 
 dist_siteconf_DATA = \
-	apache2/secca-svn.site
+	apache2/secca-svn.conf
 
 dist_xinetdconf_DATA = \
 	xinetd.d/svn-1030

@@ -11,10 +11,10 @@
 
 # configure apache2/sites.available
 
-    echo "Config apache secca-svn.site"
+    echo "Config apache secca-svn site"
 
     a2enmod  dav
     a2enmod  dav_svn
     a2enmod  ssl
-    a2ensite secca-svn.site
+    a2ensite secca-svn.conf
     a2reload

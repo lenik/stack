@@ -1,76 +1,29 @@
-2010-12-13  lenik
+[0.1.6] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* uni refactor 1.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* add changelog
+	* refactor /repos/svn/* as symlinks
 
-	* configure.ac: don't report portability warnings.
+[0.1.5] Lenik (2010-09-22)
+	* devsite -> maindev
 
-2010-12-08  lenik
+[0.1.4] Lenik (2010-09-22)
+	* /node refactor.
 
-	* .: add itree.tex to svn ignores
+[0.1.3] Lenik (2010-09-22)
+	* a2dissite in prerm.
 
-2010-11-29  lenik
+[0.1.2] Lenik (2010-09-22)
+	* auto updates.
+	* updates
+	* auto updates.
+	* rename -serv-seccasvn to -site-seccasvn
 
-	* README: create empty README files to be filled in future.
-
-2010-11-03  lenik
-
-	* debian/changelog: switch to unstable.
-
-2010-10-20  lenik
-
-	* debian/changelog: Maverick redist.
-
-2010-10-18  lenik
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, apache2/secca-svn.site,
-	  configure, configure.ac, debian/README.Debian,
-	  debian/README.source, debian/changelog, debian/compat,
-	  debian/control, debian/copyright, debian/docs, debian/postinst,
-	  debian/prerm, debian/rules, install-sh, libauto/coolauto.am,
-	  missing, post-install.sh.in, pre-remove.sh.in, xinetd.d/svn-1030:
-	  set eol-style to native
-
-2010-09-29  lenik
-
-	* debian/changelog: add changelog
-
-2010-09-24  lenik
-
-	* VERSION.av, configure, configure.ac, post-install.sh.in: refactor
-	  /repos/svn/* as symlinks
-
-2010-09-23  lenik
-
-	* ., debian: set ignores.
-	* .: ignore *.gz
-
-2010-09-22  lenik
-
-	* VERSION.av, apache2/secca-svn.site, configure, configure.ac:
-	  devsite -> maindev
-	* VERSION.av, apache2/secca-svn.site, configure, configure.ac,
-	  post-install.sh.in: /node refactor.
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: a2dissite
-	  in prerm.
-	* Makefile.am, Makefile.in, libauto/coolauto.am: auto updates.
-
-2010-09-21  lenik
-
-	* debian/sdu-vhost-seccasvn.substvars: updates
-	* Makefile.in, libauto/coolauto.am: auto updates.
-	* ., VERSION.av, configure, configure.ac, debian/README.Debian,
-	  debian/README.source, debian/control, debian/postinst,
-	  debian/prerm, pre-remove.sh.in: rename -serv-seccasvn to
-	  -site-seccasvn
-
-2010-09-19  lenik
-
-	* ignore substvars
-	* exclude substvars.
-
-2010-09-17  lenik
-
-	* add debian control files.
-	* add svn-1030 service.
-
-	  This will only serv secca-related repos.
-	* initial
