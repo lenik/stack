@@ -10,8 +10,14 @@ Package: sdu-postgresql
 Architecture: all
 Depends:
     coolutils,
-    postgresql | postgresql-8.4 | postgresql-9.1 | postgresql-9.3,
-    postgresql-8.4-plsh | postgresql-9.1-plsh,
+    postgresql
+        | postgresql-8.4
+        | postgresql-9.1
+        | postgresql-9.3,
+    postgresql-plsh
+        | postgresql-8.4-plsh
+        | postgresql-9.1-plsh
+        | postgresql-9.3-plsh,
     sdu-pgutils,
     sdu-phppgadmin,
     vim-enh

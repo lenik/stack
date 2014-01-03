@@ -1,14 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
 
-# hba=/etc/postgresql/8.4/main/pg_hba.conf
-hba=/etc/postgresql/9.1/main/pg_hba.conf
+shopt -s nullglob
 
-lineconf -tm "Add host auth 192.* by password" \
-    $hba SDUC-1-192    "host all all 192.168.1.0/24 password"
-lineconf -tm "Add host auth all by md5" \
-    $hba SDUC-9-remote "host all all 0.0.0.0/0 md5"
+pgconfdir=/etc/postgresql
+for pgconfvdir in $pgconfdir/*; do
+    pgver=${pgconfvdir##*/}
+    hba=$pgconfvdir/main/pg_hba.conf
+
+    lineconf -tm "PG-$pgver: Add host auth 192.* by password" \
+        $hba SDUC-1-192    "host all all 192.168.1.0/24 password"
+    lineconf -tm "PG-$pgver: Add host auth all by md5" \
+        $hba SDUC-9-remote "host all all 0.0.0.0/0 md5"
+done
 
 echo "Set postgres default password"
     sudo -upostgres psql -d template1 -c \

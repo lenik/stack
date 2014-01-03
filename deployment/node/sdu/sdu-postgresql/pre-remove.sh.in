@@ -1,12 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
 
-#hba=/etc/postgresql/8.4/main/pg_hba.conf
-hba=/etc/postgresql/9.1/main/pg_hba.conf
+shopt -s nullglob
 
-echo "Remove entries from $hba"
-    lineconf -tk SDUC-1-192    $hba
-    lineconf -tk SDUC-9-remote $hba
+pgconfdir=/etc/postgresql
+for pgconfvdir in $pgconfdir/*; do
+    pgver=${pgconfvdir##*/}
+    hba=$pgconfvdir/main/pg_hba.conf
+
+    lineconf -ktm "PG-$pgver: Remove host auth 192.* by password" \
+        $hba SDUC-1-192
+    lineconf -ktm "PG-$pgver: Remove host auth all by md5" \
+        $hba SDUC-9-remote
+done
 
 exit 0

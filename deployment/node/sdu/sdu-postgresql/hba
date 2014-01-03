@@ -1,4 +1,10 @@
 #!/bin/bash
 
-ifedit --sudo /etc/postgresql/8.4/main/pg_hba.conf \
-    /etc/init.d/postgresql-8.4 restart
+pgconfdir=/etc/postgresql
+
+for pgconfvdir in $pgconfdir/*; do
+    pgver=${pgconfvdir##*/}
+    hba=$pgconfvdir/main/pg_hba.conf
+    ifedit --sudo $hba \
+        /etc/init.d/postgresql-$pgver restart
+done
