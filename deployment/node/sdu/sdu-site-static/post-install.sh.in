@@ -6,5 +6,5 @@
 echo "Config apache2"
 
     a2enmod ssl
-    a2ensite 20secca-static.site
+    a2ensite 20secca-static.conf
     a2reload

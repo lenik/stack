@@ -1,53 +1,30 @@
-2010-12-13  lenik
+[0.2.2] Lenik (2012-04-05)
+	* Fixed site-statis ssl certs.
 
-	* configure.ac: don't report portability warnings.
+[0.2.1] Lenik (2012-02-22)
+	* Renamed secca-static.site to 20secca-static.site.
 
-2010-12-08  lenik
+[0.2.0] Lenik (2012-02-22)
+	* Enabled static/ssl at port 444 with cdn-private-key.
 
-	* .: add itree.tex to svn ignores
+[0.1.4] Lenik (2012-02-22)
+	* Install certs in /usr/share/ca-certificates and symlinks in /etc/ssl/certs.
+	* secca-static point to implicit istore/projects/..
 
-2010-11-29  lenik
+[0.1.1] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* initial
 
-	* README: create empty README files to be filled in future.
+[0.1.0] Lenik (2010-09-29)
+	* add changelog
+	* ignores
+	* Initial by sdu-creator
 
-2010-11-03  lenik
-
-	* ., debian/changelog: switch to unstable.
-
-2010-10-20  lenik
-
-	* debian/changelog: Maverick redist.
-
-2010-10-18  lenik
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
-	  debian/README.Debian, debian/README.source, debian/changelog,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
-	  install-sh, libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in, 20secca-static.site: set eol-style to native
-
-2010-10-07  lenik
-
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  debian/changelog, post-install.sh.in, pre-remove.sh.in,
-	  20secca-static.site: initial
-
-2010-09-29  lenik
-
-	* debian/changelog: add changelog
-
-2010-09-27  lenik
-
-	* 20secca-static.site: ignores
-
-2010-09-23  lenik
-
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
-	  configure.ac, debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
-	  install-sh, libauto, libauto/coolauto.am, missing,
-	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator

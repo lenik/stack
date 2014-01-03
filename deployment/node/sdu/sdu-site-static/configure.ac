@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([sdu-site-static], [0.2.2], [sdu-bugs@secca-project.com])
+AC_INIT([sdu-site-static], [0.3.0], [sdu-bugs@secca-project.com])
 AM_INIT_AUTOMAKE([-Wno-portability])
 
 # Checks for programs.
