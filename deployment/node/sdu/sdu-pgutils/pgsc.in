@@ -19,11 +19,11 @@ for pgdir in @libdir@/postgresql/*/; do
     break
 done
 
-_catrc="@pkgdatadir@/pgscver/$_category"
+_catrc="@pkgdatadir@/pgscrc.d/$_category"
 if [ -f "$_catrc" ]; then
     . "$_catrc"
 fi
 
-cmdexe=@libdir@/postgresql/$PGVER/bin/$cmd
+cmdexe=@libdir@/postgresql/$PGVER/bin/$_cmd
 
 exec $cmdexe "$@"
