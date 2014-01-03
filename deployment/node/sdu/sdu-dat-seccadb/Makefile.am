@@ -1,6 +1,7 @@
 include libauto/coolauto.am
 
 crondir	= ${sysconfdir}/cron.daily
+pgscrcdir = ${datadir}/sdu-pgutils/pgscrc.d
 
 PG_CREATE_SHORTCUTS = pg-create-shortcuts
 
@@ -9,6 +10,12 @@ dist_bin_SCRIPTS = \
 	seccadb-backup \
 	seccadb-restore \
 	seccadb-csv
+
+dist_pkgdata_DATA = \
+	initenv.sh
+
+dist_pgscrc_DATA = \
+	pgscrc.d/seccadb
 
 dist_cron_SCRIPTS = \
 	80seccadb-backup

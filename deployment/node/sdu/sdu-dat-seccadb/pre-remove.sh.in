@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. @pkgdatadir@/initenv.sh
+
 # master-file
 configinc=/etc/phppgadmin/config.inc.php
     lineconf -ktm "Remove SECCA DB from phppgadmin: " -p '<?php # ' -s ' ?>' \

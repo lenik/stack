@@ -1,105 +1,89 @@
-2010-12-13  lenik
+[0.4.8] Lenik (2014-01-03)
+	* sdu-pgutils: Changed pgscver to pgscrc.d.
 
-	* configure.ac: don't report portability warnings.
+[0.4.7] Lenik (2013-10-24)
+	* sdu-dat-seccadb: Utilized pg_dump_sort in the backup script.
 
-2010-12-10  lenik
+[0.4.6] Lenik (2013-10-21)
+	* sdu-dat-seccadb: Sort rows by id before save to table bak files in baksplit.
 
-	* VERSION.av, configure, configure.ac, debian/changelog,
-	  post-install.sh.in: enable pl/langs
+[0.4.5] Lenik (2013-03-18)
+	* Upgraded SDUs for PostgreSQL-9.1.
 
-2010-12-09  lenik
+[0.4.2] Lenik (2012-04-20)
+	* Added baksplit to split .bak.sql to tables.
 
-	* VERSION.av, aclocal.m4, configure, configure.ac,
-	  debian/changelog, post-install.sh.in: add semsdb.
+[0.4.1] Lenik (2012-04-05)
+	* Added seccadb-csv utility.
 
-2010-12-08  lenik
+[0.4.0] Lenik (2012-03-19)
+	* 80seccadb-backup must be run by semop user. sudo to semop.
+	* Renamed seccadb-backup.job to 80seccadb-backup. To conform run-parts filename spec.
 
-	* .: add itree.tex to svn ignores
+[0.3.9] Lenik (2012-03-02)
+	* seccadb-backup: Auto config author info.
 
-2010-11-30  lenik
+[0.3.6] Lenik (2012-03-02)
+	* seccadb-backup: Do vcs update before commit.
 
-	* post-install.sh.in: translate non-letter to `_` when search for
-	  installed database name.
+[0.3.5] Lenik (2012-03-02)
+	* seccadb-backup: Quote parameter values.
 
-2010-11-29  lenik
+[0.3.3] Lenik (2012-03-02)
+	* seccadb-backup: Added author info in commit message.
 
-	* README: create empty README files to be filled in future.
+[0.3.2] Lenik (2012-03-02)
+	* Added seccadb-backup cron.daily job.
 
-2010-11-03  lenik
+[0.3.0] Lenik (2012-03-02)
+	* Added --commit option to auto commit after backup.
 
-	* debian/changelog: switch to unstable.
+[0.1.12] Lenik (2012-03-02)
+	* Added secca-backup/restore scripts in sdu-dat-seccadb.
 
-2010-10-20  lenik
+[0.1.11] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* Update changelogs
+	* don't report portability warnings.
+	* enable pl/langs
 
-	* debian/changelog: Maverick redist.
+[0.1.10] Lenik (2010-12-09)
+	* add semsdb.
 
-2010-10-18  lenik
+[0.1.9] Lenik (2010-11-30)
+	* translate non-letter to `_` when search for installed database name.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* split seccadb-phppgadmin from -phppgadmin into -dat-seccadb
 
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
-	  debian/README.Debian, debian/README.source, debian/changelog,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/prerm, debian/rules, install-sh,
-	  libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in: set eol-style to native
+[0.1.8] Lenik (2010-09-29)
+	* add changelog
+	* lineconf syntax fix.
 
-2010-09-30  lenik
+[0.1.6] Lenik (2010-09-22)
+	* /node refactor. build deps on -pgutils
 
-	* VERSION.av, configure, configure.ac, debian/changelog,
-	  post-install.sh.in, pre-remove.sh.in: split seccadb-phppgadmin
-	  from -phppgadmin into -dat-seccadb
+[0.1.4] Lenik (2010-09-22)
+	* auto updates.
+	* updates
+	* auto updates.
+	* pre-remove always exit 0
 
-2010-09-29  lenik
+[0.1.3] Lenik (2010-09-17)
+	* add debian control files.
+	* updates
+	* libauto updates.
+	* create play and dev dbs.
 
-	* debian/changelog: add changelog
-	* VERSION.av, configure, configure.ac, post-install.sh.in: lineconf
-	  syntax fix.
+[0.1.2] Lenik (2010-09-10)
+	* create cluster using pg_createcluster, and generate shortcuts stuff.
 
-2010-09-23  lenik
+[0.1.1] Lenik (2010-09-10)
+	* create cluster using initdb. (deprecated)
 
-	* .: set ignores.
-	* .: ignore *.gz
+[0.1.0] Lenik (2010-09-09)
+	* Initial by sdu-creator
 
-2010-09-22  lenik
-
-	* VERSION.av, configure, configure.ac, debian/control,
-	  post-install.sh.in: /node refactor. build deps on -pgutils
-	* Makefile.in, libauto/coolauto.am: auto updates.
-
-2010-09-21  lenik
-
-	* libauto/coolauto.am, post-install.sh.in: updates
-	* Makefile.am, Makefile.in, debian/postinst, debian/prerm: auto
-	  updates.
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: pre-remove
-	  always exit 0
-
-2010-09-19  lenik
-
-	* debian: ignore substvars
-
-2010-09-17  lenik
-
-	* debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/prerm, debian/rules: add debian control
-	  files.
-	* Makefile.am, Makefile.in, configure, configure.ac: updates
-	* libauto/subst.am: libauto updates.
-
-2010-09-10  lenik
-
-	* VERSION.av, configure, configure.ac, post-install.sh.in: create
-	  play and dev dbs.
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  post-install.sh.in: create cluster using pg_createcluster, and
-	  generate shortcuts stuff.
-	* VERSION.av, configure, configure.ac, post-install.sh.in: create
-	  cluster using initdb. (deprecated)
-
-2010-09-09  lenik
-
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
-	  configure.ac, install-sh, libauto, libauto/subst.am, missing,
-	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator
