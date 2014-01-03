@@ -5,7 +5,7 @@ sitesdir  = ${a2confdir}/sites-available
 admindir  = ${sysconfdir}/phppgadmin
 
 dist_sites_DATA = \
-    20secca-pgsql.site
+    20secca-pgsql.conf
 
 dist_admin_DATA = \
     add_server.inc.php

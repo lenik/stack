@@ -11,10 +11,10 @@ lineconf -tm "Add add_server() support to config.inc.php" \
     $configinc @inc::add-server \
     "<?php include 'add_server.inc.php'; ?>"
 
-echo "Load 20secca-pgsql.site"
+echo "Load 20secca-pgsql site"
     a2enmod auth_digest
     a2enmod php5
-    a2ensite 20secca-pgsql.site
+    a2ensite 20secca-pgsql.conf
     a2reload
 
 exit 0

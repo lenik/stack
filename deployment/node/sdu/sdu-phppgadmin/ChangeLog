@@ -1,99 +1,47 @@
-2010-12-13  lenik
+[0.2.0] Lenik (2014-01-03)
+	* sdu-phppgamin: Upgraded site config files to apache-2.4.
+	* Renamed secca-static.site to 20secca-static.site.
+	* Renamed secca-pgsql.site to 20secca-pgsql.site.
 
-	* configure.ac: don't report portability warnings.
+[0.1.13] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* uni refactor 1.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* split seccadb-phppgadmin from -phppgadmin into -dat-seccadb
 
-2010-12-08  lenik
+[0.1.11] Lenik (2010-09-30)
+	* dep on configutils
+	* using lineconf instead of echo.
 
-	* .: add itree.tex to svn ignores
+[0.1.10] Lenik (2010-09-29)
+	* add changelog
+	* add add_server support
 
-2010-11-29  lenik
+[0.1.9] Lenik (2010-09-27)
+	* a2site file isn't disted.
 
-	* README: create empty README files to be filled in future.
+[0.1.5] Lenik (2010-09-27)
+	* initial.
 
-2010-11-03  lenik
+[0.1.2] Lenik (2010-09-22)
+	* auto updates.
+	* auto updates.
+	* pre-remove always exit 0
 
-	* debian/changelog: switch to unstable.
+[0.1.1] Lenik (2010-09-19)
+	* libauto missings.
+	* libauto updated
 
-2010-10-20  lenik
+[0.1.0] Lenik (2010-09-17)
+	* add debian control files.
+	* updates
+	* libauto updates.
+	* Initial by sdu-creator
 
-	* debian/changelog: Maverick redist.
-
-2010-10-18  lenik
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, add_server.inc.php,
-	  configure, configure.ac, debian/README.Debian,
-	  debian/README.source, debian/changelog, debian/compat,
-	  debian/control, debian/copyright, debian/docs, debian/postinst,
-	  debian/prerm, debian/rules, install-sh, libauto/coolauto.am,
-	  missing, post-install.sh.in, pre-remove.sh.in, 20secca-pgsql.site:
-	  set eol-style to native
-
-2010-09-30  lenik
-
-	* VERSION.av, configure, configure.ac, debian/changelog,
-	  post-install.sh.in, pre-remove.sh.in: split seccadb-phppgadmin
-	  from -phppgadmin into -dat-seccadb
-	* debian/control: dep on configutils
-	* VERSION.av, configure, configure.ac, debian/changelog,
-	  post-install.sh.in: using lineconf instead of echo.
-
-	  4 lines of <?php ...?>, this may produce some unnecesary space in
-	  the html header, but , let it go.
-
-2010-09-29  lenik
-
-	* debian/changelog: add changelog
-
-2010-09-28  lenik
-
-	* Makefile.am, Makefile.in, VERSION.av, add_server.inc.php,
-	  configure, configure.ac, post-install.sh.in: add add_server
-	  support
-
-2010-09-27  lenik
-
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  20secca-pgsql.site: a2site file isn't disted.
-
-	  set auth name to sql.
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  debian/control, debian/postinst, debian/prerm,
-	  post-install.sh.in, pre-remove.sh.in: initial.
-
-2010-09-23  lenik
-
-	* .: set ignores.
-	* .: ignore *.gz
-
-2010-09-22  lenik
-
-	* Makefile.in, libauto/coolauto.am: auto updates.
-
-2010-09-21  lenik
-
-	* Makefile.in, libauto/coolauto.am: auto updates.
-	* VERSION.av, configure, configure.ac, pre-remove.sh.in: pre-remove
-	  always exit 0
-
-2010-09-19  lenik
-
-	* libauto/coolauto.am: libauto missings.
-	* debian: ignore substvars
-
-2010-09-17  lenik
-
-	* Makefile.in, VERSION.av, configure, configure.ac: libauto updated
-	* debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/prerm, debian/rules: add debian control
-	  files.
-	* Makefile.am, Makefile.in, configure, configure.ac: updates
-	* libauto/subst.am: libauto updates.
-
-2010-09-09  lenik
-
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
-	  configure.ac, install-sh, libauto, libauto/subst.am, missing,
-	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator

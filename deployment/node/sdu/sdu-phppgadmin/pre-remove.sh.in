@@ -6,8 +6,8 @@ lineconf -ktm "Remove add_server() support from config.inc.php" \
     $configinc @inc::add-server
 
 # master-file
-echo "Unload 20secca-pgsql.site"
-    a2dissite 20secca-pgsql.site
+echo "Unload 20secca-pgsql site"
+    a2dissite 20secca-pgsql.conf
     a2reload
 
 exit 0
