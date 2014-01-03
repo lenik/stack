@@ -4,7 +4,7 @@ a2confdir = ${sysconfdir}/apache2
 sitesdir  = ${a2confdir}/sites-available
 
 dist_sites_DATA = \
-	secca-mysql.site
+	secca-mysql.conf
 
 setup_SCRIPTS = \
 	post-install.sh \

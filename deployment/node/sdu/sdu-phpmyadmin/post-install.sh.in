@@ -4,11 +4,11 @@
 echo "Remove global phpmyadmin.conf"
     rm -f /etc/apache2/conf.d/phpmyadmin.conf
 
-echo "Load secca-mysql.site"
+echo "Load secca-mysql site"
 
     a2enmod auth_digest
     a2enmod php5
-    a2ensite secca-mysql.site
+    a2ensite secca-mysql.conf
     a2reload
 
 exit 0

@@ -1,48 +1,19 @@
-2010-12-13  lenik
+[0.1.3] Lenik (2011-01-19)
+	* remove changelogs from repo.
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* autoconf 2.67
+	* Update changelogs
+	* don't report portability warnings.
+	* create empty README files to be filled in future.
+	* switch to unstable.
+	* Maverick redist.
+	* add changelog
+	* dist site files
 
-	* configure.ac: don't report portability warnings.
+[0.1.2] Lenik (2010-09-27)
+	* set auth name to sql.
 
-2010-12-08  lenik
+[0.1.0] Lenik (2010-09-27)
+	* Initial by sdu-creator
 
-	* .: add itree.tex to svn ignores
-
-2010-11-29  lenik
-
-	* README: create empty README files to be filled in future.
-
-2010-11-03  lenik
-
-	* debian/changelog: switch to unstable.
-
-2010-10-20  lenik
-
-	* debian/changelog: Maverick redist.
-
-2010-10-18  lenik
-
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
-	  debian/README.Debian, debian/README.source, debian/changelog,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
-	  install-sh, libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in, secca-mysql.site: set eol-style to native
-
-2010-09-29  lenik
-
-	* debian/changelog: add changelog
-
-2010-09-27  lenik
-
-	* .: ignores
-	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  secca-mysql.site: dist site files
-	* VERSION.av, configure, configure.ac, debian/control: set auth
-	  name to sql.
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
-	  configure.ac, debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
-	  install-sh, libauto, libauto/coolauto.am, missing,
-	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator
