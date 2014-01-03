@@ -4,7 +4,7 @@
 
 echo "Unconfig apache2"
 
-    a2dissite 20secca-devsite.site
+    a2dissite 20secca-devsite.conf
     a2reload
 
 devsite_dir=@pkgdatadir@/html

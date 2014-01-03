@@ -19,5 +19,5 @@ devsite_dir=@pkgdatadir@/html
 echo "Config apache2"
 
     a2enmod  userdir
-    a2ensite 20secca-devsite.site
+    a2ensite 20secca-devsite.conf
     a2reload
