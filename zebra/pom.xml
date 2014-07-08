@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.bodz</groupId>
+		<artifactId>parent</artifactId>
+		<version>1-SNAPSHOT</version>
+	</parent>
+	<groupId>com.bee32.zebra</groupId>
+	<artifactId>zebra</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>layer-1</module>
+		<module>layer-2</module>
+	</modules>
+	<name>Zebra</name>
+	<url>http://www.bee32.com</url>
+	<inceptionYear>2014</inceptionYear>
+	<developers>
+		<!--Please list in the alphabet order by developer id.-->
+		<developer>
+			<id>XJL</id>
+			<name>谢继雷</name>
+			<email>xjl@99jsj.com</email>
+			<roles>
+				<role>Project Leader</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>GMT+8</timezone>
+		</developer>
+	</developers>
+	<mailingLists>
+		<mailingList>
+			<name>SECCA Developer</name>
+			<archive>http://list.bee32.com/archive/dev</archive>
+			<post>post-dev@list.bee32.com</post>
+			<subscribe>subscribe-dev@list.bee32.com</subscribe>
+			<unsubscribe>unsubscribe-dev@list.bee32.com</unsubscribe>
+		</mailingList>
+	</mailingLists>
+	<scm>
+		<connection>scm:svn:http://svn.bee32.com/stack/zebra/trunk</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.bee32.com/repos/svn/stack/zebra/trunk</developerConnection>
+		<url>http://track.bee32.com/projects/stack/browser/zebra/trunk</url>
+	</scm>
+</project>

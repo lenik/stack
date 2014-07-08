@@ -1,3 +1,9 @@
+[0.1.10] Lenik (2014-08-12)
+	* sdu-pgutils: Added pgver. Check if postgresql installed.
+
+[0.1.9] Lenik (2014-08-12)
+	* b4
+
 [0.1.8] Lenik (2014-01-03)
 	* sdu-pgutils: Changed pgscver to pgscrc.d.
 	* Upgraded .gitignore file.

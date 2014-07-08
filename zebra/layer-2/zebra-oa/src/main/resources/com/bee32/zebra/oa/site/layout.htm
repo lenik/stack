@@ -1,0 +1,213 @@
+<html>
+<head>
+    <link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0">
+    <tr valign="top" style="height: 0">
+    <td id="left" rowspan="2">
+        <div id="logo">SECCA<br>ERP</div>
+        <div id="welcome">
+            欢迎您，<br>
+            海宁皮包有限公司<br>
+            的<br>
+            张三 销售员！
+            <span id="logout">[注销]</span>
+        </div>
+        <form id="search">
+            搜索：
+            <input id="q">
+        </form>
+        <div id="menu">
+            <ul>
+                <li>企业知识</li>
+                    <ul>
+                        <li>关系网</li>
+                    </ul>
+                <li>库存</li>
+                    <ul>
+                        <li>仓库</li>
+                        <li>产品/物料</li>
+                    </ul>
+                <li>销售</li>
+                    <ul>
+                        <li>项目/机会</li>
+                        <li>订单</li>
+                    </ul>
+                <li>生产过程</li>
+                    <ul class="submenu">
+                        <li>装配图</li>
+                        <li>工艺路线</li>
+                        <li>排程</li>
+                        <li>作业</li>
+                        <li>质量控制</li>
+                    </ul>
+                <li>财务</li>
+                    <ul>
+                        <li>流水帐</li>
+                        <li>款项</li>
+                        <li>工资</li>
+                        <li>报表</li>
+                    </ul>
+                <li>系统</li>
+                    <ul>
+                        <li>帐户</li>
+                    </ul>
+            </ul>
+        </div>
+    </td>
+    
+    <td id="topbar" class="info">
+        <h1>物料</h1>
+        <p class="sub">
+            定义生产过程或供销中使用的制品（成品或半成品）。
+            也叫SKU（库存保管单元）比如一件衬衫，按颜色、尺码可以定义一些列物料
+        </p>
+        <table border="0" width="100%">
+            <tr valign="top">
+                <td id="stat" width="50%">
+                    <ul>
+                        <li>总计 3155 种</li>
+                        <li>有效 3014 种</li>
+                        <li>在用 541 种</li>
+                    </ul>
+                </td>
+                <td id="links" rowspan="2" width="50%">
+                    <span>您可能需要进行下面的操作:</span>
+                    <ul>
+                        <li><a href="">管理物料分类</a></li>
+                        <li><a href="">管理计量单位</a></li>
+                        <li><a href="">采购入库</a></li>
+                        <li><a href="">库存盘点</a></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td id="cmds">
+                    <div id="cmds.0">
+                        <a href="">新建</a>
+                        <a href="">导出</a>
+                        <a href="">打印</a>
+                    </div>
+                    <div id="cmds.1">
+                        <a href="">打印条码</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </td>
+    
+    <td id="right" class="info" rowspan="2">
+        <div id="preview" align="center">
+            <img src="pic.png">
+        </div>
+        <div id="infosel">
+            <table width="100%" border="0">
+            <tr><td><h2>选中的信息</h2></td>
+                <td align="right" style="width: 3em">
+                    <a href="">[编辑]</a>
+                </td></tr>
+            </table>
+            
+            <table>
+            <tr><td class="group" colspan="2"><h3>基本信息</h3></td></tr>
+            <tr><td class="label">名称：</td><td>茶杯</td></tr>
+            <tr><td class="label">规格型号：</td><td>S41-431</td></tr>
+            <tr><td class="label">SKU：</td><td>CUP4321</td></tr>
+            <tr><td class="label">条形码：</td><td>31746931</td></tr>
+            <tr><td class="group" colspan="2"><h3>运输</h3></td></tr>
+            <tr><td class="label">计量单位：</td><td>个</td></tr>
+            <tr><td class="label">毛重：</td><td>120 g</td></tr>
+            <tr><td class="label">净重：</td><td>150 g</td></tr>
+            <tr><td class="label">包装尺寸：</td><td>310 x 540 x 210 mm</td></tr>
+            <tr><td class="group" colspan="2"><h3>自定义属性</h3></td></tr>
+            <tr><td class="label">色号：</td><td>4312</td></tr>
+            <tr><td class="label">桶号：</td><td>54</td></tr>
+            </table>
+        </div>
+        <div id="infoman">
+            <h2>管理过程</h2>
+            <ul>
+                <li>SKU不是越多越好</li>
+                <li>建立清晰的物料信息</li>
+                <li>物料属性的查找</li>
+            </ul>
+        </div>
+    </td>
+    </tr>
+    
+    <tr valign="top"><td id="content">
+    <style>
+    .table ul {
+        padding-left: 0;
+        list-style: none;
+        }
+
+    .row {
+        margin-bottom: 1em;
+        clear: both;
+    }
+    
+    .row > li {
+        list-style: none;
+        float: left;
+        padding-right: 1em;
+    }
+    
+    .row .c_id {
+        text-indent: none;
+    }
+    .row .c_model {
+        clear: both;
+        padding-left: 2em;
+    }
+    </style>
+        <div class="table">
+        <ul>
+            <li><ul class="row">
+                    <li class="c_id">7837</li>
+                    <li class="c_name">镀锌卷</li>
+                    <li class="c_model">0.5*1.25</li>
+                    <li class="c_unit">吨(t)</li>
+                    <li class="c_date">2013-08-02</li>
+                    <li class="c_own">张三</li>
+                </ul>
+            <li><ul class="row">
+                    <li class="c_id">7836</li>
+                    <li class="c_name">皮带轮</li>
+                    <li class="c_model">450*4B</li>
+                    <li class="c_unit">盒(BOX)</li>
+                    <li class="c_date">2013-08-02</li>
+                    <li class="c_own">王小六</li>
+                </ul>
+            <li><ul class="row">
+                    <li class="c_id">7835</li>
+                    <li class="c_name">超大皮带轮 160*4B</li>
+                    <li class="c_model">160-4B</li>
+                    <li class="c_unit">个(PCS)</li>
+                    <li class="c_date">2013-08-02</li>
+                    <li class="c_own">李十三</li>
+                </ul>
+            <li><ul class="row">
+                    <li class="c_id">7834</li>
+                    <li class="c_name">浓缩皮带轮 170*4B 特殊</li>
+                    <li class="c_model">321 4</li>
+                    <li class="c_unit">个(PCS)</li>
+                    <li class="c_date">2013-08-02</li>
+                    <li class="c_own">张三</li>
+                </ul>
+            <li><ul class="row">
+                    <li class="c_id">7833</li>
+                    <li class="c_name">变形金刚使用的皮带轮</li>
+                    <li class="c_model">180-444</li>
+                    <li class="c_unit">套</li>
+                    <li class="c_date">2013-08-02</li>
+                    <li class="c_own">陈冠希</li>
+                </ul>
+        </ul>
+        </div>
+    </td></tr>
+</table>
+</body>
+</html>

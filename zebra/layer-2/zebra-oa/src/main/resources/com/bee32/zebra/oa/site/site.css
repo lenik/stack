@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+a {
+    color: hsl(0, 100%, 50%);
+}
+
+#left {
+    width: 10em;
+    background: hsl(0, 100%, 90%);
+    float: left;
+}
+#left > div {
+    margin-bottom: 1em;
+}
+
+#logo {
+    text-align: center;
+    font-size: x-large;
+    margin: 2em;
+}
+
+#welcome {
+    text-align: center;
+    font-size: small;
+    font-style: italic;
+}
+
+form#search {
+    text-align: center;
+    font-style: italic;
+    font-size: small;
+}
+
+#menu ul {
+    padding-left: 1em;
+    list-style-type: none;
+    line-height: 1.2em;
+}
+
+#menu > ul > li {
+    font-style: italic;
+    margin-top: 1em;
+}
+
+#menu > ul > li > ul {
+    font-size: small;
+}
+
+#topbar {
+    padding: 1em;
+    width: 60%;    
+}
+
+h1 {
+    font-weight: normal;
+    font-size: xx-large;
+}
+
+h1 + .sub {
+    font-size: small;
+}
+
+#stat {
+    font-size: small;
+    color: gray;
+}
+
+#stat ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#links {
+    font-style: italic;
+    font-size: small;
+    color: hsl(30, 100%, 30%);
+}
+
+#links a {
+    color: hsl(30, 100%, 30%);
+}
+
+#links ul {
+    list-style-type: circle;
+    padding-left: 2em;
+    margin: 0;
+}
+
+
+#content {
+    padding: 1em;
+    border: solid 1px gray;
+}
+
+#right {
+    width: 30%;
+    min-width: 14em;
+    padding: 1em;
+}
+
+.info {
+    background: hsl(45, 100%, 90%);
+}
+
+#preview {
+    margin: 2em 0 0;
+}
+
+#preview > img {
+    width: 100px;
+    height: 100px;
+}
+
+h2 {
+    font-weight: normal;
+    margin: 1em 0 0 0;
+}
+
+h3 {
+    font-style: italic;
+    font-size: inherit;
+    margin: 0;
+}
+
+td.group {
+    text-align: left;
+    line-height: 2em;
+}
+
+td.label {
+    padding-left: 1em;
+    text-align: right;
+}
+
+#infoman {
+    list-style-type: square;
+}
+
+.layout {
+    padding: 0;
+    border-spacing: 0;
+    border: none;
+}

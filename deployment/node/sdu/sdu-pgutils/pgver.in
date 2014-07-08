@@ -83,6 +83,8 @@ function main() {
 
     [ "$show_max" = 1 ] && echo "$maxver"
     [ "$show_min" = 1 ] && echo "$minver"
+
+    return 0
 }
 
 boot "$@"

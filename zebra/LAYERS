@@ -1,0 +1,17 @@
+layer-1/
+    zebra-tk
+        # fn/widgets
+        
+layer-2/
+    zebra-oa
+        # user/file/mail/event/kb/log
+        # calendar/schedule
+        # process/workflow
+
+    zebra-erp
+        # world/store/inventory
+        # accounting/asset
+        # chance/contract
+        # make/makebiz/purchase
+        # hr/salary/attendance
+    
