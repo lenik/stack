@@ -1,8 +1,5 @@
 [0.1.8] Lenik (2014-01-03)
 	* sdu-pgutils: Changed pgscver to pgscrc.d.
-	* pgutils
-
-[0.1.7] Lenik (2014-01-03)
 	* Upgraded .gitignore file.
 	* sdu-pgutils: pg-create-shortcuts create pgsc wrappers, to support dat-suite.
 

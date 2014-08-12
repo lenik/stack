@@ -1,3 +1,6 @@
+[1.0.0] Lenik (2014-01-03)
+	* sdu-postgresql: Upgraded to postgresql-9.3. Also support other versions.
+
 [0.1.27] Lenik (2013-12-17)
 	* sdu-postgresql: Avoid dependencies to postgresql-9.x.
 
@@ -70,7 +73,7 @@
 	* create shortcuts utility.
 
 [0.1.6] Lenik (2010-09-09)
-	*
+	* 
 
 [0.1.4] Lenik (2010-09-09)
 	* addsyms in automake.
