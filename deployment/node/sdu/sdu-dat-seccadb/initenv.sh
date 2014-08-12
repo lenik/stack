@@ -1,2 +1,2 @@
 DATADIR=/mnt/devdata/seccadb
-PGVER=9.3
+PGVER=`pgver -qa`
