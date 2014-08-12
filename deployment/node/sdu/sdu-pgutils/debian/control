@@ -9,10 +9,6 @@ Homepage: http://sdu.secca-project.com/sdu-pgutils
 Package: sdu-pgutils
 Architecture: all
 Depends: 
-    postgresql
-        | postgresql-8.4
-        | postgresql-9.1
-        | postgresql-9.3
-        | postgresql-9.4,
-    perl
+    perl,
+    postgresql-latest
 Description: PostgreSQL utilities

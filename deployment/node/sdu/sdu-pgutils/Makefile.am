@@ -4,6 +4,7 @@ dist_bin_SCRIPTS = \
 	pg-create-shortcuts \
 	pg_dump_sort \
 	pgsc \
+	pgver \
 	rm-pglibsyms
 
 setup_SCRIPTS = \

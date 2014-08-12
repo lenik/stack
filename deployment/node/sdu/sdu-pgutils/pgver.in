@@ -1,0 +1,88 @@
+#!/bin/bash
+    : ${RCSID:=$Id: - @VERSION@ @DATE@ @TIME@ - $}
+    : ${PACKAGE:=@PACKAGE@}
+    : ${PROGRAM_TITLE:=Get the installed PostgreSQL version}
+    : ${PROGRAM_SYNTAX:=[OPTIONS] [--] ...}
+    : ${libdir:=@libdir@}
+    : ${sysconfdir:=@sysconfdir@}
+
+    . shlib-import cliboot
+    option -a --maximum         "Show the maximum installed PostgreSQL version"
+    option -b --minimum         "Show the minimum installed PostgreSQL version"
+    option -q --quiet
+    option -v --verbose
+    option -h --help
+    option    --version
+
+    show_max=
+    show_min=
+
+function setopt() {
+    case "$1" in
+        -a|--maximum)
+            show_max=1;;
+        -b|--minimum)
+            show_min=1;;
+        -h|--help)
+            help $1; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            show_version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    minver=
+    minn=99999999
+    maxver=
+    maxn=0
+    
+    shopt -s nullglob
+    for pgdir in $libdir/postgresql/*/; do
+        pgdir=${pgdir%/*}
+        ver=${pgdir##*/}
+
+        [ -d "$sysconfdir/postgresql/$ver" ] || continue
+
+        s=$ver
+        n=0
+
+        while [ -n "$s" ]; do
+            w="${s%%.*}"
+            if [ "$w" = "$s" ]; then
+                s=
+            else
+                s="${s#*.}"
+            fi
+            n=$(( n * 100 + w ))
+        done
+
+        _log1 "Found installed PostgreSQL version $ver (priority $n)"
+        if [ $n -lt $minn ]; then
+            minn=$n
+            minver="$ver"
+        fi
+        if [ $n -gt $maxn ]; then
+            maxn=$n
+            maxver="$ver"
+        fi
+    done
+
+    if [ -z "$minver" ]; then
+        _warn "PostgreSQL isn't installed, yet."
+        exit 2
+    fi
+
+    _log1 "Minimum installed PostgreSQL version: $minver"
+    _log1 "Maximum installed PostgreSQL version: $maxver"
+
+    [ "$show_max" = 1 ] && echo "$maxver"
+    [ "$show_min" = 1 ] && echo "$minver"
+}
+
+boot "$@"
