@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.oa.thread.impl.ReplyMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Reply" extends="message.mapX">
+        <result property="beginTime" column="t0" />
+        <result property="endTime" column="t1" />
+    </resultMap>
+
+    <sql id="select1"><![CDATA[
+        select
+            a.*,
+            op.label "op_label",
+        from reply a
+            left join "user" op on a.op=op.id
+        ]]>
+    </sql>
+
+    <sql id="select2"><![CDATA[
+        select
+            a.*,
+            op.label "op_label",
+        from reply a
+            left join "user" op on a.op=op.id
+        ]]>
+    </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select2" />
+        <where>
+            <if test="_parameter != null">a.id=#{id}</if>
+        </where>
+    </select>
+
+    <select id="insert" resultType="int">
+        <![CDATA[
+        insert into reply(op, text, topic, parent)
+            values(#{op},#{text}, #{topic.id}, #{parent.id})
+            returning id
+    ]]></select>
+
+    <update id="update">
+        update reply
+        <set>
+            <include refid="message.setX" />
+            val=#{value},
+            <if test="beginTime != null">t0=#{beginTime},</if>
+            <if test="endTime != null">t1=#{endTime},</if>
+            <if test="topic != null">topic=#{topic.id},</if>
+            <if test="parent != null">parent=#{parent.id},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

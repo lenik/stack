@@ -1,0 +1,500 @@
+1:资产:Assets
+11~12:流动资产:Current Assets
+111:现金及约当现金:Cash And Cash Equivalents
+1111:库存现金:Cash On Hand
+1112:零用金/周转金:Petty Cash/Revolving Funds
+1113:银行存款:Cash In Banks
+1116:在途现金:Cash In Transit
+1117:约当现金:Cash Equivalents
+1118:其它现金及 约当现金:Other Cash And Cash Equivalents
+112:短期投资:Short-Term Investments
+1121:短期投资 - 股票:Short-Term Investments - Stock
+1122:短期投资 - 短期票券:Short-Term Investments - Short-Term Notes And Bills
+1123:短期投资 - 政府债券:Short-Term Investments - Government Bonds
+1124:短期投资 - 受益凭证:Short-Term Investments - Beneficiary Certificates
+1125:短期投资 - 公司债:Short-Term Investments - Corporate Bonds
+1128:短期投资 - 其它:Short-Term Investments - Other
+1129:备抵短期投资跌价损失:Allowance For Reduction Of Short-Term Investment To Market
+113:应收票据:Notes Receivable
+1131:应收票据:Notes Receivable
+1132:应收票据贴现:Discounted Notes Receivable
+1137:应收票据 - 关系人:Notes Receivable - Related Parties
+1138:其它应收票据:Other Notes Receivable
+1139:备抵呆帐 －应收票据:Allowance For Uncollec - Tible Accounts - Notes Receivable
+114:应收帐款:Accounts Receivable
+1141:应收帐款:Accounts Receivable
+1142:应收分期帐款:Installment Accounts Receivable
+1147:应收帐款 - 关系人:Accounts Receivable - Related Parties
+1149:备抵呆帐 －应收帐款:Allowance For Uncollec - Tible Accounts - Accounts Receivable
+118:其它应收款:Other Receivables
+1181:应收出售远汇款:Forward Exchange Contract Receivable
+1182:应收远汇款 - 外币:Forward Exchange Contract Receivable - Foreign Currencies
+1183:买卖远汇折价:Discount On Forward Ex-Change Contract
+1184:应收收益:Earned Revenue Receivable
+1185:应收退税款:Income Tax Refund Receivable
+1187:其它应收款 - 关系人:Other Receivables - Related Parties
+1188:其它应收款 - 其它:Other Receivables - Other
+1189:备抵呆帐 - 其它应收款:Allowance For Uncollec - Tible Accounts - Other Receivables
+121~122:存货:Inventories
+1211:商品存货:Merchandise Inventory
+1212:寄销商品:Consigned Goods
+1213:在途商品:Goods In Transit
+1219:备抵存货跌价损失:Allowance For Reduction Of Inventory To Market
+1221:制成品:Finished Goods
+1222:寄销制成品:Consigned Finished Goods
+1223:副产品:By-Products
+1224:在制品:Work In Process
+1225:委外加工:Work In Process - Outsourced
+1226:原料:Raw Materials
+1227:物料:Supplies
+1228:在途原物料:Materials And Supplies In Transit
+1229:备抵存货跌价损失:Allowance For Reduction Of Inventory To Market
+125:预付费用:Prepaid Expenses
+1251:预付薪资:Prepaid Payroll
+1252:预付租金:Prepaid Rents
+1253:预付保险费:Prepaid Insurance
+1254:用品盘存:Office Supplies
+1255:预付所得税:Prepaid Income Tax
+1258:其它预付费用:Other Prepaid Expenses
+126:预付款项:Prepayments
+1261:预付货款:Prepayment For Purchases
+1268:其它预付款项:Other Prepayments
+128~129:其它流动资产:Other Current Assets
+1281:进项税额 VAT:Paid ( Or Input Tax)
+1282:留抵税额:Excess VAT Paid (Or Overpaid VAT)
+1283:暂付款:Temporary Payments
+1284:代付款:Payment On Behalf Of Others
+1285:员工借支:Advances To Employees
+1286:存出保证金:Refundable Deposits
+1287:受限制存款:Certificate Of Deposit-Restricted
+1291:递延所得税资产:Deferred Income Tax Assets
+1292:递延兑换损失:Deferred Foreign Exchange Losses
+1293:业主(股东)往来:Owners'(Stockholders') Current Account
+1294:同业往来:Current Account With Others
+1298:其它流动资产-其它:Other Current Assets - Other
+13:基金及长期投资:Funds And Long-Term Investments
+131:基金:Funds
+1311:偿债基金:Redemption Fund (Or Sinking Fund)
+1312:改良及扩充基金:Fund For Improvement And Expansion
+1313:意外损失准备基金:Contingency Fund
+1314:退休基金:Pension Fund
+1318:其它基金:Other Funds
+132:长期投资:Long-Term Investments
+1321:长期股权投资:Long-Term Equity Investments
+1322:长期债券投资:Long-Term Bond Investments
+1323:长期不动产投资:Long-Term Real Estate In-Vestments
+1324:人寿保险现金解约价值:Cash Surrender Value Of Life Insurance
+1328:其它长期投资:Other Long-Term Investments
+1329:备抵长期投资跌价损失:Allowance For Excess Of Cost Over Market Value Of Long-Term Investments
+14~15:固定资产:Property, Plant, And Equipment
+141:土地:Land
+1411:土地:Land
+1418:土地-重估增值:Land - Revaluation Increments
+142:土地改良物:Land Improvements
+1421:土地改良物:Land Improvements
+1428:土地改良物 - 重估增值:Land Improvements - Revaluation Increments
+1429:累积折旧 - 土地改良物:Accumulated Depreciation - Land Improvements
+143:房屋及建物:Buildings
+1431:房屋及建物:Buildings
+1438:房屋及建物 - 重估增值:Buildings - Revaluation Increments
+1439:累积折旧 - 房屋及建物:Accumulated Depreciation - Buildings
+144~146:机(器)具及设备:Machinery And Equipment
+1441:机(器)具:Machinery
+1448:机(器)具 - 重估增值:Machinery - Revaluation Increments
+1449:累积折旧 - 机(器)具:Accumulated Depreciation - Machinery
+151:租赁资产:Leased Assets
+1511:租赁资产:Leased Assets
+1519:累积折旧 - 租赁资产:Accumulated Depreciation - Leased Assets
+152:租赁权益改良:Leasehold Improvements
+1521:租赁权益改良:Leasehold Improvements
+1529:累积折旧 - 租赁权益改良:Accumulated Depreciation - Leasehold Improvements
+156:未完工程及预付购置设备款:Construction In Progress And Prepayments For Equipment
+1561:未完工程:Construction In Progress
+1562:预付购置设备款:Prepayment For Equipment
+158:杂项固定资产:Miscellaneous Property, Plant, And Equipment
+1581:杂项固定资产:Miscellaneous Property, Plant, And Equipment
+1588:杂项固定资产-重估增值:Miscellaneous Property, Plant, And Equipment - Revaluation Increments
+1589:累积折旧 - 杂项固定资产:Accumulated Depreciation - Miscellaneous Property, Plant, And Equipment
+16:递耗资产:Depletable Assets
+161:递耗资产:Depletable Assets
+1611:天然资源:Natural Resources
+1618:天然资源 - 重估增值:Natural Resources - Revaluation Increments
+1619:累积折耗 - 天然资源:Accumulated Depletion - Natural Resources
+17:无形资产:Intangible Assets
+171:商标权:Trademarks
+1711:商标权:Trademarks
+172:专利权:Patents
+1721:专利权:Patents
+173:特许权:Franchise
+1731:特许权:Franchise
+174:著作权:Copyright
+1741:著作权:Copyright
+175:计算机软件:Computer Software
+1751:计算机软件:Computer Software Cost
+176:商誉:Goodwill
+1761:商誉:Goodwill
+177:开办费:Organization Costs
+1771:开办费:Organization Costs
+178:其它无形资产:Other Intangibles
+1781:递延退休金成本:Deferred Pension Costs
+1782:租赁权益改良:Leasehold Improvements
+1788:其它无形资产-其它:Other Intangible Assets - Other
+18:其它资产:Other Assets
+181:递延资产:Deferred Assets
+1811:债券发行成本:Deferred Bond Issuance Costs
+1812:长期预付租金:Long-Term Prepaid Rent
+1813:长期预付保险费:Long-Term Prepaid Insurance
+1814:递延所得税资产:Deferred Income Tax Assets
+1815:预付退休金:Prepaid Pension Cost
+1818:其它递延资产:Other Deferred Assets
+182:闲置资产:Idle Assets
+1821:闲置资产:Idle Assets
+184:长期应收票据及款项与催收帐款:Long-Term Notes, Accounts And Overdue Receivables
+1841:长期应收票据:Long-Term Notes Receivable
+1842:长期应收帐款:Long-Term Accounts Receivable
+1843:催收帐款:Overdue Receivables
+1847:长期应收票据及款项与催收帐款-关系人:Long-Term Notes, Accounts And Overdue Receivables - Related Parties
+1848:其它长期应收款项:Other Long-Term Receivables
+1849:备抵呆帐-长期应收票据及款项与催收帐款:Allowance For Uncollectible Accounts - Long-Term Notes, Accounts And Overdue Receivables
+185:出租资产:Assets Leased To Others
+1851:出租资产:Assets Leased To Others
+1858:出租资产 - 重估增值:Assets Leased To Others - Incremental Value From Revaluation
+1859:累积折旧 - 出租资产:Accumulated Depreciation - Assets Leased To Others
+186:存出保证金:Refundable Deposit
+1861:存出保证金:Refundable Deposits
+188:杂项资产:Miscellaneous Assets
+1881:受限制存款:Certificate Of Deposit - Restricted
+1888:杂项资产 - 其它:Miscellaneous Assets - Other
+2:负债:Liabilities
+21~22:流动负债:Current Liabilities
+211:短期借款:Short-Term Borrowings(Debt)
+2111:银行透支:Bank Overdraft
+2112:银行借款:Bank Loan
+2114:短期借款 - 业主:Short-Term Borrowings - Owners
+2115:短期借款 - 员工:Short-Term Borrowings - Employees
+2117:短期借款 - 关系人:Short-Term Borrowings - Related Parties
+2118:短期借款 - 其它:Short-Term Borrowings - Other
+212:应付短期票券:Short-Term Notes And Bills Payable
+2121:应付商业本票:Commercial Paper Payable
+2122:银行承兑汇票:Bank Acceptance
+2128:其它应付短期票券:Other Short-Term Notes And Bills Payable
+2129:应付短期票券折价:Discount On Short-Term Notes And Bills Payable
+213:应付票据:Notes Payable
+2131:应付票据:Notes Payable
+2137:应付票据 - 关系人:Notes Payable - Related Parties
+2138:其它应付票据:Other Notes Payable
+214:应付帐款:Accounts Pay Able
+2141:应付帐款:Accounts Payable
+2147:应付帐款 - 关系人:Accounts Payable - Related Parties
+216:应付所得税:Income Taxes Payable
+2161:应付所得税:Income Tax Payable
+217:应付费用:Accrued Expenses
+2171:应付薪工:Accrued Payroll
+2172:应付租金:Accrued Rent Payable
+2173:应付利息:Accrued Interest Payable
+2174:应付营业税:Accrued VAT Payable
+2175:应付税捐 - 其它:Accrued Taxes Payable - Other
+2178:其它应付费用:Other Accrued Expenses Payable
+218~219:其它应付款:Other Payables
+2181:应付购入远汇款:Forward Exchange Contract Payable
+2182:应付远汇款 - 外币:Forward Exchange Contract Payable - Foreign Currencies
+2183:买卖远汇溢价:Premium On Forward Exchange Contract
+2184:应付土地房屋款:Payables On Land And Building Purchased
+2185:应付设备款 P:Ayables On Equipment
+2187:其它应付款 - 关系人:Other Payables - Related Parties
+2191:应付股利:Dividend Payable
+2192:应付红利:Bonus Payable
+2193:应付董监事酬劳:Compensation Payable To Directors And Supervisors
+2198:其它应付款 - 其它:Other Payables - Other
+226:预收款项:Advance Receipts
+2261:预收货款:Sales Revenue Received In Advance
+2262:预收收入:Revenue Received In Advance
+2268:其它预收款:Other Advance Receipts
+227:一年或一营业周期内到期长期负债:Long-Term Liabilities - Current Portion
+2271:一年或一营业周期内到期公司债:Corporate Bonds Payable - Current Portion
+2272:一年或一营业周期内到期长期借款:Long-Term Loans Payable - Current Portion
+2273:一年或一营业周期内到期长期应付票据及款项:Long-Term Notes And Accounts Payable Due Within One Year Or One Operating Cycle
+2277:一年或一营业周期内到期长期应付票据及款项-关系人:Long-Term Notes And Accounts Payables To Related Parties - Current Portion
+2278:其它一年或一营业周期内到期长期负债:Other Long-Term Lia - Bilities - Current Portion
+228~229:其它流动负债:Other Current Liabilities
+2281:销项税额 VAT:Received(Or Output Tax)
+2283:暂收款:Temporary Receipts
+2284:代收款:Receipts Under Custody
+2285:估计售后服务/保固负债:Estimated Warranty Liabilities
+2291:递延所得税负债:Deferred Income Tax Liabilities
+2292:递延兑换利益:Deferred Foreign Exchange Gain
+2293:业主(股东)往来:Owners' Current Account
+2294:同业往来:Current Account With Others
+2298:其它流动负债-其它:Other Current Liabilities - Others
+23:长期负债:Long-Term Liabilities
+231:应付公司债:Corporate Bonds Payable
+2311:应付公司债:Corporate Bonds Payable
+2319:应付公司债溢(折)价:Premium(Discount) On Corporate Bonds Payable
+232:长期借款:Long-Term Loans Payable
+2321:长期银行借款:Long-Term Loans Payable - Bank
+2324:长期借款 - 业主:Long-Term Loans Payable - Owners
+2325:长期借款 - 员工:Long-Term Loans Payable - Employees
+2327:长期借款 - 关系人:Long-Term Loans Payable - Related Parties
+2328:长期借款 - 其它:Long-Term Loans Payable - Other
+233:长期应付票据及款项:Long-Term Notes And Accounts Payable
+2331:长期应付票据:Long-Term Notes Payable
+2332:长期应付帐款:Long-Term Accounts Pay-Able
+2333:长期应付租赁负债:Long-Term Capital Lease Liabilities
+2337:长期应付票据及款项 - 关系人 L:Ong-Term Notes And Accounts Payable - Related Parties
+2338:其它长期应付款项:Other Long-Term Payables
+234:估计应付土地增值税:Accrued Liabilities For Land Value Increment Tax
+2341:估计应付土地增值税:Estimated Accrued Land Value Incremental Tax Pay-Able
+235:应计退休金负债:Accrued Pension Liabilities
+2351:应计退休金负债:Accrued Pension Liabilities
+238:其它长期负债:Other Long-Term Liabilities
+2388:其它长期负债-其它:Other Long-Term Liabilities - Other
+28:其它负债:Other Liabilities
+281:递延负债:Deferred Liabilities
+2811:递延收入:Deferred Revenue
+2814:递延所得税负债:Deferred Income Tax Liabilities
+2818:其它递延负债:Other Deferred Liabilities
+286:存入保证金:Deposits Received
+2861:存入保证金:Guarantee Deposit Received
+288:杂项负债:Miscellaneous Liabilities
+2888:杂项负债 - 其它:Miscellaneous Liabilities - Other
+3:业主权益:Owners' Equity
+31:资本:Capital
+311:资本（或股本）:Capital
+3111:普通股股本:Capital - Common Stock
+3112:特别股股本:Capital - Preferred Stock
+3113:预收股本:Capital Collected In Advance
+3114:待分配股票股利:Stock Dividends To Be Distributed
+3115:资本:Capital
+32:资本公积:Additional Paid-In Capital
+321:股票溢价:Paid-In Capital In Excess Of Par
+3211:普通股股票溢价:Paid-In Capital In Excess Of Par - Common Stock
+3212:特别股股票溢价:Paid-In Capital In Excess Of Par - Preferred Stock
+323:资产重估增值准备:Capital Surplus From Assets Revaluation
+3231:资产重估增值准备:Capital Surplus From Assets Revaluation
+324:处分资产溢价公积:Capital Surplus From Gain On Disposal Of Assets
+3241:处分资产溢价公积:Capital Surplus From Gain On Disposal Of Assets
+325:合并公积:Capital Surplus From Business Combination
+3251:合并公积:Capital Surplus From Business Combination
+326:受赠公积:Donated Surplus
+3261:受赠公积:Donated Surplus
+328:其它资本公积:Other Additional Paid-In Capital
+3281:权益法长期股权投资资本公积:Additional Paid-In Capital From Investee Under Equity Method
+3282:资本公积 - 库藏股票交易:Additional Paid-In Capital - Treasury Stock Trans-Actions
+33:保留盈余(或累积亏损):Retained Earnings (Accumulated Deficit)
+331:法定盈余公积:Legal Reserve
+3311:法定盈余公积:Legal Reserve
+332:特别盈余公积:Special Reserve
+3321:意外损失准备:Contingency Reserve
+3322:改良扩充准备:Improvement And Expansion Reserve
+3323:偿债准备:Special Reserve For Redemption Of Liabilities
+3328:其它特别盈余公积:Other Special Reserve
+335:未分配盈余(或累积亏损):Retained Earnings-Unappropriated (Or Accumulated Deficit)
+3351:累积盈亏:Accumulated Profit Or Loss
+3352:前期损益调整:Prior Period Adjustments
+3353:本期损益:Net Income Or Loss For Current Period
+34:权益调整:Equity Adjustments
+341:长期股权投资未实现跌价损失:Unrealized Loss On Market Value Decline Of Long-Term Equity Investments
+3411:长期股权投资未实现跌价损失:Unrealized Loss On Market Value Decline Of Long-Term Equity Investments
+342:累积换算调整数:Cumulative Translation Adjustment
+3421:累积换算调整数:Cumulative Translation Adjustments
+343:未认列为退休金成本之净损失:Net Loss Not Recognized As Pension Cost
+3431:未认列为退休金成本之净损失:Net Loss Not Recognized As Pension Costs
+35:库藏股:Treasury Stock
+351:库藏股:Treasury Stock
+3511:库藏股:Treasury Stock
+36:少数股权:Minority Interest
+361:少数股权:Minority Interest
+3611:少数股权:Minority Interest
+4:营业收入:Operating Revenue
+41:销货收入:Sales Revenue
+411:销货收入:Sales Revenue
+4111:销货收入:Sales Revenue
+4112:分期付款销货收入:Installment Sales Revenue
+417:销货退回:Sales Return
+4171:销货退回:Sales Return
+419:销货折让:Sales Allowances
+4191:销货折让:Sales Discounts And Allowances
+46:劳务收入:Service Revenue
+461:劳务收入:Service Revenue
+4611:劳务收入:Service Revenue
+47:业务收入:Agency Revenue
+471:业务收入:Agency Revenue
+4711:业务收入:Agency Revenue
+48:其它营业收入:Other Operating Revenue
+488:其它营业收入-其它:Other Operating Revenue
+4888:其它营业收入-其它:Other Operating Revenue - Other
+5:营业成本:Operating Costs
+51:销货成本:Cost Of Goods Sold
+511:销货成本:Cost Of Goods Sold
+5111:销货成本:Cost Of Goods Sold
+5112:分期付款销货成本:Installment Cost Of Goods Sold
+512:进货:Purchases
+5121:进货:Purchases
+5122:进货费用:Purchase Expenses
+5123:进货退出:Purchase Returns
+5124:进货折让:Charges On Purchased Merchandise
+513:进料:Materials Purchased
+5131:进料:Material Purchased
+5132:进料费用:Charges On Purchased Material
+5133:进料退出:Material Purchase Returns
+5134:进料折让:Material Purchase Allowances
+514:直接人工:Direct Labor
+5141:直接人工:Direct Labor
+515~518:制造费用:Manufacturing Overhead
+5151:间接人工:Indirect Labor
+5152:租金支出:Rent Expense, Rent
+5153:文具用品:Office Supplies (Expense)
+5154:旅费:Travelling Expense, Travel
+5155:运费:Shipping Expenses, Freight
+5156:邮电费:Postage (Expenses)
+5157:修缮费:Repair(S) And Maintenance (Expense )
+5158:包装费:Packing Expenses
+5161:水电瓦斯费:Utilities (Expense)
+5162:保险费:Insurance (Expense)
+5163:加工费:Manufacturing Overhead - Outsourced
+5166:税捐:Taxes
+5168:折旧:Depreciation Expense
+5169:各项耗竭及摊提:Various Amortization
+5172:伙食费:Meal (Expenses)
+5173:职工福利:Employee Benefits/Welfare
+5176:训练费:Training (Expense)
+5177:间接材料:Indirect Materials
+5188:其它制造费用:Other Manufacturing Expenses
+56:劳务成本制:Ervice Costs
+561:劳务成本:Service Costs
+5611:劳务成本:Service Costs
+57:业务成本:Gency Costs
+571:业务成本:Agency Costs
+5711:业务成本:Agency Costs
+58:其它营业成本:Other Operating Costs
+588:其它营业成本 - 其它:Other Operating Costs - Other
+5888:其它营业成本 - 其它:Other Operating Costs - Other
+6:营业费用:Operating Expenses
+61:推销费用:Selling Expenses
+615~618:推销费用:Selling Expenses
+6151:薪资支出:Payroll Expense
+6152:租金支出:Rent Expense, Rent
+6153:文具用品:Office Supplies (Expense)
+6154:旅费:Travelling Expense, Travel
+6155:运费:Shipping Expenses, Freight
+6156:邮电费:Postage (Expenses)
+6157:修缮费:Repair(S) And Maintenance (Expense)
+6159:广告费:Advertisement Expense, Advertisement
+6161:水电瓦斯费:Utilities (Expense)
+6162:保险费:Insurance (Expense)
+6164:交际费:Entertainment (Expense)
+6165:捐赠:Donation (Expense)
+6166:税捐:Taxes
+6167:呆帐损失:Loss On Uncollectible Accounts
+6168:折旧:Depreciation Expense
+6169:各项耗竭及摊提:Various Amortization
+6172:伙食费:Meal (Expenses)
+6173:职工福利:Employee Benefits/Welfare
+6175:佣金支出:Commission (Expense)
+6176:训练费:Training (Expense)
+6188:其它推销费用:Other Selling Expenses
+62:管理及总务费用:General & Administrative Expenses
+625~628:管理及总务费用:General & Administrative Expenses
+6251:薪资支出:Payroll Expense
+6252:租金支出:Rent Expense, Rent
+6253:文具用品:Office Supplies
+6254:旅费:Travelling Expense, Travel
+6255:运费:Shipping Expenses,Freight
+6256:邮电费:Postage (Expenses)
+6257:修缮费:Repair(S) And Maintenance (Expense)
+6259:广告费:Advertisement Expense, Advertisement
+6261:水电瓦斯费:Utilities (Expense)
+6262:保险费:Insurance (Expense)
+6264:交际费:Entertainment (Expense)
+6265:捐赠:Donation (Expense)
+6266:税捐:Taxes
+6267:呆帐损失:Loss On Uncollectible Accounts
+6268:折旧:Depreciation Expense
+6269:各项耗竭及摊提:Various Amortization
+6271:外销损失:Loss On Export Sales
+6272:伙食费:Meal (Expenses)
+6273:职工福利:Employee Benefits/Welfare
+6274:研究发展费用:Research And Development Expense
+6275:佣金支出:Commission (Expense)
+6276:训练费:Training (Expense)
+6278:劳务费:Professional Service Fees
+6288:其它管理及总务费用:Other General And Administrative Expenses
+63:研究发展费用:Research And Development Expenses
+635~638:研究发展费用:Research And Development Expenses
+6351:薪资支出:Payroll Expense
+6352:租金支出:Rent Expense, Rent
+6353:文具用品:Office Supplies
+6354:旅费:Travelling Expense, Travel
+6355:运费:Shipping Expenses, Freight
+6356:邮电费:Postage (Expenses)
+6357:修缮费:Repair(S) And Maintenance (Expense)
+6361:水电瓦斯费:Utilities (Expense)
+6362:保险费:Insurance (Expense)
+6364:交际费:Entertainment (Expense)
+6366:税捐:Taxes
+6368:折旧:Depreciation Expense
+6369:各项耗竭及摊提:Various Amortization
+6372:伙食费:Meal (Expenses)
+6373:职工福利:Employee Benefits/Welfare
+6376:训练费:Training (Expense)
+6378:其它研究发展费用:Other Research And Development Expenses
+7:营业外收入及费用:Non-Operating Revenue And Expenses, Other Income(Expense)
+71~74:营业外收入:Non-Operating Revenue
+711:利息收入:Interest Revenue
+7111:利息收入:Interest Revenue/Income
+712:投资收益:Investment Income
+7121:权益法认列之投资收益:Investment Income Recognized Under Equity Method
+7122:股利收入:Dividends Income
+7123:短期投资市价回升利益:Gain On Market Price Recovery Of Short-Term Investment
+713:兑换利益:Foreign Exchange Gain
+7131:兑换利益:Foreign Exchange Gain
+714:处分投资收益:Gain On Disposal Of Investments
+7141:处分投资收益:Gain On Disposal Of Investments
+715:处分资产溢价收入:Gain On Disposal Of Assets
+7151:处分资产溢价收入:Gain On Disposal Of Assets
+748:其它营业外收入:Other Non-Operating Revenue
+7481:捐赠收入:Donation Income
+7482:租金收入:Rent Revenue/Income
+7483:佣金收入:Commission Revenue/Income
+7484:出售下脚及废料收入:Revenue From Sale Of Scraps
+7485:存货盘盈:Gain On Physical Inventory
+7486:存货跌价回升利益:Gain From Price Recovery Of Inventory
+7487:坏帐转回利益:Gain On Reversal Of Bad Debts
+7488:其它营业外收入-其它:Other Non-Operating Revenue - Other Items
+75~78:营业外费用:Non-Operating Expenses
+751:利息费用:Interest Expense
+7511:利息费用:Interest Expense
+752:投资损失:Investment Loss
+7521:权益法认列之投资损失:Investment Loss Recog - Nized Under Equity Method
+7523:短期投资未实现跌价损失:Unrealized Loss On Reduction Of Short-Term Investments To Market
+753:兑换损失:Foreign Exchange Loss
+7531:兑换损失:Foreign Exchange Loss
+754:处分投资损失:Loss On Disposal Of Investments
+7541:处分投资损失:Loss On Disposal Of Investments
+755:处分资产损失:Loss On Disposal Of Assets
+7551:处分资产损失:Loss On Disposal Of Assets
+788:其它营业外费用:Other Non-Operating Expenses
+7881:停工损失:Loss On Work Stoppages
+7882:灾害损失:Casualty Loss
+7885:存货盘损:Loss On Physical Inventory
+7886:存货跌价及呆滞损失:Loss For Market Price Decline And Obsolete And Slow-Moving Inventories
+7888:其它营业外费用 - 其它:Other Non-Operating Expenses - Other
+8:所得税费用(或利益):Income Tax Expense (Or Benefit)
+81:所得税费用(或利益):Income Tax Expense (Or Benefit)
+811:所得税费用(或利益):Income Tax Expense (Or Benefit)
+8111:所得税费用（或利益）:Income Tax Expense ( Or Benefit)
+9:非经常营业损益:Nonrecurring Gain Or Loss
+91:停业部门损益:Gain(Loss) From Discontinued Operations
+911:停业部门损益 - 停业前营业损益:Income(Loss) From Operations Of Discontinued Segments
+9111:停业部门损益 - 停业前营业损益:Income(Loss) From Operations Of Discontinued Segment
+912:停业部门损益 - 处分损益:Gain(Loss) From Disposal Of Discontinued Segments
+9121:停业部门损益 - 处分损益:Gain(Loss) From Disposal Of Discontinued Segment
+92:非常损益:Extraordinary Gain Or Loss
+921:非常损益:Extraordinary Gain Or Loss
+9211:非常损益:Extraordinary Gain Or Loss
+93:会计原则变动累积影响数:Cumulative Effect Of Changes In Accounting Principles
+931:会计原则变动累积影响数:Cumulative Effect Of Changes In Accounting Principles
+9311:会计原则变动累积影响数:Cumulative Effect Of Changes In Accounting Principles
+94:少数股权净利:Minority Interest Income
+941:少数股权净利:Minority Interest Income
+9411:少数股权净利:Minority Interest Income

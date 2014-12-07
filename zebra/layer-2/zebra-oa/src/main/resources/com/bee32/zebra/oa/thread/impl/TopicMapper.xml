@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.oa.thread.impl.TopicMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Topic" extends="message.mapX">
+        <result property="value" column="val" />
+        <result property="beginTime" column="t0" />
+        <result property="endTime" column="t1" />
+        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
+            <id property="id" column="cat" />
+            <id property="label" column="cat_label" />
+        </association>
+        <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
+            <id property="id" column="phase" />
+            <id property="label" column="phase_label" />
+        </association>
+    </resultMap>
+
+    <sql id="select1"><![CDATA[
+        select
+            t.*,
+            op.label "op_label",
+            c.label "cat_label",
+            p.label "phase_label"
+        from topic t
+            left join "user" op on t.op=op.id
+            left join cat c on t.cat=c.id
+            left join phase p on t.phase=p.id
+            left join "user" u on t.uid=u.id
+            left join "group" g on t.gid=g.id
+        ]]>
+    </sql>
+
+    <sql id="select2"><![CDATA[
+        select
+            t.*,
+            op.label "op_label",
+            c.label "cat_label",
+            p.label "phase_label"
+        from topic t
+            left join "user" op on t.op=op.id
+            left join cat c on t.cat=c.id
+            left join phase p on t.phase=p.id
+            left join "user" u on t.uid=u.id
+            left join "group" g on t.gid=g.id
+        ]]>
+    </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+    </select>
+
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <!-- left join tags -->
+        <where>
+            <if test="categoryId != null">and t.cat=#{categoryId}</if>
+            <if test="phaseId != null">and t.phase=#{phaseId}</if>
+
+            <if test="valueRange != null">and t.value between #{valueRange.min} and #{valueRange.max}</if>
+            <if test="votesRange != null">and t.voteu between #{votesRange.min} and #{votesRange.max}</if>
+            <if test="favoritesRange != null">and t.favs between #{favoritesRange.min} and #{favoritesRange.max}</if>
+            <if test="dateRange != null">and t.lastmod between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+        </where>
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select2" />
+        <where>
+            <if test="_parameter != null">t.id=#{id}</if>
+        </where>
+    </select>
+
+    <select id="insert" resultType="int">
+        <![CDATA[
+        insert into topic(op, subject, text, cat, val)
+            values(#{op},#{subject},#{text}, #{cat}, #{val})
+            returning id
+    ]]></select>
+
+    <update id="update">
+        update topic
+        <set>
+            <include refid="message.setX" />
+            val=#{value},
+            <if test="beginTime != null">t0=#{beginTime},</if>
+            <if test="endTime != null">t1=#{endTime},</if>
+            <if test="category != null">cat=#{category.id},</if>
+            <if test="phase != null">phase=#{phase.id},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

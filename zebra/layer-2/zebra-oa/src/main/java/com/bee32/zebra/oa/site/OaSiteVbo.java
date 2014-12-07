@@ -1,16 +1,19 @@
 package com.bee32.zebra.oa.site;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import net.bodz.bas.c.string.StringQuote;
 import net.bodz.bas.html.AbstractHtmlViewBuilder;
-import net.bodz.bas.html.IHtmlMetaData;
+import net.bodz.bas.html.IHtmlHeadData;
 import net.bodz.bas.html.IHtmlViewContext;
+import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.artifact.IArtifactDependency;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.i18n.dom1.IElement;
 import net.bodz.bas.potato.ref.UiPropertyRefMap;
 import net.bodz.bas.repr.path.IPathArrival;
@@ -18,12 +21,15 @@ import net.bodz.bas.repr.path.PathArrivalEntry;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.mda.xjdoc.ClassDocLoader;
+import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
+
+import com.bee32.zebra.tk.site.IZebraSiteAnchors;
+import com.bee32.zebra.tk.site.IZebraSiteLayout;
 
 public class OaSiteVbo
         extends AbstractHtmlViewBuilder<OaSite>
-        implements IOaSiteAnchors, IOaSiteLayout {
+        implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts {
 
     public OaSiteVbo() {
         super(OaSite.class);
@@ -43,12 +49,17 @@ public class OaSiteVbo
     public void preview(IHtmlViewContext ctx, IUiRef<OaSite> ref, IOptions options) {
         super.preview(ctx, ref, options);
 
-        IHtmlMetaData metaData = ctx.getMetaData();
-        metaData.setMeta(IHtmlMetaData.META_AUTHOR, "谢继雷 (Xiè Jìléi)");
-        metaData.setMeta(IHtmlMetaData.META_VIEWPORT, "width=device-width, initial-scale=1");
+        IHtmlHeadData metaData = ctx.getHeadData();
+        metaData.setMeta(IHtmlHeadData.META_AUTHOR, "谢继雷 (Xiè Jìléi)");
+        metaData.setMeta(IHtmlHeadData.META_VIEWPORT, "width=device-width, initial-scale=1");
 
-        metaData.addDependency("jquery-min", IArtifactDependency.SCRIPT);
-        metaData.addDependency("font-awesome", IArtifactDependency.STYLESHEET).setPriority(IArtifactDependency.LOW);
+        /** See: BasicSiteArtifacts */
+        // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
+        // metaData.addDependency("datatables.responsive.js", SCRIPT);
+        metaData.addDependency("datatables.colVis.js", SCRIPT);
+        metaData.addDependency("datatables.tableTools.js", SCRIPT);
+        metaData.addDependency("font-awesome", STYLESHEET).setPriority(IArtifactDependency.LOW);
+        metaData.addDependency("jquery-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
     }
 
     @Override
@@ -57,8 +68,8 @@ public class OaSiteVbo
         if (enter(ctx))
             return null;
 
-        IHtmlTag out = ctx.getOut();
         OaSite site = ref.get();
+        IHtmlTag out = ctx.getOut();
 
         HttpSession session = ctx.getSession();
         // Preferences pref = Preferences.fromSession(session);
@@ -77,22 +88,54 @@ public class OaSiteVbo
             // head.link().css(_webApp_ + "theme-" + pref.getTheme() + ".css").id("themeLink");
 
             // scripts
-            head.script().javascript("var _webApp_ = " + StringQuote.qq(_webApp_));
+            head.script().javascript("" + //
+                    "var _webApp_ = " + StringQuote.qq(_webApp_) + ";\n" + //
+                    "var _js_ = " + StringQuote.qq(_js_) + ";\n" + //
+                    "");
+
             head.script().javascriptSrc(_webApp_ + "site.js");
         }
 
-        out = out.body();
+        HtmlBodyTag body = out.body();
 
-        HtmlTableTag layoutTable = out.table().class_("layout");
+        HtmlDivTag containerDiv = body.div().class_("container").style("width: 100%; padding: 0");
+        HtmlDivTag rowDiv = containerDiv.div().class_("container-row");
 
-        HtmlTrTag topTr = layoutTable.tr().valign("top").style("height: 0");
-        HtmlTdTag leftBar = topTr.td().id("left").rowspan("2");
+        HtmlDivTag menuCol = rowDiv.div().id("menu-col").class_("col-sm-2");
         {
-            HtmlDivTag logoDiv = leftBar.div().id("logo").text("SECCA");
-            logoDiv.br();
-            logoDiv.text("ERP");
+            if (ref instanceof PathArrivalEntry) {
+                IHtmlTag nav = menuCol.nav().ol().class_("breadcrumb");
+                List<IPathArrival> list = arrival.toList();
+                for (int i = 0; i < list.size(); i++) {
+                    IPathArrival a = list.get(i);
+                    Object target = a.getTarget();
 
-            HtmlDivTag welcomeDiv = leftBar.div().id("welcome");
+                    String label;
+                    if (target instanceof IElement) {
+                        iString _label = ((IElement) target).getLabel();
+                        if (_label == null)
+                            label = "i18n-null";
+                        else
+                            label = _label.toString();
+                    } else
+                        label = target.toString();
+
+                    String href = _webApp_.join(a.getConsumedFullPath() + "/").toString();
+
+                    boolean last = i == list.size() - 1;
+                    HtmlLiTag li = nav.li();
+                    if (last)
+                        li.class_("active").text(label);
+                    else
+                        li.a().href(href).text(label);
+                }
+            }
+
+            HtmlDivTag logoDiv = menuCol.div().id("logo").text("SECCA");
+            logoDiv.br();
+            logoDiv.text("ERP 3.0alpha");
+
+            HtmlDivTag welcomeDiv = menuCol.div().id("welcome");
             welcomeDiv.text("欢迎您，").br();
             welcomeDiv.text("海宁皮包有限公司").br();
             welcomeDiv.text("的").br();
@@ -101,95 +144,67 @@ public class OaSiteVbo
             HtmlSpanTag logout = welcomeDiv.span().id("logout");
             logout.text("[注销]");
 
-            HtmlFormTag searchForm = leftBar.form().id("search");
+            HtmlFormTag searchForm = menuCol.form().id("search");
             searchForm.text("搜索：");
             searchForm.input().id("q");
 
-            HtmlDivTag menuDiv = leftBar.div().id("menu");
-            ctx.setAnchor(UL_menu, menuDiv.ul());
+            menuCol.hr();
+            HtmlDivTag menuDiv = menuCol.div().id("menu");
+            HtmlUlTag menuUl = menuDiv.ul().id(ID.menu_ul);
+            mkMenu(menuUl);
         }
 
-        HtmlTdTag topBar = topTr.td().id("topbar").class_("info");
-        {
-            HtmlDivTag topTop = topBar.div().id("topTop");
-            ctx.setAnchor(E_topTop, topTop);
-
-            HtmlTableTag topTable = topBar.table().class_("layout").width("100%");
-            {
-                HtmlTrTag tr1 = topTable.tr().valign("top");
-                HtmlTdTag statTd = tr1.td().id("stat").width("50%");
-
-                ctx.setAnchor(E_stats, statTd);
-
-                HtmlTdTag relLinksTd = tr1.td().id("links").rowspan("2").width("50%");
-                relLinksTd.span().text("您可能需要进行下面的操作:");
-                ctx.setAnchor(UL_relLinks, relLinksTd.ul());
-
-                HtmlTrTag tr2 = topTable.tr();
-                HtmlTdTag cmdsTd = tr2.td().id("cmds");
-                ctx.setAnchor(E_cmds0, cmdsTd.div().id("cmds.0"));
-                ctx.setAnchor(E_cmds1, cmdsTd.div().id("cmds.1"));
-            }
-        }
-
-        HtmlTdTag rightTd = topTr.td().id("right").class_("info").rowspan("2");
-        {
-            HtmlDivTag previewDiv = rightTd.div().id("preview").align("center");
-            previewDiv.img().src("pic.png");
-
-            HtmlDivTag infosel = rightTd.div().id("infosel");
-
-            HtmlTableTag _table1 = infosel.table().width("100%").class_("layout");
-            HtmlTrTag _tr1 = _table1.tr();
-            HtmlTdTag _td1 = _tr1.td();
-            _td1.h2().text("选中的信息");
-            HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3em");
-            _td2.a().href("").text("[编辑]");
-
-            ctx.setAnchor(E_infosel, infosel);
-
-            HtmlDivTag refdocsDiv = rightTd.div().id("infoman");
-            refdocsDiv.h2().text("管理文献");
-            ctx.setAnchor(UL_refdocs, refdocsDiv.ul());
-        }
-
-        HtmlTdTag contentTd = layoutTable.tr().valign("top").td().id("content");
-        out = contentTd;
-
-        if (ref instanceof PathArrivalEntry) {
-            IHtmlTag nav = out.nav().ul();
-            for (IPathArrival a : arrival.toList()) {
-                Object target = a.getTarget();
-
-                String label;
-                if (target instanceof IElement)
-                    label = ((IElement) target).getLabel().toString();
-                else
-                    label = target.toString();
-
-                String href = _webApp_.join(a.getConsumedFullPath() + "/").toString();
-                nav.li().a().href(href).text(label);
-            }
-        }
-
-        HtmlDivTag mainDiv = out.div().id("main");
+        HtmlDivTag body1 = rowDiv.div().id(ID.body1).class_("col-xs-12 col-sm-10");
         if (!frameOnly)
-            indexBody(mainDiv, site);
+            indexBody(body1, site);
 
-        ClassDoc classDoc = ClassDocLoader.load(site.getClass());
-
-        HtmlDivTag foot = out.div().class_("foot");
+        HtmlDivTag foot = body.div().class_("foot");
         {
-            foot.text(classDoc.getTag("copyright"));
+            ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
+            if (doc != null)
+                foot.text(doc.getTag("copyright"));
         }
 
-        ctx.setOut(mainDiv);
+        body.div().id(ID.extradata);
+
+        ctx.setOut(body);
         return ctx;
     }
 
     protected void indexBody(IHtmlTag out, OaSite site) {
         HtmlH1Tag h1 = out.h1().text("List Of Projects");
         h1.a().style("cursor: pointer").onclick("reloadSite()").text("[Reload]");
+    }
+
+    protected void mkMenu(IHtmlTag parent) {
+        HtmlUlTag sub;
+        sub = parent.li().text("关系网").ul();
+        sub.li().a().text("企业组织").href(_webApp_.join("org/").toString());
+        sub.li().a().text("联系人").href(_webApp_.join("person/").toString());
+
+        sub = parent.li().text("库存").ul();
+        sub.li().a().text("仓库").href(_webApp_.join("warehouse/").toString());
+        sub.li().a().text("产品/物料").href(_webApp_.join("art/").toString());
+
+        sub = parent.li().text("销售").ul();
+        sub.li().a().text("项目/机会").href(_webApp_.join("topic/").toString());
+        sub.li().a().text("订单").href(_webApp_.join("order/").toString());
+
+        sub = parent.li().text("生产过程").ul();
+        sub.li().a().text("装配图").href(_webApp_.join("bom/").toString());
+        sub.li().a().text("工艺路线").href(_webApp_.join("fabproc/").toString());
+        sub.li().a().text("排程").href(_webApp_.join("sch/").toString());
+        sub.li().a().text("作业").href(_webApp_.join("job/").toString());
+        sub.li().a().text("质量控制").href(_webApp_.join("qc/").toString());
+
+        sub = parent.li().text("财务").ul();
+        sub.li().a().text("流水帐").href(_webApp_.join("account/").toString());
+        sub.li().a().text("款项").href(_webApp_.join("sum/").toString());
+        sub.li().a().text("工资").href(_webApp_.join("salary/").toString());
+        sub.li().a().text("报表").href(_webApp_.join("account/report/").toString());
+
+        sub = parent.li().text("系统").ul();
+        sub.li().a().text("帐户").href(_webApp_.join("user/").toString());
     }
 
 }

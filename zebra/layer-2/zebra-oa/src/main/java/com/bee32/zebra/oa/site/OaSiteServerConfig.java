@@ -6,14 +6,16 @@ import net.bodz.bas.c.m2.MavenPomDir;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.html.servlet.PathDispatchServlet;
 import net.bodz.bas.http.ctx.CurrentRequestContextTeller;
-import net.bodz.bas.http.servlet.ClassResourceAccessorServlet;
 import net.bodz.bas.http.servlet.FileAccessorServlet;
 import net.bodz.bas.i18n.LocaleCtl;
-import net.bodz.uni.echo._default.DefaultServerConfig;
+import net.bodz.bas.site.BasicSiteServerConfig;
 import net.bodz.uni.echo.config.ServletDescriptor;
 
 public class OaSiteServerConfig
-        extends DefaultServerConfig {
+        extends BasicSiteServerConfig {
+
+    ServletDescriptor imgLink;
+    ServletDescriptor dispatching;
 
     public OaSiteServerConfig() {
         configEnv();
@@ -26,24 +28,12 @@ public class OaSiteServerConfig
     }
 
     protected void configServlets() {
-        ServletDescriptor webjarsLink = addServlet(ClassResourceAccessorServlet.class, "/webjars/*");
-        webjarsLink.setInitParam(FileAccessorServlet.ATTRIBUTE_PATH, //
-                "META-INF/resources/webjars");
-
-        ServletDescriptor fontsLink = addServlet(FileAccessorServlet.class, "/fonts/*");
-        fontsLink.setInitParam(FileAccessorServlet.ATTRIBUTE_PATH, //
-                "/usr/share/fonts");
-
-        ServletDescriptor javascriptLink = addServlet(FileAccessorServlet.class, "/js/*");
-        javascriptLink.setInitParam(FileAccessorServlet.ATTRIBUTE_PATH, //
-                "/usr/share/javascript");
-
-        ServletDescriptor imgLink = addServlet(FileAccessorServlet.class, "/img/*");
+        imgLink = addServlet(FileAccessorServlet.class, "/img/*");
         imgLink.setInitParam(FileAccessorServlet.ATTRIBUTE_PATH, //
                 "/mnt/istore/projects/design/img");
 
         PathDispatchServlet.startObject = new OaSite();
-        addServlet(PathDispatchServlet.class, "/*");
+        dispatching = addServlet(PathDispatchServlet.class, "/*");
     }
 
     public static File getStackDirFromSrc() {

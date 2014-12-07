@@ -1,0 +1,13 @@
+com.bee32.zebra.oa.accnt.impl.AccountingEntryMapper
+com.bee32.zebra.oa.accnt.impl.AccountingEventMapper
+com.bee32.zebra.oa.accnt.impl.AccountMapper
+com.bee32.zebra.oa.cloudfs.impl.CloudDirMapper
+com.bee32.zebra.oa.cloudfs.impl.CloudFileMapper
+com.bee32.zebra.oa.contact.impl.OrganizationMapper
+com.bee32.zebra.oa.contact.impl.OrgUnitMapper
+com.bee32.zebra.oa.contact.impl.PersonMapper
+com.bee32.zebra.oa.hr.impl.EmployeeMapper
+com.bee32.zebra.oa.hr.impl.EmployeeSkillMapper
+com.bee32.zebra.oa.hr.impl.JobSkillCategoryMapper
+com.bee32.zebra.oa.thread.impl.ReplyMapper
+com.bee32.zebra.oa.thread.impl.TopicMapper

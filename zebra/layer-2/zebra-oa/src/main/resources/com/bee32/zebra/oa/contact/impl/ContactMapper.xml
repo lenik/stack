@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.oa.contact.impl.ContactMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.oa.contact.Contact">
+        <id property="id" column="_id" />
+        <result property="rename" column="rename" />
+        <result property="usage" column="usage" />
+        <result property="regionId" column="region" />
+        <result property="country" column="country" />
+        <result property="r1" column="r1" />
+        <result property="r2" column="r2" />
+        <result property="r3" column="r3" />
+        <result property="address1" column="address1" />
+        <result property="address2" column="address2" />
+        <result property="postalCode" column="postcode" />
+        <result property="tel" column="tel" />
+        <result property="mobile" column="mobile" />
+        <result property="fax" column="fax" />
+        <result property="email" column="email" />
+        <result property="web" column="web" />
+        <result property="qq" column="qq" />
+    </resultMap>
+
+    <sql id="select1"><![CDATA[
+        select
+            c.*
+        from contact a
+        ]]>
+    </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <if test="_parameter != null">p.id=#{id}</if>
+        </where>
+    </select>
+
+    <select id="insert" resultType="int">
+        <![CDATA[
+        insert into contact(code, label, description)
+        values(#{codeName},#{label},#{description})
+        returning id
+    ]]></select>
+
+    <update id="update">
+        update contact
+        where _id=#{id}
+    </update>
+
+</mapper>
