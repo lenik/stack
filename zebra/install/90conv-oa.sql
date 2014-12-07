@@ -1,3 +1,5 @@
+set constraints all deferred;
+
 -- group, user, group_user
 
     insert into "group"(id, code, label, description, creation, lastmod, flags, state)
@@ -16,6 +18,39 @@
     insert into group_user("group", "user")
         select "group", member "user" from old.group_member;
 
+    select setval('user_seq', (select max(id) from "user"));
+    
+        insert into "user"(code, label)
+            select keyword, label from old.party
+            where id in (select distinct suggester from old.chance_action)
+                and keyword not in (select code from "user");
+    
+-- contact
+
+    -- Clean duplicated contacts, keep the latest ones.
+    delete from old.contact c
+        where party in (select party from old.contact where party is not null group by party having count(*)>1)
+          and last_modified < (select max(last_modified) from old.contact t where t.party=c.party);
+
+    delete from old.contact c
+        where party in (select party from old.contact where party is not null group by party having count(*)>1)
+          and created_date < (select max(created_date) from old.contact t where t.party=c.party);
+
+    -- If tel/mobile/fax is too long, move them to description.
+    update old.contact set description = description || tel, tel = null where length(tel)>20;
+    update old.contact set description = description || mobile, mobile = null where length(mobile)>20;
+    update old.contact set description = description || fax, fax = null where length(fax)>20;
+
+    insert into contact(_id, org, ou, person, address1, postcode, tel, mobile, fax, email, web, qq)
+        select c.id "_id", 
+            case when p.stereo='ORG' then c.party else null end "org",
+            case when x.id is not null then x.id else null end "ou",
+            case when p.stereo='PER' then c.party else null end "person",
+            address "address1", post_code "postcode", tel, mobile, fax, email, website "web", qq
+        from old.contact c
+            left join old.party p on c.party=p.id
+            left join old.org_unit x on c.id=x.contact;
+    
 -- org, orgunit, person, personrole
 
     update old.party set label=full_name, full_name=null 
@@ -41,7 +76,7 @@
         select id, label, description,
             org, parent,
             created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
-        from old.orgunit;
+        from old.org_unit;
 
     insert into person(id, label, description, 
             contact,
@@ -57,71 +92,11 @@
             created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
         from old.party where stereo = 'PER';
 
-    update old.personrole set role=role_detail, role_detail=null where role='' or role is null;
+    update old.person_role set role=role_detail, role_detail=null where role='' or role is null;
     insert into personrole(person, ou, org, role, description)
-        select person, orgunit "ou", org, role,
-            trim(role_detail || ' ' || description || ' ' || alt_orgunit)
-        from old.personrole;
-
--- contact
-
-    -- Clean duplicated contacts, keep the latest ones.
-    delete from old.contact c
-        where party in (select party from old.contact where party is not null group by party having count(*)>1)
-          and last_modified < (select max(last_modified) from old.contact t where t.party=c.party);
-
-    delete from old.contact c
-        where party in (select party from old.contact where party is not null group by party having count(*)>1)
-          and created_date < (select max(created_date) from old.contact t where t.party=c.party);
-
-    -- If tel/mobile/fax is too long, move them to description.
-    update old.contact set description = description || tel, tel = null where length(tel)>20;
-    update old.contact set description = description || mobile, mobile = null where length(mobile)>20;
-    update old.contact set description = description || fax, fax = null where length(fax)>20;
-
-    insert into contact(_id, org, ou, person, address1, postcode, tel, mobile, fax, email, web, qq)
-        select c.id "_id", 
-            case when p.stereo='ORG' then c.party else null end "org",
-            case when x.id is not null then x.id else null end "ou",
-            case when p.stereo='PER' then c.party else null end "person",
-            address "address1", post_code "postcode", tel, mobile, fax, email, website "web", qq
-        from old.contact c
-            left join old.party p on c.party=p.id
-            left join old.orgunit x on c.id=x.contact;
-    
--- warehouse, product
-    
-    insert into warehouse(id, label, description, 
-            creation, lastmod, flags, state, uid)
-        select id, label, description,
-            created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
-        from old.stock_warehouse;
-
-    insert into cell(id, label, description, 
-            warehouse, parent, depth, usage,
-            creation, lastmod, flags, state, uid)
-        select id, label, description,
-            warehouse, parent, depth, 'INTERNAL',
-            created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
-        from old.stock_location;
-
-    insert into artcat(id, label, description, 
-            parent, depth,
-            creation, lastmod, flags, state, uid)
-        select id, label, description,
-            parent, depth,
-            created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
-        from old.material_category;
-
-    insert into art(id, label, description, 
-            category, barcode, uom, uomword, spec, 
-            weight, netweight,
-            creation, lastmod, flags, state, uid)
-        select id, label, description,
-            category, bar_code, unit, unit_hint, model_spec, 
-            package_weight, net_weight,
-            created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
-        from old.material;
+        select person, org_unit "ou", org, role,
+            trim(role_detail || ' ' || description || ' ' || alt_org_unit)
+        from old.person_role;
 
 -- topic, reply
     
@@ -129,10 +104,12 @@
         select 3, id, label from old.chance_category where id <> 'OTHE';
     insert into phase(schema, code, label)
         select 3, id, label from old.chance_stage;
-        
-    insert into topic(id, subject, text, cat, phase, priority, uid, op, t0, t1)
+    
+    insert into topic(id, subject, text, cat, phase, priority, op, t0, t1,
+            creation, lastmod, uid)
         select c.id, subject, content, cat.id "cat", phase.id "phase", coalesce(c.priority, 0),
-            c.owner "uid", c.owner "op", anticipation_begin "t0", anticipation_end "t1"
+            c.owner "op", anticipation_begin "t0", anticipation_end "t1",
+            c.created_date "creation", c.last_modified "lastmod", c.owner "uid"
         from old.chance c
             left join cat on c.category = cat.code
             left join phase on c.stage = phase.code;
@@ -171,12 +148,14 @@
                 else 'OTHER' end;
 
     insert into reply(id, topic, op, t0, t1, text, creation, lastmod, uid)
-        select id, chance "topic", actor "op", begin_time "t0", end_time "t1",
+        select id,
+            case when chance is null then 1 else chance end "topic",
+            actor "op", begin_time "t0", end_time "t1",
             more_info "text",
             created_date "creation", last_modified "lastmod", owner "uid"
-        from old.chance_action where chance is not null;
+        from old.chance_action;
     
-    insert into replyparty(reply, person, org, description)
+    insert into replyparty(reply, person, org)
         select c.chance_action "reply", 
             case when p.stereo='PER' then c.parties else null end "person", 
             case when p.stereo='ORG' then c.parties else null end "org"
@@ -193,21 +172,25 @@
             where chance is not null
                 and trim(spending) <> '';
 
-    insert into reply(topic, op, text, changes, creation, lastmod, uid)
-        select chance "topic", actor "op",
-            '将 阶段 更改为 ' || phase.label,
-            array['stage=' || phase.id],
-            a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
-        from old.chance_action a left join phase
-            on a.stage = phase.code
-        where chance is not null
-            and a.stage != 'INIT' and a.stage != '';
-    
     select setval('reply_seq', (select max(id) from reply));
-    insert into reply(topic, parent, op, text, creation, lastmod, uid)
-        select chance "topic", id "parent", suggester "op", 
-            suggestion "text",
-            last_modified "creation", last_modified "lastmod", owner "uid"
-        from old.chance_action where chance is not null
-            and suggester is not null;
+    
+        insert into reply(topic, op, text, changes, creation, lastmod, uid)
+            select chance "topic", actor "op",
+                '将 阶段 更改为 ' || phase.label,
+                array['stage=' || phase.id],
+                a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
+            from old.chance_action a left join phase
+                on a.stage = phase.code
+            where chance is not null
+                and a.stage != 'INIT' and a.stage != '';
         
+        insert into reply(topic, parent, op, text, creation, lastmod, uid)
+            select a.chance "topic", a.id "parent", u.id "op", 
+                a.suggestion "text",
+                a.last_modified "creation", a.last_modified "lastmod", a.owner "uid"
+            from old.chance_action a
+                left join old.party p on a.suggester = p.id
+                left join "user" u on p.label = u.label
+            where chance is not null
+                and suggester is not null;
+            
