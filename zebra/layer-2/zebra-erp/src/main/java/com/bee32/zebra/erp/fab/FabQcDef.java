@@ -2,7 +2,6 @@ package com.bee32.zebra.erp.fab;
 
 import com.tinylily.model.base.CoCode;
 
-
 public class FabQcDef
         extends CoCode<FabQcDef> {
 

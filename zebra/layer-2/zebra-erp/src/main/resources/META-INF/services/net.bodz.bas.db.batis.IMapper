@@ -1,0 +1,10 @@
+com.bee32.zebra.erp.fab.impl.FabDeviceMapper
+com.bee32.zebra.erp.fab.impl.FabOpCodeMapper
+com.bee32.zebra.erp.fab.impl.FabQcDefMapper
+com.bee32.zebra.erp.fab.impl.FabStepDefMapper
+com.bee32.zebra.erp.fab.impl.FabStepMapper
+com.bee32.zebra.erp.order.impl.FabOrderMapper
+com.bee32.zebra.erp.stock.impl.ArtifactMapper
+com.bee32.zebra.erp.stock.impl.CellMapper
+com.bee32.zebra.erp.stock.impl.UOMMapper
+com.bee32.zebra.erp.stock.impl.WarehouseMapper

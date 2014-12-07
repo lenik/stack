@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.zebra.erp.stock.Artifact;
-import com.bee32.zebra.oa.model.contact.Person;
+import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoMomentInterval;
 
 public class FabStep

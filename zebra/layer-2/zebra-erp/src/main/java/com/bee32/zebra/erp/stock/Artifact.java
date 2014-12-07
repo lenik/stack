@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.bodz.bas.repr.form.meta.OfGroup;
+
 import com.bee32.zebra.erp.fab.FabStepDef;
-import com.bee32.zebra.erp.stock.Warehouse.Cell;
+import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.CoNode;
 
@@ -65,7 +67,8 @@ public class Artifact
 
     private List<FabStepDef> fabProc = new ArrayList<FabStepDef>();
 
-    public int getId() {
+    @Override
+    public Integer getId() {
         return id;
     }
 
@@ -73,6 +76,7 @@ public class Artifact
         this.id = id;
     }
 
+    @OfGroup(OaGroups.Classification.class)
     public Category getCategory() {
         return category;
     }
@@ -85,6 +89,7 @@ public class Artifact
         (this.category = new Category()).setId(categoryId);
     }
 
+    @OfGroup(OaGroups.Identity.class)
     public String getSkuCode() {
         return skuCode;
     }
@@ -93,6 +98,10 @@ public class Artifact
         this.skuCode = skuCode;
     }
 
+    /**
+     * @placeholder 输入条形码
+     */
+    @OfGroup({ OaGroups.Identity.class, OaGroups.Packaging.class })
     public String getBarCode() {
         return barCode;
     }
@@ -101,6 +110,7 @@ public class Artifact
         this.barCode = barCode;
     }
 
+    @OfGroup(OaGroups.Packaging.class)
     public UOM getUom() {
         return uom;
     }
@@ -109,10 +119,15 @@ public class Artifact
         this.uom = uom;
     }
 
+    @OfGroup(OaGroups.Packaging.class)
     public void setUomId(int uomId) {
         (this.uom = new UOM()).setId(uomId);
     }
 
+    /**
+     * @placeholder 输入衡量单位的用途属性，如"长度"、"重量"
+     */
+    @OfGroup(OaGroups.Packaging.class)
     public String getUomProperty() {
         return uomProperty;
     }
@@ -121,6 +136,7 @@ public class Artifact
         this.uomProperty = uomProperty;
     }
 
+    @OfGroup(OaGroups.Packaging.class)
     public Map<UOM, Double> getConvMap() {
         return convMap;
     }
@@ -131,6 +147,7 @@ public class Artifact
         this.convMap = convMap;
     }
 
+    @OfGroup(OaGroups.Setting.class)
     public int getDecimalDigits() {
         return decimalDigits;
     }
@@ -139,6 +156,10 @@ public class Artifact
         this.decimalDigits = decimalDigits;
     }
 
+    /**
+     * @placeholder 输入规格/型号
+     */
+    @OfGroup(OaGroups.Identity.class)
     public String getSpec() {
         return spec;
     }
@@ -147,6 +168,10 @@ public class Artifact
         this.spec = spec;
     }
 
+    /**
+     * @placeholder 输入颜色名称
+     */
+    @OfGroup(OaGroups.ColorManagement.class)
     public String getColor() {
         return color;
     }
@@ -155,6 +180,9 @@ public class Artifact
         this.color = color;
     }
 
+    /**
+     * @placeholder 输入警告信息，如危险品、易碎、易爆炸等
+     */
     public String getCaution() {
         return caution;
     }
@@ -163,18 +191,12 @@ public class Artifact
         this.caution = caution;
     }
 
-    public int getSupplyDelay() {
-        return supplyDelay;
-    }
-
-    public void setSupplyDelay(int supplyDelay) {
-        this.supplyDelay = supplyDelay;
-    }
-
+    @OfGroup(OaGroups.Packaging.class)
     public Dim3d getBbox() {
         return bbox;
     }
 
+    @OfGroup(OaGroups.Packaging.class)
     public double getWeight() {
         return weight;
     }
@@ -183,6 +205,7 @@ public class Artifact
         this.weight = weight;
     }
 
+    @OfGroup(OaGroups.Packaging.class)
     public double getNetWeight() {
         return netWeight;
     }
@@ -191,6 +214,7 @@ public class Artifact
         this.netWeight = netWeight;
     }
 
+    @OfGroup(OaGroups.Schedule.class)
     public SupplyMethod getSupplyMethod() {
         return supplyMethod;
     }
@@ -201,6 +225,16 @@ public class Artifact
         this.supplyMethod = supplyMethod;
     }
 
+    @OfGroup(OaGroups.Schedule.class)
+    public int getSupplyDelay() {
+        return supplyDelay;
+    }
+
+    public void setSupplyDelay(int supplyDelay) {
+        this.supplyDelay = supplyDelay;
+    }
+
+    @OfGroup(OaGroups.Setting.class)
     public List<WarehouseOption> getWarehouseOpts() {
         return wOpts;
     }
@@ -211,6 +245,7 @@ public class Artifact
         this.wOpts = wOpts;
     }
 
+    @OfGroup({ OaGroups.Setting.class /* , OaGroups.Position.class */})
     public List<PreferredCell> getPreferredCells() {
         return preferredCells;
     }
@@ -242,7 +277,8 @@ public class Artifact
         private String barCodeFormat;
         private int count;
 
-        public int getId() {
+        @Override
+        public Integer getId() {
             return id;
         }
 
@@ -250,6 +286,10 @@ public class Artifact
             this.id = id;
         }
 
+        /**
+         * @label SKU代码格式
+         */
+        @OfGroup(OaGroups.Identity.class)
         public String getSkuCodeFormat() {
             return skuCodeFormat;
         }
@@ -258,6 +298,10 @@ public class Artifact
             this.skuCodeFormat = skuCodeFormat;
         }
 
+        /**
+         * @label 条形码格式
+         */
+        @OfGroup(OaGroups.Identity.class)
         public String getBarCodeFormat() {
             return barCodeFormat;
         }
@@ -300,7 +344,12 @@ public class Artifact
             this.warehouse = warehouse;
         }
 
-        /** aka. safety stock. */
+        /**
+         * 安全库存
+         * 
+         * @label 库存安全保留量
+         */
+        @OfGroup(OaGroups.Schedule.class)
         public double getReservation() {
             return reservation;
         }
@@ -309,6 +358,7 @@ public class Artifact
             this.reservation = reservation;
         }
 
+        @OfGroup(OaGroups.Schedule.class)
         public int getCheckPeriod() {
             return checkPeriod;
         }
@@ -317,6 +367,7 @@ public class Artifact
             this.checkPeriod = checkPeriod;
         }
 
+        @OfGroup(OaGroups.Schedule.class)
         public long getCheckExpires() {
             return checkExpires;
         }
@@ -355,6 +406,9 @@ public class Artifact
             this.cell = cell;
         }
 
+        /**
+         * @label 永久库位
+         */
         public boolean isLocked() {
             return locked;
         }
@@ -363,6 +417,9 @@ public class Artifact
             this.locked = locked;
         }
 
+        /**
+         * @label 推荐库位状态
+         */
         public String getStatus() {
             return status;
         }

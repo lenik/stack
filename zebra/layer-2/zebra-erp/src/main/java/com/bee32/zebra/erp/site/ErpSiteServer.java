@@ -1,5 +1,7 @@
 package com.bee32.zebra.erp.site;
 
+import java.util.Locale;
+
 import net.bodz.bas.db.jdbc.DataSourceArguments;
 import net.bodz.bas.site.vhost.MutableVirtualHost;
 import net.bodz.bas.site.vhost.VirtualHostManager;
@@ -10,33 +12,44 @@ public class ErpSiteServer {
 
     public static void main(String[] args)
             throws Exception {
-        EchoServerConfig config = new ErpSiteServerConfig();
-        EchoServer server = new EchoServer(config);
+        Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
+
+        DataSourceArguments devdb = new DataSourceArguments();
+        devdb.setServer("localhost:1063");
+        devdb.setDatabase("devdb");
+        devdb.setUserName("postgres");
+        devdb.setPassword("cW3EADp8");
+
+        DataSourceArguments playdb = new DataSourceArguments();
+        playdb.setServer("localhost:1063");
+        playdb.setDatabase("playdb");
+        playdb.setUserName("play");
+        playdb.setPassword("yalp");
+
+        DataSourceArguments zjhfdb = new DataSourceArguments();
+        zjhfdb.setServer("localhost:1063");
+        zjhfdb.setDatabase("zjhf_db");
+        zjhfdb.setUserName("postgres");
+        zjhfdb.setPassword("cW3EADp8");
 
         VirtualHostManager vhosts = VirtualHostManager.getInstance();
 
         MutableVirtualHost vhost0 = new MutableVirtualHost();
         vhost0.setName("master");
         vhost0.addHostSpecifier("master.lo");
-
-        DataSourceArguments jdbc0 = new DataSourceArguments();
-        jdbc0.setServer("localhost:1063");
-        jdbc0.setDatabase("devdb");
-        vhost0.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, jdbc0);
+        vhost0.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, zjhfdb);
 
         MutableVirtualHost vhost1 = new MutableVirtualHost();
         vhost1.setName("foo");
         vhost1.addHostSpecifier("foo.lo");
         vhost1.addHostSpecifier("a.foo.lo");
-
-        DataSourceArguments jdbc1 = new DataSourceArguments();
-        jdbc1.setServer("localhost:1063");
-        jdbc1.setDatabase("playdb");
-        vhost1.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, jdbc1);
+        vhost1.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, playdb);
 
         vhosts.add(vhost0);
         vhosts.add(vhost1);
 
+        EchoServerConfig config = new ErpSiteServerConfig();
+        EchoServer server = new EchoServer(config);
         server.start();
     }
 

@@ -3,11 +3,14 @@ package com.bee32.zebra.erp.order;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.bee32.zebra.erp.stock.Artifact;
-import com.bee32.zebra.oa.model.contact.Organization;
-import com.bee32.zebra.oa.model.contact.Person;
+import com.bee32.zebra.oa.contact.Organization;
+import com.bee32.zebra.oa.contact.Person;
+import com.bee32.zebra.tk.foo.FooControlled;
 
-public class Deliver {
+public class Deliver
+        extends FooControlled {
+
+    private static final long serialVersionUID = 1L;
 
     FabOrder fabOrder;
 
@@ -19,12 +22,5 @@ public class Deliver {
     // Account-Ticket
 
     BigDecimal total;
-
-}
-
-class DeliverItem { // extends AbstractItem
-
-    Artifact material;
-    FabOrder fabItem;
 
 }

@@ -2,7 +2,6 @@ package com.bee32.zebra.erp.stock;
 
 import com.tinylily.model.base.CoCode;
 
-
 /**
  * 度量单位
  * 
@@ -19,7 +18,6 @@ public class UOM
     public static final int N_CODE = 20;
     public static final int N_PROPERTY = 20;
 
-    private int id;
     private double scale;
     private String property = "数量";
 
@@ -46,14 +44,6 @@ public class UOM
         setParent(stdRef);
         this.scale = scale;
         this.property = property;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setParentId(int parentId) {

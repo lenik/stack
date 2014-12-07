@@ -2,20 +2,16 @@ package com.bee32.zebra.erp.order;
 
 import java.util.Date;
 
-import com.bee32.zebra.oa.model.contact.Organization;
-import com.bee32.zebra.oa.model.contact.Person;
-import com.bee32.zebra.oa.model.thread.Topic;
-import com.tinylily.model.base.CoMomentInterval;
+import com.bee32.zebra.oa.contact.Organization;
+import com.bee32.zebra.oa.contact.Person;
+import com.bee32.zebra.oa.thread.Topic;
+import com.bee32.zebra.tk.foo.FooControlled;
+import com.tinylily.model.base.security.User;
 
 public class FabOrder
-        extends CoMomentInterval {
+        extends FooControlled {
 
     private static final long serialVersionUID = 1L;
-
-    public final int S_DRAFT = S_INIT;
-    public final int S_START = S_INIT + 1;
-    public final int S_DONE = S_INIT + 2;
-    public final int S_CANCEL = S_INVALID;
 
     Topic topic;
     Organization org;
@@ -23,6 +19,8 @@ public class FabOrder
 
     Person seller;
     Person follower; // tracker, executive
+
+    User op;
 
     // make-tasks
     // material-plans (locks)
@@ -34,6 +32,10 @@ public class FabOrder
 
     public Date getDeadline() {
         return super.getEndTime();
+    }
+
+    public User getOp() {
+        return op;
     }
 
 }
