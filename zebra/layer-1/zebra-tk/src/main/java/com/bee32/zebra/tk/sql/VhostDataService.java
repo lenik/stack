@@ -13,6 +13,7 @@ import net.bodz.bas.db.jdbc.DataSourceArguments;
 import net.bodz.bas.db.jdbc.IDataSourceProvider;
 import net.bodz.bas.site.vhost.CurrentVirtualHost;
 import net.bodz.bas.site.vhost.IVirtualHost;
+import net.bodz.bas.site.vhost.VirtualHostManager;
 
 public class VhostDataService
         implements IMapperProvider {
@@ -60,7 +61,10 @@ public class VhostDataService
     }
 
     public static VhostDataService getInstance() {
-        IVirtualHost vhost = CurrentVirtualHost.getVirtualHost();
+        IVirtualHost vhost = CurrentVirtualHost.getVirtualHostOpt();
+        if (vhost == null)
+            vhost = VirtualHostManager.getInstance().getVirtualHost("master");
+
         VhostDataService service = vhost.getAttribute(VhostDataService.ATTRIBUTE_KEY);
         if (service == null) {
             synchronized (VhostDataService.class) {
