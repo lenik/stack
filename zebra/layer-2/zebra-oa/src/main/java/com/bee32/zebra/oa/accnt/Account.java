@@ -3,10 +3,10 @@ package com.bee32.zebra.oa.accnt;
 import com.tinylily.model.base.CoCode;
 
 /**
- * 资产会计科目
- * 
+ * 会计科目
+ *
  * 会计科目。
- * 
+ *
  * <p lang="en">
  * Account Subject
  */

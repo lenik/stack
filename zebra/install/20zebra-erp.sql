@@ -38,8 +38,8 @@
     );
 
     create index warehouse_label    on warehouse(label);
-    create index warehouse_priority on warehouse(priority);
     create index warehouse_lastmod  on warehouse(lastmod desc);
+    create index warehouse_priority on warehouse(priority);
     create index warehouse_state    on warehouse(state);
     create index warehouse_uid_acl  on warehouse(uid, acl);
 
@@ -86,8 +86,8 @@
     );
 
     create index cell_label         on cell(label);
-    create index cell_priority      on cell(priority);
     create index cell_lastmod       on cell(lastmod desc);
+    create index cell_priority      on cell(priority);
     create index cell_state         on cell(state);
     create index cell_uid_acl       on cell(uid, acl);
     
@@ -133,8 +133,8 @@
     );
 
     create index artcat_label          on artcat(label);
-    create index artcat_priority       on artcat(priority);
     create index artcat_lastmod        on artcat(lastmod desc);
+    create index artcat_priority       on artcat(priority);
     create index artcat_state          on artcat(state);
     create index artcat_uid_acl        on artcat(uid, acl);
 
@@ -257,8 +257,8 @@
 
     create index art_code           on art(code);
     create index art_label          on art(label);
-    create index art_priority       on art(priority);
     create index art_lastmod        on art(lastmod desc);
+    create index art_priority       on art(priority);
     create index art_state          on art(state);
     create index art_uid_acl        on art(uid, acl);
 

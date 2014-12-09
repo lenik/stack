@@ -45,7 +45,7 @@
         
         constraint user_uk_code     unique(code),
         constraint user_fk_gid0     foreign key(gid0)
-            references "group"(id)  on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null
     );
 
     create index user_label         on "user"(label);
@@ -59,9 +59,9 @@
         
         constraint group_user_pkey      primary key("group", "user"),
         constraint group_user_fk_group  foreign key("group")
-            references "group"(id)      on update cascade on delete cascade,
+            references "group"(id)          on update cascade on delete cascade,
         constraint group_user_fk_user   foreign key("user")
-            references "user"(id)       on update cascade on delete cascade
+            references "user"(id)           on update cascade on delete cascade
     );
 
     create or replace view v_group as
@@ -149,17 +149,17 @@
         
         constraint org_uk_taxid     unique(taxid),
         constraint org_fk_contact   foreign key(contact)
-            references contact(_id) on update cascade on delete set null,
+            references contact(_id)     on update cascade on delete set null,
         constraint org_fk_uid       foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint org_fk_gid       foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null
     );
 
     create index org_code           on org(code);
     create index org_label          on org(label);
-    create index org_priority       on org(priority);
     create index org_lastmod        on org(lastmod desc);
+    create index org_priority       on org(priority);
     create index org_state          on org(state);
     create index org_uid_acl        on org(uid, acl);
 
@@ -192,21 +192,21 @@
         text        text not null default '',
         
         constraint orgunit_fk_org   foreign key(org)
-            references org(id)      on update cascade on delete cascade,
+            references org(id)          on update cascade on delete cascade,
         constraint orgunit_fk_parent foreign key(parent)
-            references orgunit(id)  on update cascade on delete cascade,
+            references orgunit(id)      on update cascade on delete cascade,
         constraint orgunit_fk_contact foreign key(contact)
-            references contact(_id) on update cascade on delete set null,
+            references contact(_id)     on update cascade on delete set null,
         constraint orgunit_fk_uid   foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint orgunit_fk_gid   foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null
     );
 
     create index orgunit_code       on orgunit(code);
     create index orgunit_label      on orgunit(label);
-    create index orgunit_priority   on orgunit(priority);
     create index orgunit_lastmod    on orgunit(lastmod desc);
+    create index orgunit_priority   on orgunit(priority);
     create index orgunit_state      on orgunit(state);
     create index orgunit_uid_acl    on orgunit(uid, acl);
     
@@ -248,19 +248,19 @@
         mode        int not null default 640,
         acl         int,
         
-        constraint person_uk_ssn        unique(ssn),
-        constraint person_fk_contact    foreign key(contact)
+        constraint person_uk_ssn    unique(ssn),
+        constraint person_fk_contact foreign key(contact)
             references contact(_id)     on update cascade on delete set null,
-        constraint person_fk_uid        foreign key(uid)
+        constraint person_fk_uid    foreign key(uid)
             references "user"(id)       on update cascade on delete set null,
-        constraint person_fk_gid        foreign key(gid)
+        constraint person_fk_gid    foreign key(gid)
             references "group"(id)      on update cascade on delete set null
     );
 
     create index person_code        on person(code);
     create index person_label       on person(label);
-    create index person_priority    on person(priority);
     create index person_lastmod     on person(lastmod desc);
+    create index person_priority    on person(priority);
     create index person_state       on person(state);
     create index person_uid_acl     on person(uid, acl);
     
@@ -293,11 +293,11 @@
         
         constraint personrole_uk        unique(org, ou, person),
         constraint personrole_fk_person foreign key(person)
-            references person(id)       on update cascade on delete cascade,
+            references person(id)           on update cascade on delete cascade,
         constraint personrole_fk_ou     foreign key(ou)
-            references orgunit(id)      on update cascade on delete cascade,
+            references orgunit(id)          on update cascade on delete cascade,
         constraint personrole_fk_org    foreign key(org)
-            references org(id)          on update cascade on delete cascade
+            references org(id)              on update cascade on delete cascade
     );
 
     create or replace view v_personrole as
@@ -320,7 +320,7 @@
         
         cat         int,
         phase       int,
-        val         double precision not null default 0,
+        val         double precision not null default 0, -- estimated
         -- valmax   double precision,
         
         priority    int not null default 0,
@@ -339,24 +339,24 @@
         t1          timestamptz,                -- end time, deadline
         
         constraint topic_fk_op      foreign key(op)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint topic_fk_cat     foreign key(cat)
-            references cat(id)      on update cascade on delete set null,
+            references cat(id)          on update cascade on delete set null,
         constraint topic_fk_phase   foreign key(phase)
-            references phase(id)    on update cascade on delete set null,
+            references phase(id)        on update cascade on delete set null,
         constraint topic_fk_uid     foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint topic_fk_gid     foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null
     );
 
-    create index topic_subject        on topic(subject);
-    create index topic_priority       on topic(priority);
     create index topic_lastmod        on topic(lastmod desc);
+    create index topic_priority       on topic(priority);
     create index topic_state          on topic(state);
-    create index topic_uid_acl        on topic(uid, acl);
+    create index topic_subject        on topic(subject);
     create index topic_t0t1           on topic(t0, t1);
     create index topic_t1             on topic(t1);
+    create index topic_uid_acl        on topic(uid, acl);
 
 -- drop table if exists reply;
     create sequence reply_seq;
@@ -387,23 +387,23 @@
         t1          timestamptz,                -- work end time
         
         constraint reply_fk_op      foreign key(op)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint reply_fk_topic   foreign key(topic)
-            references topic(id)    on update cascade on delete set null,
+            references topic(id)        on update cascade on delete set null,
         constraint reply_fk_parent  foreign key(parent)
-            references reply(id)    on update cascade on delete set null,
+            references reply(id)        on update cascade on delete set null,
         constraint reply_fk_uid     foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint reply_fk_gid     foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null
     );
 
-    create index reply_priority       on reply(priority);
     create index reply_lastmod        on reply(lastmod desc);
+    create index reply_priority       on reply(priority);
     create index reply_state          on reply(state);
-    create index reply_uid_acl        on reply(uid, acl);
     create index reply_t0t1           on reply(t0, t1);
     create index reply_t1             on reply(t1);
+    create index reply_uid_acl        on reply(uid, acl);
 
 -- drop table if exists topicparty;
     create sequence topicparty_seq;
@@ -415,11 +415,11 @@
         description varchar(60),
         
         constraint topicparty_fk_topic  foreign key(topic)
-            references topic(id)        on update cascade on delete set null,
+            references topic(id)            on update cascade on delete set null,
         constraint topicparty_fk_person foreign key(person)
-            references person(id)       on update cascade on delete set null,
+            references person(id)           on update cascade on delete set null,
         constraint topicparty_fk_org    foreign key(org)
-            references org(id)          on update cascade on delete set null
+            references org(id)              on update cascade on delete set null
     );
 
 -- drop table if exists topicatt;
@@ -430,10 +430,10 @@
         att         int not null,
         val         varchar(200),
 
-        constraint topicatt_uk          unique(topic, att),
-        constraint topicatt_fk_topic    foreign key(topic)
+        constraint topicatt_uk      unique(topic, att),
+        constraint topicatt_fk_topic foreign key(topic)
             references topic(id)        on update cascade on delete cascade,
-        constraint topicatt_fk_att      foreign key(att)
+        constraint topicatt_fk_att  foreign key(att)
             references att(id)          on update cascade on delete cascade
     );
 
@@ -444,9 +444,9 @@
         topic       int not null,
         tag         int not null,
 
-        constraint topictag_fk_topic    foreign key(topic)
+        constraint topictag_fk_topic foreign key(topic)
             references topic(id)        on update cascade on delete cascade,
-        constraint topictag_fk_tag      foreign key(tag)
+        constraint topictag_fk_tag  foreign key(tag)
             references tag(id)          on update cascade on delete cascade
     );
 
@@ -460,11 +460,11 @@
         description varchar(60),
         
         constraint replyparty_fk_reply  foreign key(reply)
-            references reply(id)        on update cascade on delete set null,
+            references reply(id)            on update cascade on delete set null,
         constraint replyparty_fk_person foreign key(person)
-            references person(id)       on update cascade on delete set null,
+            references person(id)           on update cascade on delete set null,
         constraint replyparty_fk_org    foreign key(org)
-            references org(id)          on update cascade on delete set null
+            references org(id)              on update cascade on delete set null
     );
 
 -- drop table if exists replyatt;
@@ -475,10 +475,10 @@
         att         int not null,
         val         varchar(200),
 
-        constraint replyatt_uk          unique(reply, att),
-        constraint replyatt_fk_reply    foreign key(reply)
+        constraint replyatt_uk      unique(reply, att),
+        constraint replyatt_fk_reply foreign key(reply)
             references reply(id)        on update cascade on delete cascade,
-        constraint replyatt_fk_att      foreign key(att)
+        constraint replyatt_fk_att  foreign key(att)
             references att(id)          on update cascade on delete cascade
     );
 
@@ -489,9 +489,9 @@
         reply       int not null,
         tag         int not null,
 
-        constraint replytag_fk_reply    foreign key(reply)
+        constraint replytag_fk_reply foreign key(reply)
             references reply(id)        on update cascade on delete cascade,
-        constraint replytag_fk_tag      foreign key(tag)
+        constraint replytag_fk_tag  foreign key(tag)
             references tag(id)          on update cascade on delete cascade
     );
 
@@ -521,6 +521,7 @@
     insert into schema(id, code, label) values(5, 'ques', 'Question');
     insert into schema(id, code, label) values(6, 'ans', 'Answer');
     insert into schema(id, code, label) values(7, 'wlog', 'Work Log');
+    insert into schema(id, code, label) values(8, 'acc', 'Accounting');
     
     insert into phase(id, schema, code, label, priority)
         values(1, 3, 'init', '初步信息采集', 10);
@@ -584,6 +585,7 @@
         code        varchar(30),
         label       varchar(40),
         description varchar(200),
+        sign        int not null default 0,
         
         priority    int not null default 0,
         creation    timestamp not null default now(),
@@ -597,23 +599,26 @@
 
     create index account_label      on account(label);
     create index account_lastmod    on account(lastmod desc);
+    create index account_priority   on account(priority);
     create index account_state      on account(state);
 
--- drop table if exists accevent;
-    create sequence accevent_seq start with 100;
-    create table accevent(
-        id          int primary key default nextval('accevent_seq'),
-        op          int,
+-- drop table if exists acdoc;
+    create sequence acdoc_seq start with 100;
+    create table acdoc(
+        id          bigint primary key default nextval('acdoc_seq'),
+        prev        bigint,         -- previous doc
+        form        int,
         subject     varchar(200) not null,
         text        text,
-        voteu       int not null default 0,
-        voted       int not null default 0,
-        favs        int not null default 0,
+        args        text,           -- used with the form.
+        
+        org         int,
+        person      int,
         
         cat         int,
         phase       int,
         val         double precision not null default 0,
-        -- valmax   double precision,
+        sign        int not null default 1,
         
         priority    int not null default 0,
         creation    timestamp not null default now(),
@@ -629,76 +634,54 @@
         
         t0          timestamptz,                -- begin time, deliver time
         t1          timestamptz,                -- end time, deadline
-        
-        constraint accevent_fk_op      foreign key(op)
-            references "user"(id)   on update cascade on delete set null,
-        constraint accevent_fk_cat     foreign key(cat)
-            references cat(id)      on update cascade on delete set null,
-        constraint accevent_fk_phase   foreign key(phase)
-            references phase(id)    on update cascade on delete set null,
-        constraint accevent_fk_uid     foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
-        constraint accevent_fk_gid     foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+
+        constraint acdoc_fk_cat     foreign key(cat)
+            references cat(id)          on update cascade on delete set null,
+        constraint acdoc_fk_form    foreign key(form)
+            references form(id)         on update cascade on delete set null,
+        constraint acdoc_fk_gid     foreign key(gid)
+            references "group"(id)      on update cascade on delete set null,
+        constraint acdoc_fk_org     foreign key(org)
+            references org(id)          on update cascade,
+        constraint acdoc_fk_person  foreign key(person)
+            references person(id)       on update cascade,
+        constraint acdoc_fk_phase   foreign key(phase)
+            references phase(id)        on update cascade on delete set null,
+        constraint acdoc_fk_prev    foreign key(prev)
+            references acdoc(id)        on update cascade on delete set null,
+        constraint acdoc_fk_uid     foreign key(uid)
+            references "user"(id)       on update cascade on delete set null
+
     );
 
-    create index accevent_subject        on accevent(subject);
-    create index accevent_priority       on accevent(priority);
-    create index accevent_lastmod        on accevent(lastmod desc);
-    create index accevent_state          on accevent(state);
-    create index accevent_uid_acl        on accevent(uid, acl);
-    create index accevent_t0t1           on accevent(t0, t1);
-    create index accevent_t1             on accevent(t1);
+    create index acdoc_lastmod         on acdoc(lastmod desc);
+    create index acdoc_priority        on acdoc(priority);
+    create index acdoc_state           on acdoc(state);
+    create index acdoc_subject         on acdoc(subject);
+    create index acdoc_uid_acl         on acdoc(uid, acl);
+    create index acdoc_t0t1            on acdoc(t0, t1);
+    create index acdoc_t1              on acdoc(t1);
 
-
--- drop table if exists accentry;
-    create sequence accentry_seq start with 100;
-    create table accentry(
-        id          int primary key default nextval('accentry_seq'),
-        op          int,
-        subject     varchar(200) not null,
-        text        text,
-        voteu       int not null default 0,
-        voted       int not null default 0,
-        favs        int not null default 0,
+-- drop table if exists acentry;
+    create sequence acentry_seq start with 100;
+    create table acentry(
+        id          bigint primary key default nextval('acentry_seq'),
+        doc         bigint not null,
         
-        cat         int,
-        phase       int,
-        val         double precision not null default 0,
-        -- valmax   double precision,
+        account     int not null,
+        org         int,
+        person      int,
+        val         numeric(20,2) not null default 0,
         
         priority    int not null default 0,
-        creation    timestamp not null default now(),
-        lastmod     timestamp not null default now(),
-        flags       int not null default 0,
-        state       int not null default 0,
-        version     int not null default 0,
         
-        uid         int,
-        gid         int,
-        mode        int not null default 640,
-        acl         int,
-        
-        t0          timestamptz,                -- begin time, deliver time
-        t1          timestamptz,                -- end time, deadline
-        
-        constraint accentry_fk_op      foreign key(op)
-            references "user"(id)   on update cascade on delete set null,
-        constraint accentry_fk_cat     foreign key(cat)
-            references cat(id)      on update cascade on delete set null,
-        constraint accentry_fk_phase   foreign key(phase)
-            references phase(id)    on update cascade on delete set null,
-        constraint accentry_fk_uid     foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
-        constraint accentry_fk_gid     foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+        constraint acentry_fk_account   foreign key(account)
+            references account(id)          on update cascade,
+        constraint acentry_fk_doc       foreign key(doc)
+            references acdoc(id)            on update cascade on delete cascade,
+        constraint acentry_fk_org       foreign key(org)
+            references org(id)              on update cascade on delete set null,
+        constraint acentry_fk_person    foreign key(person)
+            references person(id)           on update cascade on delete set null
     );
-
-    create index accentry_subject        on accentry(subject);
-    create index accentry_priority       on accentry(priority);
-    create index accentry_lastmod        on accentry(lastmod desc);
-    create index accentry_state          on accentry(state);
-    create index accentry_uid_acl        on accentry(uid, acl);
-    create index accentry_t0t1           on accentry(t0, t1);
-    create index accentry_t1             on accentry(t1);
 

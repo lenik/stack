@@ -28,12 +28,14 @@
         state       int not null default 0,
         version     int not null default 0,
         
-        constraint tagv_uk_code      unique(code)
+        constraint tagv_uk_code     unique(code),
+        constraint tagv_fk_schema   foreign key(schema)
+            references schema(id)       on update cascade on delete cascade
     );
 
-    create index tagv_priority       on tagv(priority);
-    create index tagv_lastmod        on tagv(lastmod desc);
-    create index tagv_state          on tagv(state);
+    create index tagv_lastmod       on tagv(lastmod desc);
+    create index tagv_priority      on tagv(priority);
+    create index tagv_state         on tagv(state);
     
 -- drop table if exists phase;
     create sequence phase_seq start with 100;
@@ -44,10 +46,22 @@
         label       varchar(80),
         description varchar(200),
         
-        constraint phase_uk_code      unique(code)
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
+        constraint phase_uk_code    unique(code),
+        constraint phase_fk_schema  foreign key(schema)
+            references schema(id)       on update cascade on delete cascade
     );
 
-    create index phase_label          on phase(label);
+    create index phase_label        on phase(label);
+    create index phase_lastmod      on phase(lastmod desc);
+    create index phase_priority     on phase(priority);
+    create index phase_state        on phase(state);
     
 -- drop table if exists cat;
     create sequence cat_seq start with 1000;
@@ -58,10 +72,22 @@
         label       varchar(80),
         description varchar(200),
         
-        constraint cat_uk_code      unique(code)
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
+        constraint cat_uk_code      unique(code),
+        constraint cat_fk_schema    foreign key(schema)
+            references schema(id)       on update cascade on delete cascade
     );
 
     create index cat_label          on cat(label);
+    create index cat_lastmod        on cat(lastmod desc);
+    create index cat_priority       on cat(priority);
+    create index cat_state          on cat(state);
 
 -- drop table if exists att;
     create sequence att_seq start with 100;
@@ -72,7 +98,9 @@
         label       varchar(80),
         description varchar(200),
         
-        constraint att_uk_code      unique(code)
+        constraint att_uk_code      unique(code),
+        constraint att_fk_schema    foreign key(schema)
+            references schema(id)       on update cascade on delete cascade
     );
 
     create sequence attval_seq;
@@ -121,7 +149,47 @@
     );
 
     create index tag_label          on tag(label);
-    create index tag_priority       on tag(priority);
     create index tag_lastmod        on tag(lastmod desc);
+    create index tag_priority       on tag(priority);
     create index tag_state          on tag(state);
     
+-- drop table if exists form;
+    create sequence form_seq start with 100;
+    create table form(
+        id          int primary key default nextval('form_seq'),
+        schema      int not null,
+        code        varchar(20),
+        label       varchar(80),
+        subject     varchar(200),
+        text        text,
+        
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
+        constraint form_uk_code     unique(code),
+        constraint form_fk_schema   foreign key(schema)
+            references schema(id)       on update cascade on delete cascade
+    );
+
+    create index form_label          on form(label);
+    create index form_lastmod        on form(lastmod desc);
+    create index form_priority       on form(priority);
+    create index form_state          on form(state);
+
+-- drop table if exists formcp;
+    create sequence formcp_seq start with 100;
+    create table formcp(            -- creation parameters
+        id          int primary key default nextval('formcp_seq'),
+        form        int not null,
+        name        varchar(30),
+        value       varchar(100),
+        
+        constraint formcp_uk        unique(form, name),
+        constraint formcp_fk_form   foreign key(form)
+            references form(id)         on update cascade on delete cascade
+    );
+

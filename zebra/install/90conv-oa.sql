@@ -187,10 +187,32 @@ set constraints all deferred;
         insert into reply(topic, parent, op, text, creation, lastmod, uid)
             select a.chance "topic", a.id "parent", u.id "op", 
                 a.suggestion "text",
-                a.last_modified "creation", a.last_modified "lastmod", a.owner "uid"
+                a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
             from old.chance_action a
                 left join old.party p on a.suggester = p.id
                 left join "user" u on p.label = u.label
             where chance is not null
                 and suggester is not null;
-            
+
+-- account, pay*, recv*
+    
+    insert into account(id, label)
+        select id::int, label from old.account_subject;
+    
+    insert into form(id, schema, code, label, subject)
+        values(81, 8, 'pay', '简明付款单', '付款单 - ');
+    insert into form(id, schema, code, label, subject)
+        values(82, 8, 'recv', '简明收款单', '收款单 - ');
+    
+    insert into acdoc(id, val, org, person, form, subject, text, t0, creation, lastmod, uid)
+        select a.id, a.value, 
+            case p.stereo when 'ORG' then p.id else null end "org",
+            case p.stereo when 'PER' then p.id else null end "person",
+            case a.stereo when 'PAY' then 81 when 'CRED' then 82 end "form",
+            case a.stereo when 'PAY' then '付款单 - ' when 'CRED' then '收款单 - ' end
+                || a.description "subject", 
+            text, a.begin_time "t0", 
+            a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
+        from old.fund_flow a
+            left join old.party p on a.party=p.id;
+    
