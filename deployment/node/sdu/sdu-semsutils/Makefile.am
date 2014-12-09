@@ -10,10 +10,10 @@ dist_bin_SCRIPTS = \
 dist_shsrc_SCRIPTS = \
     cd-sems
 
-dist_aliases_DATA = \
+dist_alias_DATA = \
     semsutils.sh
 
-dist_bashcmpl_DATA = \
+dist_completion_DATA = \
     semsd.sh
 
 dist_sbin_SCRIPTS = \

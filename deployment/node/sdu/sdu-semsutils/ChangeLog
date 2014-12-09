@@ -1,62 +1,63 @@
-2010-12-13  lenik
+[0.6.5] Lenik (2013-02-19)
+	* run-server: Increased max perm gen size to 128m by default.
 
-	* configure.ac: don't report portability warnings.
+[0.6.4] Lenik (2013-01-25)
+	* sdu-semsutils: depends on maven | maven2.
 
-2010-12-08  lenik
+[0.6.3] Lenik (2012-06-18)
+	* segjoin/segsplit from lenik's utils.
+	* JRStyledTextParser NoClass: Set startup system proeprty `java.awt.headless=true`.
 
-	* deploy-this: echox/echo-v -> echo-x
+[0.6.2] Lenik (2012-05-04)
+	* run-server: show mvn cmdline in verbose mode.
 
-2010-11-29  lenik
+[0.6.1] Lenik (2012-02-14)
+	* Added option run-server -d PORT for debugging.
 
-	* ., README: create empty README files to be filled in future.
+[0.6.0] Lenik (2011-09-09)
+	* Fixed: slup-build(.in) needs subst.
 
-2010-11-09  lenik
+[0.5.6] Lenik (2011-09-08)
+	* Added slup-build.
+	* Scan the modpath.
 
-	* VERSION.av, configure, configure.ac, semsd.sh: cache the pom dirs
-	  list.
+[0.5.5] Lenik (2011-06-29)
+	* Add run-server.
 
-2010-10-31  lenik
+[0.5.4] Lenik (2011-02-09)
+	* Refactor semsd by vcscmds.
 
-	* VERSION.av, configure, configure.ac, semsd.sh: something new
-	  added.
-	  and add more ignores
+[0.5.3] Lenik (2011-01-02)
+	* remove INSTALL/COPYING gen stuff.
+	* no more gen stuff.
+	* uni refactor 1.
+	* Update changelogs
+	* don't report portability warnings.
+	* echox/echo-v -> echo-x
+	* create empty README files to be filled in future.
+	* cache the pom dirs list.
 
-2010-10-25  lenik
+[0.5.2] Lenik (2010-10-31)
+	* something new added. and add more ignores
 
-	* VERSION.av, configure, configure.ac, debian/control,
-	  svnrootofcwd: no dep to -seccajx
+[0.5.1] Lenik (2010-10-25)
+	* no dep to -seccajx
 
-2010-10-20  lenik
+[0.5.0] Lenik (2010-10-20)
+	* search archetype, (semsroot:/) also. bash-compl fixes.
 
-	* Makefile.am, Makefile.in, VERSION.av, cd-sems, cd-sems.sh,
-	  configure, configure.ac, semsd.sh, svnrootofcwd: search
-	  archetype, (semsroot:/) also.
-	  bash-compl fixes.
-	* Makefile.am, Makefile.in, VERSION.av, cd-sems, cd-sems.sh,
-	  configure, configure.ac, svnrootofcwd: add bash completion
-	  support.
-	* VERSION.av, cd-sems, configure, configure.ac, semsutils.sh: fix
-	  cd-sems dryrun.
-	* ., Makefile.am, Makefile.in, VERSION.av, aclocal.m4, cd-sems,
-	  configure, configure.ac, debian, debian/control, semsutils.sh:
-	  initial
+[0.4.0] Lenik (2010-10-20)
+	* add bash completion support.
 
-2010-10-18  lenik
+[0.3.1] Lenik (2010-10-20)
+	* fix cd-sems dryrun.
 
-	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
-	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
-	  debian/README.Debian, debian/README.source, debian/compat,
-	  debian/control, debian/copyright, debian/docs, debian/postinst,
-	  debian/postrm, debian/prerm, debian/rules, deploy-this,
-	  install-sh, libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in: set eol-style to native
+[0.3.0] Lenik (2010-10-20)
+	* initial
 
-2010-10-08  lenik
+[0.2.0] Lenik (2010-10-18)
+	* set eol-style to native
 
-	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
-	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
-	  configure.ac, debian, debian/README.Debian, debian/README.source,
-	  debian/compat, debian/control, debian/copyright, debian/docs,
-	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
-	  install-sh, libauto, libauto/coolauto.am, missing,
-	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator
+[0.1.0] Lenik (2010-10-08)
+	* Initial by sdu-creator
+
