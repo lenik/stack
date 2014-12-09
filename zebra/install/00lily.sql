@@ -192,4 +192,9 @@
         constraint formcp_fk_form   foreign key(form)
             references form(id)         on update cascade on delete cascade
     );
+    
+    create or replace view v_form as
+        select *, 
+            array(select name || '=' || value from formcp p where p.form = form.id) "params"
+        from form;
 

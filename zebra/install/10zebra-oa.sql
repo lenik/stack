@@ -612,13 +612,13 @@
         text        text,
         args        text,           -- used with the form.
         
+        op          int,
         org         int,
         person      int,
         
         cat         int,
         phase       int,
         val         double precision not null default 0,
-        sign        int not null default 1,
         
         priority    int not null default 0,
         creation    timestamp not null default now(),
@@ -641,6 +641,8 @@
             references form(id)         on update cascade on delete set null,
         constraint acdoc_fk_gid     foreign key(gid)
             references "group"(id)      on update cascade on delete set null,
+        constraint acdoc_fk_op      foreign key(op)
+            references "user"(id)       on update cascade on delete set null,
         constraint acdoc_fk_org     foreign key(org)
             references org(id)          on update cascade,
         constraint acdoc_fk_person  foreign key(person)
@@ -671,6 +673,7 @@
         account     int not null,
         org         int,
         person      int,
+        -- positive for the debit side, or negative for the credit side.
         val         numeric(20,2) not null default 0,
         
         priority    int not null default 0,
@@ -684,4 +687,23 @@
         constraint acentry_fk_person    foreign key(person)
             references person(id)           on update cascade on delete set null
     );
+
+    create or replace view v_acentry as
+        select a.id, a.doc,
+            a.account, c.label "account_label",
+            a.org, o.label "org_label",
+            a.person, p.label "person_label",
+            a.val, a.priority
+        from acentry a
+            left join account c on a.account=c.id
+            left join org o on a.org=o.id
+            left join person p on a.person=p.id;
+
+    create or replace view v_acdoc as
+        select a.*, op.label "op_label", o.label "org_label", p.label "person_label",
+            array(select e.account_label || '=' || e.val from v_acentry e where e.doc=a.id) "entries"
+        from acdoc a
+            left join org o on a.org=o.id
+            left join person p on a.person=p.id
+            left join "user" op on a.op=op.id;
 

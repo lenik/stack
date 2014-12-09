@@ -200,19 +200,64 @@ set constraints all deferred;
         select id::int, label from old.account_subject;
     
     insert into form(id, schema, code, label, subject)
+        values(80, 8, 'init', '期初登记单', '期初登记单 - ');
+    insert into form(id, schema, code, label, subject)
         values(81, 8, 'pay', '简明付款单', '付款单 - ');
     insert into form(id, schema, code, label, subject)
         values(82, 8, 'recv', '简明收款单', '收款单 - ');
     
-    insert into acdoc(id, val, org, person, form, subject, text, t0, creation, lastmod, uid)
+    insert into acdoc(id, val, op, org, person, form, subject, text, t0, t1, creation, lastmod, uid)
         select a.id, a.value, 
+            l."user" "op",
             case p.stereo when 'ORG' then p.id else null end "org",
             case p.stereo when 'PER' then p.id else null end "person",
             case a.stereo when 'PAY' then 81 when 'CRED' then 82 end "form",
             case a.stereo when 'PAY' then '付款单 - ' when 'CRED' then '收款单 - ' end
                 || a.description "subject", 
-            text, a.begin_time "t0", 
+            text, a.begin_time "t0", a.begin_time "t1", 
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.fund_flow a
-            left join old.party p on a.party=p.id;
+            left join old.party p on a.party=p.id
+            left join old.party op on a.operator=op.id
+            left join old.person_login l on op.id=l.person;
+
+        select setval('acdoc_seq', (select max(id) from "acdoc"));
+        
+    -- fill account_ticket.description from any item and fund_flow record.
+        alter table old.account_ticket add column person int;
+        update old.account_ticket t set description=i.description, person=i.person
+            from old.account_ticket_item i where t.id=i.ticket;
+        update old.account_ticket t set description=f.description
+            from old.fund_flow f where t.id=f.ticket;
+        
+    -- create acdoc for tickets without fund_flow.
+    alter table acdoc add column id_tmp int;
+    insert into acdoc(id_tmp, subject, op, t0, t1, creation, lastmod, uid)
+        select
+            a.id "id_tmp",
+            a.description "subject",
+            l."user" "op",
+            a.begin_time "t0", a.end_time "t1",
+            a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
+        from old.account_ticket a
+            left join old.fund_flow f on a.id=f.ticket
+            left join old.person_login l on a.person=l.person
+        where f.id is null;
+        
+    insert into acentry(doc, account, org, person, val)
+        select 
+            case when f.id is null then acdoc.id else f.id end "doc",
+            a.subject::int "account",
+            case p.stereo when 'ORG' then p.id else null end "org",
+            case p.stereo when 'PER' then p.id else null end "person",
+            (case debit_side when true then 1 else -1 end) * abs(a.value) "val"
+        from old.account_ticket_item a
+            left join old.account_ticket t on a.ticket=t.id
+            left join acdoc on a.ticket=acdoc.id_tmp
+            left join old.party p on a.party=p.id
+            left join old.fund_flow f on a.ticket=f.ticket
+        where a.stereo <> 'INIT';
+    alter table acdoc drop column id_tmp;
+    
+    -- TODO create INIT acdocs...
     
