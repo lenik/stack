@@ -98,6 +98,60 @@ set constraints all deferred;
             trim(role_detail || ' ' || description || ' ' || alt_org_unit)
         from old.person_role;
 
+-- fileinfo
+    alter table old.user_file add column val float;
+    
+        update old.user_file set val=description::float, description=null
+            where description ~ '^([0-9]+\.?[0-9]*)$';
+        
+        update old.user_file set
+            val=regexp_replace(description, 
+                '^(.*?)(,?工?程?合?同?暂?定?结?算?票?面?协?议?总?金?[价计额]为?)([0-9.]+)(.*)$', '\3')::float,
+            description=regexp_replace(description,
+                '^(.*?)(,?工?程?合?同?暂?定?结?算?票?面?协?议?总?金?[价计额]为?)([0-9.]+)(.*)$', '\1\4')
+            where description ~ '^(.*?)(,?工?程?合?同?暂?定?结?算?票?面?协?议?总?金?[价计额]为?)([0-9.]+)(.*)$';
+
+        update old.user_folder a set path=name where depth=1;
+        update old.user_folder a set path=p.path || '/' || a.name
+            from old.user_folder p where a.depth=2 and a.parent=p.id;
+        update old.user_folder a set path=p.path || '/' || a.name
+            from old.user_folder p where a.depth=3 and a.parent=p.id;
+        update old.user_folder a set path=p.path || '/' || a.name
+            from old.user_folder p where a.depth=4 and a.parent=p.id;
+        update old.user_folder a set path=p.path || '/' || a.name
+            from old.user_folder p where a.depth=5 and a.parent=p.id;
+        update old.user_folder a set path=p.path || '/' || a.name
+            from old.user_folder p where a.depth=6 and a.parent=p.id;
+        
+        update old.user_file set folder=18 where folder is null; -- 内部文档
+        
+        -- convert user_file_tagname to tagv(5).
+        insert into tag(tagv, label, description, priority)
+            select 5, name, description, id from old.user_file_tagname;
+        alter table old.user_file_tagname add column id_new int;
+        update old.user_file_tagname a set id_new=tag.id from tag where a.id=tag.priority;
+        update tag set priority=0 where tagv=5;
+        
+    insert into fileinfo(id, label, description, path, size, sha1, op, org, person, tags, val,
+            t0, t1, creation, lastmod, uid)
+        select
+            a.id, a.label, a.description,
+            d.path || '/' || a.name "path",
+            b.length "size", b.id "sha1",
+            a.operator "op",
+            case when p.stereo='ORG' then a.party else null end "org", 
+            case when p.stereo='PER' then a.party else null end "person",
+            array(select y.id_new from old.user_file_tags x
+                    left join old.user_file_tagname y on x.tag=y.id
+                where user_file=a.id) tags,
+            a.val,
+            a.file_date "t0", a.expired_date "t1",
+            a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
+        from old.user_file a
+            left join old.user_folder d on a.folder=d.id
+            left join old.file_blob b on a.file_blob=b.id
+            left join old.party p on a.party=p.id;
+        
 -- topic, reply
     
     insert into cat(schema, code, label)
@@ -206,7 +260,7 @@ set constraints all deferred;
     insert into form(id, schema, code, label, subject)
         values(82, 8, 'recv', '简明收款单', '收款单 - ');
     
-    insert into acdoc(id, val, op, org, person, form, subject, text, t0, t1, creation, lastmod, uid)
+    insert into acdoc(id, val, op, org, person, form, subject, text, year, t0, t1, creation, lastmod, uid)
         select a.id, a.value, 
             l."user" "op",
             case p.stereo when 'ORG' then p.id else null end "org",
@@ -214,7 +268,8 @@ set constraints all deferred;
             case a.stereo when 'PAY' then 81 when 'CRED' then 82 end "form",
             case a.stereo when 'PAY' then '付款单 - ' when 'CRED' then '收款单 - ' end
                 || a.description "subject", 
-            text, a.begin_time "t0", a.begin_time "t1", 
+            a.text,
+            extract(year from a.begin_time) "year", a.begin_time "t0", a.begin_time "t1", 
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.fund_flow a
             left join old.party p on a.party=p.id
@@ -232,12 +287,12 @@ set constraints all deferred;
         
     -- create acdoc for tickets without fund_flow.
     alter table acdoc add column id_tmp int;
-    insert into acdoc(id_tmp, subject, op, t0, t1, creation, lastmod, uid)
+    insert into acdoc(id_tmp, subject, op, year, t0, t1, creation, lastmod, uid)
         select
             a.id "id_tmp",
             a.description "subject",
             l."user" "op",
-            a.begin_time "t0", a.end_time "t1",
+            extract(year from a.begin_time) "year", a.begin_time "t0", a.end_time "t1",
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.account_ticket a
             left join old.fund_flow f on a.id=f.ticket
@@ -259,5 +314,14 @@ set constraints all deferred;
         where a.stereo <> 'INIT';
     alter table acdoc drop column id_tmp;
     
-    -- TODO create INIT acdocs...
-    
+    insert into acinit(year, account, org, person, val)
+        select
+            extract(year from a.begin_time) "year", 
+            a.subject::int "account", 
+            case p.stereo when 'ORG' then p.id else null end "org",
+            case p.stereo when 'PER' then p.id else null end "person",
+            a.value "val"
+        from old.account_ticket_item a
+            left join old.party p on a.party=p.id
+        where a.stereo = 'INIT';
+

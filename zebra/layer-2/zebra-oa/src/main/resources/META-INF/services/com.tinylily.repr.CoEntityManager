@@ -1,11 +1,10 @@
 com.bee32.zebra.oa.accnt.impl.AccountingEntryManager
 com.bee32.zebra.oa.accnt.impl.AccountingEventManager
 com.bee32.zebra.oa.accnt.impl.AccountManager
-com.bee32.zebra.oa.cloudfs.impl.CloudDirManager
-com.bee32.zebra.oa.cloudfs.impl.CloudFileManager
 com.bee32.zebra.oa.contact.impl.OrganizationManager
 com.bee32.zebra.oa.contact.impl.OrgUnitManager
 com.bee32.zebra.oa.contact.impl.PersonManager
+com.bee32.zebra.oa.file.impl.FileInfoManager
 com.bee32.zebra.oa.hr.impl.EmployeeManager
 com.bee32.zebra.oa.hr.impl.EmployeeSkillManager
 com.bee32.zebra.oa.hr.impl.JobSkillCategoryManager

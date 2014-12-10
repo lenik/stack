@@ -2,9 +2,9 @@
 <!DOCTYPE mapper 
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bee32.zebra.oa.cloudfs.impl.CloudFileMapper">
+<mapper namespace="com.bee32.zebra.oa.file.impl.FileInfoMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.cloudfs.CloudFile" extends="message.mapX">
+    <resultMap id="map1" type="com.bee32.zebra.oa.file.FileInfo" extends="message.mapX">
         <result property="beginTime" column="t0" />
         <result property="endTime" column="t1" />
     </resultMap>
@@ -14,7 +14,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from cloudFile a
+        from fileInfo a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -25,7 +25,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from cloudFile a
+        from fileInfo a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -51,13 +51,13 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into cloudFile(code, label, description)
+        insert into fileInfo(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
     ]]></select>
 
     <update id="update">
-        update cloudFile
+        update fileInfo
         <set>
             <include refid="base.setU" />
         </set>

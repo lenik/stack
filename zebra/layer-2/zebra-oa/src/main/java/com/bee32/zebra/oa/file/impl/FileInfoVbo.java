@@ -1,4 +1,4 @@
-package com.bee32.zebra.oa.cloudfs.impl;
+package com.bee32.zebra.oa.file.impl;
 
 import java.io.IOException;
 
@@ -9,18 +9,18 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.site.IBasicSiteAnchors;
 import net.bodz.bas.ui.dom1.IUiRef;
 
-import com.bee32.zebra.oa.cloudfs.CloudFile;
+import com.bee32.zebra.oa.file.FileInfo;
 
-public class CloudFileVbo
-        extends AbstractHtmlViewBuilder<CloudFile>
+public class FileInfoVbo
+        extends AbstractHtmlViewBuilder<FileInfo>
         implements IBasicSiteAnchors {
     
-    public CloudFileVbo() {
-        super(CloudFile.class);
+    public FileInfoVbo() {
+        super(FileInfo.class);
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<CloudFile> ref, IOptions options)
+    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<FileInfo> ref, IOptions options)
             throws ViewBuilderException, IOException {
         return ctx;
     }

@@ -198,10 +198,10 @@ public class OaSiteVbo
         sub.li().a().text("质量控制").href(_webApp_.join("qc/").toString());
 
         sub = parent.li().text("财务").ul();
-        sub.li().a().text("流水帐").href(_webApp_.join("account/").toString());
-        sub.li().a().text("款项").href(_webApp_.join("sum/").toString());
+        sub.li().a().text("填表").href(_webApp_.join("acdoc/?phase=1").toString());
+        sub.li().a().text("流水帐").href(_webApp_.join("acdoc/?phase=2").toString());
         sub.li().a().text("工资").href(_webApp_.join("salary/").toString());
-        sub.li().a().text("报表").href(_webApp_.join("account/report/").toString());
+        sub.li().a().text("分析").href(_webApp_.join("aca/").toString());
 
         sub = parent.li().text("系统").ul();
         sub.li().a().text("帐户").href(_webApp_.join("user/").toString());

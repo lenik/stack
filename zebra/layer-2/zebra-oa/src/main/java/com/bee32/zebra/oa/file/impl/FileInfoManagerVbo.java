@@ -1,4 +1,4 @@
-package com.bee32.zebra.oa.cloudfs.impl;
+package com.bee32.zebra.oa.file.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,48 +12,48 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
-import com.bee32.zebra.oa.cloudfs.CloudFile;
+import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.security.User;
 
-public class CloudFileManagerVbo
-        extends Zc3Template_CEM<CloudFileManager, CloudFile> {
+public class FileInfoManagerVbo
+        extends Zc3Template_CEM<FileInfoManager, FileInfo> {
 
-    public CloudFileManagerVbo()
+    public FileInfoManagerVbo()
             throws NoSuchPropertyException, ParseException {
-        super(CloudFileManager.class);
-        formStruct = new CloudFile().getFormStruct();
-        setIndexFields("id", "party.label", "label", "description", "op" //
+        super(FileInfoManager.class);
+        formStruct = new FileInfo().getFormStruct();
+        setIndexFields("id", "op", "subject", "text", "category", "phase", "value" //
                 , "creationDate", "lastModified" //
         // , "owner.label", "ownerGroup.label"
         );
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<CloudFileManager> ref, IOptions options)
+    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<FileInfoManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
 
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        CloudFileManager manager = ref.get();
-        CloudFileMapper mapper = manager.getMapper();
-        List<CloudFile> list = mapper.all();
+        FileInfoManager manager = ref.get();
+        FileInfoMapper mapper = manager.getMapper();
+        List<FileInfo> list = mapper.all();
 
         titleInfo(p);
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
-        for (CloudFile o : list) {
+        for (FileInfo o : list) {
             User op = o.getOp();
 
             HtmlTrTag tr = indexTable.tbody.tr();
             tr.td().text(o.getId()).class_("col-id");
-            tr.td().text(o.getParty().getLabel());
+            tr.td().text(op == null ? "" : op.getFullName()).align("center");
             tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
             tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
-            tr.td().text(op == null ? "" : op.getFullName()).align("center");
+            tr.td().text(o.getValue());
             stdcols(tr, o);
         }
 
