@@ -23,7 +23,7 @@ public class UOMManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(UOMManager.class);
         formStruct = new UOM().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

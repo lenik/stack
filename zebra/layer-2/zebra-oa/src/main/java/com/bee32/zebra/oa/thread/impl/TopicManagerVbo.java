@@ -33,7 +33,7 @@ public class TopicManagerVbo
         super(TopicManager.class);
         formStruct = new Topic().getFormStruct();
         setIndexFields("id", "op", "subject", "text", "category", "phase", "value" //
-                , "creationDate", "lastModified" //
+                , "creationTime", "lastModified" //
         // , "owner.label", "ownerGroup.label"
         );
     }

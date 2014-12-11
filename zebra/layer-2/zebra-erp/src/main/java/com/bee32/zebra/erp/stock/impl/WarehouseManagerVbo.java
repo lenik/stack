@@ -26,7 +26,7 @@ public class WarehouseManagerVbo
         formStruct = new Warehouse().getFormStruct();
         setIndexFields("id", "codeName", "label", "description", //
                 "contact.fullAddress", "contact.tels", //
-                "creationDate", "lastModified");
+                "creationTime", "lastModified");
     }
 
     @Override

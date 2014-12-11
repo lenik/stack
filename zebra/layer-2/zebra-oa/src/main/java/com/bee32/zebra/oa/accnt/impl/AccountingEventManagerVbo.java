@@ -24,7 +24,7 @@ public class AccountingEventManagerVbo
         super(AccountingEventManager.class);
         formStruct = new AccountingEvent().getFormStruct();
         setIndexFields("id", "beginTime", "label", "description", //
-                "creationDate", "lastModified");
+                "creationTime", "lastModified");
     }
 
     @Override

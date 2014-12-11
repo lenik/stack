@@ -23,7 +23,7 @@ public class FabQcDefManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabQcDefManager.class);
         formStruct = new FabQcDef().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

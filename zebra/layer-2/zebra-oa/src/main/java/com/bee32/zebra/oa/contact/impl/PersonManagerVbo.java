@@ -26,7 +26,7 @@ public class PersonManagerVbo
         formStruct = new Person().getFormStruct();
         setIndexFields("id", "ageSexLoc", "typeChars", "fullName", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq", //
-                "creationDate", "lastModified");
+                "creationTime", "lastModified");
     }
 
     @Override

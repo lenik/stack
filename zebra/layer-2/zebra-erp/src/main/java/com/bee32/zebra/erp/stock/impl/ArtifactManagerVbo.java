@@ -24,7 +24,7 @@ public class ArtifactManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(ArtifactManager.class);
         formStruct = new Artifact().getFormStruct();
-        setIndexFields("id", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

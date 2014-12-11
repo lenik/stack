@@ -23,7 +23,7 @@ public class FabOpCodeManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabOpCodeManager.class);
         formStruct = new FabOpCode().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

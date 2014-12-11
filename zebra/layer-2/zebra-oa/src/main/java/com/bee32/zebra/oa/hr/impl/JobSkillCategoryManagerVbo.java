@@ -23,7 +23,7 @@ public class JobSkillCategoryManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(JobSkillCategoryManager.class);
         formStruct = new JobSkillCategory().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

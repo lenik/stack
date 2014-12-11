@@ -25,7 +25,7 @@ public class FabOrderManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabOrderManager.class);
         formStruct = new FabOrder().getFormStruct();
-        setIndexFields("id", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

@@ -23,7 +23,7 @@ public class OrgUnitManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(OrgUnitManager.class);
         formStruct = new OrgUnit().getFormStruct();
-        setIndexFields("id", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

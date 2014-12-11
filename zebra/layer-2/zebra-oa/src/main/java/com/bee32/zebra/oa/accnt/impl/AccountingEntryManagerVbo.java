@@ -23,7 +23,7 @@ public class AccountingEntryManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(AccountingEntryManager.class);
         formStruct = new AccountingEntry().getFormStruct();
-        setIndexFields("id", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

@@ -26,7 +26,7 @@ public class OrganizationManagerVbo
         formStruct = new Organization().getFormStruct();
         setIndexFields("id", "typeChars", "fullName", "size", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq", //
-                "creationDate", "lastModified");
+                "creationTime", "lastModified");
     }
 
     @Override

@@ -23,7 +23,7 @@ public class FabStepManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabStepManager.class);
         formStruct = new FabStep().getFormStruct();
-        setIndexFields("id", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

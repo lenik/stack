@@ -23,7 +23,7 @@ public class AccountManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(AccountManager.class);
         formStruct = new Account().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

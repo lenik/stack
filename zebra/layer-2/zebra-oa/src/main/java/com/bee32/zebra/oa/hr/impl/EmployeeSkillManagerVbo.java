@@ -23,7 +23,7 @@ public class EmployeeSkillManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(EmployeeSkillManager.class);
         formStruct = new EmployeeSkill().getFormStruct();
-        setIndexFields("id", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

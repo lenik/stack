@@ -25,7 +25,7 @@ public class ReplyManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(ReplyManager.class);
         formStruct = new Reply(null, null).getFormStruct();
-        setIndexFields("id", "op", "subject", "text", "creationDate", "lastModified");
+        setIndexFields("id", "op", "subject", "text", "creationTime", "lastModified");
     }
 
     @Override

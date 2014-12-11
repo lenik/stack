@@ -110,7 +110,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 List<String> classes = new ArrayList<String>();
 
                 switch (field.getName()) {
-                case "creationDate":
+                case "creationTime":
                 case "state":
                 case "owner.label":
                 case "ownerGroup.label":
@@ -170,7 +170,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     }
 
     protected void stdcols(HtmlTrTag tr, CoEntity o) {
-        tr.td().text(Dates.YY_MM_DD.format(o.getCreationDate())).class_("small");
+        tr.td().text(Dates.YY_MM_DD.format(o.getCreationTime())).class_("small");
         tr.td().text(Dates.YY_MM_DD.format(o.getLastModified())).class_("small");
     }
 

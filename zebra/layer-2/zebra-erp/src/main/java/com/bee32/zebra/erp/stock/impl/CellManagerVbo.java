@@ -23,7 +23,7 @@ public class CellManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(CellManager.class);
         formStruct = new Cell().getFormStruct();
-        setIndexFields("id", "label", "description", "creationDate", "lastModified");
+        setIndexFields("id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override

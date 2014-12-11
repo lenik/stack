@@ -25,8 +25,8 @@ public class FileInfoManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FileInfoManager.class);
         formStruct = new FileInfo().getFormStruct();
-        setIndexFields("id", "op", "subject", "text", "category", "phase", "value" //
-                , "creationDate", "lastModified" //
+        setIndexFields("id", "op", "label", "description", "value", "org.label", "person.label", //
+                "creationTime", "lastModified"
         // , "owner.label", "ownerGroup.label"
         );
     }
