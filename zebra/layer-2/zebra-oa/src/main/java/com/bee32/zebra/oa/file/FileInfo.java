@@ -15,7 +15,6 @@ public class FileInfo
     private static final long serialVersionUID = 1L;
 
     private String path;
-    private String image;
     private long size;
     private String sha1;
     private String type;
@@ -47,14 +46,6 @@ public class FileInfo
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public long getSize() {

@@ -453,6 +453,7 @@
         file        int not null,
         op          int not null,
         n           int not null default 1,
+        time        timestamp not null default now(),
 
         constraint filevote_fk_file foreign key(file)
             references fileinfo(id)     on update cascade on delete cascade,
@@ -609,6 +610,7 @@
         topic       int not null,
         op          int not null,
         n           int not null default 1,
+        time        timestamp not null default now(),
 
         constraint topicvote_fk_topic foreign key(topic)
             references topic(id)        on update cascade on delete cascade,
@@ -668,6 +670,7 @@
         reply       int not null,
         op          int not null,
         n           int not null default 1,
+        time        timestamp not null default now(),
 
         constraint replyvote_fk_reply foreign key(reply)
             references reply(id)        on update cascade on delete cascade,
