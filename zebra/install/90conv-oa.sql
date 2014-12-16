@@ -27,20 +27,6 @@ set constraints all deferred;
     
 -- contact
 
-    -- Clean duplicated contacts, keep the latest ones.
-    delete from old.contact c
-        where party in (select party from old.contact where party is not null group by party having count(*)>1)
-          and last_modified < (select max(last_modified) from old.contact t where t.party=c.party);
-
-    delete from old.contact c
-        where party in (select party from old.contact where party is not null group by party having count(*)>1)
-          and created_date < (select max(created_date) from old.contact t where t.party=c.party);
-
-    -- If tel/mobile/fax is too long, move them to description.
-    update old.contact set description = description || tel, tel = null where length(tel)>20;
-    update old.contact set description = description || mobile, mobile = null where length(mobile)>20;
-    update old.contact set description = description || fax, fax = null where length(fax)>20;
-
     insert into contact(_id, org, ou, person, address1, postcode, tel, mobile, fax, email, web, qq)
         select c.id "_id", 
             case when p.stereo='ORG' then c.party else null end "org",
@@ -53,9 +39,6 @@ set constraints all deferred;
     
 -- org, orgunit, person, personrole
 
-    update old.party set label=full_name, full_name=null 
-        where full_name is not null and full_name <> '';
-        
     insert into org(id, label, description, 
             contact, 
             birthday, size, taxid,
@@ -92,47 +75,20 @@ set constraints all deferred;
             created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
         from old.party where stereo = 'PER';
 
-    update old.person_role set role=role_detail, role_detail=null where role='' or role is null;
     insert into personrole(person, ou, org, role, description)
         select person, org_unit "ou", org, role,
             trim(role_detail || ' ' || description || ' ' || alt_org_unit)
         from old.person_role;
 
 -- fileinfo
-    alter table old.user_file add column val float;
-    
-        update old.user_file set val=description::float, description=null
-            where description ~ '^([0-9]+\.?[0-9]*)$';
-        
-        update old.user_file set
-            val=regexp_replace(description, 
-                '^(.*?)(,?工?程?合?同?暂?定?结?算?票?面?协?议?总?金?[价计额]为?)([0-9.]+)(.*)$', '\3')::float,
-            description=regexp_replace(description,
-                '^(.*?)(,?工?程?合?同?暂?定?结?算?票?面?协?议?总?金?[价计额]为?)([0-9.]+)(.*)$', '\1\4')
-            where description ~ '^(.*?)(,?工?程?合?同?暂?定?结?算?票?面?协?议?总?金?[价计额]为?)([0-9.]+)(.*)$';
-
-        update old.user_folder a set path=name where depth=1;
-        update old.user_folder a set path=p.path || '/' || a.name
-            from old.user_folder p where a.depth=2 and a.parent=p.id;
-        update old.user_folder a set path=p.path || '/' || a.name
-            from old.user_folder p where a.depth=3 and a.parent=p.id;
-        update old.user_folder a set path=p.path || '/' || a.name
-            from old.user_folder p where a.depth=4 and a.parent=p.id;
-        update old.user_folder a set path=p.path || '/' || a.name
-            from old.user_folder p where a.depth=5 and a.parent=p.id;
-        update old.user_folder a set path=p.path || '/' || a.name
-            from old.user_folder p where a.depth=6 and a.parent=p.id;
-        
-        update old.user_file set folder=18 where folder is null; -- 内部文档
-        
-        -- convert user_file_tagname to tagv(5):
+    -- convert user_file_tagname to tagv(5):
         --  mapping: user_file_tagname.id_new -> tag.id.
         insert into tag(tagv, label, description, priority)
             select 5, name, description, id from old.user_file_tagname;
-        alter table old.user_file_tagname add column id_new int;
+
         update old.user_file_tagname a set id_new=tag.id from tag where a.id=tag.priority;
         update tag set priority=0 where tagv=5;
-        
+    
     insert into fileinfo(id, label, description, path, size, sha1, op, org, person, val,
             --tags,
             t0, t1, creation, lastmod, uid)
@@ -277,13 +233,6 @@ set constraints all deferred;
             left join old.person_login l on op.id=l.person;
 
         select setval('acdoc_seq', (select max(id) from "acdoc"));
-        
-    -- fill account_ticket.description from any item and fund_flow record.
-        alter table old.account_ticket add column person int;
-        update old.account_ticket t set description=i.description, person=i.person
-            from old.account_ticket_item i where t.id=i.ticket;
-        update old.account_ticket t set description=f.description
-            from old.fund_flow f where t.id=f.ticket;
         
     -- create acdoc for tickets without fund_flow.
     alter table acdoc add column id_tmp int;
