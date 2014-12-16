@@ -54,4 +54,8 @@
         where _id=#{id}
     </update>
 
+    <delete id="delete">
+        delete from contact where id=#{id}
+    </delete>
+    
 </mapper>

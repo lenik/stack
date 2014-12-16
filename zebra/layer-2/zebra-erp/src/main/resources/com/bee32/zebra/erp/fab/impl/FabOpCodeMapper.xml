@@ -14,7 +14,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from fabOpCode a
+        from fabopcode a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -25,7 +25,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from fabOpCode a
+        from fabopcode a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -51,13 +51,13 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into fabOpCode(code, label, description)
+        insert into fabopcode(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
     ]]></select>
 
     <update id="update">
-        update fabOpCode
+        update fabopcode
         <set>
             <include refid="base.setU" />
         </set>
@@ -66,4 +66,8 @@
         </where>
     </update>
 
+    <delete id="delete">
+        delete from fabopcode where id=#{id}
+    </delete>
+    
 </mapper>

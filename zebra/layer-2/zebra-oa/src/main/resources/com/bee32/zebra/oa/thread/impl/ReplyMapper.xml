@@ -58,4 +58,8 @@
         where id=#{id}
     </update>
 
+    <delete id="delete">
+        delete from reply where id=#{id}
+    </delete>
+    
 </mapper>

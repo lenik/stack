@@ -25,7 +25,7 @@ public class ReplyManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(ReplyManager.class);
         formStruct = new Reply(null, null).getFormStruct();
-        setIndexFields("id", "op", "subject", "text", "creationTime", "lastModified");
+        insertIndexFields("op", "subject", "text");
     }
 
     @Override
@@ -47,11 +47,11 @@ public class ReplyManagerVbo
             // Topic topic = o.getTopic();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(op == null ? "" : op.getFullName());
             tr.td().b().text(o.getSubject()).class_("small").style("max-width: 20em");
             tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         return ctx;

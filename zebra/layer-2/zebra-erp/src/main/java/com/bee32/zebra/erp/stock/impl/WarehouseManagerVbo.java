@@ -24,9 +24,8 @@ public class WarehouseManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(WarehouseManager.class);
         formStruct = new Warehouse().getFormStruct();
-        setIndexFields("id", "codeName", "label", "description", //
-                "contact.fullAddress", "contact.tels", //
-                "creationTime", "lastModified");
+        insertIndexFields("codeName", "label", "description", //
+                "contact.fullAddress", "contact.tels");
     }
 
     @Override
@@ -46,7 +45,7 @@ public class WarehouseManagerVbo
 
         for (Warehouse o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(o.getCodeName());
             tr.td().text(o.getLabel());
             tr.td().text(o.getDescription()).class_("small");
@@ -59,7 +58,7 @@ public class WarehouseManagerVbo
                 tr.td().text(contact.getFullAddress()).class_("small");
                 tr.td().text(contact.getTels());
             }
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

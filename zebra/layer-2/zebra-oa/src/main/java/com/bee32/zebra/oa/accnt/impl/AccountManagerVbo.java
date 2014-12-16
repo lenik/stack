@@ -23,7 +23,7 @@ public class AccountManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(AccountManager.class);
         formStruct = new Account().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
+        insertIndexFields("code", "label", "description");
     }
 
     @Override
@@ -43,11 +43,11 @@ public class AccountManagerVbo
 
         for (Account o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(o.getCode());
             tr.td().text(o.getLabel());
             tr.td().text(o.getDescription()).class_("small");
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

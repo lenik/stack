@@ -14,7 +14,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from orgUnit a
+        from orgunit a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -25,7 +25,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from orgUnit a
+        from orgunit a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -51,7 +51,7 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into orgUnit(code, label, description)
+        insert into orgunit(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
     ]]></select>
@@ -66,4 +66,8 @@
         </where>
     </update>
 
+    <delete id="delete">
+        delete from orgunit where id=#{id}
+    </delete>
+    
 </mapper>

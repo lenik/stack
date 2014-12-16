@@ -23,7 +23,7 @@ public class FabDeviceManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabDeviceManager.class);
         formStruct = new FabDevice().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
+        insertIndexFields("code", "label", "description");
     }
 
     @Override
@@ -42,8 +42,8 @@ public class FabDeviceManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabDevice o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
-            stdcols(tr, o);
+            stdcols0(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

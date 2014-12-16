@@ -14,7 +14,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from fabStepDef a
+        from fabstepdef a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -25,7 +25,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from fabStepDef a
+        from fabstepdef a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -51,13 +51,13 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into fabStepDef(code, label, description)
+        insert into fabstepdef(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
     ]]></select>
 
     <update id="update">
-        update fabStepDef
+        update fabstepdef
         <set>
             <include refid="base.setU" />
         </set>

@@ -25,7 +25,7 @@ public class FabOrderManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabOrderManager.class);
         formStruct = new FabOrder().getFormStruct();
-        setIndexFields("id", "label", "description", "creationTime", "lastModified");
+        insertIndexFields("label", "description");
     }
 
     @Override
@@ -46,12 +46,12 @@ public class FabOrderManagerVbo
             User op = o.getOp();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(op == null ? "" : op.getFullName()).align("center");
             tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
             tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
             // tr.td().text(o.getValue());
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

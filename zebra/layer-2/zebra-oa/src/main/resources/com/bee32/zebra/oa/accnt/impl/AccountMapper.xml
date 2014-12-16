@@ -66,4 +66,8 @@
         </where>
     </update>
 
+    <delete id="delete">
+        delete from account where id=#{id}
+    </delete>
+    
 </mapper>

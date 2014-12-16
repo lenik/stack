@@ -15,7 +15,7 @@ import com.bee32.zebra.tk.sql.VhostDataService;
  * @see <a href=""></a>
  * @see <a href=""></a>
  */
-@PathToken("accentry")
+@PathToken("acentry")
 public class AccountingEntryManager
         extends FooManager {
 

@@ -26,16 +26,13 @@ import com.tinylily.model.base.security.User;
 public class TopicManagerVbo
         extends Zc3Template_CEM<TopicManager, Topic> {
 
-// CategoryMana
+    boolean extensions;
 
     public TopicManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(TopicManager.class);
         formStruct = new Topic().getFormStruct();
-        setIndexFields("id", "op", "subject", "text", "category", "phase", "value" //
-                , "creationTime", "lastModified" //
-        // , "owner.label", "ownerGroup.label"
-        );
+        insertIndexFields("op", "subject", "text", "category", "phase", "value");
     }
 
     @Override
@@ -47,7 +44,10 @@ public class TopicManagerVbo
 
         TopicManager manager = ref.get();
         TopicMapper mapper = manager.getMapper();
-        List<Topic> list = mapper.all();
+
+        TopicCriteria criteria = new TopicCriteria();
+        ctx.getRequest().getParameterMap();
+        List<Topic> list = mapper.filter(criteria);
 
         titleInfo(p);
 
@@ -66,7 +66,7 @@ public class TopicManagerVbo
             PhaseDef phase = o.getPhase();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(op == null ? "" : op.getFullName()).align("center");
             tr.td().b().text(o.getSubject()).class_("small").style("max-width: 20em");
             tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
@@ -74,17 +74,19 @@ public class TopicManagerVbo
 
             tr.td().text(phase == null ? "" : phase.getLabel()).class_("small");
             tr.td().text(o.getValue());
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);
 
-        section = new SectionDiv(p.mainCol, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
-        section = new SectionDiv(p.mainCol, "s-bar", "图表/Charts", IFontAwesomeCharAliases.FA_BAR_CHART);
-        section = new SectionDiv(p.mainCol, "s-line", "图表/Charts", IFontAwesomeCharAliases.FA_LINE_CHART);
-        section = new SectionDiv(p.mainCol, "s-pie", "图表/Charts", IFontAwesomeCharAliases.FA_PIE_CHART);
-        section = new SectionDiv(p.mainCol, "s-comments", "评论/Comments", IFontAwesomeCharAliases.FA_COMMENTS);
-        section = new SectionDiv(p.mainCol, "s-debug", "调测信息/Debug", IFontAwesomeCharAliases.FA_BUG);
+        if (extensions) {
+            section = new SectionDiv(p.mainCol, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
+            section = new SectionDiv(p.mainCol, "s-bar", "图表/Charts", IFontAwesomeCharAliases.FA_BAR_CHART);
+            section = new SectionDiv(p.mainCol, "s-line", "图表/Charts", IFontAwesomeCharAliases.FA_LINE_CHART);
+            section = new SectionDiv(p.mainCol, "s-pie", "图表/Charts", IFontAwesomeCharAliases.FA_PIE_CHART);
+            section = new SectionDiv(p.mainCol, "s-comments", "评论/Comments", IFontAwesomeCharAliases.FA_COMMENTS);
+            section = new SectionDiv(p.mainCol, "s-debug", "调测信息/Debug", IFontAwesomeCharAliases.FA_BUG);
+        }
 
         return ctx;
     }

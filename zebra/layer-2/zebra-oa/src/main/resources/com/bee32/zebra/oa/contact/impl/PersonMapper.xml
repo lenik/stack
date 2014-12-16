@@ -95,4 +95,8 @@
         where id=#{id}
     </update>
 
+    <delete id="delete">
+        delete from person where id=#{id}
+    </delete>
+    
 </mapper>

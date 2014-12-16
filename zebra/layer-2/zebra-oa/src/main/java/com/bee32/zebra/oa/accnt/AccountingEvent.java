@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.bodz.bas.meta.decl.Redundant;
+import net.bodz.bas.meta.cache.Derived;
 
 import com.bee32.zebra.oa.contact.Party;
 import com.tinylily.model.base.CoMomentInterval;
@@ -58,7 +58,7 @@ public class AccountingEvent
         this.tags = tags;
     }
 
-    @Redundant
+    @Derived(cached = true)
     public double getDebitTotal() {
         return debitTotal;
     }
@@ -67,7 +67,7 @@ public class AccountingEvent
         this.debitTotal = debitTotal;
     }
 
-    @Redundant
+    @Derived(cached = true)
     public double getCreditTotal() {
         return creditTotal;
     }

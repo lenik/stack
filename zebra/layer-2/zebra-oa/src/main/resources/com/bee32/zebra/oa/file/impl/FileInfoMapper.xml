@@ -66,4 +66,8 @@
         </where>
     </update>
 
+    <delete id="delete">
+        delete from fileinfo where id=#{id}
+    </delete>
+    
 </mapper>

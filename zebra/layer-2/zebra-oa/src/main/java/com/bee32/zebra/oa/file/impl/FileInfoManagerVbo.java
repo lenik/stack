@@ -25,10 +25,7 @@ public class FileInfoManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FileInfoManager.class);
         formStruct = new FileInfo().getFormStruct();
-        setIndexFields("id", "op", "label", "description", "value", "org.label", "person.label", //
-                "creationTime", "lastModified"
-        // , "owner.label", "ownerGroup.label"
-        );
+        insertIndexFields("op", "label", "description", "value", "org.label", "person.label");
     }
 
     @Override
@@ -49,12 +46,12 @@ public class FileInfoManagerVbo
             User op = o.getOp();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(op == null ? "" : op.getFullName()).align("center");
             tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
             tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
             tr.td().text(o.getValue());
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

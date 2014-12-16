@@ -23,7 +23,7 @@ public class FabOpCodeManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabOpCodeManager.class);
         formStruct = new FabOpCode().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
+        insertIndexFields("code", "label", "description");
     }
 
     @Override
@@ -42,8 +42,8 @@ public class FabOpCodeManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabOpCode o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
-            stdcols(tr, o);
+            stdcols0(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

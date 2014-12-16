@@ -45,11 +45,13 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         super(valueClass, supportedFeatures);
     }
 
-    protected void setIndexFields(String... pathProperties)
+    protected void insertIndexFields(String... pathProperties)
             throws NoSuchPropertyException, ParseException {
         FormFieldBuilder formFieldBuilder = new FormFieldBuilder();
         FormFieldListBuilder builder = new FormFieldListBuilder(formFieldBuilder);
+        builder.fromPathProperties(formStruct, "id");
         builder.fromPathProperties(formStruct, pathProperties);
+        builder.fromPathProperties(formStruct, "creationTime", "lastModified");
         indexFields = builder.getFields();
     }
 
@@ -169,7 +171,11 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     }
 
-    protected void stdcols(HtmlTrTag tr, CoEntity o) {
+    protected void stdcols0(HtmlTrTag tr, CoEntity o) {
+        tr.td().text(o.getId()).class_("col-id");
+    }
+
+    protected void stdcols1(HtmlTrTag tr, CoEntity o) {
         tr.td().text(Dates.YY_MM_DD.format(o.getCreationTime())).class_("small");
         tr.td().text(Dates.YY_MM_DD.format(o.getLastModified())).class_("small");
     }

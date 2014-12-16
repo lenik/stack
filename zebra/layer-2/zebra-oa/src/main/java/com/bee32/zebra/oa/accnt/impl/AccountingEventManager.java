@@ -15,7 +15,7 @@ import com.bee32.zebra.tk.sql.VhostDataService;
  * @see <a href=""></a>
  * @see <a href=""></a>
  */
-@PathToken("accevent")
+@PathToken("acdoc")
 public class AccountingEventManager
         extends FooManager {
 

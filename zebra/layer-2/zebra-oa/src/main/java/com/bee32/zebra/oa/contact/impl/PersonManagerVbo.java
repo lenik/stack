@@ -24,9 +24,8 @@ public class PersonManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(PersonManager.class);
         formStruct = new Person().getFormStruct();
-        setIndexFields("id", "ageSexLoc", "typeChars", "fullName", "description", //
-                "contact.fullAddress", "contact.tels", "contact.qq", //
-                "creationTime", "lastModified");
+        insertIndexFields("ageSexLoc", "typeChars", "fullName", "description", //
+                "contact.fullAddress", "contact.tels", "contact.qq");
     }
 
     @Override
@@ -46,7 +45,7 @@ public class PersonManagerVbo
 
         for (Person o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(o.getAgeSexLoc());
             tr.td().text(o.getTypeChars());
             tr.td().b().text(o.getFullName());
@@ -61,7 +60,7 @@ public class PersonManagerVbo
                 tr.td().text(contact.getTels());
                 tr.td().text(contact.getQq());
             }
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

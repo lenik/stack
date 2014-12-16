@@ -24,7 +24,7 @@ public class ArtifactManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(ArtifactManager.class);
         formStruct = new Artifact().getFormStruct();
-        setIndexFields("id", "label", "description", "creationTime", "lastModified");
+        insertIndexFields("label", "description");
     }
 
     @Override
@@ -43,10 +43,10 @@ public class ArtifactManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Artifact o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
             tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

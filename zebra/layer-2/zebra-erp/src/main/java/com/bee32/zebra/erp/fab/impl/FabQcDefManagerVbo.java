@@ -23,7 +23,7 @@ public class FabQcDefManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabQcDefManager.class);
         formStruct = new FabQcDef().getFormStruct();
-        setIndexFields("id", "code", "label", "description", "creationTime", "lastModified");
+        insertIndexFields("code", "label", "description");
     }
 
     @Override
@@ -42,8 +42,8 @@ public class FabQcDefManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabQcDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
-            stdcols(tr, o);
+            stdcols0(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

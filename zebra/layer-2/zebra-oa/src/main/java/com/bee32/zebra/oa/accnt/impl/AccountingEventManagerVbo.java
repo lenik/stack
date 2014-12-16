@@ -23,8 +23,7 @@ public class AccountingEventManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(AccountingEventManager.class);
         formStruct = new AccountingEvent().getFormStruct();
-        setIndexFields("id", "beginTime", "label", "description", //
-                "creationTime", "lastModified");
+        insertIndexFields("beginTime", "label", "description");
     }
 
     @Override
@@ -44,11 +43,11 @@ public class AccountingEventManagerVbo
 
         for (AccountingEvent o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
+            stdcols0(tr, o);
             tr.td().text(o.getBeginTime());
             tr.td().text(o.getLabel());
             tr.td().text(o.getDescription()).class_("small");
-            stdcols(tr, o);
+            stdcols1(tr, o);
         }
 
         dumpData(p.extradata, list);

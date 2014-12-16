@@ -41,4 +41,8 @@
         where id=#{id}
     </update>
 
+    <delete id="delete">
+        delete from warehouse where id=#{id}
+    </delete>
+    
 </mapper>
