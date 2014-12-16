@@ -125,14 +125,16 @@ set constraints all deferred;
         
         update old.user_file set folder=18 where folder is null; -- 内部文档
         
-        -- convert user_file_tagname to tagv(5).
+        -- convert user_file_tagname to tagv(5):
+        --  mapping: user_file_tagname.id_new -> tag.id.
         insert into tag(tagv, label, description, priority)
             select 5, name, description, id from old.user_file_tagname;
         alter table old.user_file_tagname add column id_new int;
         update old.user_file_tagname a set id_new=tag.id from tag where a.id=tag.priority;
         update tag set priority=0 where tagv=5;
         
-    insert into fileinfo(id, label, description, path, size, sha1, op, org, person, tags, val,
+    insert into fileinfo(id, label, description, path, size, sha1, op, org, person, val,
+            --tags,
             t0, t1, creation, lastmod, uid)
         select
             a.id, a.label, a.description,
@@ -141,17 +143,22 @@ set constraints all deferred;
             a.operator "op",
             case when p.stereo='ORG' then a.party else null end "org", 
             case when p.stereo='PER' then a.party else null end "person",
-            array(select y.id_new from old.user_file_tags x
-                    left join old.user_file_tagname y on x.tag=y.id
-                where user_file=a.id) tags,
             a.val,
+            --array(select y.id_new from old.user_file_tags x
+            --        left join old.user_file_tagname y on x.tag=y.id
+            --    where user_file=a.id) tags,
             a.file_date "t0", a.expired_date "t1",
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.user_file a
             left join old.user_folder d on a.folder=d.id
             left join old.file_blob b on a.file_blob=b.id
             left join old.party p on a.party=p.id;
-        
+    
+    insert into filetag(file, tag)
+        select x.user_file "file", y.id_new "tag"
+        from old.user_file_tags x
+            left join old.user_file_tagname y on x.tag=y.id;
+
 -- topic, reply
     
     insert into cat(schema, code, label)
@@ -252,13 +259,6 @@ set constraints all deferred;
     
     insert into account(id, label)
         select id::int, label from old.account_subject;
-    
-    insert into form(id, schema, code, label, subject)
-        values(80, 8, 'init', '期初登记单', '期初登记单 - ');
-    insert into form(id, schema, code, label, subject)
-        values(81, 8, 'pay', '简明付款单', '付款单 - ');
-    insert into form(id, schema, code, label, subject)
-        values(82, 8, 'recv', '简明收款单', '收款单 - ');
     
     insert into acdoc(id, val, op, org, person, form, subject, text, year, t0, t1, creation, lastmod, uid)
         select a.id, a.value, 

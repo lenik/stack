@@ -71,6 +71,13 @@
 
     insert into tagv(id, schema, code, label) values(5, 9, 'WJXX', '文件信息');
     
+    insert into form(id, schema, code, label, subject)
+        values(80, 8, 'init', '期初登记单', '期初登记单 - ');
+    insert into form(id, schema, code, label, subject)
+        values(81, 8, 'pay', '简明付款单', '付款单 - ');
+    insert into form(id, schema, code, label, subject)
+        values(82, 8, 'recv', '简明收款单', '收款单 - ');
+    
     insert into rlock(schema)   select id from schema   where id<1000;
     insert into rlock(cat)      select id from cat      where id<1000;
     insert into rlock(phase)    select id from phase    where id<1000;
@@ -405,10 +412,9 @@
         op          int,
         org         int,
         person      int,
-        tags        int[],
         
         nvote       int not null default 0,
-        nfav        int not null default 0,
+        nlike       int not null default 0,
         ndl         int not null default 0, -- downloads
         
         val         double precision, -- estimated
@@ -446,6 +452,34 @@
     create index fileinfo_t1             on fileinfo(t1);
     create index fileinfo_uid_acl        on fileinfo(uid, acl);
 
+-- drop table if exists fileatt;
+    create sequence fileatt_seq;
+    create table fileatt(
+        id          int primary key default nextval('fileatt_seq'),
+        file        int not null,
+        att         int not null,
+        val         varchar(200),
+
+        constraint fileatt_uk       unique(file, att),
+        constraint fileatt_fk_file  foreign key(file)
+            references fileinfo(id)     on update cascade on delete cascade,
+        constraint fileatt_fk_att   foreign key(att)
+            references att(id)          on update cascade on delete cascade
+    );
+    
+-- drop table if exists filetag;
+    create sequence filetag_seq;
+    create table filetag(
+        id          int primary key default nextval('filetag_seq'),
+        file        int not null,
+        tag         int not null,
+
+        constraint filetag_fk_file  foreign key(file)
+            references fileinfo(id)     on update cascade on delete cascade,
+        constraint filetag_fk_tag   foreign key(tag)
+            references tag(id)          on update cascade on delete cascade
+    );
+
 -- drop table if exists filevote;
     create sequence filevote_seq;
     create table filevote(
@@ -460,7 +494,27 @@
         constraint filevote_fk_op foreign key(op)
             references "user"(id)       on update cascade on delete cascade
     );
+    
+    create or replace view v_fileinfo as
+        select *,
+            array(select tag || ':' || tag.label
+                from filetag a left join tag on a.tag=tag.id where a.file=fileinfo.id) tags,
+            array(select att || ':' || att.label || '=' || a.val
+                from fileatt a left join att on a.att=att.id where a.file=fileinfo.id) atts
+        from fileinfo;
 
+    create or replace view v_filetags as
+        select a.n, tag.*
+        from (select tag, count(*) n from filetag group by tag) a
+            left join tag on a.tag=tag.id
+        order by priority, n desc;
+    
+    create or replace view v_filevotes as
+        select a.n, f.*
+        from (select file, sum(n) n from filevote group by file) a
+            left join fileinfo f on a.file=f.id
+        order by n desc;
+    
 -- drop table if exists topic;
     create sequence topic_seq start with 1000;
     create table topic(
@@ -470,7 +524,7 @@
         text        text,
         nread       int not null default 0,
         nvote       int not null default 0,
-        nfav        int not null default 0,
+        nlike       int not null default 0,
         
         cat         int,
         phase       int,
@@ -511,6 +565,9 @@
     create index topic_t0t1           on topic(t0, t1);
     create index topic_t1             on topic(t1);
     create index topic_uid_acl        on topic(uid, acl);
+
+    insert into topic(id, subject, text, cat)
+        values(1, '未分类（机会）', '未指定机会的行动集', 401);
 
 -- drop table if exists reply;
     create sequence reply_seq;
@@ -687,6 +744,18 @@
                 from topicatt a left join att on a.att=att.id where a.topic=topic.id) atts
         from topic;
 
+    create or replace view v_topictags as
+        select a.n, tag.*
+        from (select tag, count(*) n from topictag group by tag) a
+            left join tag on a.tag=tag.id
+        order by priority, n desc;
+    
+    create or replace view v_topicvotes as
+        select a.n, f.*
+        from (select topic, sum(n) n from topicvote group by topic) a
+            left join topic f on a.topic=f.id
+        order by n desc;
+    
     create or replace view v_reply as
         select *, 
             array(select tag || ':' || tag.label
@@ -695,9 +764,18 @@
                 from replyatt a left join att on a.att=att.id where a.reply=reply.id) atts
         from reply;
 
-    insert into topic(id, subject, text, cat)
-        values(1, '未分类（机会）', '未指定机会的行动集', 401);
-
+    create or replace view v_replytags as
+        select a.n, tag.*
+        from (select tag, count(*) n from replytag group by tag) a
+            left join tag on a.tag=tag.id
+        order by priority, n desc;
+    
+    create or replace view v_replyvotes as
+        select a.n, f.*
+        from (select reply, sum(n) n from replyvote group by reply) a
+            left join reply f on a.reply=f.id
+        order by n desc;
+    
 -- drop table if exists "account";
     create table "account"(
         id          int primary key,
