@@ -5,6 +5,7 @@ import java.util.Locale;
 import net.bodz.bas.db.jdbc.DataSourceArguments;
 import net.bodz.bas.site.vhost.MutableVirtualHost;
 import net.bodz.bas.site.vhost.VirtualHostManager;
+import net.bodz.bas.xml.dom.XmlFormatter;
 import net.bodz.uni.echo.config.EchoServerConfig;
 import net.bodz.uni.echo.server.EchoServer;
 
@@ -12,6 +13,8 @@ public class ErpSiteServer {
 
     public static void main(String[] args)
             throws Exception {
+        XmlFormatter.NULL_VERBATIM = "<i class='fa fa-times'></i>";
+
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
 
         DataSourceArguments devdb = new DataSourceArguments();
