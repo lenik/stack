@@ -58,10 +58,12 @@
         <where>
             <if test="categoryId != null">and t.cat=#{categoryId}</if>
             <if test="phaseId != null">and t.phase=#{phaseId}</if>
+            <if test="dateRange != null">and t.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
             <if test="valueRange != null">and t.value between #{valueRange.min} and #{valueRange.max}</if>
             <if test="voteCountRange != null">and t.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
-            <if test="likeCountRange != null">and t.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
-            <if test="dateRange != null">and t.lastmod between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+            <if test="likerCountRange != null">and t.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
+            <if test="readCountRange != null">and t.nread between #{readCountRange.min} and #{readCountRange.max}</if>
+            <if test="timeRange != null">and t.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         </where>
     </select>
 

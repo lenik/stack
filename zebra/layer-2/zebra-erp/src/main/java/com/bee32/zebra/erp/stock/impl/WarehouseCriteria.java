@@ -5,6 +5,4 @@ import com.tinylily.model.base.CoEntityCriteria;
 public class WarehouseCriteria
         extends CoEntityCriteria {
 
-    Integer categoryId;
-
 }

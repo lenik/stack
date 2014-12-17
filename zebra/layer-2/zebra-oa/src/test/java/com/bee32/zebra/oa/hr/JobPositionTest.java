@@ -6,9 +6,6 @@ import net.bodz.bas.io.ITreeOut;
 import net.bodz.bas.io.Stdio;
 import net.bodz.bas.io.impl.TreeOutImpl;
 
-import com.bee32.zebra.oa.hr.JobPosition;
-import com.bee32.zebra.oa.hr.JobPositionGroup;
-
 public class JobPositionTest
         extends Assert {
 

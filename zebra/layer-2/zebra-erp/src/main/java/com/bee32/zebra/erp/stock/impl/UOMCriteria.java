@@ -5,6 +5,4 @@ import com.tinylily.model.base.CoEntityCriteria;
 public class UOMCriteria
         extends CoEntityCriteria {
 
-    Integer categoryId;
-
 }

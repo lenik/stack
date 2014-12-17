@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
-import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
@@ -44,8 +43,7 @@ public class ArtifactManagerVbo
         for (Artifact o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             stdcols0(tr, o);
-            tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
-            tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
+            stdcolsLD(tr, o);
             stdcols1(tr, o);
         }
 

@@ -13,15 +13,15 @@ public class AccountingEntry
     public static final int CREDIT_SIDE = 1;
 
     int side;
-    Account subject;
+    Account account;
     BigDecimal value = BigDecimal.ZERO;
 
-    public Account getSubject() {
-        return subject;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setSubject(Account subject) {
-        this.subject = subject;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public int getSide() {

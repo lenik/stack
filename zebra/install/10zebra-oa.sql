@@ -16,6 +16,10 @@
     insert into schema(id, code, label) values(7, 'wlog',   'Work Log');
     insert into schema(id, code, label) values(8, 'acc',    'Accounting');
     insert into schema(id, code, label) values(9, 'file',   'File Info');
+    insert into schema(id, code, label) values(10, 'part',  'Contact Party');
+    insert into schema(id, code, label) values(11, 'art',  'Artifact');
+    insert into schema(id, code, label) values(12, 'stok',  'Stock');
+    insert into schema(id, code, label) values(13, 'fab',  'Fabrication');
     
     insert into cat(id, schema, code, label, description) values(301, 3, 'opp', '机会', '潜在的或已实现的销售机会');
     insert into cat(id, schema, code, label, description) values(302, 3, 'job', '任务', '指派的工作任务');

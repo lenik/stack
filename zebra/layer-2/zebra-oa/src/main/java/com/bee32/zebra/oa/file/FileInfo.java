@@ -6,11 +6,12 @@ import java.util.Set;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
-import com.tinylily.model.base.CoMomentInterval;
-import com.tinylily.model.base.security.User;
+import com.tinylily.model.base.IMomentInterval;
+import com.tinylily.model.mx.base.CoMessage;
 
 public class FileInfo
-        extends CoMomentInterval {
+        extends CoMessage
+        implements IMomentInterval {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,13 +21,12 @@ public class FileInfo
     private String type;
     private String encoding;
 
-    private User op;
     private Organization org;
     private Person person;
     private final Set<String> tags = new HashSet<String>();
+    private Date activeDate;
+    private Date expireDate;
 
-    private int votes;
-    private int favorites;
     private int downloads;
     private Double value;
 
@@ -80,14 +80,6 @@ public class FileInfo
         this.encoding = encoding;
     }
 
-    public User getOp() {
-        return op;
-    }
-
-    public void setOp(User op) {
-        this.op = op;
-    }
-
     public Organization getOrg() {
         return org;
     }
@@ -102,22 +94,6 @@ public class FileInfo
 
     public void setPerson(Person person) {
         this.person = person;
-    }
-
-    public int getVotes() {
-        return votes;
-    }
-
-    public void setVotes(int votes) {
-        this.votes = votes;
-    }
-
-    public int getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(int favorites) {
-        this.favorites = favorites;
     }
 
     public int getDownloads() {
@@ -140,20 +116,43 @@ public class FileInfo
         return tags;
     }
 
-    public final Date getDate() {
-        return getBeginTime();
+    public Date getActiveDate() {
+        return activeDate;
     }
 
-    public final void setDate(Date date) {
-        setBeginTime(date);
+    public void setActiveDate(Date activeDate) {
+        this.activeDate = activeDate;
     }
 
-    public final Date getExpire() {
-        return getEndTime();
+    public Date getExpireDate() {
+        return expireDate;
     }
 
-    public final void setExpire(Date expire) {
-        setEndTime(expire);
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    /** ⇱ Implementation Of {@link IMomentInterval }. */
+    /* _____________________________ */static section.iface __MOMENT_INTERVAL__;
+
+    @Override
+    public final Date getBeginTime() {
+        return getActiveDate();
+    }
+
+    @Override
+    public final void setBeginTime(Date beginTime) {
+        setActiveDate(beginTime);
+    }
+
+    @Override
+    public final Date getEndTime() {
+        return getExpireDate();
+    }
+
+    @Override
+    public final void setEndTime(Date endTime) {
+        setExpireDate(endTime);
     }
 
 }

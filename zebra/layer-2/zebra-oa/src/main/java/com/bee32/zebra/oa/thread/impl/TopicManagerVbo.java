@@ -15,12 +15,16 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.thread.Topic;
+import com.bee32.zebra.sys.Schemas;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SectionDiv;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.sql.VhostDataService;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.base.schema.PhaseDef;
+import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
+import com.tinylily.model.base.schema.impl.PhaseDefMapper;
 import com.tinylily.model.base.security.User;
 
 public class TopicManagerVbo
@@ -46,7 +50,11 @@ public class TopicManagerVbo
         TopicMapper mapper = manager.getMapper();
 
         TopicCriteria criteria = new TopicCriteria();
-        ctx.getRequest().getParameterMap();
+        try {
+            criteria.populate(ctx.getRequest().getParameterMap());
+        } catch (ParseException e) {
+            throw new ViewBuilderException(e.getMessage(), e);
+        }
         List<Topic> list = mapper.filter(criteria);
 
         titleInfo(p);
@@ -55,7 +63,18 @@ public class TopicManagerVbo
         HtmlDivTag filters = section.contentDiv;
 
         filters.div().text("分类 Classification：Apple Bar Cat Dog Earth Foo Goo");
-        filters.div().text("阶段 Phase：Start Stopped Paused End");
+
+        HtmlDivTag phaseDiv = filters.div().text("阶段：");
+        PhaseDefMapper phaseMapper = VhostDataService.getInstance().getMapper(PhaseDefMapper.class);
+
+        PhaseDefCriteria phaseDefCriteria = new PhaseDefCriteria();
+        phaseDefCriteria.setSchemaId(Schemas.TOPIC_POST);
+        List<PhaseDef> phases = phaseMapper.filter(phaseDefCriteria);
+        for (PhaseDef phase : phases) {
+            phase.getLabel();
+            phaseDiv.a().href("?phase");
+        }
+
         filters.div().text("金额：全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
         filters.div().text("年份：2010 2011 2012 2013 2014 更多");
 

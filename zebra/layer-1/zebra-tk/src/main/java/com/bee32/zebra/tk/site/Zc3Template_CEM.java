@@ -9,6 +9,7 @@ import java.util.Map;
 import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.c.string.StringArray;
+import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.IHtmlViewContext;
@@ -31,6 +32,7 @@ import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.tinylily.model.base.CoCode;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.repr.CoEntityManager;
 
@@ -180,6 +182,16 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         tr.td().text(Dates.YY_MM_DD.format(o.getLastModified())).class_("small");
     }
 
+    protected void stdcolsLD(HtmlTrTag tr, CoEntity o) {
+        tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
+        tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
+    }
+
+    protected void stdcolsCLD(HtmlTrTag tr, CoCode<?> o) {
+        tr.td().text(o.getCode());
+        stdcolsLD(tr, o);
+    }
+
     protected void dumpData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
         int count = 0;
         Map<FieldGroup, Collection<IFormField>> fgMap = formStruct.getFieldsGrouped();
@@ -210,9 +222,9 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                     HtmlDivTag line = dtab.div();
                     line.span().class_("my-label").text(IXjdocElement.fn.labelName(field));
                     line.span().text(value);
-                }
-            }
-        }
-
+                } // for field
+            } // for field-group
+        } // for entity
     }
+
 }

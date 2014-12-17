@@ -9,7 +9,7 @@ import com.bee32.zebra.tk.sql.VhostDataService;
  * @label 联系人
  * 
  * @rel org/: 管理企、事业组织
- * @rel tag/: 管理标签
+ * @rel tag/?schema=10: 管理标签
  * 
  * @see <a href="http://www.xchen.com.cn/jjlw/rlzylw/580450.html">企业人员优化配置的策略</a>
  * @see <a href="http://baike.baidu.com/view/4295887.htm">客户分类</a>
