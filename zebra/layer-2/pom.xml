@@ -13,6 +13,7 @@
     <modules>
         <module>zebra-erp</module>
         <module>zebra-oa</module>
+        <module>zebra-sys</module>
     </modules>
     <name>Zebra :: Layer 2</name>
 </project>

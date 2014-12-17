@@ -1,0 +1,7 @@
+com.tinylily.model.base.schema.impl.AttributeDefManagerVbo
+com.tinylily.model.base.schema.impl.CategoryDefManagerVbo
+com.tinylily.model.base.schema.impl.PhaseDefManagerVbo
+com.tinylily.model.base.schema.impl.PriorityDefManagerVbo
+com.tinylily.model.base.schema.impl.SchemaDefManagerVbo
+com.tinylily.model.base.schema.impl.TagDefManagerVbo
+com.tinylily.model.base.schema.impl.TagSetDefManagerVbo
