@@ -23,7 +23,7 @@
         from old.material_category;
 
     insert into art(id, label, description, 
-            category, barcode, uom, uomalt, 
+            cat, barcode, uom, uomalt, 
             spec, weight, netweight,
             creation, lastmod, flags, state, uid)
         select m.id, m.label, m.description,

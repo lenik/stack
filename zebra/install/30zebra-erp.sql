@@ -1,61 +1,25 @@
 -- ENUMs
 
-    create type CellUsage as enum(
+    create type PlaceUsage as enum(
         'GROUP', 'INTERNAL', 'SUPPLIER', 'CUSTOMER',
         'SUBQUALITY', 'WASTE');
     
     create type SupplyMethod as enum(
         'BUY', 'PRODUCE');
 
--- drop table if exists warehouse;
-    create sequence warehouse_seq;
-    create table warehouse(
-        id          int primary key default nextval('warehouse_seq'),
+-- drop table if exists place;
+    create sequence place_seq;
+    create table place(
+        id          int primary key default nextval('place_seq'),
         code        varchar(20),
         label       varchar(80),
         description varchar(200),
         contact     int,
         
-        priority    int not null default 0,
-        creation    timestamp not null default now(),
-        lastmod     timestamp not null default now(),
-        flags       int not null default 0,
-        state       int not null default 0,
-        version     int not null default 0,
-        
-        uid         int,
-        gid         int,
-        mode        int not null default 640,
-        acl         int,
-        
-        constraint warehouse_uk_code    unique(code),
-        constraint warehouse_fk_contact foreign key(contact)
-            references contact(_id)     on update cascade on delete set null,
-        constraint warehouse_fk_uid     foreign key(uid)
-            references "user"(id)       on update cascade on delete set null,
-        constraint warehouse_fk_gid     foreign key(gid)
-            references "group"(id)      on update cascade on delete set null
-    );
-
-    create index warehouse_label    on warehouse(label);
-    create index warehouse_lastmod  on warehouse(lastmod desc);
-    create index warehouse_priority on warehouse(priority);
-    create index warehouse_state    on warehouse(state);
-    create index warehouse_uid_acl  on warehouse(uid, acl);
-
--- drop table if exists cell;
-    create sequence cell_seq;
-    create table cell(
-        id          int primary key default nextval('cell_seq'),
-        code        varchar(20),
-        label       varchar(80),
-        description varchar(200),
-        
-        warehouse   int not null,
         parent      int,
         depth       int not null default -1,
         
-        usage       CellUsage not null default 'INTERNAL',
+        usage       PlaceUsage not null default 'INTERNAL',
         vip         int,
         vip_org     int,
         dx          int not null default 0,         -- mm
@@ -74,28 +38,25 @@
         mode        int not null default 640,
         acl         int,
         
-        constraint cell_uk_code         unique(code),
-        constraint cell_fk_warehouse    foreign key(warehouse)
-            references warehouse(id)    on update cascade on delete cascade,
-        constraint cell_fk_parent       foreign key(parent)
-            references cell(id)         on update cascade on delete cascade,
-        constraint cell_fk_uid          foreign key(uid)
+        constraint place_uk_code     unique(code),
+        constraint place_fk_parent   foreign key(parent)
+            references place(id)         on update cascade on delete cascade,
+        constraint place_fk_uid      foreign key(uid)
             references "user"(id)       on update cascade on delete set null,
-        constraint cell_fk_gid          foreign key(gid)
+        constraint place_fk_gid      foreign key(gid)
             references "group"(id)      on update cascade on delete set null
     );
 
-    create index cell_label         on cell(label);
-    create index cell_lastmod       on cell(lastmod desc);
-    create index cell_priority      on cell(priority);
-    create index cell_state         on cell(state);
-    create index cell_uid_acl       on cell(uid, acl);
+    create index place_label         on place(label);
+    create index place_lastmod       on place(lastmod desc);
+    create index place_priority      on place(priority);
+    create index place_state         on place(state);
+    create index place_uid_acl       on place(uid, acl);
     
-    create or replace view v_cell as
-        select w.label "warehouse_label", p.label "parent_label", cell.*
-        from cell
-            left join warehouse w on cell.warehouse=w.id
-            left join cell p on cell.parent=p.id;
+    create or replace view v_place as
+        select place.*, p.label "parent_label"
+        from place
+            left join place p on place.parent=p.id;
 
 -- drop table if exists artcat;
     create sequence artcat_seq;
@@ -125,18 +86,18 @@
         
         constraint artcat_uk_code   unique(code),
         constraint artcat_fk_parent foreign key(parent)
-            references artcat(id)   on update cascade on delete cascade,
+            references artcat(id)       on update cascade on delete cascade,
         constraint artcat_fk_uid    foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint artcat_fk_gid    foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null
     );
 
-    create index artcat_label          on artcat(label);
-    create index artcat_lastmod        on artcat(lastmod desc);
-    create index artcat_priority       on artcat(priority);
-    create index artcat_state          on artcat(state);
-    create index artcat_uid_acl        on artcat(uid, acl);
+    create index artcat_label       on artcat(label);
+    create index artcat_lastmod     on artcat(lastmod desc);
+    create index artcat_priority    on artcat(priority);
+    create index artcat_state       on artcat(state);
+    create index artcat_uid_acl     on artcat(uid, acl);
 
 -- drop table if exists uom;
     create sequence uom_seq start with 1000;
@@ -151,7 +112,7 @@
         
         constraint uom_uk_code      unique(code),
         constraint uom_fk_parent    foreign key(parent)
-            references uom(code)    on update cascade on delete cascade
+            references uom(code)        on update cascade on delete cascade
     );
 
     create index uom_label          on uom(label);
@@ -212,7 +173,7 @@
         label       varchar(80),
         description varchar(200),
         
-        category    int,
+        cat         int,
         sku         varchar(30),
         barcode     varchar(30),
         uom         int not null default 1,         -- pcs
@@ -247,12 +208,12 @@
         acl         int,
         
         constraint art_uk_code      unique(code),
-        constraint art_fk_category  foreign key(category)
-            references artcat(id)   on update cascade on delete set null,
+        constraint art_fk_cat       foreign key(cat)
+            references artcat(id)       on update cascade on delete set null,
         constraint art_fk_uid       foreign key(uid)
-            references "user"(id)   on update cascade on delete set null,
+            references "user"(id)       on update cascade on delete set null,
         constraint art_fk_gid       foreign key(gid)
-            references "group"(id)  on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null
     );
 
     create index art_code           on art(code);
@@ -262,32 +223,166 @@
     create index art_state          on art(state);
     create index art_uid_acl        on art(uid, acl);
 
--- drop table if exists artcell;
-    create table artcell(
+-- drop table if exists placeopt;
+    create table placeopt(
         art         int not null,
-        cell        int not null,
+        place       int not null,
         locked      boolean not null,
-        description varchar(100),
-        
-        constraint artcell_uk       unique(art, cell),
-        constraint artcell_fk_art   foreign key(art)
-            references art(id)      on update cascade on delete cascade,
-        constraint artcell_fk_cell  foreign key(cell)
-            references cell(id)     on update cascade on delete cascade
-    );
-
--- drop table if exists artwopt;
-    create table artwopt(
-        art         int not null,
-        warehouse   int not null,
-        reservation double precision not null default 0,
+        reservation numeric(20, 2) not null default 0,
         checkperiod int not null default 365,
         checkexpire timestamp not null default now() + 365 * interval '86400',
+        description varchar(100),
         
-        constraint artwopt_pk           primary key(art, warehouse),
-        constraint artwopt_fk_art       foreign key(art)
+        constraint placeopt_uk       unique(art, place),
+        constraint placeopt_fk_art   foreign key(art)
             references art(id)          on update cascade on delete cascade,
-        constraint artwopt_fk_warehouse foreign key(warehouse)
-            references warehouse(id)    on update cascade on delete cascade
+        constraint placeopt_fk_place foreign key(place)
+            references place(id)         on update cascade on delete cascade
     );
+
+-- drop table if exists stock;
+    create sequence stdoc_seq start with 100;
+    create table stdoc(
+        id          bigint primary key default nextval('stdoc_seq'),
+        prev        bigint,         -- previous doc
+        form        int,
+        subject     varchar(200) not null,
+        text        text,
+        args        text,           -- used with the form.
+        
+        topic       int,
+        op          int,
+        org         int,
+        ou          int,
+        person      int,
+        
+        cat         int not null,   -- aka. stock order subject
+        phase       int,            -- aka. stock stage
+        val         double precision not null default 0,
+        
+        year        int not null default 0, -- same year of t0.
+        t0          date,           -- begin date
+        t1          date,           -- end date
+        
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
+        uid         int,
+        gid         int,
+        mode        int not null default 640,
+        acl         int,
+        
+        constraint stdoc_fk_cat     foreign key(cat)
+            references cat(id)          on update cascade on delete set null,
+        constraint stdoc_fk_form    foreign key(form)
+            references form(id)         on update cascade on delete set null,
+        constraint stdoc_fk_gid     foreign key(gid)
+            references "group"(id)      on update cascade on delete set null,
+        constraint stdoc_fk_op      foreign key(op)
+            references "user"(id)       on update cascade on delete set null,
+        constraint stdoc_fk_org     foreign key(org)
+            references org(id)          on update cascade,
+        constraint stdoc_fk_person  foreign key(person)
+            references person(id)       on update cascade,
+        constraint stdoc_fk_phase   foreign key(phase)
+            references phase(id)        on update cascade on delete set null,
+        constraint stdoc_fk_prev    foreign key(prev)
+            references stdoc(id)        on update cascade on delete set null,
+        constraint stdoc_fk_topic   foreign key(topic)
+            references topic(id)        on update cascade on delete set null,
+        constraint stdoc_fk_uid     foreign key(uid)
+            references "user"(id)       on update cascade on delete set null
+    );
+
+    create index stdoc_lastmod         on stdoc(lastmod desc);
+    create index stdoc_priority        on stdoc(priority);
+    create index stdoc_state           on stdoc(state);
+    create index stdoc_subject         on stdoc(subject);
+    create index stdoc_uid_acl         on stdoc(uid, acl);
+    create index stdoc_year            on stdoc(year);
+    create index stdoc_t0t1            on stdoc(t0, t1);
+    create index stdoc_t1              on stdoc(t1);
+
+-- drop table if exists stentry;
+    create sequence stentry_seq start with 1000;
+    create table stentry(
+        id          bigint primary key default nextval('stentry_seq'),
+        doc         bigint not null,
+        
+        art         int not null,
+        place       int not null,
+        batch       varchar(30) not null default '',
+        divs        varchar(100),
+        
+        qty         numeric(20,2) not null,
+        price       numeric(20,2) not null default 0,
+        total       numeric(20,2) not null default 0,   -- cache
+        description varchar(200),
+        
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
+        
+        constraint stentry_fk_art   foreign key(art)
+            references art(id)          on update cascade on delete set null,
+        constraint stentry_fk_place foreign key(place)
+            references place(id)        on update cascade on delete set null,
+        constraint stentry_fk_doc   foreign key(doc)
+            references stdoc(id)        on update cascade on delete cascade
+    );
+
+-- drop table if exists stinit;
+    create sequence stinit_seq start with 1000;
+    create table stinit(
+        id          int primary key default nextval('stinit_seq'),
+        year        int not null,
+        art         int not null,
+        place       int not null,
+        batch       varchar(30) not null default '',
+        divs        varchar(100),
+        qty         numeric(20,2) not null,
+        
+        constraint stinit_uk_code   unique(year, art, place, batch, divs),
+        constraint stinit_fk_art    foreign key(art)
+            references art(id)          on update cascade on delete set null,
+        constraint stinit_fk_place  foreign key(place)
+            references place(id)        on update cascade on delete set null
+    );
+    
+    create view v_stinits as
+        select year, art, sum(qty) from stinit group by year, art;
+    
+    create view v_stinit as
+        select a.id, a.year,
+            a.art, r.label "art_label",
+            a.place, p.label "place_label",
+            a.batch, a.divs, a.qty
+        from stinit a
+            left join art r on a.art=r.id
+            left join place p on a.place=p.id;
+
+    create or replace view v_place_n as select
+        (select count(*) from place) total,
+        (select count(distinct place) from placeopt) used,
+        (select count(distinct place) from placeopt where locked) locked;
+
+    create or replace view v_artcat_n as select
+        (select count(*) from artcat) total,
+        (select count(distinct cat) from art) used;
+        
+    create or replace view v_artcat_hist as
+        select a.*, c.* -- c.label c_label
+        from (select cat, count(*) n, 
+                max(lastmod) lastmod_max from art group by cat) a
+            left join artcat c on a.cat=c.id
+        order by priority, n desc;
+    
+    create or replace view v_art_n as
+        select
+            (select count(*) from art) total,
+            (select count(distinct art) from stentry) used;
 

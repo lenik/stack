@@ -90,7 +90,6 @@ set constraints all deferred;
         update tag set priority=0 where tagv=5;
     
     insert into fileinfo(id, label, description, path, size, sha1, op, org, person, val,
-            --tags,
             t0, t1, creation, lastmod, uid)
         select
             a.id, a.label, a.description,
@@ -100,9 +99,6 @@ set constraints all deferred;
             case when p.stereo='ORG' then a.party else null end "org", 
             case when p.stereo='PER' then a.party else null end "person",
             a.val,
-            --array(select y.id_new from old.user_file_tags x
-            --        left join old.user_file_tagname y on x.tag=y.id
-            --    where user_file=a.id) tags,
             a.file_date "t0", a.expired_date "t1",
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.user_file a

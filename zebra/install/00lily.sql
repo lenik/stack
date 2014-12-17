@@ -1,5 +1,5 @@
 -- drop table if exists schema;
-    create sequence schema_seq start with 1000;
+    create sequence schema_seq start with 100;
     create table schema(
         id          int primary key default nextval('schema_seq'),
         code        varchar(20),
@@ -10,7 +10,7 @@
     );
 
 -- drop table if exists cat;
-    create sequence cat_seq start with 1000;
+    create sequence cat_seq start with 10000;
     create table cat(
         id          int primary key default nextval('cat_seq'),
         schema      int not null,
@@ -36,7 +36,7 @@
     create index cat_state          on cat(state);
 
 -- drop table if exists phase;
-    create sequence phase_seq start with 1000;
+    create sequence phase_seq start with 10000;
     create table phase(
         id          int primary key default nextval('phase_seq'),
         schema      int not null,
@@ -62,7 +62,7 @@
     create index phase_state        on phase(state);
     
 -- drop table if exists att;
-    create sequence att_seq start with 1000;
+    create sequence att_seq start with 10000;
     create table att(
         id          int primary key default nextval('att_seq'),
         schema      int not null,
@@ -99,7 +99,7 @@
         select *, array(select val from attval a where a.att = att.id) "vals" from att;
     
 -- drop table if exists tagv;
-    create sequence tagv_seq start with 1000;
+    create sequence tagv_seq start with 10000;
     create table tagv(
         id          int primary key default nextval('tagv_seq'),
         code        varchar(20),
@@ -127,7 +127,7 @@
     create index tagv_state         on tagv(state);
     
 -- drop table if exists tag;
-    create sequence tag_seq start with 1000;
+    create sequence tag_seq start with 10000;
     create table tag(
         id          int primary key default nextval('tag_seq'),
         code        varchar(20),
@@ -154,7 +154,7 @@
     create index tag_state          on tag(state);
     
 -- drop table if exists form;
-    create sequence form_seq start with 1000;
+    create sequence form_seq start with 10000;
     create table form(
         id          int primary key default nextval('form_seq'),
         schema      int not null,
@@ -181,7 +181,7 @@
     create index form_state          on form(state);
 
 -- drop table if exists formcp;
-    create sequence formcp_seq start with 1000;
+    create sequence formcp_seq start with 10000;
     create table formcp(            -- creation parameters
         id          int primary key default nextval('formcp_seq'),
         form        int not null,
