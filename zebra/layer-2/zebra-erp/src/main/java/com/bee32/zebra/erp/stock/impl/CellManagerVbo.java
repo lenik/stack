@@ -11,18 +11,18 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
-import com.bee32.zebra.erp.stock.Cell;
+import com.bee32.zebra.erp.stock.Place;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class CellManagerVbo
-        extends Zc3Template_CEM<CellManager, Cell> {
+        extends Zc3Template_CEM<CellManager, Place> {
 
     public CellManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(CellManager.class);
-        formStruct = new Cell().getFormStruct();
+        formStruct = new Place().getFormStruct();
         insertIndexFields("label", "description");
     }
 
@@ -35,12 +35,12 @@ public class CellManagerVbo
 
         CellManager manager = ref.get();
         CellMapper mapper = manager.getMapper();
-        List<Cell> list = mapper.all();
+        List<Place> list = mapper.all();
 
         titleInfo(p);
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
-        for (Cell o : list) {
+        for (Place o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             stdcols0(tr, o);
             stdcols1(tr, o);

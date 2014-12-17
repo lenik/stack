@@ -10,33 +10,33 @@ import org.apache.ibatis.type.JdbcType;
 import net.bodz.bas.db.batis.AbstractTypeHandler;
 
 public class CellUsageTypeHandler
-        extends AbstractTypeHandler<CellUsage> {
+        extends AbstractTypeHandler<PlaceUsage> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, CellUsage parameter, JdbcType jdbcType)
+    public void setNonNullParameter(PreparedStatement ps, int i, PlaceUsage parameter, JdbcType jdbcType)
             throws SQLException {
         ps.setObject(i, parameter);
     }
 
     @Override
-    public CellUsage getNullableResult(ResultSet rs, String columnName)
+    public PlaceUsage getNullableResult(ResultSet rs, String columnName)
             throws SQLException {
         String name = rs.getString(columnName);
-        return CellUsage.valueOf(name);
+        return PlaceUsage.valueOf(name);
     }
 
     @Override
-    public CellUsage getNullableResult(ResultSet rs, int columnIndex)
+    public PlaceUsage getNullableResult(ResultSet rs, int columnIndex)
             throws SQLException {
         String name = rs.getString(columnIndex);
-        return CellUsage.valueOf(name);
+        return PlaceUsage.valueOf(name);
     }
 
     @Override
-    public CellUsage getNullableResult(CallableStatement cs, int columnIndex)
+    public PlaceUsage getNullableResult(CallableStatement cs, int columnIndex)
             throws SQLException {
         String name = cs.getString(columnIndex);
-        return CellUsage.valueOf(name);
+        return PlaceUsage.valueOf(name);
     }
 
 }

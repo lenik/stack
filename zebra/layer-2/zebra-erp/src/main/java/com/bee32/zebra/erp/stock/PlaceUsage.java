@@ -1,6 +1,6 @@
 package com.bee32.zebra.erp.stock;
 
-public enum CellUsage {
+public enum PlaceUsage {
 
     GROUP,
 

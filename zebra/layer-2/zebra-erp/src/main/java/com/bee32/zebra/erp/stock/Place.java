@@ -4,22 +4,22 @@ import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoNode;
 
-public class Cell
-        extends CoNode<Cell> {
+public class Place
+        extends CoNode<Place> {
 
     private static final long serialVersionUID = 1L;
 
     private int id;
-    private CellUsage usage = CellUsage.INTERNAL;
+    private PlaceUsage usage = PlaceUsage.INTERNAL;
     private final Dim3d bbox = new Dim3d();
     private Person party;
     private Organization partyOrg;
 
-    public Cell() {
+    public Place() {
         super();
     }
 
-    public Cell(Cell parent) {
+    public Place(Place parent) {
         super(parent);
     }
 
@@ -32,11 +32,11 @@ public class Cell
         this.id = id;
     }
 
-    public CellUsage getUsage() {
+    public PlaceUsage getUsage() {
         return usage;
     }
 
-    public void setUsage(CellUsage usage) {
+    public void setUsage(PlaceUsage usage) {
         if (usage == null)
             throw new NullPointerException("usage");
         this.usage = usage;

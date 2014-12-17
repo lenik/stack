@@ -1,6 +1,5 @@
 package com.bee32.zebra.erp.stock;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,8 +44,7 @@ public class Artifact
 
     private SupplyMethod supplyMethod = SupplyMethod.BUY;
     private int supplyDelay; // in days
-    private List<WarehouseOption> wOpts = new ArrayList<WarehouseOption>();
-    private List<PreferredCell> preferredCells = new ArrayList<PreferredCell>();
+    private List<PlaceOption> placeOpts = new ArrayList<PlaceOption>();
 
     private List<FabStepDef> fabProc = new ArrayList<FabStepDef>();
 
@@ -218,25 +216,14 @@ public class Artifact
     }
 
     @OfGroup(OaGroups.Setting.class)
-    public List<WarehouseOption> getWarehouseOpts() {
-        return wOpts;
+    public List<PlaceOption> getPlaceOpts() {
+        return placeOpts;
     }
 
-    public void setWarehouseOpts(List<WarehouseOption> wOpts) {
-        if (wOpts == null)
-            throw new NullPointerException("wOpts");
-        this.wOpts = wOpts;
-    }
-
-    @OfGroup({ OaGroups.Setting.class /* , OaGroups.Position.class */})
-    public List<PreferredCell> getPreferredCells() {
-        return preferredCells;
-    }
-
-    public void setPreferredCells(List<PreferredCell> preferredCells) {
-        if (preferredCells == null)
-            throw new NullPointerException("preferredCells");
-        this.preferredCells = preferredCells;
+    public void setPlaceOpts(List<PlaceOption> placeOpts) {
+        if (placeOpts == null)
+            throw new NullPointerException("placeOpts");
+        this.placeOpts = placeOpts;
     }
 
     public List<FabStepDef> getFabProc() {
@@ -247,10 +234,13 @@ public class Artifact
         this.fabProc = fabProc;
     }
 
-    public static class WarehouseOption {
+    public static class PlaceOption {
 
         Artifact artifact;
-        Warehouse warehouse;
+        Place place;
+        boolean locked;
+        String status;
+
         double reservation;
         int checkPeriod;
         long checkExpires;
@@ -263,74 +253,12 @@ public class Artifact
             this.artifact = artifact;
         }
 
-        public Warehouse getWarehouse() {
-            return warehouse;
+        public Place getPlace() {
+            return place;
         }
 
-        public void setWarehouse(Warehouse warehouse) {
-            this.warehouse = warehouse;
-        }
-
-        /**
-         * 安全库存
-         * 
-         * @label 库存安全保留量
-         */
-        @OfGroup(OaGroups.Schedule.class)
-        public double getReservation() {
-            return reservation;
-        }
-
-        public void setReservation(double reservation) {
-            this.reservation = reservation;
-        }
-
-        @OfGroup(OaGroups.Schedule.class)
-        public int getCheckPeriod() {
-            return checkPeriod;
-        }
-
-        public void setCheckPeriod(int checkPeriod) {
-            this.checkPeriod = checkPeriod;
-        }
-
-        @OfGroup(OaGroups.Schedule.class)
-        public long getCheckExpires() {
-            return checkExpires;
-        }
-
-        public void setCheckExpires(long checkExpires) {
-            this.checkExpires = checkExpires;
-        }
-
-    }
-
-    public static class PreferredCell
-            implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        public static final int N_STATUS = 100;
-
-        private Artifact artifact;
-        private Cell cell;
-        private boolean locked;
-        private String status;
-
-        public Artifact getArtifact() {
-            return artifact;
-        }
-
-        public void setArtifact(Artifact artifact) {
-            this.artifact = artifact;
-        }
-
-        public Cell getCell() {
-            return cell;
-        }
-
-        public void setCell(Cell cell) {
-            this.cell = cell;
+        public void setPlace(Place place) {
+            this.place = place;
         }
 
         /**
@@ -353,6 +281,44 @@ public class Artifact
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        /**
+         * 安全库存
+         * 
+         * @label 库存安全保留量
+         */
+        @OfGroup(OaGroups.Schedule.class)
+        public double getReservation() {
+            return reservation;
+        }
+
+        public void setReservation(double reservation) {
+            this.reservation = reservation;
+        }
+
+        /**
+         * @label 盘点周期
+         */
+        @OfGroup(OaGroups.Schedule.class)
+        public int getCheckPeriod() {
+            return checkPeriod;
+        }
+
+        public void setCheckPeriod(int checkPeriod) {
+            this.checkPeriod = checkPeriod;
+        }
+
+        /**
+         * @label 下次盘点时间
+         */
+        @OfGroup(OaGroups.Schedule.class)
+        public long getCheckExpires() {
+            return checkExpires;
+        }
+
+        public void setCheckExpires(long checkExpires) {
+            this.checkExpires = checkExpires;
         }
 
     }

@@ -5,23 +5,23 @@ import java.util.Set;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 
-import com.bee32.zebra.erp.stock.CellUsage;
+import com.bee32.zebra.erp.stock.PlaceUsage;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class CellCriteria
         extends CoEntityCriteria {
 
-    CellUsage usage;
+    PlaceUsage usage;
     DoubleRange volumeRange;
     Set<Integer> parties;
     Set<Integer> partyOrgs;
 
-    public CellUsage getUsage() {
+    public PlaceUsage getUsage() {
         return usage;
     }
 
-    public void setUsage(CellUsage usage) {
+    public void setUsage(PlaceUsage usage) {
         this.usage = usage;
     }
 
@@ -53,7 +53,7 @@ public class CellCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
-        usage = map.getEnum(CellUsage.class, "usage", usage);
+        usage = map.getEnum(PlaceUsage.class, "usage", usage);
         volumeRange = map.getDoubleRange("volumes", volumeRange);
         parties = map.getInts("parties", parties);
         partyOrgs = map.getInts("orgs", partyOrgs);
