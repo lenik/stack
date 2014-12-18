@@ -721,24 +721,25 @@
     create table acdoc(
         id          bigint primary key default nextval('acdoc_seq'),
         prev        bigint,         -- previous doc
-        form        int,
+        op          int,
+        cat         int,
         subject     varchar(200) not null,
         text        text,
+        form        int,
         args        text,           -- used with the form.
         
         topic       int,
-        op          int,
         org         int,
         person      int,
         
-        cat         int,
+        ndebit      double precision not null default 0,
+        ncredit     double precision not null default 0,
         phase       int,
-        val         double precision not null default 0,
         
         year        int not null default 0, -- same year of t0.
         t0          date,           -- accounting date range
         t1          date,           -- accounting date range
-
+        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
