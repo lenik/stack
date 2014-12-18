@@ -3,23 +3,26 @@ package com.bee32.zebra.oa.accnt;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import net.bodz.bas.meta.cache.Derived;
 
-import com.bee32.zebra.oa.contact.Party;
-import com.tinylily.model.base.CoMomentInterval;
+import com.bee32.zebra.oa.contact.Organization;
+import com.bee32.zebra.oa.contact.Person;
+import com.bee32.zebra.oa.thread.Topic;
+import com.tinylily.model.mx.base.CoMessage;
 
 public class AccountingEvent
-        extends CoMomentInterval {
+        extends CoMessage {
 
     private static final long serialVersionUID = 1L;
 
-    private Party party;
-    private List<AccountingEntry> entries = new ArrayList<>();
-    private Set<String> tags = new TreeSet<String>();
+    private AccountingEvent previous;
 
+    private Topic topic;
+    private Organization org;
+    private Person person;
+
+    private List<AccountingEntry> entries = new ArrayList<>();
     private double debitTotal;
     private double creditTotal;
 
@@ -34,30 +37,61 @@ public class AccountingEvent
         }
     }
 
-    public Party getParty() {
-        return party;
+    /**
+     * 前级
+     */
+    public AccountingEvent getPrevious() {
+        return previous;
     }
 
-    public void setParty(Party party) {
-        this.party = party;
+    public void setPrevious(AccountingEvent previous) {
+        this.previous = previous;
     }
 
-    public List<AccountingEntry> getLines() {
+    /**
+     * 项目
+     */
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
+    /**
+     * 公司
+     */
+    public Organization getOrg() {
+        return org;
+    }
+
+    public void setOrg(Organization org) {
+        this.org = org;
+    }
+
+    /**
+     * 人员
+     */
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public List<AccountingEntry> getEntries() {
         return entries;
     }
 
-    public void setLines(List<AccountingEntry> lines) {
-        this.entries = lines;
+    public void setEntries(List<AccountingEntry> entries) {
+        this.entries = entries;
     }
 
-    public Set<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
-    }
-
+    /**
+     * 借（总）
+     */
     @Derived(cached = true)
     public double getDebitTotal() {
         return debitTotal;
@@ -67,6 +101,9 @@ public class AccountingEvent
         this.debitTotal = debitTotal;
     }
 
+    /**
+     * 贷（总）
+     */
     @Derived(cached = true)
     public double getCreditTotal() {
         return creditTotal;

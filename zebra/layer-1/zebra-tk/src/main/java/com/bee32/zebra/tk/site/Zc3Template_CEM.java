@@ -152,7 +152,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         statUl.li().text("有效 3014 种");
         statUl.li().text("在用 541 种");
 
-        p.cmds0.a().href("create/").text("新建");
+        p.cmds0.a().href("new/").text("新建");
         p.cmds0.a().href("export/").text("导出");
         p.cmds0.a().href("print/").text("打印");
         p.cmds1.a().href("barcode/").text("打印条码");

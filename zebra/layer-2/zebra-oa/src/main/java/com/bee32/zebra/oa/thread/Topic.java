@@ -20,8 +20,6 @@ public class Topic
 
     private static final long serialVersionUID = 1L;
 
-    private CategoryDef category;
-    private PhaseDef phase;
     private Date beginTime;
     private Date endTime;
     private double value;
@@ -36,11 +34,11 @@ public class Topic
      */
     @OfGroup(OaGroups.Classification.class)
     public CategoryDef getCategory() {
-        return category;
+        return super.getCategory();
     }
 
     public void setCategory(CategoryDef category) {
-        this.category = category;
+        super.setCategory(category);
     }
 
     /**
@@ -48,11 +46,11 @@ public class Topic
      */
     @OfGroup(OaGroups.Classification.class)
     public PhaseDef getPhase() {
-        return phase;
+        return super.getPhase();
     }
 
     public void setPhase(PhaseDef phase) {
-        this.phase = phase;
+        super.setPhase(phase);
     }
 
     /**
