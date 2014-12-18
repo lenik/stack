@@ -4,18 +4,10 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.thread.impl.TopicMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Topic" extends="message.mapX">
+    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Topic" extends="message.map2">
         <result property="value" column="val" />
         <result property="beginTime" column="t0" />
         <result property="endTime" column="t1" />
-        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
-            <id property="id" column="cat" />
-            <id property="label" column="cat_label" />
-        </association>
-        <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
-            <id property="id" column="phase" />
-            <id property="label" column="phase_label" />
-        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -84,7 +76,7 @@
     <update id="update">
         update topic
         <set>
-            <include refid="message.setX" />
+            <include refid="message.set1" />
             val=#{value},
             <if test="beginTime != null">t0=#{beginTime},</if>
             <if test="endTime != null">t1=#{endTime},</if>

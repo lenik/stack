@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.hr.impl.JobSkillCategoryMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.hr.JobSkillCategory" extends="message.mapX">
+    <resultMap id="map1" type="com.bee32.zebra.oa.hr.JobSkillCategory" extends="message.map2">
         <result property="beginTime" column="t0" />
         <result property="endTime" column="t1" />
     </resultMap>

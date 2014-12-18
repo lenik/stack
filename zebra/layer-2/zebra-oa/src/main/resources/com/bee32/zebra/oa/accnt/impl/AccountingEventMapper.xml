@@ -4,24 +4,32 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.accnt.impl.AccountingEventMapper">
 
-    <resultMap id="Map_X" type="com.bee32.zebra.oa.accnt.AccountingEvent" extends="co.mapUS">
-        <result property="debitTotal" column=""/>
-        <result property="creditTotal" column=""/>
+    <resultMap id="map1" type="com.bee32.zebra.oa.accnt.AccountingEvent" extends="message.map2">
+        <result property="debitTotal" column="ndebit" />
+        <result property="creditTotal" column="ncredit" />
     </resultMap>
 
-    <sql id="select_X"><![CDATA[
+    <sql id="select1"><![CDATA[
         select
-            a.*
+            a.*, 
+            op.label "op_label",
+            form.label "form_label",
+            cat.label "cat_label",
+            phase.label "phase_label"
         from acdoc a
+            left join "user" op on a.op=op.id
+            left join form on a.form=form.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
         ]]>
     </sql>
 
-    <select id="all" resultMap="Map_X">
-        <include refid="select_X" />
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
     </select>
 
-    <select id="select" parameterType="int" resultMap="Map_X">
-        <include refid="select_X" />
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select1" />
         <where>
             <if test="_parameter != null">a.id=#{id}</if>
         </where>
@@ -45,5 +53,5 @@
     <delete id="delete">
         delete from acdoc where id=#{id}
     </delete>
-    
+
 </mapper>

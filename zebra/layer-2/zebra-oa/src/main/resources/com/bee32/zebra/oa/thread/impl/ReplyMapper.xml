@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.thread.impl.ReplyMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Reply" extends="message.mapX">
+    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Reply" extends="message.map2">
         <result property="beginTime" column="t0" />
         <result property="endTime" column="t1" />
     </resultMap>
@@ -48,7 +48,7 @@
     <update id="update">
         update reply
         <set>
-            <include refid="message.setX" />
+            <include refid="message.set1" />
             val=#{value},
             <if test="beginTime != null">t0=#{beginTime},</if>
             <if test="endTime != null">t1=#{endTime},</if>
