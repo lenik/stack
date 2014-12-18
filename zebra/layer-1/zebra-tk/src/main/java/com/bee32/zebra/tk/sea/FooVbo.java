@@ -7,6 +7,7 @@ import java.util.Map;
 import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
+import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IPropertyAccessor;
 import net.bodz.bas.repr.form.FieldGroup;
 import net.bodz.bas.repr.form.IFormField;
@@ -40,14 +41,17 @@ public abstract class FooVbo<T extends CoEntity>
         T o = ref.get();
         IFormStruct formStruct = o.getFormStruct();
 
-        Map<FieldGroup, Collection<IFormField>> fgMap = formStruct.getFieldsGrouped();
+        Map<FieldGroup, Collection<IFormField>> fgMap = formStruct.getFieldsGrouped(DetailLevel.EXTEND);
         HtmlDivTag dtab = parent.div().id("data-" + o.getId());
         for (FieldGroup fg : fgMap.keySet()) {
+            Collection<IFormField> fields = fgMap.get(fg);
+            if (fields.isEmpty())
+                continue;
 
             String fgLabel = fg == FieldGroup.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
             dtab.h3().class_("my-group").text(fgLabel);
 
-            for (IFormField field : fgMap.get(fg)) {
+            for (IFormField field : fields) {
                 IPropertyAccessor accessor = field.getAccessor();
                 Object value;
                 try {
@@ -66,6 +70,8 @@ public abstract class FooVbo<T extends CoEntity>
                 line.span().class_("my-label").text(IXjdocElement.fn.labelName(field));
                 line.span().text(value);
             } // for field
+
+            dtab.hr();
         } // for field-group
         return ctx;
     }
