@@ -12,9 +12,11 @@ com.bee32.zebra.erp.order.impl.FabOrderManagerVbo
 com.bee32.zebra.erp.order.impl.FabOrderVbo
 com.bee32.zebra.erp.stock.impl.ArtifactManagerVbo
 com.bee32.zebra.erp.stock.impl.ArtifactVbo
-com.bee32.zebra.erp.stock.impl.CellManagerVbo
-com.bee32.zebra.erp.stock.impl.CellVbo
+com.bee32.zebra.erp.stock.impl.PlaceManagerVbo
+com.bee32.zebra.erp.stock.impl.PlaceVbo
+com.bee32.zebra.erp.stock.impl.StockEntryManagerVbo
+com.bee32.zebra.erp.stock.impl.StockEntryVbo
+com.bee32.zebra.erp.stock.impl.StockEventManagerVbo
+com.bee32.zebra.erp.stock.impl.StockEventVbo
 com.bee32.zebra.erp.stock.impl.UOMManagerVbo
 com.bee32.zebra.erp.stock.impl.UOMVbo
-com.bee32.zebra.erp.stock.impl.WarehouseManagerVbo
-com.bee32.zebra.erp.stock.impl.WarehouseVbo

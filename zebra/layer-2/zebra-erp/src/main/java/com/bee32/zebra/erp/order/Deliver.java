@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
-import com.bee32.zebra.tk.foo.FooControlled;
+import com.bee32.zebra.tk.sea.FooControlled;
 
 public class Deliver
         extends FooControlled {

@@ -2,7 +2,8 @@ package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
-import com.bee32.zebra.tk.foo.FooManager;
+import com.bee32.zebra.oa.contact.Organization;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
@@ -25,6 +26,7 @@ public class OrganizationManager
     OrganizationMapper mapper;
 
     public OrganizationManager() {
+        super(Organization.class);
         mapper = VhostDataService.getInstance().getMapper(OrganizationMapper.class);
     }
 

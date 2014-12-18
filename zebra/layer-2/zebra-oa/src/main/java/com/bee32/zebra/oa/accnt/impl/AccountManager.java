@@ -1,6 +1,7 @@
 package com.bee32.zebra.oa.accnt.impl;
 
-import com.bee32.zebra.tk.foo.FooManager;
+import com.bee32.zebra.oa.accnt.Account;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
@@ -23,6 +24,7 @@ public class AccountManager
     AccountMapper mapper;
 
     public AccountManager() {
+        super(Account.class);
         mapper = VhostDataService.getInstance().getMapper(AccountMapper.class);
     }
 

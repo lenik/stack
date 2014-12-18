@@ -2,8 +2,9 @@ package com.tinylily.model.base.schema.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
+import com.tinylily.model.base.schema.TagSetDef;
 
 /**
  * 用于区分不同系统中使用的标签集。
@@ -14,11 +15,12 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("tagv")
 public class TagSetDefManager
-        extends CoEntityManager {
+        extends FooManager {
 
     TagSetDefMapper mapper;
 
     public TagSetDefManager() {
+        super(TagSetDef.class);
         mapper = VhostDataService.getInstance().getMapper(TagSetDefMapper.class);
     }
 

@@ -1,7 +1,8 @@
 package com.bee32.zebra.oa.contact.impl;
 
+import com.bee32.zebra.oa.contact.OrgUnit;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
 
 /**
  * 企、事业组织下属的单位、科室、部门。
@@ -13,11 +14,12 @@ import com.tinylily.repr.CoEntityManager;
  * @label 组织机构/单位/部门
  */
 public class OrgUnitManager
-        extends CoEntityManager {
+        extends FooManager {
 
     OrgUnitMapper mapper;
 
     public OrgUnitManager() {
+        super(OrgUnit.class);
         mapper = VhostDataService.getInstance().getMapper(OrgUnitMapper.class);
     }
 

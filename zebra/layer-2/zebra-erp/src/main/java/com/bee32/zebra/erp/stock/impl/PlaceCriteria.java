@@ -9,7 +9,7 @@ import com.bee32.zebra.erp.stock.PlaceUsage;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
-public class CellCriteria
+public class PlaceCriteria
         extends CoEntityCriteria {
 
     PlaceUsage usage;

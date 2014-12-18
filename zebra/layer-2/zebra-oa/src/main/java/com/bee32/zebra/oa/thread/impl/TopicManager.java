@@ -1,6 +1,11 @@
 package com.bee32.zebra.oa.thread.impl;
 
-import com.bee32.zebra.tk.foo.FooManager;
+import net.bodz.bas.repr.path.IPathArrival;
+import net.bodz.bas.repr.path.ITokenQueue;
+import net.bodz.bas.repr.path.PathDispatchException;
+
+import com.bee32.zebra.oa.thread.Topic;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
@@ -23,11 +28,18 @@ public class TopicManager
     TopicMapper mapper;
 
     public TopicManager() {
+        super(Topic.class);
         mapper = VhostDataService.getInstance().getMapper(TopicMapper.class);
     }
 
     public TopicMapper getMapper() {
         return mapper;
+    }
+
+    @Override
+    public IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)
+            throws PathDispatchException {
+        return super.dispatch(previous, tokens);
     }
 
 }

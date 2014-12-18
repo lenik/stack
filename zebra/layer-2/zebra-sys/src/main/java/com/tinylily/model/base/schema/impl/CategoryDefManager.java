@@ -2,8 +2,9 @@ package com.tinylily.model.base.schema.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
+import com.tinylily.model.base.schema.CategoryDef;
 
 /**
  * 用于对象分类。
@@ -14,11 +15,12 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("cat")
 public class CategoryDefManager
-        extends CoEntityManager {
+        extends FooManager {
 
     CategoryDefMapper mapper;
 
     public CategoryDefManager() {
+        super(CategoryDef.class);
         mapper = VhostDataService.getInstance().getMapper(CategoryDefMapper.class);
     }
 

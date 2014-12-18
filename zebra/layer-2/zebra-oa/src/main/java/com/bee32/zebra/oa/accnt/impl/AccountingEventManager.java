@@ -2,11 +2,11 @@ package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
-import com.bee32.zebra.tk.foo.FooManager;
+import com.bee32.zebra.oa.accnt.AccountingEvent;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
- * 
  * @label 会计事件
  * 
  * @rel tag/: 管理标签
@@ -22,6 +22,7 @@ public class AccountingEventManager
     AccountingEventMapper mapper;
 
     public AccountingEventManager() {
+        super(AccountingEvent.class);
         mapper = VhostDataService.getInstance().getMapper(AccountingEventMapper.class);
     }
 

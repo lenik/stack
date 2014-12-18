@@ -3,7 +3,6 @@ package com.bee32.zebra.erp.fab;
 import java.util.Date;
 import java.util.List;
 
-import com.bee32.zebra.erp.stock.Artifact;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoMomentInterval;
 
@@ -16,7 +15,6 @@ public class FabStep
     public static final int S_FINISHED = 2;
     public static final int S_FAILED = 3;
 
-    Artifact product;
     FabStepDef def;
     Date deadline;
 

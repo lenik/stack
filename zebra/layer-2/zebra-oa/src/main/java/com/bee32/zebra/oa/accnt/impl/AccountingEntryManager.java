@@ -2,7 +2,8 @@ package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
-import com.bee32.zebra.tk.foo.FooManager;
+import com.bee32.zebra.oa.accnt.AccountingEntry;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
@@ -22,6 +23,7 @@ public class AccountingEntryManager
     AccountingEntryMapper mapper;
 
     public AccountingEntryManager() {
+        super(AccountingEntry.class);
         mapper = VhostDataService.getInstance().getMapper(AccountingEntryMapper.class);
     }
 

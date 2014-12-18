@@ -5,6 +5,7 @@ com.bee32.zebra.erp.fab.impl.FabStepDefManager
 com.bee32.zebra.erp.fab.impl.FabStepManager
 com.bee32.zebra.erp.order.impl.FabOrderManager
 com.bee32.zebra.erp.stock.impl.ArtifactManager
-com.bee32.zebra.erp.stock.impl.CellManager
+com.bee32.zebra.erp.stock.impl.PlaceManager
+com.bee32.zebra.erp.stock.impl.StockEntryManager
+com.bee32.zebra.erp.stock.impl.StockEventManager
 com.bee32.zebra.erp.stock.impl.UOMManager
-com.bee32.zebra.erp.stock.impl.WarehouseManager

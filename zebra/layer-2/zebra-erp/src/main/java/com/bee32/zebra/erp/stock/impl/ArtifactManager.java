@@ -2,8 +2,9 @@ package com.bee32.zebra.erp.stock.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
+import com.bee32.zebra.erp.stock.Artifact;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
 
 /**
  * 定义生产过程或供销中使用的制品（成品或半成品）。<br>
@@ -23,11 +24,12 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("art")
 public class ArtifactManager
-        extends CoEntityManager {
+        extends FooManager {
 
     ArtifactMapper mapper;
 
     public ArtifactManager() {
+        super(Artifact.class);
         mapper = VhostDataService.getInstance().getMapper(ArtifactMapper.class);
     }
 

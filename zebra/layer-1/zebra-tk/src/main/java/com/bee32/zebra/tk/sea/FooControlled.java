@@ -1,4 +1,4 @@
-package com.bee32.zebra.tk.foo;
+package com.bee32.zebra.tk.sea;
 
 import com.tinylily.model.base.CoMomentInterval;
 

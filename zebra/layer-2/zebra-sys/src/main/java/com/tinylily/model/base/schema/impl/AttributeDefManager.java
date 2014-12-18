@@ -2,8 +2,9 @@ package com.tinylily.model.base.schema.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
+import com.tinylily.model.base.schema.AttributeDef;
 
 /**
  * 对象属性的形而上定义。
@@ -14,11 +15,12 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("att")
 public class AttributeDefManager
-        extends CoEntityManager {
+        extends FooManager {
 
     AttributeDefMapper mapper;
 
     public AttributeDefManager() {
+        super(AttributeDef.class);
         mapper = VhostDataService.getInstance().getMapper(AttributeDefMapper.class);
     }
 

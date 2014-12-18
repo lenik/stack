@@ -178,13 +178,19 @@ public class OaSiteVbo
 
     protected void mkMenu(IHtmlTag parent) {
         HtmlUlTag sub;
+        HtmlLiTag item;
         sub = parent.li().text("关系网").ul();
         sub.li().a().text("企业组织").href(_webApp_.join("org/").toString());
         sub.li().a().text("联系人").href(_webApp_.join("person/").toString());
 
-        sub = parent.li().text("库存").ul();
-        sub.li().a().text("仓库").href(_webApp_.join("warehouse/").toString());
+        item = parent.li().text("库存");
+        item.a().text("[初始化]").href(_webApp_.join("stinit/").toString()).class_("small").style("color: gray");
+
+        sub = item.ul();
+        sub.li().a().text("区域").href(_webApp_.join("place/").toString());
         sub.li().a().text("产品/物料").href(_webApp_.join("art/").toString());
+        sub.li().a().text("作业").href(_webApp_.join("stdoc/").toString());
+        sub.li().a().text("盘点/报损").href(_webApp_.join("stdoc/new").toString());
 
         sub = parent.li().text("销售").ul();
         sub.li().a().text("项目/机会").href(_webApp_.join("topic/").toString());
@@ -197,7 +203,9 @@ public class OaSiteVbo
         sub.li().a().text("作业").href(_webApp_.join("job/").toString());
         sub.li().a().text("质量控制").href(_webApp_.join("qc/").toString());
 
-        sub = parent.li().text("财务").ul();
+        item = parent.li().text("财务");
+        item.a().text("[初始化]").href(_webApp_.join("acinit/").toString()).class_("small").style("color: gray");
+        sub = item.ul();
         sub.li().a().text("填表").href(_webApp_.join("acdoc/?phase=1").toString());
         sub.li().a().text("流水帐").href(_webApp_.join("acdoc/?phase=2").toString());
         sub.li().a().text("工资").href(_webApp_.join("salary/").toString());

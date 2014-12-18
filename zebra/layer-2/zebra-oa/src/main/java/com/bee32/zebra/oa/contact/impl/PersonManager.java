@@ -1,6 +1,7 @@
 package com.bee32.zebra.oa.contact.impl;
 
-import com.bee32.zebra.tk.foo.FooManager;
+import com.bee32.zebra.oa.contact.Person;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
@@ -22,6 +23,7 @@ public class PersonManager
     PersonMapper mapper;
 
     public PersonManager() {
+        super(Person.class);
         mapper = VhostDataService.getInstance().getMapper(PersonMapper.class);
     }
 

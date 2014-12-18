@@ -16,25 +16,25 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
-public class CellManagerVbo
-        extends Zc3Template_CEM<CellManager, Place> {
+public class PlaceManagerVbo
+        extends Zc3Template_CEM<PlaceManager, Place> {
 
-    public CellManagerVbo()
+    public PlaceManagerVbo()
             throws NoSuchPropertyException, ParseException {
-        super(CellManager.class);
+        super(PlaceManager.class);
         formStruct = new Place().getFormStruct();
         insertIndexFields("label", "description");
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<CellManager> ref, IOptions options)
+    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<PlaceManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
 
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        CellManager manager = ref.get();
-        CellMapper mapper = manager.getMapper();
+        PlaceManager manager = ref.get();
+        PlaceMapper mapper = manager.getMapper();
         List<Place> list = mapper.all();
 
         titleInfo(p);

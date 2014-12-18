@@ -1,6 +1,7 @@
 package com.bee32.zebra.oa.thread.impl;
 
-import com.bee32.zebra.tk.foo.FooManager;
+import com.bee32.zebra.oa.thread.Reply;
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
@@ -17,6 +18,7 @@ public class ReplyManager
     ReplyMapper mapper;
 
     public ReplyManager() {
+        super(Reply.class);
         mapper = VhostDataService.getInstance().getMapper(ReplyMapper.class);
     }
 

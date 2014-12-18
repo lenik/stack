@@ -5,7 +5,7 @@ import java.util.Date;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
-import com.bee32.zebra.tk.foo.FooControlled;
+import com.bee32.zebra.tk.sea.FooControlled;
 import com.tinylily.model.base.security.User;
 
 public class FabOrder

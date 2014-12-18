@@ -11,11 +11,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.erp.stock.Place;
 
-public class CellVbo
+public class PlaceVbo
         extends AbstractHtmlViewBuilder<Place>
         implements IBasicSiteAnchors {
     
-    public CellVbo() {
+    public PlaceVbo() {
         super(Place.class);
     }
 

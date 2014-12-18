@@ -2,8 +2,9 @@ package com.tinylily.model.base.schema.impl;
 
 import net.bodz.bas.repr.path.PathToken;
 
+import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
+import com.tinylily.model.base.schema.PhaseDef;
 
 /**
  * 用于定义事件进展到什么程度。
@@ -12,11 +13,12 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("phase")
 public class PhaseDefManager
-        extends CoEntityManager {
+        extends FooManager {
 
     PhaseDefMapper mapper;
 
     public PhaseDefManager() {
+        super(PhaseDef.class);
         mapper = VhostDataService.getInstance().getMapper(PhaseDefMapper.class);
     }
 
