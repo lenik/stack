@@ -55,27 +55,38 @@ public class TopicManagerVbo
         } catch (ParseException e) {
             throw new ViewBuilderException(e.getMessage(), e);
         }
-        List<Topic> list = mapper.filter(criteria);
 
         SectionDiv section = new SectionDiv(p.mainCol, "s-filter", "过滤/Filter", IFontAwesomeCharAliases.FA_FILTER);
-        HtmlDivTag filters = section.contentDiv;
+        {
+            HtmlDivTag out = section.contentDiv;
+            HtmlDivTag catDiv = out.div().text("分类：");
+            {
+            }
 
-        filters.div().text("分类 Classification：Apple Bar Cat Dog Earth Foo Goo");
+            HtmlDivTag phaseDiv = out.div().text("阶段：");
+            {
+                PhaseDefMapper phaseMapper = VhostDataService.getInstance().getMapper(PhaseDefMapper.class);
+                PhaseDefCriteria phaseDefCriteria = new PhaseDefCriteria();
+                phaseDefCriteria.setSchemaId(Schemas.TOPIC_POST);
+                List<PhaseDef> phases = phaseMapper.filter(phaseDefCriteria);
+                for (PhaseDef phase : phases) {
+                    phase.getLabel();
+                    phaseDiv.a().href("?phase");
+                }
+            }
 
-        HtmlDivTag phaseDiv = filters.div().text("阶段：");
-        PhaseDefMapper phaseMapper = VhostDataService.getInstance().getMapper(PhaseDefMapper.class);
+            HtmlDivTag valDiv = out.div().text("金额：");
+            {
+                // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
+            }
 
-        PhaseDefCriteria phaseDefCriteria = new PhaseDefCriteria();
-        phaseDefCriteria.setSchemaId(Schemas.TOPIC_POST);
-        List<PhaseDef> phases = phaseMapper.filter(phaseDefCriteria);
-        for (PhaseDef phase : phases) {
-            phase.getLabel();
-            phaseDiv.a().href("?phase");
+            HtmlDivTag yearDiv = out.div().text("年份：");
+            {
+                yearDiv.text("2010 2011 2012 2013 2014 更多");
+            }
         }
 
-        filters.div().text("金额：全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
-        filters.div().text("年份：2010 2011 2012 2013 2014 更多");
-
+        List<Topic> list = mapper.filter(criteria);
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Topic o : list) {
             User op = o.getOp();

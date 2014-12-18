@@ -244,7 +244,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                     }
 
                     HtmlDivTag line = dtab.div();
-                    line.span().class_("my-label").text(IXjdocElement.fn.labelName(field));
+                    line.span().class_("my-label").text(IXjdocElement.fn.labelName(field) + ": ");
                     line.span().text(value);
                 } // for field
             } // for field-group
