@@ -59,7 +59,7 @@
     <update id="update">
         update fabqcdef
         <set>
-            <include refid="base.setU" />
+            <include refid="co.setU" />
         </set>
         <where>
             <if test="id != null">id=#{id}, </if>

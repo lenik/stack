@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.erp.stock.impl.ArtifactMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.erp.stock.Artifact" extends="base.mapUS">
+    <resultMap id="map1" type="com.bee32.zebra.erp.stock.Artifact" extends="co.mapUS">
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -57,7 +57,7 @@
     <update id="update">
         update art
         <set>
-            <include refid="base.setUS" />
+            <include refid="co.setUS" />
         </set>
         <where>
             <if test="id != null">id=#{id}, </if>
