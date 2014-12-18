@@ -37,8 +37,6 @@ public class OrgUnitManagerVbo
         OrgUnitMapper mapper = manager.getMapper();
         List<OrgUnit> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (OrgUnit o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

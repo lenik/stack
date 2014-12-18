@@ -37,8 +37,6 @@ public class PriorityDefManagerVbo
         PriorityDefMapper mapper = manager.getMapper();
         List<PriorityDef> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (PriorityDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

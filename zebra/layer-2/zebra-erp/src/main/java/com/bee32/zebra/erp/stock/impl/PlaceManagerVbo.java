@@ -37,8 +37,6 @@ public class PlaceManagerVbo
         PlaceMapper mapper = manager.getMapper();
         List<Place> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Place o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

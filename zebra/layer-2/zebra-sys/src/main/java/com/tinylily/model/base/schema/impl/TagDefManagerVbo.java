@@ -37,8 +37,6 @@ public class TagDefManagerVbo
         TagDefMapper mapper = manager.getMapper();
         List<TagDef> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (TagDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

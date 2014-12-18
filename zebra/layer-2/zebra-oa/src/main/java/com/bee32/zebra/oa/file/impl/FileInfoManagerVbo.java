@@ -39,8 +39,6 @@ public class FileInfoManagerVbo
         FileInfoMapper mapper = manager.getMapper();
         List<FileInfo> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FileInfo o : list) {
             User op = o.getOp();

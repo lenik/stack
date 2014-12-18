@@ -37,8 +37,6 @@ public class FabOpCodeManagerVbo
         FabOpCodeMapper mapper = manager.getMapper();
         List<FabOpCode> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabOpCode o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

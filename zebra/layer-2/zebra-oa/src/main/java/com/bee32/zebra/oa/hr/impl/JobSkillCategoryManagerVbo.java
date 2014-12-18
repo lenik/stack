@@ -37,8 +37,6 @@ public class JobSkillCategoryManagerVbo
         JobSkillCategoryMapper mapper = manager.getMapper();
         List<JobSkillCategory> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (JobSkillCategory o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

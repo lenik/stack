@@ -39,8 +39,6 @@ public class ReplyManagerVbo
         ReplyMapper mapper = manager.getMapper();
         List<Reply> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Reply o : list) {
             User op = o.getOp();

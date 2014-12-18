@@ -37,8 +37,6 @@ public class FabDeviceManagerVbo
         FabDeviceMapper mapper = manager.getMapper();
         List<FabDevice> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabDevice o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

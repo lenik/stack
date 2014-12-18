@@ -70,4 +70,8 @@
         delete from stdoc where id=#{id}
     </delete>
 
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from stdoc
+    </select>
+
 </mapper>

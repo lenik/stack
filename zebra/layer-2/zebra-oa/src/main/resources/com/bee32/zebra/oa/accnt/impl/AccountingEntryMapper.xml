@@ -14,7 +14,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from accountingEntry a
+        from acentry a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -25,7 +25,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from accountingEntry a
+        from acentry a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -51,13 +51,13 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into accountingEntry(code, label, description)
+        insert into acentry(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
     ]]></select>
 
     <update id="update">
-        update accountingEntry
+        update acentry
         <set>
             <include refid="co.setU" />
         </set>
@@ -67,7 +67,11 @@
     </update>
 
     <delete id="delete">
-        delete from accentry where id=#{id}
+        delete from acentry where id=#{id}
     </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from acentry
+    </select>
     
 </mapper>

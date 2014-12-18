@@ -39,8 +39,6 @@ public class PersonManagerVbo
         PersonMapper mapper = manager.getMapper();
         List<Person> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
         for (Person o : list) {

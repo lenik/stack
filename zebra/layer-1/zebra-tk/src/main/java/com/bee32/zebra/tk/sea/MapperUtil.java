@@ -10,7 +10,7 @@ public class MapperUtil {
     @SuppressWarnings("unchecked")
     public static <T, C> IMapperTemplate<T, C> getMapperTemplate(Class<T> type) {
         String packageName = type.getPackage().getName();
-        String mapperName = packageName + ".impl" + type.getSimpleName() + "Mapper";
+        String mapperName = packageName + ".impl." + type.getSimpleName() + "Mapper";
 
         Class<? extends IMapper> mapperClass;
         try {

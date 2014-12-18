@@ -97,5 +97,9 @@
     <delete id="delete">
         delete from person where id=#{id}
     </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from person
+    </select>
     
 </mapper>

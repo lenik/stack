@@ -37,8 +37,6 @@ public class UOMManagerVbo
         UOMMapper mapper = manager.getMapper();
         List<UOM> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (UOM o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

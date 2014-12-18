@@ -93,5 +93,9 @@
     <delete id="delete">
         delete from org where id=#{id}
     </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from org
+    </select>
     
 </mapper>

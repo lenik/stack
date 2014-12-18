@@ -37,8 +37,6 @@ public class FabQcDefManagerVbo
         FabQcDefMapper mapper = manager.getMapper();
         List<FabQcDef> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabQcDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

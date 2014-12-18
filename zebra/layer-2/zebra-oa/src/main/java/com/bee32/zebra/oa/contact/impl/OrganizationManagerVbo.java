@@ -39,8 +39,6 @@ public class OrganizationManagerVbo
         OrganizationMapper mapper = manager.getMapper();
         List<Organization> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
         for (Organization o : list) {

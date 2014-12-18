@@ -25,6 +25,8 @@ public abstract class FooManager
         if (StringPred.isDecimal(token)) {
             Long id = Long.parseLong(token);
             IMapperTemplate<?, ?> mapperTemplate = MapperUtil.getMapperTemplate(entityType);
+            if (mapperTemplate == null)
+                throw new NullPointerException("mapperTemplate");
             Object obj = mapperTemplate.select(id);
             if (obj != null)
                 return PathArrival.shift(previous, obj, tokens);

@@ -37,8 +37,6 @@ public class AttributeDefManagerVbo
         AttributeDefMapper mapper = manager.getMapper();
         List<AttributeDef> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (AttributeDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

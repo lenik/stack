@@ -37,8 +37,6 @@ public class AccountingEntryManagerVbo
         AccountingEntryMapper mapper = manager.getMapper();
         List<AccountingEntry> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
         for (AccountingEntry o : list) {

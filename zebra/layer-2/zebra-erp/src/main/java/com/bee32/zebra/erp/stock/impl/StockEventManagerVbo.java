@@ -37,8 +37,6 @@ public class StockEventManagerVbo
         StockEventMapper mapper = manager.getMapper();
         List<StockEvent> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (StockEvent o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

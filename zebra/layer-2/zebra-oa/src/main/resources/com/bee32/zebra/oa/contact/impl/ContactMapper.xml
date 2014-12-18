@@ -57,5 +57,9 @@
     <delete id="delete">
         delete from contact where id=#{id}
     </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from contact
+    </select>
     
 </mapper>

@@ -37,8 +37,6 @@ public class SchemaDefManagerVbo
         SchemaDefMapper mapper = manager.getMapper();
         List<SchemaDef> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (SchemaDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

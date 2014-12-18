@@ -37,8 +37,6 @@ public class EmployeeManagerVbo
         EmployeeMapper mapper = manager.getMapper();
         List<Employee> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Employee o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

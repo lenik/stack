@@ -90,4 +90,8 @@
         delete from topic where id=#{id}
     </delete>
 
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from topic
+    </select>
+
 </mapper>

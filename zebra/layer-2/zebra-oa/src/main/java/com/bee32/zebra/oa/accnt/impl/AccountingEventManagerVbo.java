@@ -44,8 +44,6 @@ public class AccountingEventManagerVbo
         AccountingEventMapper mapper = event.getMapper();
         List<AccountingEvent> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
         for (AccountingEvent o : list) {

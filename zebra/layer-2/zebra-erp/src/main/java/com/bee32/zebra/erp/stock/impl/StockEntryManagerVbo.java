@@ -37,8 +37,6 @@ public class StockEntryManagerVbo
         StockEntryMapper mapper = manager.getMapper();
         List<StockEntry> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (StockEntry o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

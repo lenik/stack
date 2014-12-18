@@ -39,8 +39,6 @@ public class FabOrderManagerVbo
         FabOrderMapper mapper = manager.getMapper();
         List<FabOrder> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabOrder o : list) {
             User op = o.getOp();

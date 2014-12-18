@@ -37,8 +37,6 @@ public class PhaseDefManagerVbo
         PhaseDefMapper mapper = manager.getMapper();
         List<PhaseDef> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (PhaseDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

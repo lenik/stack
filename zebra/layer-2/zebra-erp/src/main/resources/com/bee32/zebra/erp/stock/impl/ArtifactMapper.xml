@@ -67,5 +67,9 @@
     <delete id="delete">
         delete from art where id=#{id}
     </delete>
-    
+
+    <select id="count" resultType="hashmap">
+        select * from v_art_n
+    </select>
+
 </mapper>

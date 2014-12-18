@@ -66,4 +66,8 @@
         </where>
     </update>
 
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from fabstepdef
+    </select>
+
 </mapper>

@@ -37,8 +37,6 @@ public class FabStepManagerVbo
         FabStepMapper mapper = manager.getMapper();
         List<FabStep> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabStep o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

@@ -57,8 +57,6 @@ public class TopicManagerVbo
         }
         List<Topic> list = mapper.filter(criteria);
 
-        titleInfo(p);
-
         SectionDiv section = new SectionDiv(p.mainCol, "s-filter", "过滤/Filter", IFontAwesomeCharAliases.FA_FILTER);
         HtmlDivTag filters = section.contentDiv;
 

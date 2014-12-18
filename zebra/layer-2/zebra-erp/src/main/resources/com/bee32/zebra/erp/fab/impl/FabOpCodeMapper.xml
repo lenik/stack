@@ -69,5 +69,9 @@
     <delete id="delete">
         delete from fabopcode where id=#{id}
     </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from fabopcode
+    </select>
     
 </mapper>

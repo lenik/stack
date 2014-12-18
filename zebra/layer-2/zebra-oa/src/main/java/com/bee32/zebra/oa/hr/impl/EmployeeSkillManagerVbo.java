@@ -37,8 +37,6 @@ public class EmployeeSkillManagerVbo
         EmployeeSkillMapper mapper = manager.getMapper();
         List<EmployeeSkill> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (EmployeeSkill o : list) {
 

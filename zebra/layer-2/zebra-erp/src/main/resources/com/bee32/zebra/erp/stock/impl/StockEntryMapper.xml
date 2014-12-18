@@ -70,4 +70,8 @@
         delete from stentry where id=#{id}
     </delete>
 
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from stentry
+    </select>
+
 </mapper>

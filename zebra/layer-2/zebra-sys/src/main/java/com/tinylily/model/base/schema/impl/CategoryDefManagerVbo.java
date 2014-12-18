@@ -37,8 +37,6 @@ public class CategoryDefManagerVbo
         CategoryDefMapper mapper = manager.getMapper();
         List<CategoryDef> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (CategoryDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

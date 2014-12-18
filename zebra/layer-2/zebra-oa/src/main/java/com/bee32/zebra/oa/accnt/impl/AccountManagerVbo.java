@@ -37,8 +37,6 @@ public class AccountManagerVbo
         AccountMapper mapper = manager.getMapper();
         List<Account> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
         for (Account o : list) {

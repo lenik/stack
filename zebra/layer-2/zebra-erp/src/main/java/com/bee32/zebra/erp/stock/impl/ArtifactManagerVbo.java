@@ -37,8 +37,6 @@ public class ArtifactManagerVbo
         ArtifactMapper mapper = manager.getMapper();
         List<Artifact> list = mapper.all();
 
-        titleInfo(p);
-
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Artifact o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
