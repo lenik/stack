@@ -17,6 +17,7 @@ import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
+import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IPropertyAccessor;
 import net.bodz.bas.repr.form.FieldGroup;
 import net.bodz.bas.repr.form.FormFieldBuilder;
@@ -102,6 +103,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             refdocsDiv.ul().id(ID.infoman_ul);
         }
 
+        titleInfo(ctx, ref);
         return ctx;
     }
 
@@ -137,7 +139,10 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         return table;
     }
 
-    protected void titleInfo(PageStruct p) {
+    protected void titleInfo(IHtmlViewContext ctx, IUiRef<M> ref) {
+        PageStruct p = new PageStruct(ctx);
+        Map<String, Long> countMap = ref.get().getMapper().count();
+
         Class<?> entType = getValueType();
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(entType);
 
@@ -148,9 +153,25 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         subTitle.verbatim(docText.getHeadPar());
 
         HtmlUlTag statUl = p.stat.ul();
-        statUl.li().text("总计 3155 种");
-        statUl.li().text("有效 3014 种");
-        statUl.li().text("在用 541 种");
+        for (String id : countMap.keySet()) {
+            long count = countMap.get(id);
+            String name = id;
+            switch (id) {
+            case "total":
+                name = "总计";
+                break;
+            case "valid":
+                name = "有效";
+                break;
+            case "used":
+                name = "在用";
+                break;
+            case "locked":
+                name = "锁定";
+                break;
+            }
+            statUl.li().text(name + " " + count + " 种");
+        }
 
         p.cmds0.a().href("new/").text("新建");
         p.cmds0.a().href("export/").text("导出");
@@ -194,17 +215,20 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected void dumpData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
         int count = 0;
-        Map<FieldGroup, Collection<IFormField>> fgMap = formStruct.getFieldsGrouped();
+        Map<FieldGroup, Collection<IFormField>> fgMap = formStruct.getFieldsGrouped(DetailLevel.EXTEND);
         for (CoEntity entity : dataset) {
             if (count++ > 20)
                 break;
             HtmlDivTag dtab = parent.div().id("data-" + entity.getId());
             for (FieldGroup fg : fgMap.keySet()) {
+                Collection<IFormField> fields = fgMap.get(fg);
+                if (fields.isEmpty())
+                    continue;
 
                 String fgLabel = fg == FieldGroup.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
                 dtab.h3().class_("my-group").text(fgLabel);
 
-                for (IFormField field : fgMap.get(fg)) {
+                for (IFormField field : fields) {
                     IPropertyAccessor accessor = field.getAccessor();
                     Object value;
                     try {
