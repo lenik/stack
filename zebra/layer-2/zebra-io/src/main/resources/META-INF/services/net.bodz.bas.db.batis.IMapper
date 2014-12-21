@@ -1,0 +1,5 @@
+com.bee32.zebra.io.art.impl.ArtifactMapper
+com.bee32.zebra.io.art.impl.UOMMapper
+com.bee32.zebra.io.stock.impl.PlaceMapper
+com.bee32.zebra.io.stock.impl.StockEntryMapper
+com.bee32.zebra.io.stock.impl.StockEventMapper

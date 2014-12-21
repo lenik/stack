@@ -1,0 +1,5 @@
+com.bee32.zebra.io.art.impl.ArtifactManager
+com.bee32.zebra.io.art.impl.UOMManager
+com.bee32.zebra.io.stock.impl.PlaceManager
+com.bee32.zebra.io.stock.impl.StockEntryManager
+com.bee32.zebra.io.stock.impl.StockEventManager

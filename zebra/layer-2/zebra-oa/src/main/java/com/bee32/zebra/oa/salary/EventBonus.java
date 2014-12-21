@@ -7,11 +7,11 @@ import com.tinylily.model.base.CoMomentInterval;
 
 /**
  * 事件补贴
- *
+ * 
  * 特殊事件的工资增加或减少，eg:工伤等。
- *
+ * 
  * beginTime
- *
+ * 
  * <p lang="en">
  * Event Bonus
  */
@@ -20,15 +20,25 @@ public class EventBonus
 
     private static final long serialVersionUID = 1L;
 
+    int id;
     Employee employee;
     BigDecimal bonus;
 
     public EventBonus() {
     }
 
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * 员工
-     *
+     * 
      * 特殊事件对应的员工。
      */
     public Employee getEmployee() {
@@ -41,7 +51,7 @@ public class EventBonus
 
     /**
      * 事件金额
-     *
+     * 
      * 特殊事件补贴的金额，可奖可惩。
      */
     public BigDecimal getBonus() {

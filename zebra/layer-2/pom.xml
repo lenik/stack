@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>zebra-erp</module>
+        <module>zebra-io</module>
         <module>zebra-oa</module>
         <module>zebra-sys</module>
     </modules>

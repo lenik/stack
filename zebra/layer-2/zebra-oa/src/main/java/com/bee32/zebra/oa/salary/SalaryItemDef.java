@@ -23,10 +23,19 @@ public class SalaryItemDef
     public static final int CATEGORY_LENGTH = 100;
     public static final int EXPRESSION_LENGTH = 200;
 
+    int id;
     String category;
     int order;
     String expr;
     boolean tax;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * 工资字段分类

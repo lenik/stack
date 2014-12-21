@@ -17,6 +17,7 @@ public class Reply
 
     private static final long serialVersionUID = 1L;
 
+    private long id;
     private Topic topic;
     private Reply parent;
     private Date beginTime;
@@ -27,6 +28,15 @@ public class Reply
     public Reply(Topic topic, Reply parent) {
         this.topic = topic;
         this.parent = parent;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**

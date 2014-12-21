@@ -2,7 +2,7 @@ package com.bee32.zebra.tk.sea;
 
 import com.tinylily.model.base.CoMomentInterval;
 
-public class FooControlled
+public abstract class FooControlled
         extends CoMomentInterval {
 
     private static final long serialVersionUID = 1L;

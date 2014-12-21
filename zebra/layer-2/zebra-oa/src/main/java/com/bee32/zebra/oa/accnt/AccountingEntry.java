@@ -12,9 +12,19 @@ public class AccountingEntry
     public static final int DEBIT_SIDE = 0;
     public static final int CREDIT_SIDE = 1;
 
+    long id;
     int side;
     Account account;
     BigDecimal value = BigDecimal.ZERO;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Account getAccount() {
         return account;

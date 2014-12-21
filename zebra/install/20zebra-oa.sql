@@ -719,8 +719,8 @@
 -- drop table if exists acdoc;
     create sequence acdoc_seq start with 1000;
     create table acdoc(
-        id          bigint primary key default nextval('acdoc_seq'),
-        prev        bigint,         -- previous doc
+        id          int primary key default nextval('acdoc_seq'),
+        prev        int,         -- previous doc
         op          int,
         cat         int,
         subject     varchar(200) not null,
@@ -788,7 +788,7 @@
     create sequence acentry_seq start with 1000;
     create table acentry(
         id          bigint primary key default nextval('acentry_seq'),
-        doc         bigint not null,
+        doc         int not null,
         
         account     int not null,
         org         int,
@@ -815,7 +815,7 @@
             a.account, c.label "account_label",
             a.org, o.label "org_label",
             a.person, p.label "person_label",
-            a.val, d.val "doc_val", a.priority,
+            a.val, d.ndebit, d.ncredit, a.priority,
             d.subject "doc_subject", d.cat, d.phase,
             d.year, d.t0, d.t1, d.creation, d.lastmod
         from acentry a

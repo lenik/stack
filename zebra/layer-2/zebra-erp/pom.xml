@@ -9,7 +9,7 @@
     <dependencies>
         <dependency>
             <groupId>com.bee32.zebra</groupId>
-            <artifactId>zebra-oa</artifactId>
+            <artifactId>zebra-io</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

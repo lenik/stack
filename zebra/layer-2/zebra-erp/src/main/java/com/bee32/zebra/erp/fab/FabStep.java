@@ -15,6 +15,7 @@ public class FabStep
     public static final int S_FINISHED = 2;
     public static final int S_FAILED = 3;
 
+    int id;
     FabStepDef def;
     Date deadline;
 
@@ -32,5 +33,13 @@ public class FabStep
     // Person manager;
 
     List<FabQcValue> qcList;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 }

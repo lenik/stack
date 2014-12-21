@@ -1,0 +1,10 @@
+com.bee32.zebra.io.art.impl.ArtifactManagerVbo
+com.bee32.zebra.io.art.impl.ArtifactVbo
+com.bee32.zebra.io.art.impl.UOMManagerVbo
+com.bee32.zebra.io.art.impl.UOMVbo
+com.bee32.zebra.io.stock.impl.PlaceManagerVbo
+com.bee32.zebra.io.stock.impl.PlaceVbo
+com.bee32.zebra.io.stock.impl.StockEntryManagerVbo
+com.bee32.zebra.io.stock.impl.StockEntryVbo
+com.bee32.zebra.io.stock.impl.StockEventManagerVbo
+com.bee32.zebra.io.stock.impl.StockEventVbo

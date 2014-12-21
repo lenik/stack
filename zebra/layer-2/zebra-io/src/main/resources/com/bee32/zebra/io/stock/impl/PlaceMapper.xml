@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.io.stock.impl.PlaceMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.io.stock.Place" extends="message.map2">
+        <result property="beginTime" column="t0" />
+        <result property="endTime" column="t1" />
+    </resultMap>
+
+    <sql id="select1"><![CDATA[
+        select
+            a.*,
+            u.label "uid_label",
+            g.label "gid_label"
+        from place a
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+        ]]>
+    </sql>
+
+    <sql id="select2"><![CDATA[
+        select
+            a.*,
+            u.label "uid_label",
+            g.label "gid_label"
+        from place a
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+        ]]>
+    </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+    </select>
+
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <if test="categoryId != null">and a.id=#{categoryId}</if>
+        </where>
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select2" />
+        <where>
+            <if test="_parameter != null">a.id=#{id}</if>
+        </where>
+    </select>
+
+    <select id="insert" resultType="int">
+        <![CDATA[
+        insert into place(code, label, description)
+            values(#{codeName},#{label},#{description})
+            returning id
+    ]]></select>
+
+    <update id="update">
+        update place
+        <set>
+            <include refid="co.setU" />
+        </set>
+        <where>
+            <if test="id != null">id=#{id}, </if>
+        </where>
+    </update>
+
+    <delete id="delete">
+        delete from place where id=#{id}
+    </delete>
+
+    <select id="count" resultType="hashmap">
+        select * from v_place_n
+    </select>
+    
+</mapper>

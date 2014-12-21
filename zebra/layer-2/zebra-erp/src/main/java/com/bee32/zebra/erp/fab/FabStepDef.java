@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bee32.zebra.erp.stock.Artifact;
+import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoCode;
 
 public class FabStepDef

@@ -212,8 +212,11 @@ set constraints all deferred;
     insert into account(id, label)
         select id::int, label from old.account_subject;
     
-    insert into acdoc(id, val, op, org, person, form, subject, text, year, t0, t1, creation, lastmod, uid)
-        select a.id, a.value, 
+    insert into acdoc(id, ndebit, ncredit, op, org, person, form, subject, text,
+            year, t0, t1, creation, lastmod, uid)
+        select a.id,
+            case when a.value>=0 then a.value  else 0 end "ndebit",
+            case when a.value<0  then -a.value else 0 end "ncredit",
             l."user" "op",
             case p.stereo when 'ORG' then p.id else null end "org",
             case p.stereo when 'PER' then p.id else null end "person",
