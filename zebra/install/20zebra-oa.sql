@@ -90,7 +90,7 @@
     insert into "group_user"("group", "user") values(0, 0);
 
 -- drop table if exists contact;
-    create sequence contact_seq;
+    create sequence contact_seq start with 1000;
     create table contact(
         _id         int primary key default nextval('contact_seq'),
         org         int,
@@ -122,7 +122,7 @@
     create index contact_region     on contact(region);
 
 -- drop table if exists org;
-    create sequence org_seq;
+    create sequence org_seq start with 1000;
     create table org(
         id          int primary key default nextval('org_seq'),
         code        varchar(20),
@@ -171,7 +171,7 @@
     create index org_uid_acl        on org(uid, acl);
 
 -- drop table if exists orgunit;
-    create sequence orgunit_seq;
+    create sequence orgunit_seq start with 1000;
     create table orgunit(
         id          int primary key default nextval('orgunit_seq'),
         code        varchar(20),
@@ -218,7 +218,7 @@
     create index orgunit_uid_acl    on orgunit(uid, acl);
     
 -- drop table if exists person;
-    create sequence person_seq;
+    create sequence person_seq start with 1000;
     create table person(
         id          int primary key default nextval('person_seq'),
         code        varchar(20),

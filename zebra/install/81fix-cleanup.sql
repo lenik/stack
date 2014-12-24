@@ -60,3 +60,44 @@
     update old.account_ticket t set description=f.description
         from old.fund_flow f where t.id=f.ticket;
 
+-- make_order: non-null label
+    update old.make_order set label='' where label is null;
+
+-- make_order_item: part -> material
+    update old.make_order_item a set material=p.target
+        from old.part p where a.part is not null and a.part=p.id;
+
+-- make_order_item: external_* values too long.
+    update old.make_order_item
+        set external_product_name = null,
+            external_model_spec = null,
+            description = '品名: ' || external_product_name
+                || (case when external_model_spec='' then ''
+                        else '(规格：' || external_model_spec || ')'
+                        end)
+                || (case when description is null then '' else '; ' || description end)
+        where material is null;
+
+    update old.make_order_item
+        set external_product_name = null,
+            description = description || ' ' || external_product_name
+        where length(external_product_name)>30;
+
+    update old.make_order_item
+        set external_model_spec = null,
+            description=description || ' ' || external_model_spec
+        where length(external_model_spec)>30;
+
+-- delivery_note: concat(item.description) -> note.description
+    alter table old.delivery_note alter column description type varchar(300);
+    
+    update old.delivery_note a
+        set description =
+            case when description is null then '' else description || '; ' end
+            || array_to_string(array(
+                select description from old.delivery_note_item x
+                    where x.parent=a.id and x.description is not null),
+                '; ', '');
+
+    update old.delivery_note_item set description=null;
+    

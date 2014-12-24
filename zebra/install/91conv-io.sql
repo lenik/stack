@@ -10,7 +10,7 @@
             parent, depth, usage,
             creation, lastmod, flags, state, uid)
         select id+100, label, description,
-            case when parent is null then warehouse else parent+100 end,
+            coalesce(parent+100, warehouse) "parent",
             depth, 'INTERNAL',   -- old depth based on 1
             created_date "creation", last_modified "lastmod", ef "flags", state, owner "uid"
         from old.stock_location;
@@ -54,8 +54,59 @@
             price, quantity, begin_time "t0"
         from old.stock_order_item;
 
--- order
+-- sales order
     
-    insert into saledoc
-    
+    insert into sdoc(id, subject, text, t0, 
+            org, person, val, topic, op, state,
+            creation, lastmod, uid)
+        select a.id,
+            a.label, a.description, a.begin_time, 
+            case when c.stereo='ORG' then a.customer else null end "org", 
+            case when c.stereo='PER' then a.customer else null end "person",
+            a.native_total "val",
+            a.chance "topic",
+            l."user" "op",
+            case when a.valid then 0 else 417 end "state",
+            a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
+        from old.make_order a
+            left join old.party c on a.customer=c.id
+            left join old.party s on a.salesman=s.id
+            left join old.person_login l on s.id=l.person;
+        
+    insert into sentry(id,
+            doc, art, qty, price, total, deadline, comment,
+            resale, olabel, ospec)
+        select id,
+            parent "doc",
+            coalesce(material, 0) "art",
+            quantity "qty", price, quantity*price "total",
+            deadline,
+            description "comment",
+            nameplate "resale",
+            external_product_name "olabel",
+            external_model_spec "ospec"
+        from old.make_order_item a;
+
+    insert into dldoc(id, subject, text,
+            sdoc, org, person, val, t0)
+        select a.id,
+            a.label "subject", a.description "text",
+            "order" "sdoc", 
+            case when c.stereo='ORG' then a.customer else null end "org", 
+            case when c.stereo='PER' then a.customer else null end "person",
+            a.native_total "val",
+            a.begin_time "t0"
+        from old.delivery_note a
+            left join old.party c on a.customer=c.id;
+
+    insert into dlentry(doc, sentry, art, qty, price, total)
+        select
+            a.parent "doc",
+            a.order_item "sentry",
+            coalesce(a.material, x.material, 0) "art",
+            a.quantity "qty",
+            a.price,
+            a.native_total "total"
+        from old.delivery_note_item a
+            left join old.make_order_item x on a.order_item=x.id;
         

@@ -65,7 +65,7 @@
     */
     
 -- drop table if exists artcat;
-    create sequence artcat_seq;
+    create sequence artcat_seq start with 1000;
     create table artcat(
         id          int primary key default nextval('artcat_seq'),
         code        varchar(20),
@@ -108,7 +108,7 @@
 -- drop table if exists art;
     create type SupplyMethod as enum(
         'BUY', 'PRODUCE');
-    create sequence art_seq;
+    create sequence art_seq start with 1000;
     create table art(
         id          int primary key default nextval('art_seq'),
         code        varchar(20),
@@ -118,7 +118,7 @@
         cat         int,
         sku         varchar(30),
         barcode     varchar(30),
-        uom         int not null default 1,         -- pcs
+        uom         int not null default 1,     -- pcs
         uomalt      varchar(10),
         uomprop     varchar(20),
         digits      int not null default 2,
@@ -127,14 +127,14 @@
         color       varchar(20),
         caution     varchar(100),
         
-        dx          int not null default 0,         -- mm
-        dy          int not null default 0,         -- mm
-        dz          int not null default 0,         -- mm
-        weight      double precision not null,      -- gram
-        netweight   double precision not null,      -- gram
+        dx          int not null default 0,     -- mm
+        dy          int not null default 0,     -- mm
+        dz          int not null default 0,     -- mm
+        weight      float not null default 0,   -- gram
+        netweight   float not null default 0,   -- gram
         
         supply      SupplyMethod not null default 'PRODUCE',
-        supplydelay int not null default 0,         -- day
+        supplydelay int not null default 0,     -- day
         bom         text,
         
         priority    int not null default 0,
@@ -165,6 +165,9 @@
     create index art_state          on art(state);
     create index art_uid_acl        on art(uid, acl);
     
+    insert into art(id, label, description)
+        values(0, '未指定', '警告：该数据项仅用于数据升级，请重新设定。');
+    
     create or replace view v_artcat_n as select
         (select count(*) from artcat) total,
         (select count(distinct cat) from art) used;
@@ -177,9 +180,10 @@
         order by priority, n desc;
     
 -- drop table if exists sdoc;
+    create sequence sdoc_seq start with 1000;
     create table sdoc(                  -- sales/subscription doc
         id          int primary key default nextval('sdoc_seq'),
-        prev        int,         -- previous doc
+        prev        int,            -- previous doc
         form        int,
         subject     varchar(200) not null,
         text        text,
@@ -191,13 +195,13 @@
         ou          int,
         person      int,
         
-        cat         int not null,   -- aka. stock order subject
-        phase       int,            -- aka. stock stage
+        cat         int,            -- subscription category
+        phase       int,            -- subscription phase
         val         double precision,
         
         year        int not null default 0, -- same year of t0.
-        t0          date,           -- begin date
-        t1          date,           -- end date
+        t0          date not null,  -- contract date
+        t1          date,           -- contract deadline
         
         priority    int not null default 0,
         creation    timestamp not null default now(),
@@ -238,15 +242,74 @@
     create index sdoc_state            on sdoc(state);
     create index sdoc_subject          on sdoc(subject);
     create index sdoc_uid_acl          on sdoc(uid, acl);
-    create index sdoc_year             on sdoc(year);
     create index sdoc_t0t1             on sdoc(t0, t1);
     create index sdoc_t1               on sdoc(t1);
+
+    create or replace view v_sdoc as
+        select a.*, 
+            prev.subject "prev_subject",
+            form.label   "form_label",
+            topic.subject "topic_subject",
+            op.label     "op_label",
+            org.label    "org_label",
+            person.label "person_label",
+            cat.label    "cat_label",
+            phase.label  "phase_label"
+        from sdoc a
+            left join sdoc prev on a.prev=prev.id
+            left join form on a.form=form.id
+            left join topic on a.topic=topic.id
+            left join "user" op on a.op=op.id
+            left join org on a.org=org.id
+            left join person on a.person=person.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id;
+
+-- drop table if exists sentry;
+    create sequence sentry_seq start with 1000;
+    create table sentry(
+        id          bigint primary key default nextval('sentry_seq'),
+        doc         int not null,
+        
+        art         int not null,
+        --batch       varchar(30) not null default '',
+        --divs        varchar(100),
+        resale      boolean not null default false,
+        olabel      varchar(30),    -- label override
+        ospec       varchar(30),    -- spec override
+        
+        qty         numeric(20,2) not null,
+        price       numeric(20,2) not null default 0,
+        total       numeric(20,2) not null default 0,   -- cache
+        deadline    date,
+        
+        comment     varchar(200),
+        footnote    varchar(200),
+        
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
+        
+        constraint sentry_fk_art    foreign key(art)
+            references art(id)          on update cascade on delete set null,
+        constraint sentry_fk_doc    foreign key(doc)
+            references sdoc(id)         on update cascade on delete cascade
+    );
+
+    create or replace view v_sentry as
+        select a.*,
+            sdoc.subject "doc_subject",
+            art.label "art_label",
+            art.spec "art_spec"
+        from sentry a
+            left join sdoc on a.doc=sdoc.id
+            left join art on a.art=art.id;
 
 -- drop table if exists place;
     create type PlaceUsage as enum(
         'GROUP', 'INTERNAL', 'SUPPLIER', 'CUSTOMER',
         'SUBQUALITY', 'WASTE');
-    create sequence place_seq;
+    create sequence place_seq start with 1000;
     create table place(
         id          int primary key default nextval('place_seq'),
         code        varchar(20),
@@ -349,7 +412,7 @@
             left join place p on a.place=p.id;
 
 -- drop table if exists stock;
-    create sequence stdoc_seq start with 100;
+    create sequence stdoc_seq start with 1000;
     create table stdoc(
         id          int primary key default nextval('stdoc_seq'),
         prev        int,            -- previous doc
@@ -411,44 +474,8 @@
     create index stdoc_state           on stdoc(state);
     create index stdoc_subject         on stdoc(subject);
     create index stdoc_uid_acl         on stdoc(uid, acl);
-    create index stdoc_year            on stdoc(year);
     create index stdoc_t0t1            on stdoc(t0, t1);
     create index stdoc_t1              on stdoc(t1);
-
--- drop table if exists stentry;
-    create sequence stentry_seq start with 1000;
-    create table stentry(
-        id          bigint primary key default nextval('stentry_seq'),
-        doc         int not null,
-        
-        art         int not null,
-        place       int not null,
-        batch       varchar(30) not null default '',
-        divs        varchar(100),
-        
-        qty         numeric(20,2) not null,
-        price       numeric(20,2) not null default 0,
-        total       numeric(20,2) not null default 0,   -- cache
-        description varchar(200),
-        t0          date,           -- begin date
-        t1          date,           -- end date
-        
-        priority    int not null default 0,
-        flags       int not null default 0,
-        state       int not null default 0,
-        
-        constraint stentry_fk_art   foreign key(art)
-            references art(id)          on update cascade on delete set null,
-        constraint stentry_fk_place foreign key(place)
-            references place(id)        on update cascade on delete set null,
-        constraint stentry_fk_doc   foreign key(doc)
-            references stdoc(id)        on update cascade on delete cascade
-    );
-
-    create or replace view v_art_n as
-        select
-            (select count(*) from art) total,
-            (select count(distinct art) from stentry) used;
 
     create view v_stdoc as
         select a.*, 
@@ -470,6 +497,41 @@
             left join cat on a.cat=cat.id
             left join phase on a.phase=phase.id;
 
+-- drop table if exists stentry;
+    create sequence stentry_seq start with 1000;
+    create table stentry(
+        id          bigint primary key default nextval('stentry_seq'),
+        doc         int not null,
+        
+        art         int not null,
+        place       int not null,
+        batch       varchar(30) not null default '',
+        divs        varchar(100),
+        
+        qty         numeric(20,2) not null,
+        price       numeric(20,2) not null default 0,
+        total       numeric(20,2) not null default 0,   -- cache
+        comment     varchar(200),
+        t0          date,           -- begin date
+        t1          date,           -- end date
+        
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
+        
+        constraint stentry_fk_art   foreign key(art)
+            references art(id)          on update cascade on delete set null,
+        constraint stentry_fk_place foreign key(place)
+            references place(id)        on update cascade on delete set null,
+        constraint stentry_fk_doc   foreign key(doc)
+            references stdoc(id)        on update cascade on delete cascade
+    );
+
+    create or replace view v_art_n as
+        select
+            (select count(*) from art) total,
+            (select count(distinct art) from stentry) used;
+
     create view v_stentry as
         select a.*,
             stdoc.subject "doc_subject",
@@ -479,4 +541,117 @@
             left join stdoc on a.doc=stdoc.id
             left join art on a.art=art.id
             left join place on a.place=place.id;
+
+-- drop table if exists dldoc;
+    create sequence dldoc_seq start with 1000;
+    create table dldoc(                  -- sales/subscription doc
+        id          int primary key default nextval('dldoc_seq'),
+        prev        int,            -- previous doc
+        subject     varchar(200) not null,
+        text        text,
+        
+        sdoc        int,
+        op          int,
+        org         int,
+        ou          int,
+        person      int,
+        
+        cat         int,
+        phase       int,
+        
+        freight     numeric(20, 2) not null default 0,
+        val         numeric(20, 2) not null default 0,
+        
+        year        int not null default 0, -- same year of t0.
+        t0          date,           -- package date
+        t1          date,           -- recv date
+        
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
+        uid         int,
+        gid         int,
+        mode        int not null default 640,
+        acl         int,
+        
+        constraint dldoc_fk_cat     foreign key(cat)
+            references cat(id)          on update cascade on delete set null,
+        constraint dldoc_fk_gid     foreign key(gid)
+            references "group"(id)      on update cascade on delete set null,
+        constraint dldoc_fk_op      foreign key(op)
+            references "user"(id)       on update cascade on delete set null,
+        constraint dldoc_fk_org     foreign key(org)
+            references org(id)          on update cascade,
+        constraint dldoc_fk_person  foreign key(person)
+            references person(id)       on update cascade,
+        constraint dldoc_fk_phase   foreign key(phase)
+            references phase(id)        on update cascade on delete set null,
+        constraint dldoc_fk_prev    foreign key(prev)
+            references dldoc(id)        on update cascade on delete set null,
+        constraint dldoc_fk_uid     foreign key(uid)
+            references "user"(id)       on update cascade on delete set null
+    );
+
+    create index dldoc_lastmod          on dldoc(lastmod desc);
+    create index dldoc_priority         on dldoc(priority);
+    create index dldoc_state            on dldoc(state);
+    create index dldoc_subject          on dldoc(subject);
+    create index dldoc_uid_acl          on dldoc(uid, acl);
+    create index dldoc_t0t1             on dldoc(t0, t1);
+    create index dldoc_t1               on dldoc(t1);
+
+    create or replace view v_dldoc as
+        select a.*, 
+            prev.subject "prev_subject",
+            form.label   "form_label",
+            topic.subject "topic_subject",
+            op.label     "op_label",
+            org.label    "org_label",
+            person.label "person_label",
+            cat.label    "cat_label",
+            phase.label  "phase_label"
+        from dldoc a
+            left join dldoc prev on a.prev=prev.id
+            left join form on a.form=form.id
+            left join topic on a.topic=topic.id
+            left join "user" op on a.op=op.id
+            left join org on a.org=org.id
+            left join person on a.person=person.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id;
+
+-- drop table if exists dlentry;
+    create sequence dlentry_seq start with 1000;
+    create table dlentry(
+        id          bigint primary key default nextval('dlentry_seq'),
+        doc         int not null,
+        sentry      bigint,         -- XXX deprecated
+        
+        art         int not null,
+        qty         numeric(20,2) not null,
+        price       numeric(20,2) not null default 0,
+        total       numeric(20,2) not null default 0,   -- cache
+        
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
+        
+        constraint dlentry_fk_art   foreign key(art)
+            references art(id)          on update cascade on delete set null,
+        constraint dlentry_fk_doc   foreign key(doc)
+            references dldoc(id)         on update cascade on delete cascade
+    );
+
+    create or replace view v_dlentry as
+        select a.*,
+            dldoc.subject "doc_subject",
+            art.label "art_label",
+            art.spec "art_spec"
+        from dlentry a
+            left join dldoc on a.doc=dldoc.id
+            left join art on a.art=art.id;
 

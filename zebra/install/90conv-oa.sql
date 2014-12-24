@@ -30,7 +30,7 @@ set constraints all deferred;
     insert into contact(_id, org, ou, person, address1, postcode, tel, mobile, fax, email, web, qq)
         select c.id "_id", 
             case when p.stereo='ORG' then c.party else null end "org",
-            case when x.id is not null then x.id else null end "ou",
+            x.id "ou",
             case when p.stereo='PER' then c.party else null end "person",
             address "address1", post_code "postcode", tel, mobile, fax, email, website "web", qq
         from old.contact c
@@ -162,7 +162,7 @@ set constraints all deferred;
 
     insert into reply(id, topic, op, t0, t1, text, creation, lastmod, uid)
         select id,
-            case when chance is null then 1 else chance end "topic",
+            coalesce(chance, 1) "topic",
             actor "op", begin_time "t0", end_time "t1",
             more_info "text",
             created_date "creation", last_modified "lastmod", owner "uid"
@@ -249,7 +249,7 @@ set constraints all deferred;
         
     insert into acentry(doc, account, org, person, val)
         select 
-            case when f.id is null then acdoc.id else f.id end "doc",
+            coalesce(f.id, acdoc.id) "doc",
             a.subject::int "account",
             case p.stereo when 'ORG' then p.id else null end "org",
             case p.stereo when 'PER' then p.id else null end "person",
