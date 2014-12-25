@@ -1,11 +1,11 @@
 package com.bee32.zebra.tk.sea;
 
+import net.bodz.bas.repr.state.IStateConsts;
 import net.bodz.bas.repr.state.State;
 import net.bodz.bas.repr.state.StateType;
-import net.bodz.bas.repr.state.StdStates;
 
 public class FooStates
-        extends StdStates {
+        implements IStateConsts {
 
     public static final int ID_PROCESS = 102;
     public static final int ID_OK = 200;
