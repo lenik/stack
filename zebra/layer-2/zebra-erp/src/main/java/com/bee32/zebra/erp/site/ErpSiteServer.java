@@ -13,7 +13,7 @@ public class ErpSiteServer {
 
     public static void main(String[] args)
             throws Exception {
-        XmlFormatter.NULL_VERBATIM = "<i class='fa fa-times'></i>";
+        XmlFormatter.NULL_VERBATIM = "<i class='fa fa-times null'></i>";
 
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
 

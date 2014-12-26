@@ -1,0 +1,60 @@
+a {
+    color: hsl(0, 100%, 50%);
+}
+
+.col-id {
+    color: gray;
+}
+
+.info {
+    background: hsl(45, 100%, 90%);
+}
+
+.section {
+    border-top-color: hsl(0, 0%, 93%);
+    border-bottom-color: hsl(0, 0%, 93%);
+}
+
+.section:nth-child(odd) {
+    background-color: hsl(0, 0%, 98%);
+}
+
+.section:hover {
+    background-color: hsl(64, 100%, 97%);
+}
+
+.section-head {
+    border-right: solid 3px #e4e2d7;
+}
+
+.section-head>.icon {
+    color: hsl(44, 17%, 75%);
+}
+
+.section:hover>.section-head {
+    border-right-color: #cec7a3;
+}
+
+.section:hover>.section-head>.icon {
+    color: hsl(44, 55%, 50%);
+}
+
+#links {
+    color: hsl(30, 100%, 30%);
+}
+
+#links a {
+    color: hsl(30, 100%, 30%);
+}
+
+#menu a {
+    color: black;
+}
+
+#menu-col {
+    background: hsl(0, 100%, 90%);
+}
+
+#stat {
+    color: gray;
+}
