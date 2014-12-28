@@ -35,7 +35,7 @@ public class AccountManagerVbo
 
         AccountManager manager = ref.get();
         AccountMapper mapper = manager.getMapper();
-        List<Account> list = mapper.all();
+        List<Account> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
@@ -48,7 +48,7 @@ public class AccountManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

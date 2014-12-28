@@ -4,17 +4,54 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.stock.impl.StockEventMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.stock.StockEvent" extends="co.mapUS">
-        <result property="beginTime" column="t0" />
-        <result property="endTime" column="t1" />
+    <resultMap id="map1" type="com.bee32.zebra.io.stock.StockEvent" extends="message.map2">
+        <result property="quantity" column="quantity" />
+        <result property="total" column="total" />
+        <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">
+            <id column="topic" />
+            <result property="subject" column="topic_subject" />
+        </association>
+        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
+            <id column="cat" />
+            <result property="label" column="cat_label" />
+        </association>
+        <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
+            <id column="phase" />
+            <result property="label" column="phase_label" />
+        </association>
+        <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id column="org" />
+            <result property="label" column="org_label" />
+        </association>
+        <association property="orgUnit" javaType="com.bee32.zebra.oa.contact.OrgUnit">
+            <id column="org" />
+            <result property="label" column="ou_label" />
+        </association>
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id column="person" />
+            <result property="label" column="person_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*,
+            topic.subject "topic_subject",
+            cat.label "cat_label",
+            phase.label "phase_label",
+            org.label "org_label",
+            ou.label "ou_label",
+            person.label "person_label",
             u.label "uid_label",
             g.label "gid_label"
         from stdoc a
+            left join topic on a.topic=topic.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
+            left join org on a.org=org.id
+            left join orgunit ou on a.ou=ou.id
+            left join person on a.person=person.id
+            left join "user" op on a.op=op.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -23,9 +60,21 @@
     <sql id="select2"><![CDATA[
         select
             a.*,
+            topic.subject "topic_subject",
+            cat.label "cat_label",
+            phase.label "phase_label",
+            org.label "org_label",
+            ou.label "ou_label",
+            person.label "person_label",
             u.label "uid_label",
             g.label "gid_label"
         from stdoc a
+            left join topic on a.topic=topic.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
+            left join org on a.org=org.id
+            left join orgunit on a.ou=orgunit.id
+            left join person on a.person=person.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>

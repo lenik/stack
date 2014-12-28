@@ -12,6 +12,8 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.stock.Place;
+import com.bee32.zebra.oa.contact.Organization;
+import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
@@ -23,7 +25,7 @@ public class PlaceManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(PlaceManager.class);
         formStruct = new Place().getFormStruct();
-        insertIndexFields("label", "description");
+        insertIndexFields("usage", "label", "description", "position", "bbox", "party", "partyOrg");
     }
 
     @Override
@@ -35,16 +37,25 @@ public class PlaceManagerVbo
 
         PlaceManager manager = ref.get();
         PlaceMapper mapper = manager.getMapper();
-        List<Place> list = mapper.all();
+        List<Place> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Place o : list) {
+            Person person = o.getParty();
+            Organization org = o.getPartyOrg();
+
             HtmlTrTag tr = indexTable.tbody.tr();
             stdcols0(tr, o);
+            tr.td().text(o.getUsage().name()).class_("small");
+            stdcolsLD(tr, o);
+            tr.td().text(o.getPosition().isZero() ? null : o.getPosition().format(", "));
+            tr.td().text(o.getBbox().isZero() ? null : o.getBbox().format("x"));
+            tr.td().text(person == null ? null : person.getLabel());
+            tr.td().text(org == null ? null : org.getLabel());
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

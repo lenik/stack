@@ -37,7 +37,7 @@ public class FileInfoManagerVbo
 
         FileInfoManager manager = ref.get();
         FileInfoMapper mapper = manager.getMapper();
-        List<FileInfo> list = mapper.all();
+        List<FileInfo> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FileInfo o : list) {
@@ -52,7 +52,7 @@ public class FileInfoManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

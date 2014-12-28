@@ -50,6 +50,9 @@ public class Artifact
         this.id = id;
     }
 
+    /**
+     * 分类
+     */
     @OfGroup(OaGroups.Classification.class)
     public ArtifactCategory getCategory() {
         return category;
@@ -59,10 +62,12 @@ public class Artifact
         this.category = category;
     }
 
-    public void setCategoryId(int categoryId) {
-        (this.category = new ArtifactCategory()).setId(categoryId);
-    }
-
+    /**
+     * 存货识别码。
+     * 
+     * @label SKU
+     * @placeholder 输入存货识别码
+     */
     @OfGroup(OaGroups.Identity.class)
     public String getSkuCode() {
         return skuCode;
@@ -84,6 +89,9 @@ public class Artifact
         this.barCode = barCode;
     }
 
+    /**
+     * 单位
+     */
     @OfGroup(OaGroups.Packaging.class)
     public UOM getUom() {
         return uom;
@@ -93,12 +101,9 @@ public class Artifact
         this.uom = uom;
     }
 
-    @OfGroup(OaGroups.Packaging.class)
-    public void setUomId(int uomId) {
-        (this.uom = new UOM()).setId(uomId);
-    }
-
     /**
+     * 度量属性
+     * 
      * @placeholder 输入衡量单位的用途属性，如"长度"、"重量"
      */
     @OfGroup(OaGroups.Packaging.class)
@@ -110,6 +115,9 @@ public class Artifact
         this.uomProperty = uomProperty;
     }
 
+    /**
+     * 单位转换表
+     */
     @OfGroup(OaGroups.Packaging.class)
     public Map<UOM, Double> getConvMap() {
         return convMap;
@@ -121,6 +129,9 @@ public class Artifact
         this.convMap = convMap;
     }
 
+    /**
+     * 小数位数
+     */
     @OfGroup(OaGroups.Setting.class)
     public int getDecimalDigits() {
         return decimalDigits;
@@ -131,6 +142,8 @@ public class Artifact
     }
 
     /**
+     * 规格型号
+     * 
      * @placeholder 输入规格/型号
      */
     @OfGroup(OaGroups.Identity.class)
@@ -143,6 +156,8 @@ public class Artifact
     }
 
     /**
+     * 颜色
+     * 
      * @placeholder 输入颜色名称
      */
     @OfGroup(OaGroups.ColorManagement.class)
@@ -155,6 +170,8 @@ public class Artifact
     }
 
     /**
+     * 警告提示
+     * 
      * @placeholder 输入警告信息，如危险品、易碎、易爆炸等
      */
     public String getCaution() {
@@ -165,11 +182,17 @@ public class Artifact
         this.caution = caution;
     }
 
+    /**
+     * 装箱尺寸
+     */
     @OfGroup(OaGroups.Packaging.class)
     public Dim3d getBbox() {
         return bbox;
     }
 
+    /**
+     * 毛重
+     */
     @OfGroup(OaGroups.Packaging.class)
     public double getWeight() {
         return weight;
@@ -179,6 +202,9 @@ public class Artifact
         this.weight = weight;
     }
 
+    /**
+     * 净重
+     */
     @OfGroup(OaGroups.Packaging.class)
     public double getNetWeight() {
         return netWeight;
@@ -188,6 +214,9 @@ public class Artifact
         this.netWeight = netWeight;
     }
 
+    /**
+     * 供应方法
+     */
     @OfGroup(OaGroups.Schedule.class)
     public SupplyMethod getSupplyMethod() {
         return supplyMethod;
@@ -199,6 +228,9 @@ public class Artifact
         this.supplyMethod = supplyMethod;
     }
 
+    /**
+     * 供应延时
+     */
     @OfGroup(OaGroups.Schedule.class)
     public int getSupplyDelay() {
         return supplyDelay;

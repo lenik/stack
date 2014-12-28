@@ -35,7 +35,7 @@ public class OrgUnitManagerVbo
 
         OrgUnitManager manager = ref.get();
         OrgUnitMapper mapper = manager.getMapper();
-        List<OrgUnit> list = mapper.all();
+        List<OrgUnit> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (OrgUnit o : list) {
@@ -44,7 +44,7 @@ public class OrgUnitManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

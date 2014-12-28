@@ -2,19 +2,54 @@
 <!DOCTYPE mapper 
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bee32.zebra.io.sales.impl.FabOrderMapper">
+<mapper namespace="com.bee32.zebra.io.sales.impl.SalesOrderMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.sales.FabOrder" extends="message.map2">
-        <result property="beginTime" column="t0" />
-        <result property="endTime" column="t1" />
+    <resultMap id="map1" type="com.bee32.zebra.io.sales.SalesOrder" extends="message.map2">
+        <result property="total" column="val" />
+        <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">
+            <id column="topic" />
+            <result property="label" column="topic_label" />
+        </association>
+        <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id column="org" />
+            <result property="label" column="org_label" />
+        </association>
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id column="person" />
+            <result property="label" column="person_label" />
+        </association>
+        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
+            <id column="cat" />
+            <result property="label" column="cat_label" />
+        </association>
+        <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
+            <id column="phase" />
+            <result property="label" column="phase_label" />
+        </association>
+    </resultMap>
+
+    <resultMap id="map2" type="com.bee32.zebra.io.sales.SalesOrder" extends="map1">
+        <collection property="items" javaType="ArrayList" ofType="com.bee32.zebra.io.sales.SalesOrderItem">
+            <id column="y_id" />
+        </collection>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*,
+            topic.subject "topic_subject",
+            org.label "org_label",
+            person.label "person_label",
+            cat.label "cat_label",
+            phase.label "phase_label",
             u.label "uid_label",
             g.label "gid_label"
-        from fabOrder a
+        from sdoc a
+            left join topic on a.topic=topic.id
+            left join org on a.org=org.id
+            left join person on a.person=person.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -23,11 +58,22 @@
     <sql id="select2"><![CDATA[
         select
             a.*,
+            topic.subject "topic_subject",
+            org.label "org_label",
+            person.label "person_label",
+            cat.label "cat_label",
+            phase.label "phase_label",
             u.label "uid_label",
             g.label "gid_label"
-        from fabOrder a
+        from sdoc a
+            left join topic on a.topic=topic.id
+            left join org on a.org=org.id
+            left join person on a.person=person.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
+            left join sentry y on a.id=y.doc
         ]]>
     </sql>
 
@@ -51,13 +97,13 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into fabOrder(code, label, description)
+        insert into sdoc(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
     ]]></select>
 
     <update id="update">
-        update fabOrder
+        update sdoc
         <set>
             <include refid="co.setU" />
         </set>
@@ -67,11 +113,11 @@
     </update>
 
     <delete id="delete">
-        delete from faborder where id=#{id}
+        delete from sdoc where id=#{id}
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from faborder
+        select count(*) "total" from sdoc
     </select>
-    
+
 </mapper>

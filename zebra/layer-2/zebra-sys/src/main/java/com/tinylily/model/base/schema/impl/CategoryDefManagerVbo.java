@@ -35,7 +35,7 @@ public class CategoryDefManagerVbo
 
         CategoryDefManager manager = ref.get();
         CategoryDefMapper mapper = manager.getMapper();
-        List<CategoryDef> list = mapper.all();
+        List<CategoryDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (CategoryDef o : list) {
@@ -47,7 +47,7 @@ public class CategoryDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

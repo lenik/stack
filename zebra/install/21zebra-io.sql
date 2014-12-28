@@ -192,7 +192,6 @@
         topic       int,
         op          int,
         org         int,
-        ou          int,
         person      int,
         
         cat         int,            -- subscription category
@@ -553,8 +552,12 @@
         sdoc        int,
         op          int,
         org         int,
-        ou          int,
         person      int,
+        
+        shipdest    int,
+        shipper     int,
+        shipment    varchar(30),
+        shiplog     varchar(200),
         
         cat         int,
         phase       int,
@@ -592,6 +595,10 @@
             references phase(id)        on update cascade on delete set null,
         constraint dldoc_fk_prev    foreign key(prev)
             references dldoc(id)        on update cascade on delete set null,
+        constraint dldoc_fk_shipdest foreign key(shipdest)
+            references contact(_id)     on update cascade on delete set null,
+        constraint dldoc_fk_shipper foreign key(shipper)
+            references org(id)          on update cascade on delete set null,
         constraint dldoc_fk_uid     foreign key(uid)
             references "user"(id)       on update cascade on delete set null
     );
@@ -607,8 +614,7 @@
     create or replace view v_dldoc as
         select a.*, 
             prev.subject "prev_subject",
-            form.label   "form_label",
-            topic.subject "topic_subject",
+            sdoc.subject "sdoc_subject",
             op.label     "op_label",
             org.label    "org_label",
             person.label "person_label",
@@ -616,8 +622,7 @@
             phase.label  "phase_label"
         from dldoc a
             left join dldoc prev on a.prev=prev.id
-            left join form on a.form=form.id
-            left join topic on a.topic=topic.id
+            left join sdoc on a.sdoc=sdoc.id
             left join "user" op on a.op=op.id
             left join org on a.org=org.id
             left join person on a.person=person.id

@@ -2,6 +2,10 @@ com.bee32.zebra.io.art.impl.ArtifactManagerVbo
 com.bee32.zebra.io.art.impl.ArtifactVbo
 com.bee32.zebra.io.art.impl.UOMManagerVbo
 com.bee32.zebra.io.art.impl.UOMVbo
+com.bee32.zebra.io.sales.impl.DeliveryManagerVbo
+com.bee32.zebra.io.sales.impl.DeliveryVbo
+com.bee32.zebra.io.sales.impl.SalesOrderManagerVbo
+com.bee32.zebra.io.sales.impl.SalesOrderVbo
 com.bee32.zebra.io.stock.impl.PlaceManagerVbo
 com.bee32.zebra.io.stock.impl.PlaceVbo
 com.bee32.zebra.io.stock.impl.StockEntryManagerVbo

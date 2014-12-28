@@ -37,7 +37,7 @@ public class PersonManagerVbo
 
         PersonManager manager = ref.get();
         PersonMapper mapper = manager.getMapper();
-        List<Person> list = mapper.all();
+        List<Person> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
@@ -61,7 +61,7 @@ public class PersonManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

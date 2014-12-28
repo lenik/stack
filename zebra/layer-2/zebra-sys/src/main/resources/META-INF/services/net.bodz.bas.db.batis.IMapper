@@ -1,0 +1,2 @@
+com.tinylily.model.base.security.impl.GroupMapper
+com.tinylily.model.base.security.impl.UserMapper

@@ -13,6 +13,7 @@ import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.IHtmlViewContext;
+import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.http.ctx.IAnchor;
@@ -35,6 +36,7 @@ import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.tinylily.model.base.CoCode;
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.mx.base.CoMessage;
 import com.tinylily.repr.CoEntityManager;
 
 public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
@@ -213,7 +215,12 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         stdcolsLD(tr, o);
     }
 
-    protected void dumpData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
+    protected void stdcolsST(HtmlTrTag tr, CoMessage o) {
+        tr.td().b().text(o.getSubject()).class_("small").style("max-width: 20em");
+        tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
+    }
+
+    protected void dumpFullData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
         int count = 0;
         Map<FieldGroup, Collection<IFormField>> fgMap = formStruct.getFieldsGrouped(DetailLevel.EXTEND);
         for (CoEntity entity : dataset) {
@@ -249,6 +256,34 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 } // for field
             } // for field-group
         } // for entity
+    }
+
+    protected List<T> filter1(List<T> list) {
+        List<T> prefetch = new ArrayList<T>();
+        for (T o : list) {
+            prefetch.add(o);
+            if (prefetch.size() >= 40)
+                break;
+        }
+        return prefetch;
+    }
+
+    protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoEntity e) {
+        if (e != null)
+            tag.text(e.getLabel());
+        return tag;
+    }
+
+    protected String labels(Collection<? extends CoEntity> entities) {
+        if (entities == null)
+            return null;
+        StringBuilder sb = new StringBuilder(entities.size() * 80);
+        for (CoEntity o : entities) {
+            if (sb.length() != 0)
+                sb.append(", ");
+            sb.append(o.getLabel());
+        }
+        return sb.toString();
     }
 
 }

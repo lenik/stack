@@ -35,7 +35,7 @@ public class TagDefManagerVbo
 
         TagDefManager manager = ref.get();
         TagDefMapper mapper = manager.getMapper();
-        List<TagDef> list = mapper.all();
+        List<TagDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (TagDef o : list) {
@@ -47,7 +47,7 @@ public class TagDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

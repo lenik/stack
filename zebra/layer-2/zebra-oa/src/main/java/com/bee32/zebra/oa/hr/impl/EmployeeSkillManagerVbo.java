@@ -35,7 +35,7 @@ public class EmployeeSkillManagerVbo
 
         EmployeeSkillManager manager = ref.get();
         EmployeeSkillMapper mapper = manager.getMapper();
-        List<EmployeeSkill> list = mapper.all();
+        List<EmployeeSkill> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (EmployeeSkill o : list) {
@@ -45,7 +45,7 @@ public class EmployeeSkillManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

@@ -35,7 +35,7 @@ public class FabOpCodeManagerVbo
 
         FabOpCodeManager manager = ref.get();
         FabOpCodeMapper mapper = manager.getMapper();
-        List<FabOpCode> list = mapper.all();
+        List<FabOpCode> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabOpCode o : list) {
@@ -44,7 +44,7 @@ public class FabOpCodeManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

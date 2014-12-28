@@ -37,7 +37,7 @@ public class ReplyManagerVbo
 
         ReplyManager manager = ref.get();
         ReplyMapper mapper = manager.getMapper();
-        List<Reply> list = mapper.all();
+        List<Reply> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Reply o : list) {

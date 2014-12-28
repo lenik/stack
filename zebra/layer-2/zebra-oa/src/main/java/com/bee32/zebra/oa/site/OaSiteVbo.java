@@ -194,7 +194,8 @@ public class OaSiteVbo
 
         sub = parent.li().text("销售").ul();
         sub.li().a().text("项目/机会").href(_webApp_.join("topic/").toString());
-        sub.li().a().text("订单").href(_webApp_.join("order/").toString());
+        sub.li().a().text("订单").href(_webApp_.join("sdoc/").toString());
+        sub.li().a().text("送货").href(_webApp_.join("dldoc/").toString());
 
         sub = parent.li().text("生产过程").ul();
         sub.li().a().text("装配图").href(_webApp_.join("bom/").toString());
@@ -209,7 +210,7 @@ public class OaSiteVbo
         sub.li().a().text("填表").href(_webApp_.join("acdoc/?phase=1").toString());
         sub.li().a().text("流水帐").href(_webApp_.join("acdoc/?phase=2").toString());
         sub.li().a().text("工资").href(_webApp_.join("salary/").toString());
-        sub.li().a().text("分析").href(_webApp_.join("aca/").toString());
+        sub.li().a().text("分析").href(_webApp_.join("acstat/").toString());
 
         sub = parent.li().text("系统").ul();
         sub.li().a().text("帐户").href(_webApp_.join("user/").toString());

@@ -1,5 +1,7 @@
 com.bee32.zebra.io.art.impl.ArtifactManager
 com.bee32.zebra.io.art.impl.UOMManager
+com.bee32.zebra.io.sales.impl.DeliveryManager
+com.bee32.zebra.io.sales.impl.SalesOrderManager
 com.bee32.zebra.io.stock.impl.PlaceManager
 com.bee32.zebra.io.stock.impl.StockEntryManager
 com.bee32.zebra.io.stock.impl.StockEventManager

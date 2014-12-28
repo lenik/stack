@@ -4,17 +4,32 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.stock.impl.PlaceMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.stock.Place" extends="message.map2">
-        <result property="beginTime" column="t0" />
-        <result property="endTime" column="t1" />
+    <resultMap id="map1" type="com.bee32.zebra.io.stock.Place" extends="co.mapUSA">
+        <id column="id" />
+        <result property="usage" column="usage" />
+        <result property="bbox.dx" column="dx" />
+        <result property="bbox.dy" column="dy" />
+        <result property="bbox.dz" column="dz" />
+        <association property="party" javaType="com.bee32.zebra.oa.contact.Person">
+            <id column="vip" />
+            <result property="label" column="vip_label" />
+        </association>
+        <association property="partyOrg" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id column="vip_org" />
+            <result property="label" column="vip_org_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*,
+            p.label "vip_label",
+            o.label "vip_org_label",
             u.label "uid_label",
             g.label "gid_label"
         from place a
+            left join "person" p on a.vip=p.id
+            left join "org" o on a.vip_org=o.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -23,9 +38,13 @@
     <sql id="select2"><![CDATA[
         select
             a.*,
+            p.label "person_label",
+            o.label "org_label",
             u.label "uid_label",
             g.label "gid_label"
         from place a
+            left join "person" p on a.person=p.id
+            left join "org" o on a.org=o.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -38,7 +57,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
+            <if test="usage != null">and a.usage=#{usage}</if>
         </where>
     </select>
 
@@ -73,5 +92,5 @@
     <select id="count" resultType="hashmap">
         select * from v_place_n
     </select>
-    
+
 </mapper>

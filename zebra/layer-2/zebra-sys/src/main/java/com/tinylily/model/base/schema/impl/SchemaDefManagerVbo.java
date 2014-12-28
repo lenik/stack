@@ -35,7 +35,7 @@ public class SchemaDefManagerVbo
 
         SchemaDefManager manager = ref.get();
         SchemaDefMapper mapper = manager.getMapper();
-        List<SchemaDef> list = mapper.all();
+        List<SchemaDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (SchemaDef o : list) {
@@ -45,7 +45,7 @@ public class SchemaDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

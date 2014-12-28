@@ -5,14 +5,40 @@
 <mapper namespace="com.bee32.zebra.io.art.impl.ArtifactMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.io.art.Artifact" extends="co.mapUS">
+        <result property="skuCode" column="sku" />
+        <result property="barCode" column="barcode" />
+        <result property="uomProperty" column="uomprop" />
+        <result property="decimalDigits" column="digits" />
+        <result property="spec" column="spec" />
+        <result property="color" column="color" />
+        <result property="caution" column="caution" />
+        <result property="bbox.dx" column="dx" />
+        <result property="bbox.dy" column="dy" />
+        <result property="bbox.dz" column="dz" />
+        <result property="weight" column="weight" />
+        <result property="netWeight" column="netweight" />
+        <result property="supplyMethod" column="supply" typeHandler="SupplyMethodTypeHandler" />
+        <result property="supplyDelay" column="supplydelay" />
+        <association property="category" javaType="com.bee32.zebra.io.art.ArtifactCategory">
+            <id column="cat" />
+            <result property="label" column="cat_label" />
+        </association>
+        <association property="uom" javaType="com.bee32.zebra.io.art.UOM">
+            <id column="uom" />
+            <result property="label" column="uom_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*,
+            artcat.label "cat_label",
+            uom.label "uom_label",
             u.label "uid_label",
             g.label "gid_label"
         from art a
+            left join artcat on a.cat=artcat.id
+            left join uom on a.uom=uom.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -21,9 +47,13 @@
     <sql id="select2"><![CDATA[
         select
             a.*,
+            artcat.label "cat_label",
+            uom.label "uom_label",
             u.label "uid_label",
             g.label "gid_label"
         from art a
+            left join artcat on a.cat=artcat.id
+            left join uom on a.uom=uom.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>

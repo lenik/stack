@@ -35,7 +35,7 @@ public class StockEntryManagerVbo
 
         StockEntryManager manager = ref.get();
         StockEntryMapper mapper = manager.getMapper();
-        List<StockEntry> list = mapper.all();
+        List<StockEntry> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (StockEntry o : list) {
@@ -45,7 +45,7 @@ public class StockEntryManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

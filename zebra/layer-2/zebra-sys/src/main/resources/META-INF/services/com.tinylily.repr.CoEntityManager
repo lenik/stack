@@ -5,3 +5,5 @@ com.tinylily.model.base.schema.impl.PriorityDefManager
 com.tinylily.model.base.schema.impl.SchemaDefManager
 com.tinylily.model.base.schema.impl.TagDefManager
 com.tinylily.model.base.schema.impl.TagSetDefManager
+com.tinylily.model.base.security.impl.GroupManager
+com.tinylily.model.base.security.impl.UserManager

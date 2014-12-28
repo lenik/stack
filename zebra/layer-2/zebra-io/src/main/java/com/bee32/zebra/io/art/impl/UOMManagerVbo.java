@@ -35,7 +35,7 @@ public class UOMManagerVbo
 
         UOMManager manager = ref.get();
         UOMMapper mapper = manager.getMapper();
-        List<UOM> list = mapper.all();
+        List<UOM> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (UOM o : list) {
@@ -44,7 +44,7 @@ public class UOMManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

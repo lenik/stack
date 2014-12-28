@@ -35,7 +35,7 @@ public class PriorityDefManagerVbo
 
         PriorityDefManager manager = ref.get();
         PriorityDefMapper mapper = manager.getMapper();
-        List<PriorityDef> list = mapper.all();
+        List<PriorityDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (PriorityDef o : list) {
@@ -46,7 +46,7 @@ public class PriorityDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

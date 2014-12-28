@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.type.JdbcType;
 
-import net.bodz.bas.db.batis.AbstractTypeHandler;
+import net.bodz.bas.db.batis.MyBatisTypeHandler;
 
 public class PlaceUsageTypeHandler
-        extends AbstractTypeHandler<PlaceUsage> {
+        extends MyBatisTypeHandler<PlaceUsage> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, PlaceUsage parameter, JdbcType jdbcType)

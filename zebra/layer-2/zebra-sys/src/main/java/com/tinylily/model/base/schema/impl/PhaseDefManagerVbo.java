@@ -35,7 +35,7 @@ public class PhaseDefManagerVbo
 
         PhaseDefManager manager = ref.get();
         PhaseDefMapper mapper = manager.getMapper();
-        List<PhaseDef> list = mapper.all();
+        List<PhaseDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (PhaseDef o : list) {
@@ -46,7 +46,7 @@ public class PhaseDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

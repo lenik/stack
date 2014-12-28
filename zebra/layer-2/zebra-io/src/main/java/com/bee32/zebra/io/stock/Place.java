@@ -12,6 +12,7 @@ public class Place
 
     private int id;
     private PlaceUsage usage = PlaceUsage.INTERNAL;
+    private final Dim3d position = new Dim3d();
     private final Dim3d bbox = new Dim3d();
     private Person party;
     private Organization partyOrg;
@@ -33,6 +34,9 @@ public class Place
         this.id = id;
     }
 
+    /**
+     * 用途
+     */
     public PlaceUsage getUsage() {
         return usage;
     }
@@ -43,10 +47,23 @@ public class Place
         this.usage = usage;
     }
 
+    /**
+     * 位置
+     */
+    public Dim3d getPosition() {
+        return position;
+    }
+
+    /**
+     * 尺寸
+     */
     public Dim3d getBbox() {
         return bbox;
     }
 
+    /**
+     * 代理人
+     */
     public Person getParty() {
         return party;
     }
@@ -55,20 +72,15 @@ public class Place
         this.party = party;
     }
 
-    public void setPartyId(int partyId) {
-        (this.party = new Person()).setId(partyId);
-    }
-
+    /**
+     * 代理企业
+     */
     public Organization getPartyOrg() {
         return partyOrg;
     }
 
     public void setPartyOrg(Organization partyOrg) {
         this.partyOrg = partyOrg;
-    }
-
-    public void setPartyOrg(int partyOrgId) {
-        (this.partyOrg = new Organization()).setId(partyOrgId);
     }
 
 }

@@ -42,7 +42,7 @@ public class AccountingEventManagerVbo
 
         AccountingEventManager event = ref.get();
         AccountingEventMapper mapper = event.getMapper();
-        List<AccountingEvent> list = mapper.all();
+        List<AccountingEvent> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
@@ -69,7 +69,7 @@ public class AccountingEventManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

@@ -35,7 +35,7 @@ public class EmployeeManagerVbo
 
         EmployeeManager manager = ref.get();
         EmployeeMapper mapper = manager.getMapper();
-        List<Employee> list = mapper.all();
+        List<Employee> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Employee o : list) {
@@ -44,7 +44,7 @@ public class EmployeeManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

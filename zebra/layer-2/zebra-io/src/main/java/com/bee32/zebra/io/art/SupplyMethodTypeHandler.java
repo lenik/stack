@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.type.JdbcType;
 
-import net.bodz.bas.db.batis.AbstractTypeHandler;
+import net.bodz.bas.db.batis.MyBatisTypeHandler;
 
 public class SupplyMethodTypeHandler
-        extends AbstractTypeHandler<SupplyMethod> {
+        extends MyBatisTypeHandler<SupplyMethod> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, SupplyMethod parameter, JdbcType jdbcType)

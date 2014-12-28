@@ -14,6 +14,9 @@ public class Organization
 
     private int size;
     private String taxId;
+
+    private boolean shipper;
+
     private List<Person> staff = new ArrayList<>();
     private List<OrgUnit> topLevels = new ArrayList<OrgUnit>();
 
@@ -48,6 +51,17 @@ public class Organization
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    /**
+     * 承运人
+     */
+    public boolean isShipper() {
+        return shipper;
+    }
+
+    public void setShipper(boolean shipper) {
+        this.shipper = shipper;
     }
 
     /**

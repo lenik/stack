@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
-import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
@@ -21,11 +20,9 @@ import com.bee32.zebra.tk.hbin.SectionDiv;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
 import com.tinylily.model.base.schema.impl.PhaseDefMapper;
-import com.tinylily.model.base.security.User;
 
 public class TopicManagerVbo
         extends Zc3Template_CEM<TopicManager, Topic> {
@@ -86,26 +83,20 @@ public class TopicManagerVbo
             }
         }
 
-        List<Topic> list = mapper.filter(criteria);
+        List<Topic> list = filter1(mapper.filter(criteria));
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Topic o : list) {
-            User op = o.getOp();
-            CategoryDef category = o.getCategory();
-            PhaseDef phase = o.getPhase();
-
             HtmlTrTag tr = indexTable.tbody.tr();
             stdcols0(tr, o);
-            tr.td().text(op == null ? "" : op.getFullName()).align("center");
-            tr.td().b().text(o.getSubject()).class_("small").style("max-width: 20em");
-            tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
-            tr.td().text(category == null ? "" : category.getLabel());
-
-            tr.td().text(phase == null ? "" : phase.getLabel()).class_("small");
+            ref(tr.td(), o.getOp()).align("center");
+            stdcolsST(tr, o);
+            ref(tr.td(), o.getCategory());
+            ref(tr.td(), o.getPhase()).class_("small");
             tr.td().text(o.getValue());
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         if (extensions) {
             section = new SectionDiv(p.mainCol, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);

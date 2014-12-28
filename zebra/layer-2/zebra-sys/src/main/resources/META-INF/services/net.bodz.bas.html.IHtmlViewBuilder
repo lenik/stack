@@ -5,3 +5,7 @@ com.tinylily.model.base.schema.impl.PriorityDefManagerVbo
 com.tinylily.model.base.schema.impl.SchemaDefManagerVbo
 com.tinylily.model.base.schema.impl.TagDefManagerVbo
 com.tinylily.model.base.schema.impl.TagSetDefManagerVbo
+com.tinylily.model.base.security.impl.GroupManagerVbo
+com.tinylily.model.base.security.impl.GroupVbo
+com.tinylily.model.base.security.impl.UserManagerVbo
+com.tinylily.model.base.security.impl.UserVbo

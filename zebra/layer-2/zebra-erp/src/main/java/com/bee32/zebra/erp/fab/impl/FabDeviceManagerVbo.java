@@ -35,7 +35,7 @@ public class FabDeviceManagerVbo
 
         FabDeviceManager manager = ref.get();
         FabDeviceMapper mapper = manager.getMapper();
-        List<FabDevice> list = mapper.all();
+        List<FabDevice> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabDevice o : list) {
@@ -44,7 +44,7 @@ public class FabDeviceManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

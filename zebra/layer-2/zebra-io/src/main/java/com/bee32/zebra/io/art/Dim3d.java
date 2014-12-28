@@ -20,13 +20,21 @@ public class Dim3d
         this.dz = dz;
     }
 
+    public boolean isZero() {
+        return dx == 0.0 && dy == 0.0 && dz == 0.0;
+    }
+
     public double getVolume() {
         return dx * dy * dz;
     }
 
+    public String format(String delim) {
+        return dx + delim + dy + delim + dz;
+    }
+
     @Override
     public String toString() {
-        return dx + " x " + dy + " x " + dz;
+        return format(", ");
     }
 
 }

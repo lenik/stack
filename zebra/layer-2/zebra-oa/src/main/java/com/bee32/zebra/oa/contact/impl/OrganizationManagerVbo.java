@@ -37,7 +37,7 @@ public class OrganizationManagerVbo
 
         OrganizationManager manager = ref.get();
         OrganizationMapper mapper = manager.getMapper();
-        List<Organization> list = mapper.all();
+        List<Organization> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
@@ -61,7 +61,7 @@ public class OrganizationManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

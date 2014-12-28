@@ -35,7 +35,7 @@ public class FabStepDefManagerVbo
 
         FabStepDefManager manager = ref.get();
         FabStepDefMapper mapper = manager.getMapper();
-        List<FabStepDef> list = mapper.all();
+        List<FabStepDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabStepDef o : list) {
@@ -44,7 +44,7 @@ public class FabStepDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

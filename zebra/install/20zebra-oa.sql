@@ -121,6 +121,9 @@
 
     create index contact_region     on contact(region);
 
+    -- view: avct_contact
+    select * from mkaview('public', 'contact', 'ct_');
+
 -- drop table if exists org;
     create sequence org_seq start with 1000;
     create table org(

@@ -35,7 +35,7 @@ public class FabQcDefManagerVbo
 
         FabQcDefManager manager = ref.get();
         FabQcDefMapper mapper = manager.getMapper();
-        List<FabQcDef> list = mapper.all();
+        List<FabQcDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabQcDef o : list) {
@@ -44,7 +44,7 @@ public class FabQcDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

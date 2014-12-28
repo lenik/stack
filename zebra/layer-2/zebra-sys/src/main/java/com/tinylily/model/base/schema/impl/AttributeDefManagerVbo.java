@@ -35,7 +35,7 @@ public class AttributeDefManagerVbo
 
         AttributeDefManager manager = ref.get();
         AttributeDefMapper mapper = manager.getMapper();
-        List<AttributeDef> list = mapper.all();
+        List<AttributeDef> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (AttributeDef o : list) {
@@ -47,7 +47,7 @@ public class AttributeDefManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

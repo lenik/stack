@@ -35,7 +35,7 @@ public class AccountingEntryManagerVbo
 
         AccountingEntryManager manager = ref.get();
         AccountingEntryMapper mapper = manager.getMapper();
-        List<AccountingEntry> list = mapper.all();
+        List<AccountingEntry> list = filter1(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 
@@ -46,7 +46,7 @@ public class AccountingEntryManagerVbo
             stdcols1(tr, o);
         }
 
-        dumpData(p.extradata, list);
+        dumpFullData(p.extradata, list);
 
         return ctx;
     }

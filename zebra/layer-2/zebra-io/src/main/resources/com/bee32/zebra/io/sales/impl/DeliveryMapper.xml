@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.io.sales.impl.DeliveryMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.io.sales.Delivery" extends="message.map2">
+        <result property="shipmentId" column="shipment" />
+        <result property="total" column="val" />
+        <association property="salesOrder" javaType="com.bee32.zebra.io.sales.SalesOrder">
+            <id column="sdoc" />
+            <result property="label" column="sdoc_label" />
+        </association>
+        <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id column="org" />
+            <result property="label" column="org_label" />
+        </association>
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id column="person" />
+            <result property="label" column="person_label" />
+        </association>
+        <association property="shipDest" resultMap="com.bee32.zebra.oa.contact.impl.ContactMapper.map1"
+            columnPrefix="ct_" />
+        <association property="shipper" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id column="shipper" />
+            <result property="label" column="shipper_label" />
+        </association>
+        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
+            <id column="cat" />
+            <result property="label" column="cat_label" />
+        </association>
+        <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
+            <id column="phase" />
+            <result property="label" column="phase_label" />
+        </association>
+    </resultMap>
+
+    <resultMap id="map2" type="com.bee32.zebra.io.sales.Delivery" extends="map1">
+        <collection property="items" javaType="ArrayList" ofType="com.bee32.zebra.io.sales.DeliveryItem">
+            <id column="y_id" />
+        </collection>
+    </resultMap>
+
+    <sql id="select1"><![CDATA[
+        select
+            a.*,
+            sdoc.subject "sdoc_subject",
+            org.label "org_label",
+            person.label "person_label",
+            dest.*,
+            shipper.label "shipper_label",
+            cat.label "cat_label",
+            phase.label "phase_label",
+            u.label "uid_label",
+            g.label "gid_label"
+        from dldoc a
+            left join sdoc on a.sdoc=sdoc.id
+            left join org on a.org=org.id
+            left join person on a.person=person.id
+            left join avct_contact dest on a.shipdest=dest.ct__id
+            left join org shipper on a.shipper=shipper.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+        ]]>
+    </sql>
+
+    <sql id="select2"><![CDATA[
+        select
+            a.*,
+            sdoc.subject "sdoc_subject",
+            org.label "org_label",
+            person.label "person_label",
+            dest.*,
+            shipper.label "shipper_label",
+            cat.label "cat_label",
+            phase.label "phase_label",
+            u.label "uid_label",
+            g.label "gid_label"
+        from dldoc a
+            left join sdoc on a.sdoc=sdoc.id
+            left join org on a.org=org.id
+            left join person on a.person=person.id
+            left join avct_contact dest on a.shipdest=dest.ct__id
+            left join org shipper on a.shipper=shipper.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+            left join dlentry y on a.id=y.doc 
+        ]]>
+    </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+    </select>
+
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <if test="categoryId != null">and a.id=#{categoryId}</if>
+        </where>
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select2" />
+        <where>
+            <if test="_parameter != null">a.id=#{id}</if>
+        </where>
+    </select>
+
+    <select id="insert" resultType="int">
+        <![CDATA[
+        insert into dldoc(code, label, description)
+            values(#{codeName},#{label},#{description})
+            returning id
+    ]]></select>
+
+    <update id="update">
+        update dldoc
+        <set>
+            <include refid="co.setU" />
+        </set>
+        <where>
+            <if test="id != null">id=#{id}, </if>
+        </where>
+    </update>
+
+    <delete id="delete">
+        delete from dldoc where id=#{id}
+    </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from dldoc
+    </select>
+
+</mapper>
