@@ -92,4 +92,21 @@ public class Organization
         return topLevels;
     }
 
+    /**
+     * TODO xjdoc don't inherit the docs from the super method.
+     * 
+     * 由一系列单字符描述的分类特征。
+     * 
+     * @label Characters
+     * @label.zh.cn 特征字
+     */
+    @OfGroup(OaGroups.Classification.class)
+    @Override
+    public String getTypeChars() {
+        String typeChars = super.getTypeChars();
+        if (shipper)
+            typeChars += "运";
+        return typeChars;
+    }
+
 }

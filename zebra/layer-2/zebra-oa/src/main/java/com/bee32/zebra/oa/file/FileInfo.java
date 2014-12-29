@@ -209,9 +209,4 @@ public class FileInfo
         return super.getOp();
     }
 
-    @Override
-    public void setOp(User op) {
-        super.setOp(op);
-    }
-
 }
