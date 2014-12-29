@@ -240,7 +240,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 tr.td().text(fn.formatDate(o.getCreationTime())).class_("small");
                 tr.td().text(fn.formatDate(o.getLastModified())).class_("small");
                 tr.td().text(o.getFlags());
-                tr.td().text(o.getState());
+                tr.td().text(o.getState().getName());
                 break;
 
             case 'a':
