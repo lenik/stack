@@ -142,7 +142,7 @@ public class ArtifactCriteria
         weightRange = map.getDoubleRange("weights", weightRange);
         netWeightRange = map.getDoubleRange("nets", netWeightRange);
 
-        supplyMethod = map.getEnum(SupplyMethod.class, "supply", supplyMethod);
+        supplyMethod = map.getPredef(SupplyMethod.class, "supply", supplyMethod);
         supplyDelayRange = map.getIntRange("delays", supplyDelayRange);
     }
 

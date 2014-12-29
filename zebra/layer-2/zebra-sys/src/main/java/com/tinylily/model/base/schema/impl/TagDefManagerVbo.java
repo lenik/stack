@@ -11,8 +11,10 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.TagDef;
 
@@ -34,7 +36,18 @@ public class TagDefManagerVbo
         PageStruct p = new PageStruct(ctx);
 
         TagDefMapper mapper = ctx.query(TagDefMapper.class);
-        List<TagDef> list = postfilt(mapper.all());
+
+        TagDefCriteria criteria = criteriaFromRequest(new TagDefCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        {
+            SwitchOverride<Integer> so;
+            so = filters.switchEntity("向量", false, //
+                    ctx.query(TagSetDefMapper.class).all(), //
+                    "tagv", criteria.tagSetId, false);
+            criteria.tagSetId = so.key;
+        }
+
+        List<TagDef> list = postfilt(mapper.filter(criteria));
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (TagDef o : list) {
@@ -50,5 +63,4 @@ public class TagDefManagerVbo
 
         return ctx;
     }
-
 }

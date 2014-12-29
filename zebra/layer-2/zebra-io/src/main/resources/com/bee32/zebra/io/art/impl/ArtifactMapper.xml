@@ -17,7 +17,7 @@
         <result property="bbox.dz" column="dz" />
         <result property="weight" column="weight" />
         <result property="netWeight" column="netweight" />
-        <result property="supplyMethod" column="supply" typeHandler="SupplyMethodTypeHandler" />
+        <result property="supplyMethod" column="supply" />
         <result property="supplyDelay" column="supplydelay" />
         <association property="category" javaType="com.bee32.zebra.io.art.ArtifactCategory">
             <id column="cat" />
@@ -66,7 +66,11 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
+            <if test="categoryId != null">and a.cat=#{categoryId}</if>
+            <if test="uomId != null">and a.uom=#{uomId}</if>
+            <if test="supplyMethod != null">and a.supply=#{supplyMethod}</if>
+            <if test="noCategory">and a.cat is null</if>
+            <if test="noSupplyMethod">and a.supply is null</if>
         </where>
     </select>
 

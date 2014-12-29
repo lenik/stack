@@ -11,8 +11,10 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.AttributeDef;
 
@@ -34,7 +36,18 @@ public class AttributeDefManagerVbo
         PageStruct p = new PageStruct(ctx);
 
         AttributeDefMapper mapper = ctx.query(AttributeDefMapper.class);
-        List<AttributeDef> list = postfilt(mapper.all());
+
+        AttributeDefCriteria criteria = criteriaFromRequest(new AttributeDefCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        {
+            SwitchOverride<Integer> so;
+            so = filters.switchEntity("模式", false, //
+                    ctx.query(SchemaDefMapper.class).all(), //
+                    "schema", criteria.schemaId, false);
+            criteria.schemaId = so.key;
+        }
+
+        List<AttributeDef> list = postfilt(mapper.filter(criteria));
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (AttributeDef o : list) {

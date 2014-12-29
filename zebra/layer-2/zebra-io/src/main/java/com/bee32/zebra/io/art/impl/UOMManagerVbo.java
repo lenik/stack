@@ -9,7 +9,6 @@ import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
-import net.bodz.bas.t.pojo.Pair;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.art.UOM;
@@ -18,6 +17,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.util.Listing;
 
 public class UOMManagerVbo
         extends Zc3Template_CEM<UOMManager, UOM> {
@@ -42,7 +42,7 @@ public class UOMManagerVbo
         {
             SwitchOverride<String> so;
             so = filters.switchPairs("属性", true, //
-                    Pair.convertList("数量", "长度", "质量"), //
+                    Listing.pairsValString("数量", "长度", "质量"), //
                     "property", criteria.property, criteria.noProperty);
             criteria.property = so.key;
             criteria.noProperty = so.isNull;

@@ -1,8 +1,6 @@
 package com.bee32.zebra.oa.file;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import net.bodz.bas.repr.form.meta.OfGroup;
 
@@ -26,7 +24,6 @@ public class FileInfo
 
     private Organization org;
     private Person person;
-    private final Set<String> tags = new HashSet<String>();
     private Date activeDate;
     private Date expireDate;
 
@@ -143,13 +140,6 @@ public class FileInfo
 
     public void setValue(Double value) {
         this.value = value;
-    }
-
-    /**
-     * 标签集
-     */
-    public Set<String> getTags() {
-        return tags;
     }
 
     /**

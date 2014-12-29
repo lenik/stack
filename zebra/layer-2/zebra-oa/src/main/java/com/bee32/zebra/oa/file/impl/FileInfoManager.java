@@ -11,7 +11,7 @@ import com.bee32.zebra.tk.sea.FooManager;
  * 
  * @label 文件/档案
  * 
- * @rel tag/?schema=9: 管理文件标签
+ * @rel tag/?tagv=5: 管理文件标签
  * @rel att/?schema=9: 管理文件属性
  * @rel org/: 管理企、事业组织
  * @rel person/: 管理联系人

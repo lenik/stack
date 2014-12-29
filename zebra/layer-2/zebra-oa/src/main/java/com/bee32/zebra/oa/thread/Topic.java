@@ -3,8 +3,6 @@ package com.bee32.zebra.oa.thread;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import net.bodz.bas.repr.form.meta.OfGroup;
 
@@ -26,7 +24,6 @@ public class Topic
     private double value;
     // private double minValue, maxValue; // for estimated values.
 
-    private Set<String> tags = new TreeSet<>();
     private List<TopicParty> parties = new ArrayList<TopicParty>();
     private List<Reply> replies = new ArrayList<>();
 
@@ -103,15 +100,6 @@ public class Topic
 
     public void setValue(double value) {
         this.value = value;
-    }
-
-    @OfGroup(OaGroups.Classification.class)
-    public Set<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
     }
 
     /**

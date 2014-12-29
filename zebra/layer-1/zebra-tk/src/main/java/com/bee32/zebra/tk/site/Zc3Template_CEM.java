@@ -302,13 +302,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     }
 
     protected List<T> postfilt(List<T> list) {
-        List<T> prefetch = new ArrayList<T>();
-        for (T o : list) {
-            prefetch.add(o);
-            if (prefetch.size() >= 40)
-                break;
-        }
-        return prefetch;
+        return list;
     }
 
     protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoEntity e) {

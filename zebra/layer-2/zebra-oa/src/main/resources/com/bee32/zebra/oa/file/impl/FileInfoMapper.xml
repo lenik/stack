@@ -14,6 +14,10 @@
         <result property="encoding" column="encoding" />
         <result property="downloads" column="ndl" />
         <result property="value" column="val" />
+        <association property="op" javaType="com.tinylily.model.base.security.User">
+            <id column="op" />
+            <result property="label" column="op_label" />
+        </association>
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
             <id column="org" />
             <result property="label" column="org_label" />
@@ -22,33 +26,28 @@
             <id column="person" />
             <result property="label" column="person_label" />
         </association>
+        <collection property="tags" javaType="ArrayList" ofType="com.tinylily.model.base.schema.TagDef">
+            <id column="tag_id" />
+            <result property="label" column="tag_label" />
+        </collection>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*,
+            op.label "op_label",
             org.label "org_label",
             person.label "person_label",
+            y.id "tag_id",
+            y.label "tag_label",
             u.label "uid_label",
             g.label "gid_label"
         from fileinfo a
+            left join "user" op on a.op=op.id
             left join org on a.org=org.id
             left join person on a.person=person.id
-            left join "user" u on a.uid=u.id
-            left join "group" g on a.gid=g.id
-        ]]>
-    </sql>
-
-    <sql id="select2"><![CDATA[
-        select
-            a.*,
-            org.label "org_label",
-            person.label "person_label",
-            u.label "uid_label",
-            g.label "gid_label"
-        from fileinfo a
-            left join org on a.org=org.id
-            left join person on a.person=person.id
+            left join filetag x on a.id=x.file
+            left join tag y on x.tag=y.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -61,12 +60,35 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
+            <if test="orgId != null">and a.org=#{orgId}</if>
+            <if test="personId != null">and a.person=#{personId}</if>
+            <if test="noOrg">and a.org is null</if>
+            <if test="noPerson">and a.person is null</if>
+
+            <!-- co -->
+            <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            <!-- moment-interval -->
+            <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+            <if test="year != null">and extract(year from a.t0)=#{year}</if>
+            <if test="noDate">and a.t0 is null</if>
+            <if test="noYear">and a.t0 is null</if>
+            <!-- message -->
+            <if test="opId != null">and a.op=#{opId}</if>
+            <if test="categoryId != null">and a.cat=#{categoryId}</if>
+            <if test="tagId != null">and x.tag=#{tagId}</if>
+            <if test="phaseId != null">and a.phase=#{phaseId}</if>
+            <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
+            <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
+            <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
+            <if test="noOp">and a.op is null</if>
+            <if test="noCategory">and a.cat is null</if>
+            <if test="noTag">and x.tag is null</if>
+            <if test="noPhase">and a.phase is null</if>
         </where>
     </select>
 
     <select id="select" parameterType="int" resultMap="map1">
-        <include refid="select2" />
+        <include refid="select1" />
         <where>
             <if test="_parameter != null">a.id=#{id}</if>
         </where>
@@ -96,5 +118,13 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from fileinfo
     </select>
+
+    <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[
+        select
+            extract(year from t0)::int "year", 
+            count(*) "count"
+        from fileinfo
+        group by extract(year from t0)::int
+    ]]></select>
 
 </mapper>
