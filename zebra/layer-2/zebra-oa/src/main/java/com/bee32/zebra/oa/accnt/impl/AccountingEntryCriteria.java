@@ -9,9 +9,9 @@ import com.tinylily.model.sea.QVariantMap;
 public class AccountingEntryCriteria
         extends CoMomentIntervalCriteria {
 
-    Integer side;
-    Integer code_;
-    DoubleRange valueRange;
+    public Integer side;
+    public Integer code_;
+    public DoubleRange valueRange;
 
     public Integer getSide() {
         return side;

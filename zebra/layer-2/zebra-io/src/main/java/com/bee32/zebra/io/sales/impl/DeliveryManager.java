@@ -1,10 +1,10 @@
 package com.bee32.zebra.io.sales.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.sales.Delivery;
-import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
+import com.bee32.zebra.tk.sea.FooManager;
 
 /**
  * 送货单
@@ -16,17 +16,10 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("dldoc")
 public class DeliveryManager
-        extends CoEntityManager {
+        extends FooManager {
 
-    DeliveryMapper mapper;
-
-    public DeliveryManager() {
-        super(Delivery.class);
-        mapper = VhostDataService.getInstance().getMapper(DeliveryMapper.class);
-    }
-
-    public DeliveryMapper getMapper() {
-        return mapper;
+    public DeliveryManager(IQueryable context) {
+        super(Delivery.class, context);
     }
 
 }

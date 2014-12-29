@@ -1,10 +1,10 @@
 package com.bee32.zebra.io.sales.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.sales.SalesOrder;
-import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
+import com.bee32.zebra.tk.sea.FooManager;
 
 /**
  * 销售订单
@@ -19,17 +19,10 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("sdoc")
 public class SalesOrderManager
-        extends CoEntityManager {
+        extends FooManager {
 
-    SalesOrderMapper mapper;
-
-    public SalesOrderManager() {
-        super(SalesOrder.class);
-        mapper = VhostDataService.getInstance().getMapper(SalesOrderMapper.class);
-    }
-
-    public SalesOrderMapper getMapper() {
-        return mapper;
+    public SalesOrderManager(IQueryable context) {
+        super(SalesOrder.class, context);
     }
 
 }

@@ -33,9 +33,8 @@ public class AccountingEntryManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        AccountingEntryManager manager = ref.get();
-        AccountingEntryMapper mapper = manager.getMapper();
-        List<AccountingEntry> list = filter1(mapper.all());
+        AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);
+        List<AccountingEntry> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 

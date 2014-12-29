@@ -6,7 +6,6 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.IHtmlViewContext;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -15,12 +14,14 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.sys.Schemas;
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SectionDiv;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
-import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.model.base.schema.PhaseDef;
+import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
+import com.tinylily.model.base.schema.impl.CategoryDefMapper;
 import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
 import com.tinylily.model.base.schema.impl.PhaseDefMapper;
 
@@ -33,7 +34,7 @@ public class TopicManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(TopicManager.class);
         formStruct = new Topic().getFormStruct();
-        insertIndexFields("i*sa", "op", "subject", "text", "category", "phase", "value");
+        insertIndexFields("i*sa", "op", "beginTime", "endTime", "subject", "text", "category", "phase", "value");
     }
 
     @Override
@@ -43,52 +44,41 @@ public class TopicManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        TopicManager manager = ref.get();
-        TopicMapper mapper = manager.getMapper();
+        TopicMapper mapper = ctx.query(TopicMapper.class);
 
-        TopicCriteria criteria = new TopicCriteria();
-        try {
-            criteria.populate(ctx.getRequest().getParameterMap());
-        } catch (ParseException e) {
-            throw new ViewBuilderException(e.getMessage(), e);
-        }
-
-        SectionDiv section = new SectionDiv(p.mainCol, "s-filter", "过滤/Filter", IFontAwesomeCharAliases.FA_FILTER);
+        TopicCriteria criteria = criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
         {
-            HtmlDivTag out = section.contentDiv;
-            HtmlDivTag catDiv = out.div().text("分类：");
-            {
-            }
+            SwitchOverride<Integer> so;
+            so = filters.switchEntity("分类", true, //
+                    ctx.query(CategoryDefMapper.class).filter(CategoryDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
+                    "cat", criteria.categoryId, criteria.noCategory);
+            criteria.categoryId = so.key;
+            criteria.noCategory = so.isNull;
 
-            HtmlDivTag phaseDiv = out.div().text("阶段：");
-            {
-                PhaseDefMapper phaseMapper = VhostDataService.getInstance().getMapper(PhaseDefMapper.class);
-                PhaseDefCriteria phaseDefCriteria = new PhaseDefCriteria();
-                phaseDefCriteria.setSchemaId(Schemas.TOPIC_POST);
-                List<PhaseDef> phases = phaseMapper.filter(phaseDefCriteria);
-                for (PhaseDef phase : phases) {
-                    phase.getLabel();
-                    phaseDiv.a().href("?phase");
-                }
-            }
+            so = filters.switchEntity("阶段", true, //
+                    ctx.query(PhaseDefMapper.class).filter(PhaseDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
+                    "phase", criteria.phaseId, criteria.noPhase);
+            criteria.phaseId = so.key;
+            criteria.noPhase = so.isNull;
 
-            HtmlDivTag valDiv = out.div().text("金额：");
-            {
-                // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
-            }
+            // HtmlDivTag valDiv = out.div().text("金额：");
+            // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
 
-            HtmlDivTag yearDiv = out.div().text("年份：");
-            {
-                yearDiv.text("2010 2011 2012 2013 2014 更多");
-            }
+            so = filters.switchPairs("年份", false, //
+                    mapper.histoByYear(), "year", criteria.year, criteria.noYear);
+            criteria.year = so.key;
+            criteria.noYear = so.isNull;
         }
 
-        List<Topic> list = filter1(mapper.filter(criteria));
+        List<Topic> list = postfilt(mapper.filter(criteria));
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Topic o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
             ref(tr.td(), o.getOp()).align("center");
+            tr.td().text(fn.formatDate(o.getBeginTime()));
+            tr.td().text(fn.formatDate(o.getEndTime()));
             cocols("m", tr, o);
             ref(tr.td(), o.getCategory());
             ref(tr.td(), o.getPhase()).class_("small");
@@ -99,6 +89,7 @@ public class TopicManagerVbo
         dumpFullData(p.extradata, list);
 
         if (extensions) {
+            SectionDiv section;
             section = new SectionDiv(p.mainCol, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
             section = new SectionDiv(p.mainCol, "s-bar", "图表/Charts", IFontAwesomeCharAliases.FA_BAR_CHART);
             section = new SectionDiv(p.mainCol, "s-line", "图表/Charts", IFontAwesomeCharAliases.FA_LINE_CHART);
@@ -109,5 +100,4 @@ public class TopicManagerVbo
 
         return ctx;
     }
-
 }

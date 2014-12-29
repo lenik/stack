@@ -33,9 +33,8 @@ public class StockEntryManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        StockEntryManager manager = ref.get();
-        StockEntryMapper mapper = manager.getMapper();
-        List<StockEntry> list = filter1(mapper.all());
+        StockEntryMapper mapper = ctx.query(StockEntryMapper.class);
+        List<StockEntry> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (StockEntry o : list) {

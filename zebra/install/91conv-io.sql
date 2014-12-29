@@ -40,7 +40,10 @@
     insert into stdoc(id, subject, text, cat, t0, t1, val, org, person,
             creation, lastmod, uid)
         select a.id, a.label "subject", a.description "text",
-            cat.id "cat", begin_time "t0", end_time "t1", native_total "val", 
+            cat.id "cat",
+            coalesce(a.begin_time, a.created_date) "t0",
+            a.end_time "t1",
+            native_total "val", 
             case when p.stereo='ORG' then a.org else null end "org", 
             case when p.stereo='PER' then a.org else null end "person",
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
@@ -51,7 +54,8 @@
     insert into stentry(id, doc, art, place, price, qty, t0)
         select id,
             parent "doc", material "art", warehouse "place", 
-            price, quantity, begin_time "t0"
+            price, quantity,
+            begin_time "t0"
         from old.stock_order_item;
 
 -- sales order
@@ -60,7 +64,8 @@
             org, person, val, topic, op, state,
             creation, lastmod, uid)
         select a.id,
-            a.label, a.description, a.begin_time, 
+            a.label, a.description,
+            coalesce(a.begin_time, a.created_date) "t0",
             case when c.stereo='ORG' then a.customer else null end "org", 
             case when c.stereo='PER' then a.customer else null end "person",
             a.native_total "val",

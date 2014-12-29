@@ -38,7 +38,7 @@ h3 {
     vertical-align: top;
 }
 
-.col-id {
+.zu-id {
     font-size: small;
     text-align: right;
 }
@@ -47,19 +47,19 @@ h3 {
     overflow: hidden;
 }
 
-.layout {
+.zu-layout {
     padding: 0;
     border-spacing: 0;
     border: none;
 }
 
-.my-group {
+.zu-fgroup {
     text-align: left;
     line-height: 2em;
     font-size: large;
 }
 
-.my-label {
+.zu-flabel {
     display: inline-block;
     width: 50%;
     text-align: right;
@@ -67,11 +67,11 @@ h3 {
     text-overflow: ellipsis;
 }
 
-.null {
+.zu-null {
     font-size: small;
 }
 
-.section {
+.zu-section {
     display: table;
     width: 100%;
     border-top-style: solid;
@@ -80,16 +80,16 @@ h3 {
     border-bottom-width: 1px;
 }
 
-.section + .section {
+.zu-section + .zu-section {
     border-top: none;
 }
 
-.section>* {
+.zu-section>* {
     display: table-cell;
     padding: .3em;
 }
 
-.section-head {
+.zu-section-head {
     width: 8em;
     font-size: large;
     text-align: center;
@@ -97,141 +97,155 @@ h3 {
     border-right: solid 3px #e4e2d7;
 }
 
-.section-head>.icon {
+.zu-section-head>.icon {
     font-size: 2.5em;
 }
 
-.section:hover>.section-head {
+.zu-section:hover>.zu-section-head {
     font-weight: bold;
 }
 
-.section:hover>.section-head>.icon {
+.zu-section:hover>.zu-section-head>.icon {
 }
 
-.section-body {
+.zu-section-body {
     x-width: *;
 }
 
-#body1 {
+.zu-switcher ul {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+.zu-switcher li {
+    display: inline;
+}
+
+.zu-switcher .active {
+    font-weight: bold; 
+}
+
+#zp-body1 {
     padding: 0;
 }
 
-#body2 {
+#zp-body2 {
     padding: 0;
 }
 
-#body3 {
+#zp-body3 {
     padding: 0;
 }
 
-#content {
+#zp-content {
     padding: 1em;
 }
 
-#extradata {
+#zp-extradata {
     display: none;
 }
 
-#head {
+#zp-head {
     padding: 1em;
 }
 
-#head-col {
+#zp-head-col {
     padding: 0;
 }
 
-#infoman {
+#zp-infoman {
     list-style-type: square;
 }
 
-#links {
+#zp-links {
     font-style: italic;
     font-size: small;
 }
 
-#links ul {
+#zp-links ul {
     list-style-type: circle;
     padding-left: 2em;
     margin: 0;
 }
 
-#logo {
+#zp-logo {
     text-align: center;
     font-size: x-large;
     margin: 2em;
 }
 
-#main-col {
+#zp-main-col {
     padding: 0;
 }
 
-#menu>ul {
+#zp-menu>ul {
     font-size: large;
     padding-left: 1.5em;
     list-style-type: none;
     line-height: 1.2em;
 }
 
-#menu>ul>li {
+#zp-menu>ul>li {
     font-style: italic;
     margin-top: 1em;
 }
 
-#menu>ul>li>ul {
+#zp-menu>ul>li>ul {
     font-size: small;
     padding-left: 1em;
     list-style-type: none;
 }
 
-#menu a{
+#zp-menu a{
     font-style: normal;
 }
 
-#menu-col {
+#zp-menu-col {
     padding: 0;
 }
 
-#menu-col>nav {
+#zp-menu-col>nav {
     margin: 1em 0;
 }
 
-.container>#menu-col { /* fix: so as to disable float within container-table. */
+.container>#zp-menu-col { /* fix: so as to disable float within container-table. */
     float: left;
 }
 
-#menu-col>div {
+#zp-menu-col>div {
     margin-bottom: 1em;
 }
 
-#preview {
+#zp-preview {
     margin: 2em 0 0;
 }
 
-#preview>img {
+#zp-preview>img {
     width: 100px;
     height: 100px;
 }
 
-#right-col {
+#zp-right-col {
     padding: 1em;
 }
 
-form#search {
+form#zp-search {
     text-align: center;
     font-style: italic;
     font-size: small;
 }
 
-#stat {
+#zp-stat {
     font-size: small;
 }
 
-#stat ul {
+#zp-stat ul {
     list-style: none;
     padding-left: 0;
 }
 
-#welcome {
+#zp-welcome {
     text-align: center;
     font-size: small;
     font-style: italic;

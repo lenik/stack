@@ -1,8 +1,9 @@
 package com.bee32.zebra.oa.thread.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 回复<br>
@@ -15,15 +16,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class ReplyManager
         extends FooManager {
 
-    ReplyMapper mapper;
-
-    public ReplyManager() {
-        super(Reply.class);
-        mapper = VhostDataService.getInstance().getMapper(ReplyMapper.class);
-    }
-
-    public ReplyMapper getMapper() {
-        return mapper;
+    public ReplyManager(IQueryable context) {
+        super(Reply.class, context);
     }
 
 }

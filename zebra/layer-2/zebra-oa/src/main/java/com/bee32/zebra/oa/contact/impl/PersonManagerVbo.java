@@ -35,9 +35,8 @@ public class PersonManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        PersonManager manager = ref.get();
-        PersonMapper mapper = manager.getMapper();
-        List<Person> list = filter1(mapper.all());
+        PersonMapper mapper = ctx.query(PersonMapper.class);
+        List<Person> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 

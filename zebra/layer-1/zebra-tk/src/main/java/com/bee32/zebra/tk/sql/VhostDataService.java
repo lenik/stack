@@ -11,12 +11,13 @@ import net.bodz.bas.db.batis.MybatisMapperProvider;
 import net.bodz.bas.db.jdbc.BoneCPDataSourceProvider;
 import net.bodz.bas.db.jdbc.DataSourceArguments;
 import net.bodz.bas.db.jdbc.IDataSourceProvider;
+import net.bodz.bas.rtx.AbstractQueryable;
 import net.bodz.bas.site.vhost.CurrentVirtualHost;
 import net.bodz.bas.site.vhost.IVirtualHost;
 import net.bodz.bas.site.vhost.VirtualHostManager;
 
 public class VhostDataService
-        implements IMapperProvider {
+        extends AbstractQueryable {
 
     public static final String ATTRIBUTE_KEY = VhostDataService.class.getName();
 
@@ -46,18 +47,23 @@ public class VhostDataService
         }
     }
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
     public Connection getConnection()
             throws SQLException {
         return dataSource.getConnection();
     }
 
+    public IMapperProvider getMapperProvider() {
+        return mapperProvider;
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
-    public <T extends IMapper> T getMapper(Class<T> mapperClass) {
-        return mapperProvider.getMapper(mapperClass);
+    public <spec_t> spec_t query(Class<spec_t> specificationClass) {
+        if (IMapper.class.isAssignableFrom(specificationClass)) {
+            Class<? extends IMapper> mapperClass = (Class<? extends IMapper>) specificationClass;
+            return (spec_t) mapperProvider.getMapper(mapperClass);
+        }
+        return super.query(specificationClass);
     }
 
     public static VhostDataService getInstance() {

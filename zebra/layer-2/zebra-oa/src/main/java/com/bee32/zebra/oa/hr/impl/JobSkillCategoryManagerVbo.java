@@ -33,9 +33,8 @@ public class JobSkillCategoryManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        JobSkillCategoryManager manager = ref.get();
-        JobSkillCategoryMapper mapper = manager.getMapper();
-        List<JobSkillCategory> list = filter1(mapper.all());
+        JobSkillCategoryMapper mapper = ctx.query(JobSkillCategoryMapper.class);
+        List<JobSkillCategory> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (JobSkillCategory o : list) {

@@ -40,25 +40,25 @@ public abstract class Zc3Template_CE<T extends CoEntity>
 
         HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
         {
-            HtmlDivTag headDiv = mainCol.div().id("head").class_("info clearfix");
+            HtmlDivTag headDiv = mainCol.div().id("zp-head").class_("info clearfix");
             headDiv.div().id(ID.title);
 
-            HtmlDivTag headCol1 = headDiv.div().id("head-col1").class_("col-xs-6");
+            HtmlDivTag headCol1 = headDiv.div().id("zp-head-col1").class_("col-xs-6");
             headCol1.div().id(ID.stat);
 
-            HtmlDivTag cmdsDiv = headCol1.div().id("cmds");
+            HtmlDivTag cmdsDiv = headCol1.div().id("zp-cmds");
             cmdsDiv.div().id(ID.cmds0);
             cmdsDiv.div().id(ID.cmds1);
 
-            HtmlDivTag headCol2 = headDiv.div().id("head-col2").class_("col-xs-6");
-            HtmlDivTag headLinks = headCol2.div().id("links");
+            HtmlDivTag headCol2 = headDiv.div().id("zp-head-col2").class_("col-xs-6");
+            HtmlDivTag headLinks = headCol2.div().id("zp-links");
             headLinks.span().text("您可能需要进行下面的操作:");
             headLinks.ul().id(ID.links_ul);
         }
 
         HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 info");
         {
-            HtmlDivTag previewDiv = rightCol.div().id("preview").align("center");
+            HtmlDivTag previewDiv = rightCol.div().id("zp-preview").align("center");
             previewDiv.img().src("pic.png");
 
             HtmlDivTag infosel = rightCol.div().id(ID.infosel);

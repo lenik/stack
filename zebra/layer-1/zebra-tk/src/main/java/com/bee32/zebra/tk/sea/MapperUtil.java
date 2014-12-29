@@ -19,7 +19,7 @@ public class MapperUtil {
             return null;
         }
 
-        IMapper mapper = VhostDataService.getInstance().getMapper(mapperClass);
+        IMapper mapper = VhostDataService.getInstance().query(mapperClass);
         return (IMapperTemplate<T, C>) mapper;
     }
 

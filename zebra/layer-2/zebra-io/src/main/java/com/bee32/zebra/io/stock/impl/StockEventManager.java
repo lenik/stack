@@ -1,10 +1,10 @@
 package com.bee32.zebra.io.stock.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.stock.StockEvent;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 库存操作业务，如出、入库；调拨；委外加工等。
@@ -21,15 +21,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class StockEventManager
         extends FooManager {
 
-    StockEventMapper mapper;
-
-    public StockEventManager() {
-        super(StockEvent.class);
-        mapper = VhostDataService.getInstance().getMapper(StockEventMapper.class);
-    }
-
-    public StockEventMapper getMapper() {
-        return mapper;
+    public StockEventManager(IQueryable context) {
+        super(StockEvent.class, context);
     }
 
 }

@@ -3,25 +3,25 @@ package com.bee32.zebra.tk.site;
 public interface IZebraSiteLayout {
 
     interface ID {
-        String body1 = "body1";
-        String body2 = "body2";
-        String body3 = "body3";
-        String main_col = "main-col";
+        String body1 = "zp-body1";
+        String body2 = "zp-body2";
+        String body3 = "zp-body3";
+        String main_col = "zp-main-col";
 
-        String right_col = "right-col";
+        String right_col = "zp-right-col";
 
-        String menu_ul = "menu-ul";
-        String title = "title";
-        String stat = "stat";
-        String cmds0 = "cmds.0";
-        String cmds1 = "cmds.1";
+        String menu_ul = "zp-menu-ul";
+        String title = "zp-title";
+        String stat = "zp-stat";
+        String cmds0 = "zp-cmds.0";
+        String cmds1 = "zp-cmds.1";
 
-        String links_ul = "links-ul";
-        String infosel = "infosel";
-        String infoselData = "infosel-data";
-        String infoman_ul = "infoman-ul";
+        String links_ul = "zp-links-ul";
+        String infosel = "zp-infosel";
+        String infoselData = "zp-infosel-data";
+        String infoman_ul = "zp-infoman-ul";
 
-        String extradata = "extradata";
+        String extradata = "zp-extradata";
     }
 
 }

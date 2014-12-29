@@ -33,9 +33,8 @@ public class FabOpCodeManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        FabOpCodeManager manager = ref.get();
-        FabOpCodeMapper mapper = manager.getMapper();
-        List<FabOpCode> list = filter1(mapper.all());
+        FabOpCodeMapper mapper = ctx.query(FabOpCodeMapper.class);
+        List<FabOpCode> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabOpCode o : list) {

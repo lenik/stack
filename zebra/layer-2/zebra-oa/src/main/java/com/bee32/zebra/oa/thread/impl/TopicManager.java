@@ -3,10 +3,10 @@ package com.bee32.zebra.oa.thread.impl;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathDispatchException;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 用于跟踪产品、服务的生命周期。项目可以是潜在的销售机会，或已在履行的契约。
@@ -25,15 +25,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class TopicManager
         extends FooManager {
 
-    TopicMapper mapper;
-
-    public TopicManager() {
-        super(Topic.class);
-        mapper = VhostDataService.getInstance().getMapper(TopicMapper.class);
-    }
-
-    public TopicMapper getMapper() {
-        return mapper;
+    public TopicManager(IQueryable context) {
+        super(Topic.class, context);
     }
 
     @Override

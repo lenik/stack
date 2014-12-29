@@ -33,9 +33,8 @@ public class EmployeeSkillManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        EmployeeSkillManager manager = ref.get();
-        EmployeeSkillMapper mapper = manager.getMapper();
-        List<EmployeeSkill> list = filter1(mapper.all());
+        EmployeeSkillMapper mapper = ctx.query(EmployeeSkillMapper.class);
+        List<EmployeeSkill> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (EmployeeSkill o : list) {

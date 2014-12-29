@@ -1,3 +1,4 @@
+com.bee32.zebra.io.art.impl.ArtifactCategoryManager
 com.bee32.zebra.io.art.impl.ArtifactManager
 com.bee32.zebra.io.art.impl.UOMManager
 com.bee32.zebra.io.sales.impl.DeliveryManager

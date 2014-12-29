@@ -6,6 +6,7 @@ import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.repr.CoEntityManager;
@@ -13,8 +14,8 @@ import com.tinylily.repr.CoEntityManager;
 public abstract class FooManager
         extends CoEntityManager {
 
-    public FooManager(Class<? extends CoEntity> entityType) {
-        super(entityType);
+    public FooManager(Class<? extends CoEntity> entityType, IQueryable context) {
+        super(entityType, context);
     }
 
     @Override
@@ -24,10 +25,10 @@ public abstract class FooManager
 
         if (StringPred.isDecimal(token)) {
             Long id = Long.parseLong(token);
-            IMapperTemplate<?, ?> mapperTemplate = MapperUtil.getMapperTemplate(entityType);
-            if (mapperTemplate == null)
+            IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(getEntityType());
+            if (mapper == null)
                 throw new NullPointerException("mapperTemplate");
-            Object obj = mapperTemplate.select(id);
+            Object obj = mapper.select(id);
             if (obj != null)
                 return PathArrival.shift(previous, obj, tokens);
         }

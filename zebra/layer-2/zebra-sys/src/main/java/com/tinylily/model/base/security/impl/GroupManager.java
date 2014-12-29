@@ -1,6 +1,7 @@
 package com.tinylily.model.base.security.impl;
 
-import com.bee32.zebra.tk.sql.VhostDataService;
+import net.bodz.bas.rtx.IQueryable;
+
 import com.tinylily.model.base.security.Group;
 import com.tinylily.repr.CoEntityManager;
 
@@ -19,15 +20,8 @@ import com.tinylily.repr.CoEntityManager;
 public class GroupManager
         extends CoEntityManager {
 
-    GroupMapper mapper;
-
-    public GroupManager() {
-        super(Group.class);
-        mapper = VhostDataService.getInstance().getMapper(GroupMapper.class);
-    }
-
-    public GroupMapper getMapper() {
-        return mapper;
+    public GroupManager(IQueryable context) {
+        super(Group.class, context);
     }
 
 }

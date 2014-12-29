@@ -33,9 +33,8 @@ public class AttributeDefManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        AttributeDefManager manager = ref.get();
-        AttributeDefMapper mapper = manager.getMapper();
-        List<AttributeDef> list = filter1(mapper.all());
+        AttributeDefMapper mapper = ctx.query(AttributeDefMapper.class);
+        List<AttributeDef> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (AttributeDef o : list) {

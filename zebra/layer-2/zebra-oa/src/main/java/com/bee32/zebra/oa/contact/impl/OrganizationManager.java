@@ -1,10 +1,10 @@
 package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 所有感兴趣的相关企、事业单位，包括：客户、供应商、雇员、竞争对手等等。
@@ -23,15 +23,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class OrganizationManager
         extends FooManager {
 
-    OrganizationMapper mapper;
-
-    public OrganizationManager() {
-        super(Organization.class);
-        mapper = VhostDataService.getInstance().getMapper(OrganizationMapper.class);
-    }
-
-    public OrganizationMapper getMapper() {
-        return mapper;
+    public OrganizationManager(IQueryable context) {
+        super(Organization.class, context);
     }
 
 }

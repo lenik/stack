@@ -35,9 +35,8 @@ public class OrganizationManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        OrganizationManager manager = ref.get();
-        OrganizationMapper mapper = manager.getMapper();
-        List<Organization> list = filter1(mapper.all());
+        OrganizationMapper mapper = ctx.query(OrganizationMapper.class);
+        List<Organization> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 

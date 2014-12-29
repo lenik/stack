@@ -33,9 +33,8 @@ public class CategoryDefManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        CategoryDefManager manager = ref.get();
-        CategoryDefMapper mapper = manager.getMapper();
-        List<CategoryDef> list = filter1(mapper.all());
+        CategoryDefMapper mapper = ctx.query(CategoryDefMapper.class);
+        List<CategoryDef> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (CategoryDef o : list) {

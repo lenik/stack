@@ -36,9 +36,8 @@ public class AccountingEventManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        AccountingEventManager event = ref.get();
-        AccountingEventMapper mapper = event.getMapper();
-        List<AccountingEvent> list = filter1(mapper.all());
+        AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
+        List<AccountingEvent> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 

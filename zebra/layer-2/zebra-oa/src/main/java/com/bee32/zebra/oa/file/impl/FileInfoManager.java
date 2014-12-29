@@ -1,10 +1,10 @@
 package com.bee32.zebra.oa.file.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 描述文件、档案的相关信息。
@@ -20,15 +20,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class FileInfoManager
         extends FooManager {
 
-    FileInfoMapper mapper;
-
-    public FileInfoManager() {
-        super(FileInfo.class);
-        mapper = VhostDataService.getInstance().getMapper(FileInfoMapper.class);
-    }
-
-    public FileInfoMapper getMapper() {
-        return mapper;
+    public FileInfoManager(IQueryable context) {
+        super(FileInfo.class, context);
     }
 
 }

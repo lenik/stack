@@ -33,9 +33,8 @@ public class FabDeviceManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        FabDeviceManager manager = ref.get();
-        FabDeviceMapper mapper = manager.getMapper();
-        List<FabDevice> list = filter1(mapper.all());
+        FabDeviceMapper mapper = ctx.query(FabDeviceMapper.class);
+        List<FabDevice> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabDevice o : list) {

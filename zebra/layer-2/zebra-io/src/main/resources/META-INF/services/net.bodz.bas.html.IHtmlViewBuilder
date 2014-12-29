@@ -1,3 +1,5 @@
+com.bee32.zebra.io.art.impl.ArtifactCategoryManagerVbo
+com.bee32.zebra.io.art.impl.ArtifactCategoryVbo
 com.bee32.zebra.io.art.impl.ArtifactManagerVbo
 com.bee32.zebra.io.art.impl.ArtifactVbo
 com.bee32.zebra.io.art.impl.UOMManagerVbo

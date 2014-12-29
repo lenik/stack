@@ -1,6 +1,7 @@
 package com.tinylily.model.base.security.impl;
 
-import com.bee32.zebra.tk.sql.VhostDataService;
+import net.bodz.bas.rtx.IQueryable;
+
 import com.tinylily.model.base.security.User;
 import com.tinylily.repr.CoEntityManager;
 
@@ -18,15 +19,8 @@ import com.tinylily.repr.CoEntityManager;
 public class UserManager
         extends CoEntityManager {
 
-    UserMapper mapper;
-
-    public UserManager() {
-        super(User.class);
-        mapper = VhostDataService.getInstance().getMapper(UserMapper.class);
-    }
-
-    public UserMapper getMapper() {
-        return mapper;
+    public UserManager(IQueryable context) {
+        super(User.class, context);
     }
 
 }

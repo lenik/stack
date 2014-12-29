@@ -1,9 +1,9 @@
 package com.tinylily.model.base.schema.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 import com.tinylily.model.base.schema.PhaseDef;
 
 /**
@@ -15,15 +15,8 @@ import com.tinylily.model.base.schema.PhaseDef;
 public class PhaseDefManager
         extends FooManager {
 
-    PhaseDefMapper mapper;
-
-    public PhaseDefManager() {
-        super(PhaseDef.class);
-        mapper = VhostDataService.getInstance().getMapper(PhaseDefMapper.class);
-    }
-
-    public PhaseDefMapper getMapper() {
-        return mapper;
+    public PhaseDefManager(IQueryable context) {
+        super(PhaseDef.class, context);
     }
 
 }

@@ -35,9 +35,8 @@ public class ReplyManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        ReplyManager manager = ref.get();
-        ReplyMapper mapper = manager.getMapper();
-        List<Reply> list = filter1(mapper.all());
+        ReplyMapper mapper = ctx.query(ReplyMapper.class);
+        List<Reply> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Reply o : list) {

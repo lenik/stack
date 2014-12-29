@@ -2,59 +2,59 @@ a {
     color: hsl(0, 100%, 50%);
 }
 
-.col-id {
+.zu-id {
     color: gray;
 }
 
-.info {
+.zu-info {
     background: hsl(45, 100%, 90%);
 }
 
-.section {
+.zu-section {
     border-top-color: hsl(0, 0%, 93%);
     border-bottom-color: hsl(0, 0%, 93%);
 }
 
-.section:nth-child(odd) {
+.zu-section:nth-child(odd) {
     background-color: hsl(0, 0%, 98%);
 }
 
-.section:hover {
+.zu-section:hover {
     background-color: hsl(64, 100%, 97%);
 }
 
-.section-head {
+.zu-section-head {
     border-right: solid 3px #e4e2d7;
 }
 
-.section-head>.icon {
+.zu-section-head>.icon {
     color: hsl(44, 17%, 75%);
 }
 
-.section:hover>.section-head {
+.zu-section:hover>.zu-section-head {
     border-right-color: #cec7a3;
 }
 
-.section:hover>.section-head>.icon {
+.zu-section:hover>.zu-section-head>.icon {
     color: hsl(44, 55%, 50%);
 }
 
-#links {
+#zp-links {
     color: hsl(30, 100%, 30%);
 }
 
-#links a {
+#zp-links a {
     color: hsl(30, 100%, 30%);
 }
 
-#menu a {
+#zp-menu a {
     color: black;
 }
 
-#menu-col {
+#zp-menu-col {
     background: hsl(0, 100%, 90%);
 }
 
-#stat {
+#zp-stat {
     color: gray;
 }

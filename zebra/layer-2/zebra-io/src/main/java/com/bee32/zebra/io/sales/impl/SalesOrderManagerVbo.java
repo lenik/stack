@@ -33,9 +33,8 @@ public class SalesOrderManagerVbo
 
         PageStruct p = new PageStruct(ctx);
 
-        SalesOrderManager manager = ref.get();
-        SalesOrderMapper mapper = manager.getMapper();
-        List<SalesOrder> list = filter1(mapper.all());
+        SalesOrderMapper mapper = ctx.query(SalesOrderMapper.class);
+        List<SalesOrder> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (SalesOrder o : list) {

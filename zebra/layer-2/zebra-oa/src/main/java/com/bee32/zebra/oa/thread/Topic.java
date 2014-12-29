@@ -12,6 +12,7 @@ import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.IMomentInterval;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.base.schema.PhaseDef;
+import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
 public class Topic
@@ -30,7 +31,16 @@ public class Topic
     private List<Reply> replies = new ArrayList<>();
 
     /**
-     * @label 分类
+     * 业务员
+     */
+    @Override
+    @OfGroup(CoMessage.class)
+    public User getOp() {
+        return super.getOp();
+    }
+
+    /**
+     * 分类
      */
     @OfGroup(OaGroups.Classification.class)
     public CategoryDef getCategory() {
@@ -42,7 +52,7 @@ public class Topic
     }
 
     /**
-     * @label 阶段
+     * 阶段
      */
     @OfGroup(OaGroups.Classification.class)
     public PhaseDef getPhase() {
@@ -54,7 +64,7 @@ public class Topic
     }
 
     /**
-     * @label 开始时间
+     * 开始时间
      */
     @OfGroup(OaGroups.Schedule.class)
     @Override
@@ -68,7 +78,7 @@ public class Topic
     }
 
     /**
-     * @label 结束时间
+     * 结束时间
      */
     @OfGroup(OaGroups.Schedule.class)
     @Override
@@ -104,6 +114,9 @@ public class Topic
         this.tags = tags;
     }
 
+    /**
+     * 参与者
+     */
     public List<TopicParty> getParties() {
         return parties;
     }
@@ -112,6 +125,9 @@ public class Topic
         this.parties = parties;
     }
 
+    /**
+     * 跟进
+     */
     @OfGroup(OaGroups.UserInteraction.class)
     public List<Reply> getReplies() {
         return replies;

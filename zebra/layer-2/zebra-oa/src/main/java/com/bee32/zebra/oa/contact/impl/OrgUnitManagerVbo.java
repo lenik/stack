@@ -33,9 +33,8 @@ public class OrgUnitManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        OrgUnitManager manager = ref.get();
-        OrgUnitMapper mapper = manager.getMapper();
-        List<OrgUnit> list = filter1(mapper.all());
+        OrgUnitMapper mapper = ctx.query(OrgUnitMapper.class);
+        List<OrgUnit> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (OrgUnit o : list) {

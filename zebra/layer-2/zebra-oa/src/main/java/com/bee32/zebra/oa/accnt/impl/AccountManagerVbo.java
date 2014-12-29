@@ -33,9 +33,8 @@ public class AccountManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        AccountManager manager = ref.get();
-        AccountMapper mapper = manager.getMapper();
-        List<Account> list = filter1(mapper.all());
+        AccountMapper mapper = ctx.query(AccountMapper.class);
+        List<Account> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 

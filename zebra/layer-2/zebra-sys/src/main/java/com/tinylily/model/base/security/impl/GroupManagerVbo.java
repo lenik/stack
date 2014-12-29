@@ -33,9 +33,8 @@ public class GroupManagerVbo
 
         PageStruct p = new PageStruct(ctx);
 
-        GroupManager manager = ref.get();
-        GroupMapper mapper = manager.getMapper();
-        List<Group> list = filter1(mapper.all());
+        GroupMapper mapper = ctx.query(GroupMapper.class);
+        List<Group> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Group o : list) {

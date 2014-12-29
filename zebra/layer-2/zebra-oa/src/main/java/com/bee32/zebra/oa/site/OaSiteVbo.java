@@ -85,7 +85,7 @@ public class OaSiteVbo
 
             // stylesheets
             head.link().css(_webApp_ + "site.css");
-            // head.link().css(_webApp_ + "theme-" + pref.getTheme() + ".css").id("themeLink");
+            // head.link().css(_webApp_ + "theme-" + pref.getTheme() + ".css").id("zp-themeLink");
 
             // scripts
             head.script().javascript("" + //
@@ -101,7 +101,7 @@ public class OaSiteVbo
         HtmlDivTag containerDiv = body.div().class_("container").style("width: 100%; padding: 0");
         HtmlDivTag rowDiv = containerDiv.div().class_("container-row");
 
-        HtmlDivTag menuCol = rowDiv.div().id("menu-col").class_("col-sm-2");
+        HtmlDivTag menuCol = rowDiv.div().id("zp-menu-col").class_("col-sm-2");
         {
             if (ref instanceof PathArrivalEntry) {
                 IHtmlTag nav = menuCol.nav().ol().class_("breadcrumb");
@@ -131,25 +131,25 @@ public class OaSiteVbo
                 }
             }
 
-            HtmlDivTag logoDiv = menuCol.div().id("logo").text("SECCA");
+            HtmlDivTag logoDiv = menuCol.div().id("zp-logo").text("SECCA");
             logoDiv.br();
             logoDiv.text("ERP 3.0alpha");
 
-            HtmlDivTag welcomeDiv = menuCol.div().id("welcome");
+            HtmlDivTag welcomeDiv = menuCol.div().id("zp-welcome");
             welcomeDiv.text("欢迎您，").br();
             welcomeDiv.text("海宁皮包有限公司").br();
             welcomeDiv.text("的").br();
             welcomeDiv.text("张三 销售员！");
 
-            HtmlSpanTag logout = welcomeDiv.span().id("logout");
+            HtmlSpanTag logout = welcomeDiv.span().id("zp-logout");
             logout.text("[注销]");
 
-            HtmlFormTag searchForm = menuCol.form().id("search");
+            HtmlFormTag searchForm = menuCol.form().id("zp-search");
             searchForm.text("搜索：");
             searchForm.input().id("q");
 
             menuCol.hr();
-            HtmlDivTag menuDiv = menuCol.div().id("menu");
+            HtmlDivTag menuDiv = menuCol.div().id("zp-menu");
             HtmlUlTag menuUl = menuDiv.ul().id(ID.menu_ul);
             mkMenu(menuUl);
         }
@@ -158,7 +158,7 @@ public class OaSiteVbo
         if (!frameOnly)
             indexBody(body1, site);
 
-        HtmlDivTag foot = body.div().class_("foot");
+        HtmlDivTag foot = body.div().class_("zu-foot");
         {
             ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
             if (doc != null)

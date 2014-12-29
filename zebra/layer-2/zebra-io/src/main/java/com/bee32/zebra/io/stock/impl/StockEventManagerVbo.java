@@ -34,9 +34,8 @@ public class StockEventManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        StockEventManager manager = ref.get();
-        StockEventMapper mapper = manager.getMapper();
-        List<StockEvent> list = filter1(mapper.all());
+        StockEventMapper mapper = ctx.query(StockEventMapper.class);
+        List<StockEvent> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (StockEvent o : list) {

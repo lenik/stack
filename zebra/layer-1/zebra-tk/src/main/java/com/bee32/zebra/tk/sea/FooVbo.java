@@ -49,7 +49,7 @@ public abstract class FooVbo<T extends CoEntity>
                 continue;
 
             String fgLabel = fg == FieldGroup.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
-            dtab.h3().class_("my-group").text(fgLabel);
+            dtab.h3().class_("zu-fgroup").text(fgLabel);
 
             for (IFormField field : fields) {
                 IPropertyAccessor accessor = field.getAccessor();
@@ -67,7 +67,7 @@ public abstract class FooVbo<T extends CoEntity>
                 }
 
                 HtmlDivTag line = dtab.div();
-                line.span().class_("my-label").text(IXjdocElement.fn.labelName(field));
+                line.span().class_("zu-flabel").text(IXjdocElement.fn.labelName(field));
                 line.span().text(value);
             } // for field
 

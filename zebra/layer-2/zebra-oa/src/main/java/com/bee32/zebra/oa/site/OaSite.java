@@ -1,5 +1,7 @@
 package com.bee32.zebra.oa.site;
 
+import java.lang.reflect.Constructor;
+
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.c.type.IndexedTypes;
@@ -11,9 +13,11 @@ import net.bodz.bas.repr.path.IPathDispatchable;
 import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 import net.bodz.bas.site.org.ICrawlable;
 import net.bodz.bas.site.org.ICrawler;
 
+import com.bee32.zebra.tk.sql.VhostDataService;
 import com.tinylily.repr.CoEntityManager;
 import com.tinylily.site.LilyStartSite;
 
@@ -30,10 +34,13 @@ public class OaSite
     public String baiduId;
 
     public OaSite() {
+        setQueryContext(VhostDataService.getInstance());
+
         for (Class<? extends CoEntityManager> clazz : IndexedTypes.list(CoEntityManager.class, false)) {
             CoEntityManager instance;
             try {
-                instance = clazz.newInstance();
+                Constructor<? extends CoEntityManager> ctor = clazz.getConstructor(IQueryable.class);
+                instance = ctor.newInstance(getQueryContext());
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }

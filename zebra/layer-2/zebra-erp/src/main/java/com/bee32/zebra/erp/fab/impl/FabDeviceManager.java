@@ -1,8 +1,9 @@
 package com.bee32.zebra.erp.fab.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.erp.fab.FabDevice;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 生产工艺中需要用到的机器设备。
@@ -16,15 +17,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class FabDeviceManager
         extends FooManager {
 
-    FabDeviceMapper mapper;
-
-    public FabDeviceManager() {
-        super(FabDevice.class);
-        mapper = VhostDataService.getInstance().getMapper(FabDeviceMapper.class);
-    }
-
-    public FabDeviceMapper getMapper() {
-        return mapper;
+    public FabDeviceManager(IQueryable context) {
+        super(FabDevice.class, context);
     }
 
 }

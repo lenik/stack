@@ -34,9 +34,8 @@ public class DeliveryManagerVbo
 
         PageStruct p = new PageStruct(ctx);
 
-        DeliveryManager manager = ref.get();
-        DeliveryMapper mapper = manager.getMapper();
-        List<Delivery> list = filter1(mapper.all());
+        DeliveryMapper mapper = ctx.query(DeliveryMapper.class);
+        List<Delivery> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Delivery o : list) {

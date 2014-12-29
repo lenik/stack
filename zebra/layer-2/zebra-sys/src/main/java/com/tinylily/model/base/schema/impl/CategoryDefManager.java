@@ -1,9 +1,9 @@
 package com.tinylily.model.base.schema.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 import com.tinylily.model.base.schema.CategoryDef;
 
 /**
@@ -17,15 +17,8 @@ import com.tinylily.model.base.schema.CategoryDef;
 public class CategoryDefManager
         extends FooManager {
 
-    CategoryDefMapper mapper;
-
-    public CategoryDefManager() {
-        super(CategoryDef.class);
-        mapper = VhostDataService.getInstance().getMapper(CategoryDefMapper.class);
-    }
-
-    public CategoryDefMapper getMapper() {
-        return mapper;
+    public CategoryDefManager(IQueryable context) {
+        super(CategoryDef.class, context);
     }
 
 }

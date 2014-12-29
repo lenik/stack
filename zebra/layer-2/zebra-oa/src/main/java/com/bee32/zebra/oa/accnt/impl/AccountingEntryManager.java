@@ -1,10 +1,10 @@
 package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.accnt.AccountingEntry;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 
@@ -20,15 +20,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class AccountingEntryManager
         extends FooManager {
 
-    AccountingEntryMapper mapper;
-
-    public AccountingEntryManager() {
-        super(AccountingEntry.class);
-        mapper = VhostDataService.getInstance().getMapper(AccountingEntryMapper.class);
-    }
-
-    public AccountingEntryMapper getMapper() {
-        return mapper;
+    public AccountingEntryManager(IQueryable context) {
+        super(AccountingEntry.class, context);
     }
 
 }

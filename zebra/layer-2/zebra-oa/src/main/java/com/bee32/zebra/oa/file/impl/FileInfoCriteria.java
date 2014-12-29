@@ -18,14 +18,14 @@ import com.tinylily.model.sea.QVariantMap;
 public class FileInfoCriteria
         extends CoMessageCriteria {
 
-    LongRange sizeRange;
-    Integer opId;
-    Integer orgId;
-    Integer personId;
-    Set<String> tags;
+    public LongRange sizeRange;
+    public Integer opId;
+    public Integer orgId;
+    public Integer personId;
+    public Set<String> tags;
 
-    IntRange downloadCountRange;
-    DoubleRange valueRange;
+    public IntRange downloadCountRange;
+    public DoubleRange valueRange;
 
     @Override
     protected void populate(QVariantMap<String> map)

@@ -3,9 +3,12 @@ package com.bee32.zebra.io.sales;
 import java.util.Date;
 import java.util.List;
 
+import net.bodz.bas.repr.form.meta.OfGroup;
+
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
+import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
 public class Delivery
@@ -149,6 +152,15 @@ public class Delivery
 
     public void setItems(List<DeliveryItem> items) {
         this.items = items;
+    }
+
+    /**
+     * 经办人
+     */
+    @Override
+    @OfGroup(CoMessage.class)
+    public User getOp() {
+        return super.getOp();
     }
 
 }

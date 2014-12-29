@@ -1,8 +1,9 @@
 package com.bee32.zebra.oa.contact.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 所有感兴趣的联系人，包括：客户、供应商、雇员、竞争对手等等。
@@ -20,15 +21,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class PersonManager
         extends FooManager {
 
-    PersonMapper mapper;
-
-    public PersonManager() {
-        super(Person.class);
-        mapper = VhostDataService.getInstance().getMapper(PersonMapper.class);
-    }
-
-    public PersonMapper getMapper() {
-        return mapper;
+    public PersonManager(IQueryable context) {
+        super(Person.class, context);
     }
 
 }

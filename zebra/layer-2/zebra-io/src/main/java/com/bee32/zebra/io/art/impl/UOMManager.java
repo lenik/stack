@@ -1,30 +1,22 @@
 package com.bee32.zebra.io.art.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.io.art.UOM;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 定义度量中使用的单位。
  * 
  * @label 度量单位
  * 
- * @rel HREF1: TEXT1
- * 
- * @see <a href="HREF2">TEXT2</a>
+ * @rel art/: 管理物料
  */
 public class UOMManager
         extends FooManager {
 
-    UOMMapper mapper;
-
-    public UOMManager() {
-        super(UOM.class);
-        mapper = VhostDataService.getInstance().getMapper(UOMMapper.class);
-    }
-
-    public UOMMapper getMapper() {
-        return mapper;
+    public UOMManager(IQueryable context) {
+        super(UOM.class, context);
     }
 
 }

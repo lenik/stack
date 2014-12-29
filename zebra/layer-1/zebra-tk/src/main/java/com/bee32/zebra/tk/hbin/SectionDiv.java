@@ -12,11 +12,11 @@ public class SectionDiv
 
     public SectionDiv(IHtmlTag parent, String id, String label, char icon) {
         super(parent, "div");
-        this.class_("section");
-        headDiv = this.div().class_("section-head");
+        this.class_("zu-section");
+        headDiv = this.div().class_("zu-section-head");
         iconDiv = headDiv.div().class_("icon fa").text(icon);
         headDiv.div().text(label);
-        contentDiv = this.div().class_("section-body");
+        contentDiv = this.div().class_("zu-section-body");
     }
 
 }

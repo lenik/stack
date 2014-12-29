@@ -99,7 +99,8 @@ set constraints all deferred;
             case when p.stereo='ORG' then a.party else null end "org", 
             case when p.stereo='PER' then a.party else null end "person",
             a.val,
-            a.file_date "t0", a.expired_date "t1",
+            coalesce(a.file_date, a.created_date) "t0",
+            a.expired_date "t1",
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.user_file a
             left join old.user_folder d on a.folder=d.id
@@ -121,7 +122,9 @@ set constraints all deferred;
     insert into topic(id, subject, text, cat, phase, priority, op, t0, t1,
             creation, lastmod, uid)
         select c.id, subject, content, cat.id "cat", phase.id "phase", coalesce(c.priority, 0),
-            c.owner "op", anticipation_begin "t0", anticipation_end "t1",
+            c.owner "op",
+            coalesce(anticipation_begin, c.created_date) "t0",
+            anticipation_end "t1",
             c.created_date "creation", c.last_modified "lastmod", c.owner "uid"
         from old.chance c
             left join cat on c.category = cat.code
@@ -163,7 +166,9 @@ set constraints all deferred;
     insert into reply(id, topic, op, t0, t1, text, creation, lastmod, uid)
         select id,
             coalesce(chance, 1) "topic",
-            actor "op", begin_time "t0", end_time "t1",
+            actor "op",
+            coalesce(begin_time, created_date) "t0",
+            end_time "t1",
             more_info "text",
             created_date "creation", last_modified "lastmod", owner "uid"
         from old.chance_action;
@@ -224,7 +229,9 @@ set constraints all deferred;
             case a.stereo when 'PAY' then '付款单 - ' when 'CRED' then '收款单 - ' end
                 || a.description "subject", 
             a.text,
-            extract(year from a.begin_time) "year", a.begin_time "t0", a.begin_time "t1", 
+            extract(year from a.begin_time) "year",
+            coalesce(a.begin_time, a.created_date) "t0",
+            a.end_time "t1", 
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.fund_flow a
             left join old.party p on a.party=p.id
@@ -240,7 +247,9 @@ set constraints all deferred;
             a.id "id_tmp",
             a.description "subject",
             l."user" "op",
-            extract(year from a.begin_time) "year", a.begin_time "t0", a.end_time "t1",
+            extract(year from a.begin_time) "year",
+            coalesce(a.begin_time, a.created_date) "t0",
+            a.end_time "t1",
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
         from old.account_ticket a
             left join old.fund_flow f on a.id=f.ticket

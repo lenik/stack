@@ -1,8 +1,9 @@
 package com.bee32.zebra.oa.accnt.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.oa.accnt.Account;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 会计科目为会计学相当重要的基本研究方法与辅助工作， 它将会计要素视性质分属、分纲的设置，例如现金即为资产会计要素的一大会计科目。
@@ -21,15 +22,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class AccountManager
         extends FooManager {
 
-    AccountMapper mapper;
-
-    public AccountManager() {
-        super(Account.class);
-        mapper = VhostDataService.getInstance().getMapper(AccountMapper.class);
-    }
-
-    public AccountMapper getMapper() {
-        return mapper;
+    public AccountManager(IQueryable context) {
+        super(Account.class, context);
     }
 
 }

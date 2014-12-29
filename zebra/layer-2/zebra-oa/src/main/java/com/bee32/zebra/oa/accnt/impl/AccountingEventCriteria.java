@@ -12,10 +12,10 @@ import com.tinylily.model.sea.QVariantMap;
 public class AccountingEventCriteria
         extends CoMomentIntervalCriteria {
 
-    Integer partyId;
-    Set<String> tags;
-    DoubleRange debitTotalRange;
-    DoubleRange creditTotalRange;
+    public Integer partyId;
+    public Set<String> tags;
+    public DoubleRange debitTotalRange;
+    public DoubleRange creditTotalRange;
 
     public Integer getPartyId() {
         return partyId;

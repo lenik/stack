@@ -1,8 +1,9 @@
 package com.bee32.zebra.erp.fab.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.erp.fab.FabStepDef;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 定义生产工艺流程中的一个特定步骤。
@@ -16,15 +17,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class FabStepDefManager
         extends FooManager {
 
-    FabStepDefMapper mapper;
-
-    public FabStepDefManager() {
-        super(FabStepDef.class);
-        mapper = VhostDataService.getInstance().getMapper(FabStepDefMapper.class);
-    }
-
-    public FabStepDefMapper getMapper() {
-        return mapper;
+    public FabStepDefManager(IQueryable context) {
+        super(FabStepDef.class, context);
     }
 
 }

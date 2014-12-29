@@ -33,9 +33,8 @@ public class FabStepManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        FabStepManager manager = ref.get();
-        FabStepMapper mapper = manager.getMapper();
-        List<FabStep> list = filter1(mapper.all());
+        FabStepMapper mapper = ctx.query(FabStepMapper.class);
+        List<FabStep> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabStep o : list) {

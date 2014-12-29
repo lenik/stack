@@ -35,9 +35,8 @@ public class FileInfoManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        FileInfoManager manager = ref.get();
-        FileInfoMapper mapper = manager.getMapper();
-        List<FileInfo> list = filter1(mapper.all());
+        FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
+        List<FileInfo> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FileInfo o : list) {

@@ -9,11 +9,14 @@ import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
+import net.bodz.bas.t.pojo.Pair;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.art.UOM;
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class UOMManagerVbo
@@ -23,7 +26,7 @@ public class UOMManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(UOMManager.class);
         formStruct = new UOM().getFormStruct();
-        insertIndexFields("i*sa", "code", "label", "description");
+        insertIndexFields("i*", "code", "label", "description", "property");
     }
 
     @Override
@@ -33,20 +36,29 @@ public class UOMManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        UOMManager manager = ref.get();
-        UOMMapper mapper = manager.getMapper();
-        List<UOM> list = filter1(mapper.all());
+        UOMMapper mapper = ctx.query(UOMMapper.class);
+        UOMCriteria criteria = criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        {
+            SwitchOverride<String> so;
+            so = filters.switchPairs("属性", true, //
+                    Pair.convertList("数量", "长度", "质量"), //
+                    "property", criteria.property, criteria.noProperty);
+            criteria.property = so.key;
+            criteria.noProperty = so.isNull;
+        }
+
+        List<UOM> list = postfilt(mapper.filter(criteria));
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (UOM o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            tr.td().text(o.getId()).class_("col-id");
-            cocols("sa", tr, o);
+            cocols("icu", tr, o);
+            tr.td().text(o.getProperty());
         }
 
         dumpFullData(p.extradata, list);
 
         return ctx;
     }
-
 }

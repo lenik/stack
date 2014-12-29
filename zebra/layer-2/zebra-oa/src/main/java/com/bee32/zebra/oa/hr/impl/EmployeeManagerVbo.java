@@ -33,9 +33,8 @@ public class EmployeeManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        EmployeeManager manager = ref.get();
-        EmployeeMapper mapper = manager.getMapper();
-        List<Employee> list = filter1(mapper.all());
+        EmployeeMapper mapper = ctx.query(EmployeeMapper.class);
+        List<Employee> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Employee o : list) {

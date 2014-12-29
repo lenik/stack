@@ -34,9 +34,8 @@ public class UserManagerVbo
 
         PageStruct p = new PageStruct(ctx);
 
-        UserManager manager = ref.get();
-        UserMapper mapper = manager.getMapper();
-        List<User> list = filter1(mapper.all());
+        UserMapper mapper = ctx.query(UserMapper.class);
+        List<User> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (User o : list) {

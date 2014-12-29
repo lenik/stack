@@ -1,10 +1,10 @@
 package com.bee32.zebra.io.art.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 定义生产过程或供销中使用的制品（成品或半成品）。<br>
@@ -26,15 +26,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class ArtifactManager
         extends FooManager {
 
-    ArtifactMapper mapper;
-
-    public ArtifactManager() {
-        super(Artifact.class);
-        mapper = VhostDataService.getInstance().getMapper(ArtifactMapper.class);
-    }
-
-    public ArtifactMapper getMapper() {
-        return mapper;
+    public ArtifactManager(IQueryable context) {
+        super(Artifact.class, context);
     }
 
 }

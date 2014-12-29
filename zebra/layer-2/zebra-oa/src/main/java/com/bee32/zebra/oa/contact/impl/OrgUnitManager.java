@@ -1,8 +1,9 @@
 package com.bee32.zebra.oa.contact.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 企、事业组织下属的单位、科室、部门。
@@ -16,15 +17,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class OrgUnitManager
         extends FooManager {
 
-    OrgUnitMapper mapper;
-
-    public OrgUnitManager() {
-        super(OrgUnit.class);
-        mapper = VhostDataService.getInstance().getMapper(OrgUnitMapper.class);
-    }
-
-    public OrgUnitMapper getMapper() {
-        return mapper;
+    public OrgUnitManager(IQueryable context) {
+        super(OrgUnit.class, context);
     }
 
 }

@@ -11,21 +11,24 @@ import com.tinylily.model.sea.QVariantMap;
 public class ArtifactCriteria
         extends CoEntityCriteria {
 
-    Integer categoryId;
-    String skuCode_;
-    String barCode_;
+    public Integer categoryId;
+    public String skuCode_;
+    public String barCode_;
 
-    Integer uomId;
-    String spec;
-    String color;
-    String caution;
+    public Integer uomId;
+    public String spec;
+    public String color;
+    public String caution;
 
-    DoubleRange volumeRange;
-    DoubleRange weightRange;
-    DoubleRange netWeightRange;
+    public DoubleRange volumeRange;
+    public DoubleRange weightRange;
+    public DoubleRange netWeightRange;
 
-    SupplyMethod supplyMethod;
-    IntRange supplyDelayRange;
+    public SupplyMethod supplyMethod;
+    public IntRange supplyDelayRange;
+
+    public boolean noCategory;
+    public boolean noSupplyMethod;
 
     public Integer getCategoryId() {
         return categoryId;

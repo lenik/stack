@@ -6,10 +6,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
+import net.bodz.bas.db.batis.IMapperTemplate;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.IHtmlViewContext;
@@ -34,7 +37,9 @@ import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.sea.MapperUtil;
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.mx.base.CoMessage;
 import com.tinylily.repr.CoEntityManager;
 
@@ -83,30 +88,30 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
         HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
         {
-            HtmlDivTag headDiv = mainCol.div().id("head").class_("info clearfix");
+            HtmlDivTag headDiv = mainCol.div().id("zp-head").class_("info clearfix");
             headDiv.div().id(ID.title);
 
-            HtmlDivTag headCol1 = headDiv.div().id("head-col1").class_("col-xs-6");
+            HtmlDivTag headCol1 = headDiv.div().id("zp-head-col1").class_("col-xs-6");
             headCol1.div().id(ID.stat);
 
-            HtmlDivTag cmdsDiv = headCol1.div().id("cmds");
+            HtmlDivTag cmdsDiv = headCol1.div().id("zp-cmds");
             cmdsDiv.div().id(ID.cmds0);
             cmdsDiv.div().id(ID.cmds1);
 
-            HtmlDivTag headCol2 = headDiv.div().id("head-col2").class_("col-xs-6");
-            HtmlDivTag headLinks = headCol2.div().id("links");
+            HtmlDivTag headCol2 = headDiv.div().id("zp-head-col2").class_("col-xs-6");
+            HtmlDivTag headLinks = headCol2.div().id("zp-links");
             headLinks.span().text("您可能需要进行下面的操作:");
             headLinks.ul().id(ID.links_ul);
         }
 
         HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 info");
         {
-            HtmlDivTag previewDiv = rightCol.div().id("preview").align("center");
+            HtmlDivTag previewDiv = rightCol.div().id("zp-preview").align("center");
             previewDiv.img().src("pic.png");
 
             HtmlDivTag infosel = rightCol.div().id(ID.infosel);
 
-            HtmlTableTag _table1 = infosel.table().width("100%").class_("layout");
+            HtmlTableTag _table1 = infosel.table().width("100%").class_("zu-layout");
             HtmlTrTag _tr1 = _table1.tr();
             HtmlTdTag _td1 = _tr1.td();
             _td1.h2().text("选中的信息");
@@ -115,7 +120,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
             infosel.div().id(ID.infoselData);
 
-            HtmlDivTag refdocsDiv = rightCol.div().id("infoman");
+            HtmlDivTag refdocsDiv = rightCol.div().id("zp-infoman");
             refdocsDiv.h2().text("管理文献");
             refdocsDiv.ul().id(ID.infoman_ul);
         }
@@ -135,6 +140,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 switch (field.getName()) {
                 case "accessMode":
                 case "creationTime":
+                case "endTime":
                 case "flags":
                 case "owner":
                 case "ownerGroup":
@@ -159,18 +165,19 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     }
 
     protected void titleInfo(IHtmlViewContext ctx, IUiRef<M> ref) {
+        M manager = ref.get();
+        Class<?> entityType = manager.getEntityType();
+        IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(entityType);
+
+        ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
         PageStruct p = new PageStruct(ctx);
-        Map<String, Long> countMap = ref.get().getMapper().count();
-
-        Class<?> entType = getValueType();
-        ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(entType);
-
         p.title.h1().text(classDoc.getTag("label"));
 
         iString docText = classDoc.getText();
         HtmlPTag subTitle = p.title.p().class_("sub");
         subTitle.verbatim(docText.getHeadPar());
 
+        Map<String, Long> countMap = mapper.count();
         HtmlUlTag statUl = p.stat.ul();
         for (String id : countMap.keySet()) {
             long count = countMap.get(id);
@@ -217,7 +224,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         for (char c : spec.toCharArray()) {
             switch (c) {
             case 'i':
-                tr.td().text(o.getId()).class_("col-id");
+                tr.td().text(o.getId()).class_("zu-id");
                 break;
 
             case 'c':
@@ -269,7 +276,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                     continue;
 
                 String fgLabel = fg == FieldGroup.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
-                dtab.h3().class_("my-group").text(fgLabel);
+                dtab.h3().class_("zu-fgroup").text(fgLabel);
 
                 for (IFormField field : fields) {
                     IPropertyAccessor accessor = field.getAccessor();
@@ -287,14 +294,14 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                     }
 
                     HtmlDivTag line = dtab.div();
-                    line.span().class_("my-label").text(IXjdocElement.fn.labelName(field) + ": ");
+                    line.span().class_("zu-flabel").text(IXjdocElement.fn.labelName(field) + ": ");
                     line.span().text(value);
                 } // for field
             } // for field-group
         } // for entity
     }
 
-    protected List<T> filter1(List<T> list) {
+    protected List<T> postfilt(List<T> list) {
         List<T> prefetch = new ArrayList<T>();
         for (T o : list) {
             prefetch.add(o);
@@ -308,6 +315,16 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         if (e != null)
             tag.text(e.getLabel());
         return tag;
+    }
+
+    protected <C extends CoEntityCriteria> C criteriaFromRequest(C criteria, HttpServletRequest req)
+            throws ViewBuilderException {
+        try {
+            criteria.populate(req.getParameterMap());
+        } catch (ParseException e) {
+            throw new ViewBuilderException(e.getMessage(), e);
+        }
+        return criteria;
     }
 
     protected static class fn {

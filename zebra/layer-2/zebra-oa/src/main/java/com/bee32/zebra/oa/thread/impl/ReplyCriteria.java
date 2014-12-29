@@ -11,9 +11,9 @@ import com.tinylily.model.sea.QVariantMap;
 public class ReplyCriteria
         extends CoMessageCriteria {
 
-    Set<Integer> topics;
-    Set<Integer> parties;
-    DateRange dateRange;
+    public Set<Integer> topics;
+    public Set<Integer> parties;
+    public DateRange dateRange;
 
     public Set<Integer> getTopics() {
         return topics;

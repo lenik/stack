@@ -14,8 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.io.art.ArtifactCategory;
 import com.bee32.zebra.io.art.UOM;
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class ArtifactManagerVbo
@@ -35,9 +37,19 @@ public class ArtifactManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        ArtifactManager manager = ref.get();
-        ArtifactMapper mapper = manager.getMapper();
-        List<Artifact> list = filter1(mapper.all());
+        ArtifactMapper mapper = ctx.query(ArtifactMapper.class);
+        ArtifactCriteria criteria = criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        {
+            SwitchOverride<Integer> so;
+            so = filters.switchEntity("分类", true, //
+                    ctx.query(ArtifactCategoryMapper.class).filter(ArtifactCategoryCriteria.below(1)), //
+                    "cat", criteria.categoryId, criteria.noCategory);
+            criteria.categoryId = so.key;
+            criteria.noCategory = so.isNull;
+        }
+
+        List<Artifact> list = postfilt(mapper.filter(criteria));
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Artifact o : list) {

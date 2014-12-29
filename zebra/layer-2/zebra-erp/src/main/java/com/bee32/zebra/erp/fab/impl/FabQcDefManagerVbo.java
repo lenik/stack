@@ -33,9 +33,8 @@ public class FabQcDefManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        FabQcDefManager manager = ref.get();
-        FabQcDefMapper mapper = manager.getMapper();
-        List<FabQcDef> list = filter1(mapper.all());
+        FabQcDefMapper mapper = ctx.query(FabQcDefMapper.class);
+        List<FabQcDef> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabQcDef o : list) {

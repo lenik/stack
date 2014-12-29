@@ -1,8 +1,9 @@
 package com.bee32.zebra.oa.hr.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.oa.hr.EmployeeSkill;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 专项技能定义。
@@ -16,15 +17,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class EmployeeSkillManager
         extends FooManager {
 
-    EmployeeSkillMapper mapper;
-
-    public EmployeeSkillManager() {
-        super(EmployeeSkill.class);
-        mapper = VhostDataService.getInstance().getMapper(EmployeeSkillMapper.class);
-    }
-
-    public EmployeeSkillMapper getMapper() {
-        return mapper;
+    public EmployeeSkillManager(IQueryable context) {
+        super(EmployeeSkill.class, context);
     }
 
 }

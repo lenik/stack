@@ -13,7 +13,7 @@ public class TopicMapperTest
 
     @BeforeClass
     void setUp() {
-        mapper = VhostDataService.getInstance().getMapper(TopicMapper.class);
+        mapper = VhostDataService.getInstance().query(TopicMapper.class);
     }
 
     @Test

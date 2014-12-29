@@ -35,9 +35,8 @@ public class PlaceManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        PlaceManager manager = ref.get();
-        PlaceMapper mapper = manager.getMapper();
-        List<Place> list = filter1(mapper.all());
+        PlaceMapper mapper = ctx.query(PlaceMapper.class);
+        List<Place> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Place o : list) {

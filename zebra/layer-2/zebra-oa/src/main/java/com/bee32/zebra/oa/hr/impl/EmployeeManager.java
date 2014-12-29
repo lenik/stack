@@ -1,8 +1,9 @@
 package com.bee32.zebra.oa.hr.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.oa.hr.Employee;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 雇员的信息。
@@ -16,15 +17,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class EmployeeManager
         extends FooManager {
 
-    EmployeeMapper mapper;
-
-    public EmployeeManager() {
-        super(Employee.class);
-        mapper = VhostDataService.getInstance().getMapper(EmployeeMapper.class);
-    }
-
-    public EmployeeMapper getMapper() {
-        return mapper;
+    public EmployeeManager(IQueryable context) {
+        super(Employee.class, context);
     }
 
 }

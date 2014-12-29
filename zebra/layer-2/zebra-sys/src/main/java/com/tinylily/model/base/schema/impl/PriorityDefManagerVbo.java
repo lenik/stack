@@ -33,9 +33,8 @@ public class PriorityDefManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        PriorityDefManager manager = ref.get();
-        PriorityDefMapper mapper = manager.getMapper();
-        List<PriorityDef> list = filter1(mapper.all());
+        PriorityDefMapper mapper = ctx.query(PriorityDefMapper.class);
+        List<PriorityDef> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (PriorityDef o : list) {

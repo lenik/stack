@@ -14,8 +14,8 @@ import net.bodz.uni.echo.config.ServletDescriptor;
 public class OaSiteServerConfig
         extends BasicSiteServerConfig {
 
-    ServletDescriptor imgLink;
-    ServletDescriptor dispatching;
+    protected ServletDescriptor imgLink;
+    protected ServletDescriptor dispatching;
 
     public OaSiteServerConfig() {
         configEnv();
@@ -32,8 +32,8 @@ public class OaSiteServerConfig
         imgLink.setInitParam(FileAccessorServlet.ATTRIBUTE_PATH, //
                 "/mnt/istore/projects/design/img");
 
-        PathDispatchServlet.startObject = new OaSite();
         dispatching = addServlet(PathDispatchServlet.class, "/*");
+        dispatching.setInitParam(PathDispatchServlet.ROOT_CLASS, OaSite.class.getName());
     }
 
     public static File getStackDirFromSrc() {

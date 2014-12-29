@@ -1,9 +1,9 @@
 package com.tinylily.model.base.schema.impl;
 
 import net.bodz.bas.repr.path.PathToken;
+import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 import com.tinylily.model.base.schema.TagSetDef;
 
 /**
@@ -17,15 +17,8 @@ import com.tinylily.model.base.schema.TagSetDef;
 public class TagSetDefManager
         extends FooManager {
 
-    TagSetDefMapper mapper;
-
-    public TagSetDefManager() {
-        super(TagSetDef.class);
-        mapper = VhostDataService.getInstance().getMapper(TagSetDefMapper.class);
-    }
-
-    public TagSetDefMapper getMapper() {
-        return mapper;
+    public TagSetDefManager(IQueryable context) {
+        super(TagSetDef.class, context);
     }
 
 }

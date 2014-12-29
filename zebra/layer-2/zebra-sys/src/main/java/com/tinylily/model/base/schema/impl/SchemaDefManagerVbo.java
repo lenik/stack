@@ -33,9 +33,8 @@ public class SchemaDefManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        SchemaDefManager manager = ref.get();
-        SchemaDefMapper mapper = manager.getMapper();
-        List<SchemaDef> list = filter1(mapper.all());
+        SchemaDefMapper mapper = ctx.query(SchemaDefMapper.class);
+        List<SchemaDef> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (SchemaDef o : list) {

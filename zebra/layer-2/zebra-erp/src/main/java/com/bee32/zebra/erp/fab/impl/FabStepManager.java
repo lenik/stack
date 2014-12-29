@@ -1,8 +1,9 @@
 package com.bee32.zebra.erp.fab.impl;
 
+import net.bodz.bas.rtx.IQueryable;
+
 import com.bee32.zebra.erp.fab.FabStep;
 import com.bee32.zebra.tk.sea.FooManager;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 
@@ -15,15 +16,8 @@ import com.bee32.zebra.tk.sql.VhostDataService;
 public class FabStepManager
         extends FooManager {
 
-    FabStepMapper mapper;
-
-    public FabStepManager() {
-        super(FabStep.class);
-        mapper = VhostDataService.getInstance().getMapper(FabStepMapper.class);
-    }
-
-    public FabStepMapper getMapper() {
-        return mapper;
+    public FabStepManager(IQueryable context) {
+        super(FabStep.class, context);
     }
 
 }

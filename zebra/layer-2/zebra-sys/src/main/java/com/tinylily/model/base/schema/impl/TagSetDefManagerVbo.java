@@ -33,9 +33,8 @@ public class TagSetDefManagerVbo
         ctx = super.buildHtmlView(ctx, ref, options);
         PageStruct p = new PageStruct(ctx);
 
-        TagSetDefManager manager = ref.get();
-        TagSetDefMapper mapper = manager.getMapper();
-        List<TagSetDef> list = filter1(mapper.all());
+        TagSetDefMapper mapper = ctx.query(TagSetDefMapper.class);
+        List<TagSetDef> list = postfilt(mapper.all());
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (TagSetDef o : list) {
