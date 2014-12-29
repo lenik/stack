@@ -15,12 +15,16 @@
             op.label "op_label",
             form.label "form_label",
             cat.label "cat_label",
-            phase.label "phase_label"
+            phase.label "phase_label",
+            u.label "uid_label",
+            g.label "gid_label"
         from acdoc a
             left join "user" op on a.op=op.id
             left join form on a.form=form.id
             left join cat on a.cat=cat.id
             left join phase on a.phase=phase.id
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
         ]]>
     </sql>
 

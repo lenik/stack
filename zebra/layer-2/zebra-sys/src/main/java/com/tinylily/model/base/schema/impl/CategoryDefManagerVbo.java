@@ -23,7 +23,7 @@ public class CategoryDefManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(CategoryDefManager.class);
         formStruct = new CategoryDef().getFormStruct();
-        insertIndexFields("schema", "code", "label", "description", "refCount");
+        insertIndexFields("i*sa", "schema", "code", "label", "description", "refCount");
     }
 
     @Override
@@ -40,11 +40,11 @@ public class CategoryDefManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (CategoryDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getSchema().getLabel());
-            stdcolsCLD(tr, o);
+            cocols("cu", tr, o);
             tr.td().text(o.getRefCount());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

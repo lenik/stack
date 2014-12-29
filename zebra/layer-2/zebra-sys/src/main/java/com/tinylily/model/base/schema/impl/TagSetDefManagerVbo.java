@@ -23,7 +23,7 @@ public class TagSetDefManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(TagSetDefManager.class);
         formStruct = new TagSetDef().getFormStruct();
-        insertIndexFields("schema", "code", "label", "description", "ortho", "tags");
+        insertIndexFields("i*sa", "schema", "code", "label", "description", "ortho", "tags");
     }
 
     @Override
@@ -40,12 +40,12 @@ public class TagSetDefManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (TagSetDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getSchema().getLabel());
-            stdcolsCLD(tr, o);
+            cocols("cu", tr, o);
             tr.td().text(o.getTags()).class_("small");
             tr.td().text(o.isOrtho());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

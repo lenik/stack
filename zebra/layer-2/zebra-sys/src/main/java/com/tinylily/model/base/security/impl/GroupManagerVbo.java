@@ -23,7 +23,7 @@ public class GroupManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(GroupManager.class);
         formStruct = new Group().getFormStruct();
-        insertIndexFields("codeName", "label", "description", "users");
+        insertIndexFields("i*sa", "codeName", "label", "description", "users");
     }
 
     @Override
@@ -41,11 +41,11 @@ public class GroupManagerVbo
         for (Group o : list) {
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getCodeName());
-            stdcolsLD(tr, o);
-            tr.td().text(labels(o.getUsers()));
-            stdcols1(tr, o);
+            cocols("u", tr, o);
+            tr.td().text(fn.labels(o.getUsers()));
+            cocols("sa", tr, o);
         }
 
 //        dumpFullData(p.extradata, list);

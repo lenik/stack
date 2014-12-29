@@ -33,7 +33,7 @@ public class TopicManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(TopicManager.class);
         formStruct = new Topic().getFormStruct();
-        insertIndexFields("op", "subject", "text", "category", "phase", "value");
+        insertIndexFields("i*sa", "op", "subject", "text", "category", "phase", "value");
     }
 
     @Override
@@ -87,13 +87,13 @@ public class TopicManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Topic o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             ref(tr.td(), o.getOp()).align("center");
-            stdcolsST(tr, o);
+            cocols("m", tr, o);
             ref(tr.td(), o.getCategory());
             ref(tr.td(), o.getPhase()).class_("small");
             tr.td().text(o.getValue());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

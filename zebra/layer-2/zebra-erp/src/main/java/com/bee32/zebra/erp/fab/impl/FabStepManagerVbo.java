@@ -23,7 +23,7 @@ public class FabStepManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(FabStepManager.class);
         formStruct = new FabStep().getFormStruct();
-        insertIndexFields("label", "description");
+        insertIndexFields("i*sa", "label", "description");
     }
 
     @Override
@@ -40,8 +40,8 @@ public class FabStepManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (FabStep o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            stdcols1(tr, o);
+            cocols("i", tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

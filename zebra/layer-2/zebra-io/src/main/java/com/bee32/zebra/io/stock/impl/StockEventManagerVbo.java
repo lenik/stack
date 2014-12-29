@@ -23,7 +23,7 @@ public class StockEventManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(StockEventManager.class);
         formStruct = new StockEvent().getFormStruct();
-        insertIndexFields("form", "category", "subject", "text", "org", "orgUnit", "person", "quantity", "total",
+        insertIndexFields("i*sa", "form", "category", "subject", "text", "org", "orgUnit", "person", "quantity", "total",
                 "phase");
     }
 
@@ -41,17 +41,17 @@ public class StockEventManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (StockEvent o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             ref(tr.td(), o.getForm());
             ref(tr.td(), o.getCategory());
-            stdcolsST(tr, o);
+            cocols("m", tr, o);
             ref(tr.td(), o.getOrg());
             ref(tr.td(), o.getOrgUnit());
             ref(tr.td(), o.getPerson());
             tr.td().text(o.getQuantity());
             tr.td().text(o.getTotal());
             ref(tr.td(), o.getPhase());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

@@ -23,7 +23,7 @@ public class OrgUnitManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(OrgUnitManager.class);
         formStruct = new OrgUnit().getFormStruct();
-        insertIndexFields("label", "description");
+        insertIndexFields("i*sa", "label", "description");
     }
 
     @Override
@@ -40,8 +40,8 @@ public class OrgUnitManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (OrgUnit o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            stdcols1(tr, o);
+            cocols("i", tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

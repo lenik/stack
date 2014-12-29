@@ -3,7 +3,6 @@ package com.tinylily.model.base.security.impl;
 import java.io.IOException;
 import java.util.List;
 
-import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.IHtmlViewContext;
@@ -24,7 +23,7 @@ public class UserManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(UserManager.class);
         formStruct = new User().getFormStruct();
-        insertIndexFields("loginName", "label", "description", "primaryGroup", "groups", "email", "lastLoginTime",
+        insertIndexFields("i*sa", "loginName", "label", "description", "primaryGroup", "groups", "email", "lastLoginTime",
                 "lastLoginIP");
     }
 
@@ -44,15 +43,15 @@ public class UserManagerVbo
             long lastLoginTime = o.getLastLoginTime();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getLoginName());
-            stdcolsLD(tr, o);
+            cocols("u", tr, o);
             ref(tr.td(), o.getPrimaryGroup());
-            tr.td().text(labels(o.getGroups()));
+            tr.td().text(fn.labels(o.getGroups()));
             tr.td().text(o.getEmail()).style(o.isEmailValidated() ? "" : "color: gray");
-            tr.td().text(lastLoginTime == 0 ? null : Dates.YYYY_MM_DD.format(o.getLastLoginTime()));
+            tr.td().text(lastLoginTime == 0 ? null : fn.formatDate(o.getLastLoginTime()));
             tr.td().text(o.getLastLoginIP());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

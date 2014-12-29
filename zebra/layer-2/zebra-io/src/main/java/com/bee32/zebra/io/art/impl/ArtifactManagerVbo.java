@@ -25,7 +25,7 @@ public class ArtifactManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(ArtifactManager.class);
         formStruct = new Artifact().getFormStruct();
-        insertIndexFields("skuCode", "category", "label", "description", "uom", "supplyMethod", "barCode");
+        insertIndexFields("i*sa", "skuCode", "category", "label", "description", "uom", "supplyMethod", "barCode");
     }
 
     @Override
@@ -45,14 +45,14 @@ public class ArtifactManagerVbo
             UOM uom = o.getUom();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getSkuCode());
             tr.td().text(category == null ? null : category.getLabel());
-            stdcolsLD(tr, o);
+            cocols("u", tr, o);
             tr.td().text(uom == null ? null : uom.getLabel() + "/" + o.getUomProperty());
             tr.td().text(o.getSupplyMethod().name());
             tr.td().text(o.getBarCode());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

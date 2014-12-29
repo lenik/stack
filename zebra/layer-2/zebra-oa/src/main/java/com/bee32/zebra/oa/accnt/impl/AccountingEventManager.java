@@ -7,8 +7,9 @@ import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
- * @label 会计事件
+ * @label 凭证单
  * 
+ * @rel acdoc/?phase=2: 管理会计分录
  * @rel tag/: 管理标签
  * 
  * @see <a href=""></a>

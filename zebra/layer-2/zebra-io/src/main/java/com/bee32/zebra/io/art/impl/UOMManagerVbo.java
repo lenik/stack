@@ -23,7 +23,7 @@ public class UOMManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(UOMManager.class);
         formStruct = new UOM().getFormStruct();
-        insertIndexFields("code", "label", "description");
+        insertIndexFields("i*sa", "code", "label", "description");
     }
 
     @Override
@@ -41,7 +41,7 @@ public class UOMManagerVbo
         for (UOM o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             tr.td().text(o.getId()).class_("col-id");
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

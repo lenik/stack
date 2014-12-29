@@ -34,7 +34,6 @@ import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.tinylily.model.base.CoCode;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.mx.base.CoMessage;
 import com.tinylily.repr.CoEntityManager;
@@ -50,13 +49,29 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         super(valueClass, supportedFeatures);
     }
 
-    protected void insertIndexFields(String... pathProperties)
+    protected void insertIndexFields(String spec, String... pathProperties)
             throws NoSuchPropertyException, ParseException {
         FormFieldBuilder formFieldBuilder = new FormFieldBuilder();
         FormFieldListBuilder builder = new FormFieldListBuilder(formFieldBuilder);
-        builder.fromPathProperties(formStruct, "id");
-        builder.fromPathProperties(formStruct, pathProperties);
-        builder.fromPathProperties(formStruct, "creationTime", "lastModified");
+
+        for (char c : spec.toCharArray()) {
+            switch (c) {
+            case 'i':
+                builder.fromPathProperties(formStruct, "id");
+                break;
+            case 's':
+                builder.fromPathProperties(formStruct, "priority", "creationTime", "lastModified", "flags", "state");
+                break;
+            case 'a':
+                builder.fromPathProperties(formStruct, "accessMode", "owner", "ownerGroup");
+                break;
+            case '*':
+                builder.fromPathProperties(formStruct, pathProperties);
+                break;
+            default:
+                throw new IllegalArgumentException("Bad column group specifier: " + c);
+            }
+        }
         indexFields = builder.getFields();
     }
 
@@ -118,10 +133,12 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 List<String> classes = new ArrayList<String>();
 
                 switch (field.getName()) {
+                case "accessMode":
                 case "creationTime":
+                case "flags":
+                case "owner":
+                case "ownerGroup":
                 case "state":
-                case "owner.label":
-                case "ownerGroup.label":
                     classes.add("detail");
                 }
 
@@ -196,28 +213,47 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     }
 
-    protected void stdcols0(HtmlTrTag tr, CoEntity o) {
-        tr.td().text(o.getId()).class_("col-id");
-    }
+    protected void cocols(String spec, HtmlTrTag tr, CoEntity o) {
+        for (char c : spec.toCharArray()) {
+            switch (c) {
+            case 'i':
+                tr.td().text(o.getId()).class_("col-id");
+                break;
 
-    protected void stdcols1(HtmlTrTag tr, CoEntity o) {
-        tr.td().text(Dates.YY_MM_DD.format(o.getCreationTime())).class_("small");
-        tr.td().text(Dates.YY_MM_DD.format(o.getLastModified())).class_("small");
-    }
+            case 'c':
+                tr.td().text(o.getCodeName());
+                break;
 
-    protected void stdcolsLD(HtmlTrTag tr, CoEntity o) {
-        tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
-        tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
-    }
+            case 'u':
+                tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
+                tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
+                break;
 
-    protected void stdcolsCLD(HtmlTrTag tr, CoCode<?> o) {
-        tr.td().text(o.getCode());
-        stdcolsLD(tr, o);
-    }
+            case 'm':
+                CoMessage message = (CoMessage) o;
+                tr.td().b().text(message.getSubject()).class_("small").style("max-width: 20em");
+                tr.td().text(Strings.ellipsis(message.getText(), 50)).class_("small").style("max-width: 30em");
+                break;
 
-    protected void stdcolsST(HtmlTrTag tr, CoMessage o) {
-        tr.td().b().text(o.getSubject()).class_("small").style("max-width: 20em");
-        tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
+            case 's':
+                tr.td().text(o.getPriority());
+                tr.td().text(fn.formatDate(o.getCreationTime())).class_("small");
+                tr.td().text(fn.formatDate(o.getLastModified())).class_("small");
+                tr.td().text(o.getFlags());
+                tr.td().text(o.getState());
+                break;
+
+            case 'a':
+                int mode = o.getAccessMode();
+                tr.td().text(mode).class_("small");
+                ref(tr.td(), o.getOwner()).class_("small");
+                ref(tr.td(), o.getOwnerGroup()).class_("small");
+                break;
+
+            default:
+                throw new IllegalArgumentException("Bad column group specifier: " + c);
+            }
+        }
     }
 
     protected void dumpFullData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
@@ -274,16 +310,27 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         return tag;
     }
 
-    protected String labels(Collection<? extends CoEntity> entities) {
-        if (entities == null)
-            return null;
-        StringBuilder sb = new StringBuilder(entities.size() * 80);
-        for (CoEntity o : entities) {
-            if (sb.length() != 0)
-                sb.append(", ");
-            sb.append(o.getLabel());
+    protected static class fn {
+
+        public static String labels(Collection<? extends CoEntity> entities) {
+            if (entities == null)
+                return null;
+            StringBuilder sb = new StringBuilder(entities.size() * 80);
+            for (CoEntity o : entities) {
+                if (sb.length() != 0)
+                    sb.append(", ");
+                sb.append(o.getLabel());
+            }
+            return sb.toString();
         }
-        return sb.toString();
+
+        public static String formatDate(Object date) {
+            if (date == null)
+                return null;
+            else
+                return Dates.YYYY_MM_DD.format(date);
+        }
+
     }
 
 }

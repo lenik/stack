@@ -7,14 +7,33 @@
     <resultMap id="map1" type="com.bee32.zebra.oa.file.FileInfo" extends="message.map2">
         <result property="beginTime" column="t0" />
         <result property="endTime" column="t1" />
+        <result property="path" column="path" />
+        <result property="size" column="size" />
+        <result property="sha1" column="sha1" />
+        <result property="type" column="type" />
+        <result property="encoding" column="encoding" />
+        <result property="downloads" column="ndl" />
+        <result property="value" column="val" />
+        <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id column="org" />
+            <result property="label" column="org_label" />
+        </association>
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id column="person" />
+            <result property="label" column="person_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*,
+            org.label "org_label",
+            person.label "person_label",
             u.label "uid_label",
             g.label "gid_label"
-        from fileInfo a
+        from fileinfo a
+            left join org on a.org=org.id
+            left join person on a.person=person.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -23,9 +42,13 @@
     <sql id="select2"><![CDATA[
         select
             a.*,
+            org.label "org_label",
+            person.label "person_label",
             u.label "uid_label",
             g.label "gid_label"
-        from fileInfo a
+        from fileinfo a
+            left join org on a.org=org.id
+            left join person on a.person=person.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -51,13 +74,13 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into fileInfo(code, label, description)
+        insert into fileinfo(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
     ]]></select>
 
     <update id="update">
-        update fileInfo
+        update fileinfo
         <set>
             <include refid="co.setU" />
         </set>
@@ -73,5 +96,5 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from fileinfo
     </select>
-    
+
 </mapper>

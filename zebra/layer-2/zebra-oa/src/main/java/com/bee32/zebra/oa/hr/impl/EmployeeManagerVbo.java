@@ -23,7 +23,7 @@ public class EmployeeManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(EmployeeManager.class);
         formStruct = new Employee().getFormStruct();
-        insertIndexFields("id", "label", "description", "creationTime", "lastModified");
+        insertIndexFields("i*sa", "id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override
@@ -40,8 +40,8 @@ public class EmployeeManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (Employee o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            stdcols1(tr, o);
+            cocols("i", tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

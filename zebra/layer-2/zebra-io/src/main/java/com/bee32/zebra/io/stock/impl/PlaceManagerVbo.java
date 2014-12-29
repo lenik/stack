@@ -25,7 +25,7 @@ public class PlaceManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(PlaceManager.class);
         formStruct = new Place().getFormStruct();
-        insertIndexFields("usage", "label", "description", "position", "bbox", "party", "partyOrg");
+        insertIndexFields("i*sa", "usage", "label", "description", "position", "bbox", "party", "partyOrg");
     }
 
     @Override
@@ -45,14 +45,14 @@ public class PlaceManagerVbo
             Organization org = o.getPartyOrg();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getUsage().name()).class_("small");
-            stdcolsLD(tr, o);
+            cocols("u", tr, o);
             tr.td().text(o.getPosition().isZero() ? null : o.getPosition().format(", "));
             tr.td().text(o.getBbox().isZero() ? null : o.getBbox().format("x"));
             tr.td().text(person == null ? null : person.getLabel());
             tr.td().text(org == null ? null : org.getLabel());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

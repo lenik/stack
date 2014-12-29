@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.bodz.bas.repr.form.meta.OfGroup;
+
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.IMomentInterval;
+import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
 public class FileInfo
@@ -30,6 +33,9 @@ public class FileInfo
     private int downloads;
     private Double value;
 
+    /**
+     * 文件名
+     */
     public final String getFileName() {
         return getCodeName();
     }
@@ -40,6 +46,9 @@ public class FileInfo
         setCodeName(fileName);
     }
 
+    /**
+     * 路径
+     */
     public String getPath() {
         return path;
     }
@@ -48,6 +57,9 @@ public class FileInfo
         this.path = path;
     }
 
+    /**
+     * 大小
+     */
     public long getSize() {
         return size;
     }
@@ -56,6 +68,9 @@ public class FileInfo
         this.size = size;
     }
 
+    /**
+     * SHA-1摘要
+     */
     public String getSha1() {
         return sha1;
     }
@@ -64,6 +79,9 @@ public class FileInfo
         this.sha1 = sha1;
     }
 
+    /**
+     * 类型
+     */
     public String getType() {
         return type;
     }
@@ -72,6 +90,9 @@ public class FileInfo
         this.type = type;
     }
 
+    /**
+     * 字符编码
+     */
     public String getEncoding() {
         return encoding;
     }
@@ -80,6 +101,9 @@ public class FileInfo
         this.encoding = encoding;
     }
 
+    /**
+     * 公司
+     */
     public Organization getOrg() {
         return org;
     }
@@ -88,6 +112,9 @@ public class FileInfo
         this.org = org;
     }
 
+    /**
+     * 联系人
+     */
     public Person getPerson() {
         return person;
     }
@@ -96,6 +123,9 @@ public class FileInfo
         this.person = person;
     }
 
+    /**
+     * 下载次数
+     */
     public int getDownloads() {
         return downloads;
     }
@@ -104,6 +134,9 @@ public class FileInfo
         this.downloads = downloads;
     }
 
+    /**
+     * 价值
+     */
     public Double getValue() {
         return value;
     }
@@ -112,10 +145,16 @@ public class FileInfo
         this.value = value;
     }
 
+    /**
+     * 标签集
+     */
     public Set<String> getTags() {
         return tags;
     }
 
+    /**
+     * 生效时间
+     */
     public Date getActiveDate() {
         return activeDate;
     }
@@ -124,6 +163,9 @@ public class FileInfo
         this.activeDate = activeDate;
     }
 
+    /**
+     * 过期时间
+     */
     public Date getExpireDate() {
         return expireDate;
     }
@@ -153,6 +195,23 @@ public class FileInfo
     @Override
     public final void setEndTime(Date endTime) {
         setExpireDate(endTime);
+    }
+
+    /** ⇱ Implementation Of {@link ICoMessage}. */
+    /* _____________________________ */static section.iface __MESSAGE__;
+
+    /**
+     * 经办人
+     */
+    @Override
+    @OfGroup(CoMessage.class)
+    public User getOp() {
+        return super.getOp();
+    }
+
+    @Override
+    public void setOp(User op) {
+        super.setOp(op);
     }
 
 }

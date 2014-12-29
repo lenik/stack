@@ -23,7 +23,7 @@ public class SchemaDefManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(SchemaDefManager.class);
         formStruct = new SchemaDef().getFormStruct();
-        insertIndexFields("code", "label", "description");
+        insertIndexFields("i*sa", "code", "label", "description");
     }
 
     @Override
@@ -40,9 +40,9 @@ public class SchemaDefManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (SchemaDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            stdcolsCLD(tr, o);
-            stdcols1(tr, o);
+            cocols("i", tr, o);
+            cocols("cu", tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

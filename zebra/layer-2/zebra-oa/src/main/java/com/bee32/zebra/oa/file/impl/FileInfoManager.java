@@ -1,5 +1,7 @@
 package com.bee32.zebra.oa.file.impl;
 
+import net.bodz.bas.repr.path.PathToken;
+
 import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.tk.sea.FooManager;
 import com.bee32.zebra.tk.sql.VhostDataService;
@@ -14,6 +16,7 @@ import com.bee32.zebra.tk.sql.VhostDataService;
  * @rel org/: 管理企、事业组织
  * @rel person/: 管理联系人
  */
+@PathToken("file")
 public class FileInfoManager
         extends FooManager {
 

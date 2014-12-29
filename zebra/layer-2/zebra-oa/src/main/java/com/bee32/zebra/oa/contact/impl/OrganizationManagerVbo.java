@@ -24,7 +24,7 @@ public class OrganizationManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(OrganizationManager.class);
         formStruct = new Organization().getFormStruct();
-        insertIndexFields("typeChars", "fullName", "size", "description", //
+        insertIndexFields("i*sa", "typeChars", "fullName", "size", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq");
     }
 
@@ -43,7 +43,7 @@ public class OrganizationManagerVbo
 
         for (Organization o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getTypeChars());
             tr.td().b().text(o.getFullName());
             tr.td().text(o.getSize());
@@ -58,7 +58,7 @@ public class OrganizationManagerVbo
                 tr.td().text(contact.getTels());
                 tr.td().text(contact.getQq());
             }
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

@@ -23,7 +23,7 @@ public class PriorityDefManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(PriorityDefManager.class);
         formStruct = new PriorityDef().getFormStruct();
-        insertIndexFields("schema", "code", "label", "description");
+        insertIndexFields("i*sa", "schema", "code", "label", "description");
     }
 
     @Override
@@ -40,10 +40,10 @@ public class PriorityDefManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (PriorityDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
+            cocols("i", tr, o);
             tr.td().text(o.getSchema().getLabel());
-            stdcolsCLD(tr, o);
-            stdcols1(tr, o);
+            cocols("cu", tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

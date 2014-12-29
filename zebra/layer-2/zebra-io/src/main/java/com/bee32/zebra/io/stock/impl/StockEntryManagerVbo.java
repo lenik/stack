@@ -23,7 +23,7 @@ public class StockEntryManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(StockEntryManager.class);
         formStruct = new StockEntry().getFormStruct();
-        insertIndexFields("label", "description");
+        insertIndexFields("i*sa", "label", "description");
     }
 
     @Override
@@ -40,9 +40,9 @@ public class StockEntryManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (StockEntry o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            stdcolsLD(tr, o);
-            stdcols1(tr, o);
+            cocols("i", tr, o);
+            cocols("u", tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

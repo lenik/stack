@@ -24,7 +24,7 @@ public class DeliveryManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(DeliveryManager.class);
         formStruct = new Delivery().getFormStruct();
-        insertIndexFields("salesOrder", "op", "org", "person", "shipDest", "shipper", "shipmentId");
+        insertIndexFields("i*sa", "salesOrder", "op", "org", "person", "shipDest", "shipper", "shipmentId");
     }
 
     @Override
@@ -43,8 +43,8 @@ public class DeliveryManagerVbo
             Contact shipDest = o.getShipDest();
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            // stdcolsST(tr, o);
+            cocols("i", tr, o);
+            // stdcols("m", tr, o);
             ref(tr.td(), o.getSalesOrder());
             ref(tr.td(), o.getOp());
             ref(tr.td(), o.getOrg());
@@ -52,7 +52,7 @@ public class DeliveryManagerVbo
             tr.td().text(shipDest == null ? null : shipDest.getFullAddress());
             ref(tr.td(), o.getShipper());
             tr.td().text(o.getShipmentId());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

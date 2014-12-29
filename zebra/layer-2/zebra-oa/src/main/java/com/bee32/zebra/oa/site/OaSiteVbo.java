@@ -179,9 +179,10 @@ public class OaSiteVbo
     protected void mkMenu(IHtmlTag parent) {
         HtmlUlTag sub;
         HtmlLiTag item;
-        sub = parent.li().text("关系网").ul();
-        sub.li().a().text("企业组织").href(_webApp_.join("org/").toString());
+        sub = parent.li().text("知识库").ul();
+        sub.li().a().text("企事、业").href(_webApp_.join("org/").toString());
         sub.li().a().text("联系人").href(_webApp_.join("person/").toString());
+        sub.li().a().text("文件").href(_webApp_.join("file/").toString());
 
         item = parent.li().text("库存");
         item.a().text("[初始化]").href(_webApp_.join("stinit/").toString()).class_("small").style("color: gray");

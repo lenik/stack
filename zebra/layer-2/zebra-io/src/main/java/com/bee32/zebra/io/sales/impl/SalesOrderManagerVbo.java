@@ -23,7 +23,7 @@ public class SalesOrderManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(SalesOrderManager.class);
         formStruct = new SalesOrder().getFormStruct();
-        insertIndexFields("subject", "text", "topic", "org", "person", "phase", "total");
+        insertIndexFields("i*sa", "subject", "text", "topic", "org", "person", "phase", "total");
     }
 
     @Override
@@ -40,14 +40,14 @@ public class SalesOrderManagerVbo
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
         for (SalesOrder o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            stdcolsST(tr, o);
+            cocols("i", tr, o);
+            cocols("m", tr, o);
             ref(tr.td(), o.getTopic());
             ref(tr.td(), o.getOrg());
             ref(tr.td(), o.getPerson());
             ref(tr.td(), o.getPhase());
             tr.td().text(o.getTotal());
-            stdcols1(tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);

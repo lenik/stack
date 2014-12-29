@@ -23,7 +23,7 @@ public class EmployeeSkillManagerVbo
             throws NoSuchPropertyException, ParseException {
         super(EmployeeSkillManager.class);
         formStruct = new EmployeeSkill().getFormStruct();
-        insertIndexFields("label", "description");
+        insertIndexFields("i*sa", "label", "description");
     }
 
     @Override
@@ -41,8 +41,8 @@ public class EmployeeSkillManagerVbo
         for (EmployeeSkill o : list) {
 
             HtmlTrTag tr = indexTable.tbody.tr();
-            stdcols0(tr, o);
-            stdcols1(tr, o);
+            cocols("i", tr, o);
+            cocols("sa", tr, o);
         }
 
         dumpFullData(p.extradata, list);
