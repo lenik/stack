@@ -11,6 +11,7 @@ public class OrganizationCriteria
 
     IntRange sizeRange;
     IntRange staffRange;
+    boolean shipper;
 
     public IntRange getSizeRange() {
         return sizeRange;
@@ -28,12 +29,21 @@ public class OrganizationCriteria
         this.staffRange = staffRange;
     }
 
+    public boolean isShipper() {
+        return shipper;
+    }
+
+    public void setShipper(boolean shipper) {
+        this.shipper = shipper;
+    }
+
     @Override
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
         sizeRange = map.getIntRange("sizes", sizeRange);
         staffRange = map.getIntRange("staff", sizeRange);
+        shipper = map.getBoolean("shipper", shipper);
     }
 
 }

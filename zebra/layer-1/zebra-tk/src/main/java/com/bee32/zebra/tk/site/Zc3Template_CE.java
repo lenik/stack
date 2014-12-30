@@ -12,8 +12,8 @@ import net.bodz.bas.html.dom.tag.HtmlUlTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
-import net.bodz.bas.repr.form.IFieldDef;
-import net.bodz.bas.repr.form.IFormDef;
+import net.bodz.bas.repr.form.IFieldDecl;
+import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -26,8 +26,8 @@ public abstract class Zc3Template_CE<T extends CoEntity>
         extends AbstractHtmlViewBuilder<T>
         implements IZebraSiteAnchors, IZebraSiteLayout {
 
-    protected IFormDef formStruct;
-    protected List<IFieldDef> indexFields;
+    protected IFormDecl formStruct;
+    protected List<IFieldDecl> indexFields;
 
     public Zc3Template_CE(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);

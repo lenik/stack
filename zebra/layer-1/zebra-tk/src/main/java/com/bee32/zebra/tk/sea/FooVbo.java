@@ -8,6 +8,8 @@ import java.util.Map;
 
 import net.bodz.bas.c.type.TypeId;
 import net.bodz.bas.c.type.TypeKind;
+import net.bodz.bas.err.IllegalConfigException;
+import net.bodz.bas.html.IHtmlViewBuilderFactory;
 import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
@@ -17,11 +19,11 @@ import net.bodz.bas.html.dom.tag.HtmlSelectTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
-import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.element.IPropertyAccessor;
+import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
-import net.bodz.bas.repr.form.IFieldDef;
-import net.bodz.bas.repr.form.IFormDef;
+import net.bodz.bas.repr.form.IFieldDecl;
+import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -49,78 +51,83 @@ public abstract class FooVbo<T extends CoEntity>
         IHtmlTag out = p.mainCol;
 
         T o = ref.get();
-        IFormDef formStruct = o.getFormDef();
+        IFormDecl formDecl = o.getFormDef();
 
-        Map<FieldCategory, Collection<IFieldDef>> map = FieldCategory.group(//
-                formStruct.getFieldDefs(DetailLevel.EXTEND));
+        Map<FieldCategory, Collection<IFieldDecl>> categories = FieldCategory.group(//
+                formDecl.getFieldDefs(DetailLevel.EXTEND));
 
-        for (FieldCategory category : map.keySet()) {
-            List<IFieldDef> fieldDefs = new ArrayList<>();
-            for (IFieldDef fieldDef : map.get(category))
-                if (filterField(fieldDef))
-                    fieldDefs.add(fieldDef);
-            if (fieldDefs.isEmpty())
+        for (FieldCategory category : categories.keySet()) {
+            List<IFieldDecl> fieldDecls = new ArrayList<>();
+            for (IFieldDecl fieldDecl : categories.get(category))
+                if (filterField(fieldDecl))
+                    fieldDecls.add(fieldDecl);
+            if (fieldDecls.isEmpty())
                 continue;
 
             buildCategoryHeader(ctx, out, category);
-            buildFields(ctx, out, fieldDefs, o);
+            buildFields(ctx, out, ref, fieldDecls);
 
             out.hr();
         } // for field-group
         return ctx;
     }
 
-    protected boolean filterField(IFieldDef formField) {
+    protected boolean filterField(IFieldDecl formField) {
         return true;
     }
 
     protected void buildCategoryHeader(IHtmlViewContext ctx, IHtmlTag out, FieldCategory category)
             throws ViewBuilderException {
-        HtmlH2Tag fgTitle = out.h2();
-        fgTitle.span().class_("icon fa").text(FA_CUBE);
+        HtmlH2Tag h2 = out.h2();
+        h2.span().class_("icon fa").text(FA_CUBE);
         if (category == FieldCategory.NULL)
-            fgTitle.text("基本信息");
+            h2.text("基本信息");
         else
-            fgTitle.text(IXjdocElement.fn.labelName(category));
+            h2.text(IXjdocElement.fn.labelName(category));
     }
 
-    protected void buildFields(IHtmlViewContext ctx, IHtmlTag out, List<IFieldDef> fieldDefs, T o)
+    protected void buildFields(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, List<IFieldDecl> fieldDecls)
             throws ViewBuilderException {
         out = out.div().class_("container");
-        for (IFieldDef fieldDef : fieldDefs) {
-            IPropertyAccessor accessor = fieldDef.getAccessor();
-            Object value;
-            try {
-                value = accessor.getValue(o);
-                if (value == null)
-                    switch (fieldDef.getNullConvertion()) {
-                    case EMPTY:
-                        value = "";
-                    default:
-                    }
-            } catch (ReflectiveOperationException e) {
-                value = "(" + e.getClass().getName() + ") " + e.getMessage();
-            }
-
+        for (IFieldDecl fieldDecl : fieldDecls) {
             HtmlDivTag row = out.div().class_("container-row");
             HtmlDivTag labelDiv = row.div().class_("col-sm-3 col-lg-2");
-            labelDiv.text(IXjdocElement.fn.labelName(fieldDef) + ":");
+            labelDiv.text(IXjdocElement.fn.labelName(fieldDecl) + ":");
             HtmlDivTag valueDiv = row.div().class_("col-sm-9 col-lg-10");
 
-            buildField(ctx, valueDiv, fieldDef, value);
-
+            buildField(ctx, valueDiv, ref, fieldDecl);
         } // for field
     }
 
-    protected void buildField(IHtmlViewContext ctx, IHtmlTag out, IFieldDef fieldDef, Object value)
+    protected void buildField(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instance, IFieldDecl fieldDecl)
             throws ViewBuilderException {
-        // IViewBuilderFactory factory = ctx.query(IViewBuilderFactory.class);
+        IHtmlViewBuilderFactory factory = ctx.query(IHtmlViewBuilderFactory.class);
+        if (factory == null)
+            throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
+        UiPropertyRef<Object> propertyRef = new UiPropertyRef<Object>(instance, fieldDecl.getProperty());
+        factory.buildView(ctx, propertyRef);
+    }
 
-        Class<?> type = fieldDef.getValueType();
-        IProperty property = fieldDef.getProperty();
+    protected void buildField2(IHtmlViewContext ctx, IHtmlTag out, Object instance, IFieldDecl fieldDecl)
+            throws ViewBuilderException {
+        IPropertyAccessor accessor = fieldDecl.getAccessor();
+        Object value;
+        try {
+            value = accessor.getValue(instance);
+            if (value == null)
+                switch (fieldDecl.getNullConvertion()) {
+                case EMPTY:
+                    value = "";
+                default:
+                }
+        } catch (ReflectiveOperationException e) {
+            value = "(" + e.getClass().getName() + ") " + e.getMessage();
+        }
+
+        Class<?> type = fieldDecl.getValueType();
         // IElementDoc xjdoc = property.getXjdoc();
 
-        iString placeholder = fieldDef.getPlaceholder();
+        iString placeholder = fieldDecl.getPlaceholder();
         HtmlInputTag input = null;
         HtmlSelectTag select = null;
 
@@ -161,6 +168,9 @@ public abstract class FooVbo<T extends CoEntity>
             break;
         } // switch type-id
 
+        if (value != null)
+            if (input != null)
+                input.value(value.toString());
     }
 
 }

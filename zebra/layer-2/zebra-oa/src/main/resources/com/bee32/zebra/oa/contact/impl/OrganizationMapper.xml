@@ -68,10 +68,26 @@
         <include refid="select1" />
     </select>
 
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <if test="surname != null">and substr(a.label,1,1)=#{surname}</if>
+            <if test="shipper">and shipper</if>
+
+            <!-- co -->
+            <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            
+            <!-- party -->
+            <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
+            <if test="customer">and customer</if>
+            <if test="supplier">and supplier</if>
+        </where>
+    </select>
+
     <select id="select" parameterType="int" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="_parameter != null">p.id=#{id}</if>
+            <if test="_parameter != null">a.id=#{id}</if>
         </where>
     </select>
 

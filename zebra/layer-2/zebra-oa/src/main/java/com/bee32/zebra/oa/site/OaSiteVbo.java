@@ -169,7 +169,7 @@ public class OaSiteVbo
 
         body.div().id(ID.extradata);
 
-        ctx.setOut(body);
+        ctx.setOut(body1);
         return ctx;
     }
 

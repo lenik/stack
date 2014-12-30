@@ -32,30 +32,42 @@
             left join avct_contact c on a.id=c.ct_person and c.ct_usage is null
     ]]></sql>
 
+    <sql id="select2"><![CDATA[
+        select
+            a.*, c.*
+        from person a
+            left join avct_contact c on a.id=c.ct_person and c.ct_usage is null
+    ]]></sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
     </select>
 
     <select id="filter" resultMap="map1">
         <include refid="select1" />
-        <!-- left join tags -->
         <where>
             <if test="surname != null">and substr(a.label,1,1)=#{surname}</if>
+            <if test="employee">and employee</if>
 
             <!-- co -->
             <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+        
+            <!-- party -->
+            <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
+            <if test="customer">and customer</if>
+            <if test="supplier">and supplier</if>
         </where>
     </select>
 
     <select id="select" parameterType="int" resultMap="map1">
-        <include refid="select1" />
+        <include refid="select2" />
         <where>
             <if test="_parameter != null">a.id = #{id}</if>
         </where>
     </select>
 
     <select id="selectPrev" parameterType="int" resultMap="map1">
-        <include refid="select1" />
+        <include refid="select2" />
         <where>
             <if test="_parameter != null">a.id &lt; #{id}</if>
         </where>
@@ -63,7 +75,7 @@
     </select>
     
     <select id="selectNext" parameterType="int" resultMap="map1">
-        <include refid="select1" />
+        <include refid="select2" />
         <where>
             <if test="_parameter != null">a.id &gt; #{id}</if>
         </where>

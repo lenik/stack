@@ -32,7 +32,7 @@
             a.*,
             op.label "op_label",
             c.label "cat_label",
-            p.label "phase_label"，
+            p.label "phase_label",
             u.label "uid_label",
             g.label "gid_label"
         from topic a

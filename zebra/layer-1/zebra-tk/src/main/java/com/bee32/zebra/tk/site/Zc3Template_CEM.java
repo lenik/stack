@@ -25,10 +25,10 @@ import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IPropertyAccessor;
 import net.bodz.bas.repr.form.FieldCategory;
-import net.bodz.bas.repr.form.FieldDefBuilder;
-import net.bodz.bas.repr.form.FieldDefListBuilder;
-import net.bodz.bas.repr.form.IFieldDef;
-import net.bodz.bas.repr.form.IFormDef;
+import net.bodz.bas.repr.form.FieldDeclBuilder;
+import net.bodz.bas.repr.form.FieldDeclListBuilder;
+import net.bodz.bas.repr.form.IFieldDecl;
+import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.form.SortOrder;
 import net.bodz.bas.repr.req.HttpSnap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -49,8 +49,8 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         extends AbstractHtmlViewBuilder<M>
         implements IZebraSiteAnchors, IZebraSiteLayout {
 
-    protected IFormDef formDef;
-    protected List<IFieldDef> indexFields;
+    protected IFormDecl formDef;
+    protected List<IFieldDecl> indexFields;
 
     public Zc3Template_CEM(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
@@ -58,8 +58,8 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected void insertIndexFields(String spec, String... pathProperties)
             throws NoSuchPropertyException, ParseException {
-        FieldDefBuilder formFieldBuilder = new FieldDefBuilder();
-        FieldDefListBuilder builder = new FieldDefListBuilder(formFieldBuilder);
+        FieldDeclBuilder formFieldBuilder = new FieldDeclBuilder();
+        FieldDeclListBuilder builder = new FieldDeclListBuilder(formFieldBuilder);
 
         for (char c : spec.toCharArray()) {
             switch (c) {
@@ -135,7 +135,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         IndexTable table = new IndexTable(parent, id);
 
         for (IHtmlTag thr : table.headFoot)
-            for (IFieldDef field : indexFields) {
+            for (IFieldDecl field : indexFields) {
                 HtmlThTag th = thr.th().text(IXjdocElement.fn.labelName(field));
 
                 List<String> classes = new ArrayList<String>();
@@ -267,28 +267,28 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected void dumpFullData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
         int count = 0;
-        Map<FieldCategory, Collection<IFieldDef>> fgMap = FieldCategory.group(//
+        Map<FieldCategory, Collection<IFieldDecl>> fgMap = FieldCategory.group(//
                 formDef.getFieldDefs(DetailLevel.EXTEND));
         for (CoEntity entity : dataset) {
             if (count++ > 3)
                 break;
             HtmlDivTag dtab = parent.div().id("data-" + entity.getId());
             for (FieldCategory fg : fgMap.keySet()) {
-                Collection<IFieldDef> fieldDefs = fgMap.get(fg);
-                if (fieldDefs.isEmpty())
+                Collection<IFieldDecl> fieldDecls = fgMap.get(fg);
+                if (fieldDecls.isEmpty())
                     continue;
 
                 String fgLabel = fg == FieldCategory.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
                 HtmlDivTag fgDiv = dtab.div().class_("zu-fgroup").style("line-heignt: 2em");
                 fgDiv.h3().text(fgLabel);
 
-                for (IFieldDef fieldDef : fieldDefs) {
-                    IPropertyAccessor accessor = fieldDef.getAccessor();
+                for (IFieldDecl fieldDecl : fieldDecls) {
+                    IPropertyAccessor accessor = fieldDecl.getAccessor();
                     Object value;
                     try {
                         value = accessor.getValue(entity);
                         if (value == null)
-                            switch (fieldDef.getNullConvertion()) {
+                            switch (fieldDecl.getNullConvertion()) {
                             case EMPTY:
                                 value = "";
                             default:
@@ -298,7 +298,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                     }
 
                     HtmlDivTag line = fgDiv.div();
-                    line.span().class_("zu-flabel zu-w50").text(IXjdocElement.fn.labelName(fieldDef) + ": ");
+                    line.span().class_("zu-flabel zu-w50").text(IXjdocElement.fn.labelName(fieldDecl) + ": ");
                     line.span().text(value);
                 } // for field
             } // for field-group
