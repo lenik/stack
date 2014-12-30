@@ -26,7 +26,7 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IPropertyAccessor;
 import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDefBuilder;
-import net.bodz.bas.repr.form.FormFieldListBuilder;
+import net.bodz.bas.repr.form.FieldDefListBuilder;
 import net.bodz.bas.repr.form.IFieldDef;
 import net.bodz.bas.repr.form.IFormDef;
 import net.bodz.bas.repr.form.SortOrder;
@@ -59,7 +59,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     protected void insertIndexFields(String spec, String... pathProperties)
             throws NoSuchPropertyException, ParseException {
         FieldDefBuilder formFieldBuilder = new FieldDefBuilder();
-        FormFieldListBuilder builder = new FormFieldListBuilder(formFieldBuilder);
+        FieldDefListBuilder builder = new FieldDefListBuilder(formFieldBuilder);
 
         for (char c : spec.toCharArray()) {
             switch (c) {

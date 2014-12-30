@@ -15,6 +15,7 @@ import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.i18n.dom1.IElement;
+import net.bodz.bas.potato.ref.UiHelper;
 import net.bodz.bas.potato.ref.UiPropertyRefMap;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.PathArrivalEntry;
@@ -74,7 +75,7 @@ public class OaSiteVbo
         HttpSession session = ctx.getSession();
         // Preferences pref = Preferences.fromSession(session);
 
-        UiPropertyRefMap propMap = explode(ref);
+        UiPropertyRefMap propMap = UiHelper.explode(ref);
 
         IPathArrival arrival = (IPathArrival) ctx.getRequest().getAttribute(IPathArrival.class.getName());
         boolean frameOnly = arrival.getPrevious(site).getRemainingPath() != null;

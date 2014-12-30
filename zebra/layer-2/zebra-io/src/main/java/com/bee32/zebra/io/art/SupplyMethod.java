@@ -1,7 +1,7 @@
 package com.bee32.zebra.io.art;
 
-import net.bodz.bas.repr.util.Predef;
-import net.bodz.bas.repr.util.PredefMetadata;
+import net.bodz.bas.t.predef.Predef;
+import net.bodz.bas.t.predef.PredefMetadata;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocAware;
 
 public class SupplyMethod

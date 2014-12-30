@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.bodz.bas.repr.util.Predef;
 import net.bodz.bas.t.pojo.Pair;
+import net.bodz.bas.t.predef.Predef;
 
 import com.tinylily.model.base.CoEntity;
 
