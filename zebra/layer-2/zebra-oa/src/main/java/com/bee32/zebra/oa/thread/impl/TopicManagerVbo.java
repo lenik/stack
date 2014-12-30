@@ -33,7 +33,7 @@ public class TopicManagerVbo
     public TopicManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(TopicManager.class);
-        formStruct = new Topic().getFormStruct();
+        formDef = new Topic().getFormDef();
         insertIndexFields("i*sa", "op", "beginTime", "endTime", "subject", "text", "category", "phase", "value");
     }
 

@@ -24,7 +24,7 @@ public class AccountingEventManagerVbo
     public AccountingEventManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(AccountingEventManager.class);
-        formStruct = new AccountingEvent().getFormStruct();
+        formDef = new AccountingEvent().getFormDef();
         insertIndexFields("i*sa", "beginTime", "op", "category", "subject", "text", "topic", "org", "person",
                 "debitTotal", "creditTotal");
     }

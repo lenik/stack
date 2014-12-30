@@ -86,6 +86,7 @@ public class OaSiteVbo
             // stylesheets
             head.link().css(_webApp_ + "site.css");
             // head.link().css(_webApp_ + "theme-" + pref.getTheme() + ".css").id("zp-themeLink");
+            head.link().css(_webApp_ + "print.css").media("print");
 
             // scripts
             head.script().javascript("" + //

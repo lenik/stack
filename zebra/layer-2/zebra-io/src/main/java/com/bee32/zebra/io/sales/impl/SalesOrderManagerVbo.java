@@ -22,7 +22,7 @@ public class SalesOrderManagerVbo
     public SalesOrderManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(SalesOrderManager.class);
-        formStruct = new SalesOrder().getFormStruct();
+        formDef = new SalesOrder().getFormDef();
         insertIndexFields("i*sa", "subject", "text", "topic", "org", "person", "phase", "total");
     }
 

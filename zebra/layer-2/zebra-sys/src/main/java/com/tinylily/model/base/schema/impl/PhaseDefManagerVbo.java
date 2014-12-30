@@ -22,7 +22,7 @@ public class PhaseDefManagerVbo
     public PhaseDefManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(PhaseDefManager.class);
-        formStruct = new PhaseDef().getFormStruct();
+        formDef = new PhaseDef().getFormDef();
         insertIndexFields("i*sa", "schema", "code", "label", "description");
     }
 

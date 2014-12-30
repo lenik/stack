@@ -22,7 +22,7 @@ public class SchemaDefManagerVbo
     public SchemaDefManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(SchemaDefManager.class);
-        formStruct = new SchemaDef().getFormStruct();
+        formDef = new SchemaDef().getFormDef();
         insertIndexFields("i*sa", "code", "label", "description");
     }
 

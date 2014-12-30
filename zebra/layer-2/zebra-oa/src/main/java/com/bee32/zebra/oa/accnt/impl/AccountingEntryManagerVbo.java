@@ -22,7 +22,7 @@ public class AccountingEntryManagerVbo
     public AccountingEntryManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(AccountingEntryManager.class);
-        formStruct = new AccountingEntry().getFormStruct();
+        formDef = new AccountingEntry().getFormDef();
         insertIndexFields("i*sa", "label", "description");
     }
 

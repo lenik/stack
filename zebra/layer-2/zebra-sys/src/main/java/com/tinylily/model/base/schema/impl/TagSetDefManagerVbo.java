@@ -22,7 +22,7 @@ public class TagSetDefManagerVbo
     public TagSetDefManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(TagSetDefManager.class);
-        formStruct = new TagSetDef().getFormStruct();
+        formDef = new TagSetDef().getFormDef();
         insertIndexFields("i*sa", "schema", "code", "label", "description", "ortho", "tags");
     }
 

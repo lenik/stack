@@ -53,15 +53,18 @@ h3 {
     border: none;
 }
 
-.zu-fgroup {
-    text-align: left;
-    line-height: 2em;
-    font-size: large;
+.zu-fgroup h2 {
+    font-size: 1.5em;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.zu-fgroup h3 {
+    font-size: 1.2em;
 }
 
 .zu-flabel {
     display: inline-block;
-    width: 50%;
     text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -80,7 +83,7 @@ h3 {
     border-bottom-width: 1px;
 }
 
-.zu-section + .zu-section {
+.zu-section+.zu-section {
     border-top: none;
 }
 
@@ -106,6 +109,7 @@ h3 {
 }
 
 .zu-section:hover>.zu-section-head>.icon {
+    
 }
 
 .zu-section-body {
@@ -123,7 +127,23 @@ h3 {
 }
 
 .zu-switcher .active {
-    font-weight: bold; 
+    font-weight: bold;
+}
+
+.zu-w10 {
+    width: 10%;
+}
+
+.zu-w20 {
+    width: 20%;
+}
+
+.zu-w30 {
+    width: 30%;
+}
+
+.zu-w50 {
+    width: 50%;
 }
 
 #zp-body1 {
@@ -197,7 +217,7 @@ h3 {
     list-style-type: none;
 }
 
-#zp-menu a{
+#zp-menu a {
     font-style: normal;
 }
 
@@ -219,6 +239,15 @@ h3 {
 
 #zp-preview {
     margin: 2em 0 0;
+    height: 100px;
+    font-size: 2em;
+}
+
+#zp-preview>div {
+    width: 100px;
+    height: 100px;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #zp-preview>img {

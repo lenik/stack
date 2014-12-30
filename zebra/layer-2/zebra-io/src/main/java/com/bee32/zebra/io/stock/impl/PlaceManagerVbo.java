@@ -24,7 +24,7 @@ public class PlaceManagerVbo
     public PlaceManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(PlaceManager.class);
-        formStruct = new Place().getFormStruct();
+        formDef = new Place().getFormDef();
         insertIndexFields("i*sa", "usage", "label", "description", "position", "bbox", "party", "partyOrg");
     }
 

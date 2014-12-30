@@ -22,7 +22,7 @@ public class OrgUnitManagerVbo
     public OrgUnitManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(OrgUnitManager.class);
-        formStruct = new OrgUnit().getFormStruct();
+        formDef = new OrgUnit().getFormDef();
         insertIndexFields("i*sa", "label", "description");
     }
 

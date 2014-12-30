@@ -22,7 +22,7 @@ public class ArtifactCategoryManagerVbo
     public ArtifactCategoryManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(ArtifactCategoryManager.class);
-        formStruct = new ArtifactCategory().getFormStruct();
+        formDef = new ArtifactCategory().getFormDef();
         insertIndexFields("i*sa", "label", "description", "depth", "parent");
     }
 

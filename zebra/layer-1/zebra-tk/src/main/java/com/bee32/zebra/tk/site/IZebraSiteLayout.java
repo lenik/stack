@@ -13,15 +13,19 @@ public interface IZebraSiteLayout {
         String menu_ul = "zp-menu-ul";
         String title = "zp-title";
         String stat = "zp-stat";
+        String cmds = "zp-cmds";
         String cmds0 = "zp-cmds.0";
         String cmds1 = "zp-cmds.1";
 
         String links_ul = "zp-links-ul";
         String infosel = "zp-infosel";
         String infoselData = "zp-infosel-data";
+        String infoman = "zp-infoman";
         String infoman_ul = "zp-infoman-ul";
 
         String extradata = "zp-extradata";
+
+        String preview = "zp-preview";
     }
 
 }

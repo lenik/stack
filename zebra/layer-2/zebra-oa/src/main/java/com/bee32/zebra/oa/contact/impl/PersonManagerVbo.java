@@ -13,8 +13,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Person;
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class PersonManagerVbo
@@ -23,7 +25,7 @@ public class PersonManagerVbo
     public PersonManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(PersonManager.class);
-        formStruct = new Person().getFormStruct();
+        formDef = new Person().getFormDef();
         insertIndexFields("i*sa", "ageSexLoc", "typeChars", "fullName", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq");
     }
@@ -36,7 +38,17 @@ public class PersonManagerVbo
         PageStruct p = new PageStruct(ctx);
 
         PersonMapper mapper = ctx.query(PersonMapper.class);
-        List<Person> list = postfilt(mapper.all());
+
+        PersonCriteria criteria = criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        {
+            SwitchOverride<String> so;
+            so = filters.switchPairs("姓氏", true, //
+                    mapper.histoBySurname(), "surname", criteria.surname, false);
+            criteria.surname = so.key;
+        }
+
+        List<Person> list = postfilt(mapper.filter(criteria));
 
         IndexTable indexTable = mkIndexTable(p.mainCol, "list");
 

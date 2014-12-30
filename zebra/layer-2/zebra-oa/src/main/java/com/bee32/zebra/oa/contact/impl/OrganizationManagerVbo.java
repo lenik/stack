@@ -23,7 +23,7 @@ public class OrganizationManagerVbo
     public OrganizationManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(OrganizationManager.class);
-        formStruct = new Organization().getFormStruct();
+        formDef = new Organization().getFormDef();
         insertIndexFields("i*sa", "typeChars", "fullName", "size", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq");
     }

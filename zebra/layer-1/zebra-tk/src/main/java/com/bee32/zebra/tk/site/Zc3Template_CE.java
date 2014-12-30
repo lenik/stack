@@ -9,10 +9,11 @@ import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlPTag;
 import net.bodz.bas.html.dom.tag.HtmlUlTag;
+import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
-import net.bodz.bas.repr.form.IFormField;
-import net.bodz.bas.repr.form.IFormStruct;
+import net.bodz.bas.repr.form.IFieldDef;
+import net.bodz.bas.repr.form.IFormDef;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -25,8 +26,8 @@ public abstract class Zc3Template_CE<T extends CoEntity>
         extends AbstractHtmlViewBuilder<T>
         implements IZebraSiteAnchors, IZebraSiteLayout {
 
-    protected IFormStruct formStruct;
-    protected List<IFormField> indexFields;
+    protected IFormDef formStruct;
+    protected List<IFieldDef> indexFields;
 
     public Zc3Template_CE(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
@@ -49,17 +50,12 @@ public abstract class Zc3Template_CE<T extends CoEntity>
             HtmlDivTag cmdsDiv = headCol1.div().id("zp-cmds");
             cmdsDiv.div().id(ID.cmds0);
             cmdsDiv.div().id(ID.cmds1);
-
-            HtmlDivTag headCol2 = headDiv.div().id("zp-head-col2").class_("col-xs-6");
-            HtmlDivTag headLinks = headCol2.div().id("zp-links");
-            headLinks.span().text("您可能需要进行下面的操作:");
-            headLinks.ul().id(ID.links_ul);
         }
 
         HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 info");
         {
-            HtmlDivTag previewDiv = rightCol.div().id("zp-preview").align("center");
-            previewDiv.img().src("pic.png");
+            HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
+            previewDiv.div().class_("icon fa").text(IFontAwesomeCharAliases.FA_COFFEE);
 
             HtmlDivTag infosel = rightCol.div().id(ID.infosel);
         }

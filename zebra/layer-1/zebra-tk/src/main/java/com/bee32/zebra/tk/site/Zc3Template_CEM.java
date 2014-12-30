@@ -19,16 +19,18 @@ import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IPropertyAccessor;
-import net.bodz.bas.repr.form.FieldGroup;
-import net.bodz.bas.repr.form.FormFieldBuilder;
+import net.bodz.bas.repr.form.FieldCategory;
+import net.bodz.bas.repr.form.FieldDefBuilder;
 import net.bodz.bas.repr.form.FormFieldListBuilder;
-import net.bodz.bas.repr.form.IFormField;
-import net.bodz.bas.repr.form.IFormStruct;
+import net.bodz.bas.repr.form.IFieldDef;
+import net.bodz.bas.repr.form.IFormDef;
 import net.bodz.bas.repr.form.SortOrder;
+import net.bodz.bas.repr.req.HttpSnap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -47,8 +49,8 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         extends AbstractHtmlViewBuilder<M>
         implements IZebraSiteAnchors, IZebraSiteLayout {
 
-    protected IFormStruct formStruct;
-    protected List<IFormField> indexFields;
+    protected IFormDef formDef;
+    protected List<IFieldDef> indexFields;
 
     public Zc3Template_CEM(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
@@ -56,22 +58,22 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected void insertIndexFields(String spec, String... pathProperties)
             throws NoSuchPropertyException, ParseException {
-        FormFieldBuilder formFieldBuilder = new FormFieldBuilder();
+        FieldDefBuilder formFieldBuilder = new FieldDefBuilder();
         FormFieldListBuilder builder = new FormFieldListBuilder(formFieldBuilder);
 
         for (char c : spec.toCharArray()) {
             switch (c) {
             case 'i':
-                builder.fromPathProperties(formStruct, "id");
+                builder.fromPathProperties(formDef, "id");
                 break;
             case 's':
-                builder.fromPathProperties(formStruct, "priority", "creationTime", "lastModified", "flags", "state");
+                builder.fromPathProperties(formDef, "priority", "creationTime", "lastModified", "flags", "state");
                 break;
             case 'a':
-                builder.fromPathProperties(formStruct, "accessMode", "owner", "ownerGroup");
+                builder.fromPathProperties(formDef, "accessMode", "owner", "ownerGroup");
                 break;
             case '*':
-                builder.fromPathProperties(formStruct, pathProperties);
+                builder.fromPathProperties(formDef, pathProperties);
                 break;
             default:
                 throw new IllegalArgumentException("Bad column group specifier: " + c);
@@ -94,7 +96,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             HtmlDivTag headCol1 = headDiv.div().id("zp-head-col1").class_("col-xs-6");
             headCol1.div().id(ID.stat);
 
-            HtmlDivTag cmdsDiv = headCol1.div().id("zp-cmds");
+            HtmlDivTag cmdsDiv = headCol1.div().id(ID.cmds);
             cmdsDiv.div().id(ID.cmds0);
             cmdsDiv.div().id(ID.cmds1);
 
@@ -106,8 +108,8 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
         HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 info");
         {
-            HtmlDivTag previewDiv = rightCol.div().id("zp-preview").align("center");
-            previewDiv.img().src("pic.png");
+            HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
+            previewDiv.div().class_("icon fa").text(IFontAwesomeCharAliases.FA_COFFEE);
 
             HtmlDivTag infosel = rightCol.div().id(ID.infosel);
 
@@ -120,7 +122,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
             infosel.div().id(ID.infoselData);
 
-            HtmlDivTag refdocsDiv = rightCol.div().id("zp-infoman");
+            HtmlDivTag refdocsDiv = rightCol.div().id(ID.infoman);
             refdocsDiv.h2().text("管理文献");
             refdocsDiv.ul().id(ID.infoman_ul);
         }
@@ -133,10 +135,10 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         IndexTable table = new IndexTable(parent, id);
 
         for (IHtmlTag thr : table.headFoot)
-            for (IFormField field : indexFields) {
+            for (IFieldDef field : indexFields) {
                 HtmlThTag th = thr.th().text(IXjdocElement.fn.labelName(field));
-                List<String> classes = new ArrayList<String>();
 
+                List<String> classes = new ArrayList<String>();
                 switch (field.getName()) {
                 case "accessMode":
                 case "creationTime":
@@ -265,26 +267,28 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected void dumpFullData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
         int count = 0;
-        Map<FieldGroup, Collection<IFormField>> fgMap = formStruct.getFieldsGrouped(DetailLevel.EXTEND);
+        Map<FieldCategory, Collection<IFieldDef>> fgMap = FieldCategory.group(//
+                formDef.getFieldDefs(DetailLevel.EXTEND));
         for (CoEntity entity : dataset) {
-            if (count++ > 20)
+            if (count++ > 3)
                 break;
             HtmlDivTag dtab = parent.div().id("data-" + entity.getId());
-            for (FieldGroup fg : fgMap.keySet()) {
-                Collection<IFormField> fields = fgMap.get(fg);
-                if (fields.isEmpty())
+            for (FieldCategory fg : fgMap.keySet()) {
+                Collection<IFieldDef> fieldDefs = fgMap.get(fg);
+                if (fieldDefs.isEmpty())
                     continue;
 
-                String fgLabel = fg == FieldGroup.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
-                dtab.h3().class_("zu-fgroup").text(fgLabel);
+                String fgLabel = fg == FieldCategory.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
+                HtmlDivTag fgDiv = dtab.div().class_("zu-fgroup").style("line-heignt: 2em");
+                fgDiv.h3().text(fgLabel);
 
-                for (IFormField field : fields) {
-                    IPropertyAccessor accessor = field.getAccessor();
+                for (IFieldDef fieldDef : fieldDefs) {
+                    IPropertyAccessor accessor = fieldDef.getAccessor();
                     Object value;
                     try {
                         value = accessor.getValue(entity);
                         if (value == null)
-                            switch (field.getNullConvertion()) {
+                            switch (fieldDef.getNullConvertion()) {
                             case EMPTY:
                                 value = "";
                             default:
@@ -293,8 +297,8 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                         value = "(" + e.getClass().getName() + ") " + e.getMessage();
                     }
 
-                    HtmlDivTag line = dtab.div();
-                    line.span().class_("zu-flabel").text(IXjdocElement.fn.labelName(field) + ": ");
+                    HtmlDivTag line = fgDiv.div();
+                    line.span().class_("zu-flabel zu-w50").text(IXjdocElement.fn.labelName(fieldDef) + ": ");
                     line.span().text(value);
                 } // for field
             } // for field-group
@@ -314,7 +318,11 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     protected <C extends CoEntityCriteria> C criteriaFromRequest(C criteria, HttpServletRequest req)
             throws ViewBuilderException {
         try {
-            criteria.populate(req.getParameterMap());
+            HttpSnap snap = (HttpSnap) req.getAttribute(HttpSnap.class.getName());
+            if (snap == null)
+                criteria.populate(req.getParameterMap());
+            else
+                criteria.populate(snap.getParameterMap());
         } catch (ParseException e) {
             throw new ViewBuilderException(e.getMessage(), e);
         }

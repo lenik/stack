@@ -38,13 +38,13 @@
     <sql id="select2"><![CDATA[
         select
             a.*,
-            p.label "person_label",
-            o.label "org_label",
+            p.label "vip_label",
+            o.label "vip_org_label",
             u.label "uid_label",
             g.label "gid_label"
         from place a
-            left join "person" p on a.person=p.id
-            left join "org" o on a.org=o.id
+            left join "person" p on a.vip=p.id
+            left join "org" o on a.vip_org=o.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>

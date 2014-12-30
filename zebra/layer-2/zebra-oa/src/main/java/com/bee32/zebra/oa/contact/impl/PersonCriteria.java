@@ -7,9 +7,18 @@ import com.tinylily.model.sea.QVariantMap;
 public class PersonCriteria
         extends PartyCriteria {
 
-    char gender = '-';
-    String homeland;
-    boolean employee;
+    public String surname;
+    public char gender = '-';
+    public String homeland;
+    public boolean employee;
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
     public char getGender() {
         return gender;
@@ -39,6 +48,7 @@ public class PersonCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
+        surname = map.getString("surname", surname);
         employee = map.getBoolean("employee", employee);
     }
 

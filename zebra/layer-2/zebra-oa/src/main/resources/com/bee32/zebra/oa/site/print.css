@@ -1,0 +1,27 @@
+.zu-section {
+    display: none;
+}
+
+#list_wrapper>:not(table) {
+    display: none;
+}
+
+#list_wrapper>.dataTables_info {
+    display: inherit;
+}
+
+#zp-menu-col {
+    display: none;
+}
+
+#zp-head-col1 {
+    display: none;
+}
+
+#zp-head-col2 {
+    display: none;
+}
+
+#zp-right-col {
+    display: none;
+}

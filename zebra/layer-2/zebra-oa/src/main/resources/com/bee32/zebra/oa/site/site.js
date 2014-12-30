@@ -37,14 +37,27 @@ $(document).ready(function() {
 
     dt.rows().on('click', 'tr', function() {
         var row = dt.row(this); // could be the header.
-        var cell0 = dt.cell(this, 0);
-        var id = cell0.data();
+        var id = row.data()[0];
         if (id == undefined)
             return;
+        
         // load the selection
-        var outer = $("#infosel-data");
+        var outer = $("#zp-infosel-data");
         var data = $("#data-" + id);
-        outer.html(data.html());
+        var lastid = outer.attr("selid");
+        
+        if (id != lastid) {
+            outer.attr("selid", id);
+            if (data.length > 0) {
+                outer.html(data.html());
+            } else {
+                // load on demand, or create from the table...
+                outer.html("Loading...");
+            }
+        } else {
+            // click again on the same row.
+            location.href = id + "/";
+        }
     });
 
 });
