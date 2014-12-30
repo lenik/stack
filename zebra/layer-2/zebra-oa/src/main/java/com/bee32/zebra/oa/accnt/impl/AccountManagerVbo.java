@@ -27,16 +27,12 @@ public class AccountManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<AccountManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AccountManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         AccountMapper mapper = ctx.query(AccountMapper.class);
         List<Account> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
 
         for (Account o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
@@ -47,9 +43,7 @@ public class AccountManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

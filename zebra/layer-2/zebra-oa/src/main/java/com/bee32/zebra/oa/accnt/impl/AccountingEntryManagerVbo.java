@@ -27,16 +27,12 @@ public class AccountingEntryManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<AccountingEntryManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AccountingEntryManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);
         List<AccountingEntry> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
 
         for (AccountingEntry o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
@@ -44,10 +40,6 @@ public class AccountingEntryManagerVbo
             tr.td().text(o.getDescription()).class_("small");
             cocols("sa", tr, o);
         }
-
-        dumpFullData(p.extradata, list);
-
-        return ctx;
     }
 
 }

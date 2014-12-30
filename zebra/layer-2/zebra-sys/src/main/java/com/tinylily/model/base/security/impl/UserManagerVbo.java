@@ -28,16 +28,12 @@ public class UserManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<UserManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<UserManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        ctx = super.buildHtmlView(ctx, ref, options);
-
-        PageStruct p = new PageStruct(ctx);
-
         UserMapper mapper = ctx.query(UserMapper.class);
         List<User> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (User o : list) {
             long lastLoginTime = o.getLastLoginTime();
 
@@ -53,8 +49,7 @@ public class UserManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
+    
 }

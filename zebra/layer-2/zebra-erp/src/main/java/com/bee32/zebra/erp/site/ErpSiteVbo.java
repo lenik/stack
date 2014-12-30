@@ -17,10 +17,10 @@ public class ErpSiteVbo
         extends OaSiteVbo {
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<OaSite> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        ctx = super.buildHtmlView(ctx, ref, options);
-        return ctx;
+        out = super.buildHtmlView(ctx, out, ref, options);
+        return out;
     }
 
     @Override

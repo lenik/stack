@@ -28,16 +28,12 @@ public class DeliveryManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<DeliveryManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<DeliveryManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        ctx = super.buildHtmlView(ctx, ref, options);
-
-        PageStruct p = new PageStruct(ctx);
-
         DeliveryMapper mapper = ctx.query(DeliveryMapper.class);
         List<Delivery> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (Delivery o : list) {
             Contact shipDest = o.getShipDest();
 
@@ -54,9 +50,7 @@ public class DeliveryManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

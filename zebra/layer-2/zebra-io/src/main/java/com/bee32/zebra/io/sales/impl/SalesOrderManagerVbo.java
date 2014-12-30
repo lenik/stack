@@ -27,16 +27,12 @@ public class SalesOrderManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<SalesOrderManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<SalesOrderManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        ctx = super.buildHtmlView(ctx, ref, options);
-
-        PageStruct p = new PageStruct(ctx);
-
         SalesOrderMapper mapper = ctx.query(SalesOrderMapper.class);
         List<SalesOrder> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (SalesOrder o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
@@ -49,9 +45,7 @@ public class SalesOrderManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

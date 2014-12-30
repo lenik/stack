@@ -27,25 +27,19 @@ public class OrgUnitManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<OrgUnitManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<OrgUnitManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         OrgUnitMapper mapper = ctx.query(OrgUnitMapper.class);
         List<OrgUnit> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (OrgUnit o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

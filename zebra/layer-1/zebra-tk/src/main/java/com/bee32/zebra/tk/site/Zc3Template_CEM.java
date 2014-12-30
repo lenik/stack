@@ -29,6 +29,7 @@ import net.bodz.bas.repr.form.FieldDeclListBuilder;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.form.SortOrder;
+import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.req.HttpSnap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -55,35 +56,17 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         super(valueClass, supportedFeatures);
     }
 
-    protected void insertIndexFields(String spec, String... pathProperties)
-            throws NoSuchPropertyException, ParseException {
-        FieldDeclBuilder formFieldBuilder = new FieldDeclBuilder();
-        FieldDeclListBuilder builder = new FieldDeclListBuilder(formFieldBuilder);
-
-        for (char c : spec.toCharArray()) {
-            switch (c) {
-            case 'i':
-                builder.fromPathProperties(formDef, "id");
-                break;
-            case 's':
-                builder.fromPathProperties(formDef, "priority", "creationTime", "lastModified", "flags", "state");
-                break;
-            case 'a':
-                builder.fromPathProperties(formDef, "accessMode", "owner", "ownerGroup");
-                break;
-            case '*':
-                builder.fromPathProperties(formDef, pathProperties);
-                break;
-            default:
-                throw new IllegalArgumentException("Bad column group specifier: " + c);
-            }
-        }
-        indexFields = builder.getFields();
+    @Override
+    public boolean isFrame() {
+        return true;
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<M> ref, IOptions options)
+    public final IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<M> ref, IOptions options)
             throws ViewBuilderException, IOException {
+
+        IPathArrival arrival = ctx.query(IPathArrival.class);
+        boolean frameOnly = arrival.getPrevious(ref.get()).getRemainingPath() != null;
 
         IHtmlTag body1 = ctx.getTag(ID.body1);
 
@@ -128,8 +111,15 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         }
 
         titleInfo(ctx, ref);
-        return ctx;
+
+        if (!frameOnly)
+            buildDataView(ctx, new PageStruct(ctx), ref, options);
+
+        return out;
     }
+
+    protected abstract void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<M> ref, IOptions options)
+            throws ViewBuilderException, IOException;
 
     protected IndexTable mkIndexTable(IHtmlTag parent, String id) {
         IndexTable table = new IndexTable(parent, id);
@@ -164,6 +154,32 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             }
 
         return table;
+    }
+
+    protected void insertIndexFields(String spec, String... pathProperties)
+            throws NoSuchPropertyException, ParseException {
+        FieldDeclBuilder formFieldBuilder = new FieldDeclBuilder();
+        FieldDeclListBuilder builder = new FieldDeclListBuilder(formFieldBuilder);
+
+        for (char c : spec.toCharArray()) {
+            switch (c) {
+            case 'i':
+                builder.fromPathProperties(formDef, "id");
+                break;
+            case 's':
+                builder.fromPathProperties(formDef, "priority", "creationTime", "lastModified", "flags", "state");
+                break;
+            case 'a':
+                builder.fromPathProperties(formDef, "accessMode", "owner", "ownerGroup");
+                break;
+            case '*':
+                builder.fromPathProperties(formDef, pathProperties);
+                break;
+            default:
+                throw new IllegalArgumentException("Bad column group specifier: " + c);
+            }
+        }
+        indexFields = builder.getFields();
     }
 
     protected void titleInfo(IHtmlViewContext ctx, IUiRef<M> ref) {

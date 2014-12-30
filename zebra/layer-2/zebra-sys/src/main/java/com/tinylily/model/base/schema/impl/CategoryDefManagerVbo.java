@@ -27,16 +27,12 @@ public class CategoryDefManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<CategoryDefManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<CategoryDefManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         CategoryDefMapper mapper = ctx.query(CategoryDefMapper.class);
         List<CategoryDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (CategoryDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
@@ -46,9 +42,7 @@ public class CategoryDefManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

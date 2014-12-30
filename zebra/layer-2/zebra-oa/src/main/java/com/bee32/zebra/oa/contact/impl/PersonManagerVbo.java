@@ -31,16 +31,12 @@ public class PersonManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<PersonManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<PersonManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         PersonMapper mapper = ctx.query(PersonMapper.class);
 
         PersonCriteria criteria = criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
         {
             SwitchOverride<String> so;
             so = filters.switchPairs("姓氏", true, //
@@ -50,7 +46,7 @@ public class PersonManagerVbo
 
         List<Person> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
 
         for (Person o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
@@ -72,9 +68,7 @@ public class PersonManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

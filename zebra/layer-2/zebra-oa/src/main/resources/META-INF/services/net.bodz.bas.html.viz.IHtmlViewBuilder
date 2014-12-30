@@ -4,6 +4,7 @@ com.bee32.zebra.oa.accnt.impl.AccountingEventManagerVbo
 com.bee32.zebra.oa.accnt.impl.AccountingEventVbo
 com.bee32.zebra.oa.accnt.impl.AccountManagerVbo
 com.bee32.zebra.oa.accnt.impl.AccountVbo
+com.bee32.zebra.oa.contact.impl.ContactVbo
 com.bee32.zebra.oa.contact.impl.OrganizationManagerVbo
 com.bee32.zebra.oa.contact.impl.OrganizationVbo
 com.bee32.zebra.oa.contact.impl.OrgUnitManagerVbo

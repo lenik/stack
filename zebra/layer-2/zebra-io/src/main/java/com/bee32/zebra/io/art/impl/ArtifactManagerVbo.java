@@ -33,15 +33,11 @@ public class ArtifactManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<ArtifactManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<ArtifactManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);
         ArtifactCriteria criteria = criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
         {
             SwitchOverride<Integer> so1;
             so1 = filters.switchEntity("分类", false, //
@@ -60,7 +56,7 @@ public class ArtifactManagerVbo
 
         List<Artifact> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (Artifact o : list) {
             ArtifactCategory category = o.getCategory();
             UOM uom = o.getUom();
@@ -76,9 +72,7 @@ public class ArtifactManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

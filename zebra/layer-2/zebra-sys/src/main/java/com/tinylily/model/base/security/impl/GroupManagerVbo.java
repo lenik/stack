@@ -27,16 +27,12 @@ public class GroupManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<GroupManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<GroupManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        ctx = super.buildHtmlView(ctx, ref, options);
-
-        PageStruct p = new PageStruct(ctx);
-
         GroupMapper mapper = ctx.query(GroupMapper.class);
         List<Group> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (Group o : list) {
 
             HtmlTrTag tr = indexTable.tbody.tr();
@@ -48,8 +44,6 @@ public class GroupManagerVbo
         }
 
 //        dumpFullData(p.extradata, list);
-
-        return ctx;
     }
 
 }

@@ -6,8 +6,13 @@ import java.util.List;
 
 import net.bodz.bas.i18n.geo.Region;
 import net.bodz.bas.i18n.geo.Regions;
+import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.repr.form.meta.FormInput;
+
+import com.tinylily.model.base.CoEntity;
 
 public class Contact
+        extends CoEntity
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +58,7 @@ public class Contact
     private String web;
     private String qq;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -69,20 +74,12 @@ public class Contact
         this.org = org;
     }
 
-    public void setOrgId(int orgId) {
-        (this.org = new Organization()).setId(orgId);
-    }
-
     public OrgUnit getOrgUnit() {
         return orgUnit;
     }
 
     public void setOrgUnit(OrgUnit orgUnit) {
         this.orgUnit = orgUnit;
-    }
-
-    public void setOrgUnitId(int orgUnitId) {
-        (this.orgUnit = new OrgUnit()).setId(orgUnitId);
     }
 
     public Person getPerson() {
@@ -93,15 +90,15 @@ public class Contact
         this.person = person;
     }
 
-    public void setPersonId(int personId) {
-        (this.person = new Person()).setId(personId);
-    }
-
     /**
      * Contact name. Could be different to the real name.
      * 
      * <code>null</code> if there is a real name and the contact name should be the real name.
+     * 
+     * @label Alternative Name
+     * @label.zh.cn 别名
      */
+    @FormInput(maxLength = N_NAME)
     public String getRename() {
         return rename;
     }
@@ -114,7 +111,11 @@ public class Contact
      * The usage name, could be "work", "home", in locale language.
      * 
      * <code>null</code> for the default/common usage.
+     * 
+     * @label Usage
+     * @label.zh.cn 用途
      */
+    @FormInput(maxLength = N_USAGE)
     public String getUsage() {
         return usage;
     }
@@ -139,6 +140,7 @@ public class Contact
         this.region = Regions.getChinaRegion(id);
     }
 
+    @FormInput(maxLength = N_COUNTRY)
     public String getCountry() {
         return country;
     }
@@ -147,6 +149,7 @@ public class Contact
         this.country = country;
     }
 
+    @FormInput(maxLength = N_R1)
     public String getR1() {
         return r1;
     }
@@ -155,6 +158,7 @@ public class Contact
         this.r1 = r1;
     }
 
+    @FormInput(maxLength = N_R2)
     public String getR2() {
         return r2;
     }
@@ -163,6 +167,7 @@ public class Contact
         this.r2 = r2;
     }
 
+    @FormInput(maxLength = N_R3)
     public String getR3() {
         return r3;
     }
@@ -176,6 +181,7 @@ public class Contact
      * 
      * @label 地址1
      */
+    @FormInput(maxLength = N_ADDRESS1)
     public String getAddress1() {
         return address1;
     }
@@ -189,6 +195,7 @@ public class Contact
      * 
      * @label 地址2
      */
+    @FormInput(maxLength = N_ADDRESS2)
     public String getAddress2() {
         return address2;
     }
@@ -200,6 +207,7 @@ public class Contact
     /**
      * @label 邮政编码
      */
+    @FormInput(maxLength = N_POSTAL_CODE)
     public String getPostalCode() {
         return postalCode;
     }
@@ -211,6 +219,7 @@ public class Contact
     /**
      * @label 固定电话
      */
+    @FormInput(maxLength = N_TEL)
     public String getTel() {
         return tel;
     }
@@ -222,6 +231,7 @@ public class Contact
     /**
      * @label 移动电话
      */
+    @FormInput(maxLength = N_MOBILE)
     public String getMobile() {
         return mobile;
     }
@@ -233,6 +243,7 @@ public class Contact
     /**
      * @label 传真
      */
+    @FormInput(maxLength = N_FAX)
     public String getFax() {
         return fax;
     }
@@ -244,6 +255,7 @@ public class Contact
     /**
      * @label E-mail
      */
+    @FormInput(maxLength = N_EMAIL)
     public String getEmail() {
         return email;
     }
@@ -252,6 +264,7 @@ public class Contact
         this.email = email;
     }
 
+    @FormInput(maxLength = N_WEB)
     public String getWeb() {
         return web;
     }
@@ -263,6 +276,7 @@ public class Contact
     /**
      * @label QQ
      */
+    @FormInput(maxLength = N_QQ)
     public String getQq() {
         return qq;
     }
@@ -276,6 +290,7 @@ public class Contact
      * 
      * @label 地址
      */
+    @Derived
     public String getFullAddress() {
         StringBuilder sb = new StringBuilder(80);
         if (region != null) {
@@ -300,6 +315,7 @@ public class Contact
      * 
      * @label 电话/手机
      */
+    @Derived
     public String getTels() {
         List<String> tels = new ArrayList<>();
         tels.add(tel);

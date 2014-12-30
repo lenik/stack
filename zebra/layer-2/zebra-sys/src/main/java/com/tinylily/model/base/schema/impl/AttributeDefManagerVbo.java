@@ -29,16 +29,12 @@ public class AttributeDefManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<AttributeDefManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AttributeDefManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         AttributeDefMapper mapper = ctx.query(AttributeDefMapper.class);
 
         AttributeDefCriteria criteria = criteriaFromRequest(new AttributeDefCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("模式", false, //
@@ -49,7 +45,7 @@ public class AttributeDefManagerVbo
 
         List<AttributeDef> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (AttributeDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
@@ -59,9 +55,7 @@ public class AttributeDefManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

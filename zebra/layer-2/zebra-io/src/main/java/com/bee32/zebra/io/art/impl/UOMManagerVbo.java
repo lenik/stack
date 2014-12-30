@@ -30,15 +30,11 @@ public class UOMManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<UOMManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<UOMManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         UOMMapper mapper = ctx.query(UOMMapper.class);
         UOMCriteria criteria = criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
         {
             SwitchOverride<String> so;
             so = filters.switchPairs("属性", true, //
@@ -50,15 +46,14 @@ public class UOMManagerVbo
 
         List<UOM> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (UOM o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("icu", tr, o);
             tr.td().text(o.getProperty());
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
+
 }

@@ -35,16 +35,12 @@ public class FileInfoManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<FileInfoManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<FileInfoManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
 
         FileInfoCriteria criteria = criteriaFromRequest(new FileInfoCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("标签", false, //
@@ -61,7 +57,7 @@ public class FileInfoManagerVbo
 
         List<FileInfo> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (FileInfo o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
@@ -79,9 +75,7 @@ public class FileInfoManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
-
-        return ctx;
+        dumpFullData(page.extradata, list);
     }
 
 }

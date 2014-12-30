@@ -38,16 +38,12 @@ public class TopicManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<TopicManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<TopicManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         TopicMapper mapper = ctx.query(TopicMapper.class);
 
         TopicCriteria criteria = criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(p.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("分类", true, //
@@ -72,7 +68,7 @@ public class TopicManagerVbo
         }
 
         List<Topic> list = postfilt(mapper.filter(criteria));
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (Topic o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
@@ -86,19 +82,17 @@ public class TopicManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(p.extradata, list);
+        dumpFullData(page.extradata, list);
 
         if (extensions) {
             SectionDiv section;
-            section = new SectionDiv(p.mainCol, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
-            section = new SectionDiv(p.mainCol, "s-bar", "图表/Charts", IFontAwesomeCharAliases.FA_BAR_CHART);
-            section = new SectionDiv(p.mainCol, "s-line", "图表/Charts", IFontAwesomeCharAliases.FA_LINE_CHART);
-            section = new SectionDiv(p.mainCol, "s-pie", "图表/Charts", IFontAwesomeCharAliases.FA_PIE_CHART);
-            section = new SectionDiv(p.mainCol, "s-comments", "评论/Comments", IFontAwesomeCharAliases.FA_COMMENTS);
-            section = new SectionDiv(p.mainCol, "s-debug", "调测信息/Debug", IFontAwesomeCharAliases.FA_BUG);
+            section = new SectionDiv(page.mainCol, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
+            section = new SectionDiv(page.mainCol, "s-bar", "图表/Charts", IFontAwesomeCharAliases.FA_BAR_CHART);
+            section = new SectionDiv(page.mainCol, "s-line", "图表/Charts", IFontAwesomeCharAliases.FA_LINE_CHART);
+            section = new SectionDiv(page.mainCol, "s-pie", "图表/Charts", IFontAwesomeCharAliases.FA_PIE_CHART);
+            section = new SectionDiv(page.mainCol, "s-comments", "评论/Comments", IFontAwesomeCharAliases.FA_COMMENTS);
+            section = new SectionDiv(page.mainCol, "s-debug", "调测信息/Debug", IFontAwesomeCharAliases.FA_BUG);
         }
-
-        return ctx;
     }
 
 }

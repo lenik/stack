@@ -15,8 +15,6 @@ import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.i18n.dom1.IElement;
-import net.bodz.bas.potato.ref.UiHelper;
-import net.bodz.bas.potato.ref.UiPropertyRefMap;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.PathArrivalEntry;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -64,21 +62,18 @@ public class OaSiteVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<OaSite> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IOptions options)
             throws ViewBuilderException, IOException {
         if (enter(ctx))
             return null;
 
-        OaSite site = ref.get();
-        IHtmlTag out = ctx.getOut();
-
         HttpSession session = ctx.getSession();
         // Preferences pref = Preferences.fromSession(session);
 
-        UiPropertyRefMap propMap = UiHelper.explode(ref);
-
-        IPathArrival arrival = (IPathArrival) ctx.getRequest().getAttribute(IPathArrival.class.getName());
+        OaSite site = ref.get();
+        IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean frameOnly = arrival.getPrevious(site).getRemainingPath() != null;
+
         HtmlHeadTag head = out.head();
         {
             writeHeadMetas(ctx, head);
@@ -171,7 +166,7 @@ public class OaSiteVbo
         body.div().id(ID.extradata);
 
         ctx.setOut(body1);
-        return ctx;
+        return out;
     }
 
     protected void indexBody(IHtmlTag out, OaSite site) {

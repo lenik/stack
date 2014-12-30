@@ -7,6 +7,7 @@ import java.util.TimeZone;
 import java.util.TreeSet;
 
 import net.bodz.bas.c.java.util.TimeZones;
+import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 
 import com.bee32.zebra.oa.OaGroups;
@@ -151,6 +152,7 @@ public abstract class Party
      * 
      * 个人的兴趣爱好或公司的主营业务。
      */
+    @FormInput(maxLength = N_SUBJECT)
     public String getSubject() {
         return subject;
     }
@@ -162,6 +164,7 @@ public abstract class Party
     /**
      * 注释
      */
+    @FormInput(maxLength = N_COMMENT)
     public String getComment() {
         return comment;
     }
@@ -183,7 +186,10 @@ public abstract class Party
 
     /**
      * 银行
+     * 
+     * @placeholder 输入银行名称...
      */
+    @FormInput(maxLength = N_BANK)
     public String getBank() {
         return bank;
     }
@@ -194,7 +200,10 @@ public abstract class Party
 
     /**
      * 帐号
+     * 
+     * @placeholder 输入银行帐号...
      */
+    @FormInput(maxLength = N_ACCOUNT)
     public String getAccount() {
         return account;
     }

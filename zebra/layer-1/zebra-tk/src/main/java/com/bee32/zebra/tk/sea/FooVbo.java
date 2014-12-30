@@ -15,10 +15,12 @@ import net.bodz.bas.html.dom.tag.HtmlH2Tag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
 import net.bodz.bas.html.dom.tag.HtmlSelectTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
+import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlViewBuilderFactory;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.element.IPropertyAccessor;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
@@ -31,11 +33,10 @@ import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.PageStruct;
-import com.bee32.zebra.tk.site.Zc3Template_CE;
 import com.tinylily.model.base.CoEntity;
 
 public abstract class FooVbo<T extends CoEntity>
-        extends Zc3Template_CE<T>
+        extends AbstractHtmlViewBuilder<T>
         implements IZebraSiteAnchors, IFontAwesomeCharAliases {
 
     public FooVbo(Class<?> valueClass, String... supportedFeatures) {
@@ -43,14 +44,18 @@ public abstract class FooVbo<T extends CoEntity>
     }
 
     @Override
-    public final IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<T> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        ctx = super.buildHtmlView(ctx, ref, options);
 
         PageStruct p = new PageStruct(ctx);
-        IHtmlTag out = p.mainCol;
+        out = p.mainCol;
 
         T o = ref.get();
+        if (o == null) {
+            out.text("NuLL");
+            return out;
+        }
+
         IFormDecl formDecl = o.getFormDef();
 
         Map<FieldCategory, Collection<IFieldDecl>> categories = FieldCategory.group(//
@@ -69,10 +74,17 @@ public abstract class FooVbo<T extends CoEntity>
 
             out.hr();
         } // for field-group
-        return ctx;
+        return out;
     }
 
     protected boolean filterField(IFieldDecl formField) {
+        IProperty property = formField.getProperty();
+        if (property == null)
+            return false;
+
+        if (!property.isReadable())
+            return false;
+
         return true;
     }
 
@@ -91,8 +103,11 @@ public abstract class FooVbo<T extends CoEntity>
         out = out.div().class_("container");
         for (IFieldDecl fieldDecl : fieldDecls) {
             HtmlDivTag row = out.div().class_("container-row");
+
             HtmlDivTag labelDiv = row.div().class_("col-sm-3 col-lg-2");
-            labelDiv.text(IXjdocElement.fn.labelName(fieldDecl) + ":");
+            String labelName = IXjdocElement.fn.labelName(fieldDecl);
+            labelDiv.text(labelName + ":");
+
             HtmlDivTag valueDiv = row.div().class_("col-sm-9 col-lg-10");
 
             buildField(ctx, valueDiv, ref, fieldDecl);
@@ -105,7 +120,7 @@ public abstract class FooVbo<T extends CoEntity>
         if (factory == null)
             throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
         UiPropertyRef<Object> propertyRef = new UiPropertyRef<Object>(instance, fieldDecl.getProperty());
-        factory.buildView(ctx, propertyRef);
+        factory.buildView(ctx, out, propertyRef);
     }
 
     protected void buildField2(IHtmlViewContext ctx, IHtmlTag out, Object instance, IFieldDecl fieldDecl)

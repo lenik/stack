@@ -29,16 +29,12 @@ public class ReplyManagerVbo
     }
 
     @Override
-    public IHtmlViewContext buildHtmlView(IHtmlViewContext ctx, IUiRef<ReplyManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<ReplyManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        ctx = super.buildHtmlView(ctx, ref, options);
-        PageStruct p = new PageStruct(ctx);
-
         ReplyMapper mapper = ctx.query(ReplyMapper.class);
         List<Reply> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(p.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
         for (Reply o : list) {
             User op = o.getOp();
             // Topic topic = o.getTopic();
@@ -50,8 +46,6 @@ public class ReplyManagerVbo
             tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
             cocols("sa", tr, o);
         }
-
-        return ctx;
     }
 
 }
