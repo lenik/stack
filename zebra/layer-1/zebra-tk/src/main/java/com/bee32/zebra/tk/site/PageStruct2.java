@@ -1,7 +1,7 @@
 package com.bee32.zebra.tk.site;
 
-import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 

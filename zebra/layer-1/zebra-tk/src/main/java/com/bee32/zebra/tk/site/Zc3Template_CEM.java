@@ -14,12 +14,11 @@ import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.db.batis.IMapperTemplate;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.AbstractHtmlViewBuilder;
-import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
-import net.bodz.bas.html.util.IFontAwesomeCharAliases;
+import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
@@ -109,7 +108,8 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 info");
         {
             HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
-            previewDiv.div().class_("icon fa").text(IFontAwesomeCharAliases.FA_COFFEE);
+            // previewDiv.div().class_("icon fa").text(IFontAwesomeCharAliases.FA_COFFEE);
+            previewDiv.img().src(_webApp_.join("zebra/scene1.png").absoluteHref());
 
             HtmlDivTag infosel = rightCol.div().id(ID.infosel);
 

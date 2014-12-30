@@ -2,8 +2,8 @@ package com.bee32.zebra.erp.site;
 
 import java.io.IOException;
 
-import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.site.vhost.CurrentVirtualHost;

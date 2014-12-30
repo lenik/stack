@@ -1,6 +1,6 @@
 package com.bee32.zebra.erp.site;
 
-import net.bodz.bas.html.HtmlViewBuilder;
+import net.bodz.bas.html.meta.HtmlViewBuilder;
 
 import com.bee32.zebra.oa.site.OaSite;
 

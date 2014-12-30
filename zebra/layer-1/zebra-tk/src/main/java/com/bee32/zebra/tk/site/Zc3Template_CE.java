@@ -3,13 +3,13 @@ package com.bee32.zebra.tk.site;
 import java.io.IOException;
 import java.util.List;
 
-import net.bodz.bas.html.AbstractHtmlViewBuilder;
-import net.bodz.bas.html.IHtmlViewContext;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlPTag;
 import net.bodz.bas.html.dom.tag.HtmlUlTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
+import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.repr.form.IFieldDecl;

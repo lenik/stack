@@ -5,7 +5,7 @@ import java.lang.reflect.Constructor;
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.c.type.IndexedTypes;
-import net.bodz.bas.html.HtmlViewBuilder;
+import net.bodz.bas.html.meta.HtmlViewBuilder;
 import net.bodz.bas.log.Logger;
 import net.bodz.bas.log.LoggerFactory;
 import net.bodz.bas.repr.path.IPathArrival;
