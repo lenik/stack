@@ -28,6 +28,39 @@ public class Dim3d
         return dx * dy * dz;
     }
 
+    /**
+     * @label ΔX
+     */
+    public double getDx() {
+        return dx;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    /**
+     * @label ΔY
+     */
+    public double getDy() {
+        return dy;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    /**
+     * @label ΔZ
+     */
+    public double getDz() {
+        return dz;
+    }
+
+    public void setDz(double dz) {
+        this.dz = dz;
+    }
+
     public String format(String delim) {
         return dx + delim + dy + delim + dz;
     }

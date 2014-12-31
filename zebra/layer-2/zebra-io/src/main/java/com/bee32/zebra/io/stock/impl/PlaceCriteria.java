@@ -53,7 +53,7 @@ public class PlaceCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
-        usage = map.getEnum(PlaceUsage.class, "usage", usage);
+        usage = map.getPredef(PlaceUsage.class, "usage", usage);
         volumeRange = map.getDoubleRange("volumes", volumeRange);
         parties = map.getInts("parties", parties);
         partyOrgs = map.getInts("orgs", partyOrgs);

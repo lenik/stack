@@ -2,6 +2,7 @@ com.bee32.zebra.io.art.impl.ArtifactCategoryManagerVbo
 com.bee32.zebra.io.art.impl.ArtifactCategoryVbo
 com.bee32.zebra.io.art.impl.ArtifactManagerVbo
 com.bee32.zebra.io.art.impl.ArtifactVbo
+com.bee32.zebra.io.art.impl.Dim3dVbo
 com.bee32.zebra.io.art.impl.UOMManagerVbo
 com.bee32.zebra.io.art.impl.UOMVbo
 com.bee32.zebra.io.sales.impl.DeliveryManagerVbo

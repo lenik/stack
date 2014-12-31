@@ -41,7 +41,7 @@ public class PlaceManagerVbo
 
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
-            tr.td().text(o.getUsage().name()).class_("small");
+            tr.td().text(o.getUsage().getLabel()).class_("small");
             cocols("u", tr, o);
             tr.td().text(o.getPosition().isZero() ? null : o.getPosition().format(", "));
             tr.td().text(o.getBbox().isZero() ? null : o.getBbox().format("x"));
