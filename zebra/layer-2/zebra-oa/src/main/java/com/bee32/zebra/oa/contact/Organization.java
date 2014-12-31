@@ -3,7 +3,7 @@ package com.bee32.zebra.oa.contact;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bodz.bas.repr.form.meta.FormInput;
+import net.bodz.bas.repr.form.meta.TextInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 
 import com.bee32.zebra.oa.OaGroups;
@@ -26,7 +26,7 @@ public class Organization
     /**
      * 全名
      */
-    @FormInput(maxLength = N_LABEL)
+    @TextInput(maxLength = N_LABEL)
     @OfGroup(OaGroups.Identity.class)
     public String getFullName() {
         return getLabel();
@@ -39,7 +39,7 @@ public class Organization
     /**
      * 主营业务
      */
-    @FormInput(maxLength = N_SUBJECT)
+    @TextInput(maxLength = N_SUBJECT)
     @Override
     public String getSubject() {
         return super.getSubject();
@@ -74,7 +74,7 @@ public class Organization
      * 
      * @format ######-###-###-###
      */
-    @FormInput(maxLength = N_TAXID)
+    @TextInput(maxLength = N_TAXID)
     @OfGroup(OaGroups.Identity.class)
     public String getTaxId() {
         return taxId;

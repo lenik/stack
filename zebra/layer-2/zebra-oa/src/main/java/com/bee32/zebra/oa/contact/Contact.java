@@ -7,7 +7,7 @@ import java.util.List;
 import net.bodz.bas.i18n.geo.Region;
 import net.bodz.bas.i18n.geo.Regions;
 import net.bodz.bas.meta.cache.Derived;
-import net.bodz.bas.repr.form.meta.FormInput;
+import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.tinylily.model.base.CoEntity;
 
@@ -98,7 +98,7 @@ public class Contact
      * @label Alternative Name
      * @label.zh.cn 别名
      */
-    @FormInput(maxLength = N_NAME)
+    @TextInput(maxLength = N_NAME)
     public String getRename() {
         return rename;
     }
@@ -115,7 +115,7 @@ public class Contact
      * @label Usage
      * @label.zh.cn 用途
      */
-    @FormInput(maxLength = N_USAGE)
+    @TextInput(maxLength = N_USAGE)
     public String getUsage() {
         return usage;
     }
@@ -140,7 +140,7 @@ public class Contact
         this.region = Regions.getChinaRegion(id);
     }
 
-    @FormInput(maxLength = N_COUNTRY)
+    @TextInput(maxLength = N_COUNTRY)
     public String getCountry() {
         return country;
     }
@@ -149,7 +149,7 @@ public class Contact
         this.country = country;
     }
 
-    @FormInput(maxLength = N_R1)
+    @TextInput(maxLength = N_R1)
     public String getR1() {
         return r1;
     }
@@ -158,7 +158,7 @@ public class Contact
         this.r1 = r1;
     }
 
-    @FormInput(maxLength = N_R2)
+    @TextInput(maxLength = N_R2)
     public String getR2() {
         return r2;
     }
@@ -167,7 +167,7 @@ public class Contact
         this.r2 = r2;
     }
 
-    @FormInput(maxLength = N_R3)
+    @TextInput(maxLength = N_R3)
     public String getR3() {
         return r3;
     }
@@ -181,7 +181,7 @@ public class Contact
      * 
      * @label 地址1
      */
-    @FormInput(maxLength = N_ADDRESS1)
+    @TextInput(maxLength = N_ADDRESS1)
     public String getAddress1() {
         return address1;
     }
@@ -195,7 +195,7 @@ public class Contact
      * 
      * @label 地址2
      */
-    @FormInput(maxLength = N_ADDRESS2)
+    @TextInput(maxLength = N_ADDRESS2)
     public String getAddress2() {
         return address2;
     }
@@ -207,7 +207,7 @@ public class Contact
     /**
      * @label 邮政编码
      */
-    @FormInput(maxLength = N_POSTAL_CODE)
+    @TextInput(maxLength = N_POSTAL_CODE)
     public String getPostalCode() {
         return postalCode;
     }
@@ -219,7 +219,7 @@ public class Contact
     /**
      * @label 固定电话
      */
-    @FormInput(maxLength = N_TEL)
+    @TextInput(maxLength = N_TEL)
     public String getTel() {
         return tel;
     }
@@ -231,7 +231,7 @@ public class Contact
     /**
      * @label 移动电话
      */
-    @FormInput(maxLength = N_MOBILE)
+    @TextInput(maxLength = N_MOBILE)
     public String getMobile() {
         return mobile;
     }
@@ -243,7 +243,7 @@ public class Contact
     /**
      * @label 传真
      */
-    @FormInput(maxLength = N_FAX)
+    @TextInput(maxLength = N_FAX)
     public String getFax() {
         return fax;
     }
@@ -255,7 +255,7 @@ public class Contact
     /**
      * @label E-mail
      */
-    @FormInput(maxLength = N_EMAIL)
+    @TextInput(maxLength = N_EMAIL)
     public String getEmail() {
         return email;
     }
@@ -264,7 +264,7 @@ public class Contact
         this.email = email;
     }
 
-    @FormInput(maxLength = N_WEB)
+    @TextInput(maxLength = N_WEB)
     public String getWeb() {
         return web;
     }
@@ -276,7 +276,7 @@ public class Contact
     /**
      * @label QQ
      */
-    @FormInput(maxLength = N_QQ)
+    @TextInput(maxLength = N_QQ)
     public String getQq() {
         return qq;
     }
