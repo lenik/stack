@@ -12,6 +12,7 @@ import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
+import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.batis.IMapperTemplate;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
@@ -49,11 +50,13 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         extends AbstractHtmlViewBuilder<M>
         implements IZebraSiteAnchors, IZebraSiteLayout {
 
-    protected IFormDecl formDef;
+    protected IFormDecl formDecl;
     protected List<IFieldDecl> indexFields;
 
     public Zc3Template_CEM(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
+        Class<?> param1 = TypeParam.infer1(getClass(), Zc3Template_CEM.class, 1);
+        formDecl = IFormDecl.fn.forClass(param1);
     }
 
     @Override
@@ -164,16 +167,16 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         for (char c : spec.toCharArray()) {
             switch (c) {
             case 'i':
-                builder.fromPathProperties(formDef, "id");
+                builder.fromPathProperties(formDecl, "id");
                 break;
             case 's':
-                builder.fromPathProperties(formDef, "priority", "creationTime", "lastModified", "flags", "state");
+                builder.fromPathProperties(formDecl, "priority", "creationTime", "lastModified", "flags", "state");
                 break;
             case 'a':
-                builder.fromPathProperties(formDef, "accessMode", "owner", "ownerGroup");
+                builder.fromPathProperties(formDecl, "accessMode", "owner", "ownerGroup");
                 break;
             case '*':
-                builder.fromPathProperties(formDef, pathProperties);
+                builder.fromPathProperties(formDecl, pathProperties);
                 break;
             default:
                 throw new IllegalArgumentException("Bad column group specifier: " + c);
@@ -284,7 +287,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     protected void dumpFullData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
         int count = 0;
         Map<FieldCategory, Collection<IFieldDecl>> fgMap = FieldCategory.group(//
-                formDef.getFieldDefs(DetailLevel.EXTEND));
+                formDecl.getFieldDefs(DetailLevel.EXTEND));
         for (CoEntity entity : dataset) {
             if (count++ > 3)
                 break;
