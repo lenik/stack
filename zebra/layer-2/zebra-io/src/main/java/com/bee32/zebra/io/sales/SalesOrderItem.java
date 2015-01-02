@@ -27,11 +27,11 @@ public class SalesOrderItem
     }
 
     public Date getOrderTime() {
-        return super.getBeginTime();
+        return super.getBeginDate();
     }
 
     public Date getDeadline() {
-        return super.getEndTime();
+        return super.getEndDate();
     }
 
 }

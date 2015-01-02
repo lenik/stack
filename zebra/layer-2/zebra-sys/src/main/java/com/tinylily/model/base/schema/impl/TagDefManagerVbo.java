@@ -24,7 +24,6 @@ public class TagDefManagerVbo
     public TagDefManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(TagDefManager.class);
-        formDef = new TagDef().getFormDef();
         insertIndexFields("i*sa", "tagSet", "code", "label", "description", "refCount");
     }
 

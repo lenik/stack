@@ -22,7 +22,6 @@ public class StockEventManagerVbo
     public StockEventManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(StockEventManager.class);
-        formDef = new StockEvent().getFormDef();
         insertIndexFields("i*sa", "form", "category", "subject", "text", "org", "orgUnit", "person", "quantity", "total",
                 "phase");
     }

@@ -8,7 +8,7 @@ import com.tinylily.model.base.CoEntity;
 /**
  * 月度工资冗余
  * 
- * 所有员工某月的工资合计数. beginTime代表月份
+ * 所有员工某月的工资合计数. beginDate 代表月份
  * 
  * <p lang="en">
  * 

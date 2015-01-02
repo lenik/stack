@@ -22,7 +22,6 @@ public class EmployeeSkillManagerVbo
     public EmployeeSkillManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(EmployeeSkillManager.class);
-        formDef = new EmployeeSkill().getFormDef();
         insertIndexFields("i*sa", "label", "description");
     }
 

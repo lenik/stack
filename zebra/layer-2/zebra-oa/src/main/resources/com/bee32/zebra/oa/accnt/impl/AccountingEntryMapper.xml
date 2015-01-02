@@ -5,8 +5,23 @@
 <mapper namespace="com.bee32.zebra.oa.accnt.impl.AccountingEntryMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.oa.accnt.AccountingEntry" extends="message.map2">
-        <result property="beginTime" column="t0" />
-        <result property="endTime" column="t1" />
+        <result property="value" column="val" />
+        <association property="event" javaType="com.bee32.zebra.oa.accnt.AccountingEvent">
+            <id property="id" column="doc" />
+            <result property="label" column="doc_label" />
+        </association>
+        <association property="account" javaType="com.bee32.zebra.oa.accnt.Accounting">
+            <id property="id" column="account" />
+            <result property="label" column="account_label" />
+        </association>
+        <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id property="id" column="org" />
+            <result property="label" column="org_label" />
+        </association>
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id property="id" column="person" />
+            <result property="label" column="person_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -73,5 +88,5 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from acentry
     </select>
-    
+
 </mapper>

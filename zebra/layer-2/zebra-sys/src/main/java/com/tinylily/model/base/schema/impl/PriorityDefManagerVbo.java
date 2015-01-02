@@ -22,7 +22,6 @@ public class PriorityDefManagerVbo
     public PriorityDefManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(PriorityDefManager.class);
-        formDef = new PriorityDef().getFormDef();
         insertIndexFields("i*sa", "schema", "code", "label", "description");
     }
 

@@ -25,7 +25,6 @@ public class UOMManagerVbo
     public UOMManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(UOMManager.class);
-        formDef = new UOM().getFormDef();
         insertIndexFields("i*", "code", "label", "description", "property");
     }
 

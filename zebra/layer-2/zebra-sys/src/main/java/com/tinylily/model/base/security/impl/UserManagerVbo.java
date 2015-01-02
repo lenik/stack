@@ -22,7 +22,6 @@ public class UserManagerVbo
     public UserManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(UserManager.class);
-        formDef = new User().getFormDef();
         insertIndexFields("i*sa", "loginName", "label", "description", "primaryGroup", "groups", "email", "lastLoginTime",
                 "lastLoginIP");
     }

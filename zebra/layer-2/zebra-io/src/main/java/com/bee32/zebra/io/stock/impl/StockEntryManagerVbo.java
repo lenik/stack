@@ -22,7 +22,6 @@ public class StockEntryManagerVbo
     public StockEntryManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(StockEntryManager.class);
-        formDef = new StockEntry().getFormDef();
         insertIndexFields("i*sa", "label", "description");
     }
 

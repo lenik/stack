@@ -22,7 +22,6 @@ public class GroupManagerVbo
     public GroupManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(GroupManager.class);
-        formDef = new Group().getFormDef();
         insertIndexFields("i*sa", "codeName", "label", "description", "users");
     }
 

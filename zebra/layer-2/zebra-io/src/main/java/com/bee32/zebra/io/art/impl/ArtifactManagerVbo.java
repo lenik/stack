@@ -28,7 +28,6 @@ public class ArtifactManagerVbo
     public ArtifactManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(ArtifactManager.class);
-        formDef = new Artifact().getFormDef();
         insertIndexFields("i*sa", "skuCode", "category", "label", "description", "uom", "supplyMethod", "barCode");
     }
 

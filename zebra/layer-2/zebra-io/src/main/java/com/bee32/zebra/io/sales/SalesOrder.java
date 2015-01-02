@@ -116,22 +116,22 @@ public class SalesOrder
      * 下单时间
      */
     public Date getOrderTime() {
-        return super.getBeginTime();
+        return super.getBeginDate();
     }
 
     public void setOrderTime(Date orderTime) {
-        super.setBeginTime(orderTime);
+        super.setBeginDate(orderTime);
     }
 
     /**
      * 交货期限
      */
     public Date getDeadline() {
-        return super.getEndTime();
+        return super.getEndDate();
     }
 
     public void setDeadline(Date deadline) {
-        super.setEndTime(deadline);
+        super.setEndDate(deadline);
     }
 
     /**

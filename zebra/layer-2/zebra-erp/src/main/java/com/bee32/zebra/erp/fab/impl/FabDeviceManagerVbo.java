@@ -22,7 +22,6 @@ public class FabDeviceManagerVbo
     public FabDeviceManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(FabDeviceManager.class);
-        formDef = new FabDevice().getFormDef();
         insertIndexFields("i*sa", "code", "label", "description");
     }
 

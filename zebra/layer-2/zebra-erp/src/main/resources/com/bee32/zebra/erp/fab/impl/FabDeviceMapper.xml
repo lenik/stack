@@ -4,9 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.erp.fab.impl.FabDeviceMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.erp.fab.FabDevice" extends="message.map2">
-        <result property="beginTime" column="t0" />
-        <result property="endTime" column="t1" />
+    <resultMap id="map1" type="com.bee32.zebra.erp.fab.FabDevice" extends="mi.map1">
     </resultMap>
 
     <sql id="select1"><![CDATA[

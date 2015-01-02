@@ -1,12 +1,8 @@
 package com.bee32.zebra.oa.thread;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Date;
 import java.util.List;
 
-import net.bodz.bas.repr.form.meta.OfGroup;
-
-import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Party;
 import com.tinylily.model.base.IMomentInterval;
 import com.tinylily.model.mx.base.CoMessage;
@@ -20,8 +16,6 @@ public class Reply
     private long id;
     private Topic topic;
     private Reply parent;
-    private Date beginTime;
-    private Date endTime;
     private List<PropertyChangeEvent> changes;
     private List<Party> parties;
 
@@ -61,34 +55,6 @@ public class Reply
 
     public void setParent(Reply parent) {
         this.parent = parent;
-    }
-
-    /**
-     * @label 开始时间
-     */
-    @OfGroup(OaGroups.Schedule.class)
-    @Override
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    @Override
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    /**
-     * @label 结束时间
-     */
-    @OfGroup(OaGroups.Schedule.class)
-    @Override
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    @Override
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     // @PropertyGroup(OaGroups.UserInteraction.class)

@@ -22,7 +22,6 @@ public class JobSkillCategoryManagerVbo
     public JobSkillCategoryManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(JobSkillCategoryManager.class);
-        formDef = new JobSkillCategory().getFormDef();
         insertIndexFields("i*sa", "code", "label", "description");
     }
 

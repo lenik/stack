@@ -24,8 +24,7 @@ public class AccountingEventManagerVbo
     public AccountingEventManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(AccountingEventManager.class);
-        formDef = new AccountingEvent().getFormDef();
-        insertIndexFields("i*sa", "beginTime", "op", "category", "subject", "text", "topic", "org", "person",
+        insertIndexFields("i*sa", "beginDate", "op", "category", "subject", "text", "topic", "org", "person",
                 "debitTotal", "creditTotal");
     }
 
@@ -42,7 +41,7 @@ public class AccountingEventManagerVbo
 
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
-            tr.td().text(o.getBeginTime());
+            tr.td().text(o.getBeginDate());
             ref(tr.td(), o.getOp());
             ref(tr.td(), o.getCategory());
 

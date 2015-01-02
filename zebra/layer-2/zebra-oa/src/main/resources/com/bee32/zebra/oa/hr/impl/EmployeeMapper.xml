@@ -4,9 +4,20 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.hr.impl.EmployeeMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.hr.Employee" extends="message.map2">
-        <result property="beginTime" column="t0" />
-        <result property="endTime" column="t1" />
+    <resultMap id="map1" type="com.bee32.zebra.oa.hr.Employee" extends="co.mapUS">
+        <result property="baseSalary" column="duty" />
+        <result property="role" column="role" />
+        <result property="title" column="title" />
+        <result property="education" column="education" />
+        <result property="duty" column="duty" />
+        <result property="workAbility" column="workAbility" />
+        <result property="pension" column="pension" />
+        <result property="employedDate" column="t0" />
+        <result property="resignedDate" column="t1" />
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id property="id" column="person" />
+            <result property="label" column="person_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -73,5 +84,5 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from employee
     </select>
-    
+
 </mapper>

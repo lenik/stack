@@ -38,13 +38,13 @@ h3 {
     vertical-align: top;
 }
 
+.dataTables_wrapper {
+    overflow: hidden;
+}
+
 .zu-id {
     font-size: small;
     text-align: right;
-}
-
-.dataTables_wrapper {
-    overflow: hidden;
 }
 
 .zu-layout {
@@ -66,8 +66,8 @@ h3 {
 .zu-flabel {
     display: inline-block;
     text-align: right;
-    overflow: hidden;
     text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .zu-null {

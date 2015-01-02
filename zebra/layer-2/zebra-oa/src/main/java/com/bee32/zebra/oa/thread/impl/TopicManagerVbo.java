@@ -33,8 +33,7 @@ public class TopicManagerVbo
     public TopicManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(TopicManager.class);
-        formDef = new Topic().getFormDef();
-        insertIndexFields("i*sa", "op", "beginTime", "endTime", "subject", "text", "category", "phase", "value");
+        insertIndexFields("i*sa", "op", "beginDate", "endDate", "subject", "text", "category", "phase", "value");
     }
 
     @Override
@@ -73,8 +72,8 @@ public class TopicManagerVbo
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
             ref(tr.td(), o.getOp()).align("center");
-            tr.td().text(fn.formatDate(o.getBeginTime()));
-            tr.td().text(fn.formatDate(o.getEndTime()));
+            tr.td().text(fn.formatDate(o.getBeginDate()));
+            tr.td().text(fn.formatDate(o.getEndDate()));
             cocols("m", tr, o);
             ref(tr.td(), o.getCategory());
             ref(tr.td(), o.getPhase()).class_("small");

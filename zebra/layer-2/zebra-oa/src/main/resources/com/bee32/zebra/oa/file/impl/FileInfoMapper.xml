@@ -5,8 +5,6 @@
 <mapper namespace="com.bee32.zebra.oa.file.impl.FileInfoMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.oa.file.FileInfo" extends="message.map2">
-        <result property="beginTime" column="t0" />
-        <result property="endTime" column="t1" />
         <result property="path" column="path" />
         <result property="size" column="size" />
         <result property="sha1" column="sha1" />
@@ -14,10 +12,6 @@
         <result property="encoding" column="encoding" />
         <result property="downloads" column="ndl" />
         <result property="value" column="val" />
-        <association property="op" javaType="com.tinylily.model.base.security.User">
-            <id column="op" />
-            <result property="label" column="op_label" />
-        </association>
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
             <id column="org" />
             <result property="label" column="org_label" />

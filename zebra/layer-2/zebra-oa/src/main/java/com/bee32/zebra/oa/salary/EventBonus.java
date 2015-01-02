@@ -10,8 +10,6 @@ import com.tinylily.model.base.CoMomentInterval;
  * 
  * 特殊事件的工资增加或减少，eg:工伤等。
  * 
- * beginTime
- * 
  * <p lang="en">
  * Event Bonus
  */

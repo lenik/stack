@@ -22,7 +22,6 @@ public class CategoryDefManagerVbo
     public CategoryDefManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(CategoryDefManager.class);
-        formDef = new CategoryDef().getFormDef();
         insertIndexFields("i*sa", "schema", "code", "label", "description", "refCount");
     }
 

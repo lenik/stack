@@ -25,7 +25,6 @@ public class PersonManagerVbo
     public PersonManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(PersonManager.class);
-        formDef = new Person().getFormDef();
         insertIndexFields("i*sa", "ageSexLoc", "typeChars", "fullName", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq");
     }

@@ -1,7 +1,6 @@
 package com.bee32.zebra.oa.thread;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -19,8 +18,6 @@ public class Topic
 
     private static final long serialVersionUID = 1L;
 
-    private Date beginTime;
-    private Date endTime;
     private double value;
     // private double minValue, maxValue; // for estimated values.
 
@@ -58,34 +55,6 @@ public class Topic
 
     public void setPhase(PhaseDef phase) {
         super.setPhase(phase);
-    }
-
-    /**
-     * 开始时间
-     */
-    @OfGroup(OaGroups.Schedule.class)
-    @Override
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    @Override
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    /**
-     * 结束时间
-     */
-    @OfGroup(OaGroups.Schedule.class)
-    @Override
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    @Override
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     /**

@@ -28,8 +28,6 @@ public class FileInfoManagerVbo
     public FileInfoManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(FileInfoManager.class);
-
-        formDef = new FileInfo().getFormDef();
         insertIndexFields("i*sa", "op", "label", "description", "size", "org", "person", "value", "tags", "downloads",
                 "expireDate");
     }

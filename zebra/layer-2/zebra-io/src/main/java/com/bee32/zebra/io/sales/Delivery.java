@@ -103,22 +103,22 @@ public class Delivery
      * 发货时间
      */
     public Date getShipDate() {
-        return super.getBeginTime();
+        return super.getBeginDate();
     }
 
     public void setShipDate(Date shipDate) {
-        super.setBeginTime(shipDate);
+        super.setBeginDate(shipDate);
     }
 
     /**
      * 收货时间
      */
     public Date getArrivedDate() {
-        return super.getEndTime();
+        return super.getEndDate();
     }
 
     public void setArrivedDate(Date arrivedDate) {
-        super.setEndTime(arrivedDate);
+        super.setEndDate(arrivedDate);
     }
 
     /**

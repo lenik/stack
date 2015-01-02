@@ -24,7 +24,6 @@ public class AttributeDefManagerVbo
     public AttributeDefManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(AttributeDefManager.class);
-        formDef = new AttributeDef().getFormDef();
         insertIndexFields("i*sa", "schema", "code", "label", "description", "refCount");
     }
 

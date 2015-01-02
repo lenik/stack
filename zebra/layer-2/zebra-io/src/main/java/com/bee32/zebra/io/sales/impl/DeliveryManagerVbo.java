@@ -23,7 +23,6 @@ public class DeliveryManagerVbo
     public DeliveryManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(DeliveryManager.class);
-        formDef = new Delivery().getFormDef();
         insertIndexFields("i*sa", "salesOrder", "op", "org", "person", "shipDest", "shipper", "shipmentId");
     }
 

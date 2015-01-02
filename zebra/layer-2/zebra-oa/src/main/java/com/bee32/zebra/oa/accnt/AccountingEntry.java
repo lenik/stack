@@ -2,6 +2,8 @@ package com.bee32.zebra.oa.accnt;
 
 import java.math.BigDecimal;
 
+import net.bodz.bas.meta.cache.Derived;
+
 import com.tinylily.model.base.CoMomentInterval;
 
 public class AccountingEntry
@@ -13,8 +15,9 @@ public class AccountingEntry
     public static final int CREDIT_SIDE = 1;
 
     long id;
-    int side;
     Account account;
+    AccountingEvent event;
+    boolean debitSide;
     BigDecimal value = BigDecimal.ZERO;
 
     @Override
@@ -34,26 +37,27 @@ public class AccountingEntry
         this.account = account;
     }
 
-    public int getSide() {
-        return side;
+    public AccountingEvent getEvent() {
+        return event;
     }
 
-    public void setSide(int side) {
-        this.side = side;
+    public void setEvent(AccountingEvent event) {
+        this.event = event;
     }
 
     /**
      * 借方
      */
     public boolean isDebitSide() {
-        return side == DEBIT_SIDE;
+        return value.signum() == 1;
     }
 
     /**
      * 贷方
      */
+    @Derived
     public boolean isCreditSide() {
-        return side == CREDIT_SIDE;
+        return !isDebitSide();
     }
 
     /**

@@ -168,23 +168,23 @@ public class FileInfo
     /* _____________________________ */static section.iface __MOMENT_INTERVAL__;
 
     @Override
-    public final Date getBeginTime() {
+    public final Date getBeginDate() {
         return getActiveDate();
     }
 
     @Override
-    public final void setBeginTime(Date beginTime) {
-        setActiveDate(beginTime);
+    public final void setBeginDate(Date beginDate) {
+        setActiveDate(beginDate);
     }
 
     @Override
-    public final Date getEndTime() {
+    public final Date getEndDate() {
         return getExpireDate();
     }
 
     @Override
-    public final void setEndTime(Date endTime) {
-        setExpireDate(endTime);
+    public final void setEndDate(Date endDate) {
+        setExpireDate(endDate);
     }
 
     /** ⇱ Implementation Of {@link ICoMessage}. */
