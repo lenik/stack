@@ -27,7 +27,7 @@ public class Employee
     Person person;
 
     BigDecimal baseSalary = BigDecimal.ZERO;
-    JobPosition role; // =predefined(JobPosts.class);
+    JobPosition position;
     JobTitle title;
     EducationType education;
     int duty;
@@ -80,12 +80,12 @@ public class Employee
      * 
      * 雇员在公司中承担的岗位。
      */
-    public JobPosition getRole() {
-        return role;
+    public JobPosition getPosition() {
+        return position;
     }
 
-    public void setRole(JobPosition role) {
-        this.role = role;
+    public void setPosition(JobPosition position) {
+        this.position = position;
     }
 
     /**

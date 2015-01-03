@@ -5,7 +5,6 @@ import java.io.IOException;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlH2Tag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
 import net.bodz.bas.html.dom.tag.HtmlSpanTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
@@ -16,6 +15,7 @@ import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.IFieldDecl;
+import net.bodz.bas.repr.viz.IViewBuilder;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -47,19 +47,24 @@ public abstract class FooVbo<T extends CoEntity>
     @Override
     protected IHtmlTag beginCategory(IHtmlTag out, FieldCategory category)
             throws ViewBuilderException {
-        HtmlH2Tag h2 = out.h2();
-        h2.span().class_("icon fa").text(FA_CUBE);
-        if (category == FieldCategory.NULL)
-            h2.text("基本信息");
-        else
-            h2.text(IXjdocElement.fn.labelName(category));
+        String catName = category == FieldCategory.NULL ? "null" : category.getName();
+        out = out.fieldset().class_("zu-fcat").id("zp-fcat-" + catName);
 
-        return out.div().class_("container");
+        // IHtmlTag head = out.h2().id("zp-fcat-" + catName);
+        IHtmlTag head = out.legend();
+
+       // head.span().class_("icon fa").text(FA_CUBE);
+        if (category == FieldCategory.NULL) {
+            head.text("基本信息");
+        } else {
+            head.text(IXjdocElement.fn.labelName(category));
+        }
+        return out;
     }
 
     @Override
     protected void endCategory(IHtmlTag out, FieldCategory category) {
-        out.hr();
+        // out.hr();
     }
 
     @Override
@@ -67,11 +72,11 @@ public abstract class FooVbo<T extends CoEntity>
             throws ViewBuilderException {
         HtmlDivTag row = out.div().class_("container-row");
 
-        HtmlDivTag labelDiv = row.div().class_("col-sm-3 col-lg-2 zu-flabel");
+        IHtmlTag labelDiv = row.label().class_("zu-flabel");
         String labelName = IXjdocElement.fn.labelName(fieldDecl);
         labelDiv.text(labelName + ":");
 
-        HtmlDivTag valueDiv = row.div().class_("col-sm-9 col-lg-10");
+        HtmlDivTag valueDiv = labelDiv.div().class_("zu-fvalue");
         return valueDiv;
     }
 
@@ -107,8 +112,10 @@ public abstract class FooVbo<T extends CoEntity>
         IHtmlViewBuilderFactory factory = ctx.query(IHtmlViewBuilderFactory.class);
         if (factory == null)
             throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
-        else
-            factory.buildView(ctx, out, propertyRef);
+
+        IViewBuilder<Object> viewBuilder = factory.getViewBuilder(type);
+        out.comment("Foo-Field: " + type.getSimpleName() + " -- " + viewBuilder.getClass().getSimpleName());
+        viewBuilder.buildView(ctx, out, propertyRef, options);
     }
 
     @Override

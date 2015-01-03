@@ -10,7 +10,7 @@
             <id property="id" column="doc" />
             <result property="label" column="doc_label" />
         </association>
-        <association property="account" javaType="com.bee32.zebra.oa.accnt.Accounting">
+        <association property="account" javaType="com.bee32.zebra.oa.accnt.Account">
             <id property="id" column="account" />
             <result property="label" column="account_label" />
         </association>

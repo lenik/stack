@@ -3,7 +3,11 @@ package com.bee32.zebra.oa.thread;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-import com.bee32.zebra.oa.contact.Party;
+import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.repr.form.meta.OfGroup;
+
+import com.bee32.zebra.oa.OaGroups;
+import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.IMomentInterval;
 import com.tinylily.model.mx.base.CoMessage;
 
@@ -13,24 +17,17 @@ public class Reply
 
     private static final long serialVersionUID = 1L;
 
-    private long id;
     private Topic topic;
     private Reply parent;
+    private List<Person> parties;
     private List<PropertyChangeEvent> changes;
-    private List<Party> parties;
+
+    public Reply() {
+    }
 
     public Reply(Topic topic, Reply parent) {
         this.topic = topic;
         this.parent = parent;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     /**
@@ -57,13 +54,22 @@ public class Reply
         this.parent = parent;
     }
 
-    // @PropertyGroup(OaGroups.UserInteraction.class)
-    public List<Party> getParties() {
+    @OfGroup(OaGroups.UserInteraction.class)
+    public List<Person> getParties() {
         return parties;
     }
 
-    public void setParties(List<Party> parties) {
+    public void setParties(List<Person> parties) {
         this.parties = parties;
+    }
+
+    @DetailLevel(DetailLevel.EXPERT2)
+    public List<PropertyChangeEvent> getChanges() {
+        return changes;
+    }
+
+    public void setChanges(List<PropertyChangeEvent> changes) {
+        this.changes = changes;
     }
 
 }

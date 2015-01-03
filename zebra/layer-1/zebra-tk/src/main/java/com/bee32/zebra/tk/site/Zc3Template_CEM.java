@@ -170,7 +170,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 builder.fromPathProperties(formDecl, "id");
                 break;
             case 's':
-                builder.fromPathProperties(formDecl, "priority", "creationTime", "lastModified", "flags", "state");
+                builder.fromPathProperties(formDecl, "priority", "creationDate", "lastModifiedDate", "flags", "state");
                 break;
             case 'a':
                 builder.fromPathProperties(formDecl, "accessMode", "owner", "ownerGroup");

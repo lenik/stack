@@ -7,8 +7,9 @@ import java.util.TimeZone;
 import java.util.TreeSet;
 
 import net.bodz.bas.c.java.util.TimeZones;
-import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
@@ -22,6 +23,8 @@ public abstract class Party
     public static final int N_ACCOUNT = 30;
     public static final int N_SUBJECT = 200;
     public static final int N_COMMENT = 200;
+    public static final int N_LANGTAG = 5;
+    public static final int N_TIMEZONEID = 10;
 
     private int id;
     private Date birthday;
@@ -77,6 +80,7 @@ public abstract class Party
      * 语言代码
      */
     @OfGroup(OaGroups.Setting.class)
+    @TextInput(maxLength = N_LANGTAG)
     public String getLangTag() {
         return locale.toLanguageTag();
     }
@@ -91,6 +95,7 @@ public abstract class Party
      * 时区
      */
     @OfGroup(OaGroups.Setting.class)
+    @TextInput(maxLength = N_TIMEZONEID)
     public TimeZone getTimeZone() {
         return timeZone;
     }
@@ -105,6 +110,7 @@ public abstract class Party
      * 时区ID
      */
     @OfGroup(OaGroups.Setting.class)
+    @Derived
     public String getTimeZoneId() {
         return timeZone.getID();
     }
@@ -218,6 +224,7 @@ public abstract class Party
      * @label Characters
      * @label.zh.cn 特征字
      */
+    @Derived
     public String getTypeChars() {
         StringBuilder sb = new StringBuilder();
         if (isCustomer())

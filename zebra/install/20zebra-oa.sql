@@ -504,6 +504,9 @@
         parent      int,
         changes     text[],
         
+        cat         int,            -- reserved for general purpose.
+        phase       int,            -- reserved for general purpose.
+        
         t0          timestamptz,    -- work begin time
         t1          timestamptz,    -- work end time
         
@@ -519,12 +522,16 @@
         mode        int not null default 640,
         acl         int,
         
+        constraint reply_fk_cat     foreign key(cat)
+            references cat(id)          on update cascade on delete set null,
         constraint reply_fk_op      foreign key(op)
             references "user"(id)       on update cascade on delete set null,
         constraint reply_fk_topic   foreign key(topic)
             references topic(id)        on update cascade on delete set null,
         constraint reply_fk_parent  foreign key(parent)
             references reply(id)        on update cascade on delete set null,
+        constraint reply_fk_phase   foreign key(phase)
+            references phase(id)        on update cascade on delete set null,
         constraint reply_fk_uid     foreign key(uid)
             references "user"(id)       on update cascade on delete set null,
         constraint reply_fk_gid     foreign key(gid)

@@ -3,6 +3,8 @@ package com.bee32.zebra.io.art;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.bodz.bas.repr.form.meta.FormInput;
+import net.bodz.bas.repr.form.meta.NumericInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 
 import com.bee32.zebra.oa.OaGroups;
@@ -133,6 +135,8 @@ public class Artifact
      * 小数位数
      */
     @OfGroup(OaGroups.Setting.class)
+    @FormInput(textWidth = 3)
+    @NumericInput(min = 0, max = 10)
     public int getDecimalDigits() {
         return decimalDigits;
     }

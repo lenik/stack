@@ -6,9 +6,11 @@
 
     <resultMap id="map1" type="com.bee32.zebra.oa.hr.Employee" extends="co.mapUS">
         <result property="baseSalary" column="duty" />
+        <!-- 
         <result property="role" column="role" />
         <result property="title" column="title" />
         <result property="education" column="education" />
+         -->
         <result property="duty" column="duty" />
         <result property="workAbility" column="workAbility" />
         <result property="pension" column="pension" />

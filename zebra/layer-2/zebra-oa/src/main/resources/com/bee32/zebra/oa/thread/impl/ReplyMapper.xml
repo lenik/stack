@@ -4,32 +4,75 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.thread.impl.ReplyMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Reply" extends="message.map2">
+    <resultMap id="map2" type="com.bee32.zebra.oa.thread.Reply" extends="message.map2">
+        <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">
+            <id property="id" column="topic" />
+            <result property="subject" column="topic_subject" />
+        </association>
+        <collection property="parties" javaType="ArrayList" ofType="com.bee32.zebra.oa.contact.Person">
+            <id property="id" column="party" />
+            <result property="label" column="party_label" />
+        </collection>
     </resultMap>
-
-    <sql id="select1"><![CDATA[
-        select
-            a.*,
-            op.label "op_label",
-        from reply a
-            left join "user" op on a.op=op.id
-        ]]>
-    </sql>
 
     <sql id="select2"><![CDATA[
         select
             a.*,
+            topic.subject "topic_subject",
             op.label "op_label",
+            c.label "cat_label",
+            p.label "phase_label",
+            u.label "uid_label",
+            g.label "gid_label",
+            y.id "party",
+            y.label "party_label"
         from reply a
+            left join topic on a.topic=topic.id
             left join "user" op on a.op=op.id
+            left join cat c on a.cat=c.id
+            left join phase p on a.phase=p.id
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+            left join replyparty x on a.id=x.reply
+            left join person y on x.person=y.id
         ]]>
     </sql>
 
-    <select id="all" resultMap="map1">
-        <include refid="select1" />
+    <select id="all" resultMap="map2">
+        <include refid="select2" />
     </select>
 
-    <select id="select" parameterType="int" resultMap="map1">
+    <select id="filter" resultMap="map2">
+        <include refid="select2" />
+        <!-- left join tags -->
+        <where>
+            <if test="topicId != null">and a.topic=#{topicId}</if>
+            <if test="parentId != null">and a.parent=#{parentId}</if>
+            <!-- <if test="partyId != null">and a.party=#{partyId}</if> -->
+
+            <!-- co -->
+            <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            <!-- moment-interval -->
+            <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+            <if test="year != null">and extract(year from a.t0)=#{year}</if>
+            <if test="noDate">and a.t0 is null</if>
+            <if test="noYear">and a.t0 is null</if>
+            <!-- message -->
+            <if test="opId != null">and a.op=#{opId}</if>
+            <if test="categoryId != null">and a.cat=#{categoryId}</if>
+            <if test="tagId != null">and x.tag=#{tagId}</if>
+            <if test="phaseId != null">and a.phase=#{phaseId}</if>
+            <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
+            <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
+            <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
+            <if test="noOp">and a.op is null</if>
+            <if test="noCategory">and a.cat is null</if>
+            <if test="noTag">and x.tag is null</if>
+            <if test="noPhase">and a.phase is null</if>
+        </where>
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map2">
         <include refid="select2" />
         <where>
             <if test="_parameter != null">a.id=#{id}</if>
