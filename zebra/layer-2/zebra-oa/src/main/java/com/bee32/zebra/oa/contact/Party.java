@@ -9,9 +9,9 @@ import java.util.TreeSet;
 import net.bodz.bas.c.java.util.TimeZones;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
-import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
 
 public abstract class Party
@@ -65,7 +65,7 @@ public abstract class Party
     /**
      * 区域
      */
-    @OfGroup(OaGroups.Setting.class)
+    @OfGroup(StdGroup.Settings.class)
     public Locale getLocale() {
         return locale;
     }
@@ -79,7 +79,7 @@ public abstract class Party
     /**
      * 语言代码
      */
-    @OfGroup(OaGroups.Setting.class)
+    @OfGroup(StdGroup.Settings.class)
     @TextInput(maxLength = N_LANGTAG)
     public String getLangTag() {
         return locale.toLanguageTag();
@@ -94,7 +94,7 @@ public abstract class Party
     /**
      * 时区
      */
-    @OfGroup(OaGroups.Setting.class)
+    @OfGroup(StdGroup.Settings.class)
     @TextInput(maxLength = N_TIMEZONEID)
     public TimeZone getTimeZone() {
         return timeZone;
@@ -109,7 +109,7 @@ public abstract class Party
     /**
      * 时区ID
      */
-    @OfGroup(OaGroups.Setting.class)
+    @OfGroup(StdGroup.Settings.class)
     @Derived
     public String getTimeZoneId() {
         return timeZone.getID();
@@ -122,9 +122,9 @@ public abstract class Party
     }
 
     /**
-     * 客户标记
+     * 标记 - 客户
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     public boolean isCustomer() {
         return customer;
     }
@@ -134,9 +134,9 @@ public abstract class Party
     }
 
     /**
-     * 供应商标记
+     * 标记 - 供应商
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     public boolean isSupplier() {
         return supplier;
     }
@@ -148,7 +148,7 @@ public abstract class Party
     /**
      * 标签集
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     public Set<String> getTags() {
         return tags;
     }
@@ -224,6 +224,7 @@ public abstract class Party
      * @label Characters
      * @label.zh 特征字
      */
+    @OfGroup(StdGroup.Classification.class)
     @Derived
     public String getTypeChars() {
         StringBuilder sb = new StringBuilder();

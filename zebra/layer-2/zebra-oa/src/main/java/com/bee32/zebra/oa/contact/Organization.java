@@ -5,9 +5,8 @@ import java.util.List;
 
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
-
-import com.bee32.zebra.oa.OaGroups;
 
 public class Organization
         extends Party {
@@ -28,7 +27,7 @@ public class Organization
      * 全名
      */
     @TextInput(maxLength = N_LABEL)
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getFullName() {
         return getLabel();
     }
@@ -60,7 +59,7 @@ public class Organization
     }
 
     /**
-     * 承运人
+     * 标记 - 承运人
      */
     public boolean isShipper() {
         return shipper;
@@ -76,7 +75,7 @@ public class Organization
      * @format ######-###-###-###
      */
     @TextInput(maxLength = N_TAXID)
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getTaxId() {
         return taxId;
     }
@@ -107,7 +106,7 @@ public class Organization
      * @label Characters
      * @label.zh 特征字
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     @Derived
     @Override
     public String getTypeChars() {

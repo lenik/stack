@@ -4,9 +4,9 @@ import com.tinylily.model.base.CoCode;
 
 /**
  * 会计科目
- *
+ * 
  * 会计科目。
- *
+ * 
  * <p lang="en">
  * Account Subject
  */

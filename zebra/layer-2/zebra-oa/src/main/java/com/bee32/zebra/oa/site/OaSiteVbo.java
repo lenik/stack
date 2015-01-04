@@ -178,7 +178,7 @@ public class OaSiteVbo
         HtmlUlTag sub;
         HtmlLiTag item;
         sub = parent.li().text("知识库").ul();
-        sub.li().a().text("企事、业").href(_webApp_.join("org/").toString());
+        sub.li().a().text("企、事业").href(_webApp_.join("org/").toString());
         sub.li().a().text("联系人").href(_webApp_.join("person/").toString());
         sub.li().a().text("文件").href(_webApp_.join("file/").toString());
 

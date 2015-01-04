@@ -42,29 +42,39 @@ $(document).ready(function() {
         }
     });
 
-    dt.rows().on('click', 'tr', function() {
+    dt.rows().on('click', 'tr', function(e) {
         var row = dt.row(this); // could be the header.
         var id = row.data()[0];
         if (id == undefined)
             return;
 
         // load the selection
-        var outer = $("#zp-infosel-data");
+        var seldiv = $("#zp-infosel-data");
+        var seledit = $("#zp-infosel-edit");
         var data = $("#data-" + id);
-        var lastid = outer.attr("selid");
+        var lastid = seldiv.attr("selid");
 
         if (id != lastid) {
-            outer.attr("selid", id);
+            seldiv.show();
+            seldiv.attr("selid", id);
+
             if (data.length > 0) {
-                outer.html(data.html());
+                seldiv.html(data.html());
             } else {
                 // load on demand, or create from the table...
-                outer.html("Loading...");
+                seldiv.html("Loading...");
             }
+            seledit.attr("href", id + "/");
         } else {
             // click again on the same row.
-            location.href = id + "/";
+            // location.href = id + "/";
         }
+        // e.cancel = true;
     });
 
+    $("body").click(function() {
+        var seldiv = $("#zp-infosel-data");
+        // seldiv.toggle();
+    });
+    
 });

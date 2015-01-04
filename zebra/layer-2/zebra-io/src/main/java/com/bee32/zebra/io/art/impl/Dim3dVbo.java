@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
+import net.bodz.bas.html.util.FieldHtmlUtil;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.builtin.AbstractFormInput_htm;
 import net.bodz.bas.potato.ref.UiPropertyRef;
@@ -33,9 +34,9 @@ public class Dim3dVbo
         out.text(" x ");
         HtmlInputTag dz = out.input().type("number").value(dim.dz + "");
 
-        apply(dx, fieldDecl, options, "_dx");
-        apply(dy, fieldDecl, options, "_dy");
-        apply(dz, fieldDecl, options, "_dz");
+        FieldHtmlUtil.apply(dx, fieldDecl, options, "_dx");
+        FieldHtmlUtil.apply(dy, fieldDecl, options, "_dy");
+        FieldHtmlUtil.apply(dz, fieldDecl, options, "_dz");
 
         return out;
     }

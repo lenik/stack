@@ -32,6 +32,15 @@ public class ArtifactManagerVbo
     }
 
     @Override
+    protected void titleInfo(IHtmlViewContext ctx, IUiRef<ArtifactManager> ref, boolean indexPage) {
+        super.titleInfo(ctx, ref, indexPage);
+        PageStruct page = new PageStruct(ctx);
+        if (indexPage) {
+            page.cmds1.a().href("?view:=barcode").text("打印条码");
+        }
+    }
+
+    @Override
     protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<ArtifactManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);

@@ -14,9 +14,14 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
 import com.bee32.zebra.oa.thread.Topic;
+import com.bee32.zebra.sys.Schemas;
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.tinylily.model.base.schema.impl.FormDefCriteria;
+import com.tinylily.model.base.schema.impl.FormDefMapper;
 
 public class AccountingEventManagerVbo
         extends Zc3Template_CEM<AccountingEventManager, AccountingEvent> {
@@ -29,10 +34,31 @@ public class AccountingEventManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AccountingEventManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AccountingEventManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
-        List<AccountingEvent> list = postfilt(mapper.all());
+
+        AccountingEventCriteria criteria = criteriaFromRequest(new AccountingEventCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        {
+            SwitchOverride<Integer> so;
+            so = filters.switchEntity("表单", true, //
+                    ctx.query(FormDefMapper.class).filter(FormDefCriteria.forSchema(Schemas.ACCOUNTING)), //
+                    "form", criteria.formId, criteria.noForm);
+            criteria.formId = so.key;
+            criteria.noForm = so.isNull;
+
+            // HtmlDivTag valDiv = out.div().text("金额：");
+            // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
+
+            so = filters.switchPairs("年份", false, //
+                    mapper.histoByYear(), "year", criteria.year, criteria.noYear);
+            criteria.year = so.key;
+            criteria.noYear = so.isNull;
+        }
+
+        List<AccountingEvent> list = postfilt(mapper.filter(criteria));
 
         IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
@@ -41,7 +67,7 @@ public class AccountingEventManagerVbo
 
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);
-            tr.td().text(o.getBeginDate());
+            tr.td().text(fn.formatDate(o.getBeginDate()));
             ref(tr.td(), o.getOp());
             ref(tr.td(), o.getCategory());
 
@@ -58,5 +84,4 @@ public class AccountingEventManagerVbo
 
         dumpFullData(page.extradata, list);
     }
-
 }

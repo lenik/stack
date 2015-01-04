@@ -6,6 +6,7 @@ import java.util.Map;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.NumericInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
@@ -55,7 +56,7 @@ public class Artifact
     /**
      * 分类
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     public ArtifactCategory getCategory() {
         return category;
     }
@@ -70,7 +71,7 @@ public class Artifact
      * @label SKU
      * @placeholder 输入存货识别码
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getSkuCode() {
         return skuCode;
     }
@@ -82,7 +83,7 @@ public class Artifact
     /**
      * @placeholder 输入条形码
      */
-    @OfGroup({ OaGroups.Identity.class, OaGroups.Packaging.class })
+    @OfGroup({ StdGroup.Identity.class, OaGroups.Packaging.class })
     public String getBarCode() {
         return barCode;
     }
@@ -134,7 +135,7 @@ public class Artifact
     /**
      * 小数位数
      */
-    @OfGroup(OaGroups.Setting.class)
+    @OfGroup(StdGroup.Settings.class)
     @FormInput(textWidth = 3)
     @NumericInput(min = 0, max = 10)
     public int getDecimalDigits() {
@@ -150,7 +151,7 @@ public class Artifact
      * 
      * @placeholder 输入规格/型号
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getSpec() {
         return spec;
     }
@@ -221,7 +222,7 @@ public class Artifact
     /**
      * 供应方法
      */
-    @OfGroup(OaGroups.Schedule.class)
+    @OfGroup(StdGroup.Schedule.class)
     public SupplyMethod getSupplyMethod() {
         return supplyMethod;
     }
@@ -235,7 +236,7 @@ public class Artifact
     /**
      * 供应延时
      */
-    @OfGroup(OaGroups.Schedule.class)
+    @OfGroup(StdGroup.Schedule.class)
     public int getSupplyDelay() {
         return supplyDelay;
     }

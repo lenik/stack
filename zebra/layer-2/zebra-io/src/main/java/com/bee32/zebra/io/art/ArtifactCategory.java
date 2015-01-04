@@ -1,8 +1,8 @@
 package com.bee32.zebra.io.art;
 
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 
-import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoNode;
 
 public class ArtifactCategory
@@ -30,7 +30,7 @@ public class ArtifactCategory
     /**
      * @label SKU代码格式
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Preferences.class)
     public String getSkuCodeFormat() {
         return skuCodeFormat;
     }
@@ -42,7 +42,7 @@ public class ArtifactCategory
     /**
      * @label 条形码格式
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Preferences.class)
     public String getBarCodeFormat() {
         return barCodeFormat;
     }

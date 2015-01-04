@@ -7,8 +7,6 @@ import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
-import com.tinylily.model.base.schema.CategoryDef;
-import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.mx.base.CoMessage;
 
 public class StockEvent
@@ -20,9 +18,6 @@ public class StockEvent
     private Organization org;
     private OrgUnit orgUnit;
     private Person person;
-
-    private CategoryDef category;
-    private PhaseDef phase;
 
     private List<StockEntry> entries = new ArrayList<>();
     private double quantity;
@@ -70,28 +65,6 @@ public class StockEvent
 
     public void setPerson(Person person) {
         this.person = person;
-    }
-
-    /**
-     * 分类
-     */
-    public CategoryDef getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryDef category) {
-        this.category = category;
-    }
-
-    /**
-     * 阶段
-     */
-    public PhaseDef getPhase() {
-        return phase;
-    }
-
-    public void setPhase(PhaseDef phase) {
-        this.phase = phase;
     }
 
     /**

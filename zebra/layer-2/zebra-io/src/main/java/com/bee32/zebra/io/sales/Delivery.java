@@ -3,8 +3,6 @@ package com.bee32.zebra.io.sales;
 import java.util.Date;
 import java.util.List;
 
-import net.bodz.bas.repr.form.meta.OfGroup;
-
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
@@ -158,7 +156,7 @@ public class Delivery
      * 经办人
      */
     @Override
-    @OfGroup(CoMessage.class)
+    // @OfGroup(OaGroups.UserInteraction.class)
     public User getOp() {
         return super.getOp();
     }

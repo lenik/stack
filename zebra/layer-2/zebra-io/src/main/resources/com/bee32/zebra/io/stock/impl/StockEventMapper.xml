@@ -73,8 +73,9 @@
             left join cat on a.cat=cat.id
             left join phase on a.phase=phase.id
             left join org on a.org=org.id
-            left join orgunit on a.ou=orgunit.id
+            left join orgunit ou on a.ou=ou.id
             left join person on a.person=person.id
+            left join "user" op on a.op=op.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -87,7 +88,30 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
+            <if test="topicId != null">and a.topic=#{topicId}</if>
+            <if test="orgId != null">and a.org=#{orgId}</if>
+            <if test="orgUnitId != null">and a.ou=#{orgUnitId}</if>
+            <if test="personId != null">and a.person=#{personId}</if>
+
+            <!-- co -->
+            <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            <!-- moment-interval -->
+            <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+            <if test="year != null">and extract(year from a.t0)=#{year}</if>
+            <if test="noDate">and a.t0 is null</if>
+            <if test="noYear">and a.t0 is null</if>
+            <!-- message -->
+            <if test="opId != null">and a.op=#{opId}</if>
+            <if test="categoryId != null">and a.cat=#{categoryId}</if>
+            <if test="tagId != null">and x.tag=#{tagId}</if>
+            <if test="phaseId != null">and a.phase=#{phaseId}</if>
+            <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
+            <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
+            <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
+            <if test="noOp">and a.op is null</if>
+            <if test="noCategory">and a.cat is null</if>
+            <if test="noTag">and x.tag is null</if>
+            <if test="noPhase">and a.phase is null</if>
         </where>
     </select>
 
@@ -122,5 +146,13 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from stdoc
     </select>
+
+    <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[
+        select
+            extract(year from t0)::int "year", 
+            count(*) "count"
+        from stdoc
+        group by extract(year from t0)::int
+    ]]></select>
 
 </mapper>

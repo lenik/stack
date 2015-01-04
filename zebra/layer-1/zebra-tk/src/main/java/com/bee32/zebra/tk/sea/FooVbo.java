@@ -5,8 +5,10 @@ import java.io.IOException;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
+import net.bodz.bas.html.dom.tag.HtmlFormTag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
 import net.bodz.bas.html.dom.tag.HtmlSpanTag;
+import net.bodz.bas.html.util.FieldHtmlUtil;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewBuilderFactory;
 import net.bodz.bas.html.viz.IHtmlViewContext;
@@ -42,6 +44,22 @@ public abstract class FooVbo<T extends CoEntity>
     @Override
     protected void nullInstance(IHtmlTag out, IUiRef<T> ref) {
         out.text("null@" + ref.getValueType());
+    }
+
+    @Override
+    protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        HtmlFormTag form = out.form().name("form").method("post").action("../");
+        return form;
+    }
+
+    @Override
+    protected void endForm(IHtmlViewContext ctx, HtmlFormTag out, IUiRef<T> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        out.hr();
+        HtmlDivTag div = out.div();
+        div.button().type("submit").text("保存");
+        div.button().onclick("javascript: history.go(-1)").text("取消");
     }
 
     @Override
@@ -99,14 +117,18 @@ public abstract class FooVbo<T extends CoEntity>
                 inputName = fieldDecl.getName();
 
             HtmlInputTag input = out.input().type("hidden").name(inputName);
-            if (entity != null)
-                input.value(entity.getId().toString());
+            FieldHtmlUtil.apply(input, fieldDecl, options);
 
             HtmlSpanTag span = out.span();
-            span.attr("ec", instance.getClass().getSimpleName());
-            span.attr("eid", instance.getId());
-            if (instance != null)
-                span.text(instance.getLabel());
+            span.attr("ec", type.getSimpleName());
+
+            if (entity != null) {
+                input.value(entity.getId().toString());
+                span.attr("eid", entity.getId());
+                span.text(entity.getLabel());
+            } else {
+                span.text(null);
+            }
 
             out.a().href("javascript: alert(1)").text("选择");
             return;

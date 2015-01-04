@@ -9,10 +9,6 @@ public @interface OaGroups {
     @interface Accounting {
     }
 
-    /** 分类 */
-    @interface Classification {
-    }
-
     /** 颜色管理 */
     @interface ColorManagement {
     }
@@ -21,24 +17,12 @@ public @interface OaGroups {
     @interface CustomExtension {
     }
 
-    /** 标识 */
-    @interface Identity {
-    }
-
     /** 包装 */
     @interface Packaging {
     }
 
     /** 位置 */
     @interface Position {
-    }
-
-    /** 日程 */
-    @interface Schedule {
-    }
-
-    /** 设置选项 */
-    @interface Setting {
     }
 
     /** 运输 */

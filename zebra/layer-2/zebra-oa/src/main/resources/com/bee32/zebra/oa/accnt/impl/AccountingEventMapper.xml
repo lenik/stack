@@ -32,6 +32,34 @@
         <include refid="select1" />
     </select>
 
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <!-- left join tags -->
+        <where>
+            <if test="formId != null">and a.form=${formId}</if>
+            
+            <!-- co -->
+            <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            <!-- moment-interval -->
+            <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+            <if test="year != null">and extract(year from a.t0)=#{year}</if>
+            <if test="noDate">and a.t0 is null</if>
+            <if test="noYear">and a.t0 is null</if>
+            <!-- message -->
+            <if test="opId != null">and a.op=#{opId}</if>
+            <if test="categoryId != null">and a.cat=#{categoryId}</if>
+            <if test="tagId != null">and x.tag=#{tagId}</if>
+            <if test="phaseId != null">and a.phase=#{phaseId}</if>
+            <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
+            <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
+            <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
+            <if test="noOp">and a.op is null</if>
+            <if test="noCategory">and a.cat is null</if>
+            <if test="noTag">and x.tag is null</if>
+            <if test="noPhase">and a.phase is null</if>
+        </where>
+    </select>
+
     <select id="select" parameterType="int" resultMap="map1">
         <include refid="select1" />
         <where>
@@ -61,5 +89,13 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from acdoc
     </select>
+
+    <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[
+        select
+            extract(year from t0)::int "year", 
+            count(*) "count"
+        from sdoc
+        group by extract(year from t0)::int
+    ]]></select>
 
 </mapper>

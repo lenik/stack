@@ -1,9 +1,9 @@
 package com.bee32.zebra.io.stock;
 
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.io.art.Artifact;
-import com.bee32.zebra.oa.OaGroups;
 
 public class PlaceOption {
 
@@ -59,7 +59,7 @@ public class PlaceOption {
      * 
      * @label 库存安全保留量
      */
-    @OfGroup(OaGroups.Schedule.class)
+    @OfGroup(StdGroup.Schedule.class)
     public double getReservation() {
         return reservation;
     }
@@ -71,7 +71,7 @@ public class PlaceOption {
     /**
      * @label 盘点周期
      */
-    @OfGroup(OaGroups.Schedule.class)
+    @OfGroup(StdGroup.Schedule.class)
     public int getCheckPeriod() {
         return checkPeriod;
     }
@@ -83,7 +83,7 @@ public class PlaceOption {
     /**
      * @label 下次盘点时间
      */
-    @OfGroup(OaGroups.Schedule.class)
+    @OfGroup(StdGroup.Schedule.class)
     public long getCheckExpires() {
         return checkExpires;
     }

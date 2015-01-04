@@ -71,6 +71,8 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             switch (viewName) {
             case "json":
                 return ContentTypes.text_javascript;
+            case "csv":
+                return ContentTypes.text_csv;
             }
         return super.getContentType(request, value);
     }
@@ -95,7 +97,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         }
 
         IPathArrival arrival = ctx.query(IPathArrival.class);
-        boolean frameOnly = arrival.getPrevious(ref.get()).getRemainingPath() != null;
+        boolean indexPage = arrival.getPrevious(ref.get()).getRemainingPath() == null;
 
         IHtmlTag body1 = ctx.getTag(ID.body1);
 
@@ -118,7 +120,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         }
 
         HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 info");
-        {
+        if (indexPage) {
             HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
             // previewDiv.div().class_("icon fa").text(IFontAwesomeCharAliases.FA_COFFEE);
             previewDiv.img().src(_webApp_.join("zebra/scene1.png").absoluteHref());
@@ -130,7 +132,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             HtmlTdTag _td1 = _tr1.td();
             _td1.h2().text("选中的信息");
             HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3em");
-            _td2.a().href("").text("[编辑]");
+            _td2.a().id("zp-infosel-edit").href("").text("[编辑]");
 
             infosel.div().id(ID.infoselData);
 
@@ -139,12 +141,73 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             refdocsDiv.ul().id(ID.infoman_ul);
         }
 
-        titleInfo(ctx, ref);
+        titleInfo(ctx, ref, indexPage);
 
-        if (!frameOnly)
+        if (indexPage)
             buildDataView(ctx, new PageStruct(ctx), ref, options);
 
         return out;
+    }
+
+    protected void titleInfo(IHtmlViewContext ctx, IUiRef<M> ref, boolean indexPage) {
+        M manager = ref.get();
+        Class<?> entityType = manager.getEntityType();
+        IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(entityType);
+
+        ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
+        PageStruct p = new PageStruct(ctx);
+        p.title.h1().text(classDoc.getTag("label"));
+
+        iString docText = classDoc.getText();
+        HtmlPTag subTitle = p.title.p().class_("sub");
+        subTitle.verbatim(docText.getHeadPar());
+
+        Map<String, Long> countMap = mapper.count();
+        HtmlUlTag statUl = p.stat.ul();
+        for (String id : countMap.keySet()) {
+            long count = countMap.get(id);
+            String name = id;
+            switch (id) {
+            case "total":
+                name = "总计";
+                break;
+            case "valid":
+                name = "有效";
+                break;
+            case "used":
+                name = "在用";
+                break;
+            case "locked":
+                name = "锁定";
+                break;
+            }
+            statUl.li().text(name + " " + count + " 种");
+        }
+
+        if (indexPage) {
+            p.cmds0.a().href("new/").text("新建");
+            p.cmds0.a().href("?view:=csv").text("导出");
+            p.cmds0.a().href("javascript: window.print()").text("打印");
+        } else {
+            p.cmds0.a().href("javascript: form.reset()").text("复原").title("清除刚才输入的所有变更，重新写。");
+            p.cmds0.a().href("javascript: form.submit()").text("提交").title("将输入的数据提交保存。");
+        }
+
+        List<String> rels = classDoc.getTag("rel", List.class);
+        if (rels != null)
+            for (String rel : rels) {
+                int colon = rel.indexOf(':');
+                IAnchor href = _webApp_.join(rel.substring(0, colon).trim());
+                String text = rel.substring(colon + 1).trim();
+                p.linksUl.li().a().href(href.toString()).text(text);
+            }
+
+        if (indexPage) {
+            List<String> seeList = classDoc.getTag("see", List.class);
+            if (seeList != null)
+                for (String see : seeList)
+                    p.infomanUl.li().verbatim(see);
+        }
     }
 
     protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<M> ref, IOptions options)
@@ -155,8 +218,17 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             throws ViewBuilderException, IOException;
 
     protected IndexTable mkIndexTable(IHtmlViewContext ctx, IHtmlTag parent, String id) {
+        IViewOfRequest viewOfRequest = ctx.query(IViewOfRequest.class);
+        String viewName = viewOfRequest.getViewName();
+
         IndexTable table = new IndexTable(parent, id);
-        table.dataUrl("?view:=json");
+
+        if (viewName != null)
+            switch (viewName) {
+            case "index1":
+                table.dataUrl("?view:=json");
+                break;
+            }
 
         for (IHtmlTag tr : table.headFoot)
             for (PathField pathField : indexFields) {
@@ -216,62 +288,6 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             }
         }
         indexFields = builder.getFields();
-    }
-
-    protected void titleInfo(IHtmlViewContext ctx, IUiRef<M> ref) {
-        M manager = ref.get();
-        Class<?> entityType = manager.getEntityType();
-        IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(entityType);
-
-        ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
-        PageStruct p = new PageStruct(ctx);
-        p.title.h1().text(classDoc.getTag("label"));
-
-        iString docText = classDoc.getText();
-        HtmlPTag subTitle = p.title.p().class_("sub");
-        subTitle.verbatim(docText.getHeadPar());
-
-        Map<String, Long> countMap = mapper.count();
-        HtmlUlTag statUl = p.stat.ul();
-        for (String id : countMap.keySet()) {
-            long count = countMap.get(id);
-            String name = id;
-            switch (id) {
-            case "total":
-                name = "总计";
-                break;
-            case "valid":
-                name = "有效";
-                break;
-            case "used":
-                name = "在用";
-                break;
-            case "locked":
-                name = "锁定";
-                break;
-            }
-            statUl.li().text(name + " " + count + " 种");
-        }
-
-        p.cmds0.a().href("new/").text("新建");
-        p.cmds0.a().href("export/").text("导出");
-        p.cmds0.a().href("print/").text("打印");
-        p.cmds1.a().href("barcode/").text("打印条码");
-
-        List<String> rels = classDoc.getTag("rel", List.class);
-        if (rels != null)
-            for (String rel : rels) {
-                int colon = rel.indexOf(':');
-                IAnchor href = _webApp_.join(rel.substring(0, colon).trim());
-                String text = rel.substring(colon + 1).trim();
-                p.linksUl.li().a().href(href.toString()).text(text);
-            }
-
-        List<String> seeList = classDoc.getTag("see", List.class);
-        if (seeList != null)
-            for (String see : seeList)
-                p.infomanUl.li().verbatim(see);
-
     }
 
     protected void cocols(String spec, HtmlTrTag tr, CoEntity o) {
@@ -343,7 +359,9 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                             switch (fieldDecl.getNullConvertion()) {
                             case EMPTY:
                                 value = "";
+                                break;
                             default:
+                                continue;
                             }
                     } catch (ReflectiveOperationException e) {
                         value = "(" + e.getClass().getName() + ") " + e.getMessage();

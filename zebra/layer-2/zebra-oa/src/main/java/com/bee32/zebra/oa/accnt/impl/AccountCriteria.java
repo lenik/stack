@@ -8,21 +8,15 @@ import com.tinylily.model.sea.QVariantMap;
 public class AccountCriteria
         extends CoEntityCriteria {
 
-    int code_;
-
-    public int getCodePrefix() {
-        return code_;
-    }
-
-    public void setCodePrefix(int code) {
-        this.code_ = code;
-    }
+    public String codePrefix;
+    public Integer maxDepth;
 
     @Override
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
-        code_ = map.getInt("code", code_);
+        codePrefix = map.getString("code", codePrefix);
+        maxDepth = map.getInt("depth", maxDepth);
     }
 
 }

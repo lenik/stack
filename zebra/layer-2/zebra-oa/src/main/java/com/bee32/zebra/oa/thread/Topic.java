@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.IMomentInterval;
@@ -28,7 +29,7 @@ public class Topic
      * 业务员
      */
     @Override
-    @OfGroup(CoMessage.class)
+    // @OfGroup(OaGroups.UserInteraction.class)
     public User getOp() {
         return super.getOp();
     }
@@ -36,7 +37,7 @@ public class Topic
     /**
      * 分类
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     public CategoryDef getCategory() {
         return super.getCategory();
     }
@@ -48,7 +49,7 @@ public class Topic
     /**
      * 阶段
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Status.class)
     public PhaseDef getPhase() {
         return super.getPhase();
     }
@@ -63,6 +64,7 @@ public class Topic
      * @label Value
      * @label.zh 价值
      */
+    @OfGroup(StdGroup.Ranking.class)
     public double getValue() {
         return value;
     }

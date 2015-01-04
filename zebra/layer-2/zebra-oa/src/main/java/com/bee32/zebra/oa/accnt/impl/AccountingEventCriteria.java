@@ -6,11 +6,11 @@ import java.util.TreeSet;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 
-import com.tinylily.model.base.CoMomentIntervalCriteria;
+import com.tinylily.model.mx.base.CoMessageCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class AccountingEventCriteria
-        extends CoMomentIntervalCriteria {
+        extends CoMessageCriteria {
 
     public Integer partyId;
     public Set<String> tags;

@@ -4,8 +4,7 @@ import java.sql.Date;
 
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
-
-import com.bee32.zebra.oa.OaGroups;
+import net.bodz.bas.repr.form.meta.StdGroup;
 
 public class Person
         extends Party {
@@ -22,7 +21,7 @@ public class Person
     public static final char FEMALE = 'f';
     // public static final char TRANSEXUAL = 't';
 
-    private char gender = '-';
+    private Gender gender = Gender.UNKNOWN;
     private String homeland;
 
     private String passport;
@@ -34,7 +33,7 @@ public class Person
     /**
      * 姓名
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getFullName() {
         return getLabel();
     }
@@ -54,12 +53,14 @@ public class Person
     /**
      * 性别
      */
-    @OfGroup(OaGroups.Classification.class)
-    public char getGender() {
+    @OfGroup(StdGroup.Classification.class)
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(char gender) {
+    public void setGender(Gender gender) {
+        if (gender == null)
+            throw new NullPointerException("gender");
         this.gender = gender;
     }
 
@@ -77,7 +78,7 @@ public class Person
     /**
      * 护照
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getPassport() {
         return passport;
     }
@@ -89,7 +90,7 @@ public class Person
     /**
      * 身份证
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getSocialSecurityNum() {
         return socialSecurityNum;
     }
@@ -101,7 +102,7 @@ public class Person
     /**
      * 驾照
      */
-    @OfGroup(OaGroups.Identity.class)
+    @OfGroup(StdGroup.Identity.class)
     public String getDriverLicenseNum() {
         return driverLicenseNum;
     }
@@ -111,9 +112,9 @@ public class Person
     }
 
     /**
-     * 雇员
+     * 标记 - 雇员
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     public boolean isEmployee() {
         return employee;
     }
@@ -126,7 +127,8 @@ public class Person
      * @label A/S/L
      * @label.zh 年龄/性/籍
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
+    @Derived
     public String getAgeSexLoc() {
         StringBuilder sb = new StringBuilder();
 
@@ -140,16 +142,7 @@ public class Person
         }
 
         sb.append('/');
-        switch (gender) {
-        case 'm':
-            sb.append('男');
-            break;
-        case 'f':
-            sb.append('女');
-            break;
-        default:
-            sb.append('-');
-        }
+        sb.append(gender.getLabel());
 
         if (homeland != null) {
             sb.append('/');
@@ -166,7 +159,7 @@ public class Person
      * @label Characters
      * @label.zh 特征字
      */
-    @OfGroup(OaGroups.Classification.class)
+    @OfGroup(StdGroup.Classification.class)
     @Derived
     @Override
     public String getTypeChars() {

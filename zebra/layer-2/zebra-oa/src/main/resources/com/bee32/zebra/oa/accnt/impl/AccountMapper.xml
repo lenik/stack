@@ -5,28 +5,12 @@
 <mapper namespace="com.bee32.zebra.oa.accnt.impl.AccountMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.oa.accnt.Account" extends="co.mapUS">
-        <result property="sign" column="sign" />
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
-            a.*,
-            u.label "uid_label",
-            g.label "gid_label"
+            a.*
         from account a
-            left join "user" u on a.uid=u.id
-            left join "group" g on a.gid=g.id
-        ]]>
-    </sql>
-
-    <sql id="select2"><![CDATA[
-        select
-            a.*,
-            u.label "uid_label",
-            g.label "gid_label"
-        from account a
-            left join "user" u on a.uid=u.id
-            left join "group" g on a.gid=g.id
         ]]>
     </sql>
 
@@ -37,12 +21,12 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
+            <if test="maxDepth != null">and length(id::varchar) &lt;= #{maxDepth}</if>
         </where>
     </select>
 
     <select id="select" parameterType="int" resultMap="map1">
-        <include refid="select2" />
+        <include refid="select1" />
         <where>
             <if test="_parameter != null">a.id=#{id}</if>
         </where>

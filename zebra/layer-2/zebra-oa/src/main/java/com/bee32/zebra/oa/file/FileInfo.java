@@ -2,8 +2,6 @@ package com.bee32.zebra.oa.file;
 
 import java.util.Date;
 
-import net.bodz.bas.repr.form.meta.OfGroup;
-
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.IMomentInterval;
@@ -193,8 +191,8 @@ public class FileInfo
     /**
      * 经办人
      */
+    // @OfGroup(OaGroups.UserInteraction.class)
     @Override
-    @OfGroup(CoMessage.class)
     public User getOp() {
         return super.getOp();
     }
