@@ -1,6 +1,9 @@
 $(document).ready(function() {
 
-    var dt = $('.dataTable').DataTable({
+    var $dt = $('.dataTable');
+    var dataUrl = $dt.attr("data-url");
+
+    var dt = window.dt = $dt.DataTable({
         columnDefs : [ {
             targets : "detail",
             visible : false
@@ -32,6 +35,10 @@ $(document).ready(function() {
         responsive : true,
         tableTools : {
             sSwfPath : _js_ + "datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+        },
+        ajax : dataUrl == null ? null : {
+            url : "?view:=json",
+            dataSrc : ""
         }
     });
 
@@ -40,12 +47,12 @@ $(document).ready(function() {
         var id = row.data()[0];
         if (id == undefined)
             return;
-        
+
         // load the selection
         var outer = $("#zp-infosel-data");
         var data = $("#data-" + id);
         var lastid = outer.attr("selid");
-        
+
         if (id != lastid) {
             outer.attr("selid", id);
             if (data.length > 0) {
