@@ -16,35 +16,35 @@ public class FooStates
     /**
      * HTTP 102 Processing
      * 
-     * @label.zh.cn 处理中
+     * @label.zh 处理中
      */
     public static final State PROCESS = new State(ID_PROCESS, "process", StateType.ACCEPTED);
 
     /**
      * HTTP 200 OK
      * 
-     * @label.zh.cn 成功
+     * @label.zh 成功
      */
     public static final State OK = new State(ID_OK, "ok", StateType.ACCEPTED);
 
     /**
      * HTTP 417 Expectation Failed
      * 
-     * @label.zh.cn 作废
+     * @label.zh 作废
      */
     public static final State FAIL = new State(ID_FAIL, "fail", StateType.ACCEPTED);
 
     /**
      * HTTP 400 Bad Request
      * 
-     * @label.zh.cn 无效
+     * @label.zh 无效
      */
     public static final State INVALID = new State(ID_INVALID, "invalid", StateType.ERROR);
 
     /**
      * HTTP 408 Request Timeout
      * 
-     * @label.zh.cn 无应答
+     * @label.zh 无应答
      */
     public static final State TIMEOUT = new State(ID_TIMEOUT, "timeout", StateType.ERROR);
 

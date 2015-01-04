@@ -222,7 +222,7 @@ public abstract class Party
      * 由一系列单字符描述的分类特征。
      * 
      * @label Characters
-     * @label.zh.cn 特征字
+     * @label.zh 特征字
      */
     @Derived
     public String getTypeChars() {

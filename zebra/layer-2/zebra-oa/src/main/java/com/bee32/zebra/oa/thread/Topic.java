@@ -61,7 +61,7 @@ public class Topic
      * Value
      * 
      * @label Value
-     * @label.zh.cn 价值
+     * @label.zh 价值
      */
     public double getValue() {
         return value;

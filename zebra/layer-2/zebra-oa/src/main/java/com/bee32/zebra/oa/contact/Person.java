@@ -123,7 +123,7 @@ public class Person
 
     /**
      * @label A/S/L
-     * @label.zh.cn 年龄/性/籍
+     * @label.zh 年龄/性/籍
      */
     @OfGroup(OaGroups.Classification.class)
     public String getAgeSexLoc() {
@@ -163,7 +163,7 @@ public class Person
      * 由一系列单字符描述的分类特征。
      * 
      * @label Characters
-     * @label.zh.cn 特征字
+     * @label.zh 特征字
      */
     @OfGroup(OaGroups.Classification.class)
     @Override

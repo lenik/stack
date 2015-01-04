@@ -96,7 +96,7 @@ public class Contact
      * <code>null</code> if there is a real name and the contact name should be the real name.
      * 
      * @label Alternative Name
-     * @label.zh.cn 别名
+     * @label.zh 别名
      */
     @TextInput(maxLength = N_NAME)
     public String getRename() {
@@ -113,7 +113,7 @@ public class Contact
      * <code>null</code> for the default/common usage.
      * 
      * @label Usage
-     * @label.zh.cn 用途
+     * @label.zh 用途
      */
     @TextInput(maxLength = N_USAGE)
     public String getUsage() {
