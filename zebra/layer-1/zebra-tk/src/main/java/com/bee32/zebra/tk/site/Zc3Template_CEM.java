@@ -1,6 +1,7 @@
 package com.bee32.zebra.tk.site;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,16 +25,14 @@ import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IPropertyAccessor;
-import net.bodz.bas.repr.form.FieldCategory;
-import net.bodz.bas.repr.form.FieldDeclBuilder;
-import net.bodz.bas.repr.form.FieldDeclListBuilder;
-import net.bodz.bas.repr.form.IFieldDecl;
-import net.bodz.bas.repr.form.IFormDecl;
-import net.bodz.bas.repr.form.SortOrder;
+import net.bodz.bas.repr.form.*;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.req.HttpSnap;
+import net.bodz.bas.repr.req.IViewOfRequest;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
+import net.bodz.bas.std.rfc.mime.ContentType;
+import net.bodz.bas.std.rfc.mime.ContentTypes;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
@@ -51,7 +50,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         implements IZebraSiteAnchors, IZebraSiteLayout {
 
     protected IFormDecl formDecl;
-    protected List<IFieldDecl> indexFields;
+    protected List<PathField> indexFields;
 
     public Zc3Template_CEM(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
@@ -65,8 +64,35 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     }
 
     @Override
+    public ContentType getContentType(HttpServletRequest request, M value) {
+        IViewOfRequest viewOfRequest = (IViewOfRequest) request.getAttribute(IViewOfRequest.class.getName());
+        String viewName = viewOfRequest.getViewName();
+        if (viewName != null)
+            switch (viewName) {
+            case "json":
+                return ContentTypes.text_javascript;
+            }
+        return super.getContentType(request, value);
+    }
+
+    @Override
     public final IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<M> ref, IOptions options)
             throws ViewBuilderException, IOException {
+
+        IViewOfRequest view = ctx.query(IViewOfRequest.class);
+        String viewName = view.getViewName();
+        if (viewName == null)
+            viewName = "index";
+
+        switch (viewName) {
+        case "index":
+            break;
+
+        case "json":
+            PrintWriter writer = ctx.getResponse().getWriter();
+            buildJson(ctx, writer, ref, options);
+            return null;
+        }
 
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean frameOnly = arrival.getPrevious(ref.get()).getRemainingPath() != null;
@@ -75,7 +101,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
         HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
         {
-            HtmlDivTag headDiv = mainCol.div().id("zp-head").class_("info clearfix");
+            HtmlDivTag headDiv = mainCol.div().id(ID.head).class_("info clearfix");
             headDiv.div().id(ID.title);
 
             HtmlDivTag headCol1 = headDiv.div().id("zp-head-col1").class_("col-xs-6");
@@ -121,18 +147,25 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         return out;
     }
 
+    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<M> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+    }
+
     protected abstract void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<M> ref, IOptions options)
             throws ViewBuilderException, IOException;
 
     protected IndexTable mkIndexTable(IHtmlTag parent, String id) {
         IndexTable table = new IndexTable(parent, id);
+        table.dataUrl("?view:=json");
 
-        for (IHtmlTag thr : table.headFoot)
-            for (IFieldDecl field : indexFields) {
-                HtmlThTag th = thr.th().text(IXjdocElement.fn.labelName(field));
+        for (IHtmlTag tr : table.headFoot)
+            for (PathField pathField : indexFields) {
+                IFieldDecl fieldDecl = pathField.getFieldDecl();
+                HtmlThTag th = tr.th().text(IXjdocElement.fn.labelName(fieldDecl));
+                th.dataField(fieldDecl.getName());
 
                 List<String> classes = new ArrayList<String>();
-                switch (field.getName()) {
+                switch (fieldDecl.getName()) {
                 case "accessMode":
                 case "creationTime":
                 case "endTime":
@@ -143,12 +176,12 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                     classes.add("detail");
                 }
 
-                boolean sortable = field.getPreferredSortOrder() != SortOrder.NO_SORT;
+                boolean sortable = fieldDecl.getPreferredSortOrder() != SortOrder.NO_SORT;
                 th.dataSortable(sortable);
                 if (!sortable)
                     classes.add("no-sort");
 
-                String styleClass = field.getStyleClass();
+                String styleClass = fieldDecl.getStyleClass();
                 if (styleClass != null)
                     classes.add(styleClass);
 
@@ -162,21 +195,21 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     protected void insertIndexFields(String spec, String... pathProperties)
             throws NoSuchPropertyException, ParseException {
         FieldDeclBuilder formFieldBuilder = new FieldDeclBuilder();
-        FieldDeclListBuilder builder = new FieldDeclListBuilder(formFieldBuilder);
+        PathFieldsBuilder builder = new PathFieldsBuilder(formFieldBuilder);
 
         for (char c : spec.toCharArray()) {
             switch (c) {
             case 'i':
-                builder.fromPathProperties(formDecl, "id");
+                builder.fromPropertyPaths(formDecl, "id");
                 break;
             case 's':
-                builder.fromPathProperties(formDecl, "priority", "creationDate", "lastModifiedDate", "flags", "state");
+                builder.fromPropertyPaths(formDecl, "priority", "creationDate", "lastModifiedDate", "flags", "state");
                 break;
             case 'a':
-                builder.fromPathProperties(formDecl, "accessMode", "owner", "ownerGroup");
+                builder.fromPropertyPaths(formDecl, "accessMode", "owner", "ownerGroup");
                 break;
             case '*':
-                builder.fromPathProperties(formDecl, pathProperties);
+                builder.fromPropertyPaths(formDecl, pathProperties);
                 break;
             default:
                 throw new IllegalArgumentException("Bad column group specifier: " + c);

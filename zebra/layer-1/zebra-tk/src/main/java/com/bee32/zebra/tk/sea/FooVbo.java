@@ -53,7 +53,7 @@ public abstract class FooVbo<T extends CoEntity>
         // IHtmlTag head = out.h2().id("zp-fcat-" + catName);
         IHtmlTag head = out.legend();
 
-       // head.span().class_("icon fa").text(FA_CUBE);
+        head.span().class_("icon fa").text(FA_CUBE);
         if (category == FieldCategory.NULL) {
             head.text("基本信息");
         } else {
@@ -70,13 +70,14 @@ public abstract class FooVbo<T extends CoEntity>
     @Override
     protected IHtmlTag beginField(IHtmlTag out, IFieldDecl fieldDecl)
             throws ViewBuilderException {
-        HtmlDivTag row = out.div().class_("container-row");
+        HtmlDivTag div = out.div().class_("zu-field");
 
-        IHtmlTag labelDiv = row.label().class_("zu-flabel");
+        IHtmlTag labelDiv = div.label().class_("zu-flabel");
         String labelName = IXjdocElement.fn.labelName(fieldDecl);
         labelDiv.text(labelName + ":");
 
-        HtmlDivTag valueDiv = labelDiv.div().class_("zu-fvalue");
+        // IHtmlTag valueDiv = labelDiv.div().class_("zu-fvalue");
+        IHtmlTag valueDiv = div.span().class_("zu-fvalue");
         return valueDiv;
     }
 
@@ -101,7 +102,9 @@ public abstract class FooVbo<T extends CoEntity>
             if (entity != null)
                 input.value(entity.getId().toString());
 
-            HtmlSpanTag span = out.span().id(inputName + "-span");
+            HtmlSpanTag span = out.span();
+            span.attr("ec", instance.getClass().getSimpleName());
+            span.attr("eid", instance.getId());
             if (instance != null)
                 span.text(instance.getLabel());
 

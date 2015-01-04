@@ -3,8 +3,9 @@ package com.bee32.zebra.oa.contact;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.bee32.zebra.oa.OaGroups;
 
@@ -107,6 +108,7 @@ public class Organization
      * @label.zh 特征字
      */
     @OfGroup(OaGroups.Classification.class)
+    @Derived
     @Override
     public String getTypeChars() {
         String typeChars = super.getTypeChars();

@@ -59,8 +59,14 @@ h3 {
     border-bottom-width: 1px;
 }
 
-.zu-fgroup h3 {
+.zu-fcat h3 {
     font-size: 1.2em;
+}
+
+fieldset.zu-fcat legend {
+    font-size: 1.2em;
+    padding-top: 2em;
+    margin-bottom: 0;
 }
 
 .zu-flabel {
@@ -68,6 +74,19 @@ h3 {
     text-align: right;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.zu-field .zu-flabel {
+    border-left-style: solid;
+    border-left-width: 4px;
+    border-left-color: gray;
+    vertical-align: middle;
+    margin-left: 2em;
+    width: 8em;
+}
+
+.zu-field:hover .zu-flabel {
+    border-left-color: black;
 }
 
 .zu-null {

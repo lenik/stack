@@ -1,12 +1,16 @@
 package com.bee32.zebra.oa.contact.impl;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+
+import org.json.JSONWriter;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.repr.form.PathField;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -67,7 +71,38 @@ public class PersonManagerVbo
             cocols("sa", tr, o);
         }
 
-        dumpFullData(page.extradata, list);
+        // dumpFullData(page.extradata, list);
+    }
+
+    @Override
+    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<PersonManager> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        PersonMapper mapper = ctx.query(PersonMapper.class);
+        PersonCriteria criteria = criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
+        List<Person> list = postfilt(mapper.filter(criteria));
+
+        JSONWriter jw = new JSONWriter(out);
+        jw.array();
+        for (Person p : list) {
+            jw.array();
+
+            // for (IFieldDecl fieldDef : formDecl.getFieldDefs()) {
+            for (PathField pathField : indexFields) {
+                try {
+                    Object value = pathField.getValue(p);
+                    if (value == null) {
+                        jw.value(null);
+                    } else {
+                        jw.value(value.toString());
+                    }
+                } catch (ReflectiveOperationException e) {
+                    throw new ViewBuilderException(e.getMessage(), e);
+                }
+            }
+
+            jw.endArray(); // column
+        }
+        jw.endArray(); // row
     }
 
 }

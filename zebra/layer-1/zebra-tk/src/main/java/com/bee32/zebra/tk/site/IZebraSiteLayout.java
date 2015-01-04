@@ -3,6 +3,8 @@ package com.bee32.zebra.tk.site;
 public interface IZebraSiteLayout {
 
     interface ID {
+        String head = "zp-head";
+
         String body1 = "zp-body1";
         String body2 = "zp-body2";
         String body3 = "zp-body3";

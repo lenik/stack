@@ -74,7 +74,7 @@ public class OaSiteVbo
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean frameOnly = arrival.getPrevious(site).getRemainingPath() != null;
 
-        HtmlHeadTag head = out.head();
+        HtmlHeadTag head = out.head().id("_head");
         {
             writeHeadMetas(ctx, head);
             writeHeadImports(ctx, head);
@@ -90,8 +90,6 @@ public class OaSiteVbo
                     "var _webApp_ = " + StringQuote.qq(_webApp_) + ";\n" + //
                     "var _js_ = " + StringQuote.qq(_js_) + ";\n" + //
                     "");
-
-            head.script().javascriptSrc(_webApp_ + "site.js");
         }
 
         HtmlBodyTag body = out.body();
@@ -164,6 +162,8 @@ public class OaSiteVbo
         }
 
         body.div().id(ID.extradata);
+
+        body.script().javascriptSrc(_webApp_ + "makeup.js");
 
         ctx.setOut(body1);
         return out;

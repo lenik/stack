@@ -2,6 +2,7 @@ package com.bee32.zebra.oa.contact;
 
 import java.sql.Date;
 
+import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
 
 import com.bee32.zebra.oa.OaGroups;
@@ -166,6 +167,7 @@ public class Person
      * @label.zh 特征字
      */
     @OfGroup(OaGroups.Classification.class)
+    @Derived
     @Override
     public String getTypeChars() {
         String typeChars = super.getTypeChars();
