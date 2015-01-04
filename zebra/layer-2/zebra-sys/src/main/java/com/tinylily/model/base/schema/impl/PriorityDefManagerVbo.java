@@ -31,7 +31,7 @@ public class PriorityDefManagerVbo
         PriorityDefMapper mapper = ctx.query(PriorityDefMapper.class);
         List<PriorityDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (PriorityDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

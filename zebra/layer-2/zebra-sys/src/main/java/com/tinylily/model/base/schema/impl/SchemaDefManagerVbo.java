@@ -31,7 +31,7 @@ public class SchemaDefManagerVbo
         SchemaDefMapper mapper = ctx.query(SchemaDefMapper.class);
         List<SchemaDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (SchemaDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

@@ -154,7 +154,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     protected abstract void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<M> ref, IOptions options)
             throws ViewBuilderException, IOException;
 
-    protected IndexTable mkIndexTable(IHtmlTag parent, String id) {
+    protected IndexTable mkIndexTable(IHtmlViewContext ctx, IHtmlTag parent, String id) {
         IndexTable table = new IndexTable(parent, id);
         table.dataUrl("?view:=json");
 

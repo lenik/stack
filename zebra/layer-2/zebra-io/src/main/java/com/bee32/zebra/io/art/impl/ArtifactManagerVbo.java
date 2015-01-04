@@ -55,7 +55,7 @@ public class ArtifactManagerVbo
 
         List<Artifact> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (Artifact o : list) {
             ArtifactCategory category = o.getCategory();
             UOM uom = o.getUom();

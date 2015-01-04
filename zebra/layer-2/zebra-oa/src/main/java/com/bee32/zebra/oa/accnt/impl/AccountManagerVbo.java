@@ -31,7 +31,7 @@ public class AccountManagerVbo
         AccountMapper mapper = ctx.query(AccountMapper.class);
         List<Account> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
         for (Account o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

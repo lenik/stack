@@ -67,7 +67,7 @@ public class TopicManagerVbo
         }
 
         List<Topic> list = postfilt(mapper.filter(criteria));
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (Topic o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

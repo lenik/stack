@@ -32,7 +32,7 @@ public class StockEventManagerVbo
         StockEventMapper mapper = ctx.query(StockEventMapper.class);
         List<StockEvent> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (StockEvent o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

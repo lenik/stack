@@ -55,7 +55,7 @@ public class FileInfoManagerVbo
 
         List<FileInfo> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (FileInfo o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

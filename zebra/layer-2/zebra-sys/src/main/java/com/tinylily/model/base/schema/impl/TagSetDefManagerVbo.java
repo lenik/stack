@@ -31,7 +31,7 @@ public class TagSetDefManagerVbo
         TagSetDefMapper mapper = ctx.query(TagSetDefMapper.class);
         List<TagSetDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (TagSetDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

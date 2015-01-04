@@ -31,7 +31,7 @@ public class FabStepDefManagerVbo
         FabStepDefMapper mapper = ctx.query(FabStepDefMapper.class);
         List<FabStepDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (FabStepDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

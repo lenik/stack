@@ -31,7 +31,7 @@ public class AccountingEntryManagerVbo
         AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);
         List<AccountingEntry> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
         for (AccountingEntry o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

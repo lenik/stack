@@ -33,7 +33,7 @@ public class ReplyManagerVbo
         ReplyMapper mapper = ctx.query(ReplyMapper.class);
         List<Reply> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (Reply o : list) {
             User op = o.getOp();
             // Topic topic = o.getTopic();

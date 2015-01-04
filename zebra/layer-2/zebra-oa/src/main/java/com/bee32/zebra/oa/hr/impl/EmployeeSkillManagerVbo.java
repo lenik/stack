@@ -31,7 +31,7 @@ public class EmployeeSkillManagerVbo
         EmployeeSkillMapper mapper = ctx.query(EmployeeSkillMapper.class);
         List<EmployeeSkill> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (EmployeeSkill o : list) {
 
             HtmlTrTag tr = indexTable.tbody.tr();

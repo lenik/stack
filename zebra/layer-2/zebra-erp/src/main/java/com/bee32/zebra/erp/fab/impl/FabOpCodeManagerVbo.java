@@ -31,7 +31,7 @@ public class FabOpCodeManagerVbo
         FabOpCodeMapper mapper = ctx.query(FabOpCodeMapper.class);
         List<FabOpCode> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (FabOpCode o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

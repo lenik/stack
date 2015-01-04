@@ -32,7 +32,7 @@ public class UserManagerVbo
         UserMapper mapper = ctx.query(UserMapper.class);
         List<User> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (User o : list) {
             long lastLoginTime = o.getLastLoginTime();
 

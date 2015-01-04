@@ -33,7 +33,7 @@ public class PlaceManagerVbo
         PlaceMapper mapper = ctx.query(PlaceMapper.class);
         List<Place> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (Place o : list) {
             Person person = o.getParty();
             Organization org = o.getPartyOrg();

@@ -31,7 +31,7 @@ public class CategoryDefManagerVbo
         CategoryDefMapper mapper = ctx.query(CategoryDefMapper.class);
         List<CategoryDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (CategoryDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

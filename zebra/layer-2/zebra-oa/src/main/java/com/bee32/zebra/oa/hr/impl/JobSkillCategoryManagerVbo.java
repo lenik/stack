@@ -31,7 +31,7 @@ public class JobSkillCategoryManagerVbo
         JobSkillCategoryMapper mapper = ctx.query(JobSkillCategoryMapper.class);
         List<JobSkillCategory> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (JobSkillCategory o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

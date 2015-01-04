@@ -33,7 +33,7 @@ public class OrganizationManagerVbo
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);
         List<Organization> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
         for (Organization o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

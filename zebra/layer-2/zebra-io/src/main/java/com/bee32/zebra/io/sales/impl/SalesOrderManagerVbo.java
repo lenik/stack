@@ -31,7 +31,7 @@ public class SalesOrderManagerVbo
         SalesOrderMapper mapper = ctx.query(SalesOrderMapper.class);
         List<SalesOrder> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (SalesOrder o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

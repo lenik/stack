@@ -49,7 +49,7 @@ public class PersonManagerVbo
 
         List<Person> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
         for (Person o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();

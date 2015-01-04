@@ -31,7 +31,7 @@ public class GroupManagerVbo
         GroupMapper mapper = ctx.query(GroupMapper.class);
         List<Group> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (Group o : list) {
 
             HtmlTrTag tr = indexTable.tbody.tr();

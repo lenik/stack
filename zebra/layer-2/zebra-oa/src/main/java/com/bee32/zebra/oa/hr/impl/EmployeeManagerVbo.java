@@ -31,7 +31,7 @@ public class EmployeeManagerVbo
         EmployeeMapper mapper = ctx.query(EmployeeMapper.class);
         List<Employee> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (Employee o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

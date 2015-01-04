@@ -31,7 +31,7 @@ public class ArtifactCategoryManagerVbo
         ArtifactCategoryMapper mapper = ctx.query(ArtifactCategoryMapper.class);
         List<ArtifactCategory> list = mapper.all();
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (ArtifactCategory o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

@@ -44,7 +44,7 @@ public class TagDefManagerVbo
 
         List<TagDef> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (TagDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

@@ -31,7 +31,7 @@ public class PhaseDefManagerVbo
         PhaseDefMapper mapper = ctx.query(PhaseDefMapper.class);
         List<PhaseDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (PhaseDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

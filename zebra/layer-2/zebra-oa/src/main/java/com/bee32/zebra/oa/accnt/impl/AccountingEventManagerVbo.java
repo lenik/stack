@@ -34,7 +34,7 @@ public class AccountingEventManagerVbo
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
         List<AccountingEvent> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
         for (AccountingEvent o : list) {
             Topic topic = o.getTopic();

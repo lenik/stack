@@ -31,7 +31,7 @@ public class FabQcDefManagerVbo
         FabQcDefMapper mapper = ctx.query(FabQcDefMapper.class);
         List<FabQcDef> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (FabQcDef o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

@@ -31,7 +31,7 @@ public class OrgUnitManagerVbo
         OrgUnitMapper mapper = ctx.query(OrgUnitMapper.class);
         List<OrgUnit> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (OrgUnit o : list) {
             HtmlTrTag tr = indexTable.tbody.tr();
             cocols("i", tr, o);

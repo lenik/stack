@@ -32,7 +32,7 @@ public class DeliveryManagerVbo
         DeliveryMapper mapper = ctx.query(DeliveryMapper.class);
         List<Delivery> list = postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
         for (Delivery o : list) {
             Contact shipDest = o.getShipDest();
 
