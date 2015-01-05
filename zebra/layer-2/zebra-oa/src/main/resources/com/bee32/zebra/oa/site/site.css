@@ -1,3 +1,18 @@
+a {
+    padding: 2px;
+}
+
+a:hover {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+a:focus {
+    background: #fee;
+}
+
 body {
     margin: 0;
     font-family: sans-serif;
@@ -42,6 +57,22 @@ h3 {
     overflow: hidden;
 }
 
+.field-groups {
+    overflow: auto;
+    column-width: 25em;
+    -webkit-column-width: 30em;
+}
+
+.field-groups>fieldset {
+    break-inside: avoid-column;
+    -webkit-column-break-inside: avoid;
+}
+
+.node-chain {
+    display: inline-block;
+    list-style: none;
+}
+
 .zu-id {
     font-size: small;
     text-align: right;
@@ -63,9 +94,12 @@ h3 {
     font-size: 1.2em;
 }
 
+.zu-fcat+.zu-fcat {
+    margin-top: 1em;
+}
+
 fieldset.zu-fcat legend {
     font-size: 1.2em;
-    padding-top: 2em;
     margin-bottom: 0;
 }
 
@@ -166,12 +200,15 @@ fieldset.zu-fcat legend {
 }
 
 .zu-nvote {
+    display: inline-block;
     font-family: fantasy;
     font-size: 32px;
     border-style: solid;
     border-width: 1px;
     border-color: #eee;
     margin-right: .25em;
+    text-align: center;
+    padding: 0 .5em;
 }
 
 .zu-author {
@@ -311,4 +348,24 @@ form#zp-search {
     text-align: center;
     font-size: small;
     font-style: italic;
+}
+
+#zp-msg {
+    font-size: large;
+    width: 100%;
+}
+
+#zp-msg th {
+    text-align: right;
+    vertical-align: top;
+    width: 5em;
+}
+
+#zp-msg input {
+    width: 100%;
+}
+
+#zp-msg-text textarea {
+    width: 100%;
+    height: 14em;
 }

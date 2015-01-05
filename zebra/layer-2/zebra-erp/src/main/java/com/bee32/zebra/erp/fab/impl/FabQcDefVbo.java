@@ -1,10 +1,10 @@
 package com.bee32.zebra.erp.fab.impl;
 
 import com.bee32.zebra.erp.fab.FabQcDef;
-import com.bee32.zebra.tk.sea.FooVbo;
+import com.bee32.zebra.tk.sea.FooCodeVbo;
 
 public class FabQcDefVbo
-        extends FooVbo<FabQcDef> {
+        extends FooCodeVbo<FabQcDef> {
 
     public FabQcDefVbo() {
         super(FabQcDef.class);

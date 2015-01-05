@@ -13,8 +13,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class OrganizationManagerVbo
@@ -28,11 +30,20 @@ public class OrganizationManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<OrganizationManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<OrganizationManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);
-        List<Organization> list = postfilt(mapper.all());
+        OrganizationCriteria criteria = criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
+        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        {
+            SwitchOverride<Integer> so;
+            so = filters.switchPairs("类型", false, //
+                    PartyType.list, "type", criteria.type, false);
+            criteria.type = so.key;
+        }
 
+        List<Organization> list = postfilt(mapper.filter(criteria));
         IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
         for (Organization o : list) {

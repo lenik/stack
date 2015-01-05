@@ -50,7 +50,8 @@ public class OaSiteVbo
 
         IHtmlHeadData metaData = ctx.getHeadData();
         metaData.setMeta(IHtmlHeadData.META_AUTHOR, "谢继雷 (Xiè Jìléi)");
-        metaData.setMeta(IHtmlHeadData.META_VIEWPORT, "width=device-width, initial-scale=1");
+        metaData.setMeta(IHtmlHeadData.META_VIEWPORT, //
+                "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0");
 
         /** See: BasicSiteArtifacts */
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);

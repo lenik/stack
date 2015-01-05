@@ -1,10 +1,10 @@
 package com.bee32.zebra.oa.hr.impl;
 
 import com.bee32.zebra.oa.hr.JobSkillCategory;
-import com.bee32.zebra.tk.sea.FooVbo;
+import com.bee32.zebra.tk.sea.FooCodeVbo;
 
 public class JobSkillCategoryVbo
-        extends FooVbo<JobSkillCategory> {
+        extends FooCodeVbo<JobSkillCategory> {
 
     public JobSkillCategoryVbo() {
         super(JobSkillCategory.class);

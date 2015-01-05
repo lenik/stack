@@ -13,6 +13,7 @@ import com.tinylily.model.sea.QVariantMap;
 public class PartyCriteria
         extends CoEntityCriteria {
 
+    public int type = PartyType.UNSET;
     IntRange ageRange;
     Boolean customer;
     Boolean supplier;
@@ -54,6 +55,7 @@ public class PartyCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
+        type = map.getInt("type", type);
         ageRange = map.getIntRange("ages", ageRange);
         customer = map.getBoolean("customer", customer);
         supplier = map.getBoolean("supplier", supplier);

@@ -1,29 +1,38 @@
 package com.bee32.zebra.tk.sea;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
+import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.dom.tag.HtmlButtonTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlFormTag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
 import net.bodz.bas.html.dom.tag.HtmlSpanTag;
+import net.bodz.bas.html.meta.HtmlViewBuilder;
 import net.bodz.bas.html.util.FieldHtmlUtil;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
+import net.bodz.bas.html.viz.IHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlViewBuilderFactory;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
 import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
+import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
-import net.bodz.bas.repr.viz.IViewBuilder;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
+import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.tinylily.model.base.CoEntity;
 
@@ -50,21 +59,50 @@ public abstract class FooVbo<T extends CoEntity>
     protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         HtmlFormTag form = out.form().name("form").method("post").action("../");
+        form.div().id(ID.formtop);
         return form;
     }
 
     @Override
     protected void endForm(IHtmlViewContext ctx, HtmlFormTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        out.hr();
+        // out.hr();
         HtmlDivTag div = out.div();
-        div.button().type("submit").text("保存");
-        div.button().onclick("javascript: history.go(-1)").text("取消");
+        HtmlButtonTag submitButton = div.button().type("submit");
+        submitButton.span().class_("fa icon").text(FA_ANGLE_DOUBLE_UP);
+        submitButton.text("保存以上信息");
+
+        HtmlButtonTag resetButton = div.button();
+        resetButton.onclick("javascript: history.go(-1)");
+        resetButton.text("取消编辑");
     }
 
     @Override
-    protected IHtmlTag beginCategory(IHtmlTag out, FieldCategory category)
-            throws ViewBuilderException {
+    protected boolean buildFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef, FieldDeclGroup group,
+            IOptions options)
+            throws ViewBuilderException, IOException {
+        String simpleName = group.getCategory().getTagClass().getSimpleName();
+        switch (simpleName) {
+        case "Object":
+            return buildBasicGroup(ctx, out, instanceRef, group, options);
+        case "Content":
+        case "Ranking":
+        case "Metadata":
+        case "Security":
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef, FieldDeclGroup group,
+            IOptions options)
+            throws ViewBuilderException, IOException {
+        return false;
+    }
+
+    @Override
+    protected IHtmlTag beginCategory(IHtmlViewContext ctx, IHtmlTag out, FieldCategory category)
+            throws ViewBuilderException, IOException {
         String catName = category == FieldCategory.NULL ? "null" : category.getName();
         out = out.fieldset().class_("zu-fcat").id("zp-fcat-" + catName);
 
@@ -81,14 +119,43 @@ public abstract class FooVbo<T extends CoEntity>
     }
 
     @Override
-    protected void endCategory(IHtmlTag out, FieldCategory category) {
-        // out.hr();
+    protected void endCategory(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
     }
 
     @Override
-    protected IHtmlTag beginField(IHtmlTag out, IFieldDecl fieldDecl)
-            throws ViewBuilderException {
+    protected List<IFieldDecl> processFieldSelection(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef,
+            FieldDeclGroup group, List<IFieldDecl> selection, IOptions options)
+            throws ViewBuilderException, IOException {
+        if (group.getCategory() == FieldCategory.NULL) {
+            Set<String> includes = new HashSet<String>();
+            Set<String> excludes = new HashSet<String>();
+            selectBasicFields(includes, excludes);
+            if (includes.isEmpty())
+                includes = null;
+            if (excludes.isEmpty())
+                excludes = null;
+
+            Iterator<IFieldDecl> iterator = selection.iterator();
+            while (iterator.hasNext()) {
+                IFieldDecl field = iterator.next();
+                boolean included = includes == null || includes.contains(field.getName());
+                boolean excluded = excludes != null && excludes.contains(field.getName());
+                if (!included || excluded)
+                    iterator.remove();
+            }
+        }
+        return selection;
+    }
+
+    protected void selectBasicFields(Set<String> includes, Set<String> excludes)
+            throws ViewBuilderException, IOException {
+    }
+
+    @Override
+    protected IHtmlTag beginField(IHtmlViewContext ctx, IHtmlTag out, IFieldDecl fieldDecl)
+            throws ViewBuilderException, IOException {
         HtmlDivTag div = out.div().class_("zu-field");
+        div.attr("f", fieldDecl.getName());
 
         IHtmlTag labelDiv = div.label().class_("zu-flabel");
         String labelName = IXjdocElement.fn.labelName(fieldDecl);
@@ -105,7 +172,6 @@ public abstract class FooVbo<T extends CoEntity>
             throws ViewBuilderException, IOException {
         IProperty property = fieldDecl.getProperty();
         UiPropertyRef<Object> propertyRef = new UiPropertyRef<Object>(instanceRef, property);
-        T instance = instanceRef.get();
         Object value = propertyRef.get();
 
         Class<?> type = property.getPropertyType();
@@ -134,17 +200,25 @@ public abstract class FooVbo<T extends CoEntity>
             return;
         }
 
-        IHtmlViewBuilderFactory factory = ctx.query(IHtmlViewBuilderFactory.class);
-        if (factory == null)
-            throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
+        IHtmlViewBuilder<Object> viewBuilder;
 
-        IViewBuilder<Object> viewBuilder = factory.getViewBuilder(type);
+        HtmlViewBuilder aViewBuilder = property.getAnnotation(HtmlViewBuilder.class);
+        if (aViewBuilder != null && aViewBuilder.value().length > 0) {
+            viewBuilder = (IHtmlViewBuilder<Object>) SingletonUtil.instantiateCached(aViewBuilder.value()[0]);
+        } else {
+            IHtmlViewBuilderFactory factory = ctx.query(IHtmlViewBuilderFactory.class);
+            if (factory == null)
+                throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
+            viewBuilder = factory.getViewBuilder(type);
+        }
+
         out.comment("Foo-Field: " + type.getSimpleName() + " -- " + viewBuilder.getClass().getSimpleName());
         viewBuilder.buildView(ctx, out, propertyRef, options);
     }
 
     @Override
-    protected void endField(IHtmlTag out, IFieldDecl fieldDecl) {
+    protected void endField(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
+            throws ViewBuilderException, IOException {
     }
 
 }

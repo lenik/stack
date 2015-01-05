@@ -28,7 +28,13 @@ $(document).ready(function() {
             info : '当前页 _PAGE_ / 共 _PAGES_ 页。',
             lengthMenu : '每页显示 _MENU_ 条记录',
             search : '查找: ',
-            zeroRecords : '没有找到相关的记录。'
+            zeroRecords : '没有找到相关的记录。',
+            paginate: {
+                first: "开始",
+                previous: "前一页",
+                next: "后一页",
+                last: "结束"
+            }
         },
         // lengthMenu : [ [ 10, 20, 50, 100, ], [ 10, 20, 50, 100 ] ],
         paginationType : "bootstrap",
@@ -43,11 +49,18 @@ $(document).ready(function() {
     });
 
     dt.rows().on('click', 'tr', function(e) {
+        var modexs = $("#zp-right-col").css("width") == "0px";
+        
         var row = dt.row(this); // could be the header.
         var id = row.data()[0];
         if (id == undefined)
             return;
 
+        if (modexs) {
+            location.href = id + "/";
+            return;
+        }
+        
         // load the selection
         var seldiv = $("#zp-infosel-data");
         var seledit = $("#zp-infosel-edit");

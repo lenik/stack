@@ -1,10 +1,10 @@
 package com.bee32.zebra.erp.fab.impl;
 
 import com.bee32.zebra.erp.fab.FabStepDef;
-import com.bee32.zebra.tk.sea.FooVbo;
+import com.bee32.zebra.tk.sea.FooCodeVbo;
 
 public class FabStepDefVbo
-        extends FooVbo<FabStepDef> {
+        extends FooCodeVbo<FabStepDef> {
 
     public FabStepDefVbo() {
         super(FabStepDef.class);

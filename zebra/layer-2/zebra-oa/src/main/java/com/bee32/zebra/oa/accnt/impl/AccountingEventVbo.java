@@ -1,10 +1,10 @@
 package com.bee32.zebra.oa.accnt.impl;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
-import com.bee32.zebra.tk.sea.FooVbo;
+import com.bee32.zebra.tk.sea.FooMesgVbo;
 
 public class AccountingEventVbo
-        extends FooVbo<AccountingEvent> {
+        extends FooMesgVbo<AccountingEvent> {
 
     public AccountingEventVbo() {
         super(AccountingEvent.class);

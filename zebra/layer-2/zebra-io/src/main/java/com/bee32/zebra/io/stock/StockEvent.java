@@ -24,7 +24,7 @@ public class StockEvent
     private double total;
 
     /**
-     * 项目
+     * 项目/机会
      */
     public Topic getTopic() {
         return topic;
@@ -68,7 +68,7 @@ public class StockEvent
     }
 
     /**
-     * 项目
+     * 明细
      */
     public List<StockEntry> getEntries() {
         return entries;

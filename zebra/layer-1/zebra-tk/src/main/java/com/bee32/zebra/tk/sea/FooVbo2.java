@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import net.bodz.bas.c.type.TypeId;
 import net.bodz.bas.c.type.TypeKind;
@@ -21,6 +20,8 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.element.IPropertyAccessor;
 import net.bodz.bas.repr.form.FieldCategory;
+import net.bodz.bas.repr.form.FieldDeclFilters;
+import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -55,12 +56,14 @@ public abstract class FooVbo2<T extends CoEntity>
 
         IFormDecl formDecl = IFormDecl.fn.forClass(ref.getValueType());
 
-        Map<FieldCategory, Collection<IFieldDecl>> categories = FieldCategory.group(//
-                formDecl.getFieldDefs(DetailLevel.EXTEND));
+        Collection<FieldDeclGroup> groups = formDecl
+                .getFieldGroups(FieldDeclFilters.maxDetailLevel(DetailLevel.EXTEND));
 
-        for (FieldCategory category : categories.keySet()) {
+        for (FieldDeclGroup group : groups) {
+            FieldCategory category = group.getCategory();
+
             List<IFieldDecl> fieldDecls = new ArrayList<>();
-            for (IFieldDecl fieldDecl : categories.get(category))
+            for (IFieldDecl fieldDecl : group)
                 if (filterField(fieldDecl))
                     fieldDecls.add(fieldDecl);
             if (fieldDecls.isEmpty())

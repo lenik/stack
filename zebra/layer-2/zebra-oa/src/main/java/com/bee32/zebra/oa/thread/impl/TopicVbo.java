@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.oa.thread.Topic;
-import com.bee32.zebra.tk.sea.FooVbo;
+import com.bee32.zebra.tk.sea.FooMesgVbo;
 
 public class TopicVbo
-        extends FooVbo<Topic> {
+        extends FooMesgVbo<Topic> {
 
     public TopicVbo() {
         super(Topic.class);
@@ -49,6 +49,7 @@ public class TopicVbo
             }
 
             HtmlDivTag author = div.div().class_("zu-author");
+            author.span().class_("fa icon").text(FA_COMMENT_O);
             author.text(reply.getOp().getFullName() + " @" + reply.getLastModifiedDate());
 
             out.hr();

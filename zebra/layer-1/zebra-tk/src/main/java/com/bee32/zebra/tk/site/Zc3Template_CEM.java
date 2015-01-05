@@ -19,6 +19,7 @@ import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
@@ -189,8 +190,13 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             p.cmds0.a().href("?view:=csv").text("导出");
             p.cmds0.a().href("javascript: window.print()").text("打印");
         } else {
-            p.cmds0.a().href("javascript: form.reset()").text("复原").title("清除刚才输入的所有变更，重新写。");
-            p.cmds0.a().href("javascript: form.submit()").text("提交").title("将输入的数据提交保存。");
+            HtmlATag submitLink = p.cmds0.a().href("javascript: form.submit()");
+            submitLink.span().class_("fa icon").text(IFontAwesomeCharAliases.FA_FLOPPY_O);
+            submitLink.text("提交").title("将输入的数据提交保存。");
+
+            HtmlATag resetLink = p.cmds0.a().href("javascript: form.reset()");
+            resetLink.span().class_("fa icon").text(IFontAwesomeCharAliases.FA_ERASER);
+            resetLink.text("复原").title("清除刚才输入的所有变更，重新写。");
         }
 
         List<String> rels = classDoc.getTag("rel", List.class);
@@ -335,22 +341,22 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected void dumpFullData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
         int count = 0;
-        Map<FieldCategory, Collection<IFieldDecl>> fgMap = FieldCategory.group(//
-                formDecl.getFieldDefs(DetailLevel.EXTEND));
+        Collection<FieldDeclGroup> groups = formDecl
+                .getFieldGroups(FieldDeclFilters.maxDetailLevel(DetailLevel.EXTEND));
         for (CoEntity entity : dataset) {
             if (count++ > 3)
                 break;
             HtmlDivTag dtab = parent.div().id("data-" + entity.getId());
-            for (FieldCategory fg : fgMap.keySet()) {
-                Collection<IFieldDecl> fieldDecls = fgMap.get(fg);
-                if (fieldDecls.isEmpty())
+            for (FieldDeclGroup group : groups) {
+                if (group.isEmpty())
                     continue;
 
-                String fgLabel = fg == FieldCategory.NULL ? "基本信息" : IXjdocElement.fn.labelName(fg);
-                HtmlDivTag fgDiv = dtab.div().class_("zu-fgroup").style("line-heignt: 2em");
-                fgDiv.h3().text(fgLabel);
+                FieldCategory category = group.getCategory();
+                String catLabel = category == FieldCategory.NULL ? "基本信息" : IXjdocElement.fn.labelName(category);
+                HtmlDivTag groupDiv = dtab.div().class_("zu-fgroup").style("line-heignt: 2em");
+                groupDiv.h3().text(catLabel);
 
-                for (IFieldDecl fieldDecl : fieldDecls) {
+                for (IFieldDecl fieldDecl : group) {
                     IPropertyAccessor accessor = fieldDecl.getAccessor();
                     Object value;
                     try {
@@ -367,7 +373,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                         value = "(" + e.getClass().getName() + ") " + e.getMessage();
                     }
 
-                    HtmlDivTag line = fgDiv.div();
+                    HtmlDivTag line = groupDiv.div();
                     line.span().class_("zu-flabel zu-w50").text(IXjdocElement.fn.labelName(fieldDecl) + ": ");
                     line.span().text(value);
                 } // for field

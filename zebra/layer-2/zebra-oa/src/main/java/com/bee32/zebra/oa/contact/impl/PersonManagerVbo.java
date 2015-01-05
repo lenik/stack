@@ -41,14 +41,18 @@ public class PersonManagerVbo
         PersonCriteria criteria = criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
         {
-            SwitchOverride<String> so;
-            so = filters.switchPairs("姓氏", true, //
+            SwitchOverride<Integer> so;
+            so = filters.switchPairs("类型", false, //
+                    PartyType.list, "type", criteria.type, false);
+            criteria.type = so.key;
+
+            SwitchOverride<String> so1;
+            so1 = filters.switchPairs("姓氏", true, //
                     mapper.histoBySurname(), "surname", criteria.surname, false);
-            criteria.surname = so.key;
+            criteria.surname = so1.key;
         }
 
         List<Person> list = postfilt(mapper.filter(criteria));
-
         IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
 
         for (Person o : list) {
