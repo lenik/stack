@@ -91,10 +91,13 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         case "index":
             break;
 
-        case "json":
+        case "csv":
+        case "json": {
             PrintWriter writer = ctx.getResponse().getWriter();
             buildJson(ctx, writer, ref, options);
             return null;
+        }
+
         }
 
         IPathArrival arrival = ctx.query(IPathArrival.class);
@@ -104,7 +107,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
         HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
         {
-            HtmlDivTag headDiv = mainCol.div().id(ID.head).class_("info clearfix");
+            HtmlDivTag headDiv = mainCol.div().id(ID.head).class_("zu-info clearfix");
             headDiv.div().id(ID.title);
 
             HtmlDivTag headCol1 = headDiv.div().id("zp-head-col1").class_("col-xs-6");
@@ -120,7 +123,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             headLinks.ul().id(ID.links_ul);
         }
 
-        HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 info");
+        HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 zu-info");
         if (indexPage) {
             HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
             // previewDiv.div().class_("icon fa").text(IFontAwesomeCharAliases.FA_COFFEE);
@@ -187,7 +190,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
         if (indexPage) {
             p.cmds0.a().href("new/").text("新建");
-            p.cmds0.a().href("?view:=csv").text("导出");
+            p.cmds0.a().href("?view:=csv").text("导出").style("cursor: default; color: gray").onclick("return false");
             p.cmds0.a().href("javascript: window.print()").text("打印");
         } else {
             HtmlATag submitLink = p.cmds0.a().href("javascript: form.submit()");
