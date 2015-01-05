@@ -18,21 +18,8 @@ public class EventBonus
 
     private static final long serialVersionUID = 1L;
 
-    int id;
     Employee employee;
     BigDecimal bonus;
-
-    public EventBonus() {
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * 员工

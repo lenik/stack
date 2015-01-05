@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IId;
 
 /**
  * 雇员信息
@@ -19,7 +20,8 @@ import com.tinylily.model.base.CoEntity;
  * Employee Information
  */
 public class Employee
-        extends CoEntity {
+        extends CoEntity
+        implements IId<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +47,8 @@ public class Employee
         return id;
     }
 
-    public void setId(int id) {
+    @Override
+    public void setId(Integer id) {
         this.id = id;
     }
 

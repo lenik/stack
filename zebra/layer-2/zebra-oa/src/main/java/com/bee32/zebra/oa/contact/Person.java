@@ -1,10 +1,19 @@
 package com.bee32.zebra.oa.contact;
 
+import java.io.IOException;
 import java.sql.Date;
 
+import net.bodz.bas.err.ParseException;
+import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.bas.repr.req.IMethodOfRequest;
+import net.bodz.bas.repr.req.MethodNames;
+
+import com.bee32.zebra.oa.contact.impl.PersonMapper;
+import com.tinylily.model.sea.QVariantMap;
 
 public class Person
         extends Party {
@@ -167,6 +176,46 @@ public class Person
         if (employee)
             typeChars += "雇";
         return typeChars;
+    }
+
+    @Override
+    protected void populate(QVariantMap<String> map)
+            throws ParseException {
+        super.populate(map);
+
+        gender = map.getPredef(Gender.class, "gender", gender);
+        homeland = map.getString("homeland");
+
+        passport = map.getString("passport");
+        socialSecurityNum = map.getString("socialSecurityNum");
+        driverLicenseNum = map.getString("driverLicenseNum");
+
+        employee = map.getBoolean("employee", employee);
+    }
+
+    @Override
+    public void persist(IHtmlViewContext ctx, IHtmlTag out)
+            throws IOException {
+        PersonMapper mapper = ctx.query(PersonMapper.class);
+        String methodName = ctx.query(IMethodOfRequest.class).getMethodName();
+
+        boolean creation = getId() == null;
+        if (methodName != null)
+            switch (methodName) {
+            case MethodNames.CREATE:
+                creation = true;
+                break;
+            case MethodNames.UPDATE:
+                creation = false;
+                break;
+            }
+
+        if (creation) {
+            long id = mapper.insert(this);
+            setId((int) id);
+        } else {
+            mapper.update(this);
+        }
     }
 
 }

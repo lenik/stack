@@ -4,7 +4,7 @@ import java.beans.Transient;
 
 import net.bodz.bas.c.object.Nullables;
 
-import com.tinylily.model.base.CoMomentInterval;
+import com.tinylily.model.base.CoCode;
 
 /**
  * 工资元素
@@ -15,7 +15,7 @@ import com.tinylily.model.base.CoMomentInterval;
  * Salary Element Definition
  */
 public class SalaryItemDef
-        extends CoMomentInterval
+        extends CoCode<SalaryItemDef>
         implements Comparable<SalaryItemDef> {
 
     private static final long serialVersionUID = 1L;
@@ -23,19 +23,10 @@ public class SalaryItemDef
     public static final int CATEGORY_LENGTH = 100;
     public static final int EXPRESSION_LENGTH = 200;
 
-    int id;
     String category;
     int order;
     String expr;
     boolean tax;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * 工资字段分类

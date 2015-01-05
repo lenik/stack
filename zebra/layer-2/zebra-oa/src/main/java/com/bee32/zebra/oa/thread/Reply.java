@@ -3,6 +3,7 @@ package com.bee32.zebra.oa.thread;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
+import net.bodz.bas.err.ParseException;
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.OfGroup;
 
@@ -10,6 +11,7 @@ import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.IMomentInterval;
 import com.tinylily.model.mx.base.CoMessage;
+import com.tinylily.model.sea.QVariantMap;
 
 public class Reply
         extends CoMessage
@@ -70,6 +72,16 @@ public class Reply
 
     public void setChanges(List<PropertyChangeEvent> changes) {
         this.changes = changes;
+    }
+
+    @Override
+    protected void populate(QVariantMap<String> map)
+            throws ParseException {
+        super.populate(map);
+        topic = map.getLongIdRef("topic", new Topic());
+        parent = map.getLongIdRef("parent", new Reply());
+        // parties;
+        // changes;
     }
 
 }

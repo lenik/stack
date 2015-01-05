@@ -10,9 +10,11 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IId;
 
 public class Artifact
-        extends CoEntity {
+        extends CoEntity
+        implements IId<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,7 +51,8 @@ public class Artifact
         return id;
     }
 
-    public void setId(int id) {
+    @Override
+    public void setId(Integer id) {
         this.id = id;
     }
 

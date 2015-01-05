@@ -10,10 +10,11 @@ import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IId;
 
 public class Contact
         extends CoEntity
-        implements Serializable {
+        implements IId<Integer>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -58,11 +59,13 @@ public class Contact
     private String web;
     private String qq;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    @Override
+    public void setId(Integer id) {
         this.id = id;
     }
 

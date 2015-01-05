@@ -7,15 +7,19 @@ import java.util.TimeZone;
 import java.util.TreeSet;
 
 import net.bodz.bas.c.java.util.TimeZones;
+import net.bodz.bas.err.ParseException;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IId;
+import com.tinylily.model.sea.QVariantMap;
 
 public abstract class Party
-        extends CoEntity {
+        extends CoEntity
+        implements IId<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,7 +51,8 @@ public abstract class Party
         return id;
     }
 
-    public void setId(int id) {
+    @Override
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -169,6 +174,7 @@ public abstract class Party
 
     /**
      * 注释
+     * 
      * @placeholder 输入注释性的文本…
      */
     @TextInput(maxLength = N_COMMENT)
@@ -234,6 +240,28 @@ public abstract class Party
         if (isSupplier())
             sb.append("供");
         return sb.toString();
+    }
+
+    @Override
+    protected void populate(QVariantMap<String> map)
+            throws ParseException {
+        super.populate(map);
+
+        id = map.getInt("id", id);
+        // birthday=map.getDate("birthday", birthday);;
+        // locale = Locale.SIMPLIFIED_CHINESE;
+        // timeZone = TimeZones.TZ_SHANGHAI;
+
+        customer = map.getBoolean("customer", customer);
+        supplier = map.getBoolean("supplier", supplier);
+        // tags = new TreeSet<>();
+
+        subject = map.getString("subject");
+        comment = map.getString("comment");
+        // contact = map.getIntIdRef("contact", new Contact());
+
+        bank = map.getString("bank");
+        account = map.getString("account");
     }
 
 }
