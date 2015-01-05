@@ -84,10 +84,23 @@
         order by id asc limit 1
     </select>
     
-    <select id="insert" resultType="int"><![CDATA[
-        insert into person(code, label, description)
-            values(#{codeName},#{label},#{description})
-            returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into person(
+            code, label, description,
+            birthday, gender, employee, homeland, passport, ssn, dln,
+            customer, supplier, subject, comment,
+            bank, bankacc,
+            priority, flags, state,
+            uid, gid, mode, acl
+        ) values(
+            #{codeName},#{label},#{description},
+            #{birthday}, #{gender}, #{employee}, #{homeland}, #{passport},
+            #{socialSecurityNum}, #{driverLicenseNum},
+            #{customer}, #{supplier}, #{subject}, #{comment},
+            #{bank}, #{account},
+            #{priority}, #{flags}, #{state},
+            #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl}
+        ) returning id
     ]]></select>
 
     <update id="update">

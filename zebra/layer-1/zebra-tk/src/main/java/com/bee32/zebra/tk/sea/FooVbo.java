@@ -9,6 +9,7 @@ import java.util.Set;
 
 import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.err.IllegalConfigException;
+import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlButtonTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
@@ -28,6 +29,8 @@ import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.FieldDeclLabelComparator;
 import net.bodz.bas.repr.form.IFieldDecl;
+import net.bodz.bas.repr.req.IMethodOfRequest;
+import net.bodz.bas.repr.req.MethodNames;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -49,6 +52,27 @@ public abstract class FooVbo<T extends CoEntity>
     @Override
     public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
+
+        IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
+        String methodName = methodOfRequest.getMethodName();
+        switch (methodName) {
+        case MethodNames.CREATE:
+        case MethodNames.UPDATE:
+            T data = ref.get();
+            try {
+                data.populate(ctx.getRequest().getParameterMap());
+            } catch (ParseException e) {
+                throw new ViewBuilderException(e.getMessage(), e);
+            }
+            data.persist(ctx, out);
+            return null;
+
+        case MethodNames.READ:
+        case MethodNames.EDIT:
+        default:
+            break;
+        }
+
         return super.buildHtmlView(ctx, new PageStruct(ctx).mainCol, ref, options);
     }
 
@@ -60,8 +84,18 @@ public abstract class FooVbo<T extends CoEntity>
     @Override
     protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        HtmlFormTag form = out.form().name("form").method("post").action("../");
+        HtmlFormTag form = out.form().name("form").method("post");
         form.div().id(ID.formtop);
+
+        T entity = ref.get();
+        Number id = (Number) entity.getId();
+        boolean creation = id == null || id.intValue() == 0;
+        HtmlInputTag methodParam = form.input().type("hidden").name("m:");
+        if (creation)
+            methodParam.value(MethodNames.CREATE);
+        else
+            methodParam.value(MethodNames.UPDATE);
+
         return form;
     }
 
