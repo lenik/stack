@@ -53,13 +53,15 @@ public class OaSiteVbo
         metaData.setMeta(IHtmlHeadData.META_VIEWPORT, //
                 "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0");
 
-        /** See: BasicSiteArtifacts */
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
         // metaData.addDependency("datatables.responsive.js", SCRIPT);
         metaData.addDependency("datatables.colVis.js", SCRIPT);
         metaData.addDependency("datatables.tableTools.js", SCRIPT);
         metaData.addDependency("font-awesome", STYLESHEET).setPriority(IArtifactDependency.LOW);
         metaData.addDependency("jquery-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
+        metaData.addDependency("icheck.js", SCRIPT);
+        metaData.addDependency("magnific-popup.js", SCRIPT);
+        metaData.addDependency("parsley.js", SCRIPT);
     }
 
     @Override

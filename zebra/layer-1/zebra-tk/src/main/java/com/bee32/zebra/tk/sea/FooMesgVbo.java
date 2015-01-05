@@ -31,28 +31,34 @@ public abstract class FooMesgVbo<T extends CoMessage>
             IOptions options)
             throws ViewBuilderException {
         IFormDecl formDecl = group.getFormDecl();
+        T instance = instanceRef.get();
 
         IHtmlTag top = ctx.getTag(ID.formtop);
-        tab = top.table().id("zp-msg");
+        tab = top.table().class_("zu-msg");
 
         IHtmlTag subjectLine = tab.tr().id("zp-msg-subject");
-        IHtmlTag subjectLabel = subjectLine.th().label();
-        subjectLabel.span().class_("fa icon").text(FA_CHEVRON_DOWN);
-        subjectLabel.text("主题: ");
+        {
+            IHtmlTag subjectLabel = subjectLine.th().label();
+            subjectLabel.span().class_("fa icon").text(FA_CHEVRON_DOWN);
+            subjectLabel.text("主题: ");
 
-        HtmlInputTag subjectInput = subjectLine.td().input().name("subject").type("text");
-        IFieldDecl subjectDecl = formDecl.getFieldDecl("subject");
-        FieldHtmlUtil.apply(subjectInput, subjectDecl, options);
+            HtmlInputTag subjectInput = subjectLine.td().input().name("subject").type("text");
+            subjectInput.value(instance.getSubject());
+            IFieldDecl subjectDecl = formDecl.getFieldDecl("subject");
+            FieldHtmlUtil.apply(subjectInput, subjectDecl, options);
+        }
 
         IHtmlTag textLine = tab.tr().id("zp-msg-text");
-        HtmlLabelTag textLabel = textLine.th().label();
-        textLabel.span().class_("fa icon").text(FA_FILE_O);
-        textLabel.text("正文: ");
+        {
+            HtmlLabelTag textLabel = textLine.th().label();
+            textLabel.span().class_("fa icon").text(FA_FILE_O);
+            textLabel.text("正文: ");
 
-        HtmlTextareaTag textarea = textLine.td().textarea();
-        textarea.name("text");
-        IFieldDecl textDecl = formDecl.getFieldDecl("text");
-        FieldHtmlUtil.apply(textarea, textDecl, options);
+            HtmlTextareaTag textarea = textLine.td().textarea().name("text");
+            textarea.text(instance.getText());
+            IFieldDecl textDecl = formDecl.getFieldDecl("text");
+            FieldHtmlUtil.apply(textarea, textDecl, options);
+        }
 
         top.hr();
         return false;

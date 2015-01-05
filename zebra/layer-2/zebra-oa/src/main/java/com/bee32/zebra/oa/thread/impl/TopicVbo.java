@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlUlTag;
+import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -54,7 +53,36 @@ public class TopicVbo
 
             out.hr();
         }
+
+        HtmlFormTag form = out.form().method("post").action("../");
+        {
+            form.input().type("hidden").name("mode").value("reply");
+            form.input().type("hidden").name("topic").value("" + topic.getId());
+
+            IHtmlTag tab = form.table().class_("zu-msg");
+            IHtmlTag textLine = tab.tr().id("zp-reply");
+            {
+                HtmlLabelTag textLabel = textLine.th().label();
+                textLabel.span().class_("fa icon").text(FA_FILE_O);
+                textLabel.text("跟进: ");
+
+                HtmlTextareaTag textarea = textLine.td().textarea().name("text");
+                textarea.placeholder("输入跟踪信息…");
+            }
+
+            HtmlDivTag author = form.div().class_("zu-author");
+            author.span().class_("fa icon").text(FA_COMMENT_O);
+            author.text(" -- The Magic Person");
+
+            HtmlDivTag div = form.div();
+            HtmlButtonTag submitButton = div.button().type("submit");
+            submitButton.span().class_("fa icon").text(FA_CHECK);
+            submitButton.text("提交");
+
+            HtmlInputTag resetButton = div.input().type("reset");
+            resetButton.value("清空");
+        }
+
         return out;
     }
-
 }

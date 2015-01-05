@@ -124,6 +124,26 @@ fieldset.zu-fcat legend {
     border-left-color: black;
 }
 
+.zu-msg {
+    font-size: large;
+    width: 100%;
+}
+
+.zu-msg th {
+    text-align: right;
+    vertical-align: top;
+    width: 5em;
+}
+
+.zu-msg input {
+    width: 100%;
+}
+
+.zu-msg textarea {
+    width: 100%;
+    height: 14em;
+}
+
 .zu-null {
     font-size: small;
 }
@@ -349,24 +369,4 @@ form#zp-search {
     text-align: center;
     font-size: small;
     font-style: italic;
-}
-
-#zp-msg {
-    font-size: large;
-    width: 100%;
-}
-
-#zp-msg th {
-    text-align: right;
-    vertical-align: top;
-    width: 5em;
-}
-
-#zp-msg input {
-    width: 100%;
-}
-
-#zp-msg-text textarea {
-    width: 100%;
-    height: 14em;
 }
