@@ -38,6 +38,8 @@ public class Organization
 
     /**
      * 主营业务
+     * 
+     * @placeholder 输入主营业务…
      */
     @TextInput(maxLength = N_SUBJECT)
     @Override
@@ -72,6 +74,7 @@ public class Organization
     /**
      * 税号
      * 
+     * @placeholder 输入税号…
      * @format ######-###-###-###
      */
     @TextInput(maxLength = N_TAXID)

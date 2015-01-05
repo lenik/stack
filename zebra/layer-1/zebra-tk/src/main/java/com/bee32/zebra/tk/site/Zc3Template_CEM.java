@@ -16,11 +16,13 @@ import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.batis.IMapperTemplate;
 import net.bodz.bas.err.ParseException;
+import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
+import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
@@ -48,7 +50,7 @@ import com.tinylily.repr.CoEntityManager;
 
 public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         extends AbstractHtmlViewBuilder<M>
-        implements IZebraSiteAnchors, IZebraSiteLayout {
+        implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts {
 
     protected IFormDecl formDecl;
     protected List<PathField> indexFields;
@@ -62,6 +64,16 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     @Override
     public boolean isFrame() {
         return true;
+    }
+
+    @Override
+    public void preview(IHtmlViewContext ctx, IUiRef<M> ref, IOptions options) {
+        super.preview(ctx, ref, options);
+        IHtmlHeadData metaData = ctx.getHeadData();
+        // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
+        // metaData.addDependency("datatables.responsive.js", SCRIPT);
+        metaData.addDependency("datatables.colVis.js", SCRIPT);
+        metaData.addDependency("datatables.tableTools.js", SCRIPT);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.bee32.zebra.tk.sea;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +26,7 @@ import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDeclGroup;
+import net.bodz.bas.repr.form.FieldDeclLabelComparator;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -64,7 +66,7 @@ public abstract class FooVbo<T extends CoEntity>
     }
 
     @Override
-    protected void endForm(IHtmlViewContext ctx, HtmlFormTag out, IUiRef<T> ref, IOptions options)
+    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         // out.hr();
         HtmlDivTag div = out.div();
@@ -144,6 +146,8 @@ public abstract class FooVbo<T extends CoEntity>
                     iterator.remove();
             }
         }
+
+        Collections.sort(selection, FieldDeclLabelComparator.INSTANCE);
         return selection;
     }
 

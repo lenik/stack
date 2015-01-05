@@ -169,6 +169,7 @@ public abstract class Party
 
     /**
      * 注释
+     * @placeholder 输入注释性的文本…
      */
     @TextInput(maxLength = N_COMMENT)
     public String getComment() {

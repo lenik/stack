@@ -19,6 +19,7 @@ com.bee32.zebra.oa.hr.impl.EmployeeSkillVbo
 com.bee32.zebra.oa.hr.impl.EmployeeVbo
 com.bee32.zebra.oa.hr.impl.JobSkillCategoryManagerVbo
 com.bee32.zebra.oa.hr.impl.JobSkillCategoryVbo
+com.bee32.zebra.oa.login.LoginFormVbo
 com.bee32.zebra.oa.thread.impl.ReplyManagerVbo
 com.bee32.zebra.oa.thread.impl.ReplyVbo
 com.bee32.zebra.oa.thread.impl.TopicManagerVbo

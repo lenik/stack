@@ -5,13 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import net.bodz.bas.c.string.StringQuote;
-import net.bodz.bas.html.artifact.IArtifactConsts;
-import net.bodz.bas.html.artifact.IArtifactDependency;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
-import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
-import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.i18n.dom1.IElement;
@@ -23,12 +18,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 
-import com.bee32.zebra.tk.site.IZebraSiteAnchors;
-import com.bee32.zebra.tk.site.IZebraSiteLayout;
+import com.bee32.zebra.tk.htm.RespTemplate;
+import com.tinylily.model.base.security.LoginContext;
 
 public class OaSiteVbo
-        extends AbstractHtmlViewBuilder<OaSite>
-        implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts {
+        extends RespTemplate<OaSite> {
 
     public OaSiteVbo() {
         super(OaSite.class);
@@ -45,54 +39,24 @@ public class OaSiteVbo
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<OaSite> ref, IOptions options) {
-        super.preview(ctx, ref, options);
-
-        IHtmlHeadData metaData = ctx.getHeadData();
-        metaData.setMeta(IHtmlHeadData.META_AUTHOR, "谢继雷 (Xiè Jìléi)");
-        metaData.setMeta(IHtmlHeadData.META_VIEWPORT, //
-                "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0");
-
-        // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
-        // metaData.addDependency("datatables.responsive.js", SCRIPT);
-        metaData.addDependency("datatables.colVis.js", SCRIPT);
-        metaData.addDependency("datatables.tableTools.js", SCRIPT);
-        metaData.addDependency("font-awesome", STYLESHEET).setPriority(IArtifactDependency.LOW);
-        metaData.addDependency("jquery-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
-        metaData.addDependency("icheck.js", SCRIPT);
-        metaData.addDependency("magnific-popup.js", SCRIPT);
-        metaData.addDependency("parsley.js", SCRIPT);
-    }
-
-    @Override
     public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IOptions options)
             throws ViewBuilderException, IOException {
         if (enter(ctx))
             return null;
 
         HttpSession session = ctx.getSession();
-        // Preferences pref = Preferences.fromSession(session);
+        LoginContext loginctx = (LoginContext) session.getAttribute(LoginContext.ATTRIBUTE_KEY);
+        if (loginctx == null) {
+            ctx.getResponse().sendRedirect(_webApp_ + "login/");
+            return null;
+        }
 
         OaSite site = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean frameOnly = arrival.getPrevious(site).getRemainingPath() != null;
 
         HtmlHeadTag head = out.head().id("_head");
-        {
-            writeHeadMetas(ctx, head);
-            writeHeadImports(ctx, head);
-
-            // stylesheets
-            head.link().css(_webApp_ + "site.css");
-            // head.link().css(_webApp_ + "s-yellow.css");
-            head.link().css(_webApp_ + "print.css").media("print");
-
-            // scripts
-            head.script().javascript("" + //
-                    "var _webApp_ = " + StringQuote.qq(_webApp_) + ";\n" + //
-                    "var _js_ = " + StringQuote.qq(_js_) + ";\n" + //
-                    "");
-        }
+        respHead(ctx, head);
 
         HtmlBodyTag body = out.body();
 
@@ -135,11 +99,11 @@ public class OaSiteVbo
 
             HtmlDivTag welcomeDiv = menuCol.div().id("zp-welcome");
             welcomeDiv.text("欢迎您，").br();
-            welcomeDiv.text("海宁皮包有限公司").br();
+            welcomeDiv.text("海宁中鑫三元风机有限公司").br();
             welcomeDiv.text("的").br();
-            welcomeDiv.text("张三 销售员！");
-
-            HtmlSpanTag logout = welcomeDiv.span().id("zp-logout");
+            welcomeDiv.text(loginctx.user.getFullName() + "！");
+            HtmlATag logout = welcomeDiv.a().id("zp-logout");
+            logout.href(_webApp_ + "login/?logout=1");
             logout.text("[注销]");
 
             HtmlFormTag searchForm = menuCol.form().id("zp-search");

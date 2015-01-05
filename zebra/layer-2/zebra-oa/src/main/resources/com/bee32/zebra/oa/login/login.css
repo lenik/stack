@@ -1,0 +1,36 @@
+a {
+    padding: 2px;
+}
+
+a:hover {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+a:focus {
+    background: #fee;
+}
+
+.field-label {
+    text-align: right;
+    padding-right: 1em;
+}
+
+.field-label:after {
+    content: ":";
+    color: gray;
+}
+
+.field-row {
+    height: 2em;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
