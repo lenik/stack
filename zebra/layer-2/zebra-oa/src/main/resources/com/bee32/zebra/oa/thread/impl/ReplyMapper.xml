@@ -79,7 +79,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="int">
+    <select id="insert" resultType="long">
         <![CDATA[
         insert into reply(op, text, topic, parent)
             values(#{op},#{text}, #{topic.id}, #{parent.id})

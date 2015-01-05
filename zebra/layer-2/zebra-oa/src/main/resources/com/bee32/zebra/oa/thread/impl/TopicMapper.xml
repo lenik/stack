@@ -81,7 +81,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="int"><![CDATA[
+    <select id="insert" resultType="long"><![CDATA[
         insert into topic(op, subject, text, cat, val)
             values(#{op},#{subject},#{text}, #{cat}, #{val})
             returning id
