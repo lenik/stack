@@ -3,6 +3,12 @@ package com.bee32.zebra.io.stock;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
+
 import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
@@ -11,6 +17,7 @@ import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
 @IdType(Integer.class)
+@TableName("stdoc")
 public class StockEvent
         extends CoMessage<Integer> {
 
@@ -72,6 +79,7 @@ public class StockEvent
     /**
      * 明细
      */
+    @DetailLevel(DetailLevel.EXTEND)
     public List<StockEntry> getEntries() {
         return entries;
     }
@@ -83,6 +91,8 @@ public class StockEvent
     /**
      * 总数量
      */
+    @OfGroup(StdGroup.Statistics.class)
+    @Derived(cached = true)
     public double getQuantity() {
         return quantity;
     }
@@ -94,6 +104,8 @@ public class StockEvent
     /**
      * 总金额
      */
+    @OfGroup(StdGroup.Statistics.class)
+    @Derived(cached = true)
     public double getTotal() {
         return total;
     }

@@ -344,8 +344,8 @@
         image       varchar(100),
         size        bigint not null,
         sha1        varchar(32),    
-        type        varchar(100),   -- auto detected
-        encoding    varchar(100),   -- auto detected
+        type        varchar(100),   -- auto detected (file)
+        encoding    varchar(30),    -- auto detected
         
         org         int,
         person      int,

@@ -283,15 +283,14 @@ public abstract class FooVbo<T extends CoObject>
             // FieldHtmlUtil.apply(id_hidden, fieldDecl, options);
 
             HtmlInputTag label_text = out.input().type("text").name(inputName + ".label");
-            label_text.placeholder("" + fieldDecl.getPlaceholder());
+            label_text.placeholder(fieldDecl.getPlaceholder());
             label_text.readonly("readonly");
             label_text.attr("ec", type.getSimpleName());
 
             if (entity != null) {
                 Object id = entity.getId();
-                if (id != null)
-                    id_hidden.value(id.toString());
-                label_text.text(entity.getLabel());
+                id_hidden.value(id);
+                label_text.value(entity.getLabel());
             }
 
             out.a().href("javascript: alert(1)").text("选择");

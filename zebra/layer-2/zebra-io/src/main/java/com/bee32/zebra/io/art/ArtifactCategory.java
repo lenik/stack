@@ -1,5 +1,6 @@
 package com.bee32.zebra.io.art;
 
+import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 
@@ -7,6 +8,7 @@ import com.tinylily.model.base.CoNode;
 import com.tinylily.model.base.IdType;
 
 @IdType(Integer.class)
+@TableName("artcat")
 public class ArtifactCategory
         extends CoNode<ArtifactCategory, Integer> {
 

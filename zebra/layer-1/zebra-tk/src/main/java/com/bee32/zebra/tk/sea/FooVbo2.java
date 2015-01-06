@@ -57,7 +57,7 @@ public abstract class FooVbo2<T extends CoObject>
         IFormDecl formDecl = IFormDecl.fn.forClass(ref.getValueType());
 
         Collection<FieldDeclGroup> groups = formDecl
-                .getFieldGroups(FieldDeclFilters.maxDetailLevel(DetailLevel.EXTEND));
+                .getFieldGroups(FieldDeclFilters.maxDetailLevel(DetailLevel.DETAIL));
 
         for (FieldDeclGroup group : groups) {
             FieldCategory category = group.getCategory();

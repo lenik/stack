@@ -2,9 +2,12 @@ package com.bee32.zebra.io.sales;
 
 import java.util.Date;
 
+import net.bodz.bas.db.meta.TableName;
+
 import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoMomentInterval;
 
+@TableName("sentry")
 public class SalesOrderItem
         extends CoMomentInterval<Long> {
 

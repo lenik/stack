@@ -4,7 +4,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
@@ -13,6 +17,7 @@ import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
 @IdType(Long.class)
+@TableName("acdoc")
 public class AccountingEvent
         extends CoMessage<Long> {
 
@@ -42,6 +47,7 @@ public class AccountingEvent
     /**
      * 前级
      */
+    @DetailLevel(DetailLevel.EXPERT)
     public AccountingEvent getPrevious() {
         return previous;
     }
@@ -83,6 +89,10 @@ public class AccountingEvent
         this.person = person;
     }
 
+    /**
+     * 明细
+     */
+    @DetailLevel(DetailLevel.EXTEND)
     public List<AccountingEntry> getEntries() {
         return entries;
     }
@@ -92,8 +102,9 @@ public class AccountingEvent
     }
 
     /**
-     * 借（总）
+     * （总）借
      */
+    @OfGroup(StdGroup.Statistics.class)
     @Derived(cached = true)
     public double getDebitTotal() {
         return debitTotal;
@@ -104,8 +115,9 @@ public class AccountingEvent
     }
 
     /**
-     * 贷（总）
+     * （总）贷
      */
+    @OfGroup(StdGroup.Statistics.class)
     @Derived(cached = true)
     public double getCreditTotal() {
         return creditTotal;

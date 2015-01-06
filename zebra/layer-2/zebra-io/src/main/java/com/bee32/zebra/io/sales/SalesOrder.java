@@ -3,6 +3,12 @@ package com.bee32.zebra.io.sales;
 import java.util.Date;
 import java.util.List;
 
+import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
+
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
@@ -17,6 +23,7 @@ import com.tinylily.model.mx.base.CoMessage;
  * owner: 制单
  */
 @IdType(Integer.class)
+@TableName("sdoc")
 public class SalesOrder
         extends CoMessage<Integer> {
 
@@ -40,6 +47,7 @@ public class SalesOrder
     /**
      * 項目
      */
+    @OfGroup(StdGroup.Classification.class)
     public Topic getTopic() {
         return topic;
     }
@@ -71,30 +79,10 @@ public class SalesOrder
     }
 
     /**
-     * 类别
-     */
-    public CategoryDef getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryDef category) {
-        this.category = category;
-    }
-
-    /**
-     * 阶段
-     */
-    public PhaseDef getPhase() {
-        return phase;
-    }
-
-    public void setPhase(PhaseDef phase) {
-        this.phase = phase;
-    }
-
-    /**
      * 总数量
      */
+    @OfGroup(StdGroup.Statistics.class)
+    @Derived(cached = true)
     public double getQuantity() {
         return quantity;
     }
@@ -106,6 +94,8 @@ public class SalesOrder
     /**
      * 总金额
      */
+    @OfGroup(StdGroup.Statistics.class)
+    @Derived(cached = true)
     public double getTotal() {
         return total;
     }
@@ -117,6 +107,7 @@ public class SalesOrder
     /**
      * 下单时间
      */
+    @OfGroup(StdGroup.Schedule.class)
     public Date getOrderTime() {
         return super.getBeginDate();
     }
@@ -128,6 +119,7 @@ public class SalesOrder
     /**
      * 交货期限
      */
+    @OfGroup(StdGroup.Schedule.class)
     public Date getDeadline() {
         return super.getEndDate();
     }
@@ -139,6 +131,7 @@ public class SalesOrder
     /**
      * 明细列表
      */
+    @DetailLevel(DetailLevel.EXTEND)
     public List<SalesOrderItem> getItems() {
         return items;
     }

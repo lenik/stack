@@ -40,6 +40,7 @@ public class AccountingEntry
     /**
      * 借方
      */
+    @Derived
     public boolean isDebitSide() {
         return value.signum() == 1;
     }

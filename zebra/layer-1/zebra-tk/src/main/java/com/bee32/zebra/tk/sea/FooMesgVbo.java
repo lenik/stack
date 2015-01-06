@@ -55,7 +55,8 @@ public abstract class FooMesgVbo<T extends CoMessage<?>>
             textLabel.text("正文: ");
 
             HtmlTextareaTag textarea = textLine.td().textarea().name("text");
-            textarea.text(instance.getText());
+            String text = instance.getText();
+            textarea.text(text == null ? "" : text);
             IFieldDecl textDecl = formDecl.getFieldDecl("text");
             FieldHtmlUtil.apply(textarea, textDecl, options);
         }

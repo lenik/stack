@@ -144,7 +144,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             HtmlTrTag _tr1 = _table1.tr();
             HtmlTdTag _td1 = _tr1.td();
             _td1.h2().text("选中的信息");
-            HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3em");
+            HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3.5em");
             _td2.a().id("zp-infosel-edit").href("").text("[编辑]");
 
             infosel.div().id(ID.infoselData);
@@ -221,7 +221,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 int colon = rel.indexOf(':');
                 IAnchor href = _webApp_.join(rel.substring(0, colon).trim());
                 String text = rel.substring(colon + 1).trim();
-                linksUl.li().a().href(href.toString()).text(text);
+                linksUl.li().a().href(href).text(text);
             }
         }
 
@@ -359,7 +359,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     protected void dumpFullData(IHtmlTag parent, Collection<? extends CoObject> dataset) {
         int count = 0;
         Collection<FieldDeclGroup> groups = formDecl
-                .getFieldGroups(FieldDeclFilters.maxDetailLevel(DetailLevel.EXTEND));
+                .getFieldGroups(FieldDeclFilters.maxDetailLevel(DetailLevel.DETAIL));
         for (CoObject entity : dataset) {
             if (count++ > 3)
                 break;

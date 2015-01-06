@@ -1,10 +1,13 @@
 package com.bee32.zebra.io.stock;
 
+import net.bodz.bas.db.meta.TableName;
+
 import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoMomentInterval;
 import com.tinylily.model.base.IdType;
 
 @IdType(Long.class)
+@TableName("stentry")
 public class StockEntry
         extends CoMomentInterval<Long> {
 

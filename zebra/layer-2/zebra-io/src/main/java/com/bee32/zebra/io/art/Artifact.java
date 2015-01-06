@@ -3,14 +3,18 @@ package com.bee32.zebra.io.art;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.repr.form.NullConvertion;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.NumericInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
 
+@TableName("art")
 public class Artifact
         extends CoEntity<Integer> {
 
@@ -59,9 +63,11 @@ public class Artifact
      * 存货识别码。
      * 
      * @label SKU
-     * @placeholder 输入存货识别码
+     * @placeholder 输入存货识别码…
      */
     @OfGroup(StdGroup.Identity.class)
+    @FormInput(nullconv = NullConvertion.EMPTY)
+    @TextInput(maxLength = N_SKU_CODE)
     public String getSkuCode() {
         return skuCode;
     }
@@ -71,9 +77,13 @@ public class Artifact
     }
 
     /**
+     * 条形码
+     * 
      * @placeholder 输入条形码
      */
     @OfGroup({ StdGroup.Identity.class, OaGroups.Packaging.class })
+    @FormInput(nullconv = NullConvertion.EMPTY)
+    @TextInput(maxLength = N_BAR_CODE)
     public String getBarCode() {
         return barCode;
     }
@@ -100,6 +110,8 @@ public class Artifact
      * @placeholder 输入衡量单位的用途属性，如"长度"、"重量"
      */
     @OfGroup(OaGroups.Packaging.class)
+    @FormInput(nullconv = NullConvertion.EMPTY)
+    @TextInput(maxLength = N_UOM_PROPERTY)
     public String getUomProperty() {
         return uomProperty;
     }
@@ -139,9 +151,11 @@ public class Artifact
     /**
      * 规格型号
      * 
-     * @placeholder 输入规格/型号
+     * @placeholder 输入规格/型号…
      */
     @OfGroup(StdGroup.Identity.class)
+    @FormInput(nullconv = NullConvertion.EMPTY)
+    @TextInput(maxLength = N_SPEC)
     public String getSpec() {
         return spec;
     }
@@ -153,9 +167,11 @@ public class Artifact
     /**
      * 颜色
      * 
-     * @placeholder 输入颜色名称
+     * @placeholder 输入颜色名称…
      */
     @OfGroup(OaGroups.ColorManagement.class)
+    @FormInput(nullconv = NullConvertion.EMPTY)
+    @TextInput(maxLength = N_COLOR)
     public String getColor() {
         return color;
     }
@@ -167,8 +183,12 @@ public class Artifact
     /**
      * 警告提示
      * 
-     * @placeholder 输入警告信息，如危险品、易碎、易爆炸等
+     * 如危险品、易碎、易爆炸等。
+     * 
+     * @placeholder 输入警告信息…
      */
+    @FormInput(nullconv = NullConvertion.EMPTY)
+    @TextInput(maxLength = N_CAUTION)
     public String getCaution() {
         return caution;
     }
@@ -178,7 +198,7 @@ public class Artifact
     }
 
     /**
-     * 装箱尺寸
+     * 装箱尺寸 (mm)
      */
     @OfGroup(OaGroups.Packaging.class)
     public Dim3d getBbox() {
@@ -186,7 +206,7 @@ public class Artifact
     }
 
     /**
-     * 毛重
+     * 毛重 (g)
      */
     @OfGroup(OaGroups.Packaging.class)
     public double getWeight() {
@@ -198,7 +218,7 @@ public class Artifact
     }
 
     /**
-     * 净重
+     * 净重 (g)
      */
     @OfGroup(OaGroups.Packaging.class)
     public double getNetWeight() {
@@ -212,7 +232,7 @@ public class Artifact
     /**
      * 供应方法
      */
-    @OfGroup(StdGroup.Schedule.class)
+    @OfGroup(StdGroup.Classification.class)
     public SupplyMethod getSupplyMethod() {
         return supplyMethod;
     }
@@ -224,7 +244,7 @@ public class Artifact
     }
 
     /**
-     * 供应延时
+     * 供应延时 (天)
      */
     @OfGroup(StdGroup.Schedule.class)
     public int getSupplyDelay() {

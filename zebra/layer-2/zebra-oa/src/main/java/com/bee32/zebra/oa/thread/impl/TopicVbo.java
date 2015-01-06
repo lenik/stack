@@ -57,7 +57,7 @@ public class TopicVbo
         HtmlFormTag form = out.form().method("post").action("../");
         {
             form.input().type("hidden").name("mode").value("reply");
-            form.input().type("hidden").name("topic").value("" + topic.getId());
+            form.input().type("hidden").name("topic").value(topic.getId());
 
             IHtmlTag tab = form.table().class_("zu-msg");
             IHtmlTag textLine = tab.tr().id("zp-reply");
