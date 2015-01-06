@@ -2,6 +2,7 @@ com.bee32.zebra.io.art.impl.ArtifactCategoryMapper
 com.bee32.zebra.io.art.impl.ArtifactMapper
 com.bee32.zebra.io.art.impl.UOMMapper
 com.bee32.zebra.io.sales.impl.DeliveryMapper
+com.bee32.zebra.io.sales.impl.SalesOrderItemMapper
 com.bee32.zebra.io.sales.impl.SalesOrderMapper
 com.bee32.zebra.io.stock.impl.PlaceMapper
 com.bee32.zebra.io.stock.impl.StockEntryMapper
