@@ -68,7 +68,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="int"><![CDATA[
+    <select id="insert" resultType="long"><![CDATA[
         insert into place(
             code, label, description,
             priority, flags, state, version,

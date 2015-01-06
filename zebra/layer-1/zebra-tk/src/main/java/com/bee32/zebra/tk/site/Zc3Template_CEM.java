@@ -43,14 +43,14 @@ import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.sea.MapperUtil;
-import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.CoEntityCriteria;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.model.mx.base.CoMessage;
 import com.tinylily.repr.CoEntityManager;
 
 public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         extends AbstractHtmlViewBuilder<M>
-        implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts {
+        implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
     protected List<PathField> indexFields;
@@ -122,23 +122,20 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             HtmlDivTag headDiv = mainCol.div().id(ID.head).class_("zu-info clearfix");
             headDiv.div().id(ID.title);
 
-            HtmlDivTag headCol1 = headDiv.div().id("zp-head-col1").class_("col-xs-6");
+            HtmlDivTag headCol1 = headDiv.div().id(ID.headCol1).class_("col-xs-6");
             headCol1.div().id(ID.stat);
 
             HtmlDivTag cmdsDiv = headCol1.div().id(ID.cmds);
             cmdsDiv.div().id(ID.cmds0);
             cmdsDiv.div().id(ID.cmds1);
 
-            HtmlDivTag headCol2 = headDiv.div().id("zp-head-col2").class_("col-xs-6");
-            HtmlDivTag headLinks = headCol2.div().id("zp-links");
-            headLinks.span().text("您可能需要进行下面的操作:");
-            headLinks.ul().id(ID.links_ul);
+            headDiv.div().id(ID.headCol2).class_("col-xs-6");
         }
 
         HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 zu-info");
         if (indexPage) {
             HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
-            // previewDiv.div().class_("icon fa").text(IFontAwesomeCharAliases.FA_COFFEE);
+            // previewDiv.div().class_("icon fa").text(FA_COFFEE);
             previewDiv.img().src(_webApp_.join("zebra/scene1.png").absoluteHref());
 
             HtmlDivTag infosel = rightCol.div().id(ID.infosel);
@@ -205,23 +202,28 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
             p.cmds0.a().href("?view:=csv").text("导出").style("cursor: default; color: gray").onclick("return false");
             p.cmds0.a().href("javascript: window.print()").text("打印");
         } else {
-            HtmlATag submitLink = p.cmds0.a().href("javascript: form.submit()");
-            submitLink.span().class_("fa icon").text(IFontAwesomeCharAliases.FA_FLOPPY_O);
+            HtmlATag submitLink = p.cmds1.a().href("javascript: form.submit()");
+            submitLink.span().class_("fa icon").text(FA_FLOPPY_O);
             submitLink.text("提交").title("将输入的数据提交保存。");
 
-            HtmlATag resetLink = p.cmds0.a().href("javascript: form.reset()");
-            resetLink.span().class_("fa icon").text(IFontAwesomeCharAliases.FA_ERASER);
+            HtmlATag resetLink = p.cmds1.a().href("javascript: form.reset()");
+            resetLink.span().class_("fa icon").text(FA_ERASER);
             resetLink.text("复原").title("清除刚才输入的所有变更，重新写。");
         }
 
         List<String> rels = classDoc.getTag("rel", List.class);
-        if (rels != null)
+        if (rels != null && !rels.isEmpty()) {
+            IHtmlTag headCol2 = ctx.getTag(ID.headCol2);
+            HtmlDivTag headLinks = headCol2.div().class_("zu-links");
+            headLinks.div().text("您可能需要进行下面的操作:");
+            HtmlUlTag linksUl = headLinks.ul();
             for (String rel : rels) {
                 int colon = rel.indexOf(':');
                 IAnchor href = _webApp_.join(rel.substring(0, colon).trim());
                 String text = rel.substring(colon + 1).trim();
-                p.linksUl.li().a().href(href.toString()).text(text);
+                linksUl.li().a().href(href.toString()).text(text);
             }
+        }
 
         if (indexPage) {
             List<String> seeList = classDoc.getTag("see", List.class);

@@ -124,6 +124,17 @@ fieldset.zu-fcat legend {
     border-left-color: black;
 }
 
+.zu-links>div {
+    font-style: italic;
+    font-size: small;
+}
+
+.zu-links>ul {
+    list-style-type: circle;
+    padding-left: 2em;
+    margin: 0;
+}
+
 .zu-msg {
     font-size: large;
     width: 100%;
@@ -267,17 +278,6 @@ fieldset.zu-fcat legend {
 
 #zp-infoman {
     list-style-type: square;
-}
-
-#zp-links {
-    font-style: italic;
-    font-size: small;
-}
-
-#zp-links ul {
-    list-style-type: circle;
-    padding-left: 2em;
-    margin: 0;
 }
 
 #zp-logo {

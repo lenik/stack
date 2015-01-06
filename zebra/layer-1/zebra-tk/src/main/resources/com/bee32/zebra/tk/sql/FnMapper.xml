@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.tk.sql.FnMapper">
+
+    <select id="prevNext" resultMap="prevNextMap">
+        select * from prevnext(#{schemaName}, #{tableName}, #{id})
+    </select>
+    <resultMap id="prevNextMap" type="com.bee32.zebra.tk.util.PrevNext">
+        <result property="prev" column="prev" />
+        <result property="next" column="next" />
+    </resultMap>
+
+</mapper>

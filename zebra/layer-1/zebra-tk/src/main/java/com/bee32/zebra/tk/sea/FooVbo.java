@@ -11,16 +11,16 @@ import java.util.Set;
 import net.bodz.bas.c.string.StringPart;
 import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.c.type.TypeKind;
+import net.bodz.bas.db.batis.IMapperProvider;
+import net.bodz.bas.db.batis.IMapperTemplate;
+import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.err.Err;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.err.IllegalUsageException;
 import net.bodz.bas.err.NotImplementedException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlButtonTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlFormTag;
-import net.bodz.bas.html.dom.tag.HtmlInputTag;
+import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.meta.HtmlViewBuilder;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewBuilder;
@@ -47,6 +47,8 @@ import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.sql.FnMapper;
+import com.bee32.zebra.tk.util.PrevNext;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IId;
 import com.tinylily.model.base.IdType;
@@ -74,12 +76,60 @@ public abstract class FooVbo<T extends CoObject>
     @Override
     protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
+
+        Class<?> type = ref.getValueType();
+        T obj = ref.get();
+        Number id = (Number) obj.getId();
+
+        {
+            String tablename = TableName.fn.tablename(type);
+            FnMapper fnMapper = ctx.query(FnMapper.class);
+            PrevNext prevNext = fnMapper.prevNext("public", tablename, //
+                    id == null ? Integer.MAX_VALUE : id.longValue());
+
+            IHtmlTag headCol2 = ctx.getTag(ID.headCol2);
+            HtmlDivTag adjs = headCol2.div().class_("zu-links");
+            adjs.div().text("操作附近的数据:");
+            HtmlUlTag ul = adjs.ul();
+            HtmlATag newLink = ul.li().a().href("../new/");
+            newLink.span().class_("fa icon").text(FA_FILE_O);
+            newLink.text("新建");
+
+            HtmlLiTag navs = ul.li();
+            IHtmlTag prevLink = navs;
+            if (prevNext.getPrev() != null)
+                prevLink = prevLink.a().href("../" + prevNext.getPrev() + "/");
+            prevLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_LEFT);
+            prevLink.text("前翻");
+
+            IHtmlTag nextLink = navs;
+            if (prevNext.getNext() != null)
+                nextLink = nextLink.a().href("../" + prevNext.getNext() + "/");
+            nextLink.text("后翻");
+            nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
+        }
+
         IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
         String methodName = methodOfRequest.getMethodName();
         switch (methodName) {
         case MethodNames.CREATE:
+            if (persist(true, ctx, out, ref))
+                // success. create a new skel object.
+                try {
+                    T skel = ref.getValueType().newInstance();
+                    ref.set(skel);
+                } catch (ReflectiveOperationException e) {
+                    throw new ViewBuilderException(e.getMessage(), e);
+                }
+            break;
+
         case MethodNames.UPDATE:
-            persist(ctx, out, ref);
+            if (persist(false, ctx, out, ref)) {
+                // reload from database.
+                IMapperTemplate<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
+                T reload = mapper.select(id.longValue());
+                ref.set(reload);
+            }
             break;
 
         case MethodNames.READ:
@@ -269,7 +319,7 @@ public abstract class FooVbo<T extends CoObject>
             throws ViewBuilderException, IOException {
     }
 
-    protected void persist(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
+    protected boolean persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
         try {
             T data = ref.get();
             // data.populate(ctx.getRequest().getParameterMap());
@@ -281,6 +331,13 @@ public abstract class FooVbo<T extends CoObject>
             alert.span().class_("fa icon").text(FA_CHECK_CIRCLE);
             alert.strong().text("[成功]");
             alert.text("保存成功");
+            alert.hr();
+            if (create) {
+                alert.div().class_("small").text("您可以继续创建新的记录，或者选择翻页到临近的记录。");
+            } else {
+                alert.div().class_("small").text("您可以选择核对刚刚更新的记录，或者翻页浏览临近的记录。");
+            }
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
             e = Err.unwrap(e);
@@ -289,6 +346,9 @@ public abstract class FooVbo<T extends CoObject>
             alert.span().class_("fa icon").text(FA_TIMES_CIRCLE);
             alert.strong().text("[错误]");
             alert.text("无法保存: " + e.getMessage());
+            alert.hr();
+            alert.div().class_("small").text("请检查您输入的数据，再重新保存一次。");
+            return false;
         }
     }
 

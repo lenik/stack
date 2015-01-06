@@ -12,7 +12,6 @@ public class PageStruct {
     public IHtmlTag stat;
     public IHtmlTag cmds0;
     public IHtmlTag cmds1;
-    public IHtmlTag linksUl;
     public IHtmlTag infomanUl;
     public IHtmlTag extradata;
 
@@ -22,7 +21,6 @@ public class PageStruct {
         stat = ctx.getTag(ID.stat);
         cmds0 = ctx.getTag(ID.cmds0);
         cmds1 = ctx.getTag(ID.cmds1);
-        linksUl = ctx.getTag(ID.links_ul);
         infomanUl = ctx.getTag(ID.infoman_ul);
         extradata = ctx.getTag(ID.extradata);
     }

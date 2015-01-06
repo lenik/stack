@@ -4,6 +4,8 @@ public interface IZebraSiteLayout {
 
     interface ID {
         String head = "zp-head";
+        String headCol1 = "zp-head-col1";
+        String headCol2 = "zp-head-col2";
 
         String body1 = "zp-body1";
         String body2 = "zp-body2";
@@ -19,7 +21,6 @@ public interface IZebraSiteLayout {
         String cmds0 = "zp-cmds.0";
         String cmds1 = "zp-cmds.1";
 
-        String links_ul = "zp-links-ul";
         String infosel = "zp-infosel";
         String infoselData = "zp-infosel-data";
         String infoman = "zp-infoman";
