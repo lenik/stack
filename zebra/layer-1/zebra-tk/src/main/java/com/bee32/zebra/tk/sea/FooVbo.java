@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.bodz.bas.c.string.StringPart;
 import net.bodz.bas.c.type.SingletonUtil;
-import net.bodz.bas.c.type.TypeId;
 import net.bodz.bas.c.type.TypeKind;
 import net.bodz.bas.err.Err;
 import net.bodz.bas.err.IllegalConfigException;
@@ -21,9 +21,7 @@ import net.bodz.bas.html.dom.tag.HtmlButtonTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlFormTag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
-import net.bodz.bas.html.dom.tag.HtmlSpanTag;
 import net.bodz.bas.html.meta.HtmlViewBuilder;
-import net.bodz.bas.html.util.FieldHtmlUtil;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlViewBuilderFactory;
@@ -231,19 +229,19 @@ public abstract class FooVbo<T extends CoObject>
             if (inputName == null)
                 inputName = fieldDecl.getName();
 
-            HtmlInputTag input = out.input().type("hidden").name(inputName);
-            FieldHtmlUtil.apply(input, fieldDecl, options);
+            HtmlInputTag id_hidden = out.input().type("hidden").name(inputName + ".id");
+            // FieldHtmlUtil.apply(id_hidden, fieldDecl, options);
 
-            HtmlSpanTag span = out.span();
-            span.attr("ec", type.getSimpleName());
+            HtmlInputTag label_text = out.input().type("text").name(inputName + ".label");
+            label_text.placeholder("" + fieldDecl.getPlaceholder());
+            label_text.readonly("readonly");
+            label_text.attr("ec", type.getSimpleName());
 
             if (entity != null) {
                 Object id = entity.getId();
-                input.value("" + id);
-                span.attr("eid", id);
-                span.text(entity.getLabel());
-            } else {
-                span.text(null);
+                if (id != null)
+                    id_hidden.value(id.toString());
+                label_text.text(entity.getLabel());
             }
 
             out.a().href("javascript: alert(1)").text("选择");
@@ -286,7 +284,7 @@ public abstract class FooVbo<T extends CoObject>
         } catch (Throwable e) {
             e.printStackTrace();
             e = Err.unwrap(e);
-            HtmlDivTag alert = out.div().class_("alert alert-error");
+            HtmlDivTag alert = out.div().class_("alert alert-danger");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
             alert.span().class_("fa icon").text(FA_TIMES_CIRCLE);
             alert.strong().text("[错误]");
@@ -300,7 +298,7 @@ public abstract class FooVbo<T extends CoObject>
         inject(ref, variantMap);
     }
 
-    void inject(IUiRef<?> ref, IVariantMap<String> map)
+    void inject(IUiRef<?> ref, IVariantMap<String> parameterMap)
             throws ParseException, ReflectiveOperationException {
         Class<?> clazz = ref.getValueType();
         IFormDecl formDecl = IFormDecl.fn.forClass(clazz);
@@ -308,71 +306,118 @@ public abstract class FooVbo<T extends CoObject>
         Object obj = ref.get();
 
         for (IFieldDecl fieldDecl : formDecl.getFieldDecls()) {
-            Class<?> type = fieldDecl.getValueType();
-            IProperty property = fieldDecl.getProperty();
-            boolean isCoRef = CoObject.class.isAssignableFrom(type);
-
             String name = fieldDecl.getName();
-            String str = map.getString(name);
-            if (str == null) {
-                // map.getString("no-" + map.getString(name));
-                continue;
+            Class<?> type = fieldDecl.getValueType();
+            try {
+                if (CoObject.class.isAssignableFrom(type))
+                    injectCoRef(obj, fieldDecl, parameterMap);
+                else
+                    injectValue(obj, fieldDecl, parameterMap);
+            } catch (Exception e) {
+                throw new ParseException("property " + name + ": " + e.getMessage(), e);
             }
-            fieldDecl.getNullConvertion();
+        } // for property
+    }
 
+    void injectValue(Object obj, IFieldDecl fieldDecl, IVariantMap<String> parameterMap)
+            throws ParseException, ReflectiveOperationException {
+        String name = fieldDecl.getName();
+        Class<?> type = fieldDecl.getValueType();
+
+        String str = parameterMap.getString(name);
+        if (str == null)
+            // if (parameterMap.containsKey(name))
+            return;
+
+        boolean isNull = false;
+        switch (fieldDecl.getSpaceNormalization()) {
+        case NONE:
+            break;
+        case RTRIM:
+            str = StringPart.trimRight(str);
+            break;
+        case TRIM:
             str = str.trim();
+            break;
+        case XML_TEXT:
+            str = str.trim();
+            break;
+        default:
+        }
+
+        switch (fieldDecl.getNullConvertion()) {
+        case EMPTY:
+            if (str.isEmpty())
+                isNull = true;
+            break;
+
+        case NULL_TEXT:
+            if ("null".equals(str))
+                isNull = true;
+            break;
+
+        case ZERO:
+            if ("0".equals(str))
+                isNull = true;
+            break;
+
+        case NEGATIVE_ONE:
+            if ("-1".equals(str))
+                isNull = true;
+            break;
+
+        default:
             if (str.isEmpty()) {
                 if (TypeKind.isNumeric(type))
-                    continue;
-                if (isCoRef) {
-                    property.setValue(obj, null);
-                    continue;
-                }
+                    isNull = true;
             }
+        }
 
-            if (isCoRef) {
-                CoObject coRef = (CoObject) type.newInstance();
-
-                IdType aIdType = type.getAnnotation(IdType.class);
-                if (aIdType == null)
-                    throw new IllegalUsageException("Unknown id type of " + type);
-                Class<?> idType = aIdType.value();
-
-                switch (TypeKind.getTypeId(idType)) {
-                case TypeId.INTEGER:
-                    int intval = map.getInt(name);
-                    @SuppressWarnings("unchecked")
-                    IId<Integer> _intw = (IId<Integer>) coRef;
-                    _intw.setId(intval);
-                    break;
-
-                case TypeId.LONG:
-                    long longval = map.getLong(name);
-                    @SuppressWarnings("unchecked")
-                    IId<Long> _longw = (IId<Long>) coRef;
-                    _longw.setId(longval);
-                    break;
-
-                default:
-                    throw new UnsupportedOperationException("Invalid id type: " + idType);
-                }
-
-                property.setValue(obj, coRef);
-                continue;
-            }
-
+        IProperty property = fieldDecl.getProperty();
+        Object value;
+        if (isNull) {
+            value = null;
+        } else {
             IParser<?> parser = property.getTyper(IParser.class);
             if (parser == null)
                 parser = Typers.getTyper(type, IParser.class);
             if (parser == null)
                 throw new NotImplementedException("No parser for " + type);
-            try {
-                Object value = parser.parse(str);
-                property.setValue(obj, value);
-            } catch (ParseException e) {
-                throw new ParseException("property " + name + ": " + e.getMessage(), e);
-            }
-        } // for property
+            value = parser.parse(str);
+        }
+        property.setValue(obj, value);
+    }
+
+    void injectCoRef(Object obj, IFieldDecl fieldDecl, IVariantMap<String> parameterMap)
+            throws ParseException, ReflectiveOperationException {
+        Class<?> type = fieldDecl.getValueType();
+        String name = fieldDecl.getName();
+        String idStr = parameterMap.getString(name + ".id");
+        if (idStr == null) // not specified: ignore
+            return;
+
+        CoObject skel = (CoObject) type.newInstance();
+
+        if (!idStr.isEmpty()) {
+            @SuppressWarnings("unchecked")
+            IId<Object> skelw = (IId<Object>) skel;
+
+            IdType aIdType = type.getAnnotation(IdType.class);
+            if (aIdType == null)
+                throw new IllegalUsageException("Unknown id type of " + type);
+            Class<?> idType = aIdType.value();
+
+            IParser<?> parser = Typers.getTyper(idType, IParser.class);
+            Object id = parser.parse(idStr);
+
+            skelw.setId(id);
+        }
+
+        String label = parameterMap.getString(name + ".label");
+        skel.setLabel(label);
+
+        IProperty property = fieldDecl.getProperty();
+        property.setValue(obj, skel);
     }
 
 }
