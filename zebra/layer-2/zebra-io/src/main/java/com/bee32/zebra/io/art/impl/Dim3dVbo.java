@@ -28,15 +28,8 @@ public class Dim3dVbo
 
         Dim3d dim = ref.get();
 
-        HtmlInputTag dx = out.input().type("number").value(dim.dx + "");
-        out.text(" x ");
-        HtmlInputTag dy = out.input().type("number").value(dim.dy + "");
-        out.text(" x ");
-        HtmlInputTag dz = out.input().type("number").value(dim.dz + "");
-
-        FieldHtmlUtil.apply(dx, fieldDecl, options, "_dx");
-        FieldHtmlUtil.apply(dy, fieldDecl, options, "_dy");
-        FieldHtmlUtil.apply(dz, fieldDecl, options, "_dz");
+        HtmlInputTag input = out.input().type("text").value(dim.toString());
+        FieldHtmlUtil.apply(input, fieldDecl, options);
 
         return out;
     }

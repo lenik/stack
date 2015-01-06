@@ -67,7 +67,7 @@ public class Dim3d
 
     @Override
     public String toString() {
-        return format(", ");
+        return format(" x ");
     }
 
 }

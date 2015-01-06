@@ -16,8 +16,8 @@ public class Place
     private static final long serialVersionUID = 1L;
 
     private PlaceUsage usage = PlaceUsage.INTERNAL;
-    private final Dim3d position = new Dim3d();
-    private final Dim3d bbox = new Dim3d();
+    private Dim3d position = new Dim3d();
+    private Dim3d bbox = new Dim3d();
     private Person party;
     private Organization partyOrg;
 
@@ -49,11 +49,23 @@ public class Place
         return position;
     }
 
+    public void setPosition(Dim3d position) {
+        if (position == null)
+            throw new NullPointerException("position");
+        this.position = position;
+    }
+
     /**
      * 尺寸
      */
     public Dim3d getBbox() {
         return bbox;
+    }
+
+    public void setBbox(Dim3d bbox) {
+        if (bbox == null)
+            throw new NullPointerException("bbox");
+        this.bbox = bbox;
     }
 
     /**
