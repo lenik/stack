@@ -19,7 +19,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.tinylily.model.mx.base.CoMessage;
 
-public abstract class FooMesgVbo<T extends CoMessage>
+public abstract class FooMesgVbo<T extends CoMessage<?>>
         extends FooVbo<T> {
 
     public FooMesgVbo(Class<?> valueClass, String... supportedFeatures) {
@@ -36,7 +36,7 @@ public abstract class FooMesgVbo<T extends CoMessage>
         IHtmlTag top = ctx.getTag(ID.formtop);
         tab = top.table().class_("zu-msg");
 
-        IHtmlTag subjectLine = tab.tr().id("zp-msg-subject");
+        IHtmlTag subjectLine = tab.tr().id("zu-msg-subject");
         {
             IHtmlTag subjectLabel = subjectLine.th().label();
             subjectLabel.span().class_("fa icon").text(FA_CHEVRON_DOWN);
@@ -48,7 +48,7 @@ public abstract class FooMesgVbo<T extends CoMessage>
             FieldHtmlUtil.apply(subjectInput, subjectDecl, options);
         }
 
-        IHtmlTag textLine = tab.tr().id("zp-msg-text");
+        IHtmlTag textLine = tab.tr().id("zu-msg-text");
         {
             HtmlLabelTag textLabel = textLine.th().label();
             textLabel.span().class_("fa icon").text(FA_FILE_O);

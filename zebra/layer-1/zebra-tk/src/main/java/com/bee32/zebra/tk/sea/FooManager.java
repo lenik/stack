@@ -8,13 +8,13 @@ import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.rtx.IQueryable;
 
-import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.repr.CoEntityManager;
 
 public abstract class FooManager
         extends CoEntityManager {
 
-    public FooManager(Class<? extends CoEntity> entityType, IQueryable context) {
+    public FooManager(Class<? extends CoObject> entityType, IQueryable context) {
         super(entityType, context);
     }
 

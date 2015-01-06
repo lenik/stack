@@ -43,7 +43,7 @@ import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.sea.MapperUtil;
-import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.mx.base.CoMessage;
 import com.tinylily.repr.CoEntityManager;
@@ -311,7 +311,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         indexFields = builder.getFields();
     }
 
-    protected void cocols(String spec, HtmlTrTag tr, CoEntity o) {
+    protected void cocols(String spec, HtmlTrTag tr, CoObject o) {
         for (char c : spec.toCharArray()) {
             switch (c) {
             case 'i':
@@ -328,7 +328,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
                 break;
 
             case 'm':
-                CoMessage message = (CoMessage) o;
+                CoMessage<?> message = (CoMessage<?>) o;
                 tr.td().b().text(message.getSubject()).class_("small").style("max-width: 20em");
                 tr.td().text(Strings.ellipsis(message.getText(), 50)).class_("small").style("max-width: 30em");
                 break;
@@ -354,11 +354,11 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         }
     }
 
-    protected void dumpFullData(IHtmlTag parent, Collection<? extends CoEntity> dataset) {
+    protected void dumpFullData(IHtmlTag parent, Collection<? extends CoObject> dataset) {
         int count = 0;
         Collection<FieldDeclGroup> groups = formDecl
                 .getFieldGroups(FieldDeclFilters.maxDetailLevel(DetailLevel.EXTEND));
-        for (CoEntity entity : dataset) {
+        for (CoObject entity : dataset) {
             if (count++ > 3)
                 break;
             HtmlDivTag dtab = parent.div().id("data-" + entity.getId());
@@ -400,7 +400,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         return list;
     }
 
-    protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoEntity e) {
+    protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoObject e) {
         if (e != null)
             tag.text(e.getLabel());
         return tag;
@@ -422,11 +422,11 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected static class fn {
 
-        public static String labels(Collection<? extends CoEntity> entities) {
+        public static String labels(Collection<? extends CoObject> entities) {
             if (entities == null)
                 return null;
             StringBuilder sb = new StringBuilder(entities.size() * 80);
-            for (CoEntity o : entities) {
+            for (CoObject o : entities) {
                 if (sb.length() != 0)
                     sb.append(", ");
                 sb.append(o.getLabel());

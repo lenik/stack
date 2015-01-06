@@ -5,10 +5,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.bodz.bas.c.type.SingletonUtil;
+import net.bodz.bas.c.type.TypeId;
+import net.bodz.bas.c.type.TypeKind;
+import net.bodz.bas.err.Err;
 import net.bodz.bas.err.IllegalConfigException;
+import net.bodz.bas.err.IllegalUsageException;
+import net.bodz.bas.err.NotImplementedException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlButtonTag;
@@ -29,19 +35,26 @@ import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.FieldDeclLabelComparator;
 import net.bodz.bas.repr.form.IFieldDecl;
+import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.req.IMethodOfRequest;
 import net.bodz.bas.repr.req.MethodNames;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
+import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.typer.Typers;
+import net.bodz.bas.typer.std.IParser;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.bee32.zebra.tk.site.PageStruct;
-import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoObject;
+import com.tinylily.model.base.IId;
+import com.tinylily.model.base.IdType;
+import com.tinylily.model.sea.ParameterMapVariantMap;
 
-public abstract class FooVbo<T extends CoEntity>
+public abstract class FooVbo<T extends CoObject>
         extends AbstractForm_htm<T>
         implements IZebraSiteAnchors, IFontAwesomeCharAliases {
 
@@ -52,33 +65,31 @@ public abstract class FooVbo<T extends CoEntity>
     @Override
     public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
-
-        IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
-        String methodName = methodOfRequest.getMethodName();
-        switch (methodName) {
-        case MethodNames.CREATE:
-        case MethodNames.UPDATE:
-            T data = ref.get();
-            try {
-                data.populate(ctx.getRequest().getParameterMap());
-            } catch (ParseException e) {
-                throw new ViewBuilderException(e.getMessage(), e);
-            }
-            data.persist(ctx, out);
-            return null;
-
-        case MethodNames.READ:
-        case MethodNames.EDIT:
-        default:
-            break;
-        }
-
         return super.buildHtmlView(ctx, new PageStruct(ctx).mainCol, ref, options);
     }
 
     @Override
     protected void nullInstance(IHtmlTag out, IUiRef<T> ref) {
         out.text("null@" + ref.getValueType());
+    }
+
+    @Override
+    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
+        String methodName = methodOfRequest.getMethodName();
+        switch (methodName) {
+        case MethodNames.CREATE:
+        case MethodNames.UPDATE:
+            persist(ctx, out, ref);
+            break;
+
+        case MethodNames.READ:
+        case MethodNames.EDIT:
+        default:
+            break;
+        }
+        return out;
     }
 
     @Override
@@ -213,8 +224,8 @@ public abstract class FooVbo<T extends CoEntity>
         Object value = propertyRef.get();
 
         Class<?> type = property.getPropertyType();
-        if (CoEntity.class.isAssignableFrom(type)) {
-            CoEntity entity = (CoEntity) value;
+        if (CoObject.class.isAssignableFrom(type)) {
+            CoObject entity = (CoObject) value;
 
             String inputName = fieldDecl.getInputName();
             if (inputName == null)
@@ -227,8 +238,9 @@ public abstract class FooVbo<T extends CoEntity>
             span.attr("ec", type.getSimpleName());
 
             if (entity != null) {
-                input.value(entity.getId().toString());
-                span.attr("eid", entity.getId());
+                Object id = entity.getId();
+                input.value("" + id);
+                span.attr("eid", id);
                 span.text(entity.getLabel());
             } else {
                 span.text(null);
@@ -257,6 +269,110 @@ public abstract class FooVbo<T extends CoEntity>
     @Override
     protected void endField(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
+    }
+
+    protected void persist(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
+        try {
+            T data = ref.get();
+            // data.populate(ctx.getRequest().getParameterMap());
+            inject(ref, ctx.getRequest().getParameterMap());
+            data.persist(ctx, out);
+
+            HtmlDivTag alert = out.div().class_("alert alert-success");
+            alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
+            alert.span().class_("fa icon").text(FA_CHECK_CIRCLE);
+            alert.strong().text("[成功]");
+            alert.text("保存成功");
+        } catch (Throwable e) {
+            e.printStackTrace();
+            e = Err.unwrap(e);
+            HtmlDivTag alert = out.div().class_("alert alert-error");
+            alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
+            alert.span().class_("fa icon").text(FA_TIMES_CIRCLE);
+            alert.strong().text("[错误]");
+            alert.text("无法保存: " + e.getMessage());
+        }
+    }
+
+    void inject(IUiRef<?> ref, Map<String, String[]> parameterMap)
+            throws ParseException, ReflectiveOperationException {
+        ParameterMapVariantMap variantMap = new ParameterMapVariantMap(parameterMap);
+        inject(ref, variantMap);
+    }
+
+    void inject(IUiRef<?> ref, IVariantMap<String> map)
+            throws ParseException, ReflectiveOperationException {
+        Class<?> clazz = ref.getValueType();
+        IFormDecl formDecl = IFormDecl.fn.forClass(clazz);
+
+        Object obj = ref.get();
+
+        for (IFieldDecl fieldDecl : formDecl.getFieldDecls()) {
+            Class<?> type = fieldDecl.getValueType();
+            IProperty property = fieldDecl.getProperty();
+            boolean isCoRef = CoObject.class.isAssignableFrom(type);
+
+            String name = fieldDecl.getName();
+            String str = map.getString(name);
+            if (str == null) {
+                // map.getString("no-" + map.getString(name));
+                continue;
+            }
+            fieldDecl.getNullConvertion();
+
+            str = str.trim();
+            if (str.isEmpty()) {
+                if (TypeKind.isNumeric(type))
+                    continue;
+                if (isCoRef) {
+                    property.setValue(obj, null);
+                    continue;
+                }
+            }
+
+            if (isCoRef) {
+                CoObject coRef = (CoObject) type.newInstance();
+
+                IdType aIdType = type.getAnnotation(IdType.class);
+                if (aIdType == null)
+                    throw new IllegalUsageException("Unknown id type of " + type);
+                Class<?> idType = aIdType.value();
+
+                switch (TypeKind.getTypeId(idType)) {
+                case TypeId.INTEGER:
+                    int intval = map.getInt(name);
+                    @SuppressWarnings("unchecked")
+                    IId<Integer> _intw = (IId<Integer>) coRef;
+                    _intw.setId(intval);
+                    break;
+
+                case TypeId.LONG:
+                    long longval = map.getLong(name);
+                    @SuppressWarnings("unchecked")
+                    IId<Long> _longw = (IId<Long>) coRef;
+                    _longw.setId(longval);
+                    break;
+
+                default:
+                    throw new UnsupportedOperationException("Invalid id type: " + idType);
+                }
+
+                property.setValue(obj, coRef);
+                continue;
+            }
+
+            IParser<?> parser = property.getTyper(IParser.class);
+            if (parser == null)
+                parser = Typers.getTyper(type, IParser.class);
+            if (parser == null)
+                throw new NotImplementedException("No parser for " + type);
+            try {
+                Object value = parser.parse(str);
+                property.setValue(obj, value);
+            } catch (ParseException e) {
+                throw new ParseException("property " + name + ": " + e.getMessage(), e);
+            }
+        } // for property
     }
 
 }

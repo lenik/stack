@@ -13,23 +13,13 @@ import com.tinylily.model.base.CoEntity;
  * Salary Element
  */
 public class SalaryItem
-        extends CoEntity {
+        extends CoEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    long id;
     SalaryLine parent;
     SalaryItemDef def;
     BigDecimal bonus = BigDecimal.ZERO;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     /**
      * 父元素

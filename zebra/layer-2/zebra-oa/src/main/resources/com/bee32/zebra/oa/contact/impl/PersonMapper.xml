@@ -106,7 +106,21 @@
     <update id="update">
         update person
         <set>
-            <include refid="co.setU" />
+            <include refid="co.setUSA" />
+            gender=#{gender},
+            employee=#{employee},
+            homeland=#{homeland},
+            passport=#{passport},
+            ssn=#{socialSecurityNum},
+            dln=#{driverLicenseNum},
+            <!-- party -->
+            birthday=#{birthday},
+            customer=#{customer},
+            supplier=#{supplier},
+            subject=#{subject},
+            comment=#{comment},
+            bank=#{bank},
+            bankacc=#{account},
         </set>
         where id=#{id}
     </update>

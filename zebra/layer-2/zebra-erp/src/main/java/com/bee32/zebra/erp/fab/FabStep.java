@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoMomentInterval;
+import com.tinylily.model.base.IdType;
 
+@IdType(Long.class)
 public class FabStep
-        extends CoMomentInterval {
+        extends CoMomentInterval<Long> {
 
     private static final long serialVersionUID = 1L;
 

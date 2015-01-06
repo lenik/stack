@@ -8,23 +8,23 @@ import com.tinylily.model.sea.QVariantMap;
 public class ReplyCriteria
         extends CoMessageCriteria {
 
-    public Long topicId;
-    public Long parentId;
+    public Integer topicId;
+    public Integer parentId;
     public Integer partyId;
 
-    public Long getTopicId() {
+    public Integer getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(Long topicId) {
+    public void setTopicId(Integer topicId) {
         this.topicId = topicId;
     }
 
-    public Long getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
@@ -40,8 +40,8 @@ public class ReplyCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
-        topicId = map.getLong("topic", topicId);
-        parentId = map.getLong("parent", parentId);
+        topicId = map.getInt("topic", topicId);
+        parentId = map.getInt("parent", parentId);
         partyId = map.getInt("party", partyId);
     }
 

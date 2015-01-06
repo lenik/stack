@@ -3,32 +3,21 @@ package com.bee32.zebra.oa.contact;
 import net.bodz.bas.repr.form.validate.NotNull;
 
 import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IId;
+import com.tinylily.model.base.IdType;
 
+@IdType(Integer.class)
 public class PersonRole
-        extends CoEntity
-        implements IId<Integer> {
+        extends CoEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int N_ROLE = 20;
     public static final int N_DESCRIPTION = 200;
 
-    private int id;
     private Person person;
     private OrgUnit orgUnit;
     private Organization org;
     private String role;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @NotNull
     public Person getPerson() {

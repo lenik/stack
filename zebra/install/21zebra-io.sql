@@ -314,18 +314,7 @@
         code        varchar(20),
         label       varchar(80),
         description varchar(200),
-        contact     int,
-        
-        parent      int,
-        depth       int not null default -1,
-        
-        usage       PlaceUsage not null default 'INTERNAL',
-        vip         int,
-        vip_org     int,
-        dx          int not null default 0,         -- mm
-        dy          int not null default 0,         -- mm
-        dz          int not null default 0,         -- mm
-        
+
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -338,13 +327,27 @@
         mode        int not null default 640,
         acl         int,
         
+        parent      int,
+        depth       int not null default -1,
+        
+        usage       PlaceUsage not null default 'INTERNAL',
+        vip         int,
+        vip_org     int,
+        dx          int not null default 0,         -- mm
+        dy          int not null default 0,         -- mm
+        dz          int not null default 0,         -- mm
+        
         constraint place_uk_code     unique(code),
-        constraint place_fk_parent   foreign key(parent)
-            references place(id)         on update cascade on delete cascade,
-        constraint place_fk_uid      foreign key(uid)
-            references "user"(id)       on update cascade on delete set null,
         constraint place_fk_gid      foreign key(gid)
             references "group"(id)      on update cascade on delete set null
+        constraint place_fk_parent   foreign key(parent)
+            references place(id)        on update cascade on delete cascade,
+        constraint place_fk_uid      foreign key(uid)
+            references "user"(id)       on update cascade on delete set null,
+        constraint place_fk_vip      foreign key(vip)
+            references person(id)       on update cascade on delete set null,
+        constraint place_fk_vip_org  foreign key(vip_org)
+            references org(id)          on update cascade on delete set null
     );
 
     create index place_label         on place(label);
@@ -543,7 +546,7 @@
 
 -- drop table if exists dldoc;
     create sequence dldoc_seq start with 1000;
-    create table dldoc(                  -- sales/subscription doc
+    create table dldoc(             -- sales/subscription doc
         id          int primary key default nextval('dldoc_seq'),
         prev        int,            -- previous doc
         subject     varchar(200) not null,
@@ -634,7 +637,7 @@
     create table dlentry(
         id          bigint primary key default nextval('dlentry_seq'),
         doc         int not null,
-        sentry      bigint,         -- XXX deprecated
+        sentry      int,            -- XXX deprecated
         
         art         int not null,
         qty         numeric(20,2) not null,

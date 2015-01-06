@@ -7,10 +7,12 @@ import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
+@IdType(Integer.class)
 public class StockEvent
-        extends CoMessage {
+        extends CoMessage<Integer> {
 
     private static final long serialVersionUID = 1L;
 

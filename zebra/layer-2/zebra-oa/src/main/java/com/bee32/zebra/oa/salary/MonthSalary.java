@@ -4,6 +4,7 @@ import java.beans.Transient;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IdType;
 
 /**
  * 月度工资冗余
@@ -13,25 +14,16 @@ import com.tinylily.model.base.CoEntity;
  * <p lang="en">
  * 
  */
+@IdType(Integer.class)
 public class MonthSalary
-        extends CoEntity {
+        extends CoEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    int id;
     int year;
     int month;
     AccountingEvent ar;
     double value;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * 年月

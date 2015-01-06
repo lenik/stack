@@ -68,20 +68,41 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
-        <![CDATA[
-        insert into place(code, label, description)
-            values(#{codeName},#{label},#{description})
-            returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into place(
+            code, label, description,
+            priority, flags, state, version,
+            uid, gid, mode, acl, 
+            parent, depth,
+            usage, vip, vip_org,
+            dx, dy, dz
+        ) values(
+            #{codeName},#{label},#{description},
+            #{priority}, #{flags}, #{state}, #{version},
+            #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{parent.id}, #{depth},
+            #{usage}, #{party.id}, #{partyOrg.id},
+            #{bbox.dx}, #{bbox.dy}, #{bbox.dz}
+        ) returning id
     ]]></select>
 
     <update id="update">
+        <!-- delete from contact... -->
         update place
         <set>
-            <include refid="co.setU" />
+            <include refid="co.setUSA" />
+            parent = #{parent == null ? null : parent.id},
+            depth = #{depth},
+            <!-- contact... -->
+            usage = #{usage},
+            vip = #{party == null ? null : party.id},
+            vip_org = #{partyOrg == null ? null : partyOrg.id},
+            dx = #{bbox.dx},
+            dy = #{bbox.dy},
+            dz = #{bbox.dz},
         </set>
         <where>
-            <if test="id != null">id=#{id}, </if>
+            <if test="id != null">and id=#{id}</if>
         </where>
     </update>
 

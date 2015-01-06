@@ -6,6 +6,7 @@ import java.util.List;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.mx.base.CoMessage;
@@ -15,8 +16,9 @@ import com.tinylily.model.mx.base.CoMessage;
  * 
  * owner: 制单
  */
+@IdType(Integer.class)
 public class SalesOrder
-        extends CoMessage {
+        extends CoMessage<Integer> {
 
     private static final long serialVersionUID = 1L;
 

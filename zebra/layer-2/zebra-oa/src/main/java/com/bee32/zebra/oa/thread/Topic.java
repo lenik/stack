@@ -16,7 +16,7 @@ import com.tinylily.model.mx.base.CoMessage;
 import com.tinylily.model.sea.QVariantMap;
 
 public class Topic
-        extends CoMessage
+        extends CoMessage<Integer>
         implements IMomentInterval {
 
     private static final long serialVersionUID = 1L;

@@ -14,23 +14,21 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IId;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.sea.QVariantMap;
 
+@IdType(Integer.class)
 public abstract class Party
-        extends CoEntity
-        implements IId<Integer> {
+        extends CoEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int N_BANK = 50;
     public static final int N_ACCOUNT = 30;
     public static final int N_SUBJECT = 200;
-    public static final int N_COMMENT = 200;
     public static final int N_LANGTAG = 5;
     public static final int N_TIMEZONEID = 10;
 
-    private int id;
     private Date birthday;
     private Locale locale = Locale.SIMPLIFIED_CHINESE;
     private TimeZone timeZone = TimeZones.TZ_SHANGHAI;
@@ -40,21 +38,10 @@ public abstract class Party
     private final Set<String> tags = new TreeSet<>();
 
     private String subject;
-    private String comment;
     private Contact contact;
 
     private String bank;
     private String account;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * 生日
@@ -173,20 +160,6 @@ public abstract class Party
     }
 
     /**
-     * 注释
-     * 
-     * @placeholder 输入注释性的文本…
-     */
-    @TextInput(maxLength = N_COMMENT)
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    /**
      * 联系方式
      */
     public Contact getContact() {
@@ -247,8 +220,7 @@ public abstract class Party
             throws ParseException {
         super.populate(map);
 
-        id = map.getInt("id", id);
-        // birthday=map.getDate("birthday", birthday);;
+        // birthday = map.getDate("birthday", birthday);
         // locale = Locale.SIMPLIFIED_CHINESE;
         // timeZone = TimeZones.TZ_SHANGHAI;
 
@@ -256,12 +228,11 @@ public abstract class Party
         supplier = map.getBoolean("supplier", supplier);
         // tags = new TreeSet<>();
 
-        subject = map.getString("subject");
-        comment = map.getString("comment");
+        subject = map.getStringE4n("subject");
         // contact = map.getIntIdRef("contact", new Contact());
 
-        bank = map.getString("bank");
-        account = map.getString("account");
+        bank = map.getStringE4n("bank");
+        account = map.getStringE4n("account");
     }
 
 }

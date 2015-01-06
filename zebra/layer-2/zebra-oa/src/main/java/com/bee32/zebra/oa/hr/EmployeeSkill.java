@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IdType;
 
 /**
  * 雇员技能
@@ -22,26 +23,17 @@ import com.tinylily.model.base.CoEntity;
  * 
  * @rewrite description 描述获得技能的附加信息。
  */
+@IdType(Integer.class)
 public class EmployeeSkill
-        extends CoEntity {
+        extends CoEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    int id;
     Employee employee;
     JobSkillCategory category;
     int score;
     Date date;
     BigDecimal bonus = BigDecimal.ZERO;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * 雇员

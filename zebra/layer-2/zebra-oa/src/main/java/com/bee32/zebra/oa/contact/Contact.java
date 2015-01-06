@@ -1,6 +1,5 @@
 package com.bee32.zebra.oa.contact;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +9,11 @@ import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IId;
+import com.tinylily.model.base.IdType;
 
+@IdType(Integer.class)
 public class Contact
-        extends CoEntity
-        implements IId<Integer>, Serializable {
+        extends CoEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,8 +32,6 @@ public class Contact
     public static final int N_EMAIL = 30;
     public static final int N_WEB = 80;
     public static final int N_QQ = 20;
-
-    private int id;
 
     private Organization org;
     private OrgUnit orgUnit;
@@ -58,16 +55,6 @@ public class Contact
     private String email;
     private String web;
     private String qq;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Organization getOrg() {
         return org;

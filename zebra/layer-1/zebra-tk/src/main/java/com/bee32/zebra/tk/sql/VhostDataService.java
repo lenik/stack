@@ -59,6 +59,10 @@ public class VhostDataService
     @SuppressWarnings("unchecked")
     @Override
     public <spec_t> spec_t query(Class<spec_t> specificationClass) {
+        if (specificationClass == IMapperProvider.class)
+            return (spec_t) mapperProvider;
+        if (specificationClass == DataSource.class)
+            return (spec_t) dataSource;
         if (IMapper.class.isAssignableFrom(specificationClass)) {
             Class<? extends IMapper> mapperClass = (Class<? extends IMapper>) specificationClass;
             return (spec_t) mapperProvider.getMapper(mapperClass);

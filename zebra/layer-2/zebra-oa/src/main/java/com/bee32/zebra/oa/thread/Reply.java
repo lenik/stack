@@ -14,7 +14,7 @@ import com.tinylily.model.mx.base.CoMessage;
 import com.tinylily.model.sea.QVariantMap;
 
 public class Reply
-        extends CoMessage
+        extends CoMessage<Integer>
         implements IMomentInterval {
 
     private static final long serialVersionUID = 1L;
@@ -78,8 +78,8 @@ public class Reply
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
-        topic = map.getLongIdRef("topic", new Topic());
-        parent = map.getLongIdRef("parent", new Reply());
+        topic = map.getIntIdRef("topic", new Topic());
+        parent = map.getIntIdRef("parent", new Reply());
         // parties;
         // changes;
     }

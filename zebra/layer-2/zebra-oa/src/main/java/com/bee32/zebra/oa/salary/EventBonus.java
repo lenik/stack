@@ -14,7 +14,7 @@ import com.tinylily.model.base.CoMomentInterval;
  * Event Bonus
  */
 public class EventBonus
-        extends CoMomentInterval {
+        extends CoMomentInterval<Long> {
 
     private static final long serialVersionUID = 1L;
 

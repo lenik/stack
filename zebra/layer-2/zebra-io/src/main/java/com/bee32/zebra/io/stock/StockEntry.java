@@ -2,16 +2,17 @@ package com.bee32.zebra.io.stock;
 
 import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoMomentInterval;
+import com.tinylily.model.base.IdType;
 
+@IdType(Long.class)
 public class StockEntry
-        extends CoMomentInterval {
+        extends CoMomentInterval<Long> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int N_BATCH = 30;
     public static final int N_DIVS = 100;
 
-    long id;
     StockEvent event;
 
     Artifact artifact;
@@ -21,15 +22,6 @@ public class StockEntry
 
     double quantity;
     double price;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public double getQuantity() {
         return quantity;

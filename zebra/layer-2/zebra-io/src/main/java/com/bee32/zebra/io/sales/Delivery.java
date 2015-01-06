@@ -6,11 +6,13 @@ import java.util.List;
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+@IdType(Integer.class)
 public class Delivery
-        extends CoMessage {
+        extends CoMessage<Integer> {
 
     private static final long serialVersionUID = 1L;
 

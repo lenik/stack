@@ -35,6 +35,13 @@
         label       varchar(40),
         description varchar(200),
         
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
         gid0        int,            -- primary gid, 0 for root user.
         email       varchar(30),    -- some users don't have an email, like admin, guest.
         emailok     boolean not null default false,
@@ -42,13 +49,6 @@
         passwd      varchar(40) not null default '', 
         lastlog     timestamp,
         lastlogip   inet,
-        
-        priority    int not null default 0,
-        creation    timestamp not null default now(),
-        lastmod     timestamp not null default now(),
-        flags       int not null default 0,
-        state       int not null default 0,
-        version     int not null default 0,
         
         constraint user_uk_code     unique(code),
         constraint user_fk_gid0     foreign key(gid0)
@@ -115,7 +115,6 @@
         web         varchar(80),
         qq          varchar(20),
         
-        
         constraint contact_uk       unique(org, ou, person, usage)
     );
 
@@ -132,19 +131,6 @@
         label       varchar(80),
         description varchar(200),
         
-        birthday    date,
-        locale      varchar(10) not null default 'zh-cn',
-        timezone    int not null default 800,
-        size        int not null default 0,
-        customer    boolean not null default false,
-        supplier    boolean not null default false,
-        subject     varchar(200),
-        comment     varchar(200),
-        contact     int,
-        bank        varchar(50),
-        bankacc     varchar(30),
-        taxid       varchar(20),
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -156,6 +142,21 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+
+        birthday    date,
+        locale      varchar(10) not null default 'zh-cn',
+        timezone    int not null default 800,
+        customer    boolean not null default false,
+        supplier    boolean not null default false,
+        subject     varchar(200),
+        comment     varchar(200),
+        contact     int,
+        bank        varchar(50),
+        bankacc     varchar(30),
+        
+        size        int not null default 0,
+        taxid       varchar(20),
+        shipper     boolean not null default false,
         
         constraint org_uk_taxid     unique(taxid),
         constraint org_fk_contact   foreign key(contact)
@@ -181,11 +182,6 @@
         label       varchar(80),
         description varchar(200),
         
-        org         int not null,
-        parent      int,
-        depth       int not null default -1,
-        contact     int,
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -198,8 +194,10 @@
         mode        int not null default 640,
         acl         int,
         
-        subject     varchar(200) not null default '',
-        text        text not null default '',
+        org         int not null,
+        parent      int,
+        depth       int not null default -1,
+        contact     int,
         
         constraint orgunit_fk_org   foreign key(org)
             references org(id)          on update cascade on delete cascade,
@@ -228,24 +226,6 @@
         label       varchar(80),
         description varchar(200),
         
-        birthday    date,
-        locale      varchar(10) not null default 'zh-cn',
-        timezone    int not null default 800,
-        gender      char,
-        employee    boolean not null default false,
-        homeland    varchar(10),
-        passport    varchar(20),
-        ssn         varchar(20),            -- social security number
-        dln         varchar(20),            -- driver's license number
-        
-        customer    boolean not null default false,
-        supplier    boolean not null default false,
-        subject     varchar(200),
-        comment     varchar(200),
-        contact     int,
-        bank        varchar(50),
-        bankacc     varchar(30),
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -257,6 +237,24 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+        
+        birthday    date,
+        locale      varchar(10) not null default 'zh-cn',
+        timezone    int not null default 800,
+        customer    boolean not null default false,
+        supplier    boolean not null default false,
+        subject     varchar(200),
+        comment     varchar(200),
+        contact     int,
+        bank        varchar(50),
+        bankacc     varchar(30),
+
+        employee    boolean not null default false,
+        gender      char,
+        homeland    varchar(10),
+        passport    varchar(20),
+        ssn         varchar(20),            -- social security number
+        dln         varchar(20),            -- driver's license number
         
         constraint person_uk_ssn    unique(ssn),
         constraint person_fk_contact foreign key(contact)
@@ -324,25 +322,6 @@
         code        varchar(40),
         label       varchar(80),    -- null if filename is used.
         description varchar(200), 
-        path        varchar(200) not null,
-        image       varchar(100),
-        
-        size        bigint not null,
-        sha1        varchar(32),    
-        type        varchar(100),   -- auto detected
-        encoding    varchar(100),   -- auto detected
-        
-        op          int,
-        org         int,
-        person      int,
-        
-        nvote       int not null default 0,
-        nlike       int not null default 0,
-        ndl         int not null default 0, -- downloads
-        
-        val         double precision, -- estimated
-        t0          date,           -- validate since
-        t1          date,           -- expire after
         
         priority    int not null default 0,
         creation    timestamp not null default now(),
@@ -355,6 +334,25 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+        
+        op          int,
+        t0          date,           -- validate since
+        t1          date,           -- expire after
+        val         double precision, -- estimated
+        
+        path        varchar(200) not null,
+        image       varchar(100),
+        size        bigint not null,
+        sha1        varchar(32),    
+        type        varchar(100),   -- auto detected
+        encoding    varchar(100),   -- auto detected
+        
+        org         int,
+        person      int,
+        
+        nvote       int not null default 0,
+        nlike       int not null default 0,
+        ndl         int not null default 0, -- downloads
         
         constraint fileinfo_fk_gid  foreign key(gid)
             references "group"(id)      on update cascade on delete set null,
@@ -548,7 +546,7 @@
 -- drop table if exists topicparty;
     create sequence topicparty_seq;
     create table topicparty(
-        id          int primary key default nextval('topicparty_seq'),
+        id          bigint primary key default nextval('topicparty_seq'),
         topic       int not null,
         person      int,
         org         int,
@@ -730,7 +728,7 @@
     create sequence acdoc_seq start with 1000;
     create table acdoc(
         id          int primary key default nextval('acdoc_seq'),
-        prev        int,         -- previous doc
+        prev        int,            -- previous doc
         op          int,
         cat         int,
         subject     varchar(200) not null,

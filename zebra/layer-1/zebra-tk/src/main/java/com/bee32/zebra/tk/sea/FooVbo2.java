@@ -31,9 +31,9 @@ import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.PageStruct;
-import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoObject;
 
-public abstract class FooVbo2<T extends CoEntity>
+public abstract class FooVbo2<T extends CoObject>
         extends AbstractHtmlViewBuilder<T>
         implements IZebraSiteAnchors, IFontAwesomeCharAliases {
 

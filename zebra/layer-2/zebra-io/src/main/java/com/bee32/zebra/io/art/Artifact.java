@@ -10,11 +10,9 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IId;
 
 public class Artifact
-        extends CoEntity
-        implements IId<Integer> {
+        extends CoEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,7 +23,6 @@ public class Artifact
     public static final int N_COLOR = 20;
     public static final int N_CAUTION = 100;
 
-    private int id;
     private ArtifactCategory category;
     private String skuCode;
     private String barCode;
@@ -45,16 +42,6 @@ public class Artifact
 
     private SupplyMethod supplyMethod = SupplyMethod.BUY;
     private int supplyDelay; // in days
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * 分类

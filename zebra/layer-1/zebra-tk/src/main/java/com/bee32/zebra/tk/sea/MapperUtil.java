@@ -9,16 +9,7 @@ public class MapperUtil {
 
     @SuppressWarnings("unchecked")
     public static <T, C> IMapperTemplate<T, C> getMapperTemplate(Class<T> type) {
-        String packageName = type.getPackage().getName();
-        String mapperName = packageName + ".impl." + type.getSimpleName() + "Mapper";
-
-        Class<? extends IMapper> mapperClass;
-        try {
-            mapperClass = (Class<? extends IMapper>) Class.forName(mapperName, true, type.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-
+        Class<? extends IMapper> mapperClass = IMapper.fn.getMapperClass(type);
         IMapper mapper = VhostDataService.getInstance().query(mapperClass);
         return (IMapperTemplate<T, C>) mapper;
     }

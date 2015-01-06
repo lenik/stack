@@ -11,7 +11,7 @@ import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.t.pojo.Pair;
 
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoObject;
 
 public class FilterSectionDiv
         extends SectionDiv {
@@ -20,10 +20,10 @@ public class FilterSectionDiv
         super(parent, id, "过滤/Filter", IFontAwesomeCharAliases.FA_FILTER);
     }
 
-    public <K> SwitchOverride<K> switchEntity(String label, boolean optional, Iterable<? extends CoEntity> list,
+    public <K> SwitchOverride<K> switchEntity(String label, boolean optional, Iterable<? extends CoObject> list,
             String param, K currentId, boolean currentIsNo) {
         List<Pair<K, String>> pairs = new ArrayList<>();
-        for (CoEntity o : list)
+        for (CoObject o : list)
             pairs.add(Pair.of((K) o.getId(), o.getLabel()));
         return switchPairs(label, optional, pairs, param, currentId, currentIsNo);
     }

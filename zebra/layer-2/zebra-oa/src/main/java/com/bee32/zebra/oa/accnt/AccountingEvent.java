@@ -9,10 +9,12 @@ import net.bodz.bas.meta.cache.Derived;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
+@IdType(Long.class)
 public class AccountingEvent
-        extends CoMessage {
+        extends CoMessage<Long> {
 
     private static final long serialVersionUID = 1L;
 

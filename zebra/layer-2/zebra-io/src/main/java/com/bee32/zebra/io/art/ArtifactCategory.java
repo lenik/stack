@@ -4,28 +4,20 @@ import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.tinylily.model.base.CoNode;
+import com.tinylily.model.base.IdType;
 
+@IdType(Integer.class)
 public class ArtifactCategory
-        extends CoNode<ArtifactCategory> {
+        extends CoNode<ArtifactCategory, Integer> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int N_SKU_CODE_FORMAT = 100;
     public static final int N_BAR_CODE_FORMAT = 100;
 
-    private int id;
     private String skuCodeFormat;
     private String barCodeFormat;
     private int count;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * @label SKU代码格式

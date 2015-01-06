@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IId;
+import com.tinylily.model.base.IdType;
 
 /**
  * 雇员信息
@@ -19,13 +19,12 @@ import com.tinylily.model.base.IId;
  * <p lang="en">
  * Employee Information
  */
+@IdType(Integer.class)
 public class Employee
-        extends CoEntity
-        implements IId<Integer> {
+        extends CoEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    int id;
     Person person;
 
     BigDecimal baseSalary = BigDecimal.ZERO;
@@ -41,16 +40,6 @@ public class Employee
 
     // List<LaborContract> laborContracts = new ArrayList<LaborContract>();
     List<EmployeeSkill> skills = new ArrayList<EmployeeSkill>();
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * 自然人

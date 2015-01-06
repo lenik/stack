@@ -8,18 +8,19 @@ import java.util.List;
 
 import com.bee32.zebra.oa.hr.Employee;
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IdType;
 
 /**
  * 员工工资
  * 
  * 员工工资由若干个工资元素组成。
  */
+@IdType(Integer.class)
 public class SalaryLine
-        extends CoEntity {
+        extends CoEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    int id;
     int year;
     int month;
     Employee employee;
@@ -33,15 +34,6 @@ public class SalaryLine
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     /**

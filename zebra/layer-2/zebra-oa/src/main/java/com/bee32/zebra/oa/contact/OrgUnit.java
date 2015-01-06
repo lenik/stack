@@ -4,25 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tinylily.model.base.CoNode;
+import com.tinylily.model.base.IdType;
 
+@IdType(Integer.class)
 public class OrgUnit
-        extends CoNode<OrgUnit> {
+        extends CoNode<OrgUnit, Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
     private Organization org;
     private Contact contact;
     private List<PersonRole> staff = new ArrayList<PersonRole>();
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Organization getOrg() {
         return org;

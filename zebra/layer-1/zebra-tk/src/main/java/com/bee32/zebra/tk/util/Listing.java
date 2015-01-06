@@ -7,7 +7,7 @@ import java.util.List;
 import net.bodz.bas.t.pojo.Pair;
 import net.bodz.bas.t.predef.Predef;
 
-import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoObject;
 
 public class Listing {
 
@@ -31,9 +31,9 @@ public class Listing {
         return pairs;
     }
 
-    public static String joinLabels(String delim, Iterable<? extends CoEntity> entities) {
+    public static String joinLabels(String delim, Iterable<? extends CoObject> entities) {
         StringBuilder sb = new StringBuilder();
-        for (CoEntity o : entities) {
+        for (CoObject o : entities) {
             if (sb.length() != 0)
                 sb.append(delim);
             sb.append(o.getLabel());

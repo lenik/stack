@@ -2,15 +2,18 @@ package com.bee32.zebra.oa.file;
 
 import java.util.Date;
 
+import net.bodz.bas.meta.cache.Derived;
+
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.IMomentInterval;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+@IdType(Integer.class)
 public class FileInfo
-        extends CoMessage
-        implements IMomentInterval {
+        extends CoMessage<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -165,6 +168,7 @@ public class FileInfo
     /** ⇱ Implementation Of {@link IMomentInterval }. */
     /* _____________________________ */static section.iface __MOMENT_INTERVAL__;
 
+    @Derived
     @Override
     public final Date getBeginDate() {
         return getActiveDate();
@@ -175,6 +179,7 @@ public class FileInfo
         setActiveDate(beginDate);
     }
 
+    @Derived
     @Override
     public final Date getEndDate() {
         return getExpireDate();

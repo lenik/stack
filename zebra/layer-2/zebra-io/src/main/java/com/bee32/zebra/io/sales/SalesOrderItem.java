@@ -6,25 +6,16 @@ import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoMomentInterval;
 
 public class SalesOrderItem
-        extends CoMomentInterval {
+        extends CoMomentInterval<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    long id;
     SalesOrder order;
     Artifact artifact;
 
     String altLabel;
     String altSpec;
     String altUom;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public Date getOrderTime() {
         return super.getBeginDate();
