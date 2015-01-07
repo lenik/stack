@@ -9,6 +9,10 @@ import net.bodz.bas.repr.form.meta.TextInput;
 import com.tinylily.model.base.CoNode;
 import com.tinylily.model.base.IdType;
 
+/**
+ * @unit category
+ * @unit.zh 个
+ */
 @IdType(Integer.class)
 @TableName("artcat")
 public class ArtifactCategory

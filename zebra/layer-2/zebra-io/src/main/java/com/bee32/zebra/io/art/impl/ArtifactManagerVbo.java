@@ -17,6 +17,7 @@ import com.bee32.zebra.io.art.SupplyMethod;
 import com.bee32.zebra.io.art.UOM;
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
@@ -41,11 +42,12 @@ public class ArtifactManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<ArtifactManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Artifact> a, IUiRef<ArtifactManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);
         ArtifactCriteria criteria = criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so1;
             so1 = filters.switchEntity("分类", false, //
@@ -62,25 +64,27 @@ public class ArtifactManagerVbo
             criteria.noSupplyMethod = so2.isNull;
         }
 
-        List<Artifact> list = postfilt(mapper.filter(criteria));
+        List<Artifact> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (Artifact o : list) {
-            ArtifactCategory category = o.getCategory();
-            UOM uom = o.getUom();
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (Artifact o : list) {
+                ArtifactCategory category = o.getCategory();
+                UOM uom = o.getUom();
 
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getSkuCode());
-            tr.td().text(category == null ? null : category.getLabel());
-            cocols("u", tr, o);
-            tr.td().text(uom == null ? null : uom.getLabel() + "/" + o.getUomProperty());
-            tr.td().text(o.getSupplyMethod().getLabel());
-            tr.td().text(o.getBarCode());
-            cocols("sa", tr, o);
-        }
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getSkuCode());
+                tr.td().text(category == null ? null : category.getLabel());
+                cocols("u", tr, o);
+                tr.td().text(uom == null ? null : uom.getLabel() + "/" + o.getUomProperty());
+                tr.td().text(o.getSupplyMethod().getLabel());
+                tr.td().text(o.getBarCode());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

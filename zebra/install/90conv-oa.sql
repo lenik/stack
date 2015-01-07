@@ -109,13 +109,13 @@ set constraints all deferred;
             left join old.file_blob b on a.file_blob=b.id
             left join old.party p on a.party=p.id;
 
-    delete from fileinfo where id in (select id from v_fileinfo_dupx);
-    alter table fileinfo add constraint fileinfo_uk unique(dir, base);
-
     insert into filetag(file, tag)
         select x.user_file "file", y.id_new "tag"
         from old.user_file_tags x
             left join old.user_file_tagname y on x.tag=y.id;
+
+    delete from fileinfo where id in (select id from v_fileinfo_dupx);
+    alter table fileinfo add constraint fileinfo_uk unique(dir, base);
 
 -- topic, reply
     

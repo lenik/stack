@@ -1,6 +1,5 @@
 package com.tinylily.model.base.schema.impl;
 
-import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
@@ -13,7 +12,6 @@ import com.tinylily.model.base.schema.CategoryDef;
  * 
  * @label 类别
  */
-@PathToken("cat")
 public class CategoryDefManager
         extends FooManager {
 

@@ -13,7 +13,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.accnt.AccountingEntry;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class AccountingEntryManagerVbo
@@ -26,19 +26,20 @@ public class AccountingEntryManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AccountingEntryManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<AccountingEntry> a,
+            IUiRef<AccountingEntryManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);
-        List<AccountingEntry> list = postfilt(mapper.all());
+        List<AccountingEntry> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-
-        for (AccountingEntry o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getDescription()).class_("small");
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (AccountingEntry o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getDescription()).class_("small");
+                cocols("sa", tr, o);
+            }
     }
 
 }

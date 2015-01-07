@@ -15,7 +15,7 @@ import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
@@ -30,12 +30,12 @@ public class OrganizationManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<OrganizationManager> ref,
-            IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Organization> a,
+            IUiRef<OrganizationManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);
         OrganizationCriteria criteria = criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchPairs("类型", false, //
@@ -43,30 +43,32 @@ public class OrganizationManagerVbo
             criteria.type = so.key;
         }
 
-        List<Organization> list = postfilt(mapper.filter(criteria));
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
+        List<Organization> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        for (Organization o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getTypeChars());
-            tr.td().b().text(o.getFullName());
-            tr.td().text(o.getSize());
-            tr.td().text(o.getDescription()).class_("small");
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (Organization o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getTypeChars());
+                tr.td().b().text(o.getFullName());
+                tr.td().text(o.getSize());
+                tr.td().text(o.getDescription()).class_("small");
 
-            Contact contact = o.getContact();
-            if (contact == null) {
-                for (int i = 0; i < 3; i++)
-                    tr.td();
-            } else {
-                tr.td().text(contact.getFullAddress()).class_("small");
-                tr.td().text(contact.getTels());
-                tr.td().text(contact.getQq());
+                Contact contact = o.getContact();
+                if (contact == null) {
+                    for (int i = 0; i < 3; i++)
+                        tr.td();
+                } else {
+                    tr.td().text(contact.getFullAddress()).class_("small");
+                    tr.td().text(contact.getTels());
+                    tr.td().text(contact.getQq());
+                }
+                cocols("sa", tr, o);
             }
-            cocols("sa", tr, o);
-        }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

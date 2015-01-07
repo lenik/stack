@@ -2,12 +2,14 @@ package com.bee32.zebra.oa.accnt;
 
 import java.math.BigDecimal;
 
+import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.meta.cache.Derived;
 
 import com.tinylily.model.base.CoMomentInterval;
 import com.tinylily.model.base.IdType;
 
 @IdType(Long.class)
+@TableName("acentry")
 public class AccountingEntry
         extends CoMomentInterval<Long> {
 

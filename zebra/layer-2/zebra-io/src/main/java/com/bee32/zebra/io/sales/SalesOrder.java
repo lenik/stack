@@ -13,8 +13,6 @@ import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
 import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.schema.CategoryDef;
-import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.mx.base.CoMessage;
 
 /**
@@ -33,8 +31,6 @@ public class SalesOrder
     private Organization org;
     private Person person;
 
-    private CategoryDef category;
-    private PhaseDef phase;
     private double quantity;
     private double total;
 

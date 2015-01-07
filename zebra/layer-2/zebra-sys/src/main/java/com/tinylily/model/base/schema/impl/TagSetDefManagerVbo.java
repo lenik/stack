@@ -12,7 +12,7 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.TagSetDef;
 
@@ -26,23 +26,26 @@ public class TagSetDefManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<TagSetDefManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<TagSetDef> a, IUiRef<TagSetDefManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         TagSetDefMapper mapper = ctx.query(TagSetDefMapper.class);
-        List<TagSetDef> list = postfilt(mapper.all());
+        List<TagSetDef> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (TagSetDef o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getSchema().getLabel());
-            cocols("cu", tr, o);
-            tr.td().text(o.getTags()).class_("small");
-            tr.td().text(o.isOrtho());
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (TagSetDef o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getSchema().getLabel());
+                cocols("cu", tr, o);
+                tr.td().text(o.getTags()).class_("small");
+                tr.td().text(o.isOrtho());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

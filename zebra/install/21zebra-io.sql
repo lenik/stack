@@ -488,7 +488,7 @@
     create index stdoc_t0t1            on stdoc(t0, t1);
     create index stdoc_t1              on stdoc(t1);
 
-    create view v_stdoc as
+    create or replace view v_stdoc as
         select a.*, 
             prev.subject "prev_subject",
             form.label   "form_label",
@@ -507,6 +507,11 @@
             left join person on a.person=person.id
             left join cat on a.cat=cat.id
             left join phase on a.phase=phase.id;
+
+    create or replace view v_stdoc_n as
+        select
+            (select count(*) from stdoc) "total",
+            (select count(*) from stdoc where phase>1201) "running";
 
 -- drop table if exists stentry;
     create sequence stentry_seq start with 1000;
@@ -644,6 +649,10 @@
             left join cat on a.cat=cat.id
             left join phase on a.phase=phase.id;
 
+    create or replace view v_dldoc_n as select
+        (select count(*) from dldoc) "total",
+        (select count(*) from dldoc where t1 is null) "shipping";
+        
 -- drop table if exists dlentry;
     create sequence dlentry_seq start with 1000;
     create table dlentry(

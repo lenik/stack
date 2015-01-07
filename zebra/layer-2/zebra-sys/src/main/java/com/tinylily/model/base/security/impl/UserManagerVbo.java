@@ -12,7 +12,7 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.security.User;
 
@@ -22,33 +22,36 @@ public class UserManagerVbo
     public UserManagerVbo()
             throws NoSuchPropertyException, ParseException {
         super(UserManager.class);
-        insertIndexFields("i*sa", "loginName", "label", "description", "primaryGroup", "groups", "email", "lastLoginTime",
-                "lastLoginIP");
+        insertIndexFields("i*sa", "loginName", "label", "description", "primaryGroup", "groups", "email",
+                "lastLoginTime", "lastLoginIP");
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<UserManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         UserMapper mapper = ctx.query(UserMapper.class);
-        List<User> list = postfilt(mapper.all());
+        List<User> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (User o : list) {
-            long lastLoginTime = o.getLastLoginTime();
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (User o : list) {
+                long lastLoginTime = o.getLastLoginTime();
 
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getLoginName());
-            cocols("u", tr, o);
-            ref(tr.td(), o.getPrimaryGroup());
-            tr.td().text(fn.labels(o.getGroups()));
-            tr.td().text(o.getEmail()).style(o.isEmailValidated() ? "" : "color: gray");
-            tr.td().text(lastLoginTime == 0 ? null : fn.formatDate(o.getLastLoginTime()));
-            tr.td().text(o.getLastLoginIP());
-            cocols("sa", tr, o);
-        }
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getLoginName());
+                cocols("u", tr, o);
+                ref(tr.td(), o.getPrimaryGroup());
+                tr.td().text(fn.labels(o.getGroups()));
+                tr.td().text(o.getEmail()).style(o.isEmailValidated() ? "" : "color: gray");
+                tr.td().text(lastLoginTime == 0 ? null : fn.formatDate(o.getLastLoginTime()));
+                tr.td().text(o.getLastLoginIP());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
-    
+
 }

@@ -30,7 +30,7 @@
 
     <resultMap id="map2" type="com.bee32.zebra.io.sales.SalesOrder" extends="map1">
         <collection property="items" javaType="ArrayList" ofType="com.bee32.zebra.io.sales.SalesOrderItem">
-            <id column="y_id" />
+            <id property="id" column="y_id" />
         </collection>
     </resultMap>
 
@@ -84,7 +84,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
+            <if test="topicId != null">and a.topic=#{topicId}</if>
         </where>
     </select>
 
@@ -117,7 +117,7 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from sdoc
+        select * from v_sdoc_n
     </select>
 
 </mapper>

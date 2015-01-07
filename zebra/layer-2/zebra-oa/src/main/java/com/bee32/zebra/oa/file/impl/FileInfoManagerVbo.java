@@ -15,7 +15,7 @@ import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.sys.TagSets;
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.bee32.zebra.tk.util.Listing;
@@ -33,12 +33,13 @@ public class FileInfoManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<FileInfoManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<FileInfo> a, IUiRef<FileInfoManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
 
         FileInfoCriteria criteria = criteriaFromRequest(new FileInfoCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("标签", false, //
@@ -53,27 +54,29 @@ public class FileInfoManagerVbo
             criteria.noYear = so.isNull;
         }
 
-        List<FileInfo> list = postfilt(mapper.filter(criteria));
+        List<FileInfo> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (FileInfo o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (FileInfo o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
 
-            ref(tr.td(), o.getOp()).align("center");
-            cocols("u", tr, o);
-            tr.td().text(o.getSize()).class_("small");
-            ref(tr.td(), o.getOrg()).class_("small");
-            ref(tr.td(), o.getPerson()).class_("small");
-            tr.td().text(o.getValue()).style("font-weight: bold");
-            tr.td().text(Listing.joinLabels(", ", o.getTags())).class_("small");
-            tr.td().text(o.getDownloads());
-            tr.td().text(fn.formatDate(o.getExpireDate()));
+                ref(tr.td(), o.getOp()).align("center");
+                cocols("u", tr, o);
+                tr.td().text(o.getSize()).class_("small");
+                ref(tr.td(), o.getOrg()).class_("small");
+                ref(tr.td(), o.getPerson()).class_("small");
+                tr.td().text(o.getValue()).style("font-weight: bold");
+                tr.td().text(Listing.joinLabels(", ", o.getTags())).class_("small");
+                tr.td().text(o.getDownloads());
+                tr.td().text(fn.formatDate(o.getExpireDate()));
 
-            cocols("sa", tr, o);
-        }
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

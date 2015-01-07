@@ -11,11 +11,11 @@
         <result property="bbox.dy" column="dy" />
         <result property="bbox.dz" column="dz" />
         <association property="party" javaType="com.bee32.zebra.oa.contact.Person">
-            <id column="vip" />
+            <id property="id" column="vip" />
             <result property="label" column="vip_label" />
         </association>
         <association property="partyOrg" javaType="com.bee32.zebra.oa.contact.Organization">
-            <id column="vip_org" />
+            <id property="id" column="vip_org" />
             <result property="label" column="vip_org_label" />
         </association>
     </resultMap>

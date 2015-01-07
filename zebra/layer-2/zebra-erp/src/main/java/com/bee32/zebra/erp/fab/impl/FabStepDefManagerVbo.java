@@ -13,7 +13,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.erp.fab.FabStepDef;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class FabStepDefManagerVbo
@@ -26,19 +26,22 @@ public class FabStepDefManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<FabStepDefManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<FabStepDef> a, IUiRef<FabStepDefManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         FabStepDefMapper mapper = ctx.query(FabStepDefMapper.class);
-        List<FabStepDef> list = postfilt(mapper.all());
+        List<FabStepDef> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (FabStepDef o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (FabStepDef o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

@@ -23,7 +23,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from salesOrderItem a
+        from sentry a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -34,7 +34,7 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label"
-        from salesOrderItem a
+        from sentry a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -47,7 +47,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.cat=#{categoryId}</if>
+            <if test="salesOrderId != null">and a.doc=#{salesOrderId}</if>
         </where>
     </select>
 
@@ -60,7 +60,7 @@
 
     <select id="insert" resultType="int">
         <![CDATA[
-        insert into salesOrderItem(
+        insert into sentry(
             code, label, description)
         ) values(
             #{codeName},#{label},#{description}
@@ -68,7 +68,7 @@
     ]]></select>
 
     <update id="update">
-        update salesOrderItem
+        update sentry
         <set>
             <include refid="co.setU" />
         </set>
@@ -78,11 +78,11 @@
     </update>
 
     <delete id="delete">
-        delete from salesOrderItem where id=#{id}
+        delete from sentry where id=#{id}
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from salesOrderItem
+        select count(*) "total" from sentry
     </select>
 
 </mapper>

@@ -46,9 +46,9 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="type == 0">and not customer and not supplier and not employee</if>
-            <if test="employee || type == 4">and employee</if>
-            <if test="type == 3">and false</if>
+            <if test="type == 0">and not (peer or customer or supplier or employee)</if>
+            <if test="type == 4">and false</if>
+            <if test="employee || type == 5">and employee</if>
             <if test="surname != null">and substr(a.label,1,1)=#{surname}</if>
 
             <!-- co -->
@@ -56,8 +56,9 @@
         
             <!-- party -->
             <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
-            <if test="customer || type == 1">and customer</if>
-            <if test="supplier || type == 2">and supplier</if>
+            <if test="peer || type == 1">and peer</if>
+            <if test="customer || type == 2">and customer</if>
+            <if test="supplier || type == 3">and supplier</if>
         </where>
     </select>
 
@@ -68,22 +69,6 @@
         </where>
     </select>
 
-    <select id="selectPrev" parameterType="int" resultMap="map1">
-        <include refid="select2" />
-        <where>
-            <if test="_parameter != null">a.id &lt; #{id}</if>
-        </where>
-        order by id desc limit 1
-    </select>
-    
-    <select id="selectNext" parameterType="int" resultMap="map1">
-        <include refid="select2" />
-        <where>
-            <if test="_parameter != null">a.id &gt; #{id}</if>
-        </where>
-        order by id asc limit 1
-    </select>
-    
     <select id="insert" resultType="long"><![CDATA[
         insert into person(
             code, label, description,

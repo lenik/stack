@@ -13,7 +13,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.sales.SalesOrder;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class SalesOrderManagerVbo
@@ -26,25 +26,28 @@ public class SalesOrderManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<SalesOrderManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<SalesOrder> a, IUiRef<SalesOrderManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrderMapper mapper = ctx.query(SalesOrderMapper.class);
-        List<SalesOrder> list = postfilt(mapper.all());
+        List<SalesOrder> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (SalesOrder o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            cocols("m", tr, o);
-            ref(tr.td(), o.getTopic());
-            ref(tr.td(), o.getOrg());
-            ref(tr.td(), o.getPerson());
-            ref(tr.td(), o.getPhase());
-            tr.td().text(o.getTotal());
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (SalesOrder o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                cocols("m", tr, o);
+                ref(tr.td(), o.getTopic());
+                ref(tr.td(), o.getOrg());
+                ref(tr.td(), o.getPerson());
+                ref(tr.td(), o.getPhase());
+                tr.td().text(o.getTotal());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

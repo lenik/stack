@@ -22,6 +22,9 @@ import com.tinylily.model.base.security.impl.UserMapper;
 import com.tinylily.model.sea.AbstractTextParametric;
 import com.tinylily.model.sea.QVariantMap;
 
+/**
+ * 登录
+ */
 public class LoginForm
         extends AbstractTextParametric
         implements IZebraSiteAnchors {

@@ -13,7 +13,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.hr.JobSkillCategory;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class JobSkillCategoryManagerVbo
@@ -26,19 +26,22 @@ public class JobSkillCategoryManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<JobSkillCategoryManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<JobSkillCategory> a,
+            IUiRef<JobSkillCategoryManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
         JobSkillCategoryMapper mapper = ctx.query(JobSkillCategoryMapper.class);
-        List<JobSkillCategory> list = postfilt(mapper.all());
+        List<JobSkillCategory> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (JobSkillCategory o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (JobSkillCategory o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

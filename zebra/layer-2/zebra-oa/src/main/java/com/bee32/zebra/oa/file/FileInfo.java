@@ -9,6 +9,7 @@ import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.bas.repr.path.PathToken;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
@@ -17,6 +18,7 @@ import com.tinylily.model.base.IdType;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+@PathToken("file")
 @IdType(Integer.class)
 public class FileInfo
         extends CoMessage<Integer> {

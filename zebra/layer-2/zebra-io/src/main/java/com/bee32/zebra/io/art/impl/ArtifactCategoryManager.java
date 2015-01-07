@@ -1,6 +1,5 @@
 package com.bee32.zebra.io.art.impl;
 
-import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.art.ArtifactCategory;
@@ -13,7 +12,6 @@ import com.bee32.zebra.tk.sea.FooManager;
  * 
  * @rel art/: 管理物料
  */
-@PathToken("acat")
 public class ArtifactCategoryManager
         extends FooManager {
 

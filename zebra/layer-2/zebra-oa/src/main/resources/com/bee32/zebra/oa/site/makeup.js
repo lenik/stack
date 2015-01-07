@@ -1,3 +1,7 @@
+var Features = {
+    icheck : 0
+};
+
 $(document).ready(function() {
 
     $("body").click(function() {
@@ -5,7 +9,7 @@ $(document).ready(function() {
         // seldiv.toggle();
     });
 
-    if (0) {
+    if (Features.icheck) {
         $("input").iCheck({
             checkboxClass : "icheckbox_flat-blue",
             radioClass : "iradio_square"
@@ -56,8 +60,8 @@ $(document).ready(function() {
                 sSwfPath : _js_ + "datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
             },
             ajax : dataUrl == null ? null : {
-                url : "?view:=json",
-                dataSrc : ""
+                url : dataUrl,
+                dataSrc : "tbody"
             }
         });
 

@@ -15,6 +15,7 @@ public class PartyCriteria
 
     public int type = PartyType.UNSET;
     IntRange ageRange;
+    Boolean peer;
     Boolean customer;
     Boolean supplier;
     Set<String> tags;
@@ -25,6 +26,14 @@ public class PartyCriteria
 
     public void setAgeRange(IntRange ageRange) {
         this.ageRange = ageRange;
+    }
+
+    public Boolean getPeer() {
+        return peer;
+    }
+
+    public void setPeer(Boolean peer) {
+        this.peer = peer;
     }
 
     public Boolean getCustomer() {
@@ -57,6 +66,7 @@ public class PartyCriteria
         super.populate(map);
         type = map.getInt("type", type);
         ageRange = map.getIntRange("ages", ageRange);
+        peer = map.getBoolean("peer", peer);
         customer = map.getBoolean("customer", customer);
         supplier = map.getBoolean("supplier", supplier);
         String tagsStr = map.getString("tags");

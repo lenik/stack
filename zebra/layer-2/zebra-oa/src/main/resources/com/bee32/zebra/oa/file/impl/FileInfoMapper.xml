@@ -14,15 +14,15 @@
         <result property="downloads" column="ndl" />
         <result property="value" column="val" />
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
-            <id column="org" />
+            <id property="id" column="org" />
             <result property="label" column="org_label" />
         </association>
         <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
-            <id column="person" />
+            <id property="id" column="person" />
             <result property="label" column="person_label" />
         </association>
         <collection property="tags" javaType="ArrayList" ofType="com.tinylily.model.base.schema.TagDef">
-            <id column="tag_id" />
+            <id property="id" column="tag_id" />
             <result property="label" column="tag_label" />
         </collection>
     </resultMap>

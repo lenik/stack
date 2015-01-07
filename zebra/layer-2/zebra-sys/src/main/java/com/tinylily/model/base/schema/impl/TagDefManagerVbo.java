@@ -13,7 +13,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.TagDef;
@@ -28,12 +28,13 @@ public class TagDefManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<TagDefManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         TagDefMapper mapper = ctx.query(TagDefMapper.class);
 
         TagDefCriteria criteria = criteriaFromRequest(new TagDefCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("向量", false, //
@@ -42,19 +43,21 @@ public class TagDefManagerVbo
             criteria.tagSetId = so.key;
         }
 
-        List<TagDef> list = postfilt(mapper.filter(criteria));
+        List<TagDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (TagDef o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getTagSet().getLabel());
-            cocols("cu", tr, o);
-            tr.td().text(o.getRefCount());
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (TagDef o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getTagSet().getLabel());
+                cocols("cu", tr, o);
+                tr.td().text(o.getRefCount());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

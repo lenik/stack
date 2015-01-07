@@ -15,7 +15,7 @@ import com.bee32.zebra.io.stock.StockEvent;
 import com.bee32.zebra.sys.Schemas;
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
@@ -34,12 +34,13 @@ public class StockEventManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<StockEventManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<StockEvent> a, IUiRef<StockEventManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         StockEventMapper mapper = ctx.query(StockEventMapper.class);
 
         StockEventCriteria criteria = criteriaFromRequest(new StockEventCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("分类", true, //
@@ -63,25 +64,27 @@ public class StockEventManagerVbo
             criteria.noYear = so.isNull;
         }
 
-        List<StockEvent> list = postfilt(mapper.filter(criteria));
+        List<StockEvent> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (StockEvent o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            ref(tr.td(), o.getForm());
-            ref(tr.td(), o.getCategory());
-            cocols("m", tr, o);
-            ref(tr.td(), o.getOrg());
-            ref(tr.td(), o.getOrgUnit());
-            ref(tr.td(), o.getPerson());
-            tr.td().text(o.getQuantity());
-            tr.td().text(o.getTotal());
-            ref(tr.td(), o.getPhase());
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (StockEvent o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                ref(tr.td(), o.getForm());
+                ref(tr.td(), o.getCategory());
+                cocols("m", tr, o);
+                ref(tr.td(), o.getOrg());
+                ref(tr.td(), o.getOrgUnit());
+                ref(tr.td(), o.getPerson());
+                tr.td().text(o.getQuantity());
+                tr.td().text(o.getTotal());
+                ref(tr.td(), o.getPhase());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

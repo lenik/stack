@@ -160,7 +160,7 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from stdoc
+        select * from v_stdoc_n
     </select>
 
     <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[

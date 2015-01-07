@@ -1,6 +1,5 @@
 package com.tinylily.model.base.schema.impl;
 
-import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
@@ -11,7 +10,6 @@ import com.tinylily.model.base.schema.SchemaDef;
  * 
  * @label 模式
  */
-@PathToken("schema")
 public class SchemaDefManager
         extends FooManager {
 

@@ -294,7 +294,10 @@ public abstract class FooVbo<T extends CoObject>
                 label_text.value(entity.getLabel());
             }
 
-            out.a().href("javascript: alert(1)").text("选择");
+            HtmlATag picker = out.a().class_("zu-picker");
+            // 
+            picker.attr("data-class", "");
+            picker.text("选择");
             return;
         }
 

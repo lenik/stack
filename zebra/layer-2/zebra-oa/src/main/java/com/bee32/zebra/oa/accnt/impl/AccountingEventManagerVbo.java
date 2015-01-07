@@ -17,7 +17,7 @@ import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.sys.Schemas;
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.impl.FormDefCriteria;
@@ -34,13 +34,13 @@ public class AccountingEventManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AccountingEventManager> ref,
-            IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<AccountingEvent> a,
+            IUiRef<AccountingEventManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
 
         AccountingEventCriteria criteria = criteriaFromRequest(new AccountingEventCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("表单", true, //
@@ -58,30 +58,32 @@ public class AccountingEventManagerVbo
             criteria.noYear = so.isNull;
         }
 
-        List<AccountingEvent> list = postfilt(mapper.filter(criteria));
+        List<AccountingEvent> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (AccountingEvent o : list) {
+                Topic topic = o.getTopic();
 
-        for (AccountingEvent o : list) {
-            Topic topic = o.getTopic();
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(fn.formatDate(o.getBeginDate()));
+                ref(tr.td(), o.getOp());
+                ref(tr.td(), o.getCategory());
 
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(fn.formatDate(o.getBeginDate()));
-            ref(tr.td(), o.getOp());
-            ref(tr.td(), o.getCategory());
+                cocols("m", tr, o);
 
-            cocols("m", tr, o);
+                tr.td().text(topic == null ? null : Strings.ellipsis(topic.getSubject(), 50)).class_("small")
+                        .style("max-width: 30em");
+                ref(tr.td(), o.getOrg());
+                ref(tr.td(), o.getPerson());
+                tr.td().text(o.getDebitTotal());
+                tr.td().text(o.getCreditTotal());
+                cocols("sa", tr, o);
+            }
 
-            tr.td().text(topic == null ? null : Strings.ellipsis(topic.getSubject(), 50)).class_("small")
-                    .style("max-width: 30em");
-            ref(tr.td(), o.getOrg());
-            ref(tr.td(), o.getPerson());
-            tr.td().text(o.getDebitTotal());
-            tr.td().text(o.getCreditTotal());
-            cocols("sa", tr, o);
-        }
-
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
+
 }

@@ -1,6 +1,5 @@
 package com.bee32.zebra.io.stock.impl;
 
-import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.stock.StockEvent;
@@ -17,7 +16,6 @@ import com.bee32.zebra.tk.sea.FooManager;
  * 
  * @see <a href="HREF2">TEXT2</a>
  */
-@PathToken("stdoc")
 public class StockEventManager
         extends FooManager {
 

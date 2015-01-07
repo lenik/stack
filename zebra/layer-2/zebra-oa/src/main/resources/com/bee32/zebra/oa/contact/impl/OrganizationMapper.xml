@@ -75,12 +75,13 @@
             <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
             <!-- party -->
             <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
-            <if test="customer || type == 1">and customer</if>
-            <if test="supplier || type == 2">and supplier</if>
+            <if test="peer || type == 1">and peer</if>
+            <if test="customer || type == 2">and customer</if>
+            <if test="supplier || type == 3">and supplier</if>
             <!-- org -->
-            <if test="type == 0">and not customer and not supplier and not shipper</if>
-            <if test="shipper || type == 3">and shipper</if>
-            <if test="type == 4">and false</if>
+            <if test="type == 0">and not (peer or customer or supplier or shipper)</if>
+            <if test="shipper || type == 4">and shipper</if>
+            <if test="type == 5">and false</if>
         </where>
     </select>
 

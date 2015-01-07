@@ -79,9 +79,11 @@
 
     insert into tagv(id, schema, code, label) values(5, 9, 'WJXX', '文件信息');
     
-    insert into form(id, schema, code, label, subject) values(80, 8, 'init', '期初登记单', '期初登记单 - ');
-    insert into form(id, schema, code, label, subject) values(81, 8, 'pay', '简明付款单', '付款单 - ');
-    insert into form(id, schema, code, label, subject) values(82, 8, 'recv', '简明收款单', '收款单 - ');
+    insert into form(id, schema, code, label, subject) values(800, 8, 'init', '期初登记单', '[期初登记单] ');
+    insert into form(id, schema, code, label, subject) values(801, 8, 'pay',  '通用付款单', '[付款单] ');
+    insert into form(id, schema, code, label, subject) values(802, 8, 'recv', '通用收款单', '[收款单] ');
+    insert into form(id, schema, code, label, subject) values(803, 8, 'trip', '差旅费报销单', '[差旅费报销单] ');
+    insert into form(id, schema, code, label, subject) values(804, 8, 'rcpt', '借条', '[借条收据] ');
     
     insert into rlock(schema)   select id from schema   where id<100;
     insert into rlock(cat)      select id from cat      where id<10000;

@@ -47,7 +47,7 @@ public abstract class RespTemplate<T>
         writeHeadImports(ctx, head);
 
         // stylesheets
-        head.link().css(_jQueryUIThemes_ + "black-tie/jquery.ui.all.css");
+        head.link().css(_jQueryUIThemes_ + "cupertino/jquery.ui.all.css");
         head.link().css(_webApp_ + "site.css");
         // head.link().css(_webApp_ + "s-yellow.css");
         head.link().css(_webApp_ + "print.css").media("print");

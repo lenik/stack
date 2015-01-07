@@ -1,6 +1,5 @@
 package com.bee32.zebra.oa.file.impl;
 
-import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.file.FileInfo;
@@ -16,7 +15,6 @@ import com.bee32.zebra.tk.sea.FooManager;
  * @rel org/: 管理企、事业组织
  * @rel person/: 管理联系人
  */
-@PathToken("file")
 public class FileInfoManager
         extends FooManager {
 

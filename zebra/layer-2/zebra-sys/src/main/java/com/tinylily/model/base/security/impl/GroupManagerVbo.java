@@ -12,7 +12,7 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.security.Group;
 
@@ -26,23 +26,25 @@ public class GroupManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<GroupManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Group> a, IUiRef<GroupManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         GroupMapper mapper = ctx.query(GroupMapper.class);
-        List<Group> list = postfilt(mapper.all());
+        List<Group> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (Group o : list) {
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (Group o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getCodeName());
+                cocols("u", tr, o);
+                tr.td().text(fn.labels(o.getUsers()));
+                cocols("sa", tr, o);
+            }
 
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getCodeName());
-            cocols("u", tr, o);
-            tr.td().text(fn.labels(o.getUsers()));
-            cocols("sa", tr, o);
-        }
-
-//        dumpFullData(p.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

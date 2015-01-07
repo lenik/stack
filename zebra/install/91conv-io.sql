@@ -37,13 +37,13 @@
 
 -- stocking
 
-    insert into stdoc(id, subject, text, cat, t0, t1, val, org, person,
+    insert into stdoc(id, subject, text, cat, t0, t1, total, org, person,
             creation, lastmod, uid)
         select a.id, a.label "subject", a.description "text",
             cat.id "cat",
             coalesce(a.begin_time, a.created_date) "t0",
             a.end_time "t1",
-            native_total "val", 
+            coalesce(native_total, 0) "total", 
             case when p.stereo='ORG' then a.org else null end "org", 
             case when p.stereo='PER' then a.org else null end "person",
             a.created_date "creation", a.last_modified "lastmod", a.owner "uid"
@@ -61,14 +61,14 @@
 -- sales order
     
     insert into sdoc(id, subject, text, t0, 
-            org, person, val, topic, op, state,
+            org, person, total, topic, op, state,
             creation, lastmod, uid)
         select a.id,
             a.label, a.description,
             coalesce(a.begin_time, a.created_date) "t0",
             case when c.stereo='ORG' then a.customer else null end "org", 
             case when c.stereo='PER' then a.customer else null end "person",
-            a.native_total "val",
+            coalesce(a.native_total, 0) "total",
             a.chance "topic",
             l."user" "op",
             case when a.valid then 0 else 417 end "state",
@@ -93,13 +93,13 @@
         from old.make_order_item a;
 
     insert into dldoc(id, subject, text,
-            sdoc, org, person, val, t0)
+            sdoc, org, person, total, t0)
         select a.id,
             a.label "subject", a.description "text",
             "order" "sdoc", 
             case when c.stereo='ORG' then a.customer else null end "org", 
             case when c.stereo='PER' then a.customer else null end "person",
-            a.native_total "val",
+            coalesce(a.native_total, 0) "total",
             a.begin_time "t0"
         from old.delivery_note a
             left join old.party c on a.customer=c.id;

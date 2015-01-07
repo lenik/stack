@@ -1,6 +1,5 @@
 package com.bee32.zebra.io.sales.impl;
 
-import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.sales.SalesOrder;
@@ -17,7 +16,6 @@ import com.bee32.zebra.tk.sea.FooManager;
  * @rel topic/: 管理项目/机会
  * @rel dldoc/: 管理送货单
  */
-@PathToken("sdoc")
 public class SalesOrderManager
         extends FooManager {
 

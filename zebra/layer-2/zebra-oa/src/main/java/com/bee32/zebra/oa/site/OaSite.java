@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.c.type.IndexedTypes;
+import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.html.meta.HtmlViewBuilder;
 import net.bodz.bas.log.Logger;
 import net.bodz.bas.log.LoggerFactory;
@@ -55,12 +56,22 @@ public class OaSite
             String name = Strings.hyphenatize(base);
             pathMap.put(name, instance);
 
+            Class<?> entityType = instance.getEntityType();
+
             PathToken aPathToken = clazz.getAnnotation(PathToken.class);
+            if (aPathToken == null)
+                aPathToken = entityType.getAnnotation(PathToken.class);
             if (aPathToken != null) {
                 String path = StringArray.join("/", aPathToken.value());
                 pathMap.put(path, instance);
+            } else {
+                TableName aTableName = entityType.getAnnotation(TableName.class);
+                if (aTableName != null) {
+                    String tableName = aTableName.value();
+                    pathMap.put(tableName, instance);
+                }
             }
-        }
+        } // for indexed manager type.
     }
 
     /** ⇱ Implementation Of {@link ICacheControl}. */

@@ -17,7 +17,7 @@ import com.bee32.zebra.sys.Schemas;
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SectionDiv;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
@@ -37,12 +37,13 @@ public class TopicManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<TopicManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicManager> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
 
         TopicCriteria criteria = criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("分类", true, //
@@ -66,32 +67,35 @@ public class TopicManagerVbo
             criteria.noYear = so.isNull;
         }
 
-        List<Topic> list = postfilt(mapper.filter(criteria));
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (Topic o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            ref(tr.td(), o.getOp()).align("center");
-            tr.td().text(fn.formatDate(o.getBeginDate()));
-            tr.td().text(fn.formatDate(o.getEndDate()));
-            cocols("m", tr, o);
-            ref(tr.td(), o.getCategory());
-            ref(tr.td(), o.getPhase()).class_("small");
-            tr.td().text(o.getValue());
-            cocols("sa", tr, o);
-        }
+        List<Topic> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        dumpFullData(page.extradata, list);
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (Topic o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                ref(tr.td(), o.getOp()).align("center");
+                tr.td().text(fn.formatDate(o.getBeginDate()));
+                tr.td().text(fn.formatDate(o.getEndDate()));
+                cocols("m", tr, o);
+                ref(tr.td(), o.getCategory());
+                ref(tr.td(), o.getPhase()).class_("small");
+                tr.td().text(o.getValue());
+                cocols("sa", tr, o);
+            }
 
         if (extensions) {
             SectionDiv section;
-            section = new SectionDiv(page.mainCol, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
-            section = new SectionDiv(page.mainCol, "s-bar", "图表/Charts", IFontAwesomeCharAliases.FA_BAR_CHART);
-            section = new SectionDiv(page.mainCol, "s-line", "图表/Charts", IFontAwesomeCharAliases.FA_LINE_CHART);
-            section = new SectionDiv(page.mainCol, "s-pie", "图表/Charts", IFontAwesomeCharAliases.FA_PIE_CHART);
-            section = new SectionDiv(page.mainCol, "s-comments", "评论/Comments", IFontAwesomeCharAliases.FA_COMMENTS);
-            section = new SectionDiv(page.mainCol, "s-debug", "调测信息/Debug", IFontAwesomeCharAliases.FA_BUG);
+            section = new SectionDiv(a.frame, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
+            section = new SectionDiv(a.frame, "s-bar", "图表/Charts", IFontAwesomeCharAliases.FA_BAR_CHART);
+            section = new SectionDiv(a.frame, "s-line", "图表/Charts", IFontAwesomeCharAliases.FA_LINE_CHART);
+            section = new SectionDiv(a.frame, "s-pie", "图表/Charts", IFontAwesomeCharAliases.FA_PIE_CHART);
+            section = new SectionDiv(a.frame, "s-comments", "评论/Comments", IFontAwesomeCharAliases.FA_COMMENTS);
+            section = new SectionDiv(a.frame, "s-debug", "调测信息/Debug", IFontAwesomeCharAliases.FA_BUG);
         }
+
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

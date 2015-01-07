@@ -13,7 +13,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.art.ArtifactCategory;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 
 public class ArtifactCategoryManagerVbo
@@ -26,22 +26,25 @@ public class ArtifactCategoryManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<ArtifactCategoryManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<ArtifactCategory> a,
+            IUiRef<ArtifactCategoryManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactCategoryMapper mapper = ctx.query(ArtifactCategoryMapper.class);
-        List<ArtifactCategory> list = mapper.all();
+        List<ArtifactCategory> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (ArtifactCategory o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            cocols("u", tr, o);
-            tr.td().text(o.getDepth());
-            ref(tr.td(), o.getParent());
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (ArtifactCategory o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                cocols("u", tr, o);
+                tr.td().text(o.getDepth());
+                ref(tr.td(), o.getParent());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }

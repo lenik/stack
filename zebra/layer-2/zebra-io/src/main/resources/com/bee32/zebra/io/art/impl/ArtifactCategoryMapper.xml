@@ -11,7 +11,7 @@
         <result property="barCodeFormat" column="barfmt" />
         <result property="count" column="count" />
         <association property="parent" javaType="com.bee32.zebra.io.art.ArtifactCategory">
-            <id column="parent" />
+            <id property="id" column="parent" />
             <result property="label" column="label" />
         </association>
     </resultMap>

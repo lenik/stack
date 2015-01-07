@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONWriter;
+
 import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.c.string.StringArray;
@@ -18,6 +20,7 @@ import net.bodz.bas.db.batis.IMapperTemplate;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
+import net.bodz.bas.html.dom.HtmlDoc;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
@@ -37,12 +40,17 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.std.rfc.mime.ContentType;
 import net.bodz.bas.std.rfc.mime.ContentTypes;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.bas.xml.dom.IXmlNode;
+import net.bodz.bas.xml.dom.IXmlTag;
+import net.bodz.bas.xml.dom.XmlNodeType;
 import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.sea.MapperUtil;
+import com.bee32.zebra.tk.util.Counters;
+import com.bee32.zebra.tk.util.Table2JsonFormatter;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.mx.base.CoMessage;
@@ -62,6 +70,20 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
     }
 
     @Override
+    public ContentType getContentType(HttpServletRequest request, M value) {
+        IViewOfRequest viewOfRequest = (IViewOfRequest) request.getAttribute(IViewOfRequest.class.getName());
+        String viewName = viewOfRequest.getViewName();
+        if (viewName != null)
+            switch (viewName) {
+            case "json":
+                return ContentTypes.text_javascript;
+            case "csv":
+                return ContentTypes.text_csv;
+            }
+        return super.getContentType(request, value);
+    }
+
+    @Override
     public boolean isFrame() {
         return true;
     }
@@ -74,20 +96,6 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         // metaData.addDependency("datatables.responsive.js", SCRIPT);
         metaData.addDependency("datatables.colVis.js", SCRIPT);
         metaData.addDependency("datatables.tableTools.js", SCRIPT);
-    }
-
-    @Override
-    public ContentType getContentType(HttpServletRequest request, M value) {
-        IViewOfRequest viewOfRequest = (IViewOfRequest) request.getAttribute(IViewOfRequest.class.getName());
-        String viewName = viewOfRequest.getViewName();
-        if (viewName != null)
-            switch (viewName) {
-            case "json":
-                return ContentTypes.text_javascript;
-            case "csv":
-                return ContentTypes.text_csv;
-            }
-        return super.getContentType(request, value);
     }
 
     @Override
@@ -156,8 +164,15 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
         titleInfo(ctx, ref, indexPage);
 
-        if (indexPage)
-            buildDataView(ctx, new PageStruct(ctx), ref, options);
+        if (indexPage) {
+            PageStruct page = new PageStruct(ctx);
+            DataViewAnchors<T> a = new DataViewAnchors<T>();
+            a.frame = page.mainCol;
+            a.data = page.mainCol;
+            a.extradata = page.extradata;
+            a.dataList = false;
+            buildDataView(ctx, a, ref, options);
+        }
 
         return out;
     }
@@ -177,24 +192,10 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
         Map<String, Long> countMap = mapper.count();
         HtmlUlTag statUl = p.stat.ul();
-        for (String id : countMap.keySet()) {
-            long count = countMap.get(id);
-            String name = id;
-            switch (id) {
-            case "total":
-                name = "总计";
-                break;
-            case "valid":
-                name = "有效";
-                break;
-            case "used":
-                name = "在用";
-                break;
-            case "locked":
-                name = "锁定";
-                break;
-            }
-            statUl.li().text(name + " " + count + " 种");
+        for (String key : countMap.keySet()) {
+            String name = Counters.displayName(key);
+            long count = countMap.get(key);
+            statUl.li().text(name + " " + count + " 条");
         }
 
         if (indexPage) {
@@ -233,25 +234,38 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
         }
     }
 
-    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<M> ref, IOptions options)
-            throws ViewBuilderException, IOException {
-    }
-
-    protected abstract void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<M> ref, IOptions options)
+    protected abstract void buildDataView(IHtmlViewContext ctx, DataViewAnchors<T> a, IUiRef<M> ref, IOptions options)
             throws ViewBuilderException, IOException;
 
-    protected IndexTable mkIndexTable(IHtmlViewContext ctx, IHtmlTag parent, String id) {
-        IViewOfRequest viewOfRequest = ctx.query(IViewOfRequest.class);
-        String viewName = viewOfRequest.getViewName();
+    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<M> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        DataViewAnchors<T> a = new DataViewAnchors<T>();
+        a.frame = new HtmlDoc();
+        a.data = new HtmlDoc();
+        a.dataList = true;
+        buildDataView(ctx, a, ref, options);
 
+        HtmlTableTag table = null;
+        for (IXmlNode child : a.data.getRoot().getChildren())
+            if (child.getType() == XmlNodeType.ELEMENT)
+                if ("table".equals(((IXmlTag) child).getTagName())) {
+                    table = (HtmlTableTag) child;
+                    break;
+                }
+        JSONWriter jw = new JSONWriter(out);
+        Table2JsonFormatter fmt = new Table2JsonFormatter(jw);
+        fmt.format(table);
+    }
+
+    protected IndexTable mkIndexTable(IHtmlViewContext ctx, IHtmlTag parent, String id) {
         IndexTable table = new IndexTable(parent, id);
 
-        if (viewName != null)
-            switch (viewName) {
-            case "index1":
-                table.dataUrl("?view:=json");
-                break;
-            }
+        boolean ajaxMode = true;
+        if (ajaxMode) {
+            String query = ctx.getRequest().getQueryString();
+            query = QueryString.join(query, "view:=json");
+            table.dataUrl("?" + query);
+        }
 
         for (IHtmlTag tr : table.headFoot)
             for (PathField pathField : indexFields) {

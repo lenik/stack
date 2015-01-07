@@ -10,36 +10,36 @@
         <result property="quantity" column="qty" />
         <result property="total" column="total" />
         <association property="salesOrder" javaType="com.bee32.zebra.io.sales.SalesOrder">
-            <id column="sdoc" />
+            <id property="id" column="sdoc" />
             <result property="label" column="sdoc_label" />
         </association>
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
-            <id column="org" />
+            <id property="id" column="org" />
             <result property="label" column="org_label" />
         </association>
         <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
-            <id column="person" />
+            <id property="id" column="person" />
             <result property="label" column="person_label" />
         </association>
         <association property="shipDest" resultMap="com.bee32.zebra.oa.contact.impl.ContactMapper.map1"
             columnPrefix="ct_" />
         <association property="shipper" javaType="com.bee32.zebra.oa.contact.Organization">
-            <id column="shipper" />
+            <id property="id" column="shipper" />
             <result property="label" column="shipper_label" />
         </association>
         <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
-            <id column="cat" />
+            <id property="id" column="cat" />
             <result property="label" column="cat_label" />
         </association>
         <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
-            <id column="phase" />
+            <id property="id" column="phase" />
             <result property="label" column="phase_label" />
         </association>
     </resultMap>
 
     <resultMap id="map2" type="com.bee32.zebra.io.sales.Delivery" extends="map1">
         <collection property="items" javaType="ArrayList" ofType="com.bee32.zebra.io.sales.DeliveryItem">
-            <id column="y_id" />
+            <id property="id" column="y_id" />
         </collection>
     </resultMap>
 
@@ -155,7 +155,7 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from dldoc
+        select * from v_dldoc_n
     </select>
 
 </mapper>

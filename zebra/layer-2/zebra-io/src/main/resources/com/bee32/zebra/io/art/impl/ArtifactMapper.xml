@@ -20,7 +20,7 @@
         <result property="supplyMethod" column="supply" />
         <result property="supplyDelay" column="supplydelay" />
         <association property="category" javaType="com.bee32.zebra.io.art.ArtifactCategory">
-            <id column="cat" />
+            <id property="id" column="cat" />
             <result property="label" column="cat_label" />
         </association>
         <association property="uom" javaType="com.bee32.zebra.io.art.UOM">

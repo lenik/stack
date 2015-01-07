@@ -1,6 +1,5 @@
 package com.bee32.zebra.erp.fab.impl;
 
-import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.erp.fab.FabQcDef;
@@ -15,7 +14,6 @@ import com.bee32.zebra.tk.sea.FooManager;
  * 
  * @see <a href="HREF2">TEXT2</a>
  */
-@PathToken("qc")
 public class FabQcDefManager
         extends FooManager {
 

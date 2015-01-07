@@ -111,7 +111,7 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from topic
+        select * from v_topic_n
     </select>
 
     <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[

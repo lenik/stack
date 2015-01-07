@@ -13,7 +13,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.site.Zc3Template_CEM;
 import com.tinylily.model.base.schema.AttributeDef;
@@ -28,12 +28,13 @@ public class AttributeDefManagerVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, PageStruct page, IUiRef<AttributeDefManager> ref, IOptions options)
+    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<AttributeDef> a,
+            IUiRef<AttributeDefManager> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AttributeDefMapper mapper = ctx.query(AttributeDefMapper.class);
 
         AttributeDefCriteria criteria = criteriaFromRequest(new AttributeDefCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(page.mainCol, "s-filter");
+        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
             so = filters.switchEntity("模式", false, //
@@ -42,19 +43,21 @@ public class AttributeDefManagerVbo
             criteria.schemaId = so.key;
         }
 
-        List<AttributeDef> list = postfilt(mapper.filter(criteria));
+        List<AttributeDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, page.mainCol, "list");
-        for (AttributeDef o : list) {
-            HtmlTrTag tr = indexTable.tbody.tr();
-            cocols("i", tr, o);
-            tr.td().text(o.getSchema().getLabel());
-            cocols("cu", tr, o);
-            tr.td().text(o.getRefCount());
-            cocols("sa", tr, o);
-        }
+        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        if (a.dataList())
+            for (AttributeDef o : list) {
+                HtmlTrTag tr = indexTable.tbody.tr();
+                cocols("i", tr, o);
+                tr.td().text(o.getSchema().getLabel());
+                cocols("cu", tr, o);
+                tr.td().text(o.getRefCount());
+                cocols("sa", tr, o);
+            }
 
-        dumpFullData(page.extradata, list);
+        if (a.extradata != null)
+            dumpFullData(a.extradata, list);
     }
 
 }
