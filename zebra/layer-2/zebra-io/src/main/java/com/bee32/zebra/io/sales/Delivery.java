@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.meta.bean.DetailLevel;
-import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 
@@ -24,6 +24,7 @@ public class Delivery
 
     private static final long serialVersionUID = 1L;
 
+    private Delivery previous;
     private SalesOrder salesOrder;
 
     private Organization org;
@@ -32,6 +33,7 @@ public class Delivery
     private Contact shipDest;
     private Organization shipper;
     private String shipmentId;
+    private double shippingCost;
 
     // Take-Out stock job
     // Account-Ticket
@@ -40,6 +42,18 @@ public class Delivery
     private double total;
 
     private List<DeliveryItem> items;
+
+    /**
+     * 前级
+     */
+    @OfGroup(StdGroup.Process.class)
+    public Delivery getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Delivery previous) {
+        this.previous = previous;
+    }
 
     /**
      * 订单
@@ -123,6 +137,18 @@ public class Delivery
     }
 
     /**
+     * 运费
+     */
+    @OfGroup({ OaGroups.Transportation.class })
+    public double getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(double shippingCost) {
+        this.shippingCost = shippingCost;
+    }
+
+    /**
      * 发货时间
      */
     @OfGroup({ OaGroups.Transportation.class })
@@ -150,7 +176,7 @@ public class Delivery
      * 总数量
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getQuantity() {
         return quantity;
     }
@@ -163,7 +189,7 @@ public class Delivery
      * 总金额
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getTotal() {
         return total;
     }

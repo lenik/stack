@@ -2,8 +2,8 @@ package com.tinylily.model.base.security.impl;
 
 import net.bodz.bas.rtx.IQueryable;
 
+import com.bee32.zebra.tk.sea.FooManager;
 import com.tinylily.model.base.security.User;
-import com.tinylily.repr.CoEntityManager;
 
 /**
  * 使用本系统的用户帐户。
@@ -17,7 +17,7 @@ import com.tinylily.repr.CoEntityManager;
  * @rel person/: 管理联系人
  */
 public class UserManager
-        extends CoEntityManager {
+        extends FooManager {
 
     public UserManager(IQueryable context) {
         super(User.class, context);

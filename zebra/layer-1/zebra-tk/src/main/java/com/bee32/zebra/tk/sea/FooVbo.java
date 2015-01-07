@@ -100,12 +100,12 @@ public abstract class FooVbo<T extends CoObject>
             if (prevNext.getPrev() != null)
                 prevLink = prevLink.a().href("../" + prevNext.getPrev() + "/");
             prevLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_LEFT);
-            prevLink.text("前翻");
+            prevLink.text("前滚翻");
 
             IHtmlTag nextLink = navs;
             if (prevNext.getNext() != null)
                 nextLink = nextLink.a().href("../" + prevNext.getNext() + "/");
-            nextLink.text("后翻");
+            nextLink.text("后滚翻 ");
             nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
         }
 
@@ -184,6 +184,7 @@ public abstract class FooVbo<T extends CoObject>
         case "Ranking":
         case "Metadata":
         case "Security":
+        case "Visual":
             return true;
         }
         return false;

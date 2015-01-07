@@ -1,8 +1,10 @@
 package com.bee32.zebra.io.art;
 
 import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.tinylily.model.base.CoNode;
 import com.tinylily.model.base.IdType;
@@ -25,6 +27,7 @@ public class ArtifactCategory
      * @label SKU代码格式
      */
     @OfGroup(StdGroup.Preferences.class)
+    @TextInput(maxLength = N_SKU_CODE_FORMAT)
     public String getSkuCodeFormat() {
         return skuCodeFormat;
     }
@@ -37,6 +40,7 @@ public class ArtifactCategory
      * @label 条形码格式
      */
     @OfGroup(StdGroup.Preferences.class)
+    @TextInput(maxLength = N_BAR_CODE_FORMAT)
     public String getBarCodeFormat() {
         return barCodeFormat;
     }
@@ -45,6 +49,11 @@ public class ArtifactCategory
         this.barCodeFormat = barCodeFormat;
     }
 
+    /**
+     * 数目
+     */
+    @OfGroup(StdGroup.Statistics.class)
+    @Statistics
     public int getCount() {
         return count;
     }

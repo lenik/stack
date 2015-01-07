@@ -5,7 +5,8 @@
 <mapper namespace="com.bee32.zebra.oa.file.impl.FileInfoMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.oa.file.FileInfo" extends="message.map2">
-        <result property="path" column="path" />
+        <result property="dirName" column="dir" />
+        <result property="baseName" column="base" />
         <result property="size" column="size" />
         <result property="sha1" column="sha1" />
         <result property="type" column="type" />
@@ -88,20 +89,39 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
-        <![CDATA[
-        insert into fileinfo(code, label, description)
-            values(#{codeName},#{label},#{description})
-            returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into fileinfo(
+            code, label, description,
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1, op,
+            dir, base, image, size, sha1, type, encoding,
+            org, person, val
+        ) values(
+            #{codeName},#{label},#{description},
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate}, #{op.id},
+            #{dirName}, #{baseName}, #{image}, #{size}, #{sha1}, #{type}, #{encoding},
+            #{org.id}, #{person.id}, #{value}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update fileinfo
         <set>
-            <include refid="co.setU" />
+            <include refid="message.set1u" />
+            dir=#{dirName},
+            base=#{baseName},
+            image=#{image},
+            size=#{size},
+            sha1=#{sha1},
+            type=#{type},
+            encoding=#{encoding},
+            <if test="org != null">org=#{org.id},</if>
+            <if test="person != null">person=#{person.id},</if>
+            val=#{value},
         </set>
         <where>
-            <if test="id != null">id=#{id}, </if>
+            <if test="id != null">id=#{id}</if>
         </where>
     </update>
 

@@ -145,11 +145,11 @@
 
         birthday    date,
         locale      varchar(10) not null default 'zh-cn',
-        timezone    int not null default 800,
+        timezone    varchar(40),
+        peer        boolean not null default false,
         customer    boolean not null default false,
         supplier    boolean not null default false,
         subject     varchar(200),
-        comment     varchar(200),
         contact     int,
         bank        varchar(50),
         bankacc     varchar(30),
@@ -240,11 +240,11 @@
         
         birthday    date,
         locale      varchar(10) not null default 'zh-cn',
-        timezone    int not null default 800,
+        timezone    varchar(40),
+        peer        boolean not null default false,
         customer    boolean not null default false,
         supplier    boolean not null default false,
         subject     varchar(200),
-        comment     varchar(200),
         contact     int,
         bank        varchar(50),
         bankacc     varchar(30),
@@ -319,7 +319,6 @@
     create sequence fileinfo_seq start with 1000;
     create table fileinfo(          -- file info
         id          int primary key default nextval('fileinfo_seq'),
-        code        varchar(40),
         label       varchar(80),    -- null if filename is used.
         description varchar(200), 
         
@@ -335,12 +334,18 @@
         mode        int not null default 640,
         acl         int,
         
-        op          int,
         t0          date,           -- validate since
         t1          date,           -- expire after
-        val         double precision, -- estimated
         
-        path        varchar(200) not null,
+        op          int,
+        cat         int,
+        phase       int,
+        nvote       int not null default 0,
+        nlike       int not null default 0,
+        ndl         int not null default 0, -- downloads
+        
+        dir         varchar(200) not null,
+        base        varchar(80) not null,
         image       varchar(100),
         size        bigint not null,
         sha1        varchar(32),    
@@ -349,11 +354,11 @@
         
         org         int,
         person      int,
+        val         double precision, -- estimated
         
-        nvote       int not null default 0,
-        nlike       int not null default 0,
-        ndl         int not null default 0, -- downloads
-        
+        constraint fileinfo_uk      unique(dir, base),
+        constraint fileinfo_fk_cat  foreign key(cat)
+            references cat(id)          on update cascade on delete set null,
         constraint fileinfo_fk_gid  foreign key(gid)
             references "group"(id)      on update cascade on delete set null,
         constraint fileinfo_fk_op   foreign key(op)
@@ -362,16 +367,37 @@
             references org(id)          on update cascade,
         constraint fileinfo_fk_person foreign key(person)
             references person(id)       on update cascade,
+        constraint fileinfo_fk_phase foreign key(phase)
+            references phase(id)        on update cascade on delete set null,
         constraint fileinfo_fk_uid  foreign key(uid)
             references "user"(id)       on update cascade on delete set null
     );
     
-    create index fileinfo_lastmod        on fileinfo(lastmod desc);
+    create index fileinfo_base          on fileinfo(base);
+    create index fileinfo_lastmod       on fileinfo(lastmod desc);
     create index fileinfo_priority_nvote on fileinfo(priority, nvote desc);
-    create index fileinfo_state          on fileinfo(state);
-    create index fileinfo_t0t1           on fileinfo(t0, t1);
-    create index fileinfo_t1             on fileinfo(t1);
-    create index fileinfo_uid_acl        on fileinfo(uid, acl);
+    create index fileinfo_state         on fileinfo(state);
+    create index fileinfo_t0t1          on fileinfo(t0, t1);
+    create index fileinfo_t1            on fileinfo(t1);
+    create index fileinfo_uid_acl       on fileinfo(uid, acl);
+
+    create or replace view v_fileinfo_dup as
+        select a.*
+        from fileinfo a
+            left join
+                (select dir, base, count(*) n from fileinfo
+                    group by dir, base having(count(*) > 1)) c
+                on a.dir=c.dir and a.base=c.base
+        where c.dir is not null;
+
+    create or replace view v_fileinfo_dupx as
+        select a.*
+        from v_fileinfo_dup a
+            left join
+                (select max(id) "maxid", dir, base
+                    from v_fileinfo_dup group by dir, base) m
+                on a.dir=m.dir and a.base=m.base
+        where a.id < m.maxid;
 
 -- drop table if exists fileatt;
     create sequence fileatt_seq;
@@ -440,21 +466,6 @@
     create sequence topic_seq start with 1000;
     create table topic(
         id          int primary key default nextval('topic_seq'),
-        op          int,
-        subject     varchar(200) not null,
-        text        text,
-        nread       int not null default 0,
-        nvote       int not null default 0,
-        nlike       int not null default 0,
-        
-        cat         int,
-        phase       int,
-        val         double precision not null default 0, -- estimated
-        -- valmax   double precision,
-        
-        t0          date,           -- begin time, deliver time
-        t1          date,           -- end time, deadline
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -467,8 +478,29 @@
         mode        int not null default 640,
         acl         int,
         
+        t0          date,           -- begin time, deliver time
+        t1          date,           -- end time, deadline
+        year        int not null default 0,
+        
+        op          int,
+        subject     varchar(200) not null,
+        text        text,
+        form        int,
+        args        text,           -- used with the form.
+        cat         int,
+        phase       int,
+        
+        nread       int not null default 0,
+        nvote       int not null default 0,
+        nlike       int not null default 0,
+        
+        val         double precision not null default 0, -- estimated
+        -- valmax   double precision,
+        
         constraint topic_fk_cat     foreign key(cat)
             references cat(id)          on update cascade on delete set null,
+        constraint topic_fk_form    foreign key(form)
+            references form(id)         on update cascade on delete set null,
         constraint topic_fk_gid     foreign key(gid)
             references "group"(id)      on update cascade on delete set null,
         constraint topic_fk_op      foreign key(op)
@@ -494,20 +526,6 @@
     create sequence reply_seq;
     create table reply(
         id          int primary key default nextval('reply_seq'),
-        op          int not null,
-        text        text not null,
-        nvote       int not null default 0,
-        
-        topic       int not null,
-        parent      int,
-        changes     text[],
-        
-        cat         int,            -- reserved for general purpose.
-        phase       int,            -- reserved for general purpose.
-        
-        t0          timestamptz,    -- work begin time
-        t1          timestamptz,    -- work end time
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -519,6 +537,19 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+        
+        t0          timestamptz,    -- work begin time
+        t1          timestamptz,    -- work end time
+        
+        op          int not null,
+        text        text not null,
+        cat         int,            -- reserved for general purpose.
+        phase       int,            -- reserved for general purpose.
+        nvote       int not null default 0,
+        
+        topic       int not null,
+        parent      int,
+        changes     text[],
         
         constraint reply_fk_cat     foreign key(cat)
             references cat(id)          on update cascade on delete set null,
@@ -536,12 +567,12 @@
             references "group"(id)      on update cascade on delete set null
     );
 
-    create index reply_lastmod        on reply(lastmod desc);
-    create index reply_priority       on reply(priority);
-    create index reply_state          on reply(state);
-    create index reply_t0t1           on reply(t0, t1);
-    create index reply_t1             on reply(t1);
-    create index reply_uid_acl        on reply(uid, acl);
+    create index reply_lastmod      on reply(lastmod desc);
+    create index reply_priority     on reply(priority);
+    create index reply_state        on reply(state);
+    create index reply_t0t1         on reply(t0, t1);
+    create index reply_t1           on reply(t1);
+    create index reply_uid_acl      on reply(uid, acl);
 
 -- drop table if exists topicparty;
     create sequence topicparty_seq;
@@ -709,14 +740,15 @@
         id          int primary key,
         label       varchar(20) not null,
         description varchar(200),
-        sign        int not null default 0,
         
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
         flags       int not null default 0,
         state       int not null default 0,
-        version     int not null default 0
+        version     int not null default 0,
+        
+        sign        int not null default 0
     );
 
     create index account_label      on account(label);
@@ -728,26 +760,6 @@
     create sequence acdoc_seq start with 1000;
     create table acdoc(
         id          int primary key default nextval('acdoc_seq'),
-        prev        int,            -- previous doc
-        op          int,
-        cat         int,
-        subject     varchar(200) not null,
-        text        text,
-        form        int,
-        args        text,           -- used with the form.
-        
-        topic       int,
-        org         int,
-        person      int,
-        
-        ndebit      double precision not null default 0,
-        ncredit     double precision not null default 0,
-        phase       int,
-        
-        year        int not null default 0, -- same year of t0.
-        t0          date,           -- accounting date range
-        t1          date,           -- accounting date range
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -759,6 +771,26 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+        
+        t0          date,           -- accounting date range
+        t1          date,           -- accounting date range
+        year        int not null default 0, -- same year of t0.
+        
+        op          int,
+        subject     varchar(200) not null,
+        text        text,
+        form        int,
+        args        text,           -- used with the form.
+        cat         int,
+        phase       int,
+        
+        prev        int,            -- previous doc
+        topic       int,
+        org         int,
+        person      int,
+        
+        ndebit      double precision not null default 0,
+        ncredit     double precision not null default 0,
         
         constraint acdoc_fk_cat     foreign key(cat)
             references cat(id)          on update cascade on delete set null,
@@ -796,17 +828,16 @@
     create sequence acentry_seq start with 1000;
     create table acentry(
         id          bigint primary key default nextval('acentry_seq'),
-        doc         int not null,
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
         
+        doc         int not null,
         account     int not null,
         org         int,
         person      int,
         -- positive for the debit side, or negative for the credit side.
         val         numeric(20,2) not null default 0,
-        
-        priority    int not null default 0,
-        flags       int not null default 0,
-        state       int not null default 0,
         
         constraint acentry_fk_account foreign key(account)
             references account(id)      on update cascade,

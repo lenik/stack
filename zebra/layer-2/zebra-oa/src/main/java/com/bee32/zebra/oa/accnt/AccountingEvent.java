@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.meta.bean.DetailLevel;
-import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 
@@ -24,7 +24,6 @@ public class AccountingEvent
     private static final long serialVersionUID = 1L;
 
     private AccountingEvent previous;
-
     private Topic topic;
     private Organization org;
     private Person person;
@@ -47,7 +46,7 @@ public class AccountingEvent
     /**
      * 前级
      */
-    @DetailLevel(DetailLevel.EXPERT)
+    @OfGroup(StdGroup.Process.class)
     public AccountingEvent getPrevious() {
         return previous;
     }
@@ -105,7 +104,7 @@ public class AccountingEvent
      * （总）借
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getDebitTotal() {
         return debitTotal;
     }
@@ -118,7 +117,7 @@ public class AccountingEvent
      * （总）贷
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getCreditTotal() {
         return creditTotal;
     }

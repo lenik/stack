@@ -79,7 +79,7 @@
             left join old.person_login l on s.id=l.person;
         
     insert into sentry(id,
-            doc, art, qty, price, total, deadline, comment,
+            doc, art, qty, price, total, t1, comment,
             resale, olabel, ospec)
         select id,
             parent "doc",

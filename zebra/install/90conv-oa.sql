@@ -89,11 +89,13 @@ set constraints all deferred;
         update old.user_file_tagname a set id_new=tag.id from tag where a.id=tag.priority;
         update tag set priority=0 where tagv=5;
     
-    insert into fileinfo(id, label, description, path, size, sha1, op, org, person, val,
+    alter table fileinfo drop constraint fileinfo_uk;
+    insert into fileinfo(id, label, description,
+            dir, base, size, sha1, op, org, person, val,
             t0, t1, creation, lastmod, uid)
         select
             a.id, a.label, a.description,
-            d.path || '/' || a.name "path",
+            d.path "dir", a.name "base", 
             b.length "size", b.id "sha1",
             a.operator "op",
             case when p.stereo='ORG' then a.party else null end "org", 
@@ -106,7 +108,10 @@ set constraints all deferred;
             left join old.user_folder d on a.folder=d.id
             left join old.file_blob b on a.file_blob=b.id
             left join old.party p on a.party=p.id;
-    
+
+    delete from fileinfo where id in (select id from v_fileinfo_dupx);
+    alter table fileinfo add constraint fileinfo_uk unique(dir, base);
+
     insert into filetag(file, tag)
         select x.user_file "file", y.id_new "tag"
         from old.user_file_tags x

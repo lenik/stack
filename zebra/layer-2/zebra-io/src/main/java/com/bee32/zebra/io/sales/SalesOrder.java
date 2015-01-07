@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.meta.bean.DetailLevel;
-import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 
@@ -82,7 +82,7 @@ public class SalesOrder
      * 总数量
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getQuantity() {
         return quantity;
     }
@@ -95,7 +95,7 @@ public class SalesOrder
      * 总金额
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getTotal() {
         return total;
     }

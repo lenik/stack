@@ -38,26 +38,26 @@ public abstract class FooMesgVbo<T extends CoMessage<?>>
 
         IHtmlTag subjectLine = tab.tr().id("zu-msg-subject");
         {
+            IFieldDecl subjectDecl = formDecl.getFieldDecl("subject");
             IHtmlTag subjectLabel = subjectLine.th().label();
             subjectLabel.span().class_("fa icon").text(FA_CHEVRON_DOWN);
-            subjectLabel.text("主题: ");
+            subjectLabel.text(subjectDecl.getLabel() + "：");
 
             HtmlInputTag subjectInput = subjectLine.td().input().name("subject").type("text");
             subjectInput.value(instance.getSubject());
-            IFieldDecl subjectDecl = formDecl.getFieldDecl("subject");
             FieldHtmlUtil.apply(subjectInput, subjectDecl, options);
         }
 
         IHtmlTag textLine = tab.tr().id("zu-msg-text");
         {
+            IFieldDecl textDecl = formDecl.getFieldDecl("text");
             HtmlLabelTag textLabel = textLine.th().label();
             textLabel.span().class_("fa icon").text(FA_FILE_O);
-            textLabel.text("正文: ");
+            textLabel.text(textDecl.getLabel() + "：");
 
             HtmlTextareaTag textarea = textLine.td().textarea().name("text");
             String text = instance.getText();
             textarea.text(text == null ? "" : text);
-            IFieldDecl textDecl = formDecl.getFieldDecl("text");
             FieldHtmlUtil.apply(textarea, textDecl, options);
         }
 

@@ -24,21 +24,44 @@ public class UOM
     public UOM() {
     }
 
+    public UOM(UOM o) {
+        setId(o.getId());
+        setCode(o.getCode());
+        setLabel(o.getLabel());
+        setDescription(o.getDescription());
+        setParent(o.getParent());
+        scale = o.scale;
+        property = o.property;
+    }
+
     public UOM(String code, String label, String property) {
-        this(code, label, Double.NaN, null, property);
+        this(null, code, label, Double.NaN, null, property);
     }
 
     public UOM(String code, String label, double scale, UOM stdRef) {
-        this(code, label, scale, stdRef, stdRef.property);
+        this(null, code, label, scale, stdRef, stdRef.property);
     }
 
     public UOM(String code, String label, double scale, UOM stdRef, String property) {
+        this(null, code, label, scale, stdRef, property);
+    }
+
+    public UOM(int id, String code, String label, String property) {
+        this(id, code, label, Double.NaN, null, property);
+    }
+
+    public UOM(int id, String code, String label, double scale, UOM stdRef) {
+        this(id, code, label, scale, stdRef, stdRef.property);
+    }
+
+    public UOM(Integer id, String code, String label, double scale, UOM stdRef, String property) {
         if (code == null)
             throw new NullPointerException("code");
         if (label == null)
             throw new NullPointerException("label");
         if (property == null)
             throw new NullPointerException("property");
+        setId(id);
         setCode(code);
         setLabel(label);
         setParent(stdRef);

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.bodz.bas.db.meta.TableName;
-import net.bodz.bas.repr.form.NullConvertion;
+import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.NumericInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -31,7 +31,7 @@ public class Artifact
     private String skuCode;
     private String barCode;
 
-    private UOM uom = UOMs.PIECE;
+    private UOM uom = new UOM(UOMs.PIECE);
     private String uomProperty = "数量";
     private Map<UOM, Double> convMap = new HashMap<UOM, Double>();
     private int decimalDigits = 2;
@@ -40,7 +40,7 @@ public class Artifact
     private String color;
     private String caution;
 
-    private final Dim3d bbox = new Dim3d();
+    private Dim3d bbox = new Dim3d();
     private double weight;
     private double netWeight;
 
@@ -66,7 +66,6 @@ public class Artifact
      * @placeholder 输入存货识别码…
      */
     @OfGroup(StdGroup.Identity.class)
-    @FormInput(nullconv = NullConvertion.EMPTY)
     @TextInput(maxLength = N_SKU_CODE)
     public String getSkuCode() {
         return skuCode;
@@ -82,7 +81,6 @@ public class Artifact
      * @placeholder 输入条形码
      */
     @OfGroup({ StdGroup.Identity.class, OaGroups.Packaging.class })
-    @FormInput(nullconv = NullConvertion.EMPTY)
     @TextInput(maxLength = N_BAR_CODE)
     public String getBarCode() {
         return barCode;
@@ -110,7 +108,6 @@ public class Artifact
      * @placeholder 输入衡量单位的用途属性，如"长度"、"重量"
      */
     @OfGroup(OaGroups.Packaging.class)
-    @FormInput(nullconv = NullConvertion.EMPTY)
     @TextInput(maxLength = N_UOM_PROPERTY)
     public String getUomProperty() {
         return uomProperty;
@@ -154,7 +151,6 @@ public class Artifact
      * @placeholder 输入规格/型号…
      */
     @OfGroup(StdGroup.Identity.class)
-    @FormInput(nullconv = NullConvertion.EMPTY)
     @TextInput(maxLength = N_SPEC)
     public String getSpec() {
         return spec;
@@ -170,7 +166,6 @@ public class Artifact
      * @placeholder 输入颜色名称…
      */
     @OfGroup(OaGroups.ColorManagement.class)
-    @FormInput(nullconv = NullConvertion.EMPTY)
     @TextInput(maxLength = N_COLOR)
     public String getColor() {
         return color;
@@ -187,7 +182,6 @@ public class Artifact
      * 
      * @placeholder 输入警告信息…
      */
-    @FormInput(nullconv = NullConvertion.EMPTY)
     @TextInput(maxLength = N_CAUTION)
     public String getCaution() {
         return caution;
@@ -205,10 +199,15 @@ public class Artifact
         return bbox;
     }
 
+    public void setBbox(Dim3d bbox) {
+        this.bbox = bbox;
+    }
+
     /**
      * 毛重 (g)
      */
     @OfGroup(OaGroups.Packaging.class)
+    @Priority(Priority.LOW)
     public double getWeight() {
         return weight;
     }
@@ -221,6 +220,7 @@ public class Artifact
      * 净重 (g)
      */
     @OfGroup(OaGroups.Packaging.class)
+    @Priority(Priority.LOW)
     public double getNetWeight() {
         return netWeight;
     }

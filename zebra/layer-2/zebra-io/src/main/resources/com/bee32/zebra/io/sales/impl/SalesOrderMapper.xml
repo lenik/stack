@@ -7,23 +7,23 @@
     <resultMap id="map1" type="com.bee32.zebra.io.sales.SalesOrder" extends="message.map2">
         <result property="total" column="val" />
         <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">
-            <id column="topic" />
+            <id property="id" column="topic" />
             <result property="label" column="topic_label" />
         </association>
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
-            <id column="org" />
+            <id property="id" column="org" />
             <result property="label" column="org_label" />
         </association>
         <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
-            <id column="person" />
+            <id property="id" column="person" />
             <result property="label" column="person_label" />
         </association>
         <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
-            <id column="cat" />
+            <id property="id" column="cat" />
             <result property="label" column="cat_label" />
         </association>
         <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
-            <id column="phase" />
+            <id property="id" column="phase" />
             <result property="label" column="phase_label" />
         </association>
     </resultMap>

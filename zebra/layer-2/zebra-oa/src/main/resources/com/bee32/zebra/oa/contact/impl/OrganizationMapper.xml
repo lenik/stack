@@ -71,17 +71,16 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="type == 0">and not customer and not supplier and not shipper</if>
-            <if test="shipper || type == 3">and shipper</if>
-            <if test="type == 4">and false</if>
-
             <!-- co -->
             <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
-            
             <!-- party -->
             <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
             <if test="customer || type == 1">and customer</if>
             <if test="supplier || type == 2">and supplier</if>
+            <!-- org -->
+            <if test="type == 0">and not customer and not supplier and not shipper</if>
+            <if test="shipper || type == 3">and shipper</if>
+            <if test="type == 4">and false</if>
         </where>
     </select>
 
@@ -92,17 +91,39 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
-        <![CDATA[
-        insert into org(code, label, description)
-        values(#{codeName},#{label},#{description})
-        returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into org(
+            code, label, description,
+            priority, flags, state, uid, gid, mode, acl,
+            birthday, locale, timezone, customer, supplier,
+            subject, bank, bankacc,
+            size, taxid, shipper
+        ) values(
+            #{codeName},#{label},#{description},
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{birthday}, #{langTag}, #{timeZoneId}, #{customer}, #{supplier}, 
+            #{subject}, #{bank}, #{account},
+            #{size}, #{taxId}, #{shipper}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update org
         <set>
-            <include refid="co.setU" />
+            <include refid="co.setUSA" />
+            <!-- party -->
+            birthday=#{birthday},
+            locale=#{langTag},
+            timezone=#{timeZoneId},
+            customer=#{customer},
+            supplier=#{supplier},
+            subject=#{subject},
+            bank=#{bank},
+            bankacc=#{account},
+            <!-- person -->
+            size=#{size},
+            taxid=#{taxId},
+            shipper=#{shipper}
         </set>
         where id=#{id}
     </update>

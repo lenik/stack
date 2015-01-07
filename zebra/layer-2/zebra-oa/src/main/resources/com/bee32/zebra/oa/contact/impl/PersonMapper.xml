@@ -87,19 +87,18 @@
     <select id="insert" resultType="long"><![CDATA[
         insert into person(
             code, label, description,
-            birthday, gender, employee, homeland, passport, ssn, dln,
-            customer, supplier, subject, comment,
-            bank, bankacc,
-            priority, flags, state,
-            uid, gid, mode, acl
+            priority, flags, state, uid, gid, mode, acl,
+            birthday, locale, timezone, customer, supplier, 
+            subject, bank, bankacc,
+            gender, employee, homeland,
+            passport, ssn, dln
         ) values(
             #{codeName},#{label},#{description},
-            #{birthday}, #{gender}, #{employee}, #{homeland}, #{passport},
-            #{socialSecurityNum}, #{driverLicenseNum},
-            #{customer}, #{supplier}, #{subject}, #{comment},
-            #{bank}, #{account},
-            #{priority}, #{flags}, #{state},
-            #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl}
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{birthday}, #{langTag}, #{timeZoneId}, #{customer}, #{supplier}, 
+            #{subject}, #{bank}, #{account},
+            #{gender}, #{employee}, #{homeland},
+            #{passport}, #{socialSecurityNum}, #{driverLicenseNum}
         ) returning id
     ]]></select>
 
@@ -107,20 +106,22 @@
         update person
         <set>
             <include refid="co.setUSA" />
+            <!-- party -->
+            birthday=#{birthday},
+            locale=#{langTag},
+            timezone=#{timeZoneId},
+            customer=#{customer},
+            supplier=#{supplier},
+            subject=#{subject},
+            bank=#{bank},
+            bankacc=#{account},
+            <!-- person -->
             gender=#{gender},
             employee=#{employee},
             homeland=#{homeland},
             passport=#{passport},
             ssn=#{socialSecurityNum},
             dln=#{driverLicenseNum},
-            <!-- party -->
-            birthday=#{birthday},
-            customer=#{customer},
-            supplier=#{supplier},
-            subject=#{subject},
-            comment=#{comment},
-            bank=#{bank},
-            bankacc=#{account},
         </set>
         where id=#{id}
     </update>

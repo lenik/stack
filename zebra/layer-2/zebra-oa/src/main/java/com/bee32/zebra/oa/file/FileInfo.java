@@ -23,12 +23,14 @@ public class FileInfo
 
     private static final long serialVersionUID = 1L;
 
-    public static final int N_PATH = 200;
+    public static final int N_DIR_NAME = 200;
+    public static final int N_BASE_NAME = 80;
     public static final int N_SHA1 = 32;
     public static final int N_TYPE = 100;
     public static final int N_ENCODING = 30;
 
-    private String path;
+    private String dirName;
+    private String baseName;
     private long size;
     private String sha1;
     private String type;
@@ -42,37 +44,55 @@ public class FileInfo
     private int downloads;
     private Double value;
 
+    @DetailLevel(DetailLevel.HIDDEN)
+    @FormInput(nullconv = NullConvertion.NONE)
+    @TextInput(maxLength = 200)
+    @Override
+    public String getSubject() {
+        return super.getSubject();
+    }
+
+    /**
+     * @label Text
+     * @label.zh 备注
+     * @placeholder 输入备注信息…
+     */
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Override
+    public String getText() {
+        return super.getText();
+    }
+
+    /**
+     * 文件位置
+     */
+    @TextInput(maxLength = N_DIR_NAME)
+    public String getDirName() {
+        return dirName;
+    }
+
+    public void setDirName(String dirName) {
+        this.dirName = dirName;
+    }
+
     /**
      * 文件名
      */
-    @FormInput(nullconv = NullConvertion.EMPTY)
-    @TextInput(maxLength = N_PATH)
-    public final String getFileName() {
-        return super.getCodeName();
+    @TextInput(maxLength = N_BASE_NAME)
+    public final String getBaseName() {
+        return baseName;
     }
 
-    public final void setFileName(String fileName) {
-        if (fileName == null)
-            throw new NullPointerException("fileName");
-        super.setCodeName(fileName);
-    }
-
-    /**
-     * 路径
-     */
-    @FormInput(nullconv = NullConvertion.EMPTY)
-    @TextInput(maxLength = N_PATH)
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
+    public final void setBaseName(String baseName) {
+        if (baseName == null)
+            throw new NullPointerException("baseName");
+        this.baseName = baseName;
     }
 
     /**
-     * 大小
+     * 文件长度
      */
+    @FormInput(readOnly = true)
     public long getSize() {
         return size;
     }
@@ -85,9 +105,8 @@ public class FileInfo
      * SHA-1摘要
      */
     @OfGroup(StdGroup.Settings.class)
-    @FormInput(nullconv = NullConvertion.EMPTY)
+    @FormInput(readOnly = true)
     @TextInput(maxLength = N_SHA1)
-    @Derived(cached = true)
     public String getSha1() {
         return sha1;
     }
@@ -99,7 +118,8 @@ public class FileInfo
     /**
      * 类型
      */
-    @FormInput(nullconv = NullConvertion.EMPTY)
+    @OfGroup(StdGroup.Settings.class)
+    @FormInput(readOnly = true)
     @TextInput(maxLength = N_TYPE)
     public String getType() {
         return type;
@@ -113,7 +133,6 @@ public class FileInfo
      * 字符编码
      */
     @OfGroup(StdGroup.Settings.class)
-    @FormInput(nullconv = NullConvertion.EMPTY)
     @TextInput(maxLength = N_ENCODING)
     public String getEncoding() {
         return encoding;
@@ -126,7 +145,7 @@ public class FileInfo
     /**
      * 公司
      */
-    @OfGroup(StdGroup.Schedule.class)
+    @OfGroup(StdGroup.Classification.class)
     public Organization getOrg() {
         return org;
     }
@@ -138,7 +157,7 @@ public class FileInfo
     /**
      * 联系人
      */
-    @OfGroup(StdGroup.Schedule.class)
+    @OfGroup(StdGroup.Classification.class)
     public Person getPerson() {
         return person;
     }
@@ -150,7 +169,7 @@ public class FileInfo
     /**
      * 下载次数
      */
-    @OfGroup(StdGroup.Statistics.class)
+    @OfGroup(StdGroup.Ranking.class)
     @Derived(cached = true)
     public int getDownloads() {
         return downloads;
@@ -162,6 +181,8 @@ public class FileInfo
 
     /**
      * 价值
+     * 
+     * @placeholder 输入（估算的）价值…
      */
     public Double getValue() {
         return value;

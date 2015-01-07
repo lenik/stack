@@ -4,7 +4,7 @@ import net.bodz.bas.repr.path.PathToken;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.art.ArtifactCategory;
-import com.tinylily.repr.CoEntityManager;
+import com.bee32.zebra.tk.sea.FooManager;
 
 /**
  * 物料分类
@@ -15,7 +15,7 @@ import com.tinylily.repr.CoEntityManager;
  */
 @PathToken("acat")
 public class ArtifactCategoryManager
-        extends CoEntityManager {
+        extends FooManager {
 
     public ArtifactCategoryManager(IQueryable context) {
         super(ArtifactCategory.class, context);

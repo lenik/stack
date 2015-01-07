@@ -82,24 +82,32 @@
     </select>
 
     <select id="insert" resultType="long"><![CDATA[
-        insert into topic(op, subject, text, cat, val)
-            values(#{op},#{subject},#{text}, #{cat}, #{val})
-            returning id
+        insert into topic(
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1,
+            op, subject, text, form, args, cat, phase,
+            val
+        ) values(
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate},
+            #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id},
+            #{value}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update topic
         <set>
             <include refid="message.set1" />
-            val=#{value},
-            <if test="category != null">cat=#{category.id},</if>
-            <if test="phase != null">phase=#{phase.id},</if>
+            val = #{value},
         </set>
-        where id=#{id}
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </update>
 
     <delete id="delete">
-        delete from topic where id=#{id}
+        delete from topic where id = #{id}
     </delete>
 
     <select id="count" resultType="hashmap">

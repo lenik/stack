@@ -60,20 +60,29 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
-        <![CDATA[
-        insert into artcat(code, label, description)
-            values(#{codeName},#{label},#{description})
-            returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into artcat(
+            code, label, description,
+            priority, flags, state, uid, gid, mode, acl,
+            parent, depth, skufmt, barfmt
+        ) values(
+            #{codeName},#{label},#{description},
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{parent.id}, #{depth}, #{skuCodeFormat}, #{barCodeFormat} 
+        ) returning id
     ]]></select>
 
     <update id="update">
         update artcat
         <set>
-            <include refid="co.setU" />
+            <include refid="co.setUSA" />
+            <if test="parent != null">parent=#{parent.id},</if>
+            depth=#{depth},
+            skufmt=#{skuCodeFormat},
+            barfmt=#{barCodeFormat}
         </set>
         <where>
-            <if test="id != null">id=#{id}, </if>
+            <if test="id != null">id=#{id}</if>
         </where>
     </update>
 

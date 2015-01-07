@@ -67,23 +67,40 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
-        <![CDATA[
-        insert into acdoc(code, label, description)
-        values(#{codeName},#{label},#{description})
-        returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into acdoc(
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1,
+            op, subject, text, form, args, cat, phase,
+            prev, topic, org, person,
+            ndebit, ncredit
+        ) values(
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate},
+            #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id},
+            #{previous.id}, #{topic.id}, #{org.id}, #{person.id},
+            #{debitTotal}, #{creditTotal}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update acdoc
         <set>
-            <include refid="co.setU" />
+            <include refid="message.set1" />
+            <if test="previous != null">prev = #{previous.id},</if>
+            <if test="topic != null">topic = #{topic.id},</if>
+            <if test="org != null">org = #{org.id},</if>
+            <if test="person != null">person = #{person.id},</if>
+            ndebit = #{debitTotal},
+            ncredit = #{creditTotal},
         </set>
-        where id=#{id}
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </update>
 
     <delete id="delete">
-        delete from acdoc where id=#{id}
+        delete from acdoc where id = #{id}
     </delete>
 
     <select id="count" resultType="hashmap">

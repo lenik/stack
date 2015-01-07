@@ -81,16 +81,24 @@
 
     <select id="insert" resultType="long">
         <![CDATA[
-        insert into reply(op, text, topic, parent)
-            values(#{op},#{text}, #{topic.id}, #{parent.id})
-            returning id
+        insert into reply(
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1,
+            op, text, cat, phase,
+            topic, parent
+        ) values(
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate},
+            #{op.id}, #{text}, #{category.id}, #{phase.id},
+            #{topic.id}, #{parent.id}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update reply
         <set>
-            <include refid="message.set1" />
-            val=#{value},
+            <include refid="message.set1u" />
+            text = #{text},
             <if test="topic != null">topic=#{topic.id},</if>
             <if test="parent != null">parent=#{parent.id},</if>
         </set>

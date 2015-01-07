@@ -6,7 +6,9 @@
 
     <resultMap id="map1" type="com.bee32.zebra.io.sales.Delivery" extends="message.map2">
         <result property="shipmentId" column="shipment" />
-        <result property="total" column="val" />
+        <result property="shippingCost" column="shipcost" />
+        <result property="quantity" column="qty" />
+        <result property="total" column="total" />
         <association property="salesOrder" javaType="com.bee32.zebra.io.sales.SalesOrder">
             <id column="sdoc" />
             <result property="label" column="sdoc_label" />
@@ -110,25 +112,46 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
-        <![CDATA[
-        insert into dldoc(code, label, description)
-            values(#{codeName},#{label},#{description})
-            returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into dldoc(
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1,
+            op, subject, text, form, args, cat, phase,
+            prev, sdoc, org, person,
+            shipdest, shipper, shipment, shipcost,
+            qty, total
+        ) values(
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate},
+            #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id},
+            #{previous.id}, #{salesOrder.id}, #{org.id}, #{person.id},
+            #{shipDest.id}, #{shipper.id}, #{shipmentId}, #{shippingCost},
+            #{quantity}, #{total}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update dldoc
         <set>
-            <include refid="co.setU" />
+            <include refid="message.set1" />
+            <if test="previous != null">prev = #{previous.id},</if>
+            <if test="salesOrder != null">sdoc = #{salesOrder.id},</if>
+            <if test="org != null">org = #{org.id},</if>
+            <if test="person != null">person = #{person.id},</if>
+            <if test="shipDest != null">shipdest = #{shipDest.id},</if>
+            <if test="shipper != null">shipper = #{shipper.id},</if>
+            shipment = #{shipmentId},
+            shipcost = #{shippingCost},
+            qty = #{quantity},
+            total = #{total},
         </set>
         <where>
-            <if test="id != null">id=#{id}, </if>
+            <if test="id != null">id = #{id}</if>
         </where>
     </update>
 
     <delete id="delete">
-        delete from dldoc where id=#{id}
+        delete from dldoc where id = #{id}
     </delete>
 
     <select id="count" resultType="hashmap">

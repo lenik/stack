@@ -2,8 +2,8 @@ package com.tinylily.model.base.security.impl;
 
 import net.bodz.bas.rtx.IQueryable;
 
+import com.bee32.zebra.tk.sea.FooManager;
 import com.tinylily.model.base.security.Group;
-import com.tinylily.repr.CoEntityManager;
 
 /**
  * 用户组
@@ -18,7 +18,7 @@ import com.tinylily.repr.CoEntityManager;
  * @rel org/: 管理企、事业组织
  */
 public class GroupManager
-        extends CoEntityManager {
+        extends FooManager {
 
     public GroupManager(IQueryable context) {
         super(Group.class, context);

@@ -3,7 +3,7 @@ package com.bee32.zebra.io.sales.impl;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.sales.SalesOrderItem;
-import com.tinylily.repr.CoEntityManager;
+import com.bee32.zebra.tk.sea.FooManager;
 
 /**
  * TITLE
@@ -15,7 +15,7 @@ import com.tinylily.repr.CoEntityManager;
  * @see <a href="HREF2">TEXT2</a>
  */
 public class SalesOrderItemManager
-        extends CoEntityManager {
+        extends FooManager {
 
     public SalesOrderItemManager(IQueryable context) {
         super(SalesOrderItem.class, context);

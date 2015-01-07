@@ -5,30 +5,30 @@
 <mapper namespace="com.bee32.zebra.io.stock.impl.StockEventMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.io.stock.StockEvent" extends="message.map2">
-        <result property="quantity" column="quantity" />
+        <result property="quantity" column="qty" />
         <result property="total" column="total" />
         <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">
-            <id column="topic" />
+            <id property="id" column="topic" />
             <result property="subject" column="topic_subject" />
         </association>
         <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
-            <id column="cat" />
+            <id property="id" column="cat" />
             <result property="label" column="cat_label" />
         </association>
         <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
-            <id column="phase" />
+            <id property="id" column="phase" />
             <result property="label" column="phase_label" />
         </association>
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
-            <id column="org" />
+            <id property="id" column="org" />
             <result property="label" column="org_label" />
         </association>
         <association property="orgUnit" javaType="com.bee32.zebra.oa.contact.OrgUnit">
-            <id column="org" />
+            <id property="id" column="org" />
             <result property="label" column="ou_label" />
         </association>
         <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
-            <id column="person" />
+            <id property="id" column="person" />
             <result property="label" column="person_label" />
         </association>
     </resultMap>
@@ -122,25 +122,41 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
-        <![CDATA[
-        insert into stdoc(code, label, description)
-            values(#{codeName},#{label},#{description})
-            returning id
+    <select id="insert" resultType="long"><![CDATA[
+        insert into stdoc(
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1,
+            op, subject, text, form, args, cat, phase,
+            prev, topic, org, ou, person,
+            qty, total
+        ) values(
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate},
+            #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id},
+            #{previous.id}, #{topic.id}, #{org.id}, #{orgUnit.id}, #{person.id},
+            #{quantity}, #{total}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update stdoc
         <set>
-            <include refid="co.setU" />
+            <include refid="message.set1" />
+            <if test="previous != null">prev = #{previous.id},</if>
+            <if test="topic != null">topic = #{topic.id},</if>
+            <if test="org != null">org = #{org.id},</if>
+            <if test="orgUnit != null">ou = #{orgUnit.id},</if>
+            <if test="person != null">person = #{person.id},</if>
+            qty = #{quantity},
+            total = #{total},
         </set>
         <where>
-            <if test="id != null">id=#{id}, </if>
+            <if test="id != null">id = #{id}</if>
         </where>
     </update>
 
     <delete id="delete">
-        delete from stdoc where id=#{id}
+        delete from stdoc where id = #{id}
     </delete>
 
     <select id="count" resultType="hashmap">

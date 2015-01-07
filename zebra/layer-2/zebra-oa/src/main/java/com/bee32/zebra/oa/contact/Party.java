@@ -7,7 +7,6 @@ import java.util.TimeZone;
 import java.util.TreeSet;
 
 import net.bodz.bas.c.java.util.TimeZones;
-import net.bodz.bas.err.ParseException;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
@@ -15,7 +14,6 @@ import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
-import com.tinylily.model.sea.QVariantMap;
 
 @IdType(Integer.class)
 public abstract class Party
@@ -33,6 +31,7 @@ public abstract class Party
     private Locale locale = Locale.SIMPLIFIED_CHINESE;
     private TimeZone timeZone = TimeZones.TZ_SHANGHAI;
 
+    private boolean peer;
     private boolean customer;
     private boolean supplier;
     private final Set<String> tags = new TreeSet<>();
@@ -55,7 +54,7 @@ public abstract class Party
     }
 
     /**
-     * 区域
+     * 语言/区域
      */
     @OfGroup(StdGroup.Settings.class)
     public Locale getLocale() {
@@ -73,6 +72,7 @@ public abstract class Party
      */
     @OfGroup(StdGroup.Settings.class)
     @TextInput(maxLength = N_LANGTAG)
+    @Derived
     public String getLangTag() {
         return locale.toLanguageTag();
     }
@@ -111,6 +111,18 @@ public abstract class Party
         if (timeZoneId == null)
             throw new NullPointerException("timeZoneId");
         timeZone = TimeZone.getTimeZone(timeZoneId);
+    }
+
+    /**
+     * 标记 - 同行
+     */
+    @OfGroup(StdGroup.Classification.class)
+    public boolean isPeer() {
+        return peer;
+    }
+
+    public void setPeer(boolean peer) {
+        this.peer = peer;
     }
 
     /**
@@ -185,7 +197,7 @@ public abstract class Party
     }
 
     /**
-     * 帐号
+     * 银行帐号
      * 
      * @placeholder 输入银行帐号...
      */
@@ -208,31 +220,13 @@ public abstract class Party
     @Derived
     public String getTypeChars() {
         StringBuilder sb = new StringBuilder();
+        if (isPeer())
+            sb.append("同");
         if (isCustomer())
             sb.append("客");
         if (isSupplier())
             sb.append("供");
         return sb.toString();
-    }
-
-    @Override
-    protected void populate(QVariantMap<String> map)
-            throws ParseException {
-        super.populate(map);
-
-        // birthday = map.getDate("birthday", birthday);
-        // locale = Locale.SIMPLIFIED_CHINESE;
-        // timeZone = TimeZones.TZ_SHANGHAI;
-
-        customer = map.getBoolean("customer", customer);
-        supplier = map.getBoolean("supplier", supplier);
-        // tags = new TreeSet<>();
-
-        subject = map.getStringE4n("subject");
-        // contact = map.getIntIdRef("contact", new Contact());
-
-        bank = map.getStringE4n("bank");
-        account = map.getStringE4n("account");
     }
 
 }

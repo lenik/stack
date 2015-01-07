@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.meta.bean.DetailLevel;
-import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 
@@ -14,6 +14,7 @@ import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.mx.base.CoMessage;
 
 @IdType(Integer.class)
@@ -23,6 +24,7 @@ public class StockEvent
 
     private static final long serialVersionUID = 1L;
 
+    private StockEvent previous;
     private Topic topic;
     private Organization org;
     private OrgUnit orgUnit;
@@ -31,6 +33,25 @@ public class StockEvent
     private List<StockEntry> entries = new ArrayList<>();
     private double quantity;
     private double total;
+
+    public StockEvent() {
+        CategoryDef TK_I = new CategoryDef();
+        TK_I.setId(1202);
+        TK_I.setLabel("采购入库");
+        setCategory(TK_I);
+    }
+
+    /**
+     * 前级
+     */
+    @OfGroup(StdGroup.Process.class)
+    public StockEvent getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(StockEvent previous) {
+        this.previous = previous;
+    }
 
     /**
      * 项目/机会
@@ -92,7 +113,7 @@ public class StockEvent
      * 总数量
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getQuantity() {
         return quantity;
     }
@@ -105,7 +126,7 @@ public class StockEvent
      * 总金额
      */
     @OfGroup(StdGroup.Statistics.class)
-    @Derived(cached = true)
+    @Statistics
     public double getTotal() {
         return total;
     }

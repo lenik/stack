@@ -2,27 +2,20 @@ package com.bee32.zebra.oa.contact;
 
 import java.sql.Date;
 
-import net.bodz.bas.err.ParseException;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
-
-import com.tinylily.model.sea.QVariantMap;
+import net.bodz.bas.repr.form.meta.TextInput;
 
 public class Person
         extends Party {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int N_ROLE = 30;
     public static final int N_HOMELAND = 10;
     public static final int N_PASSPORT = 20;
     public static final int N_SOCIAL_SECURITY_NUM = 20;
     public static final int N_DRIVER_LICENSE_NUM = 20;
-
-    public static final char MALE = 'm';
-    public static final char FEMALE = 'f';
-    // public static final char TRANSEXUAL = 't';
 
     private Gender gender = Gender.UNKNOWN;
     private boolean employee;
@@ -35,6 +28,7 @@ public class Person
      * 姓名
      */
     @OfGroup(StdGroup.Identity.class)
+    @Derived
     public String getFullName() {
         return getLabel();
     }
@@ -46,6 +40,7 @@ public class Person
     /**
      * 兴趣爱好
      */
+    @TextInput(maxLength = N_SUBJECT)
     @Override
     public String getSubject() {
         return super.getSubject();
@@ -80,6 +75,8 @@ public class Person
     /**
      * 籍贯
      */
+    @OfGroup(StdGroup.Classification.class)
+    @TextInput(maxLength = N_HOMELAND)
     public String getHomeland() {
         return homeland;
     }
@@ -92,6 +89,7 @@ public class Person
      * 护照
      */
     @OfGroup(StdGroup.Identity.class)
+    @TextInput(maxLength = N_PASSPORT)
     public String getPassport() {
         return passport;
     }
@@ -104,6 +102,7 @@ public class Person
      * 身份证
      */
     @OfGroup(StdGroup.Identity.class)
+    @TextInput(maxLength = N_SOCIAL_SECURITY_NUM)
     public String getSocialSecurityNum() {
         return socialSecurityNum;
     }
@@ -116,6 +115,7 @@ public class Person
      * 驾照
      */
     @OfGroup(StdGroup.Identity.class)
+    @TextInput(maxLength = N_DRIVER_LICENSE_NUM)
     public String getDriverLicenseNum() {
         return driverLicenseNum;
     }
@@ -168,21 +168,6 @@ public class Person
         if (employee)
             typeChars += "雇";
         return typeChars;
-    }
-
-    @Override
-    protected void populate(QVariantMap<String> map)
-            throws ParseException {
-        super.populate(map);
-
-        gender = map.getPredef(Gender.class, "gender", gender);
-        homeland = map.getStringE4n("homeland");
-
-        passport = map.getStringE4n("passport");
-        socialSecurityNum = map.getStringE4n("socialSecurityNum");
-        driverLicenseNum = map.getStringE4n("driverLicenseNum");
-
-        employee = map.getBoolean("employee", employee);
     }
 
 }

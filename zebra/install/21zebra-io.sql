@@ -1,3 +1,10 @@
+-- uom
+-- artcat, art
+-- sdoc, sentry
+-- place, placeopt
+-- stinit, stdoc, stentry
+-- dldoc, dlentry
+
 -- drop table if exists uom;
     create sequence uom_seq start with 1000;
     create table uom(
@@ -72,12 +79,6 @@
         label       varchar(80),
         description varchar(200),
         
-        parent      int,
-        depth       int not null default -1,
-        skufmt      varchar(100),
-        barfmt      varchar(100),
-        count       int not null default 0, -- redundant.
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -89,6 +90,12 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+        
+        parent      int,
+        depth       int not null default -1,
+        skufmt      varchar(100),
+        barfmt      varchar(100),
+        count       int not null default 0, -- redundant.
         
         constraint artcat_uk_code   unique(code),
         constraint artcat_fk_parent foreign key(parent)
@@ -115,6 +122,18 @@
         label       varchar(80),
         description varchar(200),
         
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
+        uid         int,
+        gid         int,
+        mode        int not null default 640,
+        acl         int,
+        
         cat         int,
         sku         varchar(30),
         barcode     varchar(30),
@@ -136,18 +155,6 @@
         supply      SupplyMethod not null default 'PRODUCE',
         supplydelay int not null default 0,     -- day
         bom         text,
-        
-        priority    int not null default 0,
-        creation    timestamp not null default now(),
-        lastmod     timestamp not null default now(),
-        flags       int not null default 0,
-        state       int not null default 0,
-        version     int not null default 0,
-        
-        uid         int,
-        gid         int,
-        mode        int not null default 640,
-        acl         int,
         
         constraint art_uk_code      unique(code),
         constraint art_fk_cat       foreign key(cat)
@@ -183,25 +190,6 @@
     create sequence sdoc_seq start with 1000;
     create table sdoc(                  -- sales/subscription doc
         id          int primary key default nextval('sdoc_seq'),
-        prev        int,            -- previous doc
-        form        int,
-        subject     varchar(200) not null,
-        text        text,
-        args        text,           -- used with the form.
-        
-        topic       int,
-        op          int,
-        org         int,
-        person      int,
-        
-        cat         int,            -- subscription category
-        phase       int,            -- subscription phase
-        val         double precision,
-        
-        year        int not null default 0, -- same year of t0.
-        t0          date not null,  -- contract date
-        t1          date,           -- contract deadline
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -213,6 +201,26 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+        
+        t0          date not null,  -- contract date
+        t1          date,           -- contract deadline
+        year        int not null default 0, -- same year of t0.
+        
+        op          int,
+        subject     varchar(200) not null,
+        text        text,
+        form        int,
+        args        text,           -- used with the form.
+        cat         int,            -- subscription category
+        phase       int,            -- subscription phase
+        
+        prev        int,            -- previous doc
+        topic       int,
+        org         int,
+        person      int,
+        
+        qty         numeric(20,2) not null default 0,
+        total       numeric(20,2) not null default 0,
         
         constraint sdoc_fk_cat      foreign key(cat)
             references cat(id)          on update cascade on delete set null,
@@ -268,8 +276,14 @@
     create sequence sentry_seq start with 1000;
     create table sentry(
         id          bigint primary key default nextval('sentry_seq'),
-        doc         int not null,
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
         
+        t0          date,
+        t1          date,           -- deadline
+        
+        doc         int not null,
         art         int not null,
         --batch       varchar(30) not null default '',
         --divs        varchar(100),
@@ -280,14 +294,8 @@
         qty         numeric(20,2) not null,
         price       numeric(20,2) not null default 0,
         total       numeric(20,2) not null default 0,   -- cache
-        deadline    date,
-        
         comment     varchar(200),
         footnote    varchar(200),
-        
-        priority    int not null default 0,
-        flags       int not null default 0,
-        state       int not null default 0,
         
         constraint sentry_fk_art    foreign key(art)
             references art(id)          on update cascade on delete set null,
@@ -339,7 +347,7 @@
         
         constraint place_uk_code     unique(code),
         constraint place_fk_gid      foreign key(gid)
-            references "group"(id)      on update cascade on delete set null
+            references "group"(id)      on update cascade on delete set null,
         constraint place_fk_parent   foreign key(parent)
             references place(id)        on update cascade on delete cascade,
         constraint place_fk_uid      foreign key(uid)
@@ -375,7 +383,7 @@
         constraint placeopt_fk_art   foreign key(art)
             references art(id)          on update cascade on delete cascade,
         constraint placeopt_fk_place foreign key(place)
-            references place(id)         on update cascade on delete cascade
+            references place(id)        on update cascade on delete cascade
     );
 
     create or replace view v_place_n as select
@@ -417,26 +425,6 @@
     create sequence stdoc_seq start with 1000;
     create table stdoc(
         id          int primary key default nextval('stdoc_seq'),
-        prev        int,            -- previous doc
-        form        int,
-        subject     varchar(200) not null,
-        text        text,
-        args        text,           -- used with the form.
-        
-        topic       int,
-        op          int,
-        org         int,
-        ou          int,
-        person      int,
-        
-        cat         int not null,   -- aka. stock order subject
-        phase       int,            -- aka. stock stage
-        val         double precision,
-        
-        year        int not null default 0, -- same year of t0.
-        t0          date,           -- begin date
-        t1          date,           -- end date
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -448,6 +436,27 @@
         gid         int,
         mode        int not null default 640,
         acl         int,
+        
+        t0          date,           -- begin date
+        t1          date,           -- end date
+        year        int not null default 0, -- same year of t0.
+        
+        op          int,
+        subject     varchar(200) not null,
+        text        text,
+        form        int,
+        args        text,           -- used with the form.
+        cat         int not null,   -- aka. stock order subject
+        phase       int,            -- aka. stock stage
+        
+        prev        int,            -- previous doc
+        topic       int,
+        org         int,
+        ou          int,
+        person      int,
+                
+        qty         numeric(20,2) not null default 0,
+        total       numeric(20,2) not null default 0,
         
         constraint stdoc_fk_cat     foreign key(cat)
             references cat(id)          on update cascade on delete set null,
@@ -503,8 +512,14 @@
     create sequence stentry_seq start with 1000;
     create table stentry(
         id          bigint primary key default nextval('stentry_seq'),
-        doc         int not null,
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
         
+        t0          date,           -- begin date
+        t1          date,           -- end date
+        
+        doc         int not null,
         art         int not null,
         place       int not null,
         batch       varchar(30) not null default '',
@@ -514,12 +529,6 @@
         price       numeric(20,2) not null default 0,
         total       numeric(20,2) not null default 0,   -- cache
         comment     varchar(200),
-        t0          date,           -- begin date
-        t1          date,           -- end date
-        
-        priority    int not null default 0,
-        flags       int not null default 0,
-        state       int not null default 0,
         
         constraint stentry_fk_art   foreign key(art)
             references art(id)          on update cascade on delete set null,
@@ -548,30 +557,6 @@
     create sequence dldoc_seq start with 1000;
     create table dldoc(             -- sales/subscription doc
         id          int primary key default nextval('dldoc_seq'),
-        prev        int,            -- previous doc
-        subject     varchar(200) not null,
-        text        text,
-        
-        sdoc        int,
-        op          int,
-        org         int,
-        person      int,
-        
-        shipdest    int,
-        shipper     int,
-        shipment    varchar(30),
-        shiplog     varchar(200),
-        
-        cat         int,
-        phase       int,
-        
-        freight     numeric(20, 2) not null default 0,
-        val         numeric(20, 2) not null default 0,
-        
-        year        int not null default 0, -- same year of t0.
-        t0          date,           -- package date
-        t1          date,           -- recv date
-        
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -584,8 +569,35 @@
         mode        int not null default 640,
         acl         int,
         
+        t0          date,           -- package date
+        t1          date,           -- recv date
+        year        int not null default 0, -- same year of t0.
+        
+        op          int,
+        subject     varchar(200) not null,
+        text        text,
+        form        int,
+        args        text,           -- used with the form.
+        cat         int,
+        phase       int,
+        
+        prev        int,            -- previous doc
+        sdoc        int,
+        org         int,
+        person      int,
+        
+        shipdest    int,
+        shipper     int,
+        shipment    varchar(30),
+        shiplog     varchar(200),
+        shipcost    numeric(20, 2) not null default 0,
+        qty         numeric(20,2) not null default 0,
+        total       numeric(20,2) not null default 0,
+        
         constraint dldoc_fk_cat     foreign key(cat)
             references cat(id)          on update cascade on delete set null,
+        constraint dldoc_fk_form    foreign key(form)
+            references form(id)         on update cascade on delete set null,
         constraint dldoc_fk_gid     foreign key(gid)
             references "group"(id)      on update cascade on delete set null,
         constraint dldoc_fk_op      foreign key(op)
@@ -636,6 +648,10 @@
     create sequence dlentry_seq start with 1000;
     create table dlentry(
         id          bigint primary key default nextval('dlentry_seq'),
+        priority    int not null default 0,
+        flags       int not null default 0,
+        state       int not null default 0,
+        
         doc         int not null,
         sentry      int,            -- XXX deprecated
         
@@ -643,10 +659,6 @@
         qty         numeric(20,2) not null,
         price       numeric(20,2) not null default 0,
         total       numeric(20,2) not null default 0,   -- cache
-        
-        priority    int not null default 0,
-        flags       int not null default 0,
-        state       int not null default 0,
         
         constraint dlentry_fk_art   foreign key(art)
             references art(id)          on update cascade on delete set null,

@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.bodz.bas.db.meta.TableName;
-import net.bodz.bas.err.ParseException;
+import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
-
-import com.tinylily.model.sea.QVariantMap;
 
 @TableName("org")
 public class Organization
@@ -33,6 +31,7 @@ public class Organization
      */
     @TextInput(maxLength = N_LABEL)
     @OfGroup(StdGroup.Identity.class)
+    @Derived
     public String getFullName() {
         return getLabel();
     }
@@ -68,6 +67,7 @@ public class Organization
     /**
      * 标记 - 承运人
      */
+    @OfGroup(StdGroup.Classification.class)
     public boolean isShipper() {
         return shipper;
     }
@@ -95,6 +95,8 @@ public class Organization
     /**
      * 人员表
      */
+    @DetailLevel(DetailLevel.EXTEND)
+    @Derived
     public List<Person> getStaff() {
         return staff;
     }
@@ -122,20 +124,6 @@ public class Organization
         if (shipper)
             typeChars += "运";
         return typeChars;
-    }
-
-    @Override
-    protected void populate(QVariantMap<String> map)
-            throws ParseException {
-        super.populate(map);
-
-        size = map.getInt("size", size);
-        taxId = map.getString("taxId");
-
-        shipper = map.getBoolean("shipper", shipper);
-
-        // staff = new ArrayList<>();
-        // topLevels = new ArrayList<OrgUnit>();
     }
 
 }
