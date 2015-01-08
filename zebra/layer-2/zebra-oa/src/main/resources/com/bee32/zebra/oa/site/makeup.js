@@ -7,7 +7,6 @@ var Features = {
 
 $(document).ready(function() {
 
-    $("select").css("overflow", "visible");
     if (Features.chosen) {
         var selects = $("select").chosen({
             inherit_select_classes : true,
@@ -33,9 +32,39 @@ $(document).ready(function() {
         });
     }
 
-    $("body").click(function() {
-        var seldiv = $("#zp-infosel-data");
-        // seldiv.toggle();
+    $(".zu-pickcmd").click(function() {
+        var url = $(this).attr("data-url");
+        var title = $(this).attr("data-title");
+        var $iframe = $("#picker1 iframe");
+        $iframe.attr("src", url);
+
+        var inputs = $(this).prevAll("input");
+        selection = null;
+
+        $("#picker1").dialog({
+            title : title,
+            buttons : [ {
+                text : "确定",
+                click : function() {
+                    if (selection != null)
+                        for ( var i = 0; i < inputs.length; i++) {
+                            var $input = $(inputs[i]);
+                            var name = $input.attr("name");
+                            var property = name.replace(/^.*\./, '');
+                            if (selection[property] != null)
+                                $input.attr("value", selection[property]);
+                        }
+                    $(this).dialog("close");
+                }
+            }, {
+                text : "取消",
+                click : function() {
+                    $(this).dialog("close");
+                }
+            }, ],
+            modal : true,
+            width : "80%"
+        });
     });
 
     var $dt = $('.dataTable');
@@ -95,6 +124,45 @@ $(document).ready(function() {
             var id = row.data()[0];
             if (id == undefined)
                 return;
+
+            if ($(this).hasClass("selected"))
+                $(this).removeClass("selected");
+            else {
+                dt.$("tr.selected").removeClass("selected");
+                $(this).addClass("selected");
+            }
+
+            if (parent != null) {
+                var cmap = {};
+                var headers = dt.columns().header();
+                for (i = 0; i < headers.length; i++) {
+                    var dataField = $(headers[i]).attr("data-field");
+                    cmap[dataField] = i;
+                }
+                var labelFields = [ "label", "subject", "fullName" ];
+                var labelFieldIndex = null;
+                for (i = 0; i < labelFields.length; i++) {
+                    var columnIndex = cmap[labelFields[i]];
+                    if (columnIndex != null) {
+                        labelFieldIndex = columnIndex;
+                        break;
+                    }
+                }
+                var label = null;
+                if (labelFieldIndex != null) {
+                    label = row.data()[labelFieldIndex];
+                    label = label.trimRight();
+                    if (label.substr(0, 1) == "<" && label.substr(-1) == ">") {
+                        label = label.replace(/^<.*?>/, '');
+                        label = label.replace(/<.*?>$/, '');
+                    }
+                }
+
+                parent.selection = {
+                    id : id,
+                    label : label
+                };
+            }
 
             if (modexs) {
                 location.href = id + "/";

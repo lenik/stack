@@ -1,5 +1,7 @@
 package com.bee32.zebra.io.art;
 
+import net.bodz.bas.repr.form.meta.TextInput;
+
 import com.tinylily.model.base.CoCode;
 
 /**
@@ -83,6 +85,10 @@ public class UOM
         this.scale = scale;
     }
 
+    /**
+     * 属性名
+     */
+    @TextInput(maxLength = N_PROPERTY)
     public String getProperty() {
         return property;
     }

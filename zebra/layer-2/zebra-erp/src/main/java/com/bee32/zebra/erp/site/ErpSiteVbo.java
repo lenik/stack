@@ -24,7 +24,7 @@ public class ErpSiteVbo
     }
 
     @Override
-    protected void indexBody(IHtmlTag out, OaSite site) {
+    protected void defaultBody(IHtmlTag out, OaSite site) {
         out.h1().text("ERP Site Body");
 
         IVirtualHost vhost = CurrentVirtualHost.getVirtualHost();

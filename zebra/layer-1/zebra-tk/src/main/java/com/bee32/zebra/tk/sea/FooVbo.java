@@ -44,6 +44,8 @@ import net.bodz.bas.typer.std.IParser;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
+import com.bee32.zebra.tk.hbin.PickDialog;
+import com.bee32.zebra.tk.site.CoTypes;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.bee32.zebra.tk.site.PageStruct;
@@ -159,22 +161,8 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
-    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
-            throws ViewBuilderException, IOException {
-        // out.hr();
-        HtmlDivTag div = out.div();
-        HtmlButtonTag submitButton = div.button().type("submit");
-        submitButton.span().class_("fa icon").text(FA_ANGLE_DOUBLE_UP);
-        submitButton.text("保存以上信息");
-
-        HtmlButtonTag resetButton = div.button();
-        resetButton.onclick("javascript: history.go(-1)");
-        resetButton.text("取消编辑");
-    }
-
-    @Override
-    protected boolean buildFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef, FieldDeclGroup group,
-            IOptions options)
+    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef,
+            FieldDeclGroup group, IOptions options)
             throws ViewBuilderException, IOException {
         String simpleName = group.getCategory().getTagClass().getSimpleName();
         switch (simpleName) {
@@ -215,11 +203,7 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
-    protected void endCategory(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
-    }
-
-    @Override
-    protected List<IFieldDecl> processFieldSelection(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef,
+    protected List<IFieldDecl> overrideFieldSelection(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef,
             FieldDeclGroup group, List<IFieldDecl> selection, IOptions options)
             throws ViewBuilderException, IOException {
         if (group.getCategory() == FieldCategory.NULL) {
@@ -274,7 +258,7 @@ public abstract class FooVbo<T extends CoObject>
 
         Class<?> type = property.getPropertyType();
         if (CoObject.class.isAssignableFrom(type)) {
-            CoObject entity = (CoObject) value;
+            CoObject current = (CoObject) value;
 
             String inputName = fieldDecl.getInputName();
             if (inputName == null)
@@ -288,16 +272,17 @@ public abstract class FooVbo<T extends CoObject>
             label_text.readonly("readonly");
             label_text.attr("ec", type.getSimpleName());
 
-            if (entity != null) {
-                Object id = entity.getId();
+            if (current != null) {
+                Object id = current.getId();
                 id_hidden.value(id);
-                label_text.value(entity.getLabel());
+                label_text.value(current.getLabel());
             }
 
-            HtmlATag picker = out.a().class_("zu-picker");
-            // 
-            picker.attr("data-class", "");
-            picker.text("选择");
+            HtmlATag pickerLink = out.a().class_("zu-pickcmd");
+            String pathToken = CoTypes.getPathToken(type);
+            pickerLink.attr("data-url", _webApp_ + pathToken + "/picker.html");
+            pickerLink.attr("data-title", "选择" + fieldDecl.getLabel() + "...");
+            pickerLink.text("选择");
             return;
         }
 
@@ -320,6 +305,31 @@ public abstract class FooVbo<T extends CoObject>
     @Override
     protected void endField(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
+    }
+
+    @Override
+    protected void endCategory(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
+    }
+
+    @Override
+    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        // out.hr();
+        HtmlDivTag div = out.div();
+        HtmlButtonTag submitButton = div.button().type("submit");
+        submitButton.span().class_("fa icon").text(FA_ANGLE_DOUBLE_UP);
+        submitButton.text("保存以上信息");
+
+        HtmlButtonTag resetButton = div.button();
+        resetButton.onclick("javascript: history.go(-1)");
+        resetButton.text("取消编辑");
+    }
+
+    @Override
+    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        new PickDialog(out, "picker1");
+        return out;
     }
 
     protected boolean persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {

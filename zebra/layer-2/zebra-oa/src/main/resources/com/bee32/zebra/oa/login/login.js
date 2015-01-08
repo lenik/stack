@@ -17,5 +17,4 @@ $(document).ready(function() {
         width: 480
     });
 
-    dialog1.o
 });

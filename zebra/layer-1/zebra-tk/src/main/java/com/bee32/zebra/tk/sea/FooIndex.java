@@ -8,11 +8,18 @@ import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.rtx.IQueryable;
 
+import com.bee32.zebra.tk.htm.IPageLayoutGuider;
+import com.bee32.zebra.tk.htm.PageLayoutGuide;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.CoObjectIndex;
 
 public abstract class FooIndex
-        extends CoObjectIndex {
+        extends CoObjectIndex
+        implements IPageLayoutGuider {
+
+    public FooIndexFormat format = FooIndexFormat.HTML;
+    public boolean defaultPage = true;
+    public PageLayoutGuide pageLayoutGuide = new PageLayoutGuide();
 
     public FooIndex(IQueryable context) {
         super(context);
@@ -45,6 +52,17 @@ public abstract class FooIndex
         }
 
         return null;
+    }
+
+    @Override
+    public void configure(PageLayoutGuide pageLayoutGuide) {
+        switch (format) {
+        case PICKER:
+            pageLayoutGuide.hideFramework = true;
+            break;
+
+        default:
+        }
     }
 
 }

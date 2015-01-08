@@ -34,7 +34,6 @@ import net.bodz.bas.potato.element.IPropertyAccessor;
 import net.bodz.bas.repr.form.*;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.req.HttpSnap;
-import net.bodz.bas.repr.req.IViewOfRequest;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.std.rfc.mime.ContentType;
@@ -48,16 +47,17 @@ import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.sea.FooIndexFormat;
 import com.bee32.zebra.tk.sea.MapperUtil;
 import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.CoObjectIndex;
 import com.tinylily.model.mx.base.CoMessage;
 
-public abstract class Zc3Template_CEM<M extends CoObjectIndex, T>
-        extends AbstractHtmlViewBuilder<M>
+public abstract class Zc3Template_CEM<X extends FooIndex, T>
+        extends AbstractHtmlViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
@@ -70,17 +70,18 @@ public abstract class Zc3Template_CEM<M extends CoObjectIndex, T>
     }
 
     @Override
-    public ContentType getContentType(HttpServletRequest request, M value) {
-        IViewOfRequest viewOfRequest = (IViewOfRequest) request.getAttribute(IViewOfRequest.class.getName());
-        String viewName = viewOfRequest.getViewName();
-        if (viewName != null)
-            switch (viewName) {
-            case "json":
-                return ContentTypes.text_javascript;
-            case "csv":
-                return ContentTypes.text_csv;
-            }
+    public ContentType getContentType(HttpServletRequest request, X value) {
+        switch (value.format) {
+        case JSON:
+            return ContentTypes.text_javascript;
+        default:
+        }
         return super.getContentType(request, value);
+    }
+
+    @Override
+    public boolean isOrigin(X value) {
+        return false; // value.format != FooIndexFormat.HTML;
     }
 
     @Override
@@ -89,7 +90,7 @@ public abstract class Zc3Template_CEM<M extends CoObjectIndex, T>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<M> ref, IOptions options) {
+    public void preview(IHtmlViewContext ctx, IUiRef<X> ref, IOptions options) {
         super.preview(ctx, ref, options);
         IHtmlHeadData metaData = ctx.getHeadData();
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
@@ -99,86 +100,84 @@ public abstract class Zc3Template_CEM<M extends CoObjectIndex, T>
     }
 
     @Override
-    public final IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<M> ref, IOptions options)
+    public final IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
+        X index = ref.get();
+        IPathArrival arrival = ctx.query(IPathArrival.class);
+        boolean arrivedHere = arrival.getPrevious(index).getRemainingPath() == null;
+        if (arrivedHere && index.defaultPage && enter(ctx))
+            return out;
 
-        IViewOfRequest view = ctx.query(IViewOfRequest.class);
-        String viewName = view.getViewName();
-        if (viewName == null)
-            viewName = "index";
-
-        switch (viewName) {
-        case "index":
-            break;
-
-        case "csv":
-        case "json": {
+        if (index.format == FooIndexFormat.JSON) {
             PrintWriter writer = ctx.getResponse().getWriter();
             buildJson(ctx, writer, ref, options);
             return null;
         }
 
+        if (index.format == FooIndexFormat.HTML) {
+            IHtmlTag body1 = ctx.getTag(ID.body1);
+
+            HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
+            {
+                HtmlDivTag headDiv = mainCol.div().id(ID.head).class_("zu-info clearfix");
+                headDiv.div().id(ID.title);
+
+                HtmlDivTag headCol1 = headDiv.div().id(ID.headCol1).class_("col-xs-6");
+                headCol1.div().id(ID.stat);
+
+                HtmlDivTag cmdsDiv = headCol1.div().id(ID.cmds);
+                cmdsDiv.div().id(ID.cmds0);
+                cmdsDiv.div().id(ID.cmds1);
+
+                headDiv.div().id(ID.headCol2).class_("col-xs-6");
+            }
+
+            HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 zu-info");
+            if (arrivedHere) {
+                HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
+                // previewDiv.div().class_("icon fa").text(FA_COFFEE);
+                previewDiv.img().src(_webApp_.join("zebra/scene1.png").absoluteHref());
+
+                HtmlDivTag infosel = rightCol.div().id(ID.infosel);
+
+                HtmlTableTag _table1 = infosel.table().width("100%").class_("zu-layout");
+                HtmlTrTag _tr1 = _table1.tr();
+                HtmlTdTag _td1 = _tr1.td();
+                _td1.h2().text("选中的信息");
+                HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3.5em");
+                _td2.a().id("zp-infosel-edit").href("").text("[编辑]");
+
+                infosel.div().id(ID.infoselData);
+
+                HtmlDivTag refdocsDiv = rightCol.div().id(ID.infoman);
+                refdocsDiv.h2().text("管理文献");
+                refdocsDiv.ul().id(ID.infoman_ul);
+            }
+
+            titleInfo(ctx, ref, arrivedHere);
         }
 
-        IPathArrival arrival = ctx.query(IPathArrival.class);
-        boolean indexPage = arrival.getPrevious(ref.get()).getRemainingPath() == null;
-
-        IHtmlTag body1 = ctx.getTag(ID.body1);
-
-        HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
-        {
-            HtmlDivTag headDiv = mainCol.div().id(ID.head).class_("zu-info clearfix");
-            headDiv.div().id(ID.title);
-
-            HtmlDivTag headCol1 = headDiv.div().id(ID.headCol1).class_("col-xs-6");
-            headCol1.div().id(ID.stat);
-
-            HtmlDivTag cmdsDiv = headCol1.div().id(ID.cmds);
-            cmdsDiv.div().id(ID.cmds0);
-            cmdsDiv.div().id(ID.cmds1);
-
-            headDiv.div().id(ID.headCol2).class_("col-xs-6");
-        }
-
-        HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 zu-info");
-        if (indexPage) {
-            HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
-            // previewDiv.div().class_("icon fa").text(FA_COFFEE);
-            previewDiv.img().src(_webApp_.join("zebra/scene1.png").absoluteHref());
-
-            HtmlDivTag infosel = rightCol.div().id(ID.infosel);
-
-            HtmlTableTag _table1 = infosel.table().width("100%").class_("zu-layout");
-            HtmlTrTag _tr1 = _table1.tr();
-            HtmlTdTag _td1 = _tr1.td();
-            _td1.h2().text("选中的信息");
-            HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3.5em");
-            _td2.a().id("zp-infosel-edit").href("").text("[编辑]");
-
-            infosel.div().id(ID.infoselData);
-
-            HtmlDivTag refdocsDiv = rightCol.div().id(ID.infoman);
-            refdocsDiv.h2().text("管理文献");
-            refdocsDiv.ul().id(ID.infoman_ul);
-        }
-
-        titleInfo(ctx, ref, indexPage);
-
-        if (indexPage) {
+        if (arrivedHere) {
             PageStruct page = new PageStruct(ctx);
             DataViewAnchors<T> a = new DataViewAnchors<T>();
-            a.frame = page.mainCol;
-            a.data = page.mainCol;
-            a.extradata = page.extradata;
-            a.dataList = false;
+            if (index.format == FooIndexFormat.HTML) {
+                a.frame = page.mainCol;
+                a.data = page.mainCol;
+                a.extradata = page.extradata;
+                a.dataList = false;
+            } else {
+                a.frame = out;
+                a.data = out;
+                a.extradata = null;
+                a.dataList = false;
+            }
             buildDataView(ctx, a, ref, options);
         }
-
         return out;
     }
 
-    protected void titleInfo(IHtmlViewContext ctx, IUiRef<M> ref, boolean indexPage) {
-        M manager = ref.get();
+    protected void titleInfo(IHtmlViewContext ctx, IUiRef<X> ref, boolean indexPage) {
+        X manager = ref.get();
         IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(manager.getObjectType());
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
@@ -233,10 +232,10 @@ public abstract class Zc3Template_CEM<M extends CoObjectIndex, T>
         }
     }
 
-    protected abstract void buildDataView(IHtmlViewContext ctx, DataViewAnchors<T> a, IUiRef<M> ref, IOptions options)
+    protected abstract void buildDataView(IHtmlViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException;
 
-    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<M> ref, IOptions options)
+    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DataViewAnchors<T> a = new DataViewAnchors<T>();
         a.frame = new HtmlDoc();
@@ -261,9 +260,12 @@ public abstract class Zc3Template_CEM<M extends CoObjectIndex, T>
 
         boolean ajaxMode = true;
         if (ajaxMode) {
+            StringBuilder url = new StringBuilder();
+            url.append("data.json");
             String query = ctx.getRequest().getQueryString();
-            query = QueryString.join(query, "view:=json");
-            table.dataUrl("?" + query);
+            if (query != null)
+                url.append("?" + query);
+            table.dataUrl(url);
         }
 
         for (IHtmlTag tr : table.headFoot)
