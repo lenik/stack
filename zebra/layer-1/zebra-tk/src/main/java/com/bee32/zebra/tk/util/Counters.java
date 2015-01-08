@@ -19,7 +19,7 @@ public class Counters {
         case "ordered":
             return "下单";
         case "delivered":
-            return "出货";
+            return "已出货";
         }
         return key;
     }

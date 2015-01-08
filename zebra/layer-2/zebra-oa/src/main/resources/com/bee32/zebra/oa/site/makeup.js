@@ -1,13 +1,30 @@
 var Features = {
-    icheck : 0
+    chosen : 1,
+    chosen_dw : 20,
+    icheck : 0,
+    zzz : 0
 };
 
 $(document).ready(function() {
 
-    $("body").click(function() {
-        var seldiv = $("#zp-infosel-data");
-        // seldiv.toggle();
-    });
+    $("select").css("overflow", "visible");
+    if (Features.chosen) {
+        var selects = $("select").chosen({
+            inherit_select_classes : true,
+            // width : "30%",
+            disable_search : true,
+            search_contains : true,
+            no_results_text : "没找到！"
+        });
+        if (Features.chosen_dw != 0)
+            selects.parent().find('.chosen-container').each(function() {
+                var w = $(this).css("width");
+                if (w != null && w.substr(-2) == 'px') {
+                    w = Features.chosen_dw + 1 * w.substr(0, w.length - 2);
+                    $(this).css("width", w + "px")
+                }
+            });
+    }
 
     if (Features.icheck) {
         $("input").iCheck({
@@ -15,6 +32,11 @@ $(document).ready(function() {
             radioClass : "iradio_square"
         });
     }
+
+    $("body").click(function() {
+        var seldiv = $("#zp-infosel-data");
+        // seldiv.toggle();
+    });
 
     var $dt = $('.dataTable');
     if ($dt != null) {
@@ -44,6 +66,7 @@ $(document).ready(function() {
                 emptyTable : "没有相关的记录。",
                 info : '当前页 _PAGE_ / 共 _PAGES_ 页。',
                 lengthMenu : '每页显示 _MENU_ 条记录',
+                loadingRecords : "下载数据中…",
                 search : '查找: ',
                 zeroRecords : '没有找到相关的记录。',
                 paginate : {

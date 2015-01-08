@@ -1,8 +1,5 @@
 package com.bee32.zebra.oa.thread.impl;
 
-import net.bodz.bas.repr.path.IPathArrival;
-import net.bodz.bas.repr.path.ITokenQueue;
-import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.thread.Topic;
@@ -27,12 +24,6 @@ public class TopicManager
 
     public TopicManager(IQueryable context) {
         super(Topic.class, context);
-    }
-
-    @Override
-    public IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)
-            throws PathDispatchException {
-        return super.dispatch(previous, tokens);
     }
 
 }

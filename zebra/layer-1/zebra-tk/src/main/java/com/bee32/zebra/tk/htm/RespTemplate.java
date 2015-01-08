@@ -36,9 +36,8 @@ public abstract class RespTemplate<T>
         metaData.addDependency("jquery-ui-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
         metaData.addDependency("bootstrap3.js", SCRIPT).setPriority(IArtifactDependency.HIGH);
         metaData.addDependency("font-awesome", STYLESHEET).setPriority(IArtifactDependency.LOW);
-        metaData.addDependency("icheck.js", SCRIPT);
-        metaData.addDependency("magnific-popup.js", SCRIPT);
-        metaData.addDependency("parsley.js", SCRIPT);
+        metaData.addDependency("all-inputs", PSEUDO);
+        metaData.addDependency("all-effects", PSEUDO);
     }
 
     protected void respHead(IHtmlViewContext ctx, HtmlHeadTag head)
