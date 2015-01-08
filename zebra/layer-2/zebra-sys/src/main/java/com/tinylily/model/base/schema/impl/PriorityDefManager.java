@@ -1,5 +1,6 @@
 package com.tinylily.model.base.schema.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
@@ -10,11 +11,12 @@ import com.tinylily.model.base.schema.PriorityDef;
  * 
  * @label 优先级
  */
+@ObjectType(PriorityDef.class)
 public class PriorityDefManager
         extends FooManager {
 
     public PriorityDefManager(IQueryable context) {
-        super(PriorityDef.class, context);
+        super(context);
     }
 
 }

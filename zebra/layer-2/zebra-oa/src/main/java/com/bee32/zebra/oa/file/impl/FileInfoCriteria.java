@@ -38,17 +38,17 @@ public class FileInfoCriteria
         sizeRange = map.getLongRange("sizes", sizeRange);
         orgId = map.getInt("org", orgId);
         personId = map.getInt("person", personId);
-        tagId=map.getInt("tag", tagId);
+        tagId = map.getInt("tag", tagId);
         downloadCountRange = map.getIntRange("downloads", downloadCountRange);
         valueRange = map.getDoubleRange("values", valueRange);
-        
+
         String tagsStr = map.getString("tags");
         if (tagsStr != null)
             tags = new TreeSet<String>(Arrays.asList(tagsStr.split(",")));
-        
-        noOrg=map.getBoolean("no-org");
-        noPerson=map.getBoolean("no-person");
-        noTag=map.getBoolean("no-tag");
+
+        noOrg = map.getBoolean("no-org");
+        noPerson = map.getBoolean("no-person");
+        noTag = map.getBoolean("no-tag");
     }
 
 }

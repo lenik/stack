@@ -1,11 +1,10 @@
 package com.bee32.zebra.oa.hr;
 
-
 /**
  * 学历字典类
- *
+ * 
  * 定义学历相关的词汇。
- *
+ * 
  * <p lang="en">
  * Person Education Type
  */

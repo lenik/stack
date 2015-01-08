@@ -1,5 +1,6 @@
 package com.bee32.zebra.io.sales.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.sales.Delivery;
@@ -13,11 +14,12 @@ import com.bee32.zebra.tk.sea.FooManager;
  * @rel sdoc/: 管理销售订单
  * @rel org/?shipper=1: 管理承运人
  */
+@ObjectType(Delivery.class)
 public class DeliveryManager
         extends FooManager {
 
     public DeliveryManager(IQueryable context) {
-        super(Delivery.class, context);
+        super(context);
     }
 
 }

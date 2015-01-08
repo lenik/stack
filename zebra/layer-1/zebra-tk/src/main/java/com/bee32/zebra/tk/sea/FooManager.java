@@ -14,8 +14,8 @@ import com.tinylily.repr.CoEntityManager;
 public abstract class FooManager
         extends CoEntityManager {
 
-    public FooManager(Class<? extends CoObject> entityType, IQueryable context) {
-        super(entityType, context);
+    public FooManager(IQueryable context) {
+        super(context);
     }
 
     @Override
@@ -23,9 +23,20 @@ public abstract class FooManager
             throws PathDispatchException {
         String token = tokens.peek();
 
+        switch (token) {
+        case "new":
+            CoObject obj;
+            try {
+                obj = (CoObject) getObjectType().newInstance();
+            } catch (Exception e) {
+                throw new PathDispatchException(e.getMessage(), e);
+            }
+            return PathArrival.shift(previous, obj, tokens);
+        }
+
         if (StringPred.isDecimal(token)) {
             Long id = Long.parseLong(token);
-            IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(getEntityType());
+            IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(getObjectType());
             if (mapper == null)
                 throw new NullPointerException("mapperTemplate");
             Object obj = mapper.select(id);
@@ -33,7 +44,7 @@ public abstract class FooManager
                 return PathArrival.shift(previous, obj, tokens);
         }
 
-        return super.dispatch(previous, tokens);
+        return null;
     }
 
 }

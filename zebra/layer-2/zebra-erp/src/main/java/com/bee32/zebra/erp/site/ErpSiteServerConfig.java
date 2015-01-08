@@ -10,7 +10,8 @@ public class ErpSiteServerConfig
     @Override
     protected void configServlets() {
         super.configServlets();
-        dispatching.setInitParam(PathDispatchServlet.ROOT_CLASS, ErpSite.class.getName());
+        dispatching.setInitParam(PathDispatchServlet.ROOT_CLASS, //
+                ErpSiteResolver.class.getName());
     }
 
 }

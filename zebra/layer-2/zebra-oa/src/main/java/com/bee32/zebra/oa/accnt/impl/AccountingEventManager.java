@@ -1,5 +1,6 @@
 package com.bee32.zebra.oa.accnt.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
@@ -15,11 +16,12 @@ import com.bee32.zebra.tk.sea.FooManager;
  * @see <a href=""></a>
  * @see <a href=""></a>
  */
+@ObjectType(AccountingEvent.class)
 public class AccountingEventManager
         extends FooManager {
 
     public AccountingEventManager(IQueryable context) {
-        super(AccountingEvent.class, context);
+        super(context);
     }
 
 }

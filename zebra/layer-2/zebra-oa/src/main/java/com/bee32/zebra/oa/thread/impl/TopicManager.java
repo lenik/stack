@@ -1,5 +1,6 @@
 package com.bee32.zebra.oa.thread.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.thread.Topic;
@@ -19,11 +20,12 @@ import com.bee32.zebra.tk.sea.FooManager;
  * @see <a href="http://baike.baidu.com/view/395868.htm">什么是物料清单（BOM）</a>
  * @see <a href="http://book.ebusinessreview.cn/bookpartinfo-71335.html">几种不同的 BOM 拓扑结构</a>
  */
+@ObjectType(Topic.class)
 public class TopicManager
         extends FooManager {
 
     public TopicManager(IQueryable context) {
-        super(Topic.class, context);
+        super(context);
     }
 
 }

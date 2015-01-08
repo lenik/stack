@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * 雇员技能等级
- *
+ * 
  * <p lang="en">
  * Person Skill Category Level
  */
@@ -41,7 +41,7 @@ public class JobSkillCategoryLevel {
 
     /**
      * 技能等级系数
-     *
+     * 
      * 用于计算工资的技能等级系数。
      */
     public BigDecimal getBonus() {

@@ -1,5 +1,6 @@
 package com.bee32.zebra.io.stock.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.stock.Place;
@@ -14,11 +15,12 @@ import com.bee32.zebra.tk.sea.FooManager;
  * 
  * @rel art/: 管理物料
  */
+@ObjectType(Place.class)
 public class PlaceManager
         extends FooManager {
 
     public PlaceManager(IQueryable context) {
-        super(Place.class, context);
+        super(context);
     }
 
 }

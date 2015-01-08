@@ -67,7 +67,7 @@ public class OaSiteVbo
         {
             if (ref instanceof PathArrivalEntry) {
                 IHtmlTag nav = menuCol.nav().ol().class_("breadcrumb");
-                List<IPathArrival> list = arrival.toList();
+                List<IPathArrival> list = arrival.toList(true);
                 for (int i = 0; i < list.size(); i++) {
                     IPathArrival a = list.get(i);
                     Object target = a.getTarget();

@@ -179,8 +179,7 @@ public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
 
     protected void titleInfo(IHtmlViewContext ctx, IUiRef<M> ref, boolean indexPage) {
         M manager = ref.get();
-        Class<?> entityType = manager.getEntityType();
-        IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(entityType);
+        IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(manager.getObjectType());
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
         PageStruct p = new PageStruct(ctx);

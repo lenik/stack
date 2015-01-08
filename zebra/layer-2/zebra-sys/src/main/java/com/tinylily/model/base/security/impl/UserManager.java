@@ -1,5 +1,6 @@
 package com.tinylily.model.base.security.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
@@ -16,11 +17,12 @@ import com.tinylily.model.base.security.User;
  * @rel group/: 管理用户组
  * @rel person/: 管理联系人
  */
+@ObjectType(User.class)
 public class UserManager
         extends FooManager {
 
     public UserManager(IQueryable context) {
-        super(User.class, context);
+        super(context);
     }
 
 }

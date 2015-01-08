@@ -61,7 +61,7 @@ public class TopicManagerVbo
             // HtmlDivTag valDiv = out.div().text("金额：");
             // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
 
-            so = filters.switchPairs("年份", false, //
+            so = filters.switchPairs("年份", true, //
                     mapper.histoByYear(), "year", criteria.year, criteria.noYear);
             criteria.year = so.key;
             criteria.noYear = so.isNull;

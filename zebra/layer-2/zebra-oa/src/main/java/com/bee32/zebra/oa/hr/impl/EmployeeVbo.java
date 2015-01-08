@@ -10,5 +10,4 @@ public class EmployeeVbo
         super(Employee.class);
     }
 
-
 }

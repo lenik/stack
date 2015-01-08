@@ -1,5 +1,6 @@
 package com.tinylily.model.base.schema.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.sea.FooManager;
@@ -12,11 +13,12 @@ import com.tinylily.model.base.schema.CategoryDef;
  * 
  * @label 类别
  */
+@ObjectType(CategoryDef.class)
 public class CategoryDefManager
         extends FooManager {
 
     public CategoryDefManager(IQueryable context) {
-        super(CategoryDef.class, context);
+        super(context);
     }
 
 }

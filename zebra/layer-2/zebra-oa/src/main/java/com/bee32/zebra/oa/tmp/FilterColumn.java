@@ -5,5 +5,4 @@ import net.bodz.bas.ui.dom1.AbstractUiElement;
 public class FilterColumn
         extends AbstractUiElement {
 
-    
 }

@@ -1,5 +1,6 @@
 package com.bee32.zebra.erp.fab.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.erp.fab.FabStep;
@@ -13,11 +14,12 @@ import com.bee32.zebra.tk.sea.FooManager;
  * 
  * @see <a href="HREF2">TEXT2</a>
  */
+@ObjectType(FabStep.class)
 public class FabStepManager
         extends FooManager {
 
     public FabStepManager(IQueryable context) {
-        super(FabStep.class, context);
+        super(context);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.bee32.zebra.oa.hr.impl;
 
+import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.hr.EmployeeSkill;
@@ -14,11 +15,12 @@ import com.bee32.zebra.tk.sea.FooManager;
  * 
  * @see <a href="HREF2">TEXT2</a>
  */
+@ObjectType(EmployeeSkill.class)
 public class EmployeeSkillManager
         extends FooManager {
 
     public EmployeeSkillManager(IQueryable context) {
-        super(EmployeeSkill.class, context);
+        super(context);
     }
 
 }
