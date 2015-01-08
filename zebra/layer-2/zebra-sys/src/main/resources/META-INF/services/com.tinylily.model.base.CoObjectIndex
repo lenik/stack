@@ -1,0 +1,9 @@
+com.tinylily.model.base.schema.impl.AttributeDefIndex
+com.tinylily.model.base.schema.impl.CategoryDefIndex
+com.tinylily.model.base.schema.impl.PhaseDefIndex
+com.tinylily.model.base.schema.impl.PriorityDefIndex
+com.tinylily.model.base.schema.impl.SchemaDefIndex
+com.tinylily.model.base.schema.impl.TagDefIndex
+com.tinylily.model.base.schema.impl.TagSetDefIndex
+com.tinylily.model.base.security.impl.GroupIndex
+com.tinylily.model.base.security.impl.UserIndex

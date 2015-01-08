@@ -1,10 +1,10 @@
-com.bee32.zebra.erp.fab.impl.FabDeviceManagerVbo
+com.bee32.zebra.erp.fab.impl.FabDeviceIndexVbo
 com.bee32.zebra.erp.fab.impl.FabDeviceVbo
-com.bee32.zebra.erp.fab.impl.FabOpCodeManagerVbo
+com.bee32.zebra.erp.fab.impl.FabOpCodeIndexVbo
 com.bee32.zebra.erp.fab.impl.FabOpCodeVbo
-com.bee32.zebra.erp.fab.impl.FabQcDefManagerVbo
+com.bee32.zebra.erp.fab.impl.FabQcDefIndexVbo
 com.bee32.zebra.erp.fab.impl.FabQcDefVbo
-com.bee32.zebra.erp.fab.impl.FabStepDefManagerVbo
+com.bee32.zebra.erp.fab.impl.FabStepDefIndexVbo
 com.bee32.zebra.erp.fab.impl.FabStepDefVbo
-com.bee32.zebra.erp.fab.impl.FabStepManagerVbo
+com.bee32.zebra.erp.fab.impl.FabStepIndexVbo
 com.bee32.zebra.erp.fab.impl.FabStepVbo

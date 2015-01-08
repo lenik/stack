@@ -1,0 +1,9 @@
+com.bee32.zebra.io.art.impl.ArtifactCategoryIndex
+com.bee32.zebra.io.art.impl.ArtifactIndex
+com.bee32.zebra.io.art.impl.UOMIndex
+com.bee32.zebra.io.sales.impl.DeliveryIndex
+com.bee32.zebra.io.sales.impl.SalesOrderItemIndex
+com.bee32.zebra.io.sales.impl.SalesOrderIndex
+com.bee32.zebra.io.stock.impl.PlaceIndex
+com.bee32.zebra.io.stock.impl.StockEntryIndex
+com.bee32.zebra.io.stock.impl.StockEventIndex

@@ -24,8 +24,8 @@ import net.bodz.bas.std.rfc.http.ICacheControl;
 
 import com.bee32.zebra.oa.login.LoginForm;
 import com.bee32.zebra.tk.sql.VhostDataService;
-import com.tinylily.repr.CoEntityManager;
-import com.tinylily.repr.CoObjectController;
+import com.tinylily.model.base.CoObjectController;
+import com.tinylily.model.base.CoObjectIndex;
 import com.tinylily.site.LilyStartSite;
 
 /**
@@ -43,7 +43,7 @@ public class OaSite
     public OaSite() {
         setQueryContext(VhostDataService.getInstance());
 
-        for (Class<? extends CoEntityManager> indexClass : IndexedTypes.list(CoEntityManager.class, false)) {
+        for (Class<? extends CoObjectIndex> indexClass : IndexedTypes.list(CoObjectIndex.class, false)) {
             Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
 
             List<String> paths = new ArrayList<>();

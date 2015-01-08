@@ -53,10 +53,10 @@ import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.base.CoObject;
+import com.tinylily.model.base.CoObjectIndex;
 import com.tinylily.model.mx.base.CoMessage;
-import com.tinylily.repr.CoEntityManager;
 
-public abstract class Zc3Template_CEM<M extends CoEntityManager, T>
+public abstract class Zc3Template_CEM<M extends CoObjectIndex, T>
         extends AbstractHtmlViewBuilder<M>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
