@@ -9,8 +9,10 @@ import net.bodz.bas.repr.form.meta.OfGroup;
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.IMomentInterval;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
+@IdType(Integer.class)
 public class Reply
         extends CoMessage<Integer>
         implements IMomentInterval {

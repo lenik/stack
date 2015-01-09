@@ -34,7 +34,7 @@ public abstract class RespTemplate<T>
 
         metaData.addDependency("jquery-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
         metaData.addDependency("jquery-ui-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
-        metaData.addDependency("bootstrap3.js", SCRIPT).setPriority(IArtifactDependency.HIGH);
+        metaData.addDependency("bootstrap3", SCRIPT).setPriority(IArtifactDependency.HIGH);
         metaData.addDependency("font-awesome", STYLESHEET).setPriority(IArtifactDependency.LOW);
         metaData.addDependency("all-inputs", PSEUDO);
         metaData.addDependency("all-effects", PSEUDO);

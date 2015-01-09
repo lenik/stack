@@ -8,11 +8,13 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.IMomentInterval;
+import com.tinylily.model.base.IdType;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+@IdType(Integer.class)
 public class Topic
         extends CoMessage<Integer>
         implements IMomentInterval {

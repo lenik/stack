@@ -37,7 +37,7 @@ public class LoginFormVbo
     public void preview(IHtmlViewContext ctx, IUiRef<LoginForm> ref, IOptions options) {
         super.preview(ctx, ref, options);
         IHtmlHeadData metaData = ctx.getHeadData();
-        metaData.addDependency("wallpaper.js", SCRIPT);
+        metaData.addDependency("all-effects", PSEUDO);
     }
 
     @Override

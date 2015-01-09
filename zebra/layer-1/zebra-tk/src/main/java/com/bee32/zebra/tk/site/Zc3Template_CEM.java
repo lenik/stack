@@ -95,8 +95,8 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         IHtmlHeadData metaData = ctx.getHeadData();
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
         // metaData.addDependency("datatables.responsive.js", SCRIPT);
-        metaData.addDependency("datatables.colVis.js", SCRIPT);
-        metaData.addDependency("datatables.tableTools.js", SCRIPT);
+        metaData.addDependency("all-data", PSEUDO);
+        // metaData.addDependency("datatables.tableTools.js", SCRIPT);
     }
 
     @Override

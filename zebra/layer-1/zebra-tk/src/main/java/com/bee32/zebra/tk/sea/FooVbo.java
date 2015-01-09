@@ -275,7 +275,7 @@ public abstract class FooVbo<T extends CoObject>
             if (current != null) {
                 Object id = current.getId();
                 id_hidden.value(id);
-                label_text.value(current.getLabel());
+                label_text.value(current);
             }
 
             HtmlATag pickerLink = out.a().class_("zu-pickcmd");
