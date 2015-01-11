@@ -230,7 +230,7 @@ set constraints all deferred;
             l."user" "op",
             case p.stereo when 'ORG' then p.id else null end "org",
             case p.stereo when 'PER' then p.id else null end "person",
-            case a.stereo when 'PAY' then 81 when 'CRED' then 82 end "form",
+            case a.stereo when 'PAY' then 801 when 'CRED' then 802 end "form",
             case a.stereo when 'PAY' then '付款单 - ' when 'CRED' then '收款单 - ' end
                 || a.description "subject", 
             a.text,
