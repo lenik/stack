@@ -66,6 +66,9 @@
 
     <select id="all" resultMap="map1">
         <include refid="select1" />
+        <where>
+            <include refid="co.modefilt" />
+        </where>
     </select>
 
     <select id="filter" resultMap="map1">
@@ -73,6 +76,7 @@
         <where>
             <!-- co -->
             <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            <include refid="co.modefilt" />
             <!-- party -->
             <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
             <if test="peer || type == 1">and peer</if>

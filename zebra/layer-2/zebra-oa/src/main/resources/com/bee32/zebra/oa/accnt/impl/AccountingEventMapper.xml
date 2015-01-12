@@ -30,16 +30,18 @@
 
     <select id="all" resultMap="map1">
         <include refid="select1" />
+        <where>
+            <include refid="co.modefilt" />
+        </where>
     </select>
 
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <!-- left join tags -->
         <where>
-            <if test="formId != null">and a.form=${formId}</if>
-            
             <!-- co -->
             <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            <include refid="co.modefilt" />
             <!-- moment-interval -->
             <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
             <if test="year != null">and extract(year from a.t0)=#{year}</if>
@@ -57,6 +59,8 @@
             <if test="noCategory">and a.cat is null</if>
             <if test="noTag">and x.tag is null</if>
             <if test="noPhase">and a.phase is null</if>
+            
+            <if test="formId != null">and a.form=${formId}</if>
         </where>
     </select>
 

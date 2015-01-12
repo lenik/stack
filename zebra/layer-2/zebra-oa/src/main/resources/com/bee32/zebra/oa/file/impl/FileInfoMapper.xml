@@ -50,18 +50,17 @@
 
     <select id="all" resultMap="map1">
         <include refid="select1" />
+        <where>
+            <include refid="co.modefilt" />
+        </where>
     </select>
 
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="orgId != null">and a.org=#{orgId}</if>
-            <if test="personId != null">and a.person=#{personId}</if>
-            <if test="noOrg">and a.org is null</if>
-            <if test="noPerson">and a.person is null</if>
-
             <!-- co -->
             <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+            <include refid="co.modefilt" />
             <!-- moment-interval -->
             <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
             <if test="year != null">and extract(year from a.t0)=#{year}</if>
@@ -79,6 +78,11 @@
             <if test="noCategory">and a.cat is null</if>
             <if test="noTag">and x.tag is null</if>
             <if test="noPhase">and a.phase is null</if>
+            
+            <if test="orgId != null">and a.org=#{orgId}</if>
+            <if test="personId != null">and a.person=#{personId}</if>
+            <if test="noOrg">and a.org is null</if>
+            <if test="noPerson">and a.person is null</if>
         </where>
     </select>
 

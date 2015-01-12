@@ -44,6 +44,9 @@
 
     <select id="all" resultMap="map1">
         <include refid="select1" />
+        <where>
+            <include refid="co.modefilt" />
+        </where>
     </select>
 
     <select id="filter" resultMap="map1">
@@ -71,6 +74,7 @@
             <if test="noCategory">and a.cat is null</if>
             <if test="noTag">and x.tag is null</if>
             <if test="noPhase">and a.phase is null</if>
+            <include refid="co.modefilt" />
         </where>
     </select>
 
