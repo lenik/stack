@@ -1,10 +1,13 @@
 package com.bee32.zebra.oa.login;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.bodz.bas.db.batis.IMapperProvider;
+import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
@@ -102,6 +105,19 @@ public class LoginForm
 
         LoginContext lc = new LoginContext();
         lc.user = selection.get(0);
+
+        HttpServletRequest request = CurrentHttpService.getRequestOpt();
+        if (request != null) {
+            String remoteAddr = request.getRemoteAddr();
+            Inet4Address inet4;
+            try {
+                inet4 = (Inet4Address) Inet4Address.getByName(remoteAddr);
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+            lc.user.setLastLoginIP(inet4);
+            lc.user.setLastLoginTime(System.currentTimeMillis());
+        }
 
         ctx.getSession().setAttribute(LoginContext.ATTRIBUTE_KEY, lc);
         out.div().class_("success").text("登录成功。");

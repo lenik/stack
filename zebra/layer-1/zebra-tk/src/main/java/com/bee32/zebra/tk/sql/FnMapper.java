@@ -2,7 +2,7 @@ package com.bee32.zebra.tk.sql;
 
 import org.apache.ibatis.annotations.Param;
 
-import net.bodz.bas.db.batis.IMapper;
+import net.bodz.bas.db.ibatis.IMapper;
 
 import com.bee32.zebra.tk.util.PrevNext;
 

@@ -1,10 +1,9 @@
 package com.bee32.zebra.erp.fab.impl;
 
-import net.bodz.bas.db.batis.IMapperTemplate;
-
 import com.bee32.zebra.erp.fab.FabDevice;
+import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface FabDeviceMapper
-        extends IMapperTemplate<FabDevice, FabDeviceCriteria> {
+        extends FooMapper<FabDevice, FabDeviceCriteria> {
 
 }

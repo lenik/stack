@@ -1,7 +1,7 @@
 package com.bee32.zebra.tk.sea;
 
 import net.bodz.bas.c.string.StringPred;
-import net.bodz.bas.db.batis.IMapperTemplate;
+import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathArrival;

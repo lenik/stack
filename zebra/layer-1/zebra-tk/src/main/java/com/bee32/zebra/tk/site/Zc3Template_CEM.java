@@ -16,7 +16,7 @@ import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.c.type.TypeParam;
-import net.bodz.bas.db.batis.IMapperTemplate;
+import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.dom.AbstractHtmlTag;

@@ -1,7 +1,7 @@
 package com.bee32.zebra.tk.sea;
 
-import net.bodz.bas.db.batis.IMapper;
-import net.bodz.bas.db.batis.IMapperTemplate;
+import net.bodz.bas.db.ibatis.IMapper;
+import net.bodz.bas.db.ibatis.IMapperTemplate;
 
 import com.bee32.zebra.tk.sql.VhostDataService;
 

@@ -6,7 +6,6 @@ import org.junit.Assert;
 
 import com.bee32.zebra.tk.util.PrevNext;
 
-
 import user.TestEnv;
 
 public class FnMapperTest

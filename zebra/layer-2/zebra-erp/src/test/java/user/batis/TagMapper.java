@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
 
-import net.bodz.bas.db.batis.IMapper;
+import net.bodz.bas.db.ibatis.IMapper;
 
 import com.tinylily.model.base.schema.TagDef;
 

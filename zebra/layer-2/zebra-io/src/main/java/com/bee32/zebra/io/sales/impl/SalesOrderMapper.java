@@ -1,10 +1,9 @@
 package com.bee32.zebra.io.sales.impl;
 
-import net.bodz.bas.db.batis.IMapperTemplate;
-
 import com.bee32.zebra.io.sales.SalesOrder;
+import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface SalesOrderMapper
-        extends IMapperTemplate<SalesOrder, SalesOrderCriteria> {
+        extends FooMapper<SalesOrder, SalesOrderCriteria> {
 
 }

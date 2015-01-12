@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import net.bodz.bas.db.batis.IMapper;
-import net.bodz.bas.db.batis.IMapperProvider;
-import net.bodz.bas.db.batis.MybatisMapperProvider;
+import net.bodz.bas.db.ibatis.IMapper;
+import net.bodz.bas.db.ibatis.IMapperProvider;
+import net.bodz.bas.db.ibatis.IbatisMapperProvider;
 import net.bodz.bas.db.jdbc.BoneCPDataSourceProvider;
 import net.bodz.bas.db.jdbc.DataSourceArguments;
 import net.bodz.bas.db.jdbc.IDataSourceProvider;
@@ -42,7 +42,7 @@ public class VhostDataService
 
         mapperProvider = vhost.getAttribute(IMapperProvider.ATTRIBUTE_KEY);
         if (mapperProvider == null) {
-            mapperProvider = new MybatisMapperProvider(dataSource);
+            mapperProvider = new IbatisMapperProvider(dataSource);
             vhost.setAttribute(IMapperProvider.ATTRIBUTE_KEY, mapperProvider);
         }
     }

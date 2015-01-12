@@ -1,10 +1,9 @@
 package com.bee32.zebra.oa.hr.impl;
 
-import net.bodz.bas.db.batis.IMapperTemplate;
-
 import com.bee32.zebra.oa.hr.JobSkillCategory;
+import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface JobSkillCategoryMapper
-        extends IMapperTemplate<JobSkillCategory, JobSkillCategoryCriteria> {
+        extends FooMapper<JobSkillCategory, JobSkillCategoryCriteria> {
 
 }

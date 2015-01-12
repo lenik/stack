@@ -11,8 +11,7 @@ import java.util.Set;
 import net.bodz.bas.c.string.StringPart;
 import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.c.type.TypeKind;
-import net.bodz.bas.db.batis.IMapperProvider;
-import net.bodz.bas.db.batis.IMapperTemplate;
+import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.err.Err;
 import net.bodz.bas.err.IllegalConfigException;
@@ -50,6 +49,7 @@ import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.sql.FnMapper;
+import com.bee32.zebra.tk.sql.FooMapper;
 import com.bee32.zebra.tk.util.PrevNext;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IId;
@@ -128,7 +128,7 @@ public abstract class FooVbo<T extends CoObject>
         case MethodNames.UPDATE:
             if (persist(false, ctx, out, ref)) {
                 // reload from database.
-                IMapperTemplate<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
+                FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
                 T reload = mapper.select(id.longValue());
                 ref.set(reload);
             }

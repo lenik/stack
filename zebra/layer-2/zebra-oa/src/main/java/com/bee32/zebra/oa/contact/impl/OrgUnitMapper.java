@@ -1,10 +1,9 @@
 package com.bee32.zebra.oa.contact.impl;
 
-import net.bodz.bas.db.batis.IMapperTemplate;
-
 import com.bee32.zebra.oa.contact.OrgUnit;
+import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface OrgUnitMapper
-        extends IMapperTemplate<OrgUnit, OrgUnitCriteria> {
+        extends FooMapper<OrgUnit, OrgUnitCriteria> {
 
 }
