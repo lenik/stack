@@ -20,6 +20,8 @@
         state       int not null default 0,
         version     int not null default 0,
         
+        admin       boolean not null default false,
+        
         constraint group_uk_code unique(code)
     );
 
@@ -85,7 +87,7 @@
                 where a."user"=u.id) labels
         from "user" u left join "group" g on u.gid0 = g.id;
         
-    insert into "group"(id, code, label) values(0, 'root', 'Root');
+    insert into "group"(id, code, label, admin) values(0, 'root', 'Root', true);
     insert into "user"(id, gid0, code, label) values(0, 0, 'root', 'Root');
     insert into "group_user"("group", "user") values(0, 0);
 
@@ -140,7 +142,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100100'::int,
         acl         int,
 
         birthday    date,
@@ -191,7 +193,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100100'::int,
         acl         int,
         
         org         int not null,
@@ -235,7 +237,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100100'::int,
         acl         int,
         
         birthday    date,
@@ -331,7 +333,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100000'::int,
         acl         int,
         
         t0          date,           -- validate since
@@ -475,7 +477,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100000'::int,
         acl         int,
         
         t0          date,           -- begin time, deliver time
@@ -535,7 +537,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100000'::int,
         acl         int,
         
         t0          timestamptz,    -- work begin time
@@ -769,7 +771,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100000'::int,
         acl         int,
         
         t0          date,           -- accounting date range

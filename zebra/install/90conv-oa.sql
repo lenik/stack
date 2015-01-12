@@ -17,6 +17,9 @@ set constraints all deferred;
 
     insert into group_user("group", "user")
         select "group", member "user" from old.group_member;
+    
+    insert into group_user("group", "user")
+        select 0 "group", id "user" from "user" where code='admin';
 
     select setval('user_seq', (select max(id) from "user"));
     

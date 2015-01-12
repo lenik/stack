@@ -88,7 +88,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100100'::int,
         acl         int,
         
         parent      int,
@@ -131,7 +131,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100100'::int,
         acl         int,
         
         cat         int,
@@ -199,7 +199,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100000'::int,
         acl         int,
         
         t0          date not null,  -- contract date
@@ -332,7 +332,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100100'::int,
         acl         int,
         
         parent      int,
@@ -434,7 +434,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100000'::int,
         acl         int,
         
         t0          date,           -- begin date
@@ -571,7 +571,7 @@
         
         uid         int,
         gid         int,
-        mode        int not null default 640,
+        mode        int not null default b'110100000'::int,
         acl         int,
         
         t0          date,           -- package date
