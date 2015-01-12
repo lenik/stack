@@ -52,6 +52,8 @@ public class ErpSiteServer {
         vhosts.add(vhost1);
 
         EchoServerConfig config = new ErpSiteServerConfig();
+        config.setPortNumber(8083);
+
         EchoServer server = new EchoServer(config);
         server.start();
     }
