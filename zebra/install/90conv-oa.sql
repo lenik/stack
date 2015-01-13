@@ -10,7 +10,7 @@ set constraints all deferred;
 
     insert into "user"(id, gid0, code, label, description, creation, lastmod, flags, state)
         select id, 
-            coalesce(group1, group1, 0) "gid0",
+            group1 "gid0",
             name "code", coalesce(label, name), description,
             created_date "creation", last_modified "lastmod", ef "flags", state
         from old.principal where stereo = 'U';
