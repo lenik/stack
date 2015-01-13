@@ -42,7 +42,7 @@ public class FileInfoIndexVbo
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
-            so = filters.switchEntity("标签", false, //
+            so = filters.switchEntity("标签", true, //
                     ctx.query(TagDefMapper.class).filter(TagDefCriteria.forTagSet(TagSets.WJXX)), //
                     "tag", criteria.tagId, criteria.noTag);
             criteria.tagId = so.key;
