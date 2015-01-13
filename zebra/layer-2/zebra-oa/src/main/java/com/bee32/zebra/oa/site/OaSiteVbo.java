@@ -124,7 +124,10 @@ public class OaSiteVbo
         welcomeDiv.text("欢迎您，").br();
         welcomeDiv.text("海宁中鑫三元风机有限公司").br();
         welcomeDiv.text("的").br();
-        welcomeDiv.text(loginctx.user.getFullName() + "！");
+        HtmlSpanTag userSpan = welcomeDiv.span();
+        userSpan.text(loginctx.user.getFullName());
+        userSpan.title(loginctx.user.getGroupIds().toString());
+        welcomeDiv.text("！");
         HtmlATag logout = welcomeDiv.a().id("zp-logout");
         logout.href(_webApp_ + "login/?logout=1");
         logout.text("[注销]");
