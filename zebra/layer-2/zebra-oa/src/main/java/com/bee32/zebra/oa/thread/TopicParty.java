@@ -2,9 +2,8 @@ package com.bee32.zebra.oa.thread;
 
 import java.io.Serializable;
 
+import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
-
-import user.book.Org;
 
 public class TopicParty
         implements Serializable {
@@ -15,7 +14,7 @@ public class TopicParty
 
     Topic topic;
     Person person;
-    Org org;
+    Organization org;
     String description;
 
     public Topic getTopic() {
@@ -34,11 +33,11 @@ public class TopicParty
         this.person = person;
     }
 
-    public Org getOrg() {
+    public Organization getOrg() {
         return org;
     }
 
-    public void setOrg(Org org) {
+    public void setOrg(Organization org) {
         this.org = org;
     }
 
