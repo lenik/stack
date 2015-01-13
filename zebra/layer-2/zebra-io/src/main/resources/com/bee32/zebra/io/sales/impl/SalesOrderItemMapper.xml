@@ -21,22 +21,26 @@
     <sql id="select1"><![CDATA[
         select
             a.*,
+            doc.subject "doc_subject",
             u.label "uid_label",
             g.label "gid_label"
         from sentry a
-            left join "user" u on a.uid=u.id
-            left join "group" g on a.gid=g.id
+            left join sdoc "doc" on a.doc=doc.id
+            left join "user" u on doc.uid=u.id
+            left join "group" g on doc.gid=g.id
         ]]>
     </sql>
 
     <sql id="select2"><![CDATA[
         select
             a.*,
+            doc.subject "doc_subject",
             u.label "uid_label",
             g.label "gid_label"
         from sentry a
-            left join "user" u on a.uid=u.id
-            left join "group" g on a.gid=g.id
+            left join sdoc "doc" on a.doc=doc.id
+            left join "user" u on doc.uid=u.id
+            left join "group" g on doc.gid=g.id
         ]]>
     </sql>
 

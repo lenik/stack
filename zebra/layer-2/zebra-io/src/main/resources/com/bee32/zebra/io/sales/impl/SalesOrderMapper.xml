@@ -31,6 +31,17 @@
     <resultMap id="map2" type="com.bee32.zebra.io.sales.SalesOrder" extends="map1">
         <collection property="items" javaType="ArrayList" ofType="com.bee32.zebra.io.sales.SalesOrderItem">
             <id property="id" column="y_id" />
+            <result property="altLabel" column="olabel" />
+            <result property="altSpec" column="ospec" />
+            <!-- result property="altUom" column="ouom"/ -->
+            <result property="quantity" column="qty" />
+            <result property="price" column="price" />
+            <result property="comment" column="comment" />
+            <result property="footnote" column="footnote" />
+            <association property="artifact" javaType="com.bee32.zebra.io.art.Artifact">
+                <id property="id" column="art" />
+                <id property="label" column="art_label" />
+            </association>
         </collection>
     </resultMap>
 
@@ -58,22 +69,24 @@
     <sql id="select2"><![CDATA[
         select
             a.*,
+            u.label "uid_label",
+            g.label "gid_label",
+            cat.label "cat_label",
+            phase.label "phase_label",
             topic.subject "topic_subject",
             org.label "org_label",
             person.label "person_label",
-            cat.label "cat_label",
-            phase.label "phase_label",
-            u.label "uid_label",
-            g.label "gid_label"
+            art.label "art_label"
         from sdoc a
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+            left join cat on a.cat=cat.id
+            left join phase on a.phase=phase.id
             left join topic on a.topic=topic.id
             left join org on a.org=org.id
             left join person on a.person=person.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id
-            left join "user" u on a.uid=u.id
-            left join "group" g on a.gid=g.id
             left join sentry y on a.id=y.doc
+            left join art on y.art=art.id
         ]]>
     </sql>
 

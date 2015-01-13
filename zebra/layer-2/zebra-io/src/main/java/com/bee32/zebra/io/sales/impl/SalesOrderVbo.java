@@ -1,7 +1,6 @@
 package com.bee32.zebra.io.sales.impl;
 
 import java.io.IOException;
-import java.util.List;
 
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
@@ -24,15 +23,9 @@ public class SalesOrderVbo
     @Override
     protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        SalesOrderItemMapper itemMapper = ctx.query(SalesOrderItemMapper.class);
-
         SalesOrder sdoc = ref.get();
 
-        SalesOrderItemCriteria criteria = new SalesOrderItemCriteria();
-        criteria.salesOrderId = sdoc.getId();
-        List<SalesOrderItem> items = itemMapper.filter(criteria);
-
-        for (SalesOrderItem item : items) {
+        for (SalesOrderItem item : sdoc.getItems()) {
             HtmlDivTag div = out.div().id("item-" + item.getId()).class_("zu-item");
 
             out.hr();
