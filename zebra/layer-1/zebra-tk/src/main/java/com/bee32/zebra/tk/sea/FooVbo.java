@@ -111,6 +111,15 @@ public abstract class FooVbo<T extends CoObject>
             nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
         }
 
+        process(ctx, out, ref, options);
+        return out;
+    }
+
+    protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        T obj = ref.get();
+        Number id = (Number) obj.getId();
+
         IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
         String methodName = methodOfRequest.getMethodName();
         switch (methodName) {
@@ -139,16 +148,15 @@ public abstract class FooVbo<T extends CoObject>
         default:
             break;
         }
-        return out;
     }
 
     @Override
-    protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        HtmlFormTag form = out.form().name("form").method("post");
-        form.div().id(ID.formtop);
+        SplitForm form = new SplitForm(out);
+        form.name("form").method("post");
 
-        T entity = ref.get();
+        CoObject entity = (CoObject) ref.get();
         Number id = (Number) entity.getId();
         boolean creation = id == null || id.intValue() == 0;
         HtmlInputTag methodParam = form.input().type("hidden").name("m:");
@@ -161,7 +169,7 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
-    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef,
+    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, IOptions options)
             throws ViewBuilderException, IOException {
         String simpleName = group.getCategory().getTagClass().getSimpleName();
@@ -178,7 +186,7 @@ public abstract class FooVbo<T extends CoObject>
         return false;
     }
 
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef, FieldDeclGroup group,
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
             IOptions options)
             throws ViewBuilderException, IOException {
         return false;
@@ -203,7 +211,7 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
-    protected List<IFieldDecl> overrideFieldSelection(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef,
+    protected List<IFieldDecl> overrideFieldSelection(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, List<IFieldDecl> selection, IOptions options)
             throws ViewBuilderException, IOException {
         if (group.getCategory() == FieldCategory.NULL) {
@@ -249,7 +257,7 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
-    protected void fieldBody(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> instanceRef, IFieldDecl fieldDecl,
+    protected void fieldBody(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, IFieldDecl fieldDecl,
             IOptions options)
             throws ViewBuilderException, IOException {
         IProperty property = fieldDecl.getProperty();
@@ -312,7 +320,7 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
-    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
         // out.hr();
         HtmlDivTag div = out.div();
@@ -326,7 +334,7 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected IHtmlTag extras(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         new PickDialog(out, "picker1");
         return out;
@@ -365,13 +373,13 @@ public abstract class FooVbo<T extends CoObject>
         }
     }
 
-    void inject(IUiRef<?> ref, Map<String, String[]> parameterMap)
+    protected void inject(IUiRef<?> ref, Map<String, String[]> parameterMap)
             throws ParseException, ReflectiveOperationException {
         ParameterMapVariantMap variantMap = new ParameterMapVariantMap(parameterMap);
         inject(ref, variantMap);
     }
 
-    void inject(IUiRef<?> ref, IVariantMap<String> parameterMap)
+    protected void inject(IUiRef<?> ref, IVariantMap<String> parameterMap)
             throws ParseException, ReflectiveOperationException {
         Class<?> clazz = ref.getValueType();
         IFormDecl formDecl = IFormDecl.fn.forClass(clazz);

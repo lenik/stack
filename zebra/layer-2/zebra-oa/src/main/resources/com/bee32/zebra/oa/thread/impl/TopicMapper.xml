@@ -47,6 +47,7 @@
         <where>
             <include refid="co.modefilt" />
         </where>
+        order by id desc
     </select>
 
     <select id="filter" resultMap="map1">
@@ -76,6 +77,7 @@
             <if test="noPhase">and a.phase is null</if>
             <include refid="co.modefilt" />
         </where>
+        order by id desc
     </select>
 
     <select id="select" parameterType="int" resultMap="map1">

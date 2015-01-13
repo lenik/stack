@@ -3,17 +3,23 @@ package com.bee32.zebra.oa.thread.impl;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import net.bodz.bas.err.Err;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.bas.ui.dom1.UiValue;
 
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.tk.sea.FooMesgVbo;
+import com.tinylily.model.base.security.LoginContext;
+import com.tinylily.model.base.security.User;
 
 public class TopicVbo
         extends FooMesgVbo<Topic> {
@@ -23,16 +29,60 @@ public class TopicVbo
     }
 
     @Override
+    protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        HttpServletRequest req = ctx.getRequest();
+
+        String topicIdStr = req.getParameter("topic");
+        if (topicIdStr != null) {
+            int topicId = Integer.parseInt(topicIdStr);
+            Topic topicRef = new Topic();
+            topicRef.setId(topicId);
+
+            Reply reply = new Reply(topicRef, null);
+            try {
+                // data.populate(ctx.getRequest().getParameterMap());
+                inject(UiValue.wrap(reply), ctx.getRequest().getParameterMap());
+                reply.persist(ctx, out);
+
+                HtmlDivTag alert = out.div().class_("alert alert-success");
+                alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
+                alert.span().class_("fa icon").text(FA_CHECK_CIRCLE);
+                alert.strong().text("[成功]");
+                alert.text("您刚刚添加了跟进信息。");
+            } catch (Throwable e) {
+                e.printStackTrace();
+                e = Err.unwrap(e);
+                HtmlDivTag alert = out.div().class_("alert alert-danger");
+                alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
+                alert.span().class_("fa icon").text(FA_TIMES_CIRCLE);
+                alert.strong().text("[错误]");
+                alert.text("无法创建新记录: " + e.getMessage());
+            }
+            return;
+        }
+
+        super.process(ctx, out, ref, options);
+    }
+
+    @Override
     protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        ReplyMapper replyMapper = ctx.query(ReplyMapper.class);
+        buildReplyTree(ctx, out, ref, options);
+        buildReplyForm(ctx, out, ref, options);
+        return out;
+    }
 
+    protected void buildReplyTree(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+            throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 
         ReplyCriteria criteria = new ReplyCriteria();
         criteria.topicId = topic.getId();
 
+        ReplyMapper replyMapper = ctx.query(ReplyMapper.class);
         List<Reply> replies = replyMapper.filter(criteria);
+
         for (Reply reply : replies) {
             HtmlDivTag div = out.div().id("reply-" + reply.getId()).class_("zu-reply");
 
@@ -53,37 +103,42 @@ public class TopicVbo
 
             out.hr();
         }
+    }
 
-        HtmlFormTag form = out.form().method("post").action("../");
+    protected void buildReplyForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        Topic topic = ref.get();
+
+        // Reply reply = new Reply(topic, null);
+        // UiVar<Reply> replyRef = UiVar.wrap(reply);
+        // super.buildForm(ctx, out, replyRef, options);
+
+        HtmlFormTag form = out.form().id("reply-form").method("post").action("#reply-form");
+        form.input().type("hidden").name("topic").value(topic.getId());
+
+        IHtmlTag tab = form.table().class_("zu-msg");
+        IHtmlTag textLine = tab.tr().id("zp-reply");
         {
-            form.input().type("hidden").name("mode").value("reply");
-            form.input().type("hidden").name("topic").value(topic.getId());
+            HtmlLabelTag textLabel = textLine.th().label();
+            textLabel.span().class_("fa icon").text(FA_FILE_O);
+            textLabel.text("跟进: ");
 
-            IHtmlTag tab = form.table().class_("zu-msg");
-            IHtmlTag textLine = tab.tr().id("zp-reply");
-            {
-                HtmlLabelTag textLabel = textLine.th().label();
-                textLabel.span().class_("fa icon").text(FA_FILE_O);
-                textLabel.text("跟进: ");
-
-                HtmlTextareaTag textarea = textLine.td().textarea().name("text");
-                textarea.placeholder("输入跟踪信息…");
-            }
-
-            HtmlDivTag author = form.div().class_("zu-author");
-            author.span().class_("fa icon").text(FA_COMMENT_O);
-            author.text(" -- The Magic Person");
-
-            HtmlDivTag div = form.div();
-            HtmlButtonTag submitButton = div.button().type("submit");
-            submitButton.span().class_("fa icon").text(FA_CHECK);
-            submitButton.text("提交");
-
-            HtmlInputTag resetButton = div.input().type("reset");
-            resetButton.value("清空");
+            HtmlTextareaTag textarea = textLine.td().textarea().name("text");
+            textarea.placeholder("输入跟踪信息…");
         }
 
-        return out;
+        HtmlDivTag author = form.div().class_("zu-author");
+        author.span().class_("fa icon").text(FA_COMMENT_O);
+        User user = LoginContext.fromSession().user;
+        author.text(user.getFullName());
+
+        HtmlDivTag div = form.div();
+        HtmlButtonTag submitButton = div.button().type("submit");
+        submitButton.span().class_("fa icon").text(FA_CHECK);
+        submitButton.text("提交");
+
+        HtmlInputTag resetButton = div.input().type("reset");
+        resetButton.value("清空");
     }
 
 }

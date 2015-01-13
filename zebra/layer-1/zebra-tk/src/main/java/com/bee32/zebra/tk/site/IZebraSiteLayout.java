@@ -29,8 +29,6 @@ public interface IZebraSiteLayout {
         String extradata = "zp-extradata";
 
         String preview = "zp-preview";
-
-        String formtop = "zp-formtop";
     }
 
 }

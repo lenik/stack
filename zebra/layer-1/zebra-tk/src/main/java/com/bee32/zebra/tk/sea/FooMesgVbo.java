@@ -16,7 +16,6 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
-import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.tinylily.model.mx.base.CoMessage;
 
 public abstract class FooMesgVbo<T extends CoMessage<?>>
@@ -27,16 +26,16 @@ public abstract class FooMesgVbo<T extends CoMessage<?>>
     }
 
     @Override
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag tab, IUiRef<T> instanceRef, FieldDeclGroup group,
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
             IOptions options)
             throws ViewBuilderException {
         IFormDecl formDecl = group.getFormDecl();
-        T instance = instanceRef.get();
+        CoMessage<?> instance = (CoMessage<?>) instanceRef.get();
 
-        IHtmlTag top = ctx.getTag(ID.formtop);
-        tab = top.table().class_("zu-msg");
+        SplitForm form = (SplitForm) out.getParent();
+        out = form.head.table().class_("zu-msg");
 
-        IHtmlTag subjectLine = tab.tr().id("zu-msg-subject");
+        IHtmlTag subjectLine = out.tr().class_("msg-subject");
         {
             IFieldDecl subjectDecl = formDecl.getFieldDecl("subject");
             IHtmlTag subjectLabel = subjectLine.th().label();
@@ -48,7 +47,7 @@ public abstract class FooMesgVbo<T extends CoMessage<?>>
             FieldHtmlUtil.apply(subjectInput, subjectDecl, options);
         }
 
-        IHtmlTag textLine = tab.tr().id("zu-msg-text");
+        IHtmlTag textLine = out.tr().class_("msg-text");
         {
             IFieldDecl textDecl = formDecl.getFieldDecl("text");
             HtmlLabelTag textLabel = textLine.th().label();
@@ -61,7 +60,7 @@ public abstract class FooMesgVbo<T extends CoMessage<?>>
             FieldHtmlUtil.apply(textarea, textDecl, options);
         }
 
-        top.hr();
+        form.head.hr();
         return false;
     }
 
