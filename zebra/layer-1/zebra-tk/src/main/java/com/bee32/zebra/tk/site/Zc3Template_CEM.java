@@ -277,8 +277,8 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
                 List<String> classes = new ArrayList<String>();
                 switch (fieldDecl.getName()) {
                 case "accessMode":
-                case "creationTime":
-                case "endTime":
+                case "creationDate":
+                case "endDate":
                 case "flags":
                 case "owner":
                 case "ownerGroup":
