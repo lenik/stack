@@ -1,3 +1,6 @@
+[0.6.6] Lenik (2014-12-09)
+	* sdu-semsutils: Changed aliases, bashcmpl to alias, completion.
+
 [0.6.5] Lenik (2013-02-19)
 	* run-server: Increased max perm gen size to 128m by default.
 
