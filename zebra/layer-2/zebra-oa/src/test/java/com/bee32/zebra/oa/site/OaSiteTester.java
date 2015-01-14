@@ -1,13 +1,13 @@
 package com.bee32.zebra.oa.site;
 
-import net.bodz.uni.echo.config.EchoServerConfig;
+import net.bodz.bas.http.config.ServletContextConfig;
 import net.bodz.uni.echo.test.AbstractWebAppTester;
 
 public class OaSiteTester
         extends AbstractWebAppTester {
 
     @Override
-    protected EchoServerConfig createConfig() {
+    protected ServletContextConfig createConfig() {
         return new OaSiteServerConfig();
     }
 

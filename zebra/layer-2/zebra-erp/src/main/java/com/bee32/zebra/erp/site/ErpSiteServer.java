@@ -3,10 +3,10 @@ package com.bee32.zebra.erp.site;
 import java.util.Locale;
 
 import net.bodz.bas.db.jdbc.DataSourceArguments;
+import net.bodz.bas.http.config.ServletContextConfig;
 import net.bodz.bas.site.vhost.MutableVirtualHost;
 import net.bodz.bas.site.vhost.VirtualHostManager;
 import net.bodz.bas.xml.dom.XmlFormatter;
-import net.bodz.uni.echo.config.EchoServerConfig;
 import net.bodz.uni.echo.server.EchoServer;
 
 public class ErpSiteServer {
@@ -51,7 +51,7 @@ public class ErpSiteServer {
         vhosts.add(vhost0);
         vhosts.add(vhost1);
 
-        EchoServerConfig config = new ErpSiteServerConfig();
+        ServletContextConfig config = new ErpSiteServerConfig();
         config.setPortNumber(8083);
 
         EchoServer server = new EchoServer(config);
