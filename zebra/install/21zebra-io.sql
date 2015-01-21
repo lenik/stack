@@ -175,17 +175,6 @@
     insert into art(id, label, description)
         values(0, '未指定', '警告：该数据项仅用于数据升级，请重新设定。');
     
-    create or replace view v_artcat_n as select
-        (select count(*) from artcat) total,
-        (select count(distinct cat) from art) used;
-        
-    create or replace view v_artcat_hist as
-        select a.*, c.* -- c.label c_label
-        from (select cat, count(*) n, 
-                max(lastmod) lastmod_max from art group by cat) a
-            left join artcat c on a.cat=c.id
-        order by priority, n desc;
-    
 -- drop table if exists sdoc;
     create sequence sdoc_seq start with 1000;
     create table sdoc(                  -- sales/subscription doc
@@ -252,26 +241,6 @@
     create index sdoc_t0t1             on sdoc(t0, t1);
     create index sdoc_t1               on sdoc(t1);
 
-    create or replace view v_sdoc as
-        select a.*, 
-            prev.subject "prev_subject",
-            form.label   "form_label",
-            topic.subject "topic_subject",
-            op.label     "op_label",
-            org.label    "org_label",
-            person.label "person_label",
-            cat.label    "cat_label",
-            phase.label  "phase_label"
-        from sdoc a
-            left join sdoc prev on a.prev=prev.id
-            left join form on a.form=form.id
-            left join topic on a.topic=topic.id
-            left join "user" op on a.op=op.id
-            left join org on a.org=org.id
-            left join person on a.person=person.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id;
-
 -- drop table if exists sentry;
     create sequence sentry_seq start with 1000;
     create table sentry(
@@ -302,15 +271,6 @@
         constraint sentry_fk_doc    foreign key(doc)
             references sdoc(id)         on update cascade on delete cascade
     );
-
-    create or replace view v_sentry as
-        select a.*,
-            sdoc.subject "doc_subject",
-            art.label "art_label",
-            art.spec "art_spec"
-        from sentry a
-            left join sdoc on a.doc=sdoc.id
-            left join art on a.art=art.id;
 
 -- drop table if exists place;
     create type PlaceUsage as enum(
@@ -364,11 +324,6 @@
     create index place_state         on place(state);
     create index place_uid_acl       on place(uid, acl);
     
-    create or replace view v_place as
-        select place.*, p.label "parent_label"
-        from place
-            left join place p on place.parent=p.id;
-
 -- drop table if exists placeopt;
     create table placeopt(
         art         int not null,
@@ -385,11 +340,6 @@
         constraint placeopt_fk_place foreign key(place)
             references place(id)        on update cascade on delete cascade
     );
-
-    create or replace view v_place_n as select
-        (select count(*) from place) total,
-        (select count(distinct place) from placeopt) used,
-        (select count(distinct place) from placeopt where locked) locked;
 
 -- drop table if exists stinit;
     create sequence stinit_seq start with 1000;
@@ -409,18 +359,6 @@
             references place(id)        on update cascade on delete set null
     );
     
-    create view v_stinits as
-        select year, art, sum(qty) from stinit group by year, art;
-    
-    create view v_stinit as
-        select a.id, a.year,
-            a.art, r.label "art_label",
-            a.place, p.label "place_label",
-            a.batch, a.divs, a.qty
-        from stinit a
-            left join art r on a.art=r.id
-            left join place p on a.place=p.id;
-
 -- drop table if exists stock;
     create sequence stdoc_seq start with 1000;
     create table stdoc(
@@ -488,31 +426,6 @@
     create index stdoc_t0t1            on stdoc(t0, t1);
     create index stdoc_t1              on stdoc(t1);
 
-    create or replace view v_stdoc as
-        select a.*, 
-            prev.subject "prev_subject",
-            form.label   "form_label",
-            topic.subject "topic_subject",
-            op.label     "op_label",
-            org.label    "org_label",
-            person.label "person_label",
-            cat.label    "cat_label",
-            phase.label  "phase_label"
-        from stdoc a
-            left join stdoc prev on a.prev=prev.id
-            left join form on a.form=form.id
-            left join topic on a.topic=topic.id
-            left join "user" op on a.op=op.id
-            left join org on a.org=org.id
-            left join person on a.person=person.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id;
-
-    create or replace view v_stdoc_n as
-        select
-            (select count(*) from stdoc) "total",
-            (select count(*) from stdoc where phase>1201) "running";
-
 -- drop table if exists stentry;
     create sequence stentry_seq start with 1000;
     create table stentry(
@@ -542,21 +455,6 @@
         constraint stentry_fk_doc   foreign key(doc)
             references stdoc(id)        on update cascade on delete cascade
     );
-
-    create or replace view v_art_n as
-        select
-            (select count(*) from art) total,
-            (select count(distinct art) from stentry) used;
-
-    create view v_stentry as
-        select a.*,
-            stdoc.subject "doc_subject",
-            art.label "art_label",
-            place.label "place_label"
-        from stentry a
-            left join stdoc on a.doc=stdoc.id
-            left join art on a.art=art.id
-            left join place on a.place=place.id;
 
 -- drop table if exists dldoc;
     create sequence dldoc_seq start with 1000;
@@ -631,28 +529,6 @@
     create index dldoc_t0t1             on dldoc(t0, t1);
     create index dldoc_t1               on dldoc(t1);
 
-    create or replace view v_dldoc as
-        select a.*, 
-            prev.subject "prev_subject",
-            sdoc.subject "sdoc_subject",
-            op.label     "op_label",
-            org.label    "org_label",
-            person.label "person_label",
-            cat.label    "cat_label",
-            phase.label  "phase_label"
-        from dldoc a
-            left join dldoc prev on a.prev=prev.id
-            left join sdoc on a.sdoc=sdoc.id
-            left join "user" op on a.op=op.id
-            left join org on a.org=org.id
-            left join person on a.person=person.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id;
-
-    create or replace view v_dldoc_n as select
-        (select count(*) from dldoc) "total",
-        (select count(*) from dldoc where t1 is null) "shipping";
-        
 -- drop table if exists dlentry;
     create sequence dlentry_seq start with 1000;
     create table dlentry(
@@ -674,13 +550,4 @@
         constraint dlentry_fk_doc   foreign key(doc)
             references dldoc(id)         on update cascade on delete cascade
     );
-
-    create or replace view v_dlentry as
-        select a.*,
-            dldoc.subject "doc_subject",
-            art.label "art_label",
-            art.spec "art_spec"
-        from dlentry a
-            left join dldoc on a.doc=dldoc.id
-            left join art on a.art=art.id;
 

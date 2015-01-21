@@ -1,6 +1,7 @@
 -- CONTENTS:
 --      group, user
 --      contact, org, person
+--      diary
 --      fileinfo
 --      topic, reply
 --      account, acdoc, acentry
@@ -73,20 +74,6 @@
             references "user"(id)           on update cascade on delete cascade
     );
 
-    create or replace view v_group as
-        select *, 
-            array(select "user" from group_user a where a."group"=g.id) users,
-            array(select coalesce(label, code) from group_user a left join "user" u on a."user"=u.id 
-                where a."group"=g.id) labels
-        from "group" g;
-
-    create or replace view v_user as
-        select u.*, g.label "label0",
-            array(select "group" from group_user a where a."user"=u.id) groups,
-            array(select coalesce(label, code) from group_user a left join "group" g on a."group"=g.id
-                where a."user"=u.id) labels
-        from "user" u left join "group" g on u.gid0 = g.id;
-        
     insert into "group"(id, code, label, admin) values(0, 'root', 'Root', true);
     insert into "user"(id, gid0, code, label) values(0, 0, 'root', 'Root');
     insert into "group_user"("group", "user") values(0, 0);
@@ -121,9 +108,6 @@
     );
 
     create index contact_region     on contact(region);
-
-    -- view: avct_contact
-    select * from mkaview('public', 'contact', 'ct_');
 
 -- drop table if exists org;
     create sequence org_seq start with 1000;
@@ -281,16 +265,6 @@
     alter table contact add constraint contact_fk_person foreign key(person)
             references person(id)   on update cascade on delete cascade deferrable;
 
-    create or replace view v_contact as
-        select org.label "org_label", 
-            oo.label || ' - ' || ou.label "ou_label",
-            p.label "person_label", c.*
-        from contact c
-            left join org           on c.org=org.id
-            left join orgunit ou    on c.ou=ou.id
-            left join org oo        on ou.org=oo.id
-            left join person p      on c.person=p.id;
-
 -- drop table if exists personrole;
     create sequence personrole_seq;
     create table personrole(
@@ -310,12 +284,55 @@
             references org(id)              on update cascade on delete cascade
     );
 
-    create or replace view v_personrole as
-        select o.label "org_label", ou.label "ou_label", p.label "person_label", r.*
-        from personrole r
-            left join person p on r.person=p.id
-            left join orgunit ou on r.ou=ou.id
-            left join org o on r.org=o.id;
+-- drop table if exists diary;
+    create sequence diary_seq start with 1000;
+    create table diary(
+        id          int primary key default nextval('diary_seq'),
+        priority    int not null default 0,
+        creation    timestamp not null default now(),
+        lastmod     timestamp not null default now(),
+        flags       int not null default 0,
+        state       int not null default 0,
+        version     int not null default 0,
+        
+        uid         int,
+        gid         int,
+        mode        int not null default b'110100000'::int,
+        acl         int,
+        
+        t0          date,           -- begin time, deliver time
+        t1          date,           -- end time, deadline
+        year        int not null default 0,
+        
+        op          int,
+        subject     varchar(200) not null,
+        text        text,
+        form        int,
+        args        text,           -- used with the form.
+        cat         int,
+        phase       int,
+        
+        constraint diary_fk_cat     foreign key(cat)
+            references cat(id)          on update cascade on delete set null,
+        constraint diary_fk_form    foreign key(form)
+            references form(id)         on update cascade on delete set null,
+        constraint diary_fk_gid     foreign key(gid)
+            references "group"(id)      on update cascade on delete set null,
+        constraint diary_fk_op      foreign key(op)
+            references "user"(id)       on update cascade on delete set null,
+        constraint diary_fk_phase   foreign key(phase)
+            references phase(id)        on update cascade on delete set null,
+        constraint diary_fk_uid     foreign key(uid)
+            references "user"(id)       on update cascade on delete set null
+    );
+
+    create index diary_lastmod        on diary(lastmod desc);
+    create index diary_priority       on diary(priority);
+    create index diary_state          on diary(state);
+    create index diary_subject        on diary(subject);
+    create index diary_t0t1           on diary(t0, t1);
+    create index diary_t1             on diary(t1);
+    create index diary_uid_acl        on diary(uid, acl);
 
 -- drop table if exists fileinfo;
     create sequence fileinfo_seq start with 1000;
@@ -350,7 +367,7 @@
         base        varchar(80) not null,
         image       varchar(100),
         size        bigint not null,
-        sha1        varchar(32),    
+        sha1        varchar(40),    
         type        varchar(100),   -- auto detected (file)
         encoding    varchar(30),    -- auto detected
         
@@ -382,24 +399,6 @@
     create index fileinfo_t0t1          on fileinfo(t0, t1);
     create index fileinfo_t1            on fileinfo(t1);
     create index fileinfo_uid_acl       on fileinfo(uid, acl);
-
-    create or replace view v_fileinfo_dup as
-        select a.*
-        from fileinfo a
-            left join
-                (select dir, base, count(*) n from fileinfo
-                    group by dir, base having(count(*) > 1)) c
-                on a.dir=c.dir and a.base=c.base
-        where c.dir is not null;
-
-    create or replace view v_fileinfo_dupx as
-        select a.*
-        from v_fileinfo_dup a
-            left join
-                (select max(id) "maxid", dir, base
-                    from v_fileinfo_dup group by dir, base) m
-                on a.dir=m.dir and a.base=m.base
-        where a.id < m.maxid;
 
 -- drop table if exists fileatt;
     create sequence fileatt_seq;
@@ -443,26 +442,6 @@
         constraint filevote_fk_op foreign key(op)
             references "user"(id)       on update cascade on delete cascade
     );
-    
-    create or replace view v_fileinfo as
-        select *,
-            array(select tag || ':' || tag.label
-                from filetag a left join tag on a.tag=tag.id where a.file=fileinfo.id) tags,
-            array(select att || ':' || att.label || '=' || a.val
-                from fileatt a left join att on a.att=att.id where a.file=fileinfo.id) atts
-        from fileinfo;
-
-    create or replace view v_filetags as
-        select a.n, tag.*
-        from (select tag, count(*) n from filetag group by tag) a
-            left join tag on a.tag=tag.id
-        order by priority, n desc;
-    
-    create or replace view v_filevotes as
-        select a.n, f.*
-        from (select file, sum(n) n from filevote group by file) a
-            left join fileinfo f on a.file=f.id
-        order by n desc;
     
 -- drop table if exists topic;
     create sequence topic_seq start with 1000;
@@ -542,6 +521,7 @@
         
         t0          timestamptz,    -- work begin time
         t1          timestamptz,    -- work end time
+        year        int not null default 0,
         
         op          int not null,
         text        text not null,
@@ -696,47 +676,6 @@
             references "user"(id)       on update cascade on delete cascade
     );
 
--- aggregated views
-    create or replace view v_topic as
-        select *, 
-            array(select tag || ':' || tag.label
-                from topictag a left join tag on a.tag=tag.id where a.topic=topic.id) tags,
-            array(select att || ':' || att.label || '=' || a.val
-                from topicatt a left join att on a.att=att.id where a.topic=topic.id) atts
-        from topic;
-
-    create or replace view v_topictags as
-        select a.n, tag.*
-        from (select tag, count(*) n from topictag group by tag) a
-            left join tag on a.tag=tag.id
-        order by priority, n desc;
-    
-    create or replace view v_topicvotes as
-        select a.n, f.*
-        from (select topic, sum(n) n from topicvote group by topic) a
-            left join topic f on a.topic=f.id
-        order by n desc;
-    
-    create or replace view v_reply as
-        select *, 
-            array(select tag || ':' || tag.label
-                from replytag a left join tag on a.tag=tag.id where a.reply=reply.id) tags,
-            array(select att || ':' || att.label || '=' || a.val
-                from replyatt a left join att on a.att=att.id where a.reply=reply.id) atts
-        from reply;
-
-    create or replace view v_replytags as
-        select a.n, tag.*
-        from (select tag, count(*) n from replytag group by tag) a
-            left join tag on a.tag=tag.id
-        order by priority, n desc;
-    
-    create or replace view v_replyvotes as
-        select a.n, f.*
-        from (select reply, sum(n) n from replyvote group by reply) a
-            left join reply f on a.reply=f.id
-        order by n desc;
-    
 -- drop table if exists "account";
     create table "account"(
         id          int primary key,
@@ -851,28 +790,6 @@
             references person(id)       on update cascade on delete set null
     );
 
-    create or replace view v_acentry as
-        select a.id, a.doc, d.subject,
-            a.account, c.label "account_label",
-            a.org, o.label "org_label",
-            a.person, p.label "person_label",
-            a.val, d.ndebit, d.ncredit, a.priority,
-            d.subject "doc_subject", d.cat, d.phase,
-            d.year, d.t0, d.t1, d.creation, d.lastmod
-        from acentry a
-            left join account c on a.account=c.id
-            left join acdoc d on a.doc=d.id
-            left join org o on a.org=o.id
-            left join person p on a.person=p.id;
-
-    create or replace view v_acdoc as
-        select a.*, op.label "op_label", o.label "org_label", p.label "person_label",
-            array(select e.account_label || '=' || e.val from v_acentry e where e.doc=a.id) "entries"
-        from acdoc a
-            left join org o on a.org=o.id
-            left join person p on a.person=p.id
-            left join "user" op on a.op=op.id;
-
 -- drop table if exists acinit;
     create sequence acinit_seq start with 1000;
     create table acinit(
@@ -893,17 +810,3 @@
             references person(id)       on update cascade on delete set null
     );
     
-    create view v_acinits as
-        select year, account, sum(val) from acinit group by year, account;
-    
-    create view v_acinit as
-        select a.id, a.year,
-            a.account, c.label "account_label",
-            a.org, o.label "org_label",
-            a.person, p.label "person_label",
-            a.val
-        from acinit a
-            left join account c on a.account=c.id
-            left join org o on a.org=o.id
-            left join person p on a.person=p.id;
-
