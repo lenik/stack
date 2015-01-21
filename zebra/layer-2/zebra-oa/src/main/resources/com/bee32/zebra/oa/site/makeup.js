@@ -32,6 +32,10 @@ $(document).ready(function() {
         });
     }
 
+    $(".dialog").dialog({
+        autoOpen: false
+    });
+
     $(".zu-pickcmd").click(function() {
         var url = $(this).attr("data-url");
         var title = $(this).attr("data-title");
@@ -42,6 +46,7 @@ $(document).ready(function() {
         selection = null;
 
         $("#picker1").dialog({
+            autoOpen: true,
             title : title,
             buttons : [ {
                 text : "确定",
