@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.oa.calendar.impl.DiaryMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.oa.calendar.Diary" extends="message.map2">
+    </resultMap>
+
+    <sql id="select1"><![CDATA[
+        select
+            a.*,
+            op.label "op_label",
+            c.label "cat_label",
+            p.label "phase_label",
+            u.label "uid_label",
+            g.label "gid_label"
+        from diary a
+            left join "user" op on a.op=op.id
+            left join cat c on a.cat=c.id
+            left join phase p on a.phase=p.id
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+        ]]>
+    </sql>
+
+    <sql id="select2"><![CDATA[
+        select
+            a.*,
+            op.label "op_label",
+            c.label "cat_label",
+            p.label "phase_label",
+            u.label "uid_label",
+            g.label "gid_label"
+        from diary a
+            left join "user" op on a.op=op.id
+            left join cat c on a.cat=c.id
+            left join phase p on a.phase=p.id
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+        ]]>
+    </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <include refid="co.modefilt" />
+        </where>
+        order by id desc
+    </select>
+
+    <sql id="filtsql">
+        <!-- co -->
+        <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+        <!-- moment-interval -->
+        <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+        <if test="year != null">and extract(year from a.t0)=#{year}</if>
+        <if test="noDate">and a.t0 is null</if>
+        <if test="noYear">and a.t0 is null</if>
+        <!-- message -->
+        <if test="opId != null">and a.op=#{opId}</if>
+        <if test="categoryId != null">and a.cat=#{categoryId}</if>
+        <if test="tagId != null">and x.tag=#{tagId}</if>
+        <if test="phaseId != null">and a.phase=#{phaseId}</if>
+        <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
+        <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
+        <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
+        <if test="noOp">and a.op is null</if>
+        <if test="noCategory">and a.cat is null</if>
+        <if test="noTag">and x.tag is null</if>
+        <if test="noPhase">and a.phase is null</if>
+        <include refid="co.modefilt" />
+    </sql>
+
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <!-- left join tags -->
+        <where>
+            <include refid="filtsql" />
+        </where>
+        order by id desc
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select2" />
+        <where>
+            <if test="_parameter != null">a.id=#{id}</if>
+        </where>
+    </select>
+
+    <select id="insert" resultType="long"><![CDATA[
+        insert into diary(
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1,
+            op, subject, text, form, args, cat, phase
+        ) values(
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate},
+            #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id}
+        ) returning id
+    ]]></select>
+
+    <update id="update">
+        update diary
+        <set>
+            <include refid="message.set1" />
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </update>
+
+    <delete id="delete">
+        delete from diary where id = #{id}
+    </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from diary
+    </select>
+
+    <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[
+        select
+            extract(year from t0)::int "year", 
+            count(*) "count"
+        from diary
+        group by extract(year from t0)::int
+    ]]></select>
+
+    <select id="logHisto" resultType="com.bee32.zebra.tk.util.F_DateCount">
+        select select t0::date, count(*) from v_log
+        from diary
+        <where>
+            <include refid="filtsql" />
+        </where>
+        group by t0::date
+    </select>
+
+    <resultMap id="logMap" type="com.bee32.zebra.tk.util.F_Log">
+        <result property="stereo" column="stereo" />
+        <result property="id" column="id" />
+        <result property="subject" column="subject" />
+        <result property="text" column="text" />
+        <result property="beginDate" column="t0" />
+        <association property="owner" javaType="com.tinylily.model.base.security.User">
+            <id property="id" column="uid" />
+            <result property="codeName" column="uid_code" />
+            <result property="label" column="uid_label" />
+        </association>
+        <association property="ownerGroup" javaType="com.tinylily.model.base.security.Group">
+            <id property="id" column="gid" />
+            <result property="codeName" column="gid_code" />
+            <result property="label" column="gid_label" />
+        </association>
+    </resultMap>
+
+    <select id="log" resultMap="logMap"><![CDATA[
+        select a.*,
+            u.code "uid_code",
+            u.label "uid_label",
+            g.code "gid_code", 
+            g.label "gid_label" 
+        from v_log a
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
+        ]]>
+        <where>
+            <include refid="filtsql" />
+        </where>
+    </select>
+
+</mapper>

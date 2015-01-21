@@ -145,6 +145,11 @@ public class OaSiteVbo
     protected void mainMenu(IHtmlTag out, OaSite site) {
         HtmlUlTag sub;
         HtmlLiTag item;
+
+        sub = out.li().text("控制台").ul();
+        sub.li().a().text("日记").href(_webApp_.join("diary/").toString());
+        // sub.li().a().text("设置").href(_webApp_.join("setting/").toString());
+
         sub = out.li().text("知识库").ul();
         sub.li().a().text("企、事业").href(_webApp_.join("org/").toString());
         sub.li().a().text("联系人").href(_webApp_.join("person/").toString());

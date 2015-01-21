@@ -1,9 +1,11 @@
+com.bee32.zebra.oa.accnt.impl.AccountIndexVbo
 com.bee32.zebra.oa.accnt.impl.AccountingEntryIndexVbo
 com.bee32.zebra.oa.accnt.impl.AccountingEntryVbo
 com.bee32.zebra.oa.accnt.impl.AccountingEventIndexVbo
 com.bee32.zebra.oa.accnt.impl.AccountingEventVbo
-com.bee32.zebra.oa.accnt.impl.AccountIndexVbo
 com.bee32.zebra.oa.accnt.impl.AccountVbo
+com.bee32.zebra.oa.calendar.impl.DiaryIndexVbo
+com.bee32.zebra.oa.calendar.impl.DiaryVbo
 com.bee32.zebra.oa.contact.impl.ContactVbo
 com.bee32.zebra.oa.contact.impl.OrganizationIndexVbo
 com.bee32.zebra.oa.contact.impl.OrganizationVbo

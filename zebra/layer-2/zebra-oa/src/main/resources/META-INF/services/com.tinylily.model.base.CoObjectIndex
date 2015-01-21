@@ -1,6 +1,7 @@
+com.bee32.zebra.oa.accnt.impl.AccountIndex
 com.bee32.zebra.oa.accnt.impl.AccountingEntryIndex
 com.bee32.zebra.oa.accnt.impl.AccountingEventIndex
-com.bee32.zebra.oa.accnt.impl.AccountIndex
+com.bee32.zebra.oa.calendar.impl.DiaryIndex
 com.bee32.zebra.oa.contact.impl.OrganizationIndex
 com.bee32.zebra.oa.contact.impl.OrgUnitIndex
 com.bee32.zebra.oa.contact.impl.PersonIndex
