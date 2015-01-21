@@ -1,0 +1,16 @@
+
+update fileinfo set base=replace(base, '/', ',') where base like '%/%';
+
+drop view v_fileinfo;
+drop view v_fileinfo_dupx;
+drop view v_fileinfo_dup;
+drop view v_filevotes;
+alter table fileinfo alter sha1 type varchar(40);
+
+update fileinfo set sha1=k.sha1 from chksum k where fileinfo.sha1=k.md5;
+delete from fileinfo where length(sha1)=32;
+
+--
+
+alter table reply add year int not null default 0;
+
