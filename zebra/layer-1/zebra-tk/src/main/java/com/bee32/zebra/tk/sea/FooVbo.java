@@ -10,7 +10,9 @@ import java.util.Set;
 
 import net.bodz.bas.c.string.StringPart;
 import net.bodz.bas.c.type.SingletonUtil;
+import net.bodz.bas.c.type.TypeChain;
 import net.bodz.bas.c.type.TypeKind;
+import net.bodz.bas.db.ibatis.IMapper;
 import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.err.Err;
@@ -26,6 +28,8 @@ import net.bodz.bas.html.viz.IHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlViewBuilderFactory;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
+import net.bodz.bas.io.Stdio;
+import net.bodz.bas.io.impl.TreeOutImpl;
 import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
@@ -88,6 +92,8 @@ public abstract class FooVbo<T extends CoObject>
             FnMapper fnMapper = ctx.query(FnMapper.class);
             PrevNext prevNext = fnMapper.prevNext("public", tablename, //
                     id == null ? Integer.MAX_VALUE : id.longValue());
+            if (prevNext == null)
+                prevNext = new PrevNext();
 
             IHtmlTag headCol2 = ctx.getTag(ID.headCol2);
             HtmlDivTag adjs = headCol2.div().class_("zu-links");
@@ -137,9 +143,15 @@ public abstract class FooVbo<T extends CoObject>
         case MethodNames.UPDATE:
             if (persist(false, ctx, out, ref)) {
                 // reload from database.
-                FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
-                T reload = mapper.select(id.longValue());
-                ref.set(reload);
+                try {
+                    FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
+                    T reload = mapper.select(id.longValue());
+                    ref.set(reload);
+                } catch (ClassCastException e) {
+                    IMapper m = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
+                    TypeChain.dumpTypeTree(m.getClass(), TreeOutImpl.from(Stdio.cerr));
+                    throw new ViewBuilderException(e);
+                }
             }
             break;
 
@@ -329,8 +341,10 @@ public abstract class FooVbo<T extends CoObject>
         submitButton.text("保存以上信息");
 
         HtmlButtonTag resetButton = div.button();
-        resetButton.onclick("javascript: history.go(-1)");
-        resetButton.text("取消编辑");
+        resetButton.type("button");
+        resetButton.onclick("javascript: form.reset()");
+        resetButton.span().class_("fa icon").text(FA_ERASER);
+        resetButton.text("复原").title("清除刚才输入的所有变更，重新写。");
     }
 
     @Override

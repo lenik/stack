@@ -201,13 +201,17 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
             p.cmds0.a().href("?view:=csv").text("导出").style("cursor: default; color: gray").onclick("return false");
             p.cmds0.a().href("javascript: window.print()").text("打印");
         } else {
+            HtmlATag upLink = p.cmds0.a().href("../");
+            upLink.span().class_("fa icon").text(FA_LEVEL_UP);
+            upLink.text("回到上一层");
+
             HtmlATag submitLink = p.cmds1.a().href("javascript: form.submit()");
             submitLink.span().class_("fa icon").text(FA_FLOPPY_O);
             submitLink.text("提交").title("将输入的数据提交保存。");
 
-            HtmlATag resetLink = p.cmds1.a().href("javascript: form.reset()");
-            resetLink.span().class_("fa icon").text(FA_ERASER);
-            resetLink.text("复原").title("清除刚才输入的所有变更，重新写。");
+            HtmlATag refreshLink = p.cmds1.a().href("javascript: location.href = location.href");
+            refreshLink.span().class_("fa icon").text(FA_REFRESH);
+            refreshLink.text("刷新").title("重新载入当前页面。");
         }
 
         List<String> rels = classDoc.getTag("rel", List.class);
