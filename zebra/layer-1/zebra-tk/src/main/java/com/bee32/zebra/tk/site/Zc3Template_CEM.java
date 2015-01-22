@@ -2,10 +2,11 @@ package com.bee32.zebra.tk.site;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,7 +62,7 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
-    protected List<PathField> indexFields;
+    protected Map<String, PathField> indexFields;
 
     public Zc3Template_CEM(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
@@ -171,8 +172,12 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
                 a.extradata = null;
                 a.dataList = false;
             }
-            buildDataView(ctx, a, ref, options);
+            dataIndex(ctx, a, ref, options);
         }
+
+        afterData(ctx, out, ref, options);
+
+        out.script().javascriptSrc(getClass().getSimpleName() + ".js");
         return out;
     }
 
@@ -236,8 +241,12 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         }
     }
 
-    protected abstract void buildDataView(IHtmlViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)
+    protected abstract void dataIndex(IHtmlViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException;
+
+    protected void afterData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+    }
 
     protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
@@ -245,7 +254,7 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         a.frame = new HtmlDoc();
         a.data = new HtmlDoc();
         a.dataList = true;
-        buildDataView(ctx, a, ref, options);
+        dataIndex(ctx, a, ref, options);
 
         HtmlTableTag table = null;
         for (IXmlNode child : a.data.getRoot().getChildren())
@@ -273,37 +282,41 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         }
 
         for (IHtmlTag tr : table.headFoot)
-            for (PathField pathField : indexFields) {
+            for (PathField pathField : indexFields.values()) {
                 IFieldDecl fieldDecl = pathField.getFieldDecl();
                 HtmlThTag th = tr.th().text(IXjdocElement.fn.labelName(fieldDecl));
                 th.dataField(fieldDecl.getName());
 
-                List<String> classes = new ArrayList<String>();
-                switch (fieldDecl.getName()) {
-                case "accessMode":
-                case "creationDate":
-                case "endDate":
-                case "flags":
-                case "owner":
-                case "ownerGroup":
-                case "state":
-                    classes.add("detail");
-                }
+                Set<String> classes = new LinkedHashSet<String>();
+                String styleClass = fieldDecl.getStyleClass();
+                if (styleClass != null)
+                    classes.add(styleClass);
 
                 boolean sortable = fieldDecl.getPreferredSortOrder() != SortOrder.NO_SORT;
                 th.dataSortable(sortable);
                 if (!sortable)
                     classes.add("no-sort");
 
-                String styleClass = fieldDecl.getStyleClass();
-                if (styleClass != null)
-                    classes.add(styleClass);
+                fieldOverride(fieldDecl, classes);
 
                 if (!classes.isEmpty())
                     th.class_(StringArray.join(" ", classes));
             }
 
         return table;
+    }
+
+    protected void fieldOverride(IFieldDecl fieldDecl, Set<String> classes) {
+        switch (fieldDecl.getName()) {
+        case "accessMode":
+        case "creationDate":
+        case "endDate":
+        case "flags":
+        case "owner":
+        case "ownerGroup":
+        case "state":
+            classes.add("detail");
+        }
     }
 
     protected void insertIndexFields(String spec, String... pathProperties)
