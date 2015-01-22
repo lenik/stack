@@ -26,7 +26,7 @@ public class FabStepDefIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<FabStepDef> a, IUiRef<FabStepDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FabStepDef> a, IUiRef<FabStepDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FabStepDefMapper mapper = ctx.query(FabStepDefMapper.class);

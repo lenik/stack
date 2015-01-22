@@ -34,7 +34,7 @@ public class AccountingEventIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<AccountingEvent> a,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<AccountingEvent> a,
             IUiRef<AccountingEventIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);

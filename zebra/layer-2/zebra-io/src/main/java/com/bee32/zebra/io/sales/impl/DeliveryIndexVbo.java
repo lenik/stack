@@ -27,7 +27,7 @@ public class DeliveryIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Delivery> a, IUiRef<DeliveryIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Delivery> a, IUiRef<DeliveryIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         DeliveryMapper mapper = ctx.query(DeliveryMapper.class);

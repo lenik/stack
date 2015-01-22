@@ -37,7 +37,7 @@ public class TopicIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         TopicMapper mapper = ctx.query(TopicMapper.class);

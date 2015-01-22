@@ -78,15 +78,20 @@ h3 {
     background: hsl(35, 100%, 80%) !important;
 }
 
-.zu-id {
-    font-size: small;
-    text-align: right;
+.zu-detail {
+    width: 90%;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: gray;
+    margin-left: 2em;
 }
 
-.zu-layout {
+.zu-detail .breadcrumb {
+    background: none;
+    border: 0;
     padding: 0;
-    border-spacing: 0;
-    border: none;
+    font-size: small;
+    font-style: italic;
 }
 
 .zu-fgroup h2 {
@@ -126,6 +131,17 @@ fieldset.zu-fcat legend {
 
 .zu-field:hover .zu-flabel {
     border-left-color: black;
+}
+
+.zu-id {
+    font-size: small;
+    text-align: right;
+}
+
+.zu-layout {
+    padding: 0;
+    border-spacing: 0;
+    border: none;
 }
 
 .zu-links>div {
@@ -226,6 +242,10 @@ fieldset.zu-fcat legend {
 
 .zu-switcher .active {
     font-weight: bold;
+}
+
+.zu-template {
+    
 }
 
 .zu-w10 {

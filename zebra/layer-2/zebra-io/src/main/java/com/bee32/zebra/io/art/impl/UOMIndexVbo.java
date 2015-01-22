@@ -29,7 +29,7 @@ public class UOMIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<UOM> a, IUiRef<UOMIndex> ref, IOptions options)
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<UOM> a, IUiRef<UOMIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UOMMapper mapper = ctx.query(UOMMapper.class);
         UOMCriteria criteria = criteriaFromRequest(new UOMCriteria(), ctx.getRequest());

@@ -42,7 +42,7 @@ public class ArtifactIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Artifact> a, IUiRef<ArtifactIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Artifact> a, IUiRef<ArtifactIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);

@@ -28,7 +28,7 @@ public class TagDefIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         TagDefMapper mapper = ctx.query(TagDefMapper.class);

@@ -30,7 +30,7 @@ public class PersonIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Person> a, IUiRef<PersonIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Person> a, IUiRef<PersonIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         PersonMapper mapper = ctx.query(PersonMapper.class);

@@ -26,7 +26,7 @@ public class SchemaDefIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<SchemaDef> a, IUiRef<SchemaDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<SchemaDef> a, IUiRef<SchemaDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         SchemaDefMapper mapper = ctx.query(SchemaDefMapper.class);

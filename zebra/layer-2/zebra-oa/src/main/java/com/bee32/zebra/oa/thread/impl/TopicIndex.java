@@ -11,9 +11,9 @@ import com.bee32.zebra.tk.sea.FooIndex;
  * 
  * @label 项目
  * 
- * @rel cat/?schema=1: 管理分类
- * @rel phase/?schema=1: 管理进展阶段
- * @rel tag/?schema=1: 管理标签
+ * @rel cat/?schema=3: 管理分类
+ * @rel phase/?schema=3: 管理进展阶段
+ * @rel tag/?schema=3: 管理标签
  * 
  * @see <a href="http://www.bensino.com/news/sInstitute/2/2012/1212/40641.html">SKU不是越多越好</a>
  * @see <a href="http://www.360doc.com/content/08/0109/14/25392_958214.shtml">物料编码规划</a>

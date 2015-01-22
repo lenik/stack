@@ -28,7 +28,7 @@ public class PlaceIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         PlaceMapper mapper = ctx.query(PlaceMapper.class);

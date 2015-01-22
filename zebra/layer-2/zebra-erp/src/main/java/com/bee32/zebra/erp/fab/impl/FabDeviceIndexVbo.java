@@ -26,7 +26,7 @@ public class FabDeviceIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<FabDevice> a, IUiRef<FabDeviceIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FabDevice> a, IUiRef<FabDeviceIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FabDeviceMapper mapper = ctx.query(FabDeviceMapper.class);

@@ -26,7 +26,7 @@ public class PriorityDefIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<PriorityDef> a, IUiRef<PriorityDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<PriorityDef> a, IUiRef<PriorityDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         PriorityDefMapper mapper = ctx.query(PriorityDefMapper.class);

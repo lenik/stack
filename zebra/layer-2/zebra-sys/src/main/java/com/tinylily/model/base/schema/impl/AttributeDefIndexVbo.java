@@ -28,7 +28,7 @@ public class AttributeDefIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<AttributeDef> a,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<AttributeDef> a,
             IUiRef<AttributeDefIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AttributeDefMapper mapper = ctx.query(AttributeDefMapper.class);

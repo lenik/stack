@@ -33,7 +33,7 @@ $(document).ready(function() {
     }
 
     $(".dialog").dialog({
-        autoOpen: false
+        autoOpen : false
     });
 
     $(".zu-pickcmd").click(function() {
@@ -46,7 +46,7 @@ $(document).ready(function() {
         selection = null;
 
         $("#picker1").dialog({
-            autoOpen: true,
+            autoOpen : true,
             title : title,
             buttons : [ {
                 text : "确定",
@@ -123,10 +123,15 @@ $(document).ready(function() {
         });
 
         dt.rows().on('click', 'tr', function(e) {
+            var tr = $(this);
             var modexs = $("#zp-right-col").css("width") == "0px";
 
             var row = dt.row(this); // could be the header.
-            var id = row.data()[0];
+            var data = row.data();
+            if (data == null)
+                return null;
+
+            var id = data[0];
             if (id == undefined)
                 return;
 
@@ -137,36 +142,22 @@ $(document).ready(function() {
                 $(this).addClass("selected");
             }
 
-            if (parent != null) {
-                var cmap = {};
-                var headers = dt.columns().header();
-                for (i = 0; i < headers.length; i++) {
-                    var dataField = $(headers[i]).attr("data-field");
-                    cmap[dataField] = i;
-                }
-                var labelFields = [ "label", "subject", "fullName" ];
-                var labelFieldIndex = null;
-                for (i = 0; i < labelFields.length; i++) {
-                    var columnIndex = cmap[labelFields[i]];
-                    if (columnIndex != null) {
-                        labelFieldIndex = columnIndex;
-                        break;
-                    }
-                }
-                var label = null;
-                if (labelFieldIndex != null) {
-                    label = row.data()[labelFieldIndex];
-                    label = label.trimRight();
-                    if (label.substr(0, 1) == "<" && label.substr(-1) == ">") {
-                        label = label.replace(/^<.*?>/, '');
-                        label = label.replace(/<.*?>$/, '');
-                    }
-                }
+            if (parent != top)
+                // assert parent.frameElement != null;
+                parent.selection = DataTables.getIdLabel(row);
+            else {
 
-                parent.selection = {
-                    id : id,
-                    label : label
-                };
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass("shown");
+                } else {
+                    var obj = DataTables.toObject(row);
+                    var html = DataTables.formatChild(obj);
+                    if (html != null) {
+                        row.child(html).show();
+                        tr.addClass("shown");
+                    }
+                }
             }
 
             if (modexs) {
@@ -177,15 +168,15 @@ $(document).ready(function() {
             // load the selection
             var seldiv = $("#zp-infosel-data");
             var seledit = $("#zp-infosel-edit");
-            var data = $("#data-" + id);
+            var xdata = $("#data-" + id);
             var lastid = seldiv.attr("selid");
 
             if (id != lastid) {
                 seldiv.show();
                 seldiv.attr("selid", id);
 
-                if (data.length > 0) {
-                    seldiv.html(data.html());
+                if (xdata.length > 0) {
+                    seldiv.html(xdata.html());
                 } else {
                     // load on demand, or create from the table...
                     seldiv.html("Loading...");
@@ -200,3 +191,63 @@ $(document).ready(function() {
     } // dt != null
 
 });
+
+var DataTables = {
+
+    getIdLabel : function(row) {
+        var dt = row.table();
+        var data = row.data();
+        if (data == null)
+            throw "Bad row";
+
+        var id = data[0];
+        var cmap = {};
+        var headers = dt.columns().header();
+        for (i = 0; i < headers.length; i++) {
+            var dataField = $(headers[i]).attr("data-field");
+            cmap[dataField] = i;
+        }
+
+        var labelFields = [ "label", "subject", "fullName" ];
+        var labelFieldIndex = null;
+        for (i = 0; i < labelFields.length; i++) {
+            var columnIndex = cmap[labelFields[i]];
+            if (columnIndex != null) {
+                labelFieldIndex = columnIndex;
+                break;
+            }
+        }
+        var label = null;
+        if (labelFieldIndex != null) {
+            label = row.data()[labelFieldIndex];
+            label = label.trimRight();
+            if (label.substr(0, 1) == "<" && label.substr(-1) == ">") {
+                label = label.replace(/^<.*?>/, '');
+                label = label.replace(/<.*?>$/, '');
+            }
+        }
+
+        return {
+            id : id,
+            label : label
+        };
+    },
+
+    toObject : function(row) {
+        var dt = row.table();
+        var data = row.data();
+        var id = data[0];
+        var obj = {};
+        var headers = dt.columns().header();
+        for (i = 0; i < headers.length; i++) {
+            var dataField = $(headers[i]).attr("data-field");
+            obj[dataField] = data[i];
+        }
+        return obj;
+    },
+
+    formatChild : function(obj) {
+        return null;
+    }
+
+};

@@ -28,7 +28,7 @@ public class ReplyIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Reply> a, IUiRef<ReplyIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Reply> a, IUiRef<ReplyIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         ReplyMapper mapper = ctx.query(ReplyMapper.class);

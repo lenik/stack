@@ -26,7 +26,7 @@ public class FabQcDefIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<FabQcDef> a, IUiRef<FabQcDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FabQcDef> a, IUiRef<FabQcDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FabQcDefMapper mapper = ctx.query(FabQcDefMapper.class);

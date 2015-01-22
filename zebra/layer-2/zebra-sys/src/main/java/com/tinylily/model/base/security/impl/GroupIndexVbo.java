@@ -26,7 +26,7 @@ public class GroupIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Group> a, IUiRef<GroupIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Group> a, IUiRef<GroupIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         GroupMapper mapper = ctx.query(GroupMapper.class);

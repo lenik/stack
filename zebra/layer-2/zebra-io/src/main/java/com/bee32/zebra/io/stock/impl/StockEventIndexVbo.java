@@ -34,7 +34,7 @@ public class StockEventIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<StockEvent> a, IUiRef<StockEventIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<StockEvent> a, IUiRef<StockEventIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         StockEventMapper mapper = ctx.query(StockEventMapper.class);

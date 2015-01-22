@@ -26,7 +26,7 @@ public class FabOpCodeIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<FabOpCode> a, IUiRef<FabOpCodeIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FabOpCode> a, IUiRef<FabOpCodeIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FabOpCodeMapper mapper = ctx.query(FabOpCodeMapper.class);

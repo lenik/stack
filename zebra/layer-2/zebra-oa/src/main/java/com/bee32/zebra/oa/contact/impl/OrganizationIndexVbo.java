@@ -30,7 +30,7 @@ public class OrganizationIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Organization> a,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Organization> a,
             IUiRef<OrganizationIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);

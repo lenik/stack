@@ -26,7 +26,7 @@ public class AccountingEntryIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<AccountingEntry> a,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<AccountingEntry> a,
             IUiRef<AccountingEntryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);

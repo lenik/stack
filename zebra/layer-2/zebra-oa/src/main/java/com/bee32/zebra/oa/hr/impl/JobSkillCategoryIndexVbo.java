@@ -26,7 +26,7 @@ public class JobSkillCategoryIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<JobSkillCategory> a,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<JobSkillCategory> a,
             IUiRef<JobSkillCategoryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         JobSkillCategoryMapper mapper = ctx.query(JobSkillCategoryMapper.class);

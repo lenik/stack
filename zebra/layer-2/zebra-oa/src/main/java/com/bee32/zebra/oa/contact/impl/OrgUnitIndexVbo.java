@@ -26,7 +26,7 @@ public class OrgUnitIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<OrgUnit> a, IUiRef<OrgUnitIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<OrgUnit> a, IUiRef<OrgUnitIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         OrgUnitMapper mapper = ctx.query(OrgUnitMapper.class);

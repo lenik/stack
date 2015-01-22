@@ -1,5 +1,6 @@
 
 update fileinfo set base=replace(base, '/', ',') where base like '%/%';
+update fileinfo set label=base where label is null;
 
 drop view v_fileinfo;
 drop view v_fileinfo_dupx;

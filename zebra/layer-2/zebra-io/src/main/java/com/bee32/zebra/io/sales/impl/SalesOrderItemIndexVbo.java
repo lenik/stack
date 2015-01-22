@@ -26,7 +26,7 @@ public class SalesOrderItemIndexVbo
     }
 
     @Override
-    public void buildDataView(IHtmlViewContext ctx, DataViewAnchors<SalesOrderItem> a,
+    public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<SalesOrderItem> a,
             IUiRef<SalesOrderItemIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrderItemMapper mapper = ctx.query(SalesOrderItemMapper.class);

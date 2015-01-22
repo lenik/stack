@@ -26,7 +26,7 @@ public class StockEntryIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<StockEntry> a, IUiRef<StockEntryIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<StockEntry> a, IUiRef<StockEntryIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         StockEntryMapper mapper = ctx.query(StockEntryMapper.class);

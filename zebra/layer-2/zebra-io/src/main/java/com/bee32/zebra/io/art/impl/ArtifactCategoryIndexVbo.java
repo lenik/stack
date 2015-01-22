@@ -26,7 +26,7 @@ public class ArtifactCategoryIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<ArtifactCategory> a,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<ArtifactCategory> a,
             IUiRef<ArtifactCategoryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactCategoryMapper mapper = ctx.query(ArtifactCategoryMapper.class);

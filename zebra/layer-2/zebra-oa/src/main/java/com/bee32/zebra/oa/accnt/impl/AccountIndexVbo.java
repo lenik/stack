@@ -26,7 +26,7 @@ public class AccountIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Account> a, IUiRef<AccountIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Account> a, IUiRef<AccountIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         AccountMapper mapper = ctx.query(AccountMapper.class);

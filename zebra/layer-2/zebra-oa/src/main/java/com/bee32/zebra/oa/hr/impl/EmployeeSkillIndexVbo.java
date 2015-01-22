@@ -26,7 +26,7 @@ public class EmployeeSkillIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<EmployeeSkill> a,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<EmployeeSkill> a,
             IUiRef<EmployeeSkillIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         EmployeeSkillMapper mapper = ctx.query(EmployeeSkillMapper.class);

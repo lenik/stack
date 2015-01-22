@@ -27,7 +27,7 @@ public class UserIndexVbo
     }
 
     @Override
-    protected void buildDataView(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         UserMapper mapper = ctx.query(UserMapper.class);

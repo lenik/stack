@@ -28,7 +28,7 @@ public class DiaryIndexVbo
     }
 
     @Override
-    public void buildDataView(IHtmlViewContext ctx, DataViewAnchors<Diary> a, IUiRef<DiaryIndex> ref, IOptions options)
+    public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Diary> a, IUiRef<DiaryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
 
