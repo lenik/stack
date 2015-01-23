@@ -22,7 +22,7 @@ public class JobSkillCategoryIndexVbo
     public JobSkillCategoryIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(JobSkillCategoryIndex.class);
-        insertIndexFields("i*sa", "code", "label", "description");
+        indexFields.parse("i*sa", "code", "label", "description");
     }
 
     @Override
@@ -32,12 +32,13 @@ public class JobSkillCategoryIndexVbo
         JobSkillCategoryMapper mapper = ctx.query(JobSkillCategoryMapper.class);
         List<JobSkillCategory> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (JobSkillCategory o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
-                cocols("sa", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

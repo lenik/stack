@@ -33,16 +33,15 @@ public class TopicIndexVbo
     public TopicIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(TopicIndex.class);
-        insertIndexFields("i*sa", "op", "beginDate", "endDate", "subject", "text", "category", "phase", "value");
+        indexFields.parse("i*sa", "op", "beginDate", "endDate", "subject", "text", "category", "phase", "value");
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref,
-            IOptions options)
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
 
-        TopicCriteria criteria = criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
+        TopicCriteria criteria = fn.criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -69,19 +68,20 @@ public class TopicIndexVbo
 
         List<Topic> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Topic o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 ref(tr.td(), o.getOp()).align("center");
-                tr.td().text(fn.formatDate(o.getBeginDate()));
-                tr.td().text(fn.formatDate(o.getEndDate()));
-                cocols("m", tr, o);
+                tr.td().text(fmt.formatDate(o.getBeginDate()));
+                tr.td().text(fmt.formatDate(o.getEndDate()));
+                itab.cocols("m", tr, o);
                 ref(tr.td(), o.getCategory());
                 ref(tr.td(), o.getPhase()).class_("small");
                 tr.td().text(o.getValue());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (extensions) {

@@ -4,7 +4,7 @@ import java.util.NavigableMap;
 
 /**
  * Map entity divided in sub-ranges.
- *
+ * 
  * @param <V>
  *            Range boundary value type
  * @param <T>
@@ -15,7 +15,7 @@ public interface IRangeMap<V, T>
 
     /**
      * Get the defined boundary of the range which contains the <code>floatPoint</code>.
-     *
+     * 
      * @param floatPoint
      *            Search point.
      * @return Any defined target for the range which includes the <code>floatPoint</code>,
@@ -25,7 +25,7 @@ public interface IRangeMap<V, T>
 
     /**
      * Get the precise target for the range boundary.
-     *
+     * 
      * @param boundaryPoint
      *            The range boundary.
      * @return The defined target for the range aligned at <code>boundaryPoint</code>.
@@ -35,11 +35,11 @@ public interface IRangeMap<V, T>
 
     /**
      * The same as:
-     *
+     * 
      * <pre>
      * getNarrowedTarget(narrowDown(floatPoint))
      * </pre>
-     *
+     * 
      * @param floatPoint
      *            Search point.
      * @return Any defined target for the range which includes the <code>floatPoint</code>,

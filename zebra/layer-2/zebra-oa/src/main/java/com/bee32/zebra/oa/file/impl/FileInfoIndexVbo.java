@@ -2,7 +2,6 @@ package com.bee32.zebra.oa.file.impl;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
@@ -11,7 +10,6 @@ import net.bodz.bas.html.dom.tag.HtmlATag;
 import net.bodz.bas.html.dom.tag.HtmlTdTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.viz.IHtmlViewContext;
-import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -33,21 +31,8 @@ public class FileInfoIndexVbo
     public FileInfoIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(FileInfoIndex.class);
-        insertIndexFields("i*sa", "op", "label", "description", "dirName", "baseName", "size", "org", "person",
+        indexFields.parse("i*sa", "op", "label", "description", "dirName", "baseName", "size", "org", "person",
                 "value", "tags", "downloads", "expireDate");
-    }
-
-    @Override
-    protected void fieldOverride(IFieldDecl fieldDecl, Set<String> classes) {
-        super.fieldOverride(fieldDecl, classes);
-        switch (fieldDecl.getName()) {
-        case "description":
-        case "dirName":
-        case "baseName":
-        case "tags":
-        case "downloads":
-            classes.add("detail");
-        }
     }
 
     @Override
@@ -56,7 +41,7 @@ public class FileInfoIndexVbo
             throws ViewBuilderException, IOException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
 
-        FileInfoCriteria criteria = criteriaFromRequest(new FileInfoCriteria(), ctx.getRequest());
+        FileInfoCriteria criteria = fn.criteriaFromRequest(new FileInfoCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -74,14 +59,17 @@ public class FileInfoIndexVbo
 
         List<FileInfo> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.addDetailFields("description", "dirName", "baseName", "tags", "downloads");
+        itab.buildHeader(ctx, indexFields.values());
+
         if (a.dataList())
             for (FileInfo o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
 
                 ref(tr.td(), o.getOp()).align("center");
-                cocols("u", tr, o);
+                itab.cocols("u", tr, o);
                 tr.td().text(o.getDirName()).class_("small");
                 tr.td().text(o.getBaseName()).class_("small");
                 tr.td().text(o.getSize()).class_("small");
@@ -90,9 +78,9 @@ public class FileInfoIndexVbo
                 tr.td().text(o.getValue()).style("font-weight: bold");
                 tr.td().text(Listing.joinLabels(", ", o.getTags())).class_("small");
                 tr.td().text(o.getDownloads());
-                tr.td().text(fn.formatDate(o.getExpireDate()));
+                tr.td().text(fmt.formatDate(o.getExpireDate()));
 
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)
@@ -120,8 +108,8 @@ public class FileInfoIndexVbo
         right.div().ol().class_("breadcrumb").text("$segs");
         right.div().text("$description");
 
-        //right.hr();
-        //right.div().text("下载次数：$downloads");
+        // right.hr();
+        // right.div().text("下载次数：$downloads");
     }
 
 }

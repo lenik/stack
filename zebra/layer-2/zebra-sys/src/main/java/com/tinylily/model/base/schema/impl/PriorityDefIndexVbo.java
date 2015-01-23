@@ -22,7 +22,7 @@ public class PriorityDefIndexVbo
     public PriorityDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(PriorityDefIndex.class);
-        insertIndexFields("i*sa", "schema", "code", "label", "description");
+        indexFields.parse("i*sa", "schema", "code", "label", "description");
     }
 
     @Override
@@ -32,14 +32,15 @@ public class PriorityDefIndexVbo
         PriorityDefMapper mapper = ctx.query(PriorityDefMapper.class);
         List<PriorityDef> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (PriorityDef o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getSchema().getLabel());
-                cocols("cu", tr, o);
-                cocols("sa", tr, o);
+                itab.cocols("cu", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

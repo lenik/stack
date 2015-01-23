@@ -25,14 +25,14 @@ public class UOMIndexVbo
     public UOMIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(UOMIndex.class);
-        insertIndexFields("i*", "code", "label", "description", "property");
+        indexFields.parse("i*", "code", "label", "description", "property");
     }
 
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<UOM> a, IUiRef<UOMIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UOMMapper mapper = ctx.query(UOMMapper.class);
-        UOMCriteria criteria = criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
+        UOMCriteria criteria = fn.criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<String> so;
@@ -45,11 +45,12 @@ public class UOMIndexVbo
 
         List<UOM> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (UOM o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("icu", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("icu", tr, o);
                 tr.td().text(o.getProperty());
             }
 

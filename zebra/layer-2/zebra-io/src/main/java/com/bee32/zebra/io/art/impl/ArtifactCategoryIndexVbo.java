@@ -22,7 +22,7 @@ public class ArtifactCategoryIndexVbo
     public ArtifactCategoryIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(ArtifactCategoryIndex.class);
-        insertIndexFields("i*sa", "label", "description", "depth", "parent");
+        indexFields.parse("i*sa", "label", "description", "depth", "parent");
     }
 
     @Override
@@ -32,15 +32,16 @@ public class ArtifactCategoryIndexVbo
         ArtifactCategoryMapper mapper = ctx.query(ArtifactCategoryMapper.class);
         List<ArtifactCategory> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (ArtifactCategory o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
-                cocols("u", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
+                itab.cocols("u", tr, o);
                 tr.td().text(o.getDepth());
                 ref(tr.td(), o.getParent());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

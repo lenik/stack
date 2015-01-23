@@ -25,16 +25,16 @@ public class OrganizationIndexVbo
     public OrganizationIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(OrganizationIndex.class);
-        insertIndexFields("i*sa", "typeChars", "fullName", "size", "description", //
+        indexFields.parse("i*sa", "typeChars", "fullName", "size", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq");
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Organization> a,
-            IUiRef<OrganizationIndex> ref, IOptions options)
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Organization> a, IUiRef<OrganizationIndex> ref,
+            IOptions options)
             throws ViewBuilderException, IOException {
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);
-        OrganizationCriteria criteria = criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
+        OrganizationCriteria criteria = fn.criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -45,11 +45,12 @@ public class OrganizationIndexVbo
 
         List<Organization> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Organization o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getTypeChars());
                 tr.td().b().text(o.getFullName());
                 tr.td().text(o.getSize());
@@ -64,7 +65,7 @@ public class OrganizationIndexVbo
                     tr.td().text(contact.getTels());
                     tr.td().text(contact.getQq());
                 }
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

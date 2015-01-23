@@ -22,7 +22,7 @@ public class EmployeeIndexVbo
     public EmployeeIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(EmployeeIndex.class);
-        insertIndexFields("i*sa", "id", "label", "description", "creationTime", "lastModified");
+        indexFields.parse("i*sa", "id", "label", "description", "creationTime", "lastModified");
     }
 
     @Override
@@ -32,12 +32,13 @@ public class EmployeeIndexVbo
         EmployeeMapper mapper = ctx.query(EmployeeMapper.class);
         List<Employee> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Employee o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
-                cocols("sa", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

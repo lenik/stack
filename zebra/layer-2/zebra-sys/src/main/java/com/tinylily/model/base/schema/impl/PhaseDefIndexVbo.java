@@ -24,7 +24,7 @@ public class PhaseDefIndexVbo
     public PhaseDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(PhaseDefIndex.class);
-        insertIndexFields("i*sa", "schema", "code", "label", "description");
+        indexFields.parse("i*sa", "schema", "code", "label", "description");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class PhaseDefIndexVbo
             throws ViewBuilderException, IOException {
         PhaseDefMapper mapper = ctx.query(PhaseDefMapper.class);
 
-        PhaseDefCriteria criteria = criteriaFromRequest(new PhaseDefCriteria(), ctx.getRequest());
+        PhaseDefCriteria criteria = fn.criteriaFromRequest(new PhaseDefCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -45,14 +45,15 @@ public class PhaseDefIndexVbo
 
         List<PhaseDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (PhaseDef o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getSchema().getLabel());
-                cocols("cu", tr, o);
-                cocols("sa", tr, o);
+                itab.cocols("cu", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

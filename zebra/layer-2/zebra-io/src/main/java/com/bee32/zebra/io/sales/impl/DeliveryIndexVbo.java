@@ -23,7 +23,7 @@ public class DeliveryIndexVbo
     public DeliveryIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(DeliveryIndex.class);
-        insertIndexFields("i*sa", "salesOrder", "op", "org", "person", "shipDest", "shipper", "shipmentId");
+        indexFields.parse("i*sa", "salesOrder", "op", "org", "person", "shipDest", "shipper", "shipmentId");
     }
 
     @Override
@@ -33,13 +33,14 @@ public class DeliveryIndexVbo
         DeliveryMapper mapper = ctx.query(DeliveryMapper.class);
         List<Delivery> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Delivery o : list) {
                 Contact shipDest = o.getShipDest();
 
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 // stdcols("m", tr, o);
                 ref(tr.td(), o.getSalesOrder());
                 ref(tr.td(), o.getOp());
@@ -48,7 +49,7 @@ public class DeliveryIndexVbo
                 tr.td().text(shipDest == null ? null : shipDest.getFullAddress());
                 ref(tr.td(), o.getShipper());
                 tr.td().text(o.getShipmentId());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

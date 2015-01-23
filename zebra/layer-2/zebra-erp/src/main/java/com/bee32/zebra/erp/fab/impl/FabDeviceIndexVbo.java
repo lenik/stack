@@ -22,7 +22,7 @@ public class FabDeviceIndexVbo
     public FabDeviceIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(FabDeviceIndex.class);
-        insertIndexFields("i*sa", "code", "label", "description");
+        indexFields.parse("i*sa", "code", "label", "description");
     }
 
     @Override
@@ -32,12 +32,13 @@ public class FabDeviceIndexVbo
         FabDeviceMapper mapper = ctx.query(FabDeviceMapper.class);
         List<FabDevice> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (FabDevice o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
-                cocols("sa", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

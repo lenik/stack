@@ -22,7 +22,7 @@ public class StockEntryIndexVbo
     public StockEntryIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(StockEntryIndex.class);
-        insertIndexFields("i*sa", "label", "description");
+        indexFields.parse("i*sa", "label", "description");
     }
 
     @Override
@@ -32,13 +32,14 @@ public class StockEntryIndexVbo
         StockEntryMapper mapper = ctx.query(StockEntryMapper.class);
         List<StockEntry> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (StockEntry o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
-                cocols("u", tr, o);
-                cocols("sa", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
+                itab.cocols("u", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

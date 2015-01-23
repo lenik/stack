@@ -25,17 +25,16 @@ public class PersonIndexVbo
     public PersonIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(PersonIndex.class);
-        insertIndexFields("i*sa", "ageSexLoc", "typeChars", "fullName", "description", //
+        indexFields.parse("i*sa", "ageSexLoc", "typeChars", "fullName", "description", //
                 "contact.fullAddress", "contact.tels", "contact.qq");
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Person> a, IUiRef<PersonIndex> ref,
-            IOptions options)
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Person> a, IUiRef<PersonIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         PersonMapper mapper = ctx.query(PersonMapper.class);
 
-        PersonCriteria criteria = criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
+        PersonCriteria criteria = fn.criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -51,11 +50,12 @@ public class PersonIndexVbo
 
         List<Person> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Person o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getAgeSexLoc());
                 tr.td().text(o.getTypeChars());
                 tr.td().b().text(o.getFullName());
@@ -70,7 +70,7 @@ public class PersonIndexVbo
                     tr.td().text(contact.getTels());
                     tr.td().text(contact.getQq());
                 }
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

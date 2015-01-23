@@ -22,7 +22,7 @@ public class AccountingEntryIndexVbo
     public AccountingEntryIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(AccountingEntryIndex.class);
-        insertIndexFields("i*sa", "label", "description");
+        indexFields.parse("i*sa", "label", "description");
     }
 
     @Override
@@ -32,13 +32,14 @@ public class AccountingEntryIndexVbo
         AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);
         List<AccountingEntry> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (AccountingEntry o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getDescription()).class_("small");
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
     }
 

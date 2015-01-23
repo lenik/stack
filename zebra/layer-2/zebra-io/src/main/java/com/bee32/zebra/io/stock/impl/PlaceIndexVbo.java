@@ -24,31 +24,31 @@ public class PlaceIndexVbo
     public PlaceIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(PlaceIndex.class);
-        insertIndexFields("i*sa", "usage", "label", "description", "position", "bbox", "party", "partyOrg");
+        indexFields.parse("i*sa", "usage", "label", "description", "position", "bbox", "party", "partyOrg");
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref,
-            IOptions options)
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         PlaceMapper mapper = ctx.query(PlaceMapper.class);
         List<Place> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Place o : list) {
                 Person person = o.getParty();
                 Organization org = o.getPartyOrg();
 
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getUsage().getLabel()).class_("small");
-                cocols("u", tr, o);
+                itab.cocols("u", tr, o);
                 tr.td().text(o.getPosition().isZero() ? null : o.getPosition().format(", "));
                 tr.td().text(o.getBbox().isZero() ? null : o.getBbox().format("x"));
                 tr.td().text(person == null ? null : person.getLabel());
                 tr.td().text(org == null ? null : org.getLabel());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

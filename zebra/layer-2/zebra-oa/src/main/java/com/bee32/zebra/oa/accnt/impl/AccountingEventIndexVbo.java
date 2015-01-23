@@ -29,7 +29,7 @@ public class AccountingEventIndexVbo
     public AccountingEventIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(AccountingEventIndex.class);
-        insertIndexFields("i*sa", "beginDate", "op", "category", "subject", "text", "topic", "org", "person",
+        indexFields.parse("i*sa", "beginDate", "op", "category", "subject", "text", "topic", "org", "person",
                 "debitTotal", "creditTotal");
     }
 
@@ -39,7 +39,7 @@ public class AccountingEventIndexVbo
             throws ViewBuilderException, IOException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
 
-        AccountingEventCriteria criteria = criteriaFromRequest(new AccountingEventCriteria(), ctx.getRequest());
+        AccountingEventCriteria criteria = fn.criteriaFromRequest(new AccountingEventCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -60,18 +60,19 @@ public class AccountingEventIndexVbo
 
         List<AccountingEvent> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (AccountingEvent o : list) {
                 Topic topic = o.getTopic();
 
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
-                tr.td().text(fn.formatDate(o.getBeginDate()));
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
+                tr.td().text(fmt.formatDate(o.getBeginDate()));
                 ref(tr.td(), o.getOp());
                 ref(tr.td(), o.getCategory());
 
-                cocols("m", tr, o);
+                itab.cocols("m", tr, o);
 
                 tr.td().text(topic == null ? null : Strings.ellipsis(topic.getSubject(), 50)).class_("small")
                         .style("max-width: 30em");
@@ -79,7 +80,7 @@ public class AccountingEventIndexVbo
                 ref(tr.td(), o.getPerson());
                 tr.td().text(o.getDebitTotal());
                 tr.td().text(o.getCreditTotal());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

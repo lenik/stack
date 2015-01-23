@@ -1,5 +1,6 @@
 package com.bee32.zebra.io.sales;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class SalesOrder
     private double quantity;
     private double total;
 
-    private List<SalesOrderItem> items;
+    private List<SalesOrderItem> items = new ArrayList<>();
 
     // make-tasks
     // material-plans (locks)

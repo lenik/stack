@@ -22,7 +22,7 @@ public class AccountIndexVbo
     public AccountIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(AccountIndex.class);
-        insertIndexFields("i*sa", "code", "label", "description");
+        indexFields.parse("i*sa", "code", "label", "description");
     }
 
     @Override
@@ -32,15 +32,16 @@ public class AccountIndexVbo
         AccountMapper mapper = ctx.query(AccountMapper.class);
         List<Account> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Account o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getCode());
                 tr.td().text(o.getLabel());
                 tr.td().text(o.getDescription()).class_("small");
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

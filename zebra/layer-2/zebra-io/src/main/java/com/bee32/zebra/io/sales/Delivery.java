@@ -1,5 +1,6 @@
 package com.bee32.zebra.io.sales;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class Delivery
     private double quantity;
     private double total;
 
-    private List<DeliveryItem> items;
+    private List<DeliveryItem> items = new ArrayList<>();
 
     /**
      * 前级

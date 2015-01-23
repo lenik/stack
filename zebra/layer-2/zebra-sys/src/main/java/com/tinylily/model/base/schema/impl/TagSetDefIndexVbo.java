@@ -22,7 +22,7 @@ public class TagSetDefIndexVbo
     public TagSetDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(TagSetDefIndex.class);
-        insertIndexFields("i*sa", "schema", "code", "label", "description", "ortho", "tags");
+        indexFields.parse("i*sa", "schema", "code", "label", "description", "ortho", "tags");
     }
 
     @Override
@@ -32,16 +32,17 @@ public class TagSetDefIndexVbo
         TagSetDefMapper mapper = ctx.query(TagSetDefMapper.class);
         List<TagSetDef> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (TagSetDef o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getSchema().getLabel());
-                cocols("cu", tr, o);
+                itab.cocols("cu", tr, o);
                 tr.td().text(o.getTags()).class_("small");
                 tr.td().text(o.isOrtho());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

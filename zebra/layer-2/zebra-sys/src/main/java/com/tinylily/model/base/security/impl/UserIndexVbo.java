@@ -22,32 +22,32 @@ public class UserIndexVbo
     public UserIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(UserIndex.class);
-        insertIndexFields("i*sa", "loginName", "label", "description", "primaryGroup", "groups", "email",
+        indexFields.parse("i*sa", "loginName", "label", "description", "primaryGroup", "groups", "email",
                 "lastLoginTime", "lastLoginIP");
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref,
-            IOptions options)
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UserMapper mapper = ctx.query(UserMapper.class);
         List<User> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (User o : list) {
                 long lastLoginTime = o.getLastLoginTime();
 
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getLoginName());
-                cocols("u", tr, o);
+                itab.cocols("u", tr, o);
                 ref(tr.td(), o.getPrimaryGroup());
                 tr.td().text(fn.labels(o.getGroups()));
                 tr.td().text(o.getEmail()).style(o.isEmailValidated() ? "" : "color: gray");
-                tr.td().text(lastLoginTime == 0 ? null : fn.formatDate(o.getLastLoginTime()));
+                tr.td().text(lastLoginTime == 0 ? null : fmt.formatDate(o.getLastLoginTime()));
                 tr.td().text(o.getLastLoginIP());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

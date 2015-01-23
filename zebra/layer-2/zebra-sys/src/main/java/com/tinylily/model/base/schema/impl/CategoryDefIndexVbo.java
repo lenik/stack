@@ -24,7 +24,7 @@ public class CategoryDefIndexVbo
     public CategoryDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(CategoryDefIndex.class);
-        insertIndexFields("i*sa", "schema", "code", "label", "description", "refCount");
+        indexFields.parse("i*sa", "schema", "code", "label", "description", "refCount");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CategoryDefIndexVbo
             throws ViewBuilderException, IOException {
         CategoryDefMapper mapper = ctx.query(CategoryDefMapper.class);
 
-        CategoryDefCriteria criteria = criteriaFromRequest(new CategoryDefCriteria(), ctx.getRequest());
+        CategoryDefCriteria criteria = fn.criteriaFromRequest(new CategoryDefCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -45,15 +45,16 @@ public class CategoryDefIndexVbo
 
         List<CategoryDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (CategoryDef o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getSchema().getLabel());
-                cocols("cu", tr, o);
+                itab.cocols("cu", tr, o);
                 tr.td().text(o.getRefCount());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

@@ -29,7 +29,7 @@ public class ArtifactIndexVbo
     public ArtifactIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(ArtifactIndex.class);
-        insertIndexFields("i*sa", "skuCode", "category", "label", "description", "uom", "supplyMethod", "barCode");
+        indexFields.parse("i*sa", "skuCode", "category", "label", "description", "uom", "supplyMethod", "barCode");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ArtifactIndexVbo
             IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);
-        ArtifactCriteria criteria = criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
+        ArtifactCriteria criteria = fn.criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so1;
@@ -66,21 +66,22 @@ public class ArtifactIndexVbo
 
         List<Artifact> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Artifact o : list) {
                 ArtifactCategory category = o.getCategory();
                 UOM uom = o.getUom();
 
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 tr.td().text(o.getSkuCode());
                 tr.td().text(category == null ? null : category.getLabel());
-                cocols("u", tr, o);
+                itab.cocols("u", tr, o);
                 tr.td().text(uom == null ? null : uom.getLabel() + "/" + o.getUomProperty());
                 tr.td().text(o.getSupplyMethod().getLabel());
                 tr.td().text(o.getBarCode());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

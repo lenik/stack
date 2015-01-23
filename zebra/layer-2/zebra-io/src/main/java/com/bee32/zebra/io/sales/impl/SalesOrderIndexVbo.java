@@ -22,7 +22,7 @@ public class SalesOrderIndexVbo
     public SalesOrderIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(SalesOrderIndex.class);
-        insertIndexFields("i*sa", "subject", "text", "topic", "org", "person", "phase", "total");
+        indexFields.parse("i*sa", "subject", "text", "topic", "org", "person", "phase", "total");
     }
 
     @Override
@@ -32,18 +32,19 @@ public class SalesOrderIndexVbo
         SalesOrderMapper mapper = ctx.query(SalesOrderMapper.class);
         List<SalesOrder> list = a.noList() ? null : postfilt(mapper.all());
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (SalesOrder o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
-                cocols("m", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
+                itab.cocols("m", tr, o);
                 ref(tr.td(), o.getTopic());
                 ref(tr.td(), o.getOrg());
                 ref(tr.td(), o.getPerson());
                 ref(tr.td(), o.getPhase());
                 tr.td().text(o.getTotal());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

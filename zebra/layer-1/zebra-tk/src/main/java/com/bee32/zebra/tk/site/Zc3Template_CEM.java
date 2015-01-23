@@ -3,19 +3,13 @@ package com.bee32.zebra.tk.site;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONWriter;
 
-import net.bodz.bas.c.java.util.Dates;
-import net.bodz.bas.c.reflect.NoSuchPropertyException;
-import net.bodz.bas.c.string.StringArray;
-import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.err.ParseException;
@@ -32,7 +26,11 @@ import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.potato.element.IPropertyAccessor;
-import net.bodz.bas.repr.form.*;
+import net.bodz.bas.repr.form.FieldCategory;
+import net.bodz.bas.repr.form.FieldDeclFilters;
+import net.bodz.bas.repr.form.FieldDeclGroup;
+import net.bodz.bas.repr.form.IFieldDecl;
+import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.req.HttpSnap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -47,7 +45,6 @@ import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
-import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.sea.FooIndex;
 import com.bee32.zebra.tk.sea.FooIndexFormat;
 import com.bee32.zebra.tk.sea.MapperUtil;
@@ -55,19 +52,19 @@ import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.base.CoObject;
-import com.tinylily.model.mx.base.CoMessage;
 
 public abstract class Zc3Template_CEM<X extends FooIndex, T>
         extends AbstractHtmlViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
-    protected Map<String, PathField> indexFields;
+    protected PathFieldMap indexFields;
 
     public Zc3Template_CEM(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
         Class<?> param1 = TypeParam.infer1(getClass(), Zc3Template_CEM.class, 1);
         formDecl = IFormDecl.fn.forClass(param1);
+        indexFields = new PathFieldMap(formDecl);
     }
 
     @Override
@@ -268,126 +265,6 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         fmt.format(table);
     }
 
-    protected IndexTable mkIndexTable(IHtmlViewContext ctx, IHtmlTag parent, String id) {
-        IndexTable table = new IndexTable(parent, id);
-
-        boolean ajaxMode = true;
-        if (ajaxMode) {
-            StringBuilder url = new StringBuilder();
-            url.append("data.json");
-            String query = ctx.getRequest().getQueryString();
-            if (query != null)
-                url.append("?" + query);
-            table.dataUrl(url);
-        }
-
-        for (IHtmlTag tr : table.headFoot)
-            for (PathField pathField : indexFields.values()) {
-                IFieldDecl fieldDecl = pathField.getFieldDecl();
-                HtmlThTag th = tr.th().text(IXjdocElement.fn.labelName(fieldDecl));
-                th.dataField(fieldDecl.getName());
-
-                Set<String> classes = new LinkedHashSet<String>();
-                String styleClass = fieldDecl.getStyleClass();
-                if (styleClass != null)
-                    classes.add(styleClass);
-
-                boolean sortable = fieldDecl.getPreferredSortOrder() != SortOrder.NO_SORT;
-                th.dataSortable(sortable);
-                if (!sortable)
-                    classes.add("no-sort");
-
-                fieldOverride(fieldDecl, classes);
-
-                if (!classes.isEmpty())
-                    th.class_(StringArray.join(" ", classes));
-            }
-
-        return table;
-    }
-
-    protected void fieldOverride(IFieldDecl fieldDecl, Set<String> classes) {
-        switch (fieldDecl.getName()) {
-        case "accessMode":
-        case "creationDate":
-        case "endDate":
-        case "flags":
-        case "owner":
-        case "ownerGroup":
-        case "state":
-            classes.add("detail");
-        }
-    }
-
-    protected void insertIndexFields(String spec, String... pathProperties)
-            throws NoSuchPropertyException, ParseException {
-        FieldDeclBuilder formFieldBuilder = new FieldDeclBuilder();
-        PathFieldsBuilder builder = new PathFieldsBuilder(formFieldBuilder);
-
-        for (char c : spec.toCharArray()) {
-            switch (c) {
-            case 'i':
-                builder.fromPropertyPaths(formDecl, "id");
-                break;
-            case 's':
-                builder.fromPropertyPaths(formDecl, "priority", "creationDate", "lastModifiedDate", "flags", "state");
-                break;
-            case 'a':
-                builder.fromPropertyPaths(formDecl, "accessMode", "owner", "ownerGroup");
-                break;
-            case '*':
-                builder.fromPropertyPaths(formDecl, pathProperties);
-                break;
-            default:
-                throw new IllegalArgumentException("Bad column group specifier: " + c);
-            }
-        }
-        indexFields = builder.getFields();
-    }
-
-    protected void cocols(String spec, HtmlTrTag tr, CoObject o) {
-        for (char c : spec.toCharArray()) {
-            switch (c) {
-            case 'i':
-                tr.td().text(o.getId()).class_("zu-id");
-                break;
-
-            case 'c':
-                tr.td().text(o.getCodeName());
-                break;
-
-            case 'u':
-                tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
-                tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
-                break;
-
-            case 'm':
-                CoMessage<?> message = (CoMessage<?>) o;
-                tr.td().b().text(message.getSubject()).class_("small").style("max-width: 20em");
-                tr.td().text(Strings.ellipsis(message.getText(), 50)).class_("small").style("max-width: 30em");
-                break;
-
-            case 's':
-                tr.td().text(o.getPriority());
-                tr.td().text(fn.formatDate(o.getCreationTime())).class_("small");
-                tr.td().text(fn.formatDate(o.getLastModified())).class_("small");
-                tr.td().text(o.getFlags());
-                tr.td().text(o.getState().getName());
-                break;
-
-            case 'a':
-                int mode = o.getAccessMode();
-                tr.td().text(mode).class_("small");
-                ref(tr.td(), o.getOwner()).class_("small");
-                ref(tr.td(), o.getOwnerGroup()).class_("small");
-                break;
-
-            default:
-                throw new IllegalArgumentException("Bad column group specifier: " + c);
-            }
-        }
-    }
-
     protected void dumpFullData(IHtmlTag parent, Collection<? extends CoObject> dataset) {
         int count = 0;
         Collection<FieldDeclGroup> groups = formDecl
@@ -440,21 +317,23 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         return tag;
     }
 
-    protected <C extends CoEntityCriteria> C criteriaFromRequest(C criteria, HttpServletRequest req)
-            throws ViewBuilderException {
-        try {
-            HttpSnap snap = (HttpSnap) req.getAttribute(HttpSnap.class.getName());
-            if (snap == null)
-                criteria.populate(req.getParameterMap());
-            else
-                criteria.populate(snap.getParameterMap());
-        } catch (ParseException e) {
-            throw new ViewBuilderException(e.getMessage(), e);
-        }
-        return criteria;
-    }
+    protected final FormatFn fmt = new FormatFn();
 
     protected static class fn {
+
+        public static <C extends CoEntityCriteria> C criteriaFromRequest(C criteria, HttpServletRequest req)
+                throws ViewBuilderException {
+            try {
+                HttpSnap snap = (HttpSnap) req.getAttribute(HttpSnap.class.getName());
+                if (snap == null)
+                    criteria.populate(req.getParameterMap());
+                else
+                    criteria.populate(snap.getParameterMap());
+            } catch (ParseException e) {
+                throw new ViewBuilderException(e.getMessage(), e);
+            }
+            return criteria;
+        }
 
         public static String labels(Collection<? extends CoObject> entities) {
             if (entities == null)
@@ -466,13 +345,6 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
                 sb.append(o.getLabel());
             }
             return sb.toString();
-        }
-
-        public static String formatDate(Object date) {
-            if (date == null)
-                return null;
-            else
-                return Dates.YYYY_MM_DD.format(date);
         }
 
     }

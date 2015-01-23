@@ -29,7 +29,7 @@ public class StockEventIndexVbo
     public StockEventIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(StockEventIndex.class);
-        insertIndexFields("i*sa", "form", "category", "subject", "text", "org", "orgUnit", "person", "quantity",
+        indexFields.parse("i*sa", "form", "category", "subject", "text", "org", "orgUnit", "person", "quantity",
                 "total", "phase");
     }
 
@@ -39,7 +39,7 @@ public class StockEventIndexVbo
             throws ViewBuilderException, IOException {
         StockEventMapper mapper = ctx.query(StockEventMapper.class);
 
-        StockEventCriteria criteria = criteriaFromRequest(new StockEventCriteria(), ctx.getRequest());
+        StockEventCriteria criteria = fn.criteriaFromRequest(new StockEventCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -66,21 +66,22 @@ public class StockEventIndexVbo
 
         List<StockEvent> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (StockEvent o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 ref(tr.td(), o.getForm());
                 ref(tr.td(), o.getCategory());
-                cocols("m", tr, o);
+                itab.cocols("m", tr, o);
                 ref(tr.td(), o.getOrg());
                 ref(tr.td(), o.getOrgUnit());
                 ref(tr.td(), o.getPerson());
                 tr.td().text(o.getQuantity());
                 tr.td().text(o.getTotal());
                 ref(tr.td(), o.getPhase());
-                cocols("sa", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)

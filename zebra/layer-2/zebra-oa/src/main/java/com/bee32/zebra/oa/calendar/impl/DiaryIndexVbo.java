@@ -24,7 +24,7 @@ public class DiaryIndexVbo
     public DiaryIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(DiaryIndex.class);
-        insertIndexFields("i*sa", "op", "beginDate", "subject", "text");
+        indexFields.parse("i*sa", "op", "beginDate", "subject", "text");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class DiaryIndexVbo
             throws ViewBuilderException, IOException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
 
-        DiaryCriteria criteria = criteriaFromRequest(new DiaryCriteria(), ctx.getRequest());
+        DiaryCriteria criteria = fn.criteriaFromRequest(new DiaryCriteria(), ctx.getRequest());
         FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
         {
             SwitchOverride<Integer> so;
@@ -44,16 +44,17 @@ public class DiaryIndexVbo
 
         List<Diary> list = postfilt(mapper.filter(criteria));
 
-        IndexTable indexTable = mkIndexTable(ctx, a.data, "list");
+        IndexTable itab = new IndexTable(a.data);
+        itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (Diary o : list) {
-                HtmlTrTag tr = indexTable.tbody.tr();
-                cocols("i", tr, o);
+                HtmlTrTag tr = itab.tbody.tr();
+                itab.cocols("i", tr, o);
                 ref(tr.td(), o.getOp()).align("center");
-                tr.td().text(fn.formatDate(o.getBeginDate()));
-                tr.td().text(fn.formatDate(o.getEndDate()));
-                cocols("m", tr, o);
-                cocols("sa", tr, o);
+                tr.td().text(fmt.formatDate(o.getBeginDate()));
+                tr.td().text(fmt.formatDate(o.getEndDate()));
+                itab.cocols("m", tr, o);
+                itab.cocols("sa", tr, o);
             }
 
         if (a.extradata != null)
