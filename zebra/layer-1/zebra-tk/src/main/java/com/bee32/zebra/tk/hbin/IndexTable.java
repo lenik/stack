@@ -1,12 +1,15 @@
 package com.bee32.zebra.tk.hbin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
+import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlTableTag;
 import net.bodz.bas.html.dom.tag.HtmlTbodyTag;
@@ -25,8 +28,12 @@ import com.tinylily.model.mx.base.CoMessage;
 public class IndexTable
         extends HtmlTableTag {
 
-    public IHtmlTag[] headFoot;
+    public List<IHtmlTag> headFoot = new ArrayList<IHtmlTag>();
     public HtmlTbodyTag tbody;
+
+    boolean ajaxMode = true;
+    boolean headColumns = true;
+    boolean footColumns = true;
 
     Set<String> detailFields = new HashSet<>();
     FormatFn fmt = new FormatFn();
@@ -41,7 +48,6 @@ public class IndexTable
         this.id(id);
         this.class_("table table-striped table-hover table-condensed dataTable");
 
-        headFoot = new IHtmlTag[] { this.thead(), this.tfoot() };
         tbody = this.tbody();
 
         detailFields.add("accessMode");
@@ -53,8 +59,31 @@ public class IndexTable
         detailFields.add("state");
     }
 
+    public boolean isAjaxMode() {
+        return ajaxMode;
+    }
+
+    public void setAjaxMode(boolean ajaxMode) {
+        this.ajaxMode = ajaxMode;
+    }
+
+    public boolean isHeadColumns() {
+        return headColumns;
+    }
+
+    public void setHeadColumns(boolean headColumns) {
+        this.headColumns = headColumns;
+    }
+
+    public boolean isFootColumns() {
+        return footColumns;
+    }
+
+    public void setFootColumns(boolean footColumns) {
+        this.footColumns = footColumns;
+    }
+
     public void buildHeader(IHtmlViewContext ctx, Iterable<PathField> indexFields) {
-        boolean ajaxMode = true;
         if (ajaxMode) {
             StringBuilder url = new StringBuilder();
             url.append("data.json");
@@ -63,6 +92,11 @@ public class IndexTable
                 url.append("?" + query);
             this.dataUrl(url);
         }
+
+        if (headColumns)
+            headFoot.add(this.thead());
+        if (footColumns)
+            headFoot.add(this.tfoot());
 
         for (IHtmlTag tr : this.headFoot)
             for (PathField pathField : indexFields) {
@@ -129,14 +163,20 @@ public class IndexTable
             case 'a':
                 int mode = o.getAccessMode();
                 tr.td().text(mode).class_("small");
-                fmt.ref(tr.td(), o.getOwner()).class_("small");
-                fmt.ref(tr.td(), o.getOwnerGroup()).class_("small");
+                ref(tr.td(), o.getOwner()).class_("small");
+                ref(tr.td(), o.getOwnerGroup()).class_("small");
                 break;
 
             default:
                 throw new IllegalArgumentException("Bad column group specifier: " + c);
             }
         }
+    }
+
+    protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoObject e) {
+        if (e != null)
+            tag.text(e.getLabel());
+        return tag;
     }
 
 }

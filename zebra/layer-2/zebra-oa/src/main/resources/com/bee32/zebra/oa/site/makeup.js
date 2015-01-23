@@ -74,28 +74,13 @@ $(document).ready(function() {
 
     var $dt = $('.dataTable');
     if ($dt != null) {
-        var dataUrl = $dt.attr("data-url");
-
-        var dt = window.dt = $dt.DataTable({
-            columnDefs : [ {
-                targets : "detail",
-                visible : false
-            }, {
-                targets : "no-search",
-                searchable : false
-            }, {
-                targets : "no-sort",
-                orderable : false
-            } ],
-            colVis : {
-                buttonText : "列",
-                label : function(index, title, th) {
-                    return (index + 1) + '. ' + title;
-                },
-                showAll : '显示全部'
-            },
+        var config = {
             // displayStart : 10,
-            dom : 'C<"clear">lfrtip',
+
+            // lengthMenu : [ [ 10, 20, 50, 100, ], [ 10, 20, 50, 100 ] ],
+            paginationType : "bootstrap",
+            responsive : true,
+
             language : {
                 emptyTable : "没有相关的记录。",
                 info : '当前页 _PAGE_ / 共 _PAGES_ 页。',
@@ -109,18 +94,46 @@ $(document).ready(function() {
                     next : "后一页",
                     last : "结束"
                 }
-            },
-            // lengthMenu : [ [ 10, 20, 50, 100, ], [ 10, 20, 50, 100 ] ],
-            paginationType : "bootstrap",
-            responsive : true,
-            tableTools : {
-                sSwfPath : _js_ + "datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
-            },
-            ajax : dataUrl == null ? null : {
-                url : dataUrl,
-                dataSrc : "tbody"
             }
-        });
+        };
+
+        var dataUrl = $dt.attr("data-url");
+        config.ajax = dataUrl == null ? null : {
+            url : dataUrl,
+            dataSrc : "tbody"
+        };
+
+        var dom = $dt.attr("dom");
+        if (dom == null)
+            dom = 'C<"clear">lfrtip';
+        config.dom = dom;
+
+        config.columnDefs = [ {
+            targets : "detail",
+            visible : false
+        }, {
+            targets : "no-search",
+            searchable : false
+        }, {
+            targets : "no-sort",
+            orderable : false
+        } ];
+
+        if (!$dt.attr("no-colvis"))
+            config.colVis = {
+                buttonText : "列",
+                label : function(index, title, th) {
+                    return (index + 1) + '. ' + title;
+                },
+                showAll : '显示全部'
+            };
+
+        if (!$dt.attr("no-tableTools"))
+            config.tableTools = {
+                sSwfPath : _js_ + "datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+            };
+
+        var dt = window.dt = $dt.DataTable(config);
 
         dt.rows().on('click', 'tr', function(e) {
             var tr = $(this);
