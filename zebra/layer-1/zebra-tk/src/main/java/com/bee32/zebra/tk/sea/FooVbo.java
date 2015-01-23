@@ -20,6 +20,7 @@ import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.err.IllegalUsageException;
 import net.bodz.bas.err.NotImplementedException;
 import net.bodz.bas.err.ParseException;
+import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.meta.HtmlViewBuilder;
@@ -513,6 +514,12 @@ public abstract class FooVbo<T extends CoObject>
 
         IProperty property = fieldDecl.getProperty();
         property.setValue(obj, skel);
+    }
+
+    protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoObject e) {
+        if (e != null)
+            tag.text(e.getLabel());
+        return tag;
     }
 
 }

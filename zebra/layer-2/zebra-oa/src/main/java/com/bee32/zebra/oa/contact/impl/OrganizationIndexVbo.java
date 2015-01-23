@@ -26,7 +26,7 @@ public class OrganizationIndexVbo
             throws NoSuchPropertyException, ParseException {
         super(OrganizationIndex.class);
         indexFields.parse("i*sa", "typeChars", "fullName", "size", "description", //
-                "contact.fullAddress", "contact.tels", "contact.qq");
+                "contact0.fullAddress", "contact0.tels", "contact0.qq");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class OrganizationIndexVbo
                 tr.td().text(o.getSize());
                 tr.td().text(o.getDescription()).class_("small");
 
-                Contact contact = o.getContact();
+                Contact contact = o.getContact0();
                 if (contact == null) {
                     for (int i = 0; i < 3; i++)
                         tr.td();

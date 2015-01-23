@@ -22,7 +22,8 @@
         <result property="socialSecurityNum" column="ssn" />
         <result property="driverLicenseNum" column="dln" />
 
-        <association property="contact" columnPrefix="ct_" resultMap="com.bee32.zebra.oa.contact.impl.ContactMapper.map1" />
+        <collection property="contacts" javaType="ArrayList" columnPrefix="ct_"
+            resultMap="com.bee32.zebra.oa.contact.impl.ContactMapper.map1" />
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -53,11 +54,12 @@
             <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
             <include refid="co.modefilt" />
             <!-- party -->
-            <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
+            <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max}
+                years'</if>
             <if test="peer || type == 1">and peer</if>
             <if test="customer || type == 2">and customer</if>
             <if test="supplier || type == 3">and supplier</if>
-            
+
             <if test="type == 0">and not (peer or customer or supplier or employee)</if>
             <if test="type == 4">and false</if>
             <if test="employee || type == 5">and employee</if>
@@ -128,6 +130,7 @@
             count(*) "count"
         from person
         group by substr(label,1,1)
+        having count(*) >= 50
         order by substr(label,1,1)
     ]]></select>
 

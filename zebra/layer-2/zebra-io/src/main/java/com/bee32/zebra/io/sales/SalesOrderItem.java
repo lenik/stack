@@ -30,14 +30,6 @@ public class SalesOrderItem
     double price;
     String footnote;
 
-    public Date getOrderTime() {
-        return super.getBeginDate();
-    }
-
-    public Date getDeadline() {
-        return super.getEndDate();
-    }
-
     public SalesOrder getOrder() {
         return order;
     }
@@ -54,6 +46,23 @@ public class SalesOrderItem
         this.artifact = artifact;
     }
 
+    /**
+     * 订单时间
+     */
+    public Date getOrderTime() {
+        return super.getBeginDate();
+    }
+
+    /**
+     * 交货时间
+     */
+    public Date getDeadline() {
+        return super.getEndDate();
+    }
+
+    /**
+     * 铭牌名称
+     */
     @TextInput(maxLength = N_ALT_LABEL)
     public String getAltLabel() {
         return altLabel;
@@ -63,6 +72,9 @@ public class SalesOrderItem
         this.altLabel = altLabel;
     }
 
+    /**
+     * 铭牌规格
+     */
     @TextInput(maxLength = N_ALT_SPEC)
     public String getAltSpec() {
         return altSpec;
@@ -72,6 +84,9 @@ public class SalesOrderItem
         this.altSpec = altSpec;
     }
 
+    /**
+     * 数量
+     */
     public double getQuantity() {
         return quantity;
     }
@@ -80,6 +95,9 @@ public class SalesOrderItem
         this.quantity = quantity;
     }
 
+    /**
+     * 价格
+     */
     public double getPrice() {
         return price;
     }
@@ -88,6 +106,9 @@ public class SalesOrderItem
         this.price = price;
     }
 
+    /**
+     * 附注
+     */
     @TextInput(maxLength = N_FOOTNOTE)
     public String getFootnote() {
         return footnote;

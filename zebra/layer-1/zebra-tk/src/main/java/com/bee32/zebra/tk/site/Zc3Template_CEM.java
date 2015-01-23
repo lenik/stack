@@ -31,6 +31,7 @@ import net.bodz.bas.repr.form.FieldDeclFilters;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
+import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.req.HttpSnap;
 import net.bodz.bas.repr.viz.ViewBuilderException;

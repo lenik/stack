@@ -1,6 +1,7 @@
 package com.bee32.zebra.oa.contact;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
@@ -37,7 +38,7 @@ public abstract class Party
     private final Set<String> tags = new TreeSet<>();
 
     private String subject;
-    private Contact contact;
+    private List<Contact> contacts;
 
     private String bank;
     private String account;
@@ -174,12 +175,22 @@ public abstract class Party
     /**
      * 联系方式
      */
-    public Contact getContact() {
-        return contact;
+    public List<Contact> getContacts() {
+        return contacts;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    /**
+     * 默认联系方式
+     */
+    public Contact getContact0() {
+        if (contacts == null || contacts.isEmpty())
+            return null;
+        else
+            return contacts.get(0);
     }
 
     /**
