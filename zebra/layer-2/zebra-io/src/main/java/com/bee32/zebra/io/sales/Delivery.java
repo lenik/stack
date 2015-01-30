@@ -61,6 +61,7 @@ public class Delivery
      * 
      * @placeholder 选择一个源始订单…
      */
+    @OfGroup(StdGroup.Process.class)
     public SalesOrder getSalesOrder() {
         return salesOrder;
     }

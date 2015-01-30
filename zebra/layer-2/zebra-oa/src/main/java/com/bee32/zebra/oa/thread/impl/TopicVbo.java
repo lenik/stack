@@ -9,6 +9,7 @@ import net.bodz.bas.err.Err;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -18,6 +19,7 @@ import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.tk.sea.FooMesgVbo;
+import com.bee32.zebra.tk.sea.SplitForm;
 import com.tinylily.model.base.security.LoginContext;
 import com.tinylily.model.base.security.User;
 
@@ -66,10 +68,35 @@ public class TopicVbo
     }
 
     @Override
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
+            IOptions options)
+            throws ViewBuilderException {
+        super.buildBasicGroup(ctx, out, instanceRef, group, options);
+
+        Topic topic = (Topic) instanceRef.get();
+        if (topic.getId() != null) {
+            TopicMapper topicMapper = ctx.query(TopicMapper.class);
+            int n = topicMapper.replyCount(topic.getId());
+            SplitForm form = (SplitForm) out.getParent();
+            HtmlATag link = form.head.a().class_("fa").href("#reply-tree").text(FA_ANGLE_DOUBLE_RIGHT);
+            if (n == 0) {
+                link.text(" 本项目尚无跟进。");
+            } else {
+                link.text(" 本项目已有 " + n + " 条跟进信息。");
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        buildReplyTree(ctx, out, ref, options);
-        buildReplyForm(ctx, out, ref, options);
+        Topic topic = ref.get();
+        if (topic.getId() != null) {
+            buildReplyTree(ctx, out, ref, options);
+            buildReplyForm(ctx, out, ref, options);
+        }
         return out;
     }
 
@@ -83,6 +110,7 @@ public class TopicVbo
         ReplyMapper replyMapper = ctx.query(ReplyMapper.class);
         List<Reply> replies = replyMapper.filter(criteria);
 
+        out.div().id("reply-tree");
         for (Reply reply : replies) {
             HtmlDivTag div = out.div().id("reply-" + reply.getId()).class_("zu-reply");
 

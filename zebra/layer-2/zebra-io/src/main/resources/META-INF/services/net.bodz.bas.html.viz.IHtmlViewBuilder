@@ -9,6 +9,8 @@ com.bee32.zebra.io.sales.impl.DeliveryIndexVbo
 com.bee32.zebra.io.sales.impl.DeliveryVbo
 com.bee32.zebra.io.sales.impl.SalesOrderIndexVbo
 com.bee32.zebra.io.sales.impl.SalesOrderVbo
+com.bee32.zebra.io.sales.impl.SalesOrderItemIndexVbo
+com.bee32.zebra.io.sales.impl.SalesOrderItemVbo
 com.bee32.zebra.io.stock.impl.PlaceIndexVbo
 com.bee32.zebra.io.stock.impl.PlaceVbo
 com.bee32.zebra.io.stock.impl.StockEntryIndexVbo

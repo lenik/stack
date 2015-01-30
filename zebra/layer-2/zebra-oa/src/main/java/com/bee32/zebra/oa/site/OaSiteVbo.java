@@ -17,7 +17,7 @@ import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
-import com.bee32.zebra.tk.htm.PageLayoutGuide;
+import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.htm.RespTemplate;
 import com.tinylily.model.base.security.LoginContext;
 
@@ -39,6 +39,15 @@ public class OaSiteVbo
     }
 
     @Override
+    public void preview(IHtmlViewContext ctx, IUiRef<OaSite> ref, IOptions options) {
+        super.preview(ctx, ref, options);
+
+        IPathArrival arrival = ctx.query(IPathArrival.class);
+        PageLayout layout = solicitLayout(arrival);
+        ctx.setAttribute(PageLayout.ATTRIBUTE_KEY, layout);
+    }
+
+    @Override
     public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IOptions options)
             throws ViewBuilderException, IOException {
         OaSite site = ref.get();
@@ -54,25 +63,22 @@ public class OaSiteVbo
             return null;
         }
 
-        PageLayoutGuide pageLayoutGuide = new PageLayoutGuide();
-        for (IPathArrival a : arrival.toList(false)) { // should be in reversed order.
-            Object target = a.getTarget();
-            if (target instanceof IPageLayoutGuider)
-                ((IPageLayoutGuider) target).configure(pageLayoutGuide);
-        }
-
         HtmlHeadTag head = out.head().id("_head");
         respHead(ctx, head);
 
         HtmlBodyTag body = out.body();
+        out = body;
 
-        if (!pageLayoutGuide.hideFramework) {
+        PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+        if (!layout.hideFramework) {
             HtmlDivTag container = body.div().class_("container").style("width: 100%; padding: 0");
             HtmlDivTag containerRow = container.div().class_("container-row");
             HtmlDivTag menuCol = containerRow.div().id("zp-menu-col").class_("col-sm-2");
             menuCol(ctx, menuCol, ref, arrival);
 
             HtmlDivTag body1 = containerRow.div().id(ID.body1).class_("col-xs-12 col-sm-10");
+            out = body1;
+
             if (arrivedHere)
                 defaultBody(body1, site);
 
@@ -80,8 +86,21 @@ public class OaSiteVbo
         }
 
         body.div().id(ID.extradata);
-        body.script().javascriptSrc(_webApp_ + "makeup.js");
+
+        HtmlDivTag scripts = body.div().id(ID.scripts);
+        scripts.script().javascriptSrc(_webApp_ + "makeup.js");
+
         return out;
+    }
+
+    PageLayout solicitLayout(IPathArrival arrival) {
+        PageLayout layout = new PageLayout();
+        for (IPathArrival a : arrival.toList(false)) { // should be in reversed order.
+            Object target = a.getTarget();
+            if (target instanceof IPageLayoutGuider)
+                ((IPageLayoutGuider) target).configure(layout);
+        }
+        return layout;
     }
 
     protected void menuCol(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IPathArrival arrival) {
@@ -196,8 +215,10 @@ public class OaSiteVbo
     protected void foot(IHtmlTag out, OaSite site) {
         HtmlDivTag foot = out.div().class_("zu-foot");
         ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
-        if (doc != null)
-            foot.text(doc.getTag("copyright"));
+        if (doc != null) {
+            Object copyright = doc.getTag("copyright");
+            foot.text("CC" + copyright);
+        }
     }
 
 }

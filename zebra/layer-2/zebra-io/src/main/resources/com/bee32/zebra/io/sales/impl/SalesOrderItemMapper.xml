@@ -8,6 +8,7 @@
         <id property="id" column="id" />
         <result property="beginDate" column="t0" />
         <result property="endDate" column="t1" />
+        <result property="resale" column="resale" />
         <result property="altLabel" column="olabel" />
         <result property="altSpec" column="ospec" />
         <!-- result property="altUom" column="ouom"/ -->
@@ -15,35 +16,35 @@
         <result property="price" column="price" />
         <result property="comment" column="comment" />
         <result property="footnote" column="footnote" />
+        <association property="order" javaType="com.bee32.zebra.io.sales.SalesOrder">
+            <id property="id" column="doc" />
+            <result property="subject" column="doc_subject" />
+        </association>
         <association property="artifact" javaType="com.bee32.zebra.io.art.Artifact">
             <id property="id" column="art" />
             <result property="label" column="art_label" />
+            <association property="uom" javaType="com.bee32.zebra.io.art.UOM">
+                <id property="id" column="uom" />
+                <result property="label" column="uom_label" />
+            </association>
         </association>
     </resultMap>
-    
+
     <sql id="select1"><![CDATA[
         select
             a.*,
             doc.subject "doc_subject",
+            art.label "art_label",
+            art.uom "uom",
+            uom.label "uom_label",
             u.label "uid_label",
             g.label "gid_label"
         from sentry a
             left join sdoc "doc" on a.doc=doc.id
             left join "user" u on doc.uid=u.id
             left join "group" g on doc.gid=g.id
-        ]]>
-    </sql>
-
-    <sql id="select2"><![CDATA[
-        select
-            a.*,
-            doc.subject "doc_subject",
-            u.label "uid_label",
-            g.label "gid_label"
-        from sentry a
-            left join sdoc "doc" on a.doc=doc.id
-            left join "user" u on doc.uid=u.id
-            left join "group" g on doc.gid=g.id
+            left join art on a.art=art.id
+            left join uom on art.uom=uom.id
         ]]>
     </sql>
 
@@ -59,18 +60,24 @@
     </select>
 
     <select id="select" parameterType="int" resultMap="map1">
-        <include refid="select2" />
+        <include refid="select1" />
         <where>
             <if test="_parameter != null">a.id=#{id}</if>
         </where>
     </select>
 
-    <select id="insert" resultType="int">
+    <select id="insert" resultType="long">
         <![CDATA[
         insert into sentry(
-            code, label, description)
+            priority, flags, state,
+            t0, t1,
+            doc, art, resale, olabel, ospec, 
+            qty, price, total, comment, footnote
         ) values(
-            #{codeName},#{label},#{description}
+            #{priority}, #{flags}, #{state},
+            #{beginDate}, #{endDate},
+            #{order.id}, #{artifact.id}, #{resale}, #{altLabel}, #{altSpec},
+            #{quantity}, #{price}, #{total}, #{comment}, #{footnote}
         ) returning id
     ]]></select>
 
@@ -78,9 +85,20 @@
         update sentry
         <set>
             <include refid="co.setU" />
+            t0 = #{beginDate},
+            t1 = #{endDate},
+            doc = #{order.id},
+            art = #{artifact.id},
+            resale = #{resale},
+            olabel = #{altLabel},
+            ospec = #{altSpec},
+            qty = #{quantity},
+            price = #{price},
+            total = #{total},
+            footnote = #{footnote},
         </set>
         <where>
-            <if test="id != null">id=#{id}, </if>
+            <if test="id != null">id=#{id}</if>
         </where>
     </update>
 

@@ -60,7 +60,7 @@ public abstract class FooMesgVbo<T extends CoMessage<?>>
             FieldHtmlUtil.apply(textarea, textDecl, options);
         }
 
-        form.head.hr();
+        form.sep.hr();
         return false;
     }
 

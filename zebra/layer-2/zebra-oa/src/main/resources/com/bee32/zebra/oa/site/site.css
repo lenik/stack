@@ -183,7 +183,7 @@ fieldset.zu-fcat legend {
     cursor: pointer;
 }
 
-.zu-pick-dialog iframe {
+.dialog iframe {
     width: 100%;
     height: 70%;
 }
@@ -245,7 +245,7 @@ fieldset.zu-fcat legend {
 }
 
 .zu-template {
-    
+    display: none;
 }
 
 .zu-w10 {

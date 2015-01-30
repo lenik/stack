@@ -15,9 +15,10 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
+import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.io.sales.SalesOrder;
 import com.bee32.zebra.io.sales.SalesOrderItem;
-import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.ItemsTable;
 import com.bee32.zebra.tk.sea.FooMesgVbo;
 
 public class SalesOrderVbo
@@ -44,32 +45,37 @@ public class SalesOrderVbo
             }
             itemIndexFields = new PathFieldMap(itemFormDecl);
             try {
-                itemIndexFields.parse("i*sa", "artifact", "altLabel", "altSpec", "quantity", "price", "comment",
-                        "footnote");
+                itemIndexFields.parse("i*s", "artifact", "altLabel", "altSpec", "quantity", "artifact.uom", "price",
+                        "total",
+                        // "beginDate", "endDate",
+                        "comment", "footnote");
             } catch (Exception e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
         }
 
-        IndexTable itab = new IndexTable(out, "items");
-        itab.attr("dom", "rti");
-        itab.attr("no-colvis", "1");
-        itab.setAjaxMode(false);
-        itab.setFootColumns(false);
-        itab.buildHeader(ctx, itemIndexFields.values());
+        ItemsTable xtab = new ItemsTable(out);
+        xtab.ajaxUrl = "../../sentry/data.json?doc=" + sdoc.getId();
+
+        xtab.buildHeader(itemIndexFields.values());
 
         for (SalesOrderItem o : sdoc.getItems()) {
-            HtmlTrTag tr = itab.tbody.tr();
-            itab.cocols("i", tr, o);
-            ref(tr.td(), o.getArtifact()).class_("small");
+            Artifact art = o.getArtifact();
+
+            HtmlTrTag tr = xtab.tbody.tr();
+            xtab.cocols("i", tr, o);
+            ref(tr.td(), art).class_("small");
             tr.td().text(o.getAltLabel());
             tr.td().text(o.getAltSpec());
             tr.td().text(o.getQuantity());
+            ref(tr.td(), art == null ? null : art.getUom());
             tr.td().text(o.getPrice());
+            tr.td().text(o.getTotal());
             tr.td().text(o.getComment());
             tr.td().text(o.getFootnote());
-            itab.cocols("sa", tr, o);
+            xtab.cocols("s", tr, o);
         }
+
         return out;
     }
 

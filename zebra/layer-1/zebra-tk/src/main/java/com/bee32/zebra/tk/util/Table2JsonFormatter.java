@@ -28,6 +28,8 @@ public class Table2JsonFormatter {
     }
 
     public void format(IXmlTag tag) {
+        if (tag == null)
+            throw new NullPointerException("tag");
         switch (tag.getTagName()) {
         case "thead":
         case "tbody":

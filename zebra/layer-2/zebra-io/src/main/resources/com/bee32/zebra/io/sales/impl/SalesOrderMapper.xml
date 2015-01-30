@@ -119,10 +119,15 @@
     <update id="update">
         update sdoc
         <set>
-            <include refid="co.setU" />
+            <include refid="message.set1" />
+            <if test="topic != null">topic = #{topic.id},</if>
+            <if test="org != null">org = #{org.id},</if>
+            <if test="person != null">person = #{person.id},</if>
+            qty = #{quantity},
+            total = #{total},
         </set>
         <where>
-            <if test="id != null">id=#{id}, </if>
+            <if test="id != null">id=#{id}</if>
         </where>
     </update>
 

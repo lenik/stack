@@ -7,13 +7,14 @@ import com.bee32.zebra.io.sales.SalesOrderItem;
 import com.bee32.zebra.tk.sea.FooIndex;
 
 /**
- * TITLE
+ * 订单项
  * 
- * @label LABEL
+ * 销售订单的具体项目。
  * 
- * @rel HREF1: TEXT1
+ * @label 销售订单项
  * 
- * @see <a href="HREF2">TEXT2</a>
+ * @rel sdoc/: 管理销售订单
+ * @rel dldoc/: 管理送货单
  */
 @ObjectType(SalesOrderItem.class)
 public class SalesOrderItemIndex

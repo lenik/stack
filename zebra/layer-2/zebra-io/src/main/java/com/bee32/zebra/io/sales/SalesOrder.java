@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
@@ -99,6 +100,20 @@ public class SalesOrder
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Derived
+    @Override
+    public Date getBeginDate() {
+        return super.getBeginDate();
+    }
+
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Derived
+    @Override
+    public Date getEndDate() {
+        return super.getEndDate();
     }
 
     /**

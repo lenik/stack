@@ -7,11 +7,13 @@ import net.bodz.bas.html.dom.tag.HtmlFormTag;
 public class SplitForm
         extends HtmlFormTag {
 
-    public final HtmlDivTag head;
+    public HtmlDivTag head;
+    public HtmlDivTag sep;
 
     public SplitForm(IHtmlTag parent) {
         super(parent, "form");
         head = div().class_("form-head");
+        sep = div();
     }
 
 }

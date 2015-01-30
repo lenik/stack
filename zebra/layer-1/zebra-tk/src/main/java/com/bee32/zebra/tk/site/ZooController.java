@@ -29,6 +29,11 @@ public class ZooController
             index = createIndex();
             break;
 
+        case "plain.html":
+            index = createIndex();
+            index.format = FooIndexFormat.PLAIN;
+            break;
+
         case "data.json":
             index = createIndex();
             index.format = FooIndexFormat.JSON;

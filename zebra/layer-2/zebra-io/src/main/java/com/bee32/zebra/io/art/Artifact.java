@@ -13,7 +13,9 @@ import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.IdType;
 
+@IdType(Integer.class)
 @TableName("art")
 public class Artifact
         extends CoEntity<Integer> {
@@ -195,6 +197,7 @@ public class Artifact
      * 装箱尺寸 (mm)
      */
     @OfGroup(OaGroups.Packaging.class)
+    @Priority(100)
     public Dim3d getBbox() {
         return bbox;
     }
@@ -207,7 +210,7 @@ public class Artifact
      * 毛重 (g)
      */
     @OfGroup(OaGroups.Packaging.class)
-    @Priority(Priority.LOW)
+    @Priority(200)
     public double getWeight() {
         return weight;
     }
@@ -220,7 +223,7 @@ public class Artifact
      * 净重 (g)
      */
     @OfGroup(OaGroups.Packaging.class)
-    @Priority(Priority.LOW)
+    @Priority(201)
     public double getNetWeight() {
         return netWeight;
     }

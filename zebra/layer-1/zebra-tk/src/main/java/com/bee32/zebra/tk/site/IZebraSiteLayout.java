@@ -27,6 +27,7 @@ public interface IZebraSiteLayout {
         String infoman_ul = "zp-infoman-ul";
 
         String extradata = "zp-extradata";
+        String scripts = "zp-scripts";
 
         String preview = "zp-preview";
     }

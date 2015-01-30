@@ -17,7 +17,7 @@ public class SalesOrderItemCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
-        salesOrderId = map.getInt("sdoc", salesOrderId);
+        salesOrderId = map.getInt("doc", salesOrderId);
     }
 
 }

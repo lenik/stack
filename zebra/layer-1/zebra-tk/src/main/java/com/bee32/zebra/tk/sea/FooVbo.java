@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.c.string.StringPart;
 import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.c.type.TypeChain;
@@ -34,8 +36,8 @@ import net.bodz.bas.io.impl.TreeOutImpl;
 import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
+import net.bodz.bas.repr.form.FieldDeclComparator;
 import net.bodz.bas.repr.form.FieldDeclGroup;
-import net.bodz.bas.repr.form.FieldDeclLabelComparator;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.req.IMethodOfRequest;
@@ -49,6 +51,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.PickDialog;
+import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.site.CoTypes;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
@@ -70,9 +73,20 @@ public abstract class FooVbo<T extends CoObject>
     }
 
     @Override
+    public void preview(IHtmlViewContext ctx, IUiRef<T> ref, IOptions options) {
+        super.preview(ctx, ref, options);
+
+        PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+        HttpServletRequest request = ctx.getRequest();
+        String view = request.getParameter("view:");
+        if ("form".equals(view))
+            pageLayout.hideFramework = true;
+    }
+
+    @Override
     public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        return super.buildHtmlView(ctx, new PageStruct(ctx).mainCol, ref, options);
+        return super.buildHtmlView(ctx, out, ref, options);
     }
 
     @Override
@@ -88,7 +102,8 @@ public abstract class FooVbo<T extends CoObject>
         T obj = ref.get();
         Number id = (Number) obj.getId();
 
-        {
+        PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+        if (!pageLayout.hideFramework) {
             String tablename = TableName.fn.tablename(type);
             FnMapper fnMapper = ctx.query(FnMapper.class);
             PrevNext prevNext = fnMapper.prevNext("public", tablename, //
@@ -124,6 +139,13 @@ public abstract class FooVbo<T extends CoObject>
 
     protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
+        try {
+            // data.populate(ctx.getRequest().getParameterMap());
+            inject(ref, ctx.getRequest().getParameterMap());
+        } catch (Exception e) {
+            throw new ViewBuilderException(e.getMessage(), e);
+        }
+
         T obj = ref.get();
         Number id = (Number) obj.getId();
 
@@ -246,7 +268,7 @@ public abstract class FooVbo<T extends CoObject>
             }
         }
 
-        Collections.sort(selection, FieldDeclLabelComparator.INSTANCE);
+        Collections.sort(selection, FieldDeclComparator.INSTANCE);
         return selection;
     }
 
@@ -285,8 +307,11 @@ public abstract class FooVbo<T extends CoObject>
             if (inputName == null)
                 inputName = fieldDecl.getName();
 
-            HtmlInputTag id_hidden = out.input().type("hidden").name(inputName + ".id");
-            // FieldHtmlUtil.apply(id_hidden, fieldDecl, options);
+            HtmlInputTag id_hidden = null;
+            if (!fieldDecl.isReadOnly()) {
+                id_hidden = out.input().type("hidden").name(inputName + ".id");
+                // FieldHtmlUtil.apply(id_hidden, fieldDecl, options);
+            }
 
             HtmlInputTag label_text = out.input().type("text").name(inputName + ".label");
             label_text.placeholder(fieldDecl.getPlaceholder());
@@ -294,16 +319,20 @@ public abstract class FooVbo<T extends CoObject>
             label_text.attr("ec", type.getSimpleName());
 
             if (current != null) {
-                Object id = current.getId();
-                id_hidden.value(id);
+                if (id_hidden != null)
+                    id_hidden.value(current.getId());
                 label_text.value(current);
             }
 
-            HtmlATag pickerLink = out.a().class_("zu-pickcmd");
-            String pathToken = CoTypes.getPathToken(type);
-            pickerLink.attr("data-url", _webApp_ + pathToken + "/picker.html");
-            pickerLink.attr("data-title", "选择" + fieldDecl.getLabel() + "...");
-            pickerLink.text("选择");
+            if (!fieldDecl.isReadOnly()) {
+                HtmlATag pickerLink = out.a().class_("zu-pickcmd");
+                String pathToken = CoTypes.getPathToken(type);
+                pickerLink.attr("data-url", _webApp_ + pathToken + "/picker.html");
+                pickerLink.attr("data-title", "选择" + fieldDecl.getLabel() + "...");
+                pickerLink.text("选择");
+            } else {
+                label_text.disabled("disabled");
+            }
             return;
         }
 
@@ -352,14 +381,18 @@ public abstract class FooVbo<T extends CoObject>
     protected IHtmlTag extras(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         new PickDialog(out, "picker1");
+
+        PageStruct page = new PageStruct(ctx);
+        page.scripts.script().javascriptSrc("impl/" + getClass().getSimpleName() + ".js");
+
         return out;
     }
 
     protected boolean persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
+        PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+
         try {
             T data = ref.get();
-            // data.populate(ctx.getRequest().getParameterMap());
-            inject(ref, ctx.getRequest().getParameterMap());
             data.persist(ctx, out);
 
             HtmlDivTag alert = out.div().class_("alert alert-success");
@@ -369,9 +402,15 @@ public abstract class FooVbo<T extends CoObject>
             alert.text("保存成功");
             alert.hr();
             if (create) {
-                alert.div().class_("small").text("您可以继续创建新的记录，或者选择翻页到临近的记录。");
+                alert.div().class_("small").text("您可以继续创建新的记录，" //
+                        + (layout.hideFramework ? "或者关闭本窗口。" : "或者选择翻页到临近的记录。"));
             } else {
-                alert.div().class_("small").text("您可以选择核对刚刚更新的记录，或者翻页浏览临近的记录。");
+                alert.div().class_("small").text("您可以选择核对刚刚更新的记录，" //
+                        + (layout.hideFramework ? "或者关闭本窗口。" : "或者翻页浏览临近的记录。"));
+            }
+
+            if (layout.hideFramework) {
+                out.script().javascript("iframeDone()");
             }
             return true;
         } catch (Throwable e) {

@@ -7,14 +7,18 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlTableTag;
 import net.bodz.bas.html.dom.tag.HtmlTbodyTag;
 import net.bodz.bas.html.dom.tag.HtmlThTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.PathField;
@@ -26,12 +30,16 @@ import com.tinylily.model.base.CoObject;
 import com.tinylily.model.mx.base.CoMessage;
 
 public class IndexTable
-        extends HtmlTableTag {
+        extends HtmlDivTag
+        implements IFontAwesomeCharAliases {
 
+    public HtmlTableTag table;
     public List<IHtmlTag> headFoot = new ArrayList<IHtmlTag>();
     public HtmlTbodyTag tbody;
+    public IHtmlTag tools;
+    public EditDialog editDialog;
 
-    boolean ajaxMode = true;
+    public String ajaxUrl;
     boolean headColumns = true;
     boolean footColumns = true;
 
@@ -39,16 +47,17 @@ public class IndexTable
     FormatFn fmt = new FormatFn();
 
     public IndexTable(IHtmlTag parent) {
-        this(parent, "list");
+        this(parent, "itab");
     }
 
     public IndexTable(IHtmlTag parent, String id) {
-        super(parent, "table");
+        super(parent, "div");
+        id(id);
+        class_("itab");
 
-        this.id(id);
-        this.class_("table table-striped table-hover table-condensed dataTable");
-
-        tbody = this.tbody();
+        table = table();
+        table.class_("table table-striped table-hover table-condensed dataTable");
+        tbody = table.tbody();
 
         detailFields.add("accessMode");
         detailFields.add("creationDate");
@@ -57,48 +66,35 @@ public class IndexTable
         detailFields.add("owner");
         detailFields.add("ownerGroup");
         detailFields.add("state");
+
+        tools = div().class_("tools");
+        editDialog = new EditDialog(tools, id + "ed");
     }
 
-    public boolean isAjaxMode() {
-        return ajaxMode;
-    }
-
-    public void setAjaxMode(boolean ajaxMode) {
-        this.ajaxMode = ajaxMode;
-    }
-
-    public boolean isHeadColumns() {
-        return headColumns;
-    }
-
-    public void setHeadColumns(boolean headColumns) {
-        this.headColumns = headColumns;
-    }
-
-    public boolean isFootColumns() {
-        return footColumns;
-    }
-
-    public void setFootColumns(boolean footColumns) {
-        this.footColumns = footColumns;
+    public void setAjaxUrlFromRequest(HttpServletRequest req) {
+        StringBuilder url = new StringBuilder();
+        url.append("data.json");
+        String query = req.getQueryString();
+        if (query != null)
+            url.append("?" + query);
+        ajaxUrl = url.toString();
     }
 
     public void buildHeader(IHtmlViewContext ctx, Iterable<PathField> indexFields) {
-        if (ajaxMode) {
-            StringBuilder url = new StringBuilder();
-            url.append("data.json");
-            String query = ctx.getRequest().getQueryString();
-            if (query != null)
-                url.append("?" + query);
-            this.dataUrl(url);
-        }
+        setAjaxUrlFromRequest(ctx.getRequest());
+        buildHeader(indexFields);
+    }
+
+    public void buildHeader(Iterable<PathField> indexFields) {
+        if (ajaxUrl != null)
+            table.dataUrl(ajaxUrl);
 
         if (headColumns)
-            headFoot.add(this.thead());
+            headFoot.add(table.thead());
         if (footColumns)
-            headFoot.add(this.tfoot());
+            headFoot.add(table.tfoot());
 
-        for (IHtmlTag tr : this.headFoot)
+        for (IHtmlTag tr : headFoot)
             for (PathField pathField : indexFields) {
                 IFieldDecl fieldDecl = pathField.getFieldDecl();
                 HtmlThTag th = tr.th().text(IXjdocElement.fn.labelName(fieldDecl));

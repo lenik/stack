@@ -7,6 +7,7 @@ import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlATag;
+import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlTdTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.viz.IHtmlViewContext;
@@ -90,8 +91,9 @@ public class FileInfoIndexVbo
     @Override
     protected void afterData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfoIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        out = out.div().id("child-0").class_("zu-template");
-        HtmlTrTag tr = out.table().class_("zu-detail").tr();
+        HtmlDivTag tmpl = out.div().id("child-0").class_("zu-template");
+
+        HtmlTrTag tr = tmpl.table().class_("zu-detail").tr();
         HtmlTdTag left = tr.td().valign("top").style("width: 4em");
         left.div().align("center").i().class_("fa fa-2x").text(FA_FILE_O);
         left.hr();

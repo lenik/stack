@@ -128,4 +128,8 @@
         group by extract(year from t0)::int
     ]]></select>
 
+    <select id="replyCount" resultType="int">
+        select count(*) from reply where topic=#{id}
+    </select>
+
 </mapper>

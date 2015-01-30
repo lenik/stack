@@ -11,4 +11,6 @@ public interface TopicMapper
 
     List<F_YearCount> histoByYear();
 
+    int replyCount(int topicId);
+
 }

@@ -17,7 +17,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Person;
-import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.ItemsTable;
 import com.bee32.zebra.tk.sea.FooVbo;
 
 public class PersonVbo
@@ -44,23 +44,20 @@ public class PersonVbo
             }
             subIndexFields = new PathFieldMap(itemFormDecl);
             try {
-                subIndexFields.parse("i*", "rename", "usage", "region", "tel", "mobile", "fax", "email", "web", "qq",
-                        "postalCode", "address1", "address2");
+                subIndexFields.parse("i*", "priority", "rename", "usage", "region", "tel", "mobile", "fax", "email",
+                        "web", "qq", "postalCode", "address1", "address2");
             } catch (Exception e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
         }
 
-        IndexTable itab = new IndexTable(out, "items");
-        itab.attr("dom", "rti");
-        itab.attr("no-colvis", "1");
-        itab.setAjaxMode(false);
-        itab.setFootColumns(false);
-        itab.buildHeader(ctx, subIndexFields.values());
+        ItemsTable xtab = new ItemsTable(out);
+        xtab.buildHeader(ctx, subIndexFields.values());
 
         for (Contact o : person.getContacts()) {
-            HtmlTrTag tr = itab.tbody.tr();
-            itab.cocols("i", tr, o);
+            HtmlTrTag tr = xtab.tbody.tr();
+            xtab.cocols("i", tr, o);
+            tr.td().text(o.getPriority());
             tr.td().text(o.getRename());
             tr.td().text(o.getUsage());
             tr.td().text(o.getRegion());

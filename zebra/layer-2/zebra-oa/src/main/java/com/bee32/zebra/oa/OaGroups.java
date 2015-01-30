@@ -25,6 +25,10 @@ public @interface OaGroups {
     @interface Position {
     }
 
+    /** 交易 */
+    @interface Trade {
+    }
+
     /** 运输 */
     @interface Transportation {
     }

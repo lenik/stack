@@ -5,25 +5,19 @@ import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlIframeTag;
 
 public class PickDialog
-        extends HtmlDivTag {
+        extends IframeDialog {
 
     public HtmlDivTag body;
     public HtmlIframeTag iframe;
     public HtmlDivTag buttons;
 
     public PickDialog(IHtmlTag parent, String id) {
-        this(parent, id, id + "-");
+        super(parent, id);
     }
 
-    public PickDialog(IHtmlTag parent, String id, String prefix) {
-        super(parent, "div");
-        if (id != null)
-            id(id);
-        class_("dialog zu-pick-dialog");
-
-        iframe = iframe().id(prefix + "iframe");
-        // hr();
-        // buttons = div().align("right").id(prefix + "buttons");
+    @Override
+    protected void create() {
+        addClass("zu-pick-dialog");
     }
 
 }

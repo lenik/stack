@@ -39,13 +39,12 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.std.rfc.mime.ContentType;
 import net.bodz.bas.std.rfc.mime.ContentTypes;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.bas.xml.dom.IXmlNode;
-import net.bodz.bas.xml.dom.IXmlTag;
-import net.bodz.bas.xml.dom.XmlNodeType;
+import net.bodz.bas.xml.dom.XmlTags;
 import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
+import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.sea.FooIndex;
 import com.bee32.zebra.tk.sea.FooIndexFormat;
 import com.bee32.zebra.tk.sea.MapperUtil;
@@ -113,7 +112,8 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
             return null;
         }
 
-        if (index.format == FooIndexFormat.HTML) {
+        PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+        if (!layout.hideFramework) {
             IHtmlTag body1 = ctx.getTag(ID.body1);
 
             HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
@@ -129,6 +129,8 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
                 cmdsDiv.div().id(ID.cmds1);
 
                 headDiv.div().id(ID.headCol2).class_("col-xs-6");
+
+                out = mainCol;
             }
 
             HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 zu-info");
@@ -156,8 +158,9 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
             titleInfo(ctx, ref, arrivedHere);
         }
 
+        PageStruct page = new PageStruct(ctx);
+
         if (arrivedHere) {
-            PageStruct page = new PageStruct(ctx);
             DataViewAnchors<T> a = new DataViewAnchors<T>();
             if (index.format == FooIndexFormat.HTML) {
                 a.frame = page.mainCol;
@@ -175,7 +178,11 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
 
         afterData(ctx, out, ref, options);
 
-        out.script().javascriptSrc(getClass().getSimpleName() + ".js");
+        if (arrivedHere) {
+            new PageStruct(ctx);
+            page.scripts.script().javascriptSrc(getClass().getSimpleName() + ".js");
+        }
+
         return out;
     }
 
@@ -254,13 +261,9 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         a.dataList = true;
         dataIndex(ctx, a, ref, options);
 
-        HtmlTableTag table = null;
-        for (IXmlNode child : a.data.getRoot().getChildren())
-            if (child.getType() == XmlNodeType.ELEMENT)
-                if ("table".equals(((IXmlTag) child).getTagName())) {
-                    table = (HtmlTableTag) child;
-                    break;
-                }
+        IHtmlTag table = null;
+        table = (IHtmlTag) XmlTags.findFirst(a.data, "table");
+
         JSONWriter jw = new JSONWriter(out);
         Table2JsonFormatter fmt = new Table2JsonFormatter(jw);
         fmt.format(table);

@@ -18,49 +18,15 @@
         <result property="size" column="size" />
         <result property="taxId" column="taxId" />
 
-        <association property="contact" columnPrefix="c_" resultMap="Contact1" />
-    </resultMap>
-
-    <resultMap id="Contact1" type="com.bee32.zebra.oa.contact.Contact">
-        <id property="id" column="_id" />
-        <result property="rename" column="rename" />
-        <result property="usage" column="usage" />
-        <result property="regionId" column="region" />
-        <result property="country" column="country" />
-        <result property="r1" column="r1" />
-        <result property="r2" column="r2" />
-        <result property="r3" column="r3" />
-        <result property="address1" column="address1" />
-        <result property="address2" column="address2" />
-        <result property="postalCode" column="postcode" />
-        <result property="tel" column="tel" />
-        <result property="mobile" column="mobile" />
-        <result property="fax" column="fax" />
-        <result property="email" column="email" />
-        <result property="web" column="web" />
-        <result property="qq" column="qq" />
+        <collection property="contacts" javaType="ArrayList" columnPrefix="ct_"
+            resultMap="com.bee32.zebra.oa.contact.impl.ContactMapper.map1" />
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
-            a.*,
-            c._id "c__id",
-            c.region "c_region",
-            c.country "c_country",
-            c.r1 "c_r1",
-            c.r2 "c_r2",
-            c.r3 "c_r3",
-            c.address1 "c_address1",
-            c.address2 "c_address2",
-            c.postcode "c_postcode",
-            c.tel "c_tel",
-            c.mobile "c_mobile",
-            c.fax "c_fax",
-            c.email "c_email",
-            c.web "c_web",
-            c.qq "c_qq"
+            a.*, c.*
         from org a
-            left join contact c on a.id=c.org and c.usage is null
+            left join avct_contact c on a.id=c.ct_org and c.ct_usage is null
         ]]>
     </sql>
 

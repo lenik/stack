@@ -3,11 +3,18 @@ package com.bee32.zebra.io.sales;
 import java.util.Date;
 
 import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.decl.Priority;
+import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoMomentInterval;
+import com.tinylily.model.base.IdType;
 
+@IdType(Long.class)
 @TableName("sentry")
 public class SalesOrderItem
         extends CoMomentInterval<Long> {
@@ -22,6 +29,7 @@ public class SalesOrderItem
     SalesOrder order;
     Artifact artifact;
 
+    boolean resale;
     String altLabel;
     String altSpec;
     String altUom;
@@ -30,6 +38,10 @@ public class SalesOrderItem
     double price;
     String footnote;
 
+    /**
+     * 订单
+     */
+    @Priority(1)
     public SalesOrder getOrder() {
         return order;
     }
@@ -38,6 +50,10 @@ public class SalesOrderItem
         this.order = order;
     }
 
+    /**
+     * 商品
+     */
+    @Priority(100)
     public Artifact getArtifact() {
         return artifact;
     }
@@ -46,23 +62,60 @@ public class SalesOrderItem
         this.artifact = artifact;
     }
 
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Override
+    public Date getBeginDate() {
+        return super.getBeginDate();
+    }
+
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Override
+    public Date getEndDate() {
+        return super.getEndDate();
+    }
+
     /**
      * 订单时间
      */
+    @OfGroup(StdGroup.Schedule.class)
     public Date getOrderTime() {
         return super.getBeginDate();
+    }
+
+    public void setOrderTime(Date orderTime) {
+        super.setBeginDate(orderTime);
     }
 
     /**
      * 交货时间
      */
+    @OfGroup(StdGroup.Schedule.class)
     public Date getDeadline() {
         return super.getEndDate();
     }
 
+    public void setDeadline(Date deadline) {
+        super.setEndDate(deadline);
+    }
+
     /**
-     * 铭牌名称
+     * 定制铭牌
      */
+    @Priority(1)
+    @OfGroup(StdGroup.Option.class)
+    public boolean isResale() {
+        return resale;
+    }
+
+    public void setResale(boolean resale) {
+        this.resale = resale;
+    }
+
+    /**
+     * 定制名称
+     */
+    @Priority(2)
+    @OfGroup(StdGroup.Option.class)
     @TextInput(maxLength = N_ALT_LABEL)
     public String getAltLabel() {
         return altLabel;
@@ -73,8 +126,10 @@ public class SalesOrderItem
     }
 
     /**
-     * 铭牌规格
+     * 定制规格
      */
+    @Priority(3)
+    @OfGroup(StdGroup.Option.class)
     @TextInput(maxLength = N_ALT_SPEC)
     public String getAltSpec() {
         return altSpec;
@@ -87,6 +142,7 @@ public class SalesOrderItem
     /**
      * 数量
      */
+    @Priority(200)
     public double getQuantity() {
         return quantity;
     }
@@ -98,6 +154,7 @@ public class SalesOrderItem
     /**
      * 价格
      */
+    @Priority(201)
     public double getPrice() {
         return price;
     }
@@ -107,8 +164,30 @@ public class SalesOrderItem
     }
 
     /**
-     * 附注
+     * 总额
      */
+    @Priority(202)
+    @Derived
+    public double getTotal() {
+        return price * quantity;
+    }
+
+    /**
+     * @label Comment
+     * @label.zh 注释
+     * @placeholder 输入注释…
+     */
+    @Priority(800)
+    @TextInput(maxLength = 200)
+    @Override
+    public String getComment() {
+        return super.getComment();
+    }
+
+    /**
+     * 注释/附加
+     */
+    @Priority(801)
     @TextInput(maxLength = N_FOOTNOTE)
     public String getFootnote() {
         return footnote;

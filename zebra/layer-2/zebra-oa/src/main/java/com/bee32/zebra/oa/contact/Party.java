@@ -1,6 +1,7 @@
 package com.bee32.zebra.oa.contact;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -8,10 +9,13 @@ import java.util.TimeZone;
 import java.util.TreeSet;
 
 import net.bodz.bas.c.java.util.TimeZones;
+import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.bas.t.order.PriorityUtils;
 
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
@@ -38,7 +42,7 @@ public abstract class Party
     private final Set<String> tags = new TreeSet<>();
 
     private String subject;
-    private List<Contact> contacts;
+    private List<Contact> contacts = new ArrayList<Contact>();
 
     private String bank;
     private String account;
@@ -46,6 +50,7 @@ public abstract class Party
     /**
      * 生日
      */
+    @Priority(100)
     public Date getBirthday() {
         return birthday;
     }
@@ -163,6 +168,7 @@ public abstract class Party
      * 
      * 个人的兴趣爱好或公司的主营业务。
      */
+    @Priority(300)
     @TextInput(maxLength = N_SUBJECT)
     public String getSubject() {
         return subject;
@@ -175,6 +181,8 @@ public abstract class Party
     /**
      * 联系方式
      */
+    @Priority(501)
+    @DetailLevel(DetailLevel.EXTEND)
     public List<Contact> getContacts() {
         return contacts;
     }
@@ -186,11 +194,13 @@ public abstract class Party
     /**
      * 默认联系方式
      */
+    @Priority(500)
+    @Derived
     public Contact getContact0() {
         if (contacts == null || contacts.isEmpty())
             return null;
         else
-            return contacts.get(0);
+            return PriorityUtils.selectTop(contacts);
     }
 
     /**
@@ -198,6 +208,7 @@ public abstract class Party
      * 
      * @placeholder 输入银行名称...
      */
+    @Priority(400)
     @TextInput(maxLength = N_BANK)
     public String getBank() {
         return bank;
@@ -212,6 +223,7 @@ public abstract class Party
      * 
      * @placeholder 输入银行帐号...
      */
+    @Priority(401)
     @TextInput(maxLength = N_ACCOUNT)
     public String getAccount() {
         return account;

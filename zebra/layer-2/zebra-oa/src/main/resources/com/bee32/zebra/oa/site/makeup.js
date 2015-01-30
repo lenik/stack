@@ -72,8 +72,8 @@ $(document).ready(function() {
         });
     });
 
-    var $dt = $('.dataTable');
-    if ($dt != null) {
+    var $table = $("table.dataTable");
+    if ($table.length > 0) {
         var config = {
             // displayStart : 10,
 
@@ -97,13 +97,13 @@ $(document).ready(function() {
             }
         };
 
-        var dataUrl = $dt.attr("data-url");
+        var dataUrl = $table.attr("data-url");
         config.ajax = dataUrl == null ? null : {
             url : dataUrl,
             dataSrc : "tbody"
         };
 
-        var dom = $dt.attr("dom");
+        var dom = $table.attr("dom");
         if (dom == null)
             dom = 'C<"clear">lfrtip';
         config.dom = dom;
@@ -119,7 +119,7 @@ $(document).ready(function() {
             orderable : false
         } ];
 
-        if (!$dt.attr("no-colvis"))
+        if (!$table.attr("no-colvis"))
             config.colVis = {
                 buttonText : "列",
                 label : function(index, title, th) {
@@ -128,12 +128,16 @@ $(document).ready(function() {
                 showAll : '显示全部'
             };
 
-        if (!$dt.attr("no-tableTools"))
+        if ($table.attr("no-paginate"))
+            config.paginate = false;
+
+        if (!$table.attr("no-tableTools"))
             config.tableTools = {
                 sSwfPath : _js_ + "datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
             };
 
-        var dt = window.dt = $dt.DataTable(config);
+        var itab = $table.parent()[0];
+        var dt = itab.dataTable = $table.DataTable(config);
 
         dt.rows().on('click', 'tr', function(e) {
             var tr = $(this);
@@ -155,24 +159,37 @@ $(document).ready(function() {
                 $(this).addClass("selected");
             }
 
-            if (parent != top)
+            if (parent != window) {
                 // assert parent.frameElement != null;
                 parent.selection = DataTables.getIdLabel(row);
-            else {
+                return;
+            }
 
-                if (row.child.isShown()) {
-                    row.child.hide();
-                    tr.removeClass("shown");
-                } else {
-                    var obj = DataTables.toObject(row);
-                    var html = DataTables.formatChild(obj);
-                    if (html != null) {
-                        row.child(html).show();
-                        tr.addClass("shown");
+            var formatChild = itab.formatChild;
+            if (formatChild != null) {
+                var trs = $("tr", tr.parent());
+                for (i = 0; i < trs.length; i++) {
+                    var r = dt.row(trs[i]);
+                    if (r.child.isShown()) {
+                        r.child.hide();
+                        tr.removeClass("shown");
                     }
+                }
+
+                var obj = DataTables.toObject(row);
+                
+                var html = formatChild(obj);
+                if (html != null) {
+                    row.child(html).show();
+                    tr.addClass("shown");
                 }
             }
 
+            if (itab.rowClick != null) {
+                itab.rowClick(row);
+                return;
+            }
+            
             if (modexs) {
                 location.href = id + "/";
                 return;
@@ -259,8 +276,9 @@ var DataTables = {
         return obj;
     },
 
-    formatChild : function(obj) {
-        return null;
-    }
-
 };
+
+function iframeDone() {
+    if (parent.itab!=null)
+        parent.itab.reload();
+}

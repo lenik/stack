@@ -4,6 +4,8 @@ public enum FooIndexFormat {
 
     HTML,
 
+    PLAIN,
+
     PICKER,
 
     JSON,
