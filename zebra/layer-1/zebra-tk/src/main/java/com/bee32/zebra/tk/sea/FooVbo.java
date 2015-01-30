@@ -393,7 +393,7 @@ public abstract class FooVbo<T extends CoObject>
 
         try {
             T data = ref.get();
-            data.persist(ctx, out);
+            Object id = data.persist(ctx, out);
 
             HtmlDivTag alert = out.div().class_("alert alert-success");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
@@ -401,11 +401,18 @@ public abstract class FooVbo<T extends CoObject>
             alert.strong().text("[成功]");
             alert.text("保存成功");
             alert.hr();
+            HtmlDivTag mesg = alert.div().class_("small");
             if (create) {
-                alert.div().class_("small").text("您可以继续创建新的记录，" //
-                        + (layout.hideFramework ? "或者关闭本窗口。" : "或者选择翻页到临近的记录。"));
+                if (layout.hideFramework)
+                    mesg.text("您可以继续创建新的记录，或者关闭本窗口。");
+                else {
+                    mesg.text("您可以继续创建新的记录，或者");
+                    mesg.span().class_("fa").text(FA_EXTERNAL_LINK_SQUARE);
+                    mesg.a().href("../" + id + "/").text("返回刚才保存的记录");
+                    mesg.text("。");
+                }
             } else {
-                alert.div().class_("small").text("您可以选择核对刚刚更新的记录，" //
+                mesg.text("您可以选择核对刚刚更新的记录，" //
                         + (layout.hideFramework ? "或者关闭本窗口。" : "或者翻页浏览临近的记录。"));
             }
 

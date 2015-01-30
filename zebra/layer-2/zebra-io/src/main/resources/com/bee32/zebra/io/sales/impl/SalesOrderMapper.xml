@@ -111,9 +111,17 @@
 
     <select id="insert" resultType="long">
         <![CDATA[
-        insert into sdoc(code, label, description)
-            values(#{codeName},#{label},#{description})
-            returning id
+        insert into sdoc(
+            priority, flags, state, uid, gid, mode, acl,
+            t0, t1,
+            op, subject, text, form, args, cat, phase,
+            topic, org, person, qty, total
+        ) values(
+            #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
+            #{beginDate}, #{endDate},
+            #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id},
+            #{topic.id}, #{org.id}, #{person.id}, #{quantity}, #{total}
+        ) returning id
     ]]></select>
 
     <update id="update">

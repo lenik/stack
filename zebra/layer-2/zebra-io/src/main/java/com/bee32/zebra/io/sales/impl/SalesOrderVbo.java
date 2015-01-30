@@ -32,6 +32,8 @@ public class SalesOrderVbo
     protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrder sdoc = ref.get();
+        if (sdoc.getId() == null)
+            return out;
 
         PathFieldMap itemIndexFields;
         {
