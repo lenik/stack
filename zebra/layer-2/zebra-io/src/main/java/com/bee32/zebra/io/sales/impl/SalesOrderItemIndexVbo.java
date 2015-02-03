@@ -15,17 +15,20 @@ import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.io.sales.SalesOrderItem;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class SalesOrderItemIndexVbo
-        extends Zc3Template_CEM<SalesOrderItemIndex, SalesOrderItem> {
+        extends SlimIndex_htm<SalesOrderItemIndex, SalesOrderItem> {
+
+    public static final String[] FIELDS = { "artifact", "altLabel", "altSpec", "quantity", "artifact.uom", "price",
+            "total",
+            // "beginDate", "endDate",
+            "comment", "footnote" };
 
     public SalesOrderItemIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(SalesOrderItemIndex.class);
-        indexFields.parse("i*s", "artifact", "altLabel", "altSpec", "quantity", "artifact.uom", "price", "total",
-        // "beginDate", "endDate",
-                "comment", "footnote");
+        indexFields.parse("i*s", FIELDS);
     }
 
     @Override

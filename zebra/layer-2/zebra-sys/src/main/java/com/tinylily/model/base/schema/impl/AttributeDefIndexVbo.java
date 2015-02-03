@@ -15,11 +15,11 @@ import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.AttributeDef;
 
 public class AttributeDefIndexVbo
-        extends Zc3Template_CEM<AttributeDefIndex, AttributeDef> {
+        extends SlimIndex_htm<AttributeDefIndex, AttributeDef> {
 
     public AttributeDefIndexVbo()
             throws NoSuchPropertyException, ParseException {

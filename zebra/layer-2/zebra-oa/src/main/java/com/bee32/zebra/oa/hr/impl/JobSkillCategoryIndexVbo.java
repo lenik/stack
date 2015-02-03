@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.hr.JobSkillCategory;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class JobSkillCategoryIndexVbo
-        extends Zc3Template_CEM<JobSkillCategoryIndex, JobSkillCategory> {
+        extends SlimIndex_htm<JobSkillCategoryIndex, JobSkillCategory> {
 
     public JobSkillCategoryIndexVbo()
             throws NoSuchPropertyException, ParseException {

@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.hr.EmployeeSkill;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 专项技能定义。
@@ -17,7 +17,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(EmployeeSkill.class)
 public class EmployeeSkillIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public EmployeeSkillIndex(IQueryable context) {
         super(context);

@@ -9,9 +9,17 @@ import com.tinylily.model.sea.QVariantMap;
 public class AccountingEntryCriteria
         extends CoMomentIntervalCriteria {
 
+    public Integer accountId;
     public Integer side;
-    public Integer code_;
     public DoubleRange valueRange;
+
+    public Integer getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
+    }
 
     public Integer getSide() {
         return side;
@@ -19,14 +27,6 @@ public class AccountingEntryCriteria
 
     public void setSide(Integer side) {
         this.side = side;
-    }
-
-    public Integer getAccountCodePrefix() {
-        return code_;
-    }
-
-    public void setAccountCodePrefix(Integer accountCodePrefix) {
-        this.code_ = accountCodePrefix;
     }
 
     public DoubleRange getValueRange() {
@@ -41,8 +41,8 @@ public class AccountingEntryCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
+        accountId = map.getInt("account", accountId);
         side = map.getInt("side", side);
-        code_ = map.getInt("code", code_);
         valueRange = map.getDoubleRange("values", valueRange);
     }
 

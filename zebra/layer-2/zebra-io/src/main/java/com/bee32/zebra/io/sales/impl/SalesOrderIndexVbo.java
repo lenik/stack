@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.io.sales.SalesOrder;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class SalesOrderIndexVbo
-        extends Zc3Template_CEM<SalesOrderIndex, SalesOrder> {
+        extends SlimIndex_htm<SalesOrderIndex, SalesOrder> {
 
     public SalesOrderIndexVbo()
             throws NoSuchPropertyException, ParseException {

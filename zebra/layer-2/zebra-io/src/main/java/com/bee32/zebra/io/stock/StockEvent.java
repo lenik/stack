@@ -35,6 +35,10 @@ public class StockEvent
     private double total;
 
     public StockEvent() {
+    }
+
+    @Override
+    public void create() {
         CategoryDef TK_I = new CategoryDef();
         TK_I.setId(1202);
         TK_I.setLabel("采购入库");

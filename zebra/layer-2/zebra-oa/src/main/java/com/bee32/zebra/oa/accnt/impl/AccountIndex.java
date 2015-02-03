@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.accnt.Account;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 会计科目为会计学相当重要的基本研究方法与辅助工作， 它将会计要素视性质分属、分纲的设置，例如现金即为资产会计要素的一大会计科目。
@@ -22,7 +22,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(Account.class)
 public class AccountIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public AccountIndex(IQueryable context) {
         super(context);

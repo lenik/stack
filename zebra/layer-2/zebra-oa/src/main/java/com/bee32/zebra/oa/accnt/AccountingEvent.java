@@ -78,7 +78,7 @@ public class AccountingEvent
     }
 
     /**
-     * 人员
+     * 联系人
      */
     public Person getPerson() {
         return person;

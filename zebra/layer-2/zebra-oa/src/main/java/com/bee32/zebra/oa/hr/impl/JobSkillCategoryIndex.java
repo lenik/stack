@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.hr.JobSkillCategory;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 工作技能的分类。
@@ -17,7 +17,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(JobSkillCategory.class)
 public class JobSkillCategoryIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public JobSkillCategoryIndex(IQueryable context) {
         super(context);

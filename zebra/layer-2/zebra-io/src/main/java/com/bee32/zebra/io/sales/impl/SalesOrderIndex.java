@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.sales.SalesOrder;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 销售订单
@@ -19,7 +19,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(SalesOrder.class)
 public class SalesOrderIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public SalesOrderIndex(IQueryable context) {
         super(context);

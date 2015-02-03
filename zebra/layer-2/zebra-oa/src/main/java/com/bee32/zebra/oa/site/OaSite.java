@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.bodz.bas.c.type.IndexedTypes;
-import net.bodz.bas.html.meta.HtmlViewBuilder;
 import net.bodz.bas.log.Logger;
 import net.bodz.bas.log.LoggerFactory;
 import net.bodz.bas.meta.decl.ObjectType;
@@ -19,8 +18,8 @@ import net.bodz.bas.std.rfc.http.CacheControlMode;
 import net.bodz.bas.std.rfc.http.ICacheControl;
 
 import com.bee32.zebra.oa.login.LoginForm;
+import com.bee32.zebra.tk.repr.QuickController;
 import com.bee32.zebra.tk.site.CoTypes;
-import com.bee32.zebra.tk.site.ZooController;
 import com.bee32.zebra.tk.sql.VhostDataService;
 import com.tinylily.model.base.CoObjectIndex;
 import com.tinylily.site.LilyStartSite;
@@ -28,7 +27,6 @@ import com.tinylily.site.LilyStartSite;
 /**
  * @label OA Site Frame
  */
-@HtmlViewBuilder(OaSiteVbo.class)
 public class OaSite
         extends LilyStartSite {
 
@@ -42,7 +40,7 @@ public class OaSite
 
         for (Class<? extends CoObjectIndex> indexClass : IndexedTypes.list(CoObjectIndex.class, false)) {
             Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
-            ZooController controller = new ZooController(getQueryContext(), objectType, indexClass);
+            QuickController controller = new QuickController(getQueryContext(), objectType, indexClass);
 
             List<String> paths = new ArrayList<>();
             CoTypes.getPathToken(objectType, paths);

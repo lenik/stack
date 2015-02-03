@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * @label 凭证单
@@ -18,7 +18,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(AccountingEvent.class)
 public class AccountingEventIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public AccountingEventIndex(IQueryable context) {
         super(context);

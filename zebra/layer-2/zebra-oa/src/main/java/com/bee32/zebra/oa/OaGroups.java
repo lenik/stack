@@ -13,6 +13,10 @@ public @interface OaGroups {
     @interface ColorManagement {
     }
 
+    /** 通信 */
+    @interface Communication {
+    }
+
     /** 定制扩展 */
     @interface CustomExtension {
     }

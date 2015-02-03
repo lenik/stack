@@ -1,10 +1,10 @@
 package com.bee32.zebra.oa.contact.impl;
 
 import com.bee32.zebra.oa.contact.Organization;
-import com.bee32.zebra.tk.sea.FooVbo;
+import com.bee32.zebra.tk.slim.SlimForm_htm;
 
 public class OrganizationVbo
-        extends FooVbo<Organization> {
+        extends SlimForm_htm<Organization> {
 
     public OrganizationVbo() {
         super(Organization.class);

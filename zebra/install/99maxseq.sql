@@ -7,6 +7,7 @@ select setval('att_seq',        greatest((select start_value from att_seq),     
 select setval('attval_seq',     greatest((select start_value from attval_seq),      (select max(id) from attval)));
 select setval('cat_seq',        greatest((select start_value from cat_seq),         (select max(id) from cat)));
 select setval('contact_seq',    greatest((select start_value from contact_seq),     (select max(_id) from contact)));
+select setval('diary_seq',      greatest((select start_value from diary_seq),       (select max(id) from diary)));
 select setval('dldoc_seq',      greatest((select start_value from dldoc_seq),       (select max(id) from dldoc)));
 select setval('dlentry_seq',    greatest((select start_value from dlentry_seq),     (select max(id) from dlentry)));
 select setval('fileatt_seq',    greatest((select start_value from fileatt_seq),     (select max(id) from fileatt)));

@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.file.FileInfo;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 描述文件、档案的相关信息。
@@ -18,7 +18,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(FileInfo.class)
 public class FileInfoIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public FileInfoIndex(IQueryable context) {
         super(context);

@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.contact.Person;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 所有感兴趣的联系人，包括：客户、供应商、雇员、竞争对手等等。
@@ -21,7 +21,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(Person.class)
 public class PersonIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public PersonIndex(IQueryable context) {
         super(context);

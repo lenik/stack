@@ -13,11 +13,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.SchemaDef;
 
 public class SchemaDefIndexVbo
-        extends Zc3Template_CEM<SchemaDefIndex, SchemaDef> {
+        extends SlimIndex_htm<SchemaDefIndex, SchemaDef> {
 
     public SchemaDefIndexVbo()
             throws NoSuchPropertyException, ParseException {

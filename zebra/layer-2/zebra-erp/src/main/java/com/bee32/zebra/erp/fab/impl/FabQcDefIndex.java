@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.erp.fab.FabQcDef;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 质量检验参数定义。
@@ -17,7 +17,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(FabQcDef.class)
 public class FabQcDefIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public FabQcDefIndex(IQueryable context) {
         super(context);

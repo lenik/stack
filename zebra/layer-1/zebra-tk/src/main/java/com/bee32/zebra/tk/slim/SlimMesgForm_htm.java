@@ -1,4 +1,4 @@
-package com.bee32.zebra.tk.sea;
+package com.bee32.zebra.tk.slim;
 
 import java.io.IOException;
 import java.util.Set;
@@ -9,6 +9,7 @@ import net.bodz.bas.html.dom.tag.HtmlLabelTag;
 import net.bodz.bas.html.dom.tag.HtmlTextareaTag;
 import net.bodz.bas.html.util.FieldHtmlUtil;
 import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
@@ -16,12 +17,13 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
+import com.bee32.zebra.tk.hbin.SplitForm;
 import com.tinylily.model.mx.base.CoMessage;
 
-public abstract class FooMesgVbo<T extends CoMessage<?>>
-        extends FooVbo<T> {
+public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
+        extends SlimForm_htm<T> {
 
-    public FooMesgVbo(Class<?> valueClass, String... supportedFeatures) {
+    public SlimMesgForm_htm(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
     }
 
@@ -65,16 +67,18 @@ public abstract class FooMesgVbo<T extends CoMessage<?>>
     }
 
     @Override
-    protected void selectBasicFields(Set<String> includes, Set<String> excludes)
+    protected void selectFields(FieldDeclGroup group, Set<String> includes, Set<String> excludes)
             throws ViewBuilderException, IOException {
-        excludes.add("subject");
-        excludes.add("text");
-        excludes.add("textPreview");
-        excludes.add("image");
+        if (group.getCategory() == FieldCategory.NULL) {
+            excludes.add("subject");
+            excludes.add("text");
+            excludes.add("textPreview");
+            excludes.add("image");
 
-        excludes.add("codeName");
-        excludes.add("label");
-        excludes.add("description");
+            excludes.add("codeName");
+            excludes.add("label");
+            excludes.add("description");
+        }
     }
 
 }

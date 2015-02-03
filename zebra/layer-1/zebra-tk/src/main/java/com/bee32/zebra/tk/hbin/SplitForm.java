@@ -1,4 +1,4 @@
-package com.bee32.zebra.tk.sea;
+package com.bee32.zebra.tk.hbin;
 
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;

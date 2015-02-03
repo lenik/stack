@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.erp.fab.FabDevice;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 生产工艺中需要用到的机器设备。
@@ -17,7 +17,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(FabDevice.class)
 public class FabDeviceIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public FabDeviceIndex(IQueryable context) {
         super(context);

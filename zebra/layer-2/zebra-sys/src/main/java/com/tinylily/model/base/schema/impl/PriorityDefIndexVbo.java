@@ -13,11 +13,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.PriorityDef;
 
 public class PriorityDefIndexVbo
-        extends Zc3Template_CEM<PriorityDefIndex, PriorityDef> {
+        extends SlimIndex_htm<PriorityDefIndex, PriorityDef> {
 
     public PriorityDefIndexVbo()
             throws NoSuchPropertyException, ParseException {

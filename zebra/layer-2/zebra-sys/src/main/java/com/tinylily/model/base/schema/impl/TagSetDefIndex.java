@@ -3,7 +3,7 @@ package com.tinylily.model.base.schema.impl;
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 import com.tinylily.model.base.schema.TagSetDef;
 
 /**
@@ -15,7 +15,7 @@ import com.tinylily.model.base.schema.TagSetDef;
  */
 @ObjectType(TagSetDef.class)
 public class TagSetDefIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public TagSetDefIndex(IQueryable context) {
         super(context);

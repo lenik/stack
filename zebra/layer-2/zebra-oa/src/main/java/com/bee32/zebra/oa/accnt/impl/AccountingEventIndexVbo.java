@@ -19,12 +19,12 @@ import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.impl.FormDefCriteria;
 import com.tinylily.model.base.schema.impl.FormDefMapper;
 
 public class AccountingEventIndexVbo
-        extends Zc3Template_CEM<AccountingEventIndex, AccountingEvent> {
+        extends SlimIndex_htm<AccountingEventIndex, AccountingEvent> {
 
     public AccountingEventIndexVbo()
             throws NoSuchPropertyException, ParseException {

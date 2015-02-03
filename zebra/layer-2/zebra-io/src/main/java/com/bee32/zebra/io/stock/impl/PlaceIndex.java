@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.stock.Place;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 仓库、楼层、区间、货架、单元格等按层次结构组织的空间区域。
@@ -17,7 +17,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(Place.class)
 public class PlaceIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public PlaceIndex(IQueryable context) {
         super(context);

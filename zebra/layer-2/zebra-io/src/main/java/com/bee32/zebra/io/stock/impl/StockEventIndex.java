@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.stock.StockEvent;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 库存操作业务，如出、入库；调拨；委外加工等。
@@ -19,7 +19,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(StockEvent.class)
 public class StockEventIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public StockEventIndex(IQueryable context) {
         super(context);

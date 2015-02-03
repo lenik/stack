@@ -1,4 +1,4 @@
-package com.bee32.zebra.tk.sea;
+package com.bee32.zebra.tk.slim;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -51,6 +51,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.PickDialog;
+import com.bee32.zebra.tk.hbin.SplitForm;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.site.CoTypes;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
@@ -64,11 +65,11 @@ import com.tinylily.model.base.IId;
 import com.tinylily.model.base.IdType;
 import com.tinylily.model.sea.ParameterMapVariantMap;
 
-public abstract class FooVbo<T extends CoObject>
+public abstract class SlimForm_htm<T extends CoObject>
         extends AbstractForm_htm<T>
         implements IZebraSiteAnchors, IFontAwesomeCharAliases {
 
-    public FooVbo(Class<?> valueClass, String... supportedFeatures) {
+    public SlimForm_htm(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
     }
 
@@ -207,6 +208,8 @@ public abstract class FooVbo<T extends CoObject>
     protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, IOptions options)
             throws ViewBuilderException, IOException {
+        String typeName = instanceRef.getValueType().getSimpleName();
+
         String simpleName = group.getCategory().getTagClass().getSimpleName();
         switch (simpleName) {
         case "Object":
@@ -214,9 +217,25 @@ public abstract class FooVbo<T extends CoObject>
         case "Content":
         case "Ranking":
         case "Metadata":
-        case "Security":
         case "Visual":
             return true;
+
+        case "Version":
+            switch (typeName) {
+            case "Contact":
+                return true;
+            }
+            break;
+
+        case "Security":
+            switch (typeName) {
+            case "AccountingEntry":
+            case "Contact":
+            case "DeliveryItem":
+            case "SalesOrderItem":
+                return true;
+            }
+            break;
         }
         return false;
     }
@@ -249,15 +268,16 @@ public abstract class FooVbo<T extends CoObject>
     protected List<IFieldDecl> overrideFieldSelection(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, List<IFieldDecl> selection, IOptions options)
             throws ViewBuilderException, IOException {
-        if (group.getCategory() == FieldCategory.NULL) {
-            Set<String> includes = new HashSet<String>();
-            Set<String> excludes = new HashSet<String>();
-            selectBasicFields(includes, excludes);
-            if (includes.isEmpty())
-                includes = null;
-            if (excludes.isEmpty())
-                excludes = null;
 
+        Set<String> includes = new HashSet<String>();
+        Set<String> excludes = new HashSet<String>();
+        selectFields(group, includes, excludes);
+        if (includes.isEmpty())
+            includes = null;
+        if (excludes.isEmpty())
+            excludes = null;
+
+        if (includes != null || excludes != null) {
             Iterator<IFieldDecl> iterator = selection.iterator();
             while (iterator.hasNext()) {
                 IFieldDecl field = iterator.next();
@@ -272,7 +292,7 @@ public abstract class FooVbo<T extends CoObject>
         return selection;
     }
 
-    protected void selectBasicFields(Set<String> includes, Set<String> excludes)
+    protected void selectFields(FieldDeclGroup group, Set<String> includes, Set<String> excludes)
             throws ViewBuilderException, IOException {
     }
 
@@ -562,6 +582,19 @@ public abstract class FooVbo<T extends CoObject>
         property.setValue(obj, skel);
     }
 
+    /**
+     * <ul>
+     * <li>rw-rw-rw- 公开
+     * <li>rw-rw-r-- 协同发布
+     * <li>rw-r--r-- 发布
+     * <li>rw-rw---- 协同管理
+     * <li>rw-r----- 共享
+     * <li>rw------- 私有
+     * <li>r--r--r-- 发布/锁定
+     * <li>r--r----- 共享/锁定
+     * <li>r-------- 私有/锁定
+     * </ul>
+     */
     protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoObject e) {
         if (e != null)
             tag.text(e.getLabel());

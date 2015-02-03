@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.calendar.Diary;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 用于一般日志记录。
@@ -15,7 +15,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(Diary.class)
 public class DiaryIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public DiaryIndex(IQueryable context) {
         super(context);

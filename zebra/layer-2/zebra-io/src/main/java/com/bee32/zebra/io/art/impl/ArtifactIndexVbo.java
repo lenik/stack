@@ -20,11 +20,11 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
 
 public class ArtifactIndexVbo
-        extends Zc3Template_CEM<ArtifactIndex, Artifact> {
+        extends SlimIndex_htm<ArtifactIndex, Artifact> {
 
     public ArtifactIndexVbo()
             throws NoSuchPropertyException, ParseException {

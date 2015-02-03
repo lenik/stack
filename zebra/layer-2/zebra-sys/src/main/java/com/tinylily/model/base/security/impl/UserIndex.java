@@ -3,7 +3,7 @@ package com.tinylily.model.base.security.impl;
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 import com.tinylily.model.base.security.User;
 
 /**
@@ -19,7 +19,7 @@ import com.tinylily.model.base.security.User;
  */
 @ObjectType(User.class)
 public class UserIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public UserIndex(IQueryable context) {
         super(context);

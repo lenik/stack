@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.contact.OrgUnit;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 企、事业组织下属的单位、科室、部门。
@@ -17,7 +17,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(OrgUnit.class)
 public class OrgUnitIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public OrgUnitIndex(IQueryable context) {
         super(context);

@@ -5,9 +5,12 @@ import java.util.List;
 
 import net.bodz.bas.i18n.geo.Region;
 import net.bodz.bas.i18n.geo.Regions;
+import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
+import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
 
@@ -24,6 +27,7 @@ public class Contact
     public static final int N_R1 = 30;
     public static final int N_R2 = 30;
     public static final int N_R3 = 30;
+    public static final int N_R4 = 40;
     public static final int N_COUNTRY = 2;
     public static final int N_POSTAL_CODE = 8;
     public static final int N_TEL = 20;
@@ -45,6 +49,7 @@ public class Contact
     private String r1;
     private String r2;
     private String r3;
+    private String r4;
     private String address1;
     private String address2;
     private String postalCode;
@@ -56,6 +61,9 @@ public class Contact
     private String web;
     private String qq;
 
+    /**
+     * 公司/单位
+     */
     public Organization getOrg() {
         return org;
     }
@@ -64,6 +72,9 @@ public class Contact
         this.org = org;
     }
 
+    /**
+     * 部门/科室
+     */
     public OrgUnit getOrgUnit() {
         return orgUnit;
     }
@@ -72,6 +83,9 @@ public class Contact
         this.orgUnit = orgUnit;
     }
 
+    /**
+     * 联系人
+     */
     public Person getPerson() {
         return person;
     }
@@ -114,6 +128,10 @@ public class Contact
         this.usage = usage;
     }
 
+    /**
+     * 区域
+     */
+    @OfGroup(OaGroups.Position.class)
     public Region getRegion() {
         return region;
     }
@@ -122,6 +140,8 @@ public class Contact
         this.region = region;
     }
 
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Derived
     public String getRegionId() {
         return region == null ? null : region.joinId();
     }
@@ -130,6 +150,10 @@ public class Contact
         this.region = Regions.getChinaRegion(id);
     }
 
+    /**
+     * 国家
+     */
+    @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_COUNTRY)
     public String getCountry() {
         return country;
@@ -139,6 +163,10 @@ public class Contact
         this.country = country;
     }
 
+    /**
+     * 省/直辖市
+     */
+    @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_R1)
     public String getR1() {
         return r1;
@@ -148,6 +176,10 @@ public class Contact
         this.r1 = r1;
     }
 
+    /**
+     * 市/地区
+     */
+    @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_R2)
     public String getR2() {
         return r2;
@@ -157,6 +189,10 @@ public class Contact
         this.r2 = r2;
     }
 
+    /**
+     * 县/府
+     */
+    @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_R3)
     public String getR3() {
         return r3;
@@ -167,10 +203,24 @@ public class Contact
     }
 
     /**
-     * 地址（街道、小区）等。
+     * 城镇/乡/街道
+     */
+    @OfGroup(OaGroups.Position.class)
+    @TextInput(maxLength = N_R4)
+    public String getR4() {
+        return r4;
+    }
+
+    public void setR4(String r4) {
+        this.r4 = r4;
+    }
+
+    /**
+     * 村、街巷、路等。
      * 
      * @label 地址1
      */
+    @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_ADDRESS1)
     public String getAddress1() {
         return address1;
@@ -181,10 +231,11 @@ public class Contact
     }
 
     /**
-     * 地址（建筑、楼层）等。
+     * 建筑、楼层等。
      * 
      * @label 地址2
      */
+    @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_ADDRESS2)
     public String getAddress2() {
         return address2;
@@ -197,6 +248,7 @@ public class Contact
     /**
      * @label 邮政编码
      */
+    @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_POSTAL_CODE)
     public String getPostalCode() {
         return postalCode;
@@ -209,6 +261,7 @@ public class Contact
     /**
      * @label 固定电话
      */
+    @OfGroup(OaGroups.Communication.class)
     @TextInput(maxLength = N_TEL)
     public String getTel() {
         return tel;
@@ -221,6 +274,7 @@ public class Contact
     /**
      * @label 移动电话
      */
+    @OfGroup(OaGroups.Communication.class)
     @TextInput(maxLength = N_MOBILE)
     public String getMobile() {
         return mobile;
@@ -233,6 +287,7 @@ public class Contact
     /**
      * @label 传真
      */
+    @OfGroup(OaGroups.Communication.class)
     @TextInput(maxLength = N_FAX)
     public String getFax() {
         return fax;
@@ -245,6 +300,7 @@ public class Contact
     /**
      * @label E-mail
      */
+    @OfGroup(OaGroups.Communication.class)
     @TextInput(maxLength = N_EMAIL)
     public String getEmail() {
         return email;
@@ -266,6 +322,7 @@ public class Contact
     /**
      * @label QQ
      */
+    @OfGroup(OaGroups.Communication.class)
     @TextInput(maxLength = N_QQ)
     public String getQq() {
         return qq;
@@ -280,6 +337,7 @@ public class Contact
      * 
      * @label 地址
      */
+    @OfGroup(OaGroups.Position.class)
     @Derived
     public String getFullAddress() {
         StringBuilder sb = new StringBuilder(80);
@@ -305,6 +363,7 @@ public class Contact
      * 
      * @label 电话/手机
      */
+    @OfGroup(OaGroups.Communication.class)
     @Derived
     public String getTels() {
         List<String> tels = new ArrayList<>();

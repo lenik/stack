@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.thread.Topic;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 用于跟踪产品、服务的生命周期。项目可以是潜在的销售机会，或已在履行的契约。
@@ -22,7 +22,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(Topic.class)
 public class TopicIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public TopicIndex(IQueryable context) {
         super(context);

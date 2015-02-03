@@ -15,11 +15,11 @@ import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.PhaseDef;
 
 public class PhaseDefIndexVbo
-        extends Zc3Template_CEM<PhaseDefIndex, PhaseDef> {
+        extends SlimIndex_htm<PhaseDefIndex, PhaseDef> {
 
     public PhaseDefIndexVbo()
             throws NoSuchPropertyException, ParseException {

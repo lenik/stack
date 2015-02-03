@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.erp.fab.FabStep;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class FabStepIndexVbo
-        extends Zc3Template_CEM<FabStepIndex, FabStep> {
+        extends SlimIndex_htm<FabStepIndex, FabStep> {
 
     public FabStepIndexVbo()
             throws NoSuchPropertyException, ParseException {

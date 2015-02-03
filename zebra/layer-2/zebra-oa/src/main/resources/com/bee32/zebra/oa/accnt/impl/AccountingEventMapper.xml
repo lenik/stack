@@ -7,6 +7,14 @@
     <resultMap id="map1" type="com.bee32.zebra.oa.accnt.AccountingEvent" extends="message.map2">
         <result property="debitTotal" column="ndebit" />
         <result property="creditTotal" column="ncredit" />
+        <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id property="id" column="id" />
+            <result property="label" column="org_label" />
+        </association>
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id property="id" column="id" />
+            <result property="label" column="person_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -17,7 +25,9 @@
             cat.label "cat_label",
             phase.label "phase_label",
             u.label "uid_label",
-            g.label "gid_label"
+            g.label "gid_label",
+            org.label "org_label",
+            person.label "person_label"
         from acdoc a
             left join "user" op on a.op=op.id
             left join form on a.form=form.id
@@ -25,6 +35,8 @@
             left join phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
+            left join org on a.org=org.id
+            left join person on a.person=person.id
         ]]>
     </sql>
 
@@ -59,7 +71,7 @@
             <if test="noCategory">and a.cat is null</if>
             <if test="noTag">and x.tag is null</if>
             <if test="noPhase">and a.phase is null</if>
-            
+
             <if test="formId != null">and a.form=${formId}</if>
         </where>
     </select>

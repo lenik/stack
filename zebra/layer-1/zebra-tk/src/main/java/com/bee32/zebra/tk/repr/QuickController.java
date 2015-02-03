@@ -1,4 +1,4 @@
-package com.bee32.zebra.tk.site;
+package com.bee32.zebra.tk.repr;
 
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.ITokenQueue;
@@ -6,15 +6,13 @@ import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.rtx.IQueryable;
 
-import com.bee32.zebra.tk.sea.FooIndex;
-import com.bee32.zebra.tk.sea.FooIndexFormat;
 import com.tinylily.model.base.CoObjectController;
 import com.tinylily.model.base.CoObjectIndex;
 
-public class ZooController
+public class QuickController
         extends CoObjectController {
 
-    public ZooController(IQueryable context, Class<?> objectType, Class<? extends CoObjectIndex> indexClass) {
+    public QuickController(IQueryable context, Class<?> objectType, Class<? extends CoObjectIndex> indexClass) {
         super(context, objectType, indexClass);
     }
 
@@ -23,7 +21,7 @@ public class ZooController
             throws PathDispatchException {
         String token = tokens.peek();
 
-        FooIndex index = null;
+        QuickIndex index = null;
         switch (token) {
         case "index.html":
             index = createIndex();
@@ -31,17 +29,17 @@ public class ZooController
 
         case "plain.html":
             index = createIndex();
-            index.format = FooIndexFormat.PLAIN;
+            index.format = QuickIndexFormat.PLAIN;
             break;
 
         case "data.json":
             index = createIndex();
-            index.format = FooIndexFormat.JSON;
+            index.format = QuickIndexFormat.JSON;
             break;
 
         case "picker.html":
             index = createIndex();
-            index.format = FooIndexFormat.PICKER;
+            index.format = QuickIndexFormat.PICKER;
             break;
         }
 
@@ -53,8 +51,8 @@ public class ZooController
     }
 
     @Override
-    protected FooIndex createIndex() {
-        return (FooIndex) super.createIndex();
+    protected QuickIndex createIndex() {
+        return (QuickIndex) super.createIndex();
     }
 
 }

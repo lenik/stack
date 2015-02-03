@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class OrgUnitIndexVbo
-        extends Zc3Template_CEM<OrgUnitIndex, OrgUnit> {
+        extends SlimIndex_htm<OrgUnitIndex, OrgUnit> {
 
     public OrgUnitIndexVbo()
             throws NoSuchPropertyException, ParseException {

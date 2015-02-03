@@ -16,11 +16,11 @@ import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
 
 public class UOMIndexVbo
-        extends Zc3Template_CEM<UOMIndex, UOM> {
+        extends SlimIndex_htm<UOMIndex, UOM> {
 
     public UOMIndexVbo()
             throws NoSuchPropertyException, ParseException {

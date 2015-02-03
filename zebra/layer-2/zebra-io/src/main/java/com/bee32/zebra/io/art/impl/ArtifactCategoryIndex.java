@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.art.ArtifactCategory;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 物料分类
@@ -15,7 +15,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(ArtifactCategory.class)
 public class ArtifactCategoryIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public ArtifactCategoryIndex(IQueryable context) {
         super(context);

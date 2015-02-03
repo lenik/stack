@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
@@ -18,10 +17,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.tk.hbin.ItemsTable;
-import com.bee32.zebra.tk.sea.FooVbo;
+import com.bee32.zebra.tk.slim.SlimForm_htm;
 
 public class PersonVbo
-        extends FooVbo<Person> {
+        extends SlimForm_htm<Person> {
 
     public PersonVbo() {
         super(Person.class);
@@ -44,33 +43,15 @@ public class PersonVbo
             }
             subIndexFields = new PathFieldMap(itemFormDecl);
             try {
-                subIndexFields.parse("i*", "priority", "rename", "usage", "region", "tel", "mobile", "fax", "email",
-                        "web", "qq", "postalCode", "address1", "address2");
+                subIndexFields.parse("i*", ContactIndexVbo.FIELDS);
             } catch (Exception e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
         }
 
         ItemsTable xtab = new ItemsTable(out);
-        xtab.buildHeader(ctx, subIndexFields.values());
-
-        for (Contact o : person.getContacts()) {
-            HtmlTrTag tr = xtab.tbody.tr();
-            xtab.cocols("i", tr, o);
-            tr.td().text(o.getPriority());
-            tr.td().text(o.getRename());
-            tr.td().text(o.getUsage());
-            tr.td().text(o.getRegion());
-            tr.td().text(o.getTel());
-            tr.td().text(o.getMobile());
-            tr.td().text(o.getFax());
-            tr.td().text(o.getEmail());
-            tr.td().text(o.getWeb());
-            tr.td().text(o.getQq());
-            tr.td().text(o.getPostalCode());
-            tr.td().text(o.getAddress1());
-            tr.td().text(o.getAddress2());
-        }
+        xtab.ajaxUrl = "../../contact/data.json?person=" + person.getId();
+        xtab.buildHeader(subIndexFields.values());
 
         return out;
     }

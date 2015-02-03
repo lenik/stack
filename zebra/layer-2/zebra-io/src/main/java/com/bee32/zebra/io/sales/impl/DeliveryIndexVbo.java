@@ -15,10 +15,10 @@ import com.bee32.zebra.io.sales.Delivery;
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class DeliveryIndexVbo
-        extends Zc3Template_CEM<DeliveryIndex, Delivery> {
+        extends SlimIndex_htm<DeliveryIndex, Delivery> {
 
     public DeliveryIndexVbo()
             throws NoSuchPropertyException, ParseException {

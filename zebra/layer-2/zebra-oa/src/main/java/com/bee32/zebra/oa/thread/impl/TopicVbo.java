@@ -18,13 +18,13 @@ import net.bodz.bas.ui.dom1.UiValue;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.oa.thread.Topic;
-import com.bee32.zebra.tk.sea.FooMesgVbo;
-import com.bee32.zebra.tk.sea.SplitForm;
+import com.bee32.zebra.tk.hbin.SplitForm;
+import com.bee32.zebra.tk.slim.SlimMesgForm_htm;
 import com.tinylily.model.base.security.LoginContext;
 import com.tinylily.model.base.security.User;
 
 public class TopicVbo
-        extends FooMesgVbo<Topic> {
+        extends SlimMesgForm_htm<Topic> {
 
     public TopicVbo() {
         super(Topic.class);

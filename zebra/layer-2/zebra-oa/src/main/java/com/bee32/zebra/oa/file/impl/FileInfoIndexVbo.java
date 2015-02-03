@@ -21,13 +21,13 @@ import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
 import com.tinylily.model.base.schema.impl.TagDefCriteria;
 import com.tinylily.model.base.schema.impl.TagDefMapper;
 
 public class FileInfoIndexVbo
-        extends Zc3Template_CEM<FileInfoIndex, FileInfo> {
+        extends SlimIndex_htm<FileInfoIndex, FileInfo> {
 
     public FileInfoIndexVbo()
             throws NoSuchPropertyException, ParseException {

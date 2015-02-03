@@ -17,10 +17,10 @@ import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.SwitchOverride;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class OrganizationIndexVbo
-        extends Zc3Template_CEM<OrganizationIndex, Organization> {
+        extends SlimIndex_htm<OrganizationIndex, Organization> {
 
     public OrganizationIndexVbo()
             throws NoSuchPropertyException, ParseException {

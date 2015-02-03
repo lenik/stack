@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.erp.fab.FabOpCode;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 标准化生产过程（步骤）中具体的操作行为。
@@ -17,7 +17,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(FabOpCode.class)
 public class FabOpCodeIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public FabOpCodeIndex(IQueryable context) {
         super(context);

@@ -22,12 +22,30 @@
         <result property="email" column="email" />
         <result property="web" column="web" />
         <result property="qq" column="qq" />
+        <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+            <id property="id" column="id" />
+            <result property="label" column="org_label" />
+        </association>
+        <association property="orgUnit" javaType="com.bee32.zebra.oa.contact.OrgUnit">
+            <id property="id" column="id" />
+            <result property="label" column="ou_label" />
+        </association>
+        <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+            <id property="id" column="id" />
+            <result property="label" column="peson_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
-            c.*
+            a.*,
+            org.label "org_label",
+            ou.label "ou_label",
+            person.label "person_label"
         from contact a
+            left join org on org.id=a.org
+            left join orgunit ou on ou.id=a.ou
+            left join person on person.id=a.person
         ]]>
     </sql>
 
@@ -35,22 +53,63 @@
         <include refid="select1" />
     </select>
 
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <if test="orgId != null">and org=#{orgId}</if>
+            <if test="orgUnitId != null">and ou=#{orgUnitId}</if>
+            <if test="personId != null">and person=#{personId}</if>
+            <if test="usage != null">and usage=#{usage}</if>
+            <if test="country != null">and country=#{country}</if>
+        </where>
+    </select>
+
     <select id="select" parameterType="int" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="_parameter != null">p.id=#{id}</if>
+            <if test="_parameter != null">a._id=#{id}</if>
         </where>
     </select>
 
     <select id="insert" resultType="long">
         <![CDATA[
-        insert into contact(code, label, description)
-        values(#{codeName},#{label},#{description})
-        returning id
+        insert into contact(
+            org, ou, person,
+            rename, usage,
+            region, country, r1, r2, r3, address1, address2, postcode,
+            tel, mobile, fax, email, web, qq 
+        ) values(
+            #{org.id},#{orgUnit.id},#{person.id},
+            #{rename}, #{usage},
+            0, -- #{region},
+            #{country},
+            0, 0, 0, -- #{region.code}, #{region.code}, #{region,code},
+            #{address1}, #{address2}, #{postcode},
+            #{tel}, #{mobile}, #{fax}, #{email}, #{web}, #{qq}
+        ) returning id
     ]]></select>
 
     <update id="update">
         update contact
+        <set>
+            org=#{org.id},
+            ou=#{orgUnit.id},
+            person=#{person.id},
+            rename=#{rename},
+            usage=#{usage},
+            -- region=#{region},
+            country=#{country},
+            -- r1=#{r1}, r2=#{r2}, r3=#{r3},
+            address1=#{address1},
+            address2=#{address2},
+            postcode=#{postcode},
+            tel=#{tel},
+            mobile=#{mobile},
+            fax=#{fax},
+            email=#{email},
+            web=#{web},
+            qq=#{qq},
+        </set>
         where _id=#{id}
     </update>
 
@@ -61,5 +120,5 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from contact
     </select>
-    
+
 </mapper>

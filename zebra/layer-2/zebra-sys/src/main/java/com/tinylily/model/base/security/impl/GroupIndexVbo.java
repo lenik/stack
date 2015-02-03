@@ -13,11 +13,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.Group;
 
 public class GroupIndexVbo
-        extends Zc3Template_CEM<GroupIndex, Group> {
+        extends SlimIndex_htm<GroupIndex, Group> {
 
     public GroupIndexVbo()
             throws NoSuchPropertyException, ParseException {

@@ -13,11 +13,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.User;
 
 public class UserIndexVbo
-        extends Zc3Template_CEM<UserIndex, User> {
+        extends SlimIndex_htm<UserIndex, User> {
 
     public UserIndexVbo()
             throws NoSuchPropertyException, ParseException {

@@ -1,4 +1,4 @@
-package com.bee32.zebra.tk.sea;
+package com.bee32.zebra.tk.repr;
 
 import net.bodz.bas.c.string.StringPred;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
@@ -10,18 +10,19 @@ import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
+import com.bee32.zebra.tk.sql.MapperUtil;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.CoObjectIndex;
 
-public abstract class FooIndex
+public abstract class QuickIndex
         extends CoObjectIndex
         implements IPageLayoutGuider {
 
-    public FooIndexFormat format = FooIndexFormat.HTML;
+    public QuickIndexFormat format = QuickIndexFormat.HTML;
     public boolean defaultPage = true;
     public PageLayout pageLayoutGuide = new PageLayout();
 
-    public FooIndex(IQueryable context) {
+    public QuickIndex(IQueryable context) {
         super(context);
     }
 
@@ -38,6 +39,7 @@ public abstract class FooIndex
             } catch (Exception e) {
                 throw new PathDispatchException(e.getMessage(), e);
             }
+            obj.create();
             return PathArrival.shift(previous, obj, tokens);
         }
 

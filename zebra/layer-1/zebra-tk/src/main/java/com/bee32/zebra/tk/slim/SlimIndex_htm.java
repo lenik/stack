@@ -1,4 +1,4 @@
-package com.bee32.zebra.tk.site;
+package com.bee32.zebra.tk.slim;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,24 +45,29 @@ import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.htm.PageLayout;
-import com.bee32.zebra.tk.sea.FooIndex;
-import com.bee32.zebra.tk.sea.FooIndexFormat;
-import com.bee32.zebra.tk.sea.MapperUtil;
+import com.bee32.zebra.tk.repr.QuickIndex;
+import com.bee32.zebra.tk.repr.QuickIndexFormat;
+import com.bee32.zebra.tk.site.DataViewAnchors;
+import com.bee32.zebra.tk.site.FormatFn;
+import com.bee32.zebra.tk.site.IZebraSiteAnchors;
+import com.bee32.zebra.tk.site.IZebraSiteLayout;
+import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.sql.MapperUtil;
 import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
 import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.base.CoObject;
 
-public abstract class Zc3Template_CEM<X extends FooIndex, T>
+public abstract class SlimIndex_htm<X extends QuickIndex, T>
         extends AbstractHtmlViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
     protected PathFieldMap indexFields;
 
-    public Zc3Template_CEM(Class<?> valueClass, String... supportedFeatures) {
+    public SlimIndex_htm(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
-        Class<?> param1 = TypeParam.infer1(getClass(), Zc3Template_CEM.class, 1);
+        Class<?> param1 = TypeParam.infer1(getClass(), SlimIndex_htm.class, 1);
         formDecl = IFormDecl.fn.forClass(param1);
         indexFields = new PathFieldMap(formDecl);
     }
@@ -106,7 +111,7 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
         if (arrivedHere && index.defaultPage && enter(ctx))
             return out;
 
-        if (index.format == FooIndexFormat.JSON) {
+        if (index.format == QuickIndexFormat.JSON) {
             PrintWriter writer = ctx.getResponse().getWriter();
             buildJson(ctx, writer, ref, options);
             return null;
@@ -162,7 +167,7 @@ public abstract class Zc3Template_CEM<X extends FooIndex, T>
 
         if (arrivedHere) {
             DataViewAnchors<T> a = new DataViewAnchors<T>();
-            if (index.format == FooIndexFormat.HTML) {
+            if (index.format == QuickIndexFormat.HTML) {
                 a.frame = page.mainCol;
                 a.data = page.mainCol;
                 a.extradata = page.extradata;

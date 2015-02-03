@@ -3,7 +3,7 @@ package com.tinylily.model.base.schema.impl;
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 import com.tinylily.model.base.schema.SchemaDef;
 
 /**
@@ -13,7 +13,7 @@ import com.tinylily.model.base.schema.SchemaDef;
  */
 @ObjectType(SchemaDef.class)
 public class SchemaDefIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public SchemaDefIndex(IQueryable context) {
         super(context);

@@ -16,10 +16,10 @@ import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class PlaceIndexVbo
-        extends Zc3Template_CEM<PlaceIndex, Place> {
+        extends SlimIndex_htm<PlaceIndex, Place> {
 
     public PlaceIndexVbo()
             throws NoSuchPropertyException, ParseException {

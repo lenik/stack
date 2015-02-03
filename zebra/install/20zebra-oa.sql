@@ -93,6 +93,7 @@
         r1          varchar(30),
         r2          varchar(30),
         r3          varchar(30),
+        r4          varchar(30),
         address1    varchar(80),
         address2    varchar(80),
         postcode    varchar(8),

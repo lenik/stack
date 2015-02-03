@@ -14,15 +14,17 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.accnt.AccountingEntry;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class AccountingEntryIndexVbo
-        extends Zc3Template_CEM<AccountingEntryIndex, AccountingEntry> {
+        extends SlimIndex_htm<AccountingEntryIndex, AccountingEntry> {
+
+    public static final String[] FIELDS = { "event", "account", "debitSide", "value" };
 
     public AccountingEntryIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(AccountingEntryIndex.class);
-        indexFields.parse("i*sa", "label", "description");
+        indexFields.parse("i*", FIELDS);
     }
 
     @Override
@@ -38,8 +40,10 @@ public class AccountingEntryIndexVbo
             for (AccountingEntry o : list) {
                 HtmlTrTag tr = itab.tbody.tr();
                 itab.cocols("i", tr, o);
-                tr.td().text(o.getDescription()).class_("small");
-                itab.cocols("sa", tr, o);
+                ref(tr.td(), o.getEvent());
+                ref(tr.td(), o.getAccount());
+                tr.td().text(o.isDebitSide() ? "借" : "贷");
+                tr.td().text(o.getValue().abs());
             }
     }
 

@@ -50,7 +50,7 @@ public abstract class RespTemplate<T>
         String theme = "sunny";
         head.link().css(_jQueryUIThemes_ + theme + "/jquery.ui.all.css");
         head.link().css(_webApp_ + "site.css");
-        head.link().css(_webApp_ + "s-yellow.css");
+        //head.link().css(_webApp_ + "s-yellow.css");
         head.link().css(_webApp_ + "print.css").media("print");
 
         // scripts

@@ -15,11 +15,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.User;
 
 public class ReplyIndexVbo
-        extends Zc3Template_CEM<ReplyIndex, Reply> {
+        extends SlimIndex_htm<ReplyIndex, Reply> {
 
     public ReplyIndexVbo()
             throws NoSuchPropertyException, ParseException {

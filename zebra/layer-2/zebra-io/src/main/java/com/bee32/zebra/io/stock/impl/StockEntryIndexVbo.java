@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.io.stock.StockEntry;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class StockEntryIndexVbo
-        extends Zc3Template_CEM<StockEntryIndex, StockEntry> {
+        extends SlimIndex_htm<StockEntryIndex, StockEntry> {
 
     public StockEntryIndexVbo()
             throws NoSuchPropertyException, ParseException {

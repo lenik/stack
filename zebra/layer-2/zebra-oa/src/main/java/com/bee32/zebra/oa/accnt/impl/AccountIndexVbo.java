@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.accnt.Account;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class AccountIndexVbo
-        extends Zc3Template_CEM<AccountIndex, Account> {
+        extends SlimIndex_htm<AccountIndex, Account> {
 
     public AccountIndexVbo()
             throws NoSuchPropertyException, ParseException {

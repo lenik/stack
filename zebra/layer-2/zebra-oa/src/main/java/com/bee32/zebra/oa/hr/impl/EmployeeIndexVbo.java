@@ -14,10 +14,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.hr.Employee;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.Zc3Template_CEM;
+import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class EmployeeIndexVbo
-        extends Zc3Template_CEM<EmployeeIndex, Employee> {
+        extends SlimIndex_htm<EmployeeIndex, Employee> {
 
     public EmployeeIndexVbo()
             throws NoSuchPropertyException, ParseException {

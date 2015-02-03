@@ -1,9 +1,8 @@
-package com.bee32.zebra.tk.sea;
+package com.bee32.zebra.tk.sql;
 
 import net.bodz.bas.db.ibatis.IMapper;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 public class MapperUtil {
 

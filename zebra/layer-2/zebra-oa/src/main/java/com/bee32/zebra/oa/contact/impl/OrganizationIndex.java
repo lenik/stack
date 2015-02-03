@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.contact.Organization;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 所有感兴趣的相关企、事业单位，包括：客户、供应商、雇员、竞争对手等等。
@@ -21,7 +21,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(Organization.class)
 public class OrganizationIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public OrganizationIndex(IQueryable context) {
         super(context);

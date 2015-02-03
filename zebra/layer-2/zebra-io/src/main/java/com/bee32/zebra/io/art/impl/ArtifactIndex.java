@@ -4,7 +4,7 @@ import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.art.Artifact;
-import com.bee32.zebra.tk.sea.FooIndex;
+import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
  * 定义生产过程或供销中使用的制品（成品或半成品）。<br>
@@ -24,7 +24,7 @@ import com.bee32.zebra.tk.sea.FooIndex;
  */
 @ObjectType(Artifact.class)
 public class ArtifactIndex
-        extends FooIndex {
+        extends QuickIndex {
 
     public ArtifactIndex(IQueryable context) {
         super(context);
