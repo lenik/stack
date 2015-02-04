@@ -30,6 +30,22 @@
         ]]>
     </sql>
 
+    <sql id="criteria">
+        <!-- co -->
+        <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+        <include refid="co.modefilt" />
+        <!-- party -->
+        <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'
+        </if>
+        <if test="peer || type == 1">and peer</if>
+        <if test="customer || type == 2">and customer</if>
+        <if test="supplier || type == 3">and supplier</if>
+        <!-- org -->
+        <if test="type == 0">and not (peer or customer or supplier or shipper)</if>
+        <if test="shipper || type == 4">and shipper</if>
+        <if test="type == 5">and false</if>
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
         <where>
@@ -40,18 +56,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <!-- co -->
-            <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
-            <include refid="co.modefilt" />
-            <!-- party -->
-            <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'</if>
-            <if test="peer || type == 1">and peer</if>
-            <if test="customer || type == 2">and customer</if>
-            <if test="supplier || type == 3">and supplier</if>
-            <!-- org -->
-            <if test="type == 0">and not (peer or customer or supplier or shipper)</if>
-            <if test="shipper || type == 4">and shipper</if>
-            <if test="type == 5">and false</if>
+            <include refid="criteria" />
         </where>
     </select>
 
@@ -106,5 +111,5 @@
     <select id="count" resultType="hashmap">
         select count(*) "total" from org
     </select>
-    
+
 </mapper>

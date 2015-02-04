@@ -2,11 +2,11 @@ package com.bee32.zebra.io.art.impl;
 
 import net.bodz.bas.err.ParseException;
 
-import com.tinylily.model.base.CoEntityCriteria;
+import com.bee32.zebra.tk.sea.MyCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class UOMCriteria
-        extends CoEntityCriteria {
+        extends MyCriteria {
 
     public String property;
     public boolean noProperty;

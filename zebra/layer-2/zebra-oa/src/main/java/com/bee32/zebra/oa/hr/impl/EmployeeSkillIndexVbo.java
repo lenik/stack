@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.hr.EmployeeSkill;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class EmployeeSkillIndexVbo
-        extends SlimIndex_htm<EmployeeSkillIndex, EmployeeSkill> {
+        extends SlimIndex_htm<EmployeeSkillIndex, EmployeeSkill, EmployeeSkillCriteria> {
 
     public EmployeeSkillIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class EmployeeSkillIndexVbo
     }
 
     @Override
+    protected EmployeeSkillCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        EmployeeSkillCriteria criteria = fn.criteriaFromRequest(new EmployeeSkillCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<EmployeeSkill> a, IUiRef<EmployeeSkillIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         EmployeeSkillMapper mapper = ctx.query(EmployeeSkillMapper.class);
-        List<EmployeeSkill> list = a.noList() ? null : postfilt(mapper.all());
+        EmployeeSkillCriteria criteria = ctx.query(EmployeeSkillCriteria.class);
+        List<EmployeeSkill> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -14,11 +14,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.io.sales.SalesOrderItem;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class SalesOrderItemIndexVbo
-        extends SlimIndex_htm<SalesOrderItemIndex, SalesOrderItem> {
+        extends SlimIndex_htm<SalesOrderItemIndex, SalesOrderItem, SalesOrderItemCriteria> {
 
     public static final String[] FIELDS = { "artifact", "altLabel", "altSpec", "quantity", "artifact.uom", "price",
             "total",
@@ -32,16 +33,22 @@ public class SalesOrderItemIndexVbo
     }
 
     @Override
+    protected SalesOrderItemCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        SalesOrderItemCriteria criteria = fn.criteriaFromRequest(new SalesOrderItemCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<SalesOrderItem> a, IUiRef<SalesOrderItemIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrderItemMapper mapper = ctx.query(SalesOrderItemMapper.class);
-
-        SalesOrderItemCriteria criteria = fn.criteriaFromRequest(new SalesOrderItemCriteria(), ctx.getRequest());
+        SalesOrderItemCriteria criteria = ctx.query(SalesOrderItemCriteria.class);
         List<SalesOrderItem> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
-        itab.addDetailFields("footnote");
+        itab.addDetailFields("SalesOrderItemtnote");
         itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (SalesOrderItem o : list) {

@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.erp.fab.FabStep;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class FabStepIndexVbo
-        extends SlimIndex_htm<FabStepIndex, FabStep> {
+        extends SlimIndex_htm<FabStepIndex, FabStep, FabStepCriteria> {
 
     public FabStepIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class FabStepIndexVbo
     }
 
     @Override
+    protected FabStepCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        FabStepCriteria criteria = fn.criteriaFromRequest(new FabStepCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FabStep> a, IUiRef<FabStepIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FabStepMapper mapper = ctx.query(FabStepMapper.class);
-        List<FabStep> list = a.noList() ? null : postfilt(mapper.all());
+        FabStepCriteria criteria = ctx.query(FabStepCriteria.class);
+        List<FabStep> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

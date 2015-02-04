@@ -12,12 +12,13 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.Group;
 
 public class GroupIndexVbo
-        extends SlimIndex_htm<GroupIndex, Group> {
+        extends SlimIndex_htm<GroupIndex, Group, GroupCriteria> {
 
     public GroupIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,10 +27,18 @@ public class GroupIndexVbo
     }
 
     @Override
+    protected GroupCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        GroupCriteria criteria = fn.criteriaFromRequest(new GroupCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Group> a, IUiRef<GroupIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         GroupMapper mapper = ctx.query(GroupMapper.class);
-        List<Group> list = a.noList() ? null : postfilt(mapper.all());
+        GroupCriteria criteria = ctx.query(GroupCriteria.class);
+        List<Group> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

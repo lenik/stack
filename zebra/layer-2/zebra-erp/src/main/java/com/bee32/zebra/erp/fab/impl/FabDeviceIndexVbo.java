@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.erp.fab.FabDevice;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class FabDeviceIndexVbo
-        extends SlimIndex_htm<FabDeviceIndex, FabDevice> {
+        extends SlimIndex_htm<FabDeviceIndex, FabDevice, FabDeviceCriteria> {
 
     public FabDeviceIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class FabDeviceIndexVbo
     }
 
     @Override
+    protected FabDeviceCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        FabDeviceCriteria criteria = fn.criteriaFromRequest(new FabDeviceCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FabDevice> a, IUiRef<FabDeviceIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FabDeviceMapper mapper = ctx.query(FabDeviceMapper.class);
-        List<FabDevice> list = a.noList() ? null : postfilt(mapper.all());
+        FabDeviceCriteria criteria = ctx.query(FabDeviceCriteria.class);
+        List<FabDevice> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class OrgUnitIndexVbo
-        extends SlimIndex_htm<OrgUnitIndex, OrgUnit> {
+        extends SlimIndex_htm<OrgUnitIndex, OrgUnit, OrgUnitCriteria> {
 
     public OrgUnitIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class OrgUnitIndexVbo
     }
 
     @Override
+    protected OrgUnitCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        OrgUnitCriteria criteria = fn.criteriaFromRequest(new OrgUnitCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<OrgUnit> a, IUiRef<OrgUnitIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         OrgUnitMapper mapper = ctx.query(OrgUnitMapper.class);
-        List<OrgUnit> list = a.noList() ? null : postfilt(mapper.all());
+        OrgUnitCriteria criteria = ctx.query(OrgUnitCriteria.class);
+        List<OrgUnit> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

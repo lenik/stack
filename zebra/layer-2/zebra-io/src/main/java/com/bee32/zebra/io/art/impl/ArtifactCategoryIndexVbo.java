@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.art.ArtifactCategory;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class ArtifactCategoryIndexVbo
-        extends SlimIndex_htm<ArtifactCategoryIndex, ArtifactCategory> {
+        extends SlimIndex_htm<ArtifactCategoryIndex, ArtifactCategory, ArtifactCategoryCriteria> {
 
     public ArtifactCategoryIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class ArtifactCategoryIndexVbo
     }
 
     @Override
+    protected ArtifactCategoryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        ArtifactCategoryCriteria criteria = fn.criteriaFromRequest(new ArtifactCategoryCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<ArtifactCategory> a,
             IUiRef<ArtifactCategoryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactCategoryMapper mapper = ctx.query(ArtifactCategoryMapper.class);
-        List<ArtifactCategory> list = a.noList() ? null : postfilt(mapper.all());
+        ArtifactCategoryCriteria criteria = ctx.query(ArtifactCategoryCriteria.class);
+        List<ArtifactCategory> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

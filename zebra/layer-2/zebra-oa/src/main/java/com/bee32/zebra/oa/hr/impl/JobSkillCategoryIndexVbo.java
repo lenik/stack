@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.hr.JobSkillCategory;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class JobSkillCategoryIndexVbo
-        extends SlimIndex_htm<JobSkillCategoryIndex, JobSkillCategory> {
+        extends SlimIndex_htm<JobSkillCategoryIndex, JobSkillCategory, JobSkillCategoryCriteria> {
 
     public JobSkillCategoryIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class JobSkillCategoryIndexVbo
     }
 
     @Override
+    protected JobSkillCategoryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        JobSkillCategoryCriteria criteria = fn.criteriaFromRequest(new JobSkillCategoryCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<JobSkillCategory> a,
             IUiRef<JobSkillCategoryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         JobSkillCategoryMapper mapper = ctx.query(JobSkillCategoryMapper.class);
-        List<JobSkillCategory> list = a.noList() ? null : postfilt(mapper.all());
+        JobSkillCategoryCriteria criteria = ctx.query(JobSkillCategoryCriteria.class);
+        List<JobSkillCategory> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

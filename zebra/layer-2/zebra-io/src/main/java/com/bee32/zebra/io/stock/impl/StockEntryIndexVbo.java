@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.stock.StockEntry;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class StockEntryIndexVbo
-        extends SlimIndex_htm<StockEntryIndex, StockEntry> {
+        extends SlimIndex_htm<StockEntryIndex, StockEntry, StockEntryCriteria> {
 
     public StockEntryIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class StockEntryIndexVbo
     }
 
     @Override
+    protected StockEntryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        StockEntryCriteria criteria = fn.criteriaFromRequest(new StockEntryCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<StockEntry> a, IUiRef<StockEntryIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         StockEntryMapper mapper = ctx.query(StockEntryMapper.class);
-        List<StockEntry> list = a.noList() ? null : postfilt(mapper.all());
+        StockEntryCriteria criteria = ctx.query(StockEntryCriteria.class);
+        List<StockEntry> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

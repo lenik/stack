@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class ContactIndexVbo
-        extends SlimIndex_htm<ContactIndex, Contact> {
+        extends SlimIndex_htm<ContactIndex, Contact, ContactCriteria> {
 
     public static final String[] FIELDS = { "priority", "rename", "usage", "region", "tel", "mobile", "fax", "email",
             "web", "qq", "postalCode", "address1", "address2" };
@@ -29,13 +30,18 @@ public class ContactIndexVbo
     }
 
     @Override
+    protected ContactCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        ContactCriteria criteria = fn.criteriaFromRequest(new ContactCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Contact> a, IUiRef<ContactIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         ContactMapper mapper = ctx.query(ContactMapper.class);
-
-        ContactCriteria criteria = fn.criteriaFromRequest(new ContactCriteria(), ctx.getRequest());
-
+        ContactCriteria criteria = ctx.query(ContactCriteria.class);
         List<Contact> list = postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

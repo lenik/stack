@@ -14,12 +14,13 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.User;
 
 public class ReplyIndexVbo
-        extends SlimIndex_htm<ReplyIndex, Reply> {
+        extends SlimIndex_htm<ReplyIndex, Reply, ReplyCriteria> {
 
     public ReplyIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +29,18 @@ public class ReplyIndexVbo
     }
 
     @Override
+    protected ReplyCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        ReplyCriteria criteria = fn.criteriaFromRequest(new ReplyCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Reply> a, IUiRef<ReplyIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ReplyMapper mapper = ctx.query(ReplyMapper.class);
-        List<Reply> list = a.noList() ? null : postfilt(mapper.all());
+        ReplyCriteria criteria = ctx.query(ReplyCriteria.class);
+        List<Reply> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

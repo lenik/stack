@@ -12,14 +12,14 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.calendar.Diary;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class DiaryIndexVbo
-        extends SlimIndex_htm<DiaryIndex, Diary> {
+        extends SlimIndex_htm<DiaryIndex, Diary, DiaryCriteria> {
 
     public DiaryIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -28,20 +28,23 @@ public class DiaryIndexVbo
     }
 
     @Override
+    protected DiaryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        DiaryMapper mapper = ctx.query(DiaryMapper.class);
+        DiaryCriteria criteria = fn.criteriaFromRequest(new DiaryCriteria(), ctx.getRequest());
+        SwitcherModel<Integer> sw;
+        sw = switchers.entryOf("年份", true, //
+                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
+        criteria.year = sw.getSelection1();
+        criteria.noYear = sw.isSelectNull();
+        return criteria;
+    }
+
+    @Override
     public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Diary> a, IUiRef<DiaryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
-
-        DiaryCriteria criteria = fn.criteriaFromRequest(new DiaryCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so;
-            so = filters.switchPairs("年份", true, //
-                    mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-            criteria.year = so.key;
-            criteria.noYear = so.isNull;
-        }
-
+        DiaryCriteria criteria = ctx.query(DiaryCriteria.class);
         List<Diary> list = postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

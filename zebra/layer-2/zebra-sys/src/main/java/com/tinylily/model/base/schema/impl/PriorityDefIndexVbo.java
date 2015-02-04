@@ -12,12 +12,13 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.PriorityDef;
 
 public class PriorityDefIndexVbo
-        extends SlimIndex_htm<PriorityDefIndex, PriorityDef> {
+        extends SlimIndex_htm<PriorityDefIndex, PriorityDef, PriorityDefCriteria> {
 
     public PriorityDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class PriorityDefIndexVbo
     }
 
     @Override
+    protected PriorityDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        PriorityDefCriteria criteria = fn.criteriaFromRequest(new PriorityDefCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<PriorityDef> a, IUiRef<PriorityDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         PriorityDefMapper mapper = ctx.query(PriorityDefMapper.class);
-        List<PriorityDef> list = a.noList() ? null : postfilt(mapper.all());
+        PriorityDefCriteria criteria = ctx.query(PriorityDefCriteria.class);
+        List<PriorityDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

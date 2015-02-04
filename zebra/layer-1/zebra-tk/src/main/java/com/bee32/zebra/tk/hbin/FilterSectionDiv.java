@@ -1,17 +1,11 @@
 package com.bee32.zebra.tk.hbin;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map.Entry;
 
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlUlTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.t.pojo.Pair;
-
-import com.bee32.zebra.tk.site.SwitchOverride;
-import com.tinylily.model.base.CoObject;
 
 public class FilterSectionDiv
         extends SectionDiv {
@@ -20,45 +14,37 @@ public class FilterSectionDiv
         super(parent, id, "过滤/Filter", IFontAwesomeCharAliases.FA_FILTER);
     }
 
-    public <K> SwitchOverride<K> switchEntity(String label, boolean optional, Iterable<? extends CoObject> list,
-            String param, K currentId, boolean currentIsNo) {
-        List<Pair<K, String>> pairs = new ArrayList<>();
-        for (CoObject o : list)
-            pairs.add(Pair.of((K) o.getId(), o.getLabel()));
-        return switchPairs(label, optional, pairs, param, currentId, currentIsNo);
+    public void build(SwitcherModelGroup switchers) {
+        for (SwitcherModel<?> switcher : switchers.models) {
+            build(switcher);
+        }
     }
 
-    public <K> SwitchOverride<K> switchPairs(String label, boolean optional, Iterable<? extends Entry<K, ?>> pairs,
-            String param, K selection, boolean selectNull) {
-        boolean selectAll = selection == null && !selectNull;
+    public <K> void build(SwitcherModel<K> switcher) {
+        String param = switcher.getParam();
 
         HtmlDivTag div = contentDiv.div().class_("zu-switcher");
-        div.b().text(label + ": ");
+        div.b().text(switcher.getLabel() + ": ");
 
         HtmlUlTag ul = div.ul();
 
-        if (optional) {
+        if (switcher.isOptional()) {
             IHtmlTag tag = ul.li();
-            if (!selectAll)
+            if (!switcher.isSelectAll())
                 tag = tag.a().href("?all-" + param + "=1");
             tag.text("全部");
         }
 
-        for (Entry<K, ?> pair : pairs) {
+        for (Entry<K, ?> pair : switcher.getPairs()) {
             IHtmlTag tag = ul.li();
             K key = pair.getKey();
 
-            if (!optional && selectAll) {
-                selection = key;
-                selectNull = key == null;
-                selectAll = false;
+            if (switcher.isSelectNone() && switcher.isRequired()) {
+                switcher.setSelection1(key);
+                switcher.setSelectNull(key == null);
             }
 
-            boolean selected;
-            if (key == null)
-                selected = selection == null && selectNull;
-            else
-                selected = selection != null && selection.equals(key);
+            boolean selected = switcher.isSelected(key);
 
             if (selected)
                 tag.class_("active");
@@ -71,8 +57,6 @@ public class FilterSectionDiv
 
             tag.text(pair.getValue());
         }
-
-        return new SwitchOverride<K>(selection, selectNull);
     }
 
 }

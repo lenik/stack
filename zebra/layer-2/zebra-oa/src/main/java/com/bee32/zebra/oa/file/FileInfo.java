@@ -4,10 +4,13 @@ import java.util.Date;
 
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.decl.Priority;
+import net.bodz.bas.meta.decl.Volatile;
 import net.bodz.bas.repr.form.NullConvertion;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.bas.repr.form.meta.StdGroup.Status;
 import net.bodz.bas.repr.form.meta.TextInput;
 import net.bodz.bas.repr.path.PathToken;
 
@@ -15,9 +18,11 @@ import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.IMomentInterval;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+@Volatile
 @PathToken("file")
 @IdType(Integer.class)
 public class FileInfo
@@ -65,9 +70,17 @@ public class FileInfo
         return super.getText();
     }
 
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Derived
+    @Override
+    public String getTextPreview() {
+        return super.getTextPreview();
+    }
+
     /**
      * 文件位置
      */
+    @OfGroup(StdGroup.Identity.class)
     @TextInput(maxLength = N_DIR_NAME)
     public String getDirName() {
         return dirName;
@@ -80,6 +93,7 @@ public class FileInfo
     /**
      * 文件名
      */
+    @OfGroup(StdGroup.Identity.class)
     @TextInput(maxLength = N_BASE_NAME)
     public final String getBaseName() {
         return baseName;
@@ -94,7 +108,9 @@ public class FileInfo
     /**
      * 文件长度
      */
+    @OfGroup(StdGroup.Content.class)
     @FormInput(readOnly = true)
+    @Derived
     public long getSize() {
         return size;
     }
@@ -106,9 +122,10 @@ public class FileInfo
     /**
      * SHA-1摘要
      */
-    @OfGroup(StdGroup.Settings.class)
+    @OfGroup(StdGroup.Identity.class)
     @FormInput(readOnly = true)
     @TextInput(maxLength = N_SHA1)
+    @Derived
     public String getSha1() {
         return sha1;
     }
@@ -120,9 +137,10 @@ public class FileInfo
     /**
      * 类型
      */
-    @OfGroup(StdGroup.Settings.class)
+    @OfGroup(StdGroup.Content.class)
     @FormInput(readOnly = true)
     @TextInput(maxLength = N_TYPE)
+    @Derived
     public String getType() {
         return type;
     }
@@ -134,8 +152,9 @@ public class FileInfo
     /**
      * 字符编码
      */
-    @OfGroup(StdGroup.Settings.class)
+    @OfGroup(StdGroup.Content.class)
     @TextInput(maxLength = N_ENCODING)
+    @Derived
     public String getEncoding() {
         return encoding;
     }
@@ -147,6 +166,7 @@ public class FileInfo
     /**
      * 公司
      */
+    @Priority(100)
     @OfGroup(StdGroup.Classification.class)
     public Organization getOrg() {
         return org;
@@ -159,6 +179,7 @@ public class FileInfo
     /**
      * 联系人
      */
+    @Priority(101)
     @OfGroup(StdGroup.Classification.class)
     public Person getPerson() {
         return person;
@@ -186,6 +207,7 @@ public class FileInfo
      * 
      * @placeholder 输入（估算的）价值…
      */
+    @Priority(50)
     public Double getValue() {
         return value;
     }
@@ -197,6 +219,7 @@ public class FileInfo
     /**
      * 生效时间
      */
+    @Priority(1)
     @OfGroup(StdGroup.Schedule.class)
     public Date getActiveDate() {
         return activeDate;
@@ -209,6 +232,7 @@ public class FileInfo
     /**
      * 过期时间
      */
+    @Priority(2)
     @OfGroup(StdGroup.Schedule.class)
     public Date getExpireDate() {
         return expireDate;
@@ -251,10 +275,22 @@ public class FileInfo
     /**
      * 经办人
      */
-    // @OfGroup(OaGroups.UserInteraction.class)
+    @Priority(100)
+    // @OfGroup(StdGroup.Classification.class)
     @Override
     public User getOp() {
         return super.getOp();
+    }
+
+    /**
+     * @label Phase
+     * @label.zh 阶段
+     */
+    @DetailLevel(DetailLevel.HIDDEN)
+    @OfGroup(Status.class)
+    @Override
+    public PhaseDef getPhase() {
+        return super.getPhase();
     }
 
 }

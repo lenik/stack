@@ -15,16 +15,16 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.oa.accnt.AccountingEvent;
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.sys.Schemas;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.impl.FormDefCriteria;
 import com.tinylily.model.base.schema.impl.FormDefMapper;
 
 public class AccountingEventIndexVbo
-        extends SlimIndex_htm<AccountingEventIndex, AccountingEvent> {
+        extends SlimIndex_htm<AccountingEventIndex, AccountingEvent, AccountingEventCriteria> {
 
     public AccountingEventIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -34,30 +34,35 @@ public class AccountingEventIndexVbo
     }
 
     @Override
+    protected AccountingEventCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
+
+        AccountingEventCriteria criteria = fn.criteriaFromRequest(new AccountingEventCriteria(), ctx.getRequest());
+        SwitcherModel<Integer> sw;
+        sw = switchers.entityOf("表单", true, //
+                ctx.query(FormDefMapper.class).filter(FormDefCriteria.forSchema(Schemas.ACCOUNTING)), //
+                "form", criteria.formId, criteria.noForm);
+        criteria.formId = sw.getSelection1();
+        criteria.noForm = sw.isSelectNull();
+
+        // HtmlDivTag valDiv = out.div().text("金额：");
+        // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
+
+        sw = switchers.entryOf("年份", false, //
+                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
+        criteria.year = sw.getSelection1();
+        criteria.noYear = sw.isSelectNull();
+
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<AccountingEvent> a,
             IUiRef<AccountingEventIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
-
-        AccountingEventCriteria criteria = fn.criteriaFromRequest(new AccountingEventCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so;
-            so = filters.switchEntity("表单", true, //
-                    ctx.query(FormDefMapper.class).filter(FormDefCriteria.forSchema(Schemas.ACCOUNTING)), //
-                    "form", criteria.formId, criteria.noForm);
-            criteria.formId = so.key;
-            criteria.noForm = so.isNull;
-
-            // HtmlDivTag valDiv = out.div().text("金额：");
-            // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
-
-            so = filters.switchPairs("年份", false, //
-                    mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-            criteria.year = so.key;
-            criteria.noYear = so.isNull;
-        }
-
+        AccountingEventCriteria criteria = ctx.query(AccountingEventCriteria.class);
         List<AccountingEvent> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

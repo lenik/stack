@@ -15,16 +15,16 @@ import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.io.art.ArtifactCategory;
 import com.bee32.zebra.io.art.SupplyMethod;
 import com.bee32.zebra.io.art.UOM;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.PageStruct;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
 
 public class ArtifactIndexVbo
-        extends SlimIndex_htm<ArtifactIndex, Artifact> {
+        extends SlimIndex_htm<ArtifactIndex, Artifact, ArtifactCriteria> {
 
     public ArtifactIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -42,28 +42,33 @@ public class ArtifactIndexVbo
     }
 
     @Override
+    protected ArtifactCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        ArtifactCriteria criteria = fn.criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
+
+        SwitcherModel<Integer> sw1;
+        sw1 = switchers.entityOf("分类", false, //
+                ctx.query(ArtifactCategoryMapper.class).filter(ArtifactCategoryCriteria.below(1)), //
+                "cat", criteria.categoryId, criteria.noCategory);
+        criteria.categoryId = sw1.getSelection1();
+        criteria.noCategory = sw1.isSelectNull();
+
+        SwitcherModel<SupplyMethod> sw2;
+        sw2 = switchers.entryOf("供应方式", true, //
+                Listing.pairsValLabel(SupplyMethod.METADATA.geLocalValues()), //
+                "supply", criteria.supplyMethod, criteria.noSupplyMethod);
+        criteria.supplyMethod = sw2.getSelection1();
+        criteria.noSupplyMethod = sw2.isSelectNull();
+
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Artifact> a, IUiRef<ArtifactIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);
-        ArtifactCriteria criteria = fn.criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so1;
-            so1 = filters.switchEntity("分类", false, //
-                    ctx.query(ArtifactCategoryMapper.class).filter(ArtifactCategoryCriteria.below(1)), //
-                    "cat", criteria.categoryId, criteria.noCategory);
-            criteria.categoryId = so1.key;
-            criteria.noCategory = so1.isNull;
-
-            SwitchOverride<SupplyMethod> so2;
-            so2 = filters.switchPairs("供应方式", true, //
-                    Listing.pairsValLabel(SupplyMethod.METADATA.geLocalValues()), //
-                    "supply", criteria.supplyMethod, criteria.noSupplyMethod);
-            criteria.supplyMethod = so2.key;
-            criteria.noSupplyMethod = so2.isNull;
-        }
-
+        ArtifactCriteria criteria = ctx.query(ArtifactCriteria.class);
         List<Artifact> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
@@ -87,5 +92,4 @@ public class ArtifactIndexVbo
         if (a.extradata != null)
             dumpFullData(a.extradata, list);
     }
-
 }

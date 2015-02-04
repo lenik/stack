@@ -14,11 +14,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.io.sales.Delivery;
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class DeliveryIndexVbo
-        extends SlimIndex_htm<DeliveryIndex, Delivery> {
+        extends SlimIndex_htm<DeliveryIndex, Delivery, DeliveryCriteria> {
 
     public DeliveryIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -27,11 +28,19 @@ public class DeliveryIndexVbo
     }
 
     @Override
+    protected DeliveryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        DeliveryCriteria criteria = fn.criteriaFromRequest(new DeliveryCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Delivery> a, IUiRef<DeliveryIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         DeliveryMapper mapper = ctx.query(DeliveryMapper.class);
-        List<Delivery> list = a.noList() ? null : postfilt(mapper.all());
+        DeliveryCriteria criteria = ctx.query(DeliveryCriteria.class);
+        List<Delivery> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

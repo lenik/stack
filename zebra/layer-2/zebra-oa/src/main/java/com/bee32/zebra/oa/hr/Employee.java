@@ -7,8 +7,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.bas.repr.form.meta.StdGroup.Schedule;
+
 import com.bee32.zebra.oa.contact.Person;
-import com.tinylily.model.base.CoEntity;
+import com.tinylily.model.base.CoMomentInterval;
 import com.tinylily.model.base.IdType;
 
 /**
@@ -21,7 +26,7 @@ import com.tinylily.model.base.IdType;
  */
 @IdType(Integer.class)
 public class Employee
-        extends CoEntity<Integer> {
+        extends CoMomentInterval<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,9 +39,6 @@ public class Employee
     int duty;
     int workAbility;
     BigDecimal pension = BigDecimal.ZERO;
-
-    Date employedDate;
-    Date resignedDate;
 
     // List<LaborContract> laborContracts = new ArrayList<LaborContract>();
     List<EmployeeSkill> skills = new ArrayList<EmployeeSkill>();
@@ -137,12 +139,13 @@ public class Employee
      * 
      * 雇员进入公司的日期。
      */
+    @OfGroup(StdGroup.Schedule.class)
     public Date getEmployedDate() {
-        return employedDate;
+        return getBeginDate();
     }
 
     public void setEmployedDate(Date employedDate) {
-        this.employedDate = employedDate;
+        setBeginDate(employedDate);
     }
 
     /**
@@ -150,12 +153,27 @@ public class Employee
      * 
      * 雇员离开公司的日期。
      */
+    @OfGroup(StdGroup.Schedule.class)
     public Date getResignedDate() {
-        return resignedDate;
+        return getEndDate();
     }
 
     public void setResignedDate(Date resignedDate) {
-        this.resignedDate = resignedDate;
+        setEndDate(resignedDate);
+    }
+
+    @DetailLevel(DetailLevel.HIDDEN)
+    @OfGroup(Schedule.class)
+    @Override
+    public Date getBeginDate() {
+        return super.getBeginDate();
+    }
+
+    @DetailLevel(DetailLevel.HIDDEN)
+    @Override
+    @OfGroup(Schedule.class)
+    public Date getEndDate() {
+        return super.getEndDate();
     }
 
     /**
@@ -184,14 +202,15 @@ public class Employee
         Calendar current = Calendar.getInstance();
         current.setTime(currentDate);
         Calendar resigned = Calendar.getInstance();
-        resigned.setTime(resignedDate);
+        resigned.setTime(getResignedDate());
         Calendar employed = Calendar.getInstance();
-        employed.setTime(employedDate);
+        employed.setTime(getEmployedDate());
 
         // 计算方法:
         // 月数之差=年份相减*12+月份之差
         // 工龄(年)=月数之差/12
 
+        Date resignedDate = getResignedDate();
         int months = 0;
 
         if (resignedDate != null && currentDate.after(resignedDate)) {

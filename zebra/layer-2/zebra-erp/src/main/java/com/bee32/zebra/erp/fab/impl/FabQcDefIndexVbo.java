@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.erp.fab.FabQcDef;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class FabQcDefIndexVbo
-        extends SlimIndex_htm<FabQcDefIndex, FabQcDef> {
+        extends SlimIndex_htm<FabQcDefIndex, FabQcDef, FabQcDefCriteria> {
 
     public FabQcDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class FabQcDefIndexVbo
     }
 
     @Override
+    protected FabQcDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        FabQcDefCriteria criteria = fn.criteriaFromRequest(new FabQcDefCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FabQcDef> a, IUiRef<FabQcDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FabQcDefMapper mapper = ctx.query(FabQcDefMapper.class);
-        List<FabQcDef> list = a.noList() ? null : postfilt(mapper.all());
+        FabQcDefCriteria criteria = ctx.query(FabQcDefCriteria.class);
+        List<FabQcDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

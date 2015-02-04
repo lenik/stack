@@ -14,11 +14,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.sys.Schemas;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SectionDiv;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
 import com.tinylily.model.base.schema.impl.CategoryDefMapper;
@@ -26,7 +26,7 @@ import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
 import com.tinylily.model.base.schema.impl.PhaseDefMapper;
 
 public class TopicIndexVbo
-        extends SlimIndex_htm<TopicIndex, Topic> {
+        extends SlimIndex_htm<TopicIndex, Topic, TopicCriteria> {
 
     boolean extensions;
 
@@ -37,35 +37,40 @@ public class TopicIndexVbo
     }
 
     @Override
+    protected TopicCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        TopicMapper mapper = ctx.query(TopicMapper.class);
+        TopicCriteria criteria = fn.criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
+
+        SwitcherModel<Integer> sw;
+        sw = switchers.entityOf("分类", true, //
+                ctx.query(CategoryDefMapper.class).filter(CategoryDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
+                "cat", criteria.categoryId, criteria.noCategory);
+        criteria.categoryId = sw.getSelection1();
+        criteria.noCategory = sw.isSelectNull();
+
+        sw = switchers.entityOf("阶段", true, //
+                ctx.query(PhaseDefMapper.class).filter(PhaseDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
+                "phase", criteria.phaseId, criteria.noPhase);
+        criteria.phaseId = sw.getSelection1();
+        criteria.noPhase = sw.isSelectNull();
+
+        // HtmlDivTag valDiv = out.div().text("金额：");
+        // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
+
+        sw = switchers.entryOf("年份", true, //
+                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
+        criteria.year = sw.getSelection1();
+        criteria.noYear = sw.isSelectNull();
+
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
+        TopicCriteria criteria = ctx.query(TopicCriteria.class);
         TopicMapper mapper = ctx.query(TopicMapper.class);
-
-        TopicCriteria criteria = fn.criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so;
-            so = filters.switchEntity("分类", true, //
-                    ctx.query(CategoryDefMapper.class).filter(CategoryDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
-                    "cat", criteria.categoryId, criteria.noCategory);
-            criteria.categoryId = so.key;
-            criteria.noCategory = so.isNull;
-
-            so = filters.switchEntity("阶段", true, //
-                    ctx.query(PhaseDefMapper.class).filter(PhaseDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
-                    "phase", criteria.phaseId, criteria.noPhase);
-            criteria.phaseId = so.key;
-            criteria.noPhase = so.isNull;
-
-            // HtmlDivTag valDiv = out.div().text("金额：");
-            // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
-
-            so = filters.switchPairs("年份", true, //
-                    mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-            criteria.year = so.key;
-            criteria.noYear = so.isNull;
-        }
-
         List<Topic> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

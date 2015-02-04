@@ -1,9 +1,9 @@
 package com.bee32.zebra.erp.fab.impl;
 
-import com.tinylily.model.base.CoEntityCriteria;
+import com.bee32.zebra.tk.sea.MyCriteria;
 
 public class FabQcDefCriteria
-        extends CoEntityCriteria {
+        extends MyCriteria {
 
     Integer categoryId;
 

@@ -7,11 +7,11 @@ import java.util.TreeSet;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.IntRange;
 
-import com.tinylily.model.base.CoEntityCriteria;
+import com.bee32.zebra.tk.sea.MyCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class PartyCriteria
-        extends CoEntityCriteria {
+        extends MyCriteria {
 
     public int type = PartyType.UNSET;
     IntRange ageRange;

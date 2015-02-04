@@ -99,41 +99,10 @@ public abstract class SlimForm_htm<T extends CoObject>
     protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
 
-        Class<?> type = ref.getValueType();
-        T obj = ref.get();
-        Number id = (Number) obj.getId();
-
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         if (!pageLayout.hideFramework) {
-            String tablename = TableName.fn.tablename(type);
-            FnMapper fnMapper = ctx.query(FnMapper.class);
-            PrevNext prevNext = fnMapper.prevNext("public", tablename, //
-                    id == null ? Integer.MAX_VALUE : id.longValue());
-            if (prevNext == null)
-                prevNext = new PrevNext();
-
-            IHtmlTag headCol2 = ctx.getTag(ID.headCol2);
-            HtmlDivTag adjs = headCol2.div().class_("zu-links");
-            adjs.div().text("操作附近的数据:");
-            HtmlUlTag ul = adjs.ul();
-            HtmlATag newLink = ul.li().a().href("../new/");
-            newLink.span().class_("fa icon").text(FA_FILE_O);
-            newLink.text("新建");
-
-            HtmlLiTag navs = ul.li();
-            IHtmlTag prevLink = navs;
-            if (prevNext.getPrev() != null)
-                prevLink = prevLink.a().href("../" + prevNext.getPrev() + "/");
-            prevLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_LEFT);
-            prevLink.text("前滚翻");
-
-            IHtmlTag nextLink = navs;
-            if (prevNext.getNext() != null)
-                nextLink = nextLink.a().href("../" + prevNext.getNext() + "/");
-            nextLink.text("后滚翻 ");
-            nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
+            setUpFrame(ctx, out, ref, options);
         }
-
         process(ctx, out, ref, options);
         return out;
     }
@@ -186,6 +155,42 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
+    protected void setUpFrame(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        Class<?> type = ref.getValueType();
+        T obj = ref.get();
+        Number id = (Number) obj.getId();
+
+        String tablename = TableName.fn.tablename(type);
+        FnMapper fnMapper = ctx.query(FnMapper.class);
+
+        // FIXME consider access control and criteria.
+        PrevNext prevNext = fnMapper.prevNext("public", tablename, //
+                id == null ? Integer.MAX_VALUE : id.longValue());
+        if (prevNext == null)
+            prevNext = new PrevNext();
+
+        IHtmlTag headCol2 = ctx.getTag(ID.headCol2);
+        HtmlDivTag adjs = headCol2.div().class_("zu-links");
+        adjs.div().text("操作附近的数据:");
+        HtmlUlTag ul = adjs.ul();
+        HtmlATag newLink = ul.li().a().href("../new/");
+        newLink.spanText("fa icon", FA_FILE_O, "新建");
+
+        HtmlLiTag navs = ul.li();
+        IHtmlTag prevLink = navs;
+        if (prevNext.getPrev() != null)
+            prevLink = prevLink.a().href("../" + prevNext.getPrev() + "/");
+        prevLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_LEFT);
+        prevLink.text("前滚翻");
+
+        IHtmlTag nextLink = navs;
+        if (prevNext.getNext() != null)
+            nextLink = nextLink.a().href("../" + prevNext.getNext() + "/");
+        nextLink.text("后滚翻 ");
+        nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
+    }
+
     @Override
     protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
@@ -214,7 +219,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         switch (simpleName) {
         case "Object":
             return buildBasicGroup(ctx, out, instanceRef, group, options);
-        case "Content":
+            // case "Content":
         case "Ranking":
         case "Metadata":
         case "Visual":
@@ -271,6 +276,7 @@ public abstract class SlimForm_htm<T extends CoObject>
 
         Set<String> includes = new HashSet<String>();
         Set<String> excludes = new HashSet<String>();
+        excludes.add("acl");
         selectFields(group, includes, excludes);
         if (includes.isEmpty())
             includes = null;

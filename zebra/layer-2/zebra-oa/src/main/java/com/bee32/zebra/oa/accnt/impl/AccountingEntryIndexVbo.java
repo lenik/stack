@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.accnt.AccountingEntry;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class AccountingEntryIndexVbo
-        extends SlimIndex_htm<AccountingEntryIndex, AccountingEntry> {
+        extends SlimIndex_htm<AccountingEntryIndex, AccountingEntry, AccountingEntryCriteria> {
 
     public static final String[] FIELDS = { "event", "account", "debitSide", "value" };
 
@@ -28,11 +29,19 @@ public class AccountingEntryIndexVbo
     }
 
     @Override
+    protected AccountingEntryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        AccountingEntryCriteria criteria = fn.criteriaFromRequest(new AccountingEntryCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<AccountingEntry> a,
             IUiRef<AccountingEntryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);
-        List<AccountingEntry> list = a.noList() ? null : postfilt(mapper.all());
+        AccountingEntryCriteria criteria = ctx.query(AccountingEntryCriteria.class);
+        List<AccountingEntry> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

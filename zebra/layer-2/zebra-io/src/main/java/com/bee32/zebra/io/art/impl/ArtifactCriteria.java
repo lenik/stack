@@ -5,11 +5,11 @@ import net.bodz.bas.t.range.DoubleRange;
 import net.bodz.bas.t.range.IntRange;
 
 import com.bee32.zebra.io.art.SupplyMethod;
-import com.tinylily.model.base.CoEntityCriteria;
+import com.bee32.zebra.tk.sea.MyCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class ArtifactCriteria
-        extends CoEntityCriteria {
+        extends MyCriteria {
 
     public Integer categoryId;
     public String skuCode_;

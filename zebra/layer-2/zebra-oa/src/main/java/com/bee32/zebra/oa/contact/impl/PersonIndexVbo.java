@@ -13,14 +13,14 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Person;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class PersonIndexVbo
-        extends SlimIndex_htm<PersonIndex, Person> {
+        extends SlimIndex_htm<PersonIndex, Person, PersonCriteria> {
 
     public PersonIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -30,24 +30,29 @@ public class PersonIndexVbo
     }
 
     @Override
+    protected PersonCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        PersonMapper mapper = ctx.query(PersonMapper.class);
+        PersonCriteria criteria = fn.criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
+
+        SwitcherModel<Integer> sw1;
+        sw1 = switchers.entryOf("类型", false, //
+                PartyType.list, "type", criteria.type, false);
+        criteria.type = sw1.getSelection1();
+
+        SwitcherModel<String> sw2;
+        sw2 = switchers.entryOf("姓氏", true, //
+                mapper.histoBySurname(), "surname", criteria.surname, false);
+        criteria.surname = sw2.getSelection1();
+
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Person> a, IUiRef<PersonIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         PersonMapper mapper = ctx.query(PersonMapper.class);
-
-        PersonCriteria criteria = fn.criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so;
-            so = filters.switchPairs("类型", false, //
-                    PartyType.list, "type", criteria.type, false);
-            criteria.type = so.key;
-
-            SwitchOverride<String> so1;
-            so1 = filters.switchPairs("姓氏", true, //
-                    mapper.histoBySurname(), "surname", criteria.surname, false);
-            criteria.surname = so1.key;
-        }
-
+        PersonCriteria criteria = ctx.query(PersonCriteria.class);
         List<Person> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

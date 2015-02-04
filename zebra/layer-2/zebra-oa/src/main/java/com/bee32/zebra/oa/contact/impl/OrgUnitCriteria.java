@@ -3,11 +3,11 @@ package com.bee32.zebra.oa.contact.impl;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.IntRange;
 
-import com.tinylily.model.base.CoEntityCriteria;
+import com.bee32.zebra.tk.sea.MyCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class OrgUnitCriteria
-        extends CoEntityCriteria {
+        extends MyCriteria {
 
     Integer orgId;
     IntRange staffCountRange;

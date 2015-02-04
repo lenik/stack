@@ -6,11 +6,11 @@ import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 
 import com.bee32.zebra.io.stock.PlaceUsage;
-import com.tinylily.model.base.CoEntityCriteria;
+import com.bee32.zebra.tk.sea.MyCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class PlaceCriteria
-        extends CoEntityCriteria {
+        extends MyCriteria {
 
     PlaceUsage usage;
     DoubleRange volumeRange;

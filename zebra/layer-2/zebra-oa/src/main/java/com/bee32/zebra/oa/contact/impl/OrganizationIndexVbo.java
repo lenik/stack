@@ -13,14 +13,14 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class OrganizationIndexVbo
-        extends SlimIndex_htm<OrganizationIndex, Organization> {
+        extends SlimIndex_htm<OrganizationIndex, Organization, OrganizationCriteria> {
 
     public OrganizationIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -30,19 +30,24 @@ public class OrganizationIndexVbo
     }
 
     @Override
+    protected OrganizationCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        OrganizationCriteria criteria = fn.criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
+
+        SwitcherModel<Integer> sw;
+        sw = switchers.entryOf("类型", false, //
+                PartyType.list, "type", criteria.type, false);
+        criteria.type = sw.getSelection1();
+
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Organization> a, IUiRef<OrganizationIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);
-        OrganizationCriteria criteria = fn.criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so;
-            so = filters.switchPairs("类型", false, //
-                    PartyType.list, "type", criteria.type, false);
-            criteria.type = so.key;
-        }
-
+        OrganizationCriteria criteria = ctx.query(OrganizationCriteria.class);
         List<Organization> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

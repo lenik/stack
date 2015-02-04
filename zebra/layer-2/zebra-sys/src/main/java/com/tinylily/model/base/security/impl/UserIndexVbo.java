@@ -12,12 +12,13 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.User;
 
 public class UserIndexVbo
-        extends SlimIndex_htm<UserIndex, User> {
+        extends SlimIndex_htm<UserIndex, User, UserCriteria> {
 
     public UserIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -27,10 +28,18 @@ public class UserIndexVbo
     }
 
     @Override
+    protected UserCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        UserCriteria criteria = fn.criteriaFromRequest(new UserCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UserMapper mapper = ctx.query(UserMapper.class);
-        List<User> list = a.noList() ? null : postfilt(mapper.all());
+        UserCriteria criteria = ctx.query(UserCriteria.class);
+        List<User> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -13,11 +13,12 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.sales.SalesOrder;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class SalesOrderIndexVbo
-        extends SlimIndex_htm<SalesOrderIndex, SalesOrder> {
+        extends SlimIndex_htm<SalesOrderIndex, SalesOrder, SalesOrderCriteria> {
 
     public SalesOrderIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -26,11 +27,19 @@ public class SalesOrderIndexVbo
     }
 
     @Override
+    protected SalesOrderCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        SalesOrderCriteria criteria = fn.criteriaFromRequest(new SalesOrderCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<SalesOrder> a, IUiRef<SalesOrderIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrderMapper mapper = ctx.query(SalesOrderMapper.class);
-        List<SalesOrder> list = a.noList() ? null : postfilt(mapper.all());
+        SalesOrderCriteria criteria = ctx.query(SalesOrderCriteria.class);
+        List<SalesOrder> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

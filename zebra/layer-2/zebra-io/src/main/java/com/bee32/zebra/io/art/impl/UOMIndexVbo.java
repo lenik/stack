@@ -12,15 +12,15 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.art.UOM;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
 
 public class UOMIndexVbo
-        extends SlimIndex_htm<UOMIndex, UOM> {
+        extends SlimIndex_htm<UOMIndex, UOM, UOMCriteria> {
 
     public UOMIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -29,20 +29,25 @@ public class UOMIndexVbo
     }
 
     @Override
+    protected UOMCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        UOMCriteria criteria = fn.criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
+
+        SwitcherModel<String> sw;
+        sw = switchers.entryOf("属性", true, //
+                Listing.pairsValString("数量", "长度", "质量"), //
+                "property", criteria.property, criteria.noProperty);
+        criteria.property = sw.getSelection1();
+        criteria.noProperty = sw.isSelectNull();
+
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<UOM> a, IUiRef<UOMIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UOMMapper mapper = ctx.query(UOMMapper.class);
-        UOMCriteria criteria = fn.criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<String> so;
-            so = filters.switchPairs("属性", true, //
-                    Listing.pairsValString("数量", "长度", "质量"), //
-                    "property", criteria.property, criteria.noProperty);
-            criteria.property = so.key;
-            criteria.noProperty = so.isNull;
-        }
-
+        UOMCriteria criteria = ctx.query(UOMCriteria.class);
         List<UOM> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

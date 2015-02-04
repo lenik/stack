@@ -15,11 +15,12 @@ import com.bee32.zebra.io.stock.Place;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 
 public class PlaceIndexVbo
-        extends SlimIndex_htm<PlaceIndex, Place> {
+        extends SlimIndex_htm<PlaceIndex, Place, PlaceCriteria> {
 
     public PlaceIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +29,18 @@ public class PlaceIndexVbo
     }
 
     @Override
+    protected PlaceCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        PlaceCriteria criteria = fn.criteriaFromRequest(new PlaceCriteria(), ctx.getRequest());
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         PlaceMapper mapper = ctx.query(PlaceMapper.class);
-        List<Place> list = a.noList() ? null : postfilt(mapper.all());
+        PlaceCriteria criteria = ctx.query(PlaceCriteria.class);
+        List<Place> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

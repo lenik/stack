@@ -11,15 +11,15 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.TagDef;
 
 public class TagDefIndexVbo
-        extends SlimIndex_htm<TagDefIndex, TagDef> {
+        extends SlimIndex_htm<TagDefIndex, TagDef, TagDefCriteria> {
 
     public TagDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -28,20 +28,22 @@ public class TagDefIndexVbo
     }
 
     @Override
+    protected TagDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        TagDefCriteria criteria = fn.criteriaFromRequest(new TagDefCriteria(), ctx.getRequest());
+        SwitcherModel<Integer> sw;
+        sw = switchers.entityOf("向量", false, //
+                ctx.query(TagSetDefMapper.class).all(), //
+                "tagv", criteria.tagSetId, false);
+        criteria.tagSetId = sw.getSelection1();
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         TagDefMapper mapper = ctx.query(TagDefMapper.class);
-
-        TagDefCriteria criteria = fn.criteriaFromRequest(new TagDefCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so;
-            so = filters.switchEntity("向量", false, //
-                    ctx.query(TagSetDefMapper.class).all(), //
-                    "tagv", criteria.tagSetId, false);
-            criteria.tagSetId = so.key;
-        }
-
+        TagDefCriteria criteria = ctx.query(TagDefCriteria.class);
         List<TagDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

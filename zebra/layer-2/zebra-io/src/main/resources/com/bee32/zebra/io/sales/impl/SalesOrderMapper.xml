@@ -87,6 +87,11 @@
         ]]>
     </sql>
 
+    <sql id="criteria">
+        <if test="topicId != null">and a.topic=#{topicId}</if>
+        <include refid="co.modefilt" />
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
         <where>
@@ -97,8 +102,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="topicId != null">and a.topic=#{topicId}</if>
-            <include refid="co.modefilt" />
+            <include refid="criteria" />
         </where>
     </select>
 

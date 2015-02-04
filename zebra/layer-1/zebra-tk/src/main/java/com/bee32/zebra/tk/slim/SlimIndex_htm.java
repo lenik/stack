@@ -44,6 +44,8 @@ import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
+import com.bee32.zebra.tk.hbin.FilterSectionDiv;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.repr.QuickIndex;
 import com.bee32.zebra.tk.repr.QuickIndexFormat;
@@ -55,10 +57,10 @@ import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.sql.MapperUtil;
 import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
-import com.tinylily.model.base.CoEntityCriteria;
 import com.tinylily.model.base.CoObject;
+import com.tinylily.model.base.CoObjectCriteria;
 
-public abstract class SlimIndex_htm<X extends QuickIndex, T>
+public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         extends AbstractHtmlViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
@@ -111,6 +113,10 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T>
         if (arrivedHere && index.defaultPage && enter(ctx))
             return out;
 
+        SwitcherModelGroup switchers = new SwitcherModelGroup();
+        CoObjectCriteria criteria = buildSwitchers(ctx, switchers);
+        ctx.getRequest().setAttribute(criteria.getClass().getName(), criteria);
+
         if (index.format == QuickIndexFormat.JSON) {
             PrintWriter writer = ctx.getResponse().getWriter();
             buildJson(ctx, writer, ref, options);
@@ -159,27 +165,32 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T>
                 refdocsDiv.h2().text("管理文献");
                 refdocsDiv.ul().id(ID.infoman_ul);
             }
-
-            titleInfo(ctx, ref, arrivedHere);
-        }
+        } // showFramework
 
         PageStruct page = new PageStruct(ctx);
+        DataViewAnchors<T> a = new DataViewAnchors<T>();
+        if (index.format == QuickIndexFormat.HTML) {
+            a.frame = page.mainCol;
+            a.data = page.mainCol;
+            a.extradata = page.extradata;
+            a.dataList = false;
+        } else {
+            a.frame = out;
+            a.data = out;
+            a.extradata = null;
+            a.dataList = false;
+        }
 
         if (arrivedHere) {
-            DataViewAnchors<T> a = new DataViewAnchors<T>();
-            if (index.format == QuickIndexFormat.HTML) {
-                a.frame = page.mainCol;
-                a.data = page.mainCol;
-                a.extradata = page.extradata;
-                a.dataList = false;
-            } else {
-                a.frame = out;
-                a.data = out;
-                a.extradata = null;
-                a.dataList = false;
-            }
-            dataIndex(ctx, a, ref, options);
+            FilterSectionDiv filtersDiv = new FilterSectionDiv(a.frame, "s-filter");
+            filtersDiv.build(switchers);
         }
+
+        if (!layout.hideFramework)
+            titleInfo(ctx, ref, arrivedHere);
+
+        if (arrivedHere)
+            dataIndex(ctx, a, ref, options);
 
         afterData(ctx, out, ref, options);
 
@@ -191,9 +202,12 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T>
         return out;
     }
 
+    protected abstract CoObjectCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException;
+
     protected void titleInfo(IHtmlViewContext ctx, IUiRef<X> ref, boolean indexPage) {
         X manager = ref.get();
-        IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(manager.getObjectType());
+        IMapperTemplate<?, C> mapper = MapperUtil.getMapperTemplate(manager.getObjectType());
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
         PageStruct p = new PageStruct(ctx);
@@ -203,11 +217,12 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T>
         HtmlPTag subTitle = p.title.p().class_("sub");
         subTitle.verbatim(docText.getHeadPar());
 
-        Map<String, Long> countMap = mapper.count();
+        // ctx.query(criteria)
+        Map<String, Number> countMap = mapper.count();
         HtmlUlTag statUl = p.stat.ul();
         for (String key : countMap.keySet()) {
             String name = Counters.displayName(key);
-            long count = countMap.get(key);
+            long count = countMap.get(key).longValue();
             statUl.li().text(name + " " + count + " 条");
         }
 
@@ -330,7 +345,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T>
 
     protected static class fn {
 
-        public static <C extends CoEntityCriteria> C criteriaFromRequest(C criteria, HttpServletRequest req)
+        public static <C extends CoObjectCriteria> C criteriaFromRequest(C criteria, HttpServletRequest req)
                 throws ViewBuilderException {
             try {
                 HttpSnap snap = (HttpSnap) req.getAttribute(HttpSnap.class.getName());

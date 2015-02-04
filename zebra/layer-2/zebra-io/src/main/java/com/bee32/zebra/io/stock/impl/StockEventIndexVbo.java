@@ -13,10 +13,10 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.stock.StockEvent;
 import com.bee32.zebra.sys.Schemas;
-import com.bee32.zebra.tk.hbin.FilterSectionDiv;
 import com.bee32.zebra.tk.hbin.IndexTable;
+import com.bee32.zebra.tk.hbin.SwitcherModel;
+import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.SwitchOverride;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
 import com.tinylily.model.base.schema.impl.CategoryDefMapper;
@@ -24,7 +24,7 @@ import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
 import com.tinylily.model.base.schema.impl.PhaseDefMapper;
 
 public class StockEventIndexVbo
-        extends SlimIndex_htm<StockEventIndex, StockEvent> {
+        extends SlimIndex_htm<StockEventIndex, StockEvent, StockEventCriteria> {
 
     public StockEventIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -34,36 +34,41 @@ public class StockEventIndexVbo
     }
 
     @Override
+    protected StockEventCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+            throws ViewBuilderException {
+        StockEventMapper mapper = ctx.query(StockEventMapper.class);
+        StockEventCriteria criteria = fn.criteriaFromRequest(new StockEventCriteria(), ctx.getRequest());
+
+        SwitcherModel<Integer> sw;
+        sw = switchers.entityOf("分类", true, //
+                ctx.query(CategoryDefMapper.class).filter(CategoryDefCriteria.forSchema(Schemas.STOCK)), //
+                "cat", criteria.categoryId, criteria.noCategory);
+        criteria.categoryId = sw.getSelection1();
+        criteria.noCategory = sw.isSelectNull();
+
+        sw = switchers.entityOf("阶段", true, //
+                ctx.query(PhaseDefMapper.class).filter(PhaseDefCriteria.forSchema(Schemas.STOCK)), //
+                "phase", criteria.phaseId, criteria.noPhase);
+        criteria.phaseId = sw.getSelection1();
+        criteria.noPhase = sw.isSelectNull();
+
+        // HtmlDivTag valDiv = out.div().text("金额：");
+        // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
+
+        sw = switchers.entryOf("年份", false, //
+                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
+        criteria.year = sw.getSelection1();
+        criteria.noYear = sw.isSelectNull();
+
+        return criteria;
+    }
+
+    @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<StockEvent> a, IUiRef<StockEventIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         StockEventMapper mapper = ctx.query(StockEventMapper.class);
-
-        StockEventCriteria criteria = fn.criteriaFromRequest(new StockEventCriteria(), ctx.getRequest());
-        FilterSectionDiv filters = new FilterSectionDiv(a.frame, "s-filter");
-        {
-            SwitchOverride<Integer> so;
-            so = filters.switchEntity("分类", true, //
-                    ctx.query(CategoryDefMapper.class).filter(CategoryDefCriteria.forSchema(Schemas.STOCK)), //
-                    "cat", criteria.categoryId, criteria.noCategory);
-            criteria.categoryId = so.key;
-            criteria.noCategory = so.isNull;
-
-            so = filters.switchEntity("阶段", true, //
-                    ctx.query(PhaseDefMapper.class).filter(PhaseDefCriteria.forSchema(Schemas.STOCK)), //
-                    "phase", criteria.phaseId, criteria.noPhase);
-            criteria.phaseId = so.key;
-            criteria.noPhase = so.isNull;
-
-            // HtmlDivTag valDiv = out.div().text("金额：");
-            // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
-
-            so = filters.switchPairs("年份", false, //
-                    mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-            criteria.year = so.key;
-            criteria.noYear = so.isNull;
-        }
-
+        StockEventCriteria criteria = ctx.query(StockEventCriteria.class);
         List<StockEvent> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);

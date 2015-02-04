@@ -2,11 +2,11 @@ package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.err.ParseException;
 
-import com.tinylily.model.base.CoEntityCriteria;
+import com.bee32.zebra.tk.sea.MyCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class AccountCriteria
-        extends CoEntityCriteria {
+        extends MyCriteria {
 
     public String codePrefix;
     public Integer maxDepth;

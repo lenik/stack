@@ -48,6 +48,34 @@
         ]]>
     </sql>
 
+    <sql id="criteria">
+        <!-- co -->
+        <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+        <include refid="co.modefilt" />
+        <!-- moment-interval -->
+        <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
+        <if test="year != null">and extract(year from a.t0)=#{year}</if>
+        <if test="noDate">and a.t0 is null</if>
+        <if test="noYear">and a.t0 is null</if>
+        <!-- message -->
+        <if test="opId != null">and a.op=#{opId}</if>
+        <if test="categoryId != null">and a.cat=#{categoryId}</if>
+        <if test="tagId != null">and x.tag=#{tagId}</if>
+        <if test="phaseId != null">and a.phase=#{phaseId}</if>
+        <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
+        <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
+        <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
+        <if test="noOp">and a.op is null</if>
+        <if test="noCategory">and a.cat is null</if>
+        <if test="noTag">and x.tag is null</if>
+        <if test="noPhase">and a.phase is null</if>
+
+        <if test="orgId != null">and a.org=#{orgId}</if>
+        <if test="personId != null">and a.person=#{personId}</if>
+        <if test="noOrg">and a.org is null</if>
+        <if test="noPerson">and a.person is null</if>
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
         <where>
@@ -58,31 +86,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <!-- co -->
-            <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
-            <include refid="co.modefilt" />
-            <!-- moment-interval -->
-            <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
-            <if test="year != null">and extract(year from a.t0)=#{year}</if>
-            <if test="noDate">and a.t0 is null</if>
-            <if test="noYear">and a.t0 is null</if>
-            <!-- message -->
-            <if test="opId != null">and a.op=#{opId}</if>
-            <if test="categoryId != null">and a.cat=#{categoryId}</if>
-            <if test="tagId != null">and x.tag=#{tagId}</if>
-            <if test="phaseId != null">and a.phase=#{phaseId}</if>
-            <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
-            <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
-            <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
-            <if test="noOp">and a.op is null</if>
-            <if test="noCategory">and a.cat is null</if>
-            <if test="noTag">and x.tag is null</if>
-            <if test="noPhase">and a.phase is null</if>
-            
-            <if test="orgId != null">and a.org=#{orgId}</if>
-            <if test="personId != null">and a.person=#{personId}</if>
-            <if test="noOrg">and a.org is null</if>
-            <if test="noPerson">and a.person is null</if>
+            <include refid="criteria" />
         </where>
     </select>
 
@@ -134,7 +138,8 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from fileinfo
+        select count(*) "total", sum(size) "total_size" from fileinfo
+
     </select>
 
     <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[
