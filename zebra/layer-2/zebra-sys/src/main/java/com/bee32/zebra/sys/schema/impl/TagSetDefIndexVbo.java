@@ -1,4 +1,4 @@
-package com.tinylily.model.base.schema.impl;
+package com.bee32.zebra.sys.schema.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,40 +15,44 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.tinylily.model.base.schema.PriorityDef;
+import com.tinylily.model.base.schema.TagSetDef;
+import com.tinylily.model.base.schema.impl.TagSetDefCriteria;
+import com.tinylily.model.base.schema.impl.TagSetDefMapper;
 
-public class PriorityDefIndexVbo
-        extends SlimIndex_htm<PriorityDefIndex, PriorityDef, PriorityDefCriteria> {
+public class TagSetDefIndexVbo
+        extends SlimIndex_htm<TagSetDefIndex, TagSetDef, TagSetDefCriteria> {
 
-    public PriorityDefIndexVbo()
+    public TagSetDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
-        super(PriorityDefIndex.class);
-        indexFields.parse("i*sa", "schema", "code", "label", "description");
+        super(TagSetDefIndex.class);
+        indexFields.parse("i*sa", "schema", "code", "label", "description", "ortho", "tags");
     }
 
     @Override
-    protected PriorityDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected TagSetDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PriorityDefCriteria criteria = fn.criteriaFromRequest(new PriorityDefCriteria(), ctx.getRequest());
+        TagSetDefCriteria criteria = fn.criteriaFromRequest(new TagSetDefCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<PriorityDef> a, IUiRef<PriorityDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<TagSetDef> a, IUiRef<TagSetDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
-        PriorityDefMapper mapper = ctx.query(PriorityDefMapper.class);
-        PriorityDefCriteria criteria = ctx.query(PriorityDefCriteria.class);
-        List<PriorityDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        TagSetDefMapper mapper = ctx.query(TagSetDefMapper.class);
+        TagSetDefCriteria criteria = ctx.query(TagSetDefCriteria.class);
+        List<TagSetDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
-            for (PriorityDef o : list) {
+            for (TagSetDef o : list) {
                 HtmlTrTag tr = itab.tbody.tr();
                 itab.cocols("i", tr, o);
                 tr.td().text(o.getSchema().getLabel());
                 itab.cocols("cu", tr, o);
+                tr.td().text(o.getTags()).class_("small");
+                tr.td().text(o.isOrtho());
                 itab.cocols("sa", tr, o);
             }
 

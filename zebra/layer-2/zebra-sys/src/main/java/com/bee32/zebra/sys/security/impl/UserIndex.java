@@ -1,4 +1,4 @@
-package com.tinylily.model.base.security.impl;
+package com.bee32.zebra.sys.security.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;

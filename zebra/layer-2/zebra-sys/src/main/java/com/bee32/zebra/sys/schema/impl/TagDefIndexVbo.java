@@ -1,4 +1,4 @@
-package com.tinylily.model.base.schema.impl;
+package com.bee32.zebra.sys.schema.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +17,9 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.schema.TagDef;
+import com.tinylily.model.base.schema.impl.TagDefCriteria;
+import com.tinylily.model.base.schema.impl.TagDefMapper;
+import com.tinylily.model.base.schema.impl.TagSetDefMapper;
 
 public class TagDefIndexVbo
         extends SlimIndex_htm<TagDefIndex, TagDef, TagDefCriteria> {

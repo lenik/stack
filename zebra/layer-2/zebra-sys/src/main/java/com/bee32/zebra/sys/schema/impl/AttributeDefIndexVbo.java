@@ -1,4 +1,4 @@
-package com.tinylily.model.base.schema.impl;
+package com.bee32.zebra.sys.schema.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,21 +16,24 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.tinylily.model.base.schema.PhaseDef;
+import com.tinylily.model.base.schema.AttributeDef;
+import com.tinylily.model.base.schema.impl.AttributeDefCriteria;
+import com.tinylily.model.base.schema.impl.AttributeDefMapper;
+import com.tinylily.model.base.schema.impl.SchemaDefMapper;
 
-public class PhaseDefIndexVbo
-        extends SlimIndex_htm<PhaseDefIndex, PhaseDef, PhaseDefCriteria> {
+public class AttributeDefIndexVbo
+        extends SlimIndex_htm<AttributeDefIndex, AttributeDef, AttributeDefCriteria> {
 
-    public PhaseDefIndexVbo()
+    public AttributeDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
-        super(PhaseDefIndex.class);
-        indexFields.parse("i*sa", "schema", "code", "label", "description");
+        super(AttributeDefIndex.class);
+        indexFields.parse("i*sa", "schema", "code", "label", "description", "refCount");
     }
 
     @Override
-    protected PhaseDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected AttributeDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PhaseDefCriteria criteria = fn.criteriaFromRequest(new PhaseDefCriteria(), ctx.getRequest());
+        AttributeDefCriteria criteria = fn.criteriaFromRequest(new AttributeDefCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("模式", false, //
@@ -42,21 +45,22 @@ public class PhaseDefIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<PhaseDef> a, IUiRef<PhaseDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<AttributeDef> a, IUiRef<AttributeDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
-        PhaseDefMapper mapper = ctx.query(PhaseDefMapper.class);
-        PhaseDefCriteria criteria = ctx.query(PhaseDefCriteria.class);
-        List<PhaseDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        AttributeDefMapper mapper = ctx.query(AttributeDefMapper.class);
+        AttributeDefCriteria criteria = ctx.query(AttributeDefCriteria.class);
+        List<AttributeDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
-            for (PhaseDef o : list) {
+            for (AttributeDef o : list) {
                 HtmlTrTag tr = itab.tbody.tr();
                 itab.cocols("i", tr, o);
                 tr.td().text(o.getSchema().getLabel());
                 itab.cocols("cu", tr, o);
+                tr.td().text(o.getRefCount());
                 itab.cocols("sa", tr, o);
             }
 

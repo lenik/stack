@@ -1,4 +1,4 @@
-package com.tinylily.model.base.schema.impl;
+package com.bee32.zebra.sys.schema.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,43 +16,46 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.tinylily.model.base.schema.AttributeDef;
+import com.tinylily.model.base.schema.CategoryDef;
+import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
+import com.tinylily.model.base.schema.impl.CategoryDefMapper;
+import com.tinylily.model.base.schema.impl.SchemaDefMapper;
 
-public class AttributeDefIndexVbo
-        extends SlimIndex_htm<AttributeDefIndex, AttributeDef, AttributeDefCriteria> {
+public class CategoryDefIndexVbo
+        extends SlimIndex_htm<CategoryDefIndex, CategoryDef, CategoryDefCriteria> {
 
-    public AttributeDefIndexVbo()
+    public CategoryDefIndexVbo()
             throws NoSuchPropertyException, ParseException {
-        super(AttributeDefIndex.class);
+        super(CategoryDefIndex.class);
         indexFields.parse("i*sa", "schema", "code", "label", "description", "refCount");
     }
 
     @Override
-    protected AttributeDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected CategoryDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        AttributeDefCriteria criteria = fn.criteriaFromRequest(new AttributeDefCriteria(), ctx.getRequest());
+        CategoryDefCriteria criteria = fn.criteriaFromRequest(new CategoryDefCriteria(), ctx.getRequest());
 
-        SwitcherModel<Integer> sw;
-        sw = switchers.entityOf("模式", false, //
+        SwitcherModel<Integer> so;
+        so = switchers.entityOf("模式", false, //
                 ctx.query(SchemaDefMapper.class).all(), //
                 "schema", criteria.schemaId, false);
-        criteria.schemaId = sw.getSelection1();
+        criteria.schemaId = so.getSelection1();
 
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<AttributeDef> a, IUiRef<AttributeDefIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<CategoryDef> a, IUiRef<CategoryDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
-        AttributeDefMapper mapper = ctx.query(AttributeDefMapper.class);
-        AttributeDefCriteria criteria = ctx.query(AttributeDefCriteria.class);
-        List<AttributeDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        CategoryDefMapper mapper = ctx.query(CategoryDefMapper.class);
+        CategoryDefCriteria criteria = ctx.query(CategoryDefCriteria.class);
+        List<CategoryDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
-            for (AttributeDef o : list) {
+            for (CategoryDef o : list) {
                 HtmlTrTag tr = itab.tbody.tr();
                 itab.cocols("i", tr, o);
                 tr.td().text(o.getSchema().getLabel());

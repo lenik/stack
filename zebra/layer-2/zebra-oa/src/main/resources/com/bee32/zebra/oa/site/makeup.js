@@ -177,7 +177,7 @@ $(document).ready(function() {
                 }
 
                 var obj = DataTables.toObject(row);
-                
+
                 var html = formatChild(obj);
                 if (html != null) {
                     row.child(html).show();
@@ -189,7 +189,7 @@ $(document).ready(function() {
                 itab.rowClick(row);
                 return;
             }
-            
+
             if (modexs) {
                 location.href = id + "/";
                 return;
@@ -274,11 +274,16 @@ var DataTables = {
             obj[dataField] = data[i];
         }
         return obj;
-    },
+    }
 
 };
 
 function iframeDone() {
-    if (parent.itab!=null)
+    if (parent.itab != null)
         parent.itab.reload();
+}
+
+function spin(n) {
+    var $span = $("span", n);
+    $span.addClass("fa-spin");
 }

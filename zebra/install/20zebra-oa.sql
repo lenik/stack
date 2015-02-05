@@ -1,5 +1,5 @@
 -- CONTENTS:
---      group, user
+--      group, user, sysq, userq, policy
 --      contact, org, person
 --      diary
 --      fileinfo
@@ -77,6 +77,71 @@
     insert into "group"(id, code, label, admin) values(0, 'root', 'Root', true);
     insert into "user"(id, gid0, code, label) values(0, 0, 'root', 'Root');
     insert into "group_user"("group", "user") values(0, 0);
+
+-- drop table if exists sysq;
+    create sequence sysq_seq start with 1000;
+    create table sysq(
+        id          int primary key default nextval('sysq_seq'),
+        code        varchar(20),
+        label       varchar(80),
+        description varchar(200),
+        
+        class       varchar(80) not null,
+        summary     varchar(30) not null,
+        quota       double precision not null,
+        userquota   double precision null,
+
+        constraint sysq_uk          unique(class, summary)
+    );
+
+    create index sysq_code          on sysq(code);
+    create index sysq_label         on sysq(label);
+
+-- drop table if exists userq;
+    create sequence userq_seq start with 1000;
+    create table userq(
+        id          int primary key default nextval('userq_seq'),
+        code        varchar(20),
+        label       varchar(80),
+        description varchar(200),
+        
+        uid         int not null,
+        class       varchar(80) not null,
+        summary     varchar(30) not null,
+        quota       double precision not null,
+
+        constraint userq_uk         unique(uid, class, summary),
+        constraint userq_fk_uid     foreign key(uid)
+            references "user"(id)       on update cascade on delete cascade
+    );
+
+    create index userq_code         on userq(code);
+    create index userq_label        on userq(label);
+
+-- drop table if exists policy;
+    create sequence policy_seq start with 1000;
+    create table policy(
+        id          int primary key default nextval('policy_seq'),
+        code        varchar(20),
+        label       varchar(80),
+        description varchar(200),
+        
+        gid         int null,
+        uid         int null,
+        class       varchar(80) not null,
+        method      varchar(40) null,
+        allow       int not null default 0,
+        deny        int not null default 0,
+
+        constraint policy_uk         unique(gid, uid, class, method),
+        constraint policy_fk_gid     foreign key(gid)
+            references "group"(id)      on update cascade on delete set null,
+        constraint policy_fk_uid     foreign key(uid)
+            references "user"(id)       on update cascade on delete set null
+    );
+
+    create index policy_code         on policy(code);
+    create index policy_label        on policy(label);
 
 -- drop table if exists contact;
     create sequence contact_seq start with 1000;

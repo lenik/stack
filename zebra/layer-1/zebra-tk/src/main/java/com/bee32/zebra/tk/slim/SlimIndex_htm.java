@@ -157,7 +157,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
                 HtmlTdTag _td1 = _tr1.td();
                 _td1.h2().text("选中的信息");
                 HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3.5em");
-                _td2.a().id("zp-infosel-edit").href("").text("[编辑]");
+
+                _td2.a().id("zp-infosel-edit").href("").target("blank").text("[编辑]");
 
                 infosel.div().id(ID.infoselData);
 
@@ -231,15 +232,20 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
             p.cmds0.a().href("?view:=csv").text("导出").style("cursor: default; color: gray").onclick("return false");
             p.cmds0.a().href("javascript: window.print()").text("打印");
         } else {
+            HtmlATag closeLink = p.cmds0.a().href("javascript: window.close()");
+            closeLink.span().class_("fa icon").text(FA_TIMES_CIRCLE);
+            closeLink.text("关闭本页面");
+
             HtmlATag upLink = p.cmds0.a().href("../");
             upLink.span().class_("fa icon").text(FA_LEVEL_UP);
             upLink.text("回到上一层");
 
+            p.cmds1.br();
             HtmlATag submitLink = p.cmds1.a().href("javascript: form.submit()");
             submitLink.span().class_("fa icon").text(FA_FLOPPY_O);
             submitLink.text("提交").title("将输入的数据提交保存。");
 
-            HtmlATag refreshLink = p.cmds1.a().href("javascript: location.href = location.href");
+            HtmlATag refreshLink = p.cmds1.a().href("javascript: location.href = location.href").onclick("spin(this)");
             refreshLink.span().class_("fa icon").text(FA_REFRESH);
             refreshLink.text("刷新").title("重新载入当前页面。");
         }

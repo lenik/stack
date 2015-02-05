@@ -1,4 +1,4 @@
-package com.tinylily.model.base.security.impl;
+package com.bee32.zebra.sys.security.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +16,8 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.User;
+import com.tinylily.model.base.security.impl.UserCriteria;
+import com.tinylily.model.base.security.impl.UserMapper;
 
 public class UserIndexVbo
         extends SlimIndex_htm<UserIndex, User, UserCriteria> {

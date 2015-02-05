@@ -1,4 +1,4 @@
-package com.tinylily.model.base.security.impl;
+package com.bee32.zebra.sys.security.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +16,8 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.tinylily.model.base.security.Group;
+import com.tinylily.model.base.security.impl.GroupCriteria;
+import com.tinylily.model.base.security.impl.GroupMapper;
 
 public class GroupIndexVbo
         extends SlimIndex_htm<GroupIndex, Group, GroupCriteria> {

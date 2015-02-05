@@ -69,8 +69,8 @@ public class TopicIndexVbo
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        TopicCriteria criteria = ctx.query(TopicCriteria.class);
         TopicMapper mapper = ctx.query(TopicMapper.class);
+        TopicCriteria criteria = ctx.query(TopicCriteria.class);
         List<Topic> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
