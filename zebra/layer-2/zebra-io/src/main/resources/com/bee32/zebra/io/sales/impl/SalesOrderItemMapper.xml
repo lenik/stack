@@ -48,6 +48,10 @@
         ]]>
     </sql>
 
+    <sql id="filtconds">
+        <if test="salesOrderId != null">and a.doc=#{salesOrderId}</if>
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
     </select>
@@ -55,7 +59,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="salesOrderId != null">and a.doc=#{salesOrderId}</if>
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -107,7 +111,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from sentry
+        select count(*) "total" from sentry a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
 </mapper>

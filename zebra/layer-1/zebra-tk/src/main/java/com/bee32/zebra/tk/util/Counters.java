@@ -20,6 +20,8 @@ public class Counters {
             return "下单";
         case "delivered":
             return "已出货";
+        case "filter":
+            return "找到";
         }
         return key;
     }

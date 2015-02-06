@@ -49,6 +49,14 @@
         ]]>
     </sql>
 
+    <sql id="filtconds">
+        <if test="orgId != null">and org=#{orgId}</if>
+        <if test="orgUnitId != null">and ou=#{orgUnitId}</if>
+        <if test="personId != null">and person=#{personId}</if>
+        <if test="usage != null">and usage=#{usage}</if>
+        <if test="country != null">and country=#{country}</if>
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
     </select>
@@ -56,11 +64,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="orgId != null">and org=#{orgId}</if>
-            <if test="orgUnitId != null">and ou=#{orgUnitId}</if>
-            <if test="personId != null">and person=#{personId}</if>
-            <if test="usage != null">and usage=#{usage}</if>
-            <if test="country != null">and country=#{country}</if>
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -118,7 +122,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from contact
+        select count(*) "total" from contact a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
 </mapper>

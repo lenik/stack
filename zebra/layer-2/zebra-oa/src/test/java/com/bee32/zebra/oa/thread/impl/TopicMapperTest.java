@@ -1,7 +1,7 @@
 package com.bee32.zebra.oa.thread.impl;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.bee32.zebra.tk.sql.VhostDataService;
@@ -11,8 +11,8 @@ public class TopicMapperTest
 
     TopicMapper mapper;
 
-    @BeforeClass
-    void setUp() {
+    @Before
+    public void setUp() {
         mapper = VhostDataService.getInstance().query(TopicMapper.class);
     }
 

@@ -30,7 +30,7 @@
         ]]>
     </sql>
 
-    <sql id="criteria">
+    <sql id="filtconds">
         <!-- co -->
         <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         <include refid="co.modefilt" />
@@ -56,7 +56,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <include refid="criteria" />
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -109,7 +109,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from org
+        select count(*) "total" from org a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
 </mapper>

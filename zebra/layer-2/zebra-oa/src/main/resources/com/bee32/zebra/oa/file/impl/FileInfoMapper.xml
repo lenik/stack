@@ -48,7 +48,7 @@
         ]]>
     </sql>
 
-    <sql id="criteria">
+    <sql id="filtconds">
         <!-- co -->
         <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         <include refid="co.modefilt" />
@@ -60,14 +60,12 @@
         <!-- message -->
         <if test="opId != null">and a.op=#{opId}</if>
         <if test="categoryId != null">and a.cat=#{categoryId}</if>
-        <if test="tagId != null">and x.tag=#{tagId}</if>
         <if test="phaseId != null">and a.phase=#{phaseId}</if>
         <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
         <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
         <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
         <if test="noOp">and a.op is null</if>
         <if test="noCategory">and a.cat is null</if>
-        <if test="noTag">and x.tag is null</if>
         <if test="noPhase">and a.phase is null</if>
 
         <if test="orgId != null">and a.org=#{orgId}</if>
@@ -86,7 +84,9 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <include refid="criteria" />
+            <include refid="filtconds" />
+            <if test="tagId != null">and x.tag=#{tagId}</if>
+            <if test="noTag">and x.tag is null</if>
         </where>
     </select>
 
@@ -138,8 +138,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total", sum(size) "total_size" from fileinfo
-
+        select count(*) "total" from fileinfo a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
     <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[

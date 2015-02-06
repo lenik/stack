@@ -41,7 +41,7 @@
         ]]>
     </sql>
 
-    <sql id="criteria">
+    <sql id="filtconds">
         <if test="accountId != null">and a.account=#{accountId}</if>
     </sql>
 
@@ -52,7 +52,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <include refid="criteria" />
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -99,7 +99,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from acentry
+        select count(*) "total" from acentry a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
 </mapper>

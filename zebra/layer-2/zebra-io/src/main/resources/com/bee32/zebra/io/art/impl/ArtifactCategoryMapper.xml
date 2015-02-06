@@ -42,6 +42,10 @@
         ]]>
     </sql>
 
+    <sql id="filtconds">
+        <if test="maxDepth != null">and a.depth&lt;=#{maxDepth}</if>
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
     </select>
@@ -49,7 +53,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="maxDepth != null">and a.depth&lt;=#{maxDepth}</if>
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -91,7 +95,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from artcat
+        select count(*) "total" from artcat a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
 </mapper>

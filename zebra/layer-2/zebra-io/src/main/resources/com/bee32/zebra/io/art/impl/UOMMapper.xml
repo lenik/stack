@@ -12,6 +12,10 @@
         ]]>
     </sql>
 
+    <sql id="filtconds">
+        <if test="property != null">and a.property=#{property}</if>
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
     </select>
@@ -19,7 +23,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="property != null">and a.property=#{property}</if>
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -52,7 +56,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from uom
+        select count(*) "total" from uom a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
 </mapper>

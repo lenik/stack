@@ -136,6 +136,8 @@ $(document).ready(function() {
                 sSwfPath : _js_ + "datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
             };
 
+        config.order = [ [ 0, "desc" ] ];
+
         var itab = $table.parent()[0];
         var dt = itab.dataTable = $table.DataTable(config);
 

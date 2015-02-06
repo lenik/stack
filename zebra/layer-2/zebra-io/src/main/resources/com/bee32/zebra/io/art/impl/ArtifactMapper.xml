@@ -59,6 +59,14 @@
         ]]>
     </sql>
 
+    <sql id="filtconds">
+        <if test="categoryId != null">and a.cat=#{categoryId}</if>
+        <if test="uomId != null">and a.uom=#{uomId}</if>
+        <if test="supplyMethod != null">and a.supply=#{supplyMethod}</if>
+        <if test="noCategory">and a.cat is null</if>
+        <if test="noSupplyMethod">and a.supply is null</if>
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
     </select>
@@ -66,11 +74,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.cat=#{categoryId}</if>
-            <if test="uomId != null">and a.uom=#{uomId}</if>
-            <if test="supplyMethod != null">and a.supply=#{supplyMethod}</if>
-            <if test="noCategory">and a.cat is null</if>
-            <if test="noSupplyMethod">and a.supply is null</if>
+            <include refid="filtconds" />
         </where>
     </select>
 

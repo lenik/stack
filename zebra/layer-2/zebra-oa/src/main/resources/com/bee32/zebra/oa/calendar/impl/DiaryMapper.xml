@@ -41,15 +41,7 @@
         ]]>
     </sql>
 
-    <select id="all" resultMap="map1">
-        <include refid="select1" />
-        <where>
-            <include refid="co.modefilt" />
-        </where>
-        order by id desc
-    </select>
-
-    <sql id="filtsql">
+    <sql id="filtconds">
         <!-- co -->
         <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         <!-- moment-interval -->
@@ -60,25 +52,31 @@
         <!-- message -->
         <if test="opId != null">and a.op=#{opId}</if>
         <if test="categoryId != null">and a.cat=#{categoryId}</if>
-        <if test="tagId != null">and x.tag=#{tagId}</if>
         <if test="phaseId != null">and a.phase=#{phaseId}</if>
         <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
         <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
         <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
         <if test="noOp">and a.op is null</if>
         <if test="noCategory">and a.cat is null</if>
-        <if test="noTag">and x.tag is null</if>
         <if test="noPhase">and a.phase is null</if>
         <include refid="co.modefilt" />
     </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <include refid="co.modefilt" />
+        </where>
+    </select>
 
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <!-- left join tags -->
         <where>
-            <include refid="filtsql" />
+            <include refid="filtconds" />
+            <if test="tagId != null">and x.tag=#{tagId}</if>
+            <if test="noTag">and x.tag is null</if>
         </where>
-        order by id desc
     </select>
 
     <select id="select" parameterType="int" resultMap="map1">
@@ -115,7 +113,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from diary
+        select count(*) "total" from diary a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
     <select id="histoByYear" resultType="com.bee32.zebra.tk.util.F_YearCount"><![CDATA[
@@ -130,7 +133,7 @@
         select select t0::date, count(*) from v_log
         from diary
         <where>
-            <include refid="filtsql" />
+            <include refid="filtconds" />
         </where>
         group by t0::date
     </select>
@@ -164,7 +167,7 @@
             left join "group" g on a.gid=g.id
         ]]>
         <where>
-            <include refid="filtsql" />
+            <include refid="filtconds" />
         </where>
     </select>
 

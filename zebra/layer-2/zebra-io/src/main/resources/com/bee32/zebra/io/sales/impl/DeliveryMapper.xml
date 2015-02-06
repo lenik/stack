@@ -94,6 +94,10 @@
         ]]>
     </sql>
 
+    <sql id="filtconds">
+        <include refid="co.modefilt" />
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
         <where>
@@ -104,8 +108,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
-            <include refid="co.modefilt" />
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -159,7 +162,23 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select * from v_dldoc_n
+        select
+        (select count(*) from dldoc a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
+        ) "total",
+
+        (select count(*) from dldoc a
+        <where>
+            t1 is null
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
+        ) "shipping";
     </select>
 
 </mapper>

@@ -87,7 +87,7 @@
         ]]>
     </sql>
 
-    <sql id="criteria">
+    <sql id="filtconds">
         <if test="topicId != null">and a.topic=#{topicId}</if>
         <include refid="co.modefilt" />
     </sql>
@@ -102,7 +102,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <include refid="criteria" />
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -148,7 +148,17 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select * from v_sdoc_n
+        select
+        (select count(*) from sdoc) "total",
+        (select count(distinct sdoc) from dldoc) "delivered",
+        (select count(*)
+        from sdoc a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
+        ) "filter";
     </select>
 
 </mapper>

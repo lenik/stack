@@ -44,6 +44,10 @@
         ]]>
     </sql>
 
+    <sql id="filtconds">
+
+    </sql>
+
     <select id="all" resultMap="map1">
         <include refid="select1" />
     </select>
@@ -51,7 +55,7 @@
     <select id="filter" resultMap="map1">
         <include refid="select1" />
         <where>
-            <if test="categoryId != null">and a.id=#{categoryId}</if>
+            <include refid="filtconds" />
         </where>
     </select>
 
@@ -84,7 +88,12 @@
     </delete>
 
     <select id="count" resultType="hashmap">
-        select count(*) "total" from employee
+        select count(*) "total" from employee a
+        <where>
+            <if test="_parameter != null">
+                <include refid="filtconds" />
+            </if>
+        </where>
     </select>
 
 </mapper>

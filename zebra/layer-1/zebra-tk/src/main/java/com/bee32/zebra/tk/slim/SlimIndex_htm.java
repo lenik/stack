@@ -12,6 +12,7 @@ import org.json.JSONWriter;
 
 import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
+import net.bodz.bas.err.IllegalUsageException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
@@ -208,7 +209,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
 
     protected void titleInfo(IHtmlViewContext ctx, IUiRef<X> ref, boolean indexPage) {
         X manager = ref.get();
-        IMapperTemplate<?, C> mapper = MapperUtil.getMapperTemplate(manager.getObjectType());
+        Class<?> objectType = manager.getObjectType();
+        IMapperTemplate<?, C> mapper = MapperUtil.getMapperTemplate(objectType);
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
         PageStruct p = new PageStruct(ctx);
@@ -218,8 +220,12 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         HtmlPTag subTitle = p.title.p().class_("sub");
         subTitle.verbatim(docText.getHeadPar());
 
-        // ctx.query(criteria)
-        Map<String, Number> countMap = mapper.count();
+        Class<C> criteriaClass = (Class<C>) CoObjectCriteria.findCriteriaClass(objectType);
+        if (criteriaClass == null)
+            throw new IllegalUsageException("No criteria for " + objectType);
+        C criteria = ctx.query(criteriaClass);
+
+        Map<String, Number> countMap = mapper.count(criteria);
         HtmlUlTag statUl = p.stat.ul();
         for (String key : countMap.keySet()) {
             String name = Counters.displayName(key);

@@ -59,6 +59,8 @@ public class VhostDataService
     @SuppressWarnings("unchecked")
     @Override
     public <spec_t> spec_t query(Class<spec_t> specificationClass) {
+        if (specificationClass == null)
+            throw new NullPointerException("specificationClass");
         if (specificationClass == IMapperProvider.class)
             return (spec_t) mapperProvider;
         if (specificationClass == DataSource.class)
@@ -72,8 +74,11 @@ public class VhostDataService
 
     public static VhostDataService getInstance() {
         IVirtualHost vhost = CurrentVirtualHost.getVirtualHostOpt();
-        if (vhost == null)
+        if (vhost == null) {
             vhost = VirtualHostManager.getInstance().getVirtualHost("master");
+            if (vhost == null)
+                throw new NullPointerException("master vhost isn't set up.");
+        }
 
         VhostDataService service = vhost.getAttribute(VhostDataService.ATTRIBUTE_KEY);
         if (service == null) {
