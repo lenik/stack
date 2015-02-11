@@ -14,6 +14,9 @@ import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoMomentInterval;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 订单项
+ */
 @IdType(Long.class)
 @TableName("sentry")
 public class SalesOrderItem

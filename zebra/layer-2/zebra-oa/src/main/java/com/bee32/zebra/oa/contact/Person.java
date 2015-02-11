@@ -3,10 +3,14 @@ package com.bee32.zebra.oa.contact;
 import java.sql.Date;
 
 import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
+/**
+ * 联系人
+ */
 public class Person
         extends Party {
 
@@ -40,6 +44,7 @@ public class Person
     /**
      * 兴趣爱好
      */
+    @Priority(300)
     @TextInput(maxLength = N_SUBJECT)
     @Override
     public String getSubject() {
@@ -152,9 +157,8 @@ public class Person
         return sb.toString();
     }
 
+    // TODO xjdoc don't inherit the docs from the super method.
     /**
-     * TODO xjdoc don't inherit the docs from the super method.
-     * 
      * 由一系列单字符描述的分类特征。
      * 
      * @label Characters

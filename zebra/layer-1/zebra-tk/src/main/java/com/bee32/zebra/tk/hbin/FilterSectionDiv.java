@@ -30,7 +30,7 @@ public class FilterSectionDiv
 
         if (switcher.isOptional()) {
             IHtmlTag tag = ul.li();
-            if (!switcher.isSelectAll())
+            if (switcher.isEnabled())
                 tag = tag.a().href("?all-" + param + "=1");
             tag.text("全部");
         }

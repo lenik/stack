@@ -14,6 +14,9 @@ import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 联系方式
+ */
 @IdType(Integer.class)
 public class Contact
         extends CoEntity<Integer> {
@@ -131,6 +134,7 @@ public class Contact
     /**
      * 区域
      */
+    @DetailLevel(DetailLevel.HIDDEN)
     @OfGroup(OaGroups.Position.class)
     public Region getRegion() {
         return region;
@@ -141,6 +145,7 @@ public class Contact
     }
 
     @DetailLevel(DetailLevel.HIDDEN)
+    @OfGroup(OaGroups.Position.class)
     @Derived
     public String getRegionId() {
         return region == null ? null : region.joinId();

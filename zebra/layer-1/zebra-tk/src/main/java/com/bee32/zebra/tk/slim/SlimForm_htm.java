@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.c.string.StringPart;
 import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.c.type.TypeChain;
@@ -33,7 +34,9 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
 import net.bodz.bas.io.Stdio;
 import net.bodz.bas.io.impl.TreeOutImpl;
+import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IProperty;
+import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDeclComparator;
@@ -175,7 +178,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         adjs.div().text("操作附近的数据:");
         HtmlUlTag ul = adjs.ul();
         HtmlATag newLink = ul.li().a().href("../new/");
-        newLink.spanText("fa icon", FA_FILE_O, "新建");
+        newLink.iText(FA_FILE_O, "fa").text("新建");
 
         HtmlLiTag navs = ul.li();
         IHtmlTag prevLink = navs;
@@ -325,8 +328,25 @@ public abstract class SlimForm_htm<T extends CoObject>
         UiPropertyRef<Object> propertyRef = new UiPropertyRef<Object>(instanceRef, property);
         Object value = propertyRef.get();
 
-        Class<?> type = property.getPropertyType();
-        if (CoObject.class.isAssignableFrom(type)) {
+        Class<?> clazz = property.getPropertyType();
+        IType type = PotatoTypes.getInstance().forClass(clazz);
+        String typeName = clazz.getSimpleName();
+
+        String description = Nullables.toString(fieldDecl.getHelpDoc());
+        {
+            if (description == null)
+                description = "";
+
+            String labelName = IXjdocElement.fn.labelName(fieldDecl);
+            if (description.equals(labelName))
+                description = "";
+
+            // if (!fieldDecl.isEnabled()) description += "<p>Generated。";
+        }
+
+        // if (CoCode.class.isAssignableFrom(type)) {
+
+        if (CoObject.class.isAssignableFrom(clazz)) {
             CoObject current = (CoObject) value;
 
             String inputName = fieldDecl.getInputName();
@@ -342,7 +362,7 @@ public abstract class SlimForm_htm<T extends CoObject>
             HtmlInputTag label_text = out.input().type("text").name(inputName + ".label");
             label_text.placeholder(fieldDecl.getPlaceholder());
             label_text.readonly("readonly");
-            label_text.attr("ec", type.getSimpleName());
+            label_text.attr("ec", typeName);
 
             if (current != null) {
                 if (id_hidden != null)
@@ -352,30 +372,40 @@ public abstract class SlimForm_htm<T extends CoObject>
 
             if (!fieldDecl.isReadOnly()) {
                 HtmlATag pickerLink = out.a().class_("zu-pickcmd");
-                String pathToken = CoTypes.getPathToken(type);
+                String pathToken = CoTypes.getPathToken(clazz);
                 pickerLink.attr("data-url", _webApp_ + pathToken + "/picker.html");
                 pickerLink.attr("data-title", "选择" + fieldDecl.getLabel() + "...");
                 pickerLink.text("选择");
             } else {
                 label_text.disabled("disabled");
             }
-            return;
+
+            if (!description.isEmpty())
+                description = IXjdocElement.fn.labelName(type) + "：" + description;
         }
 
-        IHtmlViewBuilder<Object> viewBuilder;
+        else {
+            IHtmlViewBuilder<Object> viewBuilder;
 
-        HtmlViewBuilder aViewBuilder = property.getAnnotation(HtmlViewBuilder.class);
-        if (aViewBuilder != null && aViewBuilder.value().length > 0) {
-            viewBuilder = (IHtmlViewBuilder<Object>) SingletonUtil.instantiateCached(aViewBuilder.value()[0]);
-        } else {
-            IHtmlViewBuilderFactory factory = ctx.query(IHtmlViewBuilderFactory.class);
-            if (factory == null)
-                throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
-            viewBuilder = factory.getViewBuilder(type);
+            HtmlViewBuilder aViewBuilder = property.getAnnotation(HtmlViewBuilder.class);
+            if (aViewBuilder != null && aViewBuilder.value().length > 0) {
+                viewBuilder = (IHtmlViewBuilder<Object>) SingletonUtil.instantiateCached(aViewBuilder.value()[0]);
+            } else {
+                IHtmlViewBuilderFactory factory = ctx.query(IHtmlViewBuilderFactory.class);
+                if (factory == null)
+                    throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
+                viewBuilder = factory.getViewBuilder(clazz);
+            }
+
+            // String htmName = viewBuilder.getClass().getSimpleName();
+            // out.comment("Foo-Field: " + typeName + " -- " + htmName);
+            viewBuilder.buildView(ctx, out, propertyRef, options);
         }
 
-        out.comment("Foo-Field: " + type.getSimpleName() + " -- " + viewBuilder.getClass().getSimpleName());
-        viewBuilder.buildView(ctx, out, propertyRef, options);
+        if (!description.isEmpty()) {
+            out.a().class_("fa icon helpdoc-switcher").text(FA_QUESTION_CIRCLE);
+            out.div().class_("helpdoc").verbatim(description);
+        }
     }
 
     @Override
@@ -423,19 +453,21 @@ public abstract class SlimForm_htm<T extends CoObject>
 
             HtmlDivTag alert = out.div().class_("alert alert-success");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
-            alert.span().class_("fa icon").text(FA_CHECK_CIRCLE);
-            alert.strong().text("[成功]");
-            alert.text("保存成功");
+            alert.iText(FA_CHECK_CIRCLE, "fa");
+            alert.bText("[成功]").text("保存成功");
             alert.hr();
             HtmlDivTag mesg = alert.div().class_("small");
             if (create) {
-                if (layout.hideFramework)
-                    mesg.text("您可以继续创建新的记录，或者关闭本窗口。");
-                else {
-                    mesg.text("您可以继续创建新的记录，或者");
-                    mesg.span().class_("fa").text(FA_EXTERNAL_LINK_SQUARE);
-                    mesg.a().href("../" + id + "/").text("返回刚才保存的记录");
-                    mesg.text("。");
+                mesg.text("您可以：");
+                HtmlUlTag ul = mesg.ul();
+                ul.li().text("继续创建新的记录，或者");
+                if (layout.hideFramework) {
+                    ul.li().text("关闭本窗口。");
+                } else {
+                    ul.li().iText(FA_EXTERNAL_LINK_SQUARE, "fa")//
+                            .aText("返回刚才保存的记录", "../" + id + "/").text("，或者");
+                    ul.li().iText(FA_TIMES_CIRCLE, "fa")//
+                            .aText("关闭本窗口", "javascript: window.close()").text("。");
                 }
             } else {
                 mesg.text("您可以选择核对刚刚更新的记录，" //
@@ -588,19 +620,6 @@ public abstract class SlimForm_htm<T extends CoObject>
         property.setValue(obj, skel);
     }
 
-    /**
-     * <ul>
-     * <li>rw-rw-rw- 公开
-     * <li>rw-rw-r-- 协同发布
-     * <li>rw-r--r-- 发布
-     * <li>rw-rw---- 协同管理
-     * <li>rw-r----- 共享
-     * <li>rw------- 私有
-     * <li>r--r--r-- 发布/锁定
-     * <li>r--r----- 共享/锁定
-     * <li>r-------- 私有/锁定
-     * </ul>
-     */
     protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoObject e) {
         if (e != null)
             tag.text(e.getLabel());

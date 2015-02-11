@@ -222,6 +222,12 @@ $(document).ready(function() {
         });
     } // dt != null
 
+    $("a.helpdoc-switcher").click(function() {
+        var $doc = $(this).nextAll(".helpdoc");
+        $doc.fadeToggle();
+        $(this).toggleClass("active");
+    });
+    
 });
 
 var DataTables = {

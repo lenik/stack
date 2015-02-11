@@ -3,6 +3,9 @@ package com.bee32.zebra.oa.hr;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 岗位组
+ */
 public class JobPositionGroup {
 
     int id;

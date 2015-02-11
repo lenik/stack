@@ -6,6 +6,9 @@ import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoMomentInterval;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 库存操作项目
+ */
 @IdType(Long.class)
 @TableName("stentry")
 public class StockEntry

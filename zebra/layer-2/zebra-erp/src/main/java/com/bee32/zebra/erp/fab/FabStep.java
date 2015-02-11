@@ -7,6 +7,9 @@ import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoMomentInterval;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 生产过程
+ */
 @IdType(Long.class)
 public class FabStep
         extends CoMomentInterval<Long> {

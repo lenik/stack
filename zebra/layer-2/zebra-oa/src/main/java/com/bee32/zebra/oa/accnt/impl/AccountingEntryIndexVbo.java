@@ -20,7 +20,7 @@ import com.bee32.zebra.tk.slim.SlimIndex_htm;
 public class AccountingEntryIndexVbo
         extends SlimIndex_htm<AccountingEntryIndex, AccountingEntry, AccountingEntryCriteria> {
 
-    public static final String[] FIELDS = { "event", "account", "debitSide", "value" };
+    public static final String[] FIELDS = { "event", "account", "side", "absValue" };
 
     public AccountingEntryIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -51,7 +51,7 @@ public class AccountingEntryIndexVbo
                 itab.cocols("i", tr, o);
                 ref(tr.td(), o.getEvent());
                 ref(tr.td(), o.getAccount());
-                tr.td().text(o.isDebitSide() ? "借" : "贷");
+                tr.td().text(o.getSide().getLabel());
                 tr.td().text(o.getValue().abs());
             }
     }

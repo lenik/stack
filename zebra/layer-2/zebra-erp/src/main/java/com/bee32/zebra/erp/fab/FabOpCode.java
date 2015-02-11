@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.tinylily.model.base.CoCode;
 
+/**
+ * 操作代码
+ */
 public class FabOpCode
         extends CoCode<FabOpCode> {
 

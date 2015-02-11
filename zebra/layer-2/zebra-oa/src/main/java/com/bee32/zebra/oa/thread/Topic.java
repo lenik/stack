@@ -13,6 +13,9 @@ import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+/**
+ * 项目/机会
+ */
 @IdType(Integer.class)
 public class Topic
         extends CoMessage<Integer> {

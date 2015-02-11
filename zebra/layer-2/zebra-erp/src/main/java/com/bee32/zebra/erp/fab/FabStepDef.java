@@ -8,6 +8,9 @@ import java.util.Map;
 import com.bee32.zebra.io.art.Artifact;
 import com.tinylily.model.base.CoCode;
 
+/**
+ * 工艺步骤
+ */
 public class FabStepDef
         extends CoCode<FabStepDef> {
 

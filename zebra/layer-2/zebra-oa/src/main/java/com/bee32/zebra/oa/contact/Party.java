@@ -20,6 +20,9 @@ import net.bodz.bas.t.order.PriorityUtils;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 参与方
+ */
 @IdType(Integer.class)
 public abstract class Party
         extends CoEntity<Integer> {
@@ -46,6 +49,10 @@ public abstract class Party
 
     private String bank;
     private String account;
+
+    public Party() {
+        setAccessMode(M_PUBLIC);
+    }
 
     /**
      * 生日
@@ -193,6 +200,8 @@ public abstract class Party
 
     /**
      * 默认联系方式
+     * 
+     * 当不特别指定时，默认使用的联系方式。 （通常是较常用的联系方式。）
      */
     @Priority(500)
     @Derived

@@ -6,10 +6,14 @@ import java.util.List;
 import net.bodz.bas.db.meta.TableName;
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
+import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
+/**
+ * 企、事业组织
+ */
 @TableName("org")
 public class Organization
         extends Party {
@@ -45,6 +49,7 @@ public class Organization
      * 
      * @placeholder 输入主营业务…
      */
+    @Priority(300)
     @TextInput(maxLength = N_SUBJECT)
     @Override
     public String getSubject() {
@@ -54,8 +59,11 @@ public class Organization
     /**
      * 规模
      * 
+     * 描述企业的规模（人数）。
+     * 
      * @format ###人
      */
+    @Priority(310)
     public int getSize() {
         return size;
     }
@@ -95,6 +103,7 @@ public class Organization
     /**
      * 人员表
      */
+    @Priority(400)
     @DetailLevel(DetailLevel.EXTEND)
     @Derived
     public List<Person> getStaff() {
@@ -104,13 +113,13 @@ public class Organization
     /**
      * 顶级机构
      */
+    @Priority(400)
     public List<OrgUnit> getTopLevels() {
         return topLevels;
     }
 
+    // TODO xjdoc don't inherit the docs from the super method.
     /**
-     * TODO xjdoc don't inherit the docs from the super method.
-     * 
      * 由一系列单字符描述的分类特征。
      * 
      * @label Characters

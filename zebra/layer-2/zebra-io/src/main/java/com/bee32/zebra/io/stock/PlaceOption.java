@@ -5,6 +5,9 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.io.art.Artifact;
 
+/**
+ * 库位选项
+ */
 public class PlaceOption {
 
     Artifact artifact;

@@ -34,7 +34,7 @@ public class FileInfoVbo
         filecmds.div().text("云端文件:");
         HtmlUlTag ul = filecmds.ul();
         HtmlATag uploadLink = filecmds.a().href("");
-        uploadLink.spanText("fa icon", FA_UPLOAD, "上传");
+        uploadLink.iText(FA_UPLOAD, "fa icon").text("上传");
     }
 
     @Override

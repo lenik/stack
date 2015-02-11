@@ -6,6 +6,9 @@ import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoNode;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 库位
+ */
 @IdType(Integer.class)
 public class Place
         extends CoNode<Place, Integer> {

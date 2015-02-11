@@ -5,6 +5,9 @@ import java.io.Serializable;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 
+/**
+ * 项目参与方
+ */
 public class TopicParty
         implements Serializable {
 

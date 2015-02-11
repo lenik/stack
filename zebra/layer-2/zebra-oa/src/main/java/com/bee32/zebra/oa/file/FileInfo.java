@@ -22,6 +22,9 @@ import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+/**
+ * 文件
+ */
 @Volatile
 @PathToken("file")
 @IdType(Integer.class)

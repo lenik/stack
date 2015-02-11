@@ -2,6 +2,9 @@ package com.bee32.zebra.io.art;
 
 import java.io.Serializable;
 
+/**
+ * 三维尺寸
+ */
 public class Dim3d
         implements Serializable {
 

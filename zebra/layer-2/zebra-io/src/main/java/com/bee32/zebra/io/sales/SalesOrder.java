@@ -18,6 +18,8 @@ import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
 /**
+ * 订单
+ * 
  * op: 销售员/经办人
  * 
  * owner: 制单

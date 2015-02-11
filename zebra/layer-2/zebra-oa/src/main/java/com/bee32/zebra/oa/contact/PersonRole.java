@@ -5,6 +5,9 @@ import net.bodz.bas.repr.form.validate.NotNull;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 人员部门职位
+ */
 @IdType(Integer.class)
 public class PersonRole
         extends CoEntity<Integer> {

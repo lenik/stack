@@ -4,6 +4,9 @@ import net.bodz.bas.t.predef.Predef;
 import net.bodz.bas.t.predef.PredefMetadata;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocAware;
 
+/**
+ * 性别
+ */
 public class Gender
         extends Predef<Gender, Character> {
 

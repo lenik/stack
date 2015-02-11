@@ -2,6 +2,9 @@ package com.bee32.zebra.erp.fab;
 
 import com.tinylily.model.base.CoCode;
 
+/**
+ * 质检参数
+ */
 public class FabQcDef
         extends CoCode<FabQcDef> {
 

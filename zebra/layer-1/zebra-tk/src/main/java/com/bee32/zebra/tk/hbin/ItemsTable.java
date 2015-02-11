@@ -27,8 +27,8 @@ public class ItemsTable
         footColumns = false;
 
         HtmlDivTag cmds = tools.div().id(id + "cmds");
-        cmds.button().class_("cmd-reload").spanText("fa", FA_REFRESH, "刷新");
-        cmds.button().class_("cmd-add").spanText("fa", FA_FILE_O, "添加");
+        cmds.button().class_("cmd-reload").iText(FA_REFRESH, "fa").text("刷新");
+        cmds.button().class_("cmd-add").iText(FA_FILE_O, "fa").text("添加");
     }
 
 }

@@ -16,6 +16,9 @@ import com.bee32.zebra.oa.thread.Topic;
 import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
+/**
+ * 凭证单
+ */
 @IdType(Long.class)
 @TableName("acdoc")
 public class AccountingEvent
@@ -36,10 +39,10 @@ public class AccountingEvent
         BigDecimal debitTotal = BigDecimal.ZERO;
         BigDecimal creditTotal = BigDecimal.ZERO;
         for (AccountingEntry entry : entries) {
-            if (entry.isDebitSide())
-                debitTotal = debitTotal.add(entry.getValue());
-            if (entry.isCreditSide())
-                creditTotal = creditTotal.add(entry.getValue());
+            if (entry.getSide() == DebitOrCredit.DEBIT)
+                debitTotal = debitTotal.add(entry.getAbsValue());
+            else
+                creditTotal = creditTotal.add(entry.getAbsValue());
         }
     }
 
@@ -57,6 +60,8 @@ public class AccountingEvent
 
     /**
      * 项目
+     * 
+     * 凭证记账下的功能相当于会计科目。
      */
     public Topic getTopic() {
         return topic;
@@ -68,6 +73,8 @@ public class AccountingEvent
 
     /**
      * 公司
+     * 
+     * 凭证记账下的功能相当于会计科目。
      */
     public Organization getOrg() {
         return org;
@@ -79,6 +86,8 @@ public class AccountingEvent
 
     /**
      * 联系人
+     * 
+     * 凭证记账下的功能相当于会计科目。
      */
     public Person getPerson() {
         return person;
@@ -102,6 +111,8 @@ public class AccountingEvent
 
     /**
      * （总）借
+     * 
+     * 凭证记账下的借方总金额。通常数值上应该和<code>（总）贷</code>相等。
      */
     @OfGroup(StdGroup.Statistics.class)
     @Statistics
@@ -115,6 +126,8 @@ public class AccountingEvent
 
     /**
      * （总）贷
+     * 
+     * 凭证记账下的贷方总金额。通常数值上应该和<code>（总）借</code>相等。
      */
     @OfGroup(StdGroup.Statistics.class)
     @Statistics

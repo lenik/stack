@@ -3,15 +3,25 @@ package com.bee32.zebra.oa.accnt.impl;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 
+import com.bee32.zebra.oa.accnt.DebitOrCredit;
 import com.tinylily.model.base.CoMomentIntervalCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
 public class AccountingEntryCriteria
         extends CoMomentIntervalCriteria {
 
+    public Long eventId;
     public Integer accountId;
-    public Integer side;
+    public DebitOrCredit side;
     public DoubleRange valueRange;
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
 
     public Integer getAccountId() {
         return accountId;
@@ -21,12 +31,12 @@ public class AccountingEntryCriteria
         this.accountId = accountId;
     }
 
-    public Integer getSide() {
-        return side;
+    public boolean isDebitSide() {
+        return side == DebitOrCredit.DEBIT;
     }
 
-    public void setSide(Integer side) {
-        this.side = side;
+    public boolean isCreditSide() {
+        return side == DebitOrCredit.CREDIT;
     }
 
     public DoubleRange getValueRange() {
@@ -41,8 +51,9 @@ public class AccountingEntryCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
+        eventId = map.getLong("doc", eventId);
         accountId = map.getInt("account", accountId);
-        side = map.getInt("side", side);
+        side = map.getPredef(DebitOrCredit.class, "side", side);
         valueRange = map.getDoubleRange("values", valueRange);
     }
 

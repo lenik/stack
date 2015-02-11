@@ -118,11 +118,11 @@ public class SwitcherModel<K> {
         return selection.isEmpty() && !selectNull;
     }
 
-    public boolean isSelectAll() {
+    public boolean isEnabled() {
         if (isRequired())
-            return false;
+            return true;
         else
-            return isSelectNone();
+            return !isSelectNone();
     }
 
     public boolean isSelected(K key) {

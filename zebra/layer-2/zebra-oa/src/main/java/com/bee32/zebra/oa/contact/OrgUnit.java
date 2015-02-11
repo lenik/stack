@@ -6,6 +6,9 @@ import java.util.List;
 import com.tinylily.model.base.CoNode;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 部门
+ */
 @IdType(Integer.class)
 public class OrgUnit
         extends CoNode<OrgUnit, Integer> {

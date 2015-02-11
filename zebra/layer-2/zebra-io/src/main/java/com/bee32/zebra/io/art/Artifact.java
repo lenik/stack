@@ -15,6 +15,9 @@ import com.bee32.zebra.oa.OaGroups;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
 
+/**
+ * 物料/商品
+ */
 @IdType(Integer.class)
 @TableName("art")
 public class Artifact
@@ -43,6 +46,7 @@ public class Artifact
     private String caution;
 
     private Dim3d bbox = new Dim3d();
+    private double quantity = 1.0;
     private double weight;
     private double netWeight;
 
@@ -107,6 +111,8 @@ public class Artifact
     /**
      * 度量属性
      * 
+     * 衡量单位的用途属性，如"长度"、"重量"等。
+     * 
      * @placeholder 输入衡量单位的用途属性，如"长度"、"重量"
      */
     @OfGroup(OaGroups.Packaging.class)
@@ -135,6 +141,8 @@ public class Artifact
 
     /**
      * 小数位数
+     * 
+     * 描述该种物料时使用的数量精度。
      */
     @OfGroup(StdGroup.Settings.class)
     @FormInput(textWidth = 3)
@@ -165,6 +173,10 @@ public class Artifact
     /**
      * 颜色
      * 
+     * 描述物料的外观颜色。
+     * 
+     * 对于系列商品不同的颜色型号，应该分别建立不同的物料。
+     * 
      * @placeholder 输入颜色名称…
      */
     @OfGroup(OaGroups.ColorManagement.class)
@@ -184,6 +196,7 @@ public class Artifact
      * 
      * @placeholder 输入警告信息…
      */
+    @Priority(100)
     @TextInput(maxLength = N_CAUTION)
     public String getCaution() {
         return caution;
@@ -195,6 +208,12 @@ public class Artifact
 
     /**
      * 装箱尺寸 (mm)
+     * 
+     * 是指将商品装入一个长方体的箱子，长方体的形状用<code>长 x 宽 x 高</code>来描述。
+     * <p>
+     * 尺寸的单位采用国际通行的毫米(mm)制。
+     * <p>
+     * 如果有多种装箱规格（如小包装、大包装），这里仅可以描述一种。应该选择合适的、常用的装箱规格来描述。
      */
     @OfGroup(OaGroups.Packaging.class)
     @Priority(100)
@@ -207,7 +226,26 @@ public class Artifact
     }
 
     /**
+     * 装箱数量
+     * 
+     * 如果有多种装箱规格（如小包装、大包装），这里仅可以描述一种。应该选择合适的、常用的装箱规格来描述。
+     */
+    @OfGroup(OaGroups.Packaging.class)
+    @Priority(101)
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
      * 毛重 (g)
+     * 
+     * 含包装的重量。
+     * 
+     * 单位采用国际通行的克(g)。
      */
     @OfGroup(OaGroups.Packaging.class)
     @Priority(200)
@@ -221,6 +259,10 @@ public class Artifact
 
     /**
      * 净重 (g)
+     * 
+     * 不含包装的重量。
+     * 
+     * 单位采用国际通行的克(g)。
      */
     @OfGroup(OaGroups.Packaging.class)
     @Priority(201)
@@ -234,6 +276,8 @@ public class Artifact
 
     /**
      * 供应方法
+     * 
+     * 说明物料的供应来源，是自行生产得来的或从外部采购得来的。
      */
     @OfGroup(StdGroup.Classification.class)
     public SupplyMethod getSupplyMethod() {
@@ -248,6 +292,8 @@ public class Artifact
 
     /**
      * 供应延时 (天)
+     * 
+     * 指开始订购到收到货品实物的最大时间间隔，用于指导采购、生产计划。
      */
     @OfGroup(StdGroup.Schedule.class)
     public int getSupplyDelay() {

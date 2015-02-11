@@ -18,6 +18,9 @@ import com.tinylily.model.base.IdType;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+/**
+ * 送货单
+ */
 @IdType(Integer.class)
 @TableName("dldoc")
 public class Delivery

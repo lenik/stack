@@ -42,8 +42,11 @@
     </sql>
 
     <sql id="filtconds">
+        <if test="eventId != null">and a.doc=#{eventId}</if>
         <if test="accountId != null">and a.account=#{accountId}</if>
-    </sql>
+        <if test="debitSide">and a.val &gt; 0</if>
+        <if test="creditSide">and a.val &lt; 0</if>
+        </sql>
 
     <select id="all" resultMap="map1">
         <include refid="select1" />
@@ -73,7 +76,14 @@
             #{priority}, #{flags}, #{state},
             #{event.id}, #{account.id}, #{org.id}, #{person.id},
             #{value}
-        ) returning id
+        ) returning id;
+        
+        update acdoc set ndebit = valp, ncredit = -valn
+            from (select doc, 
+                    sum(case when val>=0 then val else 0 end) valp,
+                    sum(case when val<0 then val else 0 end) valn
+                from acentry group by doc) y
+            where acdoc.id=#{event.id};
     ]]></select>
 
     <update id="update">

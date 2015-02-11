@@ -12,6 +12,9 @@ import com.tinylily.model.base.IMomentInterval;
 import com.tinylily.model.base.IdType;
 import com.tinylily.model.mx.base.CoMessage;
 
+/**
+ * 项目跟进
+ */
 @IdType(Integer.class)
 public class Reply
         extends CoMessage<Integer>

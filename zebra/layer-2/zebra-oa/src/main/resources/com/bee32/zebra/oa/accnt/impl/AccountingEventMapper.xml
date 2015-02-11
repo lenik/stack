@@ -8,11 +8,11 @@
         <result property="debitTotal" column="ndebit" />
         <result property="creditTotal" column="ncredit" />
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
-            <id property="id" column="id" />
+            <id property="id" column="org" />
             <result property="label" column="org_label" />
         </association>
         <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
-            <id property="id" column="id" />
+            <id property="id" column="person" />
             <result property="label" column="person_label" />
         </association>
     </resultMap>

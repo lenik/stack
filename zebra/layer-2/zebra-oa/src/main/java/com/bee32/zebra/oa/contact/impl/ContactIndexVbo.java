@@ -20,8 +20,9 @@ import com.bee32.zebra.tk.slim.SlimIndex_htm;
 public class ContactIndexVbo
         extends SlimIndex_htm<ContactIndex, Contact, ContactCriteria> {
 
-    public static final String[] FIELDS = { "priority", "rename", "usage", "region", "tel", "mobile", "fax", "email",
-            "web", "qq", "postalCode", "address1", "address2" };
+    public static final String[] FIELDS = { "priority", "rename", "usage",
+            // "region",
+            "tel", "mobile", "fax", "email", "web", "qq", "postalCode", "address1", "address2" };
 
     public ContactIndexVbo()
             throws NoSuchPropertyException, ParseException {
@@ -55,7 +56,7 @@ public class ContactIndexVbo
                 ref(tr.td(), o.getPerson());
                 tr.td().text(o.getRename());
                 tr.td().text(o.getUsage());
-                tr.td().text(o.getRegion());
+                // tr.td().text(o.getRegion());
                 tr.td().text(o.getCountry());
                 tr.td().text(o.getR1());
                 tr.td().text(o.getR2());

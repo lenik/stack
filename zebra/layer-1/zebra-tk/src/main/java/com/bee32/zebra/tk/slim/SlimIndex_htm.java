@@ -234,7 +234,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         }
 
         if (indexPage) {
-            p.cmds0.a().href("new/").text("新建");
+            p.cmds0.a().href("new/").target("_blank").text("新建");
             p.cmds0.a().href("?view:=csv").text("导出").style("cursor: default; color: gray").onclick("return false");
             p.cmds0.a().href("javascript: window.print()").text("打印");
         } else {

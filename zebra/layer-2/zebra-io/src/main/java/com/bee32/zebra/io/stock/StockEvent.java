@@ -17,6 +17,9 @@ import com.tinylily.model.base.IdType;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.mx.base.CoMessage;
 
+/**
+ * 库存作业
+ */
 @IdType(Integer.class)
 @TableName("stdoc")
 public class StockEvent
