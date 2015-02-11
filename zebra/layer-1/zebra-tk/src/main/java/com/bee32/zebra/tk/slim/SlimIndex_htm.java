@@ -159,7 +159,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
                 _td1.h2().text("选中的信息");
                 HtmlTdTag _td2 = _tr1.td().align("right").style("width: 3.5em");
 
-                _td2.a().id("zp-infosel-edit").href("").target("blank").text("[编辑]");
+                _td2.a().id("zp-infosel-edit").href("").target("_blank").text("[编辑]");
 
                 infosel.div().id(ID.infoselData);
 
