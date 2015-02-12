@@ -38,12 +38,6 @@ public class FilterSectionDiv
         for (Entry<K, ?> pair : switcher.getPairs()) {
             IHtmlTag tag = ul.li();
             K key = pair.getKey();
-
-            if (switcher.isSelectNone() && switcher.isRequired()) {
-                switcher.setSelection1(key);
-                switcher.setSelectNull(key == null);
-            }
-
             boolean selected = switcher.isSelected(key);
 
             if (selected)

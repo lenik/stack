@@ -2,12 +2,34 @@ a {
     color: hsl(0, 100%, 50%);
 }
 
+a:focus {
+    background: hsl(0, 100%, 97%);
+}
+
+.helpdoc {
+    color: hsl(0, 0%, 25%);
+    background: hsl(59, 100%, 92%);
+    border-color: hsl(0, 0%, 50%);
+}
+
+a.helpdoc-switcher {
+    color: gray;
+}
+
+a.helpdoc-switcher.active {
+    color: hsl(27, 100%, 50%);
+}
+
+a.helpdoc-switcher:hover {
+    color: red;
+}
+
 .zu-id {
     color: gray;
 }
 
 .zu-info {
-    background: hsl(45, 100%, 90%);
+    background: hsla(45, 100%, 90%, 0.5);
 }
 
 .zu-section {
@@ -16,11 +38,11 @@ a {
 }
 
 .zu-section:nth-child(odd) {
-    background-color: hsl(0, 0%, 98%);
+    background: hsla(0, 0%, 98%, 0.5);
 }
 
 .zu-section:hover {
-    background-color: hsl(64, 100%, 97%);
+    background: hsla(64, 100%, 97%, 0.5);
 }
 
 .zu-section-head {
@@ -52,7 +74,7 @@ a {
 }
 
 #zp-menu-col {
-    background: hsl(0, 100%, 90%);
+    background: hsla(0, 100%, 90%, 0.5);
 }
 
 #zp-stat {

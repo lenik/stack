@@ -5,6 +5,7 @@
 <mapper namespace="com.bee32.zebra.oa.accnt.impl.AccountingEventMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.oa.accnt.AccountingEvent" extends="message.map2">
+        <result property="value" column="val" />
         <result property="debitTotal" column="ndebit" />
         <result property="creditTotal" column="ncredit" />
         <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
@@ -92,13 +93,13 @@
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,
             op, subject, text, form, args, cat, phase,
-            prev, topic, org, person,
+            prev, topic, org, person, val,
             ndebit, ncredit
         ) values(
             #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
             #{beginDate}, #{endDate},
             #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id},
-            #{previous.id}, #{topic.id}, #{org.id}, #{person.id},
+            #{previous.id}, #{topic.id}, #{org.id}, #{person.id}, #{value},
             #{debitTotal}, #{creditTotal}
         ) returning id
     ]]></select>
@@ -138,6 +139,7 @@
             count(*) "count"
         from sdoc
         group by extract(year from t0)::int
+        order by year desc
     ]]></select>
 
 </mapper>

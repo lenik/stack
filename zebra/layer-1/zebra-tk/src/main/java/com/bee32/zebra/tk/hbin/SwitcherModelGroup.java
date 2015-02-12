@@ -26,6 +26,7 @@ public class SwitcherModelGroup {
         model.setSelectNull(selectNull);
         for (CoObject o : list)
             model.pairs.add(Pair.of((K) o.getId(), o.getLabel()));
+        model.updateDefaults();
         models.add(model);
         return model;
     }
@@ -42,6 +43,7 @@ public class SwitcherModelGroup {
             Object value = pair.getValue();
             model.pairs.add(Pair.of(key, Nullables.toString(value)));
         }
+        model.updateDefaults();
         models.add(model);
         return model;
     }

@@ -8,7 +8,7 @@ import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 public class PageStruct {
 
     public IHtmlTag title;
-    public IHtmlTag mainCol;
+    public IHtmlTag body1;
     public IHtmlTag stat;
     public IHtmlTag cmds0;
     public IHtmlTag cmds1;
@@ -18,7 +18,7 @@ public class PageStruct {
 
     public PageStruct(IHtmlViewContext ctx) {
         title = ctx.getTag(ID.title);
-        mainCol = ctx.getTag(ID.main_col);
+        body1 = ctx.getTag(ID.body1);
         stat = ctx.getTag(ID.stat);
         cmds0 = ctx.getTag(ID.cmds0);
         cmds1 = ctx.getTag(ID.cmds1);

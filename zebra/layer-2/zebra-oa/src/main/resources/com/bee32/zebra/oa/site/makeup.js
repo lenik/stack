@@ -97,6 +97,8 @@ $(document).ready(function() {
             }
         };
 
+        config.autoWidth = false;
+        
         var dataUrl = $table.attr("data-url");
         config.ajax = dataUrl == null ? null : {
             url : dataUrl,

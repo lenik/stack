@@ -109,10 +109,9 @@ public class Artifact
     }
 
     /**
-     * 度量属性
-     * 
      * 衡量单位的用途属性，如"长度"、"重量"等。
      * 
+     * @label 度量属性
      * @placeholder 输入衡量单位的用途属性，如"长度"、"重量"
      */
     @OfGroup(OaGroups.Packaging.class)
@@ -275,9 +274,9 @@ public class Artifact
     }
 
     /**
-     * 供应方法
-     * 
      * 说明物料的供应来源，是自行生产得来的或从外部采购得来的。
+     * 
+     * @label 供应方法
      */
     @OfGroup(StdGroup.Classification.class)
     public SupplyMethod getSupplyMethod() {

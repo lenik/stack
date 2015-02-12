@@ -56,7 +56,8 @@ public class IndexTable
         class_("itab");
 
         table = table();
-        table.class_("table table-striped table-hover table-condensed dataTable");
+        // table.style("width: 100%");
+        table.class_("table table-striped table-hover table-condensed dataTable table-responsive");
         tbody = table.tbody();
 
         detailFields.add("accessMode");

@@ -30,6 +30,7 @@ public class AccountingEvent
     private Topic topic;
     private Organization org;
     private Person person;
+    private double value;
 
     private List<AccountingEntry> entries = new ArrayList<>();
     private double debitTotal;
@@ -49,6 +50,7 @@ public class AccountingEvent
     /**
      * 前级
      */
+    @DetailLevel(DetailLevel.HIDDEN)
     @OfGroup(StdGroup.Process.class)
     public AccountingEvent getPrevious() {
         return previous;
@@ -95,6 +97,19 @@ public class AccountingEvent
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    /**
+     * 金额
+     * 
+     * 凭证上的字面金额，通常和凭证正文上的有效总金额相等，为后续决策的提供依据。
+     */
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
     }
 
     /**

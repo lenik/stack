@@ -13,8 +13,6 @@ import net.bodz.bas.repr.path.PathArrivalEntry;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.mda.xjdoc.Xjdocs;
-import net.bodz.mda.xjdoc.model.ClassDoc;
 
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
@@ -67,16 +65,24 @@ public class OaSiteVbo
         respHead(ctx, head);
 
         HtmlBodyTag body = out.body();
+
+        body.img().class_("background").src(_webApp_ + "chunk/pic/bg/poppy-orange-flower-bud.jpg");
+
         out = body;
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         if (!layout.hideFramework) {
             HtmlDivTag container = body.div().class_("container").style("width: 100%; padding: 0");
             HtmlDivTag containerRow = container.div().class_("container-row");
-            HtmlDivTag menuCol = containerRow.div().id("zp-menu-col").class_("col-sm-2");
+            HtmlDivTag menuCol = containerRow.div().id("zp-menu-col")//
+                    .class_("col-xs-3 col-sm-2 col-lg-1");
             menuCol(ctx, menuCol, ref, arrival);
 
-            HtmlDivTag body1 = containerRow.div().id(ID.body1).class_("col-xs-12 col-sm-10");
+            HtmlDivTag body1 = containerRow.div().id(ID.body1)//
+                    .class_("col-xs-9 col-sm-8 col-lg-10");
+            containerRow.div().id(ID.right_col)//
+                    .class_("col-xs-0 hidden-xs col-sm-2 col-lg-1 zu-info");
+
             out = body1;
 
             if (arrivedHere)
@@ -213,12 +219,9 @@ public class OaSiteVbo
     }
 
     protected void foot(IHtmlTag out, OaSite site) {
-        HtmlDivTag foot = out.div().class_("zu-foot");
-        ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
-        if (doc != null) {
-            Object copyright = doc.getTag("copyright");
-            foot.text("CC" + copyright);
-        }
+        HtmlDivTag foot = out.div().id("zp-foot");
+        // ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
+        
     }
 
 }

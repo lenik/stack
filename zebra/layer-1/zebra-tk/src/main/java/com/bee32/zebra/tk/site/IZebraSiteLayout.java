@@ -10,7 +10,7 @@ public interface IZebraSiteLayout {
         String body1 = "zp-body1";
         String body2 = "zp-body2";
         String body3 = "zp-body3";
-        String main_col = "zp-main-col";
+        //String main_col = "zp-main-col";
 
         String right_col = "zp-right-col";
 

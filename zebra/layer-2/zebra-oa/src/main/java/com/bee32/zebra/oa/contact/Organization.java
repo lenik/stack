@@ -57,10 +57,9 @@ public class Organization
     }
 
     /**
-     * 规模
-     * 
      * 描述企业的规模（人数）。
      * 
+     * @label 规模
      * @format ###人
      */
     @Priority(310)

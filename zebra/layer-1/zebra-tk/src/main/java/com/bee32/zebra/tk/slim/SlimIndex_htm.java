@@ -127,10 +127,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         if (!layout.hideFramework) {
             IHtmlTag body1 = ctx.getTag(ID.body1);
-
-            HtmlDivTag mainCol = body1.div().id(ID.main_col).class_("col-xs-12 col-sm-9 col-lg-10");
             {
-                HtmlDivTag headDiv = mainCol.div().id(ID.head).class_("zu-info clearfix");
+                HtmlDivTag headDiv = body1.div().id(ID.head).class_("zu-info clearfix");
                 headDiv.div().id(ID.title);
 
                 HtmlDivTag headCol1 = headDiv.div().id(ID.headCol1).class_("col-xs-6");
@@ -142,10 +140,10 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
 
                 headDiv.div().id(ID.headCol2).class_("col-xs-6");
 
-                out = mainCol;
+                out = body1;
             }
 
-            HtmlDivTag rightCol = body1.div().id(ID.right_col).class_("hidden-xs col-sm-3 col-lg-2 zu-info");
+            IHtmlTag rightCol = ctx.getTag(ID.right_col);
             if (arrivedHere) {
                 HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
                 // previewDiv.div().class_("icon fa").text(FA_COFFEE);
@@ -172,8 +170,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         PageStruct page = new PageStruct(ctx);
         DataViewAnchors<T> a = new DataViewAnchors<T>();
         if (index.format == QuickIndexFormat.HTML) {
-            a.frame = page.mainCol;
-            a.data = page.mainCol;
+            a.frame = page.body1;
+            a.data = page.body1;
             a.extradata = page.extradata;
             a.dataList = false;
         } else {

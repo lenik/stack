@@ -7,6 +7,9 @@ import java.util.Set;
 
 import net.bodz.bas.t.pojo.Pair;
 
+/**
+ * @see SwitcherModelGroup
+ */
 public class SwitcherModel<K> {
 
     boolean multiple;
@@ -18,6 +21,8 @@ public class SwitcherModel<K> {
     List<Pair<K, String>> pairs;
     Set<K> selection;
     boolean selectNull;
+
+    boolean defaultLast = false;
 
     public SwitcherModel() {
         this(false, false);
@@ -130,6 +135,20 @@ public class SwitcherModel<K> {
             return selectNull;
         else
             return selection.contains(key);
+    }
+
+    public void updateDefaults() {
+        if (pairs.isEmpty()) // No candidate.
+            return;
+
+        if (isSelectNone() && isRequired()) {
+            Pair<K, String> first = pairs.get(0);
+            Pair<K, String> last = pairs.get(pairs.size() - 1);
+
+            K defaultKey = defaultLast ? last.getKey() : first.getKey();
+            setSelection1(defaultKey);
+            setSelectNull(defaultKey == null);
+        }
     }
 
 }
