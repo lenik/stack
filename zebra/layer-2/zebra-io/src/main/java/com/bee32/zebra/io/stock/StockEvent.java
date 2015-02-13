@@ -42,6 +42,7 @@ public class StockEvent
 
     @Override
     public void create() {
+        super.create();
         CategoryDef TK_I = new CategoryDef();
         TK_I.setId(1202);
         TK_I.setLabel("采购入库");
