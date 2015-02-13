@@ -114,6 +114,13 @@ public class FileInfo
         this.baseName = baseName;
     }
 
+    @DetailLevel(DetailLevel.HIDDEN)
+    public String getPath() {
+        if (dirName == null || baseName == null)
+            return null;
+        return dirName + "/" + baseName;
+    }
+
     /**
      * 文件长度
      * 

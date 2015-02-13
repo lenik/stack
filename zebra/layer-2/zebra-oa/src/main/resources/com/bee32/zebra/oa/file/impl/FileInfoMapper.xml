@@ -99,13 +99,13 @@
 
     <select id="insert" resultType="long"><![CDATA[
         insert into fileinfo(
-            code, label, description,
+            label, description,
             priority, flags, state, uid, gid, mode, acl,
             t0, t1, op,
             dir, base, image, size, sha1, type, encoding,
             org, person, val
         ) values(
-            #{codeName},#{label},#{description},
+            #{label},#{description},
             #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
             #{beginDate}, #{endDate}, #{op.id},
             #{dirName}, #{baseName}, #{image}, #{size}, #{sha1}, #{type}, #{encoding},

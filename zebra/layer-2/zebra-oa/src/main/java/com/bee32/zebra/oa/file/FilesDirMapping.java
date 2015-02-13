@@ -9,6 +9,8 @@ import net.bodz.bas.http.config.ServletContextConfig;
 public class FilesDirMapping
         extends AbstractResourceMappings {
 
+    public static final String PREFIX = "/files";
+
     ServletContextConfig config;
 
     @Override
@@ -16,7 +18,7 @@ public class FilesDirMapping
         this.config = config;
         String homeDir = SystemProperties.getUserHome();
         File filesDir = new File(homeDir, "files");
-        localLink("/files", filesDir.getPath(), 365).install(config);
+        localLink(PREFIX, filesDir.getPath(), 365).install(config);
     }
 
 }

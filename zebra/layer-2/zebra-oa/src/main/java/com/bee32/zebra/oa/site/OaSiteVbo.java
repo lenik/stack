@@ -65,8 +65,8 @@ public class OaSiteVbo
         respHead(ctx, head);
 
         HtmlBodyTag body = out.body();
-
-        body.img().class_("background").src(_webApp_ + "chunk/pic/bg/poppy-orange-flower-bud.jpg");
+        // HtmlImgTag bg = body.img().class_("background");
+        // bg.src(_webApp_ + "chunk/pic/bg/poppy-orange-flower-bud.jpg");
 
         out = body;
 
@@ -221,7 +221,7 @@ public class OaSiteVbo
     protected void foot(IHtmlTag out, OaSite site) {
         HtmlDivTag foot = out.div().id("zp-foot");
         // ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
-        
+
     }
 
 }

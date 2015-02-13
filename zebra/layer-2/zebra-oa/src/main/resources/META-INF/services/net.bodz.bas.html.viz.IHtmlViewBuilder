@@ -16,6 +16,7 @@ com.bee32.zebra.oa.contact.impl.PersonIndexVbo
 com.bee32.zebra.oa.contact.impl.PersonVbo
 com.bee32.zebra.oa.file.impl.FileInfoIndexVbo
 com.bee32.zebra.oa.file.impl.FileInfoVbo
+com.bee32.zebra.oa.file.impl.UploadResult_json
 com.bee32.zebra.oa.hr.impl.EmployeeIndexVbo
 com.bee32.zebra.oa.hr.impl.EmployeeSkillIndexVbo
 com.bee32.zebra.oa.hr.impl.EmployeeSkillVbo

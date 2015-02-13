@@ -126,7 +126,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         String methodName = methodOfRequest.getMethodName();
         switch (methodName) {
         case MethodNames.CREATE:
-            if (persist(true, ctx, out, ref))
+            if (tryPersist(true, ctx, out, ref))
                 // success. create a new skel object.
                 try {
                     T skel = ref.getValueType().newInstance();
@@ -137,7 +137,7 @@ public abstract class SlimForm_htm<T extends CoObject>
             break;
 
         case MethodNames.UPDATE:
-            if (persist(false, ctx, out, ref)) {
+            if (tryPersist(false, ctx, out, ref)) {
                 // reload from database.
                 try {
                     FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
@@ -444,12 +444,11 @@ public abstract class SlimForm_htm<T extends CoObject>
         return out;
     }
 
-    protected boolean persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
+    protected boolean tryPersist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
 
         try {
-            T data = ref.get();
-            Object id = data.persist(ctx, out);
+            Object id = persist(create, ctx, out, ref);
 
             HtmlDivTag alert = out.div().class_("alert alert-success");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
@@ -492,7 +491,14 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
-    protected void inject(IUiRef<?> ref, Map<String, String[]> parameterMap)
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref)
+            throws Exception {
+        T data = ref.get();
+        Object id = data.persist(ctx, out);
+        return id;
+    }
+
+    protected final void inject(IUiRef<?> ref, Map<String, String[]> parameterMap)
             throws ParseException, ReflectiveOperationException {
         ParameterMapVariantMap variantMap = new ParameterMapVariantMap(parameterMap);
         inject(ref, variantMap);
