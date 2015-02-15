@@ -25,7 +25,7 @@ public class SalesOrderItem
     private static final long serialVersionUID = 1L;
 
     public static final int N_ALT_LABEL = 30;
-    public static final int N_ALT_SPEC = 30;
+    public static final int N_ALT_SPEC = 80;
     public static final int N_COMMENT1 = 200;
     public static final int N_FOOTNOTE = 200;
 

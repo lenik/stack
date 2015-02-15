@@ -258,7 +258,7 @@
         --divs        varchar(100),
         resale      boolean not null default false,
         olabel      varchar(30),    -- label override
-        ospec       varchar(30),    -- spec override
+        ospec       varchar(80),    -- spec override
         
         qty         numeric(20,2) not null,
         price       numeric(20,2) not null default 0,
