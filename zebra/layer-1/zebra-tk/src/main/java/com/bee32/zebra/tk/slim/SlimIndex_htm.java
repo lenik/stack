@@ -20,9 +20,9 @@ import net.bodz.bas.html.dom.HtmlDoc;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
+import net.bodz.bas.html.viz.AbstractHttpViewBuilder;
 import net.bodz.bas.html.viz.IHtmlHeadData;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
@@ -62,7 +62,7 @@ import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.CoObjectCriteria;
 
 public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
-        extends AbstractHtmlViewBuilder<X>
+        extends AbstractHttpViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
@@ -96,7 +96,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<X> ref, IOptions options) {
+    public void preview(IHttpViewContext ctx, IUiRef<X> ref, IOptions options) {
         super.preview(ctx, ref, options);
         IHtmlHeadData metaData = ctx.getHeadData();
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
@@ -106,7 +106,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
     }
 
     @Override
-    public final IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+    public final IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
         X index = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
@@ -114,6 +114,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         if (arrivedHere && index.defaultPage && enter(ctx))
             return out;
 
+        HtmlDoc doc = ctx.getHtmlDoc();
+        
         SwitcherModelGroup switchers = new SwitcherModelGroup();
         CoObjectCriteria criteria = buildSwitchers(ctx, switchers);
         ctx.getRequest().setAttribute(criteria.getClass().getName(), criteria);
@@ -126,7 +128,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         if (!layout.hideFramework) {
-            IHtmlTag body1 = ctx.getTag(ID.body1);
+            IHtmlTag body1 = doc.getElementById(ID.body1);
             {
                 HtmlDivTag headDiv = body1.div().id(ID.head).class_("zu-info clearfix");
                 headDiv.div().id(ID.title);
@@ -143,7 +145,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
                 out = body1;
             }
 
-            IHtmlTag rightCol = ctx.getTag(ID.right_col);
+            IHtmlTag rightCol = doc.getElementById(ID.right_col);
             if (arrivedHere) {
                 HtmlDivTag previewDiv = rightCol.div().id(ID.preview).align("center");
                 // previewDiv.div().class_("icon fa").text(FA_COFFEE);
@@ -167,7 +169,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
             }
         } // showFramework
 
-        PageStruct page = new PageStruct(ctx);
+        PageStruct page = new PageStruct(doc);
         DataViewAnchors<T> a = new DataViewAnchors<T>();
         if (index.format == QuickIndexFormat.HTML) {
             a.frame = page.body1;
@@ -195,23 +197,23 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         afterData(ctx, out, ref, options);
 
         if (arrivedHere) {
-            new PageStruct(ctx);
+            new PageStruct(doc);
             page.scripts.script().javascriptSrc(getClass().getSimpleName() + ".js");
         }
 
         return out;
     }
 
-    protected abstract CoObjectCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected abstract CoObjectCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException;
 
-    protected void titleInfo(IHtmlViewContext ctx, IUiRef<X> ref, boolean indexPage) {
+    protected void titleInfo(IHttpViewContext ctx, IUiRef<X> ref, boolean indexPage) {
         X manager = ref.get();
         Class<?> objectType = manager.getObjectType();
         IMapperTemplate<?, C> mapper = MapperUtil.getMapperTemplate(objectType);
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
-        PageStruct p = new PageStruct(ctx);
+        PageStruct p = new PageStruct(ctx.getHtmlDoc());
         p.title.h1().text(classDoc.getTag("label"));
 
         iString docText = classDoc.getText();
@@ -256,7 +258,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
 
         List<String> rels = classDoc.getTag("rel", List.class);
         if (rels != null && !rels.isEmpty()) {
-            IHtmlTag headCol2 = ctx.getTag(ID.headCol2);
+            IHtmlTag headCol2 = ctx.getHtmlDoc().getElementById(ID.headCol2);
             HtmlDivTag headLinks = headCol2.div().class_("zu-links");
             headLinks.div().text("您可能需要进行下面的操作:");
             HtmlUlTag linksUl = headLinks.ul();
@@ -276,14 +278,14 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         }
     }
 
-    protected abstract void dataIndex(IHtmlViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)
+    protected abstract void dataIndex(IHttpViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException;
 
-    protected void afterData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+    protected void afterData(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
     }
 
-    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<X> ref, IOptions options)
+    protected void buildJson(IHttpViewContext ctx, PrintWriter out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DataViewAnchors<T> a = new DataViewAnchors<T>();
         a.frame = new HtmlDoc();

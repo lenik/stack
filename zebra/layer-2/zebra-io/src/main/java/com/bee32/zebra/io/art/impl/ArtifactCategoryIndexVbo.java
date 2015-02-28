@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -27,14 +27,14 @@ public class ArtifactCategoryIndexVbo
     }
 
     @Override
-    protected ArtifactCategoryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected ArtifactCategoryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         ArtifactCategoryCriteria criteria = fn.criteriaFromRequest(new ArtifactCategoryCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<ArtifactCategory> a,
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<ArtifactCategory> a,
             IUiRef<ArtifactCategoryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactCategoryMapper mapper = ctx.query(ArtifactCategoryMapper.class);

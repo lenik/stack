@@ -8,7 +8,7 @@ import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -35,7 +35,7 @@ public class FileInfoVbo
     }
 
     @Override
-    protected void setUpFrame(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref, IOptions options)
+    protected void setUpFrame(IHttpViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref, IOptions options)
             throws ViewBuilderException, IOException {
         super.setUpFrame(ctx, out, ref, options);
 
@@ -44,7 +44,7 @@ public class FileInfoVbo
         canUpload = true;
 
         if (canUpload) {
-            IHtmlTag headCol1 = ctx.getTag(ID.headCol1);
+            IHtmlTag headCol1 = ctx.getHtmlDoc().getElementById(ID.headCol1);
 
             HtmlDivTag filecmds = headCol1.div().class_("zu-links");
             // HtmlATag uploadLink = filecmds.a().href("javascript: showUploadDialog()");
@@ -53,6 +53,11 @@ public class FileInfoVbo
                     .iText(FA_PLUS_CIRCLE, "fa").text("上传...")//
                     .input().id("fileupload").type("file").name("files[]");
             fileupload.attr("data-url", _webApp_ + "file/upload");
+
+            HtmlDivTag progress = filecmds.div().class_("fileupload-progress fade");
+            HtmlDivTag prog = progress.div().class_("progress progress-success progress-triped active") //
+                    .attr("role", "progressbar").attr("aria-valuemin", 0).attr("aria-valuemax", 100);
+            prog.div().class_("bar").style("width:0%");
 
             HtmlDivTag alert = out.div().id("alert-done").class_("alert alert-success").style("display: none");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
@@ -66,7 +71,7 @@ public class FileInfoVbo
     }
 
     @Override
-    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref)
+    protected Object persist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref)
             throws Exception {
         FileInfo fileInfo = ref.get();
 
@@ -121,14 +126,14 @@ public class FileInfoVbo
     }
 
     @Override
-    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected void endForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
         out.input().type("hidden").id("incoming").name("incoming");
         super.endForm(ctx, out, ref, options);
     }
 
     @Override
-    protected IHtmlTag extras(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref, IOptions options)
+    protected IHtmlTag extras(IHttpViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref, IOptions options)
             throws ViewBuilderException, IOException {
         super.extras(ctx, out, ref, options);
 

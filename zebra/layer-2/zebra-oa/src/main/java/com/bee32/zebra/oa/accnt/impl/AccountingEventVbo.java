@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.repr.form.FormDeclBuilder;
@@ -27,7 +27,7 @@ public class AccountingEventVbo
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<AccountingEvent> ref, IOptions options)
+    protected IHtmlTag afterForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<AccountingEvent> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEvent acdoc = ref.get();
         if (acdoc.getId() == null)

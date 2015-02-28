@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.bodz.bas.err.Err;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -31,7 +31,7 @@ public class TopicVbo
     }
 
     @Override
-    protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected void process(IHttpViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
             throws ViewBuilderException, IOException {
         HttpServletRequest req = ctx.getRequest();
 
@@ -68,7 +68,7 @@ public class TopicVbo
     }
 
     @Override
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
+    protected boolean buildBasicGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
             IOptions options)
             throws ViewBuilderException {
         super.buildBasicGroup(ctx, out, instanceRef, group, options);
@@ -90,7 +90,7 @@ public class TopicVbo
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected IHtmlTag afterForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
         if (topic.getId() != null) {
@@ -100,7 +100,7 @@ public class TopicVbo
         return out;
     }
 
-    protected void buildReplyTree(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected void buildReplyTree(IHttpViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 
@@ -133,7 +133,7 @@ public class TopicVbo
         }
     }
 
-    protected void buildReplyForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected void buildReplyForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 

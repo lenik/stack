@@ -11,7 +11,7 @@ import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.TextInput;
@@ -89,7 +89,7 @@ public class LoginForm
         this.password = password;
     }
 
-    public void login(IHtmlViewContext ctx, IHtmlTag out) {
+    public void login(IHttpViewContext ctx, IHtmlTag out) {
         IMapperProvider mapperProvider = VhostDataService.getInstance().getMapperProvider();
         UserMapper mapper = mapperProvider.getMapper(UserMapper.class);
 

@@ -25,6 +25,7 @@ $(document).ready(function() {
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
         dataType : "json",
+
         done : function(e, data) {
             var alertDone = $("#alert-done");
             alertDone.fadeIn();
@@ -34,7 +35,13 @@ $(document).ready(function() {
                 message.append($("<p/>").text(file.name + " (" + file.size + " 字节)"));
                 $("#incoming").val(file.name);
             });
+        },
+
+        progressall : function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .bar').css('width', progress + '%');
         }
+
     });
 
 });

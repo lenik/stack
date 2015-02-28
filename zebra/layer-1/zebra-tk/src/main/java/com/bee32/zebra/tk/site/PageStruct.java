@@ -1,7 +1,7 @@
 package com.bee32.zebra.tk.site;
 
+import net.bodz.bas.html.dom.HtmlDoc;
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
 
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 
@@ -16,15 +16,15 @@ public class PageStruct {
     public IHtmlTag extradata;
     public IHtmlTag scripts;
 
-    public PageStruct(IHtmlViewContext ctx) {
-        title = ctx.getTag(ID.title);
-        body1 = ctx.getTag(ID.body1);
-        stat = ctx.getTag(ID.stat);
-        cmds0 = ctx.getTag(ID.cmds0);
-        cmds1 = ctx.getTag(ID.cmds1);
-        infomanUl = ctx.getTag(ID.infoman_ul);
-        extradata = ctx.getTag(ID.extradata);
-        scripts = ctx.getTag(ID.scripts);
+    public PageStruct(HtmlDoc doc) {
+        title = doc.getElementById(ID.title);
+        body1 = doc.getElementById(ID.body1);
+        stat = doc.getElementById(ID.stat);
+        cmds0 = doc.getElementById(ID.cmds0);
+        cmds1 = doc.getElementById(ID.cmds1);
+        infomanUl = doc.getElementById(ID.infoman_ul);
+        extradata = doc.getElementById(ID.extradata);
+        scripts = doc.getElementById(ID.scripts);
     }
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -33,16 +33,16 @@ public class ArtifactIndexVbo
     }
 
     @Override
-    protected void titleInfo(IHtmlViewContext ctx, IUiRef<ArtifactIndex> ref, boolean indexPage) {
+    protected void titleInfo(IHttpViewContext ctx, IUiRef<ArtifactIndex> ref, boolean indexPage) {
         super.titleInfo(ctx, ref, indexPage);
-        PageStruct page = new PageStruct(ctx);
+        PageStruct page = new PageStruct(ctx.getHtmlDoc());
         if (indexPage) {
             page.cmds1.a().href("?view:=barcode").text("打印条码");
         }
     }
 
     @Override
-    protected ArtifactCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected ArtifactCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         ArtifactCriteria criteria = fn.criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
 
@@ -64,7 +64,7 @@ public class ArtifactIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Artifact> a, IUiRef<ArtifactIndex> ref,
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<Artifact> a, IUiRef<ArtifactIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);

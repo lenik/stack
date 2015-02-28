@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -28,7 +28,7 @@ public class DiaryIndexVbo
     }
 
     @Override
-    protected DiaryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected DiaryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
         DiaryCriteria criteria = fn.criteriaFromRequest(new DiaryCriteria(), ctx.getRequest());
@@ -41,7 +41,7 @@ public class DiaryIndexVbo
     }
 
     @Override
-    public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Diary> a, IUiRef<DiaryIndex> ref, IOptions options)
+    public void dataIndex(IHttpViewContext ctx, DataViewAnchors<Diary> a, IUiRef<DiaryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
         DiaryCriteria criteria = ctx.query(DiaryCriteria.class);

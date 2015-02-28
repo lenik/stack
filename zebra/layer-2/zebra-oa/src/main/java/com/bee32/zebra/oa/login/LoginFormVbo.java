@@ -10,7 +10,7 @@ import net.bodz.bas.html.dom.tag.HtmlFormTag;
 import net.bodz.bas.html.dom.tag.HtmlHeadTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlHeadData;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.html.viz.util.DefaultForm_htm;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -34,14 +34,14 @@ public class LoginFormVbo
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<LoginForm> ref, IOptions options) {
+    public void preview(IHttpViewContext ctx, IUiRef<LoginForm> ref, IOptions options) {
         super.preview(ctx, ref, options);
         IHtmlHeadData metaData = ctx.getHeadData();
         metaData.addDependency("all-effects", PSEUDO);
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<LoginForm> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag out, IUiRef<LoginForm> ref, IOptions options)
             throws ViewBuilderException, IOException {
         if (enter(ctx))
             return null;

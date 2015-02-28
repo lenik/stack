@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -30,14 +30,14 @@ public class UserIndexVbo
     }
 
     @Override
-    protected UserCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected UserCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         UserCriteria criteria = fn.criteriaFromRequest(new UserCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref, IOptions options)
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UserMapper mapper = ctx.query(UserMapper.class);
         UserCriteria criteria = ctx.query(UserCriteria.class);

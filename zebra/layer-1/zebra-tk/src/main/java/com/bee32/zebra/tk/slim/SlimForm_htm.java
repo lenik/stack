@@ -24,13 +24,14 @@ import net.bodz.bas.err.IllegalUsageException;
 import net.bodz.bas.err.NotImplementedException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
+import net.bodz.bas.html.dom.HtmlDoc;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.meta.HtmlViewBuilder;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHtmlViewBuilder;
-import net.bodz.bas.html.viz.IHtmlViewBuilderFactory;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewBuilderFactory;
+import net.bodz.bas.html.viz.IHttpViewBuilder;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
 import net.bodz.bas.io.Stdio;
 import net.bodz.bas.io.impl.TreeOutImpl;
@@ -77,7 +78,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<T> ref, IOptions options) {
+    public void preview(IHttpViewContext ctx, IUiRef<T> ref, IOptions options) {
         super.preview(ctx, ref, options);
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
@@ -88,7 +89,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         return super.buildHtmlView(ctx, out, ref, options);
     }
@@ -99,7 +100,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected IHtmlTag beforeForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
@@ -110,7 +111,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         return out;
     }
 
-    protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected void process(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         try {
             // data.populate(ctx.getRequest().getParameterMap());
@@ -158,8 +159,10 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
-    protected void setUpFrame(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected void setUpFrame(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
+        HtmlDoc doc = ctx.getHtmlDoc();
+
         Class<?> type = ref.getValueType();
         T obj = ref.get();
         Number id = (Number) obj.getId();
@@ -173,7 +176,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         if (prevNext == null)
             prevNext = new PrevNext();
 
-        IHtmlTag headCol2 = ctx.getTag(ID.headCol2);
+        IHtmlTag headCol2 = doc.getElementById(ID.headCol2);
         HtmlDivTag adjs = headCol2.div().class_("zu-links");
         adjs.div().text("操作附近的数据:");
         HtmlUlTag ul = adjs.ul();
@@ -195,7 +198,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected HtmlFormTag beginForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
         SplitForm form = new SplitForm(out);
         form.name("form").method("post");
@@ -213,7 +216,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
+    protected boolean overrideFieldGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, IOptions options)
             throws ViewBuilderException, IOException {
         String typeName = instanceRef.getValueType().getSimpleName();
@@ -248,14 +251,14 @@ public abstract class SlimForm_htm<T extends CoObject>
         return false;
     }
 
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
+    protected boolean buildBasicGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
             IOptions options)
             throws ViewBuilderException, IOException {
         return false;
     }
 
     @Override
-    protected IHtmlTag beginCategory(IHtmlViewContext ctx, IHtmlTag out, FieldCategory category)
+    protected IHtmlTag beginCategory(IHttpViewContext ctx, IHtmlTag out, FieldCategory category)
             throws ViewBuilderException, IOException {
         String catName = category == FieldCategory.NULL ? "null" : category.getName();
         out = out.fieldset().class_("zu-fcat").id("zp-fcat-" + catName);
@@ -273,7 +276,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected List<IFieldDecl> overrideFieldSelection(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
+    protected List<IFieldDecl> overrideFieldSelection(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, List<IFieldDecl> selection, IOptions options)
             throws ViewBuilderException, IOException {
 
@@ -306,7 +309,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected IHtmlTag beginField(IHtmlViewContext ctx, IHtmlTag out, IFieldDecl fieldDecl)
+    protected IHtmlTag beginField(IHttpViewContext ctx, IHtmlTag out, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
         HtmlDivTag div = out.div().class_("zu-field");
         div.attr("f", fieldDecl.getName());
@@ -321,7 +324,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected void fieldBody(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, IFieldDecl fieldDecl,
+    protected void fieldBody(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, IFieldDecl fieldDecl,
             IOptions options)
             throws ViewBuilderException, IOException {
         IProperty property = fieldDecl.getProperty();
@@ -385,15 +388,15 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
 
         else {
-            IHtmlViewBuilder<Object> viewBuilder;
+            IHttpViewBuilder<Object> viewBuilder;
 
             HtmlViewBuilder aViewBuilder = property.getAnnotation(HtmlViewBuilder.class);
             if (aViewBuilder != null && aViewBuilder.value().length > 0) {
-                viewBuilder = (IHtmlViewBuilder<Object>) SingletonUtil.instantiateCached(aViewBuilder.value()[0]);
+                viewBuilder = (IHttpViewBuilder<Object>) SingletonUtil.instantiateCached(aViewBuilder.value()[0]);
             } else {
-                IHtmlViewBuilderFactory factory = ctx.query(IHtmlViewBuilderFactory.class);
+                IHttpViewBuilderFactory factory = ctx.query(IHttpViewBuilderFactory.class);
                 if (factory == null)
-                    throw new IllegalConfigException(IHtmlViewBuilderFactory.class + " isn't set.");
+                    throw new IllegalConfigException(IHttpViewBuilderFactory.class + " isn't set.");
                 viewBuilder = factory.getViewBuilder(clazz);
             }
 
@@ -409,16 +412,16 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected void endField(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
+    protected void endField(IHttpViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
     }
 
     @Override
-    protected void endCategory(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
+    protected void endCategory(IHttpViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
     }
 
     @Override
-    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected void endForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
         // out.hr();
         HtmlDivTag div = out.div();
@@ -434,17 +437,17 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected IHtmlTag extras(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected IHtmlTag extras(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         new PickDialog(out, "picker1");
 
-        PageStruct page = new PageStruct(ctx);
+        PageStruct page = new PageStruct(ctx.getHtmlDoc());
         page.scripts.script().javascriptSrc("impl/" + getClass().getSimpleName() + ".js");
 
         return out;
     }
 
-    protected boolean tryPersist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
+    protected boolean tryPersist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
 
         try {
@@ -491,7 +494,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
-    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref)
+    protected Object persist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref)
             throws Exception {
         T data = ref.get();
         Object id = data.persist(ctx, out);

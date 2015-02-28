@@ -7,7 +7,7 @@ import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -29,14 +29,14 @@ public class ReplyIndexVbo
     }
 
     @Override
-    protected ReplyCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected ReplyCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         ReplyCriteria criteria = fn.criteriaFromRequest(new ReplyCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Reply> a, IUiRef<ReplyIndex> ref, IOptions options)
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<Reply> a, IUiRef<ReplyIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ReplyMapper mapper = ctx.query(ReplyMapper.class);
         ReplyCriteria criteria = ctx.query(ReplyCriteria.class);

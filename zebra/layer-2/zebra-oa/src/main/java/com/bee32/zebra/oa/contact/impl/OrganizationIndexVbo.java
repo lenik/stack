@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -30,7 +30,7 @@ public class OrganizationIndexVbo
     }
 
     @Override
-    protected OrganizationCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected OrganizationCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         OrganizationCriteria criteria = fn.criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
 
@@ -43,7 +43,7 @@ public class OrganizationIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Organization> a, IUiRef<OrganizationIndex> ref,
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<Organization> a, IUiRef<OrganizationIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);

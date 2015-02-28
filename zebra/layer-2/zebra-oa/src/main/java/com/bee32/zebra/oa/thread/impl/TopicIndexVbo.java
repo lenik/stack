@@ -7,7 +7,7 @@ import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -37,7 +37,7 @@ public class TopicIndexVbo
     }
 
     @Override
-    protected TopicCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected TopicCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
         TopicCriteria criteria = fn.criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
@@ -67,7 +67,7 @@ public class TopicIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref, IOptions options)
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
         TopicCriteria criteria = ctx.query(TopicCriteria.class);

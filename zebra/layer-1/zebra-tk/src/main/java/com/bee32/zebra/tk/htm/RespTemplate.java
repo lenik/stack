@@ -6,9 +6,9 @@ import net.bodz.bas.c.string.StringQuote;
 import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.artifact.IArtifactDependency;
 import net.bodz.bas.html.dom.tag.HtmlHeadTag;
-import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
+import net.bodz.bas.html.viz.AbstractHttpViewBuilder;
 import net.bodz.bas.html.viz.IHtmlHeadData;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
@@ -16,7 +16,7 @@ import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout;
 
 public abstract class RespTemplate<T>
-        extends AbstractHtmlViewBuilder<T>
+        extends AbstractHttpViewBuilder<T>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts {
 
     public RespTemplate(Class<?> valueClass, String... supportedFeatures) {
@@ -24,7 +24,7 @@ public abstract class RespTemplate<T>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<T> ref, IOptions options) {
+    public void preview(IHttpViewContext ctx, IUiRef<T> ref, IOptions options) {
         super.preview(ctx, ref, options);
 
         IHtmlHeadData metaData = ctx.getHeadData();
@@ -40,7 +40,7 @@ public abstract class RespTemplate<T>
         metaData.addDependency("all-effects", PSEUDO);
     }
 
-    protected void respHead(IHtmlViewContext ctx, HtmlHeadTag head)
+    protected void respHead(IHttpViewContext ctx, HtmlHeadTag head)
             throws IOException {
         writeHeadMetas(ctx, head);
         writeHeadImports(ctx, head);

@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -33,14 +33,14 @@ public class SalesOrderItemIndexVbo
     }
 
     @Override
-    protected SalesOrderItemCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected SalesOrderItemCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         SalesOrderItemCriteria criteria = fn.criteriaFromRequest(new SalesOrderItemCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<SalesOrderItem> a, IUiRef<SalesOrderItemIndex> ref,
+    public void dataIndex(IHttpViewContext ctx, DataViewAnchors<SalesOrderItem> a, IUiRef<SalesOrderItemIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrderItemMapper mapper = ctx.query(SalesOrderItemMapper.class);

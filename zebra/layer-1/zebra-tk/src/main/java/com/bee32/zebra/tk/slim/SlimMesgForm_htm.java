@@ -8,7 +8,7 @@ import net.bodz.bas.html.dom.tag.HtmlInputTag;
 import net.bodz.bas.html.dom.tag.HtmlLabelTag;
 import net.bodz.bas.html.dom.tag.HtmlTextareaTag;
 import net.bodz.bas.html.util.FieldHtmlUtil;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
@@ -28,7 +28,7 @@ public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
     }
 
     @Override
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
+    protected boolean buildBasicGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
             IOptions options)
             throws ViewBuilderException {
         IFormDecl formDecl = group.getFormDecl();

@@ -10,7 +10,7 @@ import net.bodz.bas.html.dom.tag.HtmlATag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlTdTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -37,7 +37,7 @@ public class FileInfoIndexVbo
     }
 
     @Override
-    protected FileInfoCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected FileInfoCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
         FileInfoCriteria criteria = fn.criteriaFromRequest(new FileInfoCriteria(), ctx.getRequest());
@@ -58,7 +58,7 @@ public class FileInfoIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FileInfo> a, IUiRef<FileInfoIndex> ref,
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<FileInfo> a, IUiRef<FileInfoIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
@@ -94,7 +94,7 @@ public class FileInfoIndexVbo
     }
 
     @Override
-    protected void afterData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfoIndex> ref, IOptions options)
+    protected void afterData(IHttpViewContext ctx, IHtmlTag out, IUiRef<FileInfoIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         HtmlDivTag tmpl = out.div().id("child-0").class_("zu-template");
 

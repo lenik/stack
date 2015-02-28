@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -31,7 +31,7 @@ public class TagDefIndexVbo
     }
 
     @Override
-    protected TagDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected TagDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         TagDefCriteria criteria = fn.criteriaFromRequest(new TagDefCriteria(), ctx.getRequest());
         SwitcherModel<Integer> sw;
@@ -43,7 +43,7 @@ public class TagDefIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefIndex> ref, IOptions options)
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         TagDefMapper mapper = ctx.query(TagDefMapper.class);
         TagDefCriteria criteria = ctx.query(TagDefCriteria.class);

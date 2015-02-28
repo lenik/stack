@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -29,7 +29,7 @@ public class UOMIndexVbo
     }
 
     @Override
-    protected UOMCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected UOMCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         UOMCriteria criteria = fn.criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
 
@@ -44,7 +44,7 @@ public class UOMIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<UOM> a, IUiRef<UOMIndex> ref, IOptions options)
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<UOM> a, IUiRef<UOMIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UOMMapper mapper = ctx.query(UOMMapper.class);
         UOMCriteria criteria = ctx.query(UOMCriteria.class);

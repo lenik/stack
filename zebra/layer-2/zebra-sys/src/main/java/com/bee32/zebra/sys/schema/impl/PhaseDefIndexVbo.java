@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -31,7 +31,7 @@ public class PhaseDefIndexVbo
     }
 
     @Override
-    protected PhaseDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected PhaseDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         PhaseDefCriteria criteria = fn.criteriaFromRequest(new PhaseDefCriteria(), ctx.getRequest());
 
@@ -45,7 +45,7 @@ public class PhaseDefIndexVbo
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<PhaseDef> a, IUiRef<PhaseDefIndex> ref,
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<PhaseDef> a, IUiRef<PhaseDefIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         PhaseDefMapper mapper = ctx.query(PhaseDefMapper.class);

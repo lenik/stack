@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.i18n.dom1.IElement;
 import net.bodz.bas.repr.path.IPathArrival;
@@ -37,7 +37,7 @@ public class OaSiteVbo
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<OaSite> ref, IOptions options) {
+    public void preview(IHttpViewContext ctx, IUiRef<OaSite> ref, IOptions options) {
         super.preview(ctx, ref, options);
 
         IPathArrival arrival = ctx.query(IPathArrival.class);
@@ -46,7 +46,7 @@ public class OaSiteVbo
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IOptions options)
             throws ViewBuilderException, IOException {
         OaSite site = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
@@ -109,7 +109,7 @@ public class OaSiteVbo
         return layout;
     }
 
-    protected void menuCol(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IPathArrival arrival) {
+    protected void menuCol(IHttpViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IPathArrival arrival) {
         OaSite site = ref.get();
         LoginContext loginctx = LoginContext.fromSession(ctx.getSession());
 

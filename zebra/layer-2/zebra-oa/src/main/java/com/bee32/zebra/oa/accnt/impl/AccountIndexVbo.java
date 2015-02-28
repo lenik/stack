@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -27,14 +27,14 @@ public class AccountIndexVbo
     }
 
     @Override
-    protected AccountCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected AccountCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         AccountCriteria criteria = fn.criteriaFromRequest(new AccountCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Account> a, IUiRef<AccountIndex> ref,
+    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<Account> a, IUiRef<AccountIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         AccountMapper mapper = ctx.query(AccountMapper.class);
