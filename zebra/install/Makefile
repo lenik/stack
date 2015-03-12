@@ -1,9 +1,26 @@
+
+# DB=foobar_db make create
+# DB=foobar_db make all
+# DB=foobar_db make reset
+
 DATABASE = ${DB}
 PSQL_S = psql -h localhost -p 1063 -1 -U postgres
 PSQL_U = psql -h localhost -p 1063 -1 -U semsadmin
 
 all: check utils lily zebra view
 	@echo "NOTICE: Remember to 'make conv' if you have old data."
+
+drop: check
+	dropdb -h localhost -p 1063 -U postgres ${DATABASE}
+
+create: check
+	createdb \
+	    -h localhost -p 1063 \
+	    -U postgres \
+	    -T template0 \
+	    -E UTF8 \
+	    -l zh_CN.UTF8 \
+	    ${DATABASE}
 
 check:
 	@if [ -z "${DATABASE}" ]; then \
