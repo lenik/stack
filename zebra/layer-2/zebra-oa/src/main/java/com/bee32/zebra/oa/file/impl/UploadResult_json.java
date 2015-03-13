@@ -38,7 +38,7 @@ public class UploadResult_json
     public IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag parent, IUiRef<UploadResult> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UploadResult result = ref.get();
-        FileManager manager = FileManager.getInstance();
+        FileManager manager = FileManager.forCurrentRequest();
 
         JSONArray filesArray = new JSONArray();
         for (FileItem item : result.items) {

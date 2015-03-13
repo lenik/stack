@@ -24,7 +24,7 @@ public class UploadHandler
         if (!ServletFileUpload.isMultipartContent(request))
             throw new IllegalArgumentException("Request is not multipart.");
 
-        FileManager manager = FileManager.getInstance();
+        FileManager manager = FileManager.forCurrentRequest();
         ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 
         try {

@@ -77,7 +77,7 @@ public class FileInfoVbo
 
         String incoming = ctx.getRequest().getParameter("incoming");
         if (!Nullables.isEmpty(incoming)) {
-            FileManager manager = FileManager.getInstance();
+            FileManager manager = FileManager.forCurrentRequest();
             File incomingFile = new File(manager.incomingDir, incoming);
             if (!incomingFile.exists())
                 throw new IllegalStateException("incoming file isn't existed: " + incomingFile);
