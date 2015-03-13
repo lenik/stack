@@ -2,6 +2,7 @@ com.bee32.zebra.oa.accnt.impl.AccountingEntryMapper
 com.bee32.zebra.oa.accnt.impl.AccountingEventMapper
 com.bee32.zebra.oa.accnt.impl.AccountMapper
 com.bee32.zebra.oa.calendar.impl.DiaryMapper
+com.bee32.zebra.oa.calendar.impl.LogEntryMapper
 com.bee32.zebra.oa.contact.impl.ContactMapper
 com.bee32.zebra.oa.contact.impl.OrganizationMapper
 com.bee32.zebra.oa.contact.impl.OrgUnitMapper
