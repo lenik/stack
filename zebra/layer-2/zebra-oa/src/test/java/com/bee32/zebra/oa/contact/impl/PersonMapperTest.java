@@ -17,7 +17,7 @@ public class PersonMapperTest {
     @Before
     public void setUp() {
         TestEnvironment.setUpVhosts();
-        mapper = VhostDataService.getInstance().query(PersonMapper.class);
+        mapper = VhostDataService.forCurrentRequest().query(PersonMapper.class);
     }
 
     @Test

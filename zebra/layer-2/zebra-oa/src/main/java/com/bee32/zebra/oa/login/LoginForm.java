@@ -90,7 +90,7 @@ public class LoginForm
     }
 
     public void login(IHttpViewContext ctx, IHtmlTag out) {
-        IMapperProvider mapperProvider = VhostDataService.getInstance().getMapperProvider();
+        IMapperProvider mapperProvider = VhostDataService.forCurrentRequest().getMapperProvider();
         UserMapper mapper = mapperProvider.getMapper(UserMapper.class);
 
         UserCriteria criteria = new UserCriteria();

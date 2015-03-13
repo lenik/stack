@@ -10,7 +10,7 @@ public class MapperUtil {
         Class<? extends IMapper> mapperClass = IMapper.fn.getMapperClass(type);
         if (mapperClass == null)
             throw new NullPointerException("unmapped " + type);
-        IMapper mapper = VhostDataService.getInstance().query(mapperClass);
+        IMapper mapper = VhostDataService.forCurrentRequest().query(mapperClass);
         return (IMapperTemplate<T, C>) mapper;
     }
 

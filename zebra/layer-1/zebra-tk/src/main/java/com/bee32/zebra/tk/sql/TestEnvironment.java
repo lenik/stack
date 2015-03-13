@@ -2,46 +2,63 @@ package com.bee32.zebra.tk.sql;
 
 import net.bodz.bas.db.jdbc.DataSourceArguments;
 import net.bodz.bas.site.vhost.MutableVirtualHost;
+import net.bodz.bas.site.vhost.MutableVirtualHostResolver;
 import net.bodz.bas.site.vhost.VirtualHostManager;
 
 public class TestEnvironment {
 
+    static VirtualHostManager manager = VirtualHostManager.getInstance();
+    static MutableVirtualHostResolver resolver1 = new MutableVirtualHostResolver();
+    static VirtualHostTemplate resolver2;
+
     public static void setUpVhosts() {
+        MutableVirtualHost master = new MutableVirtualHost();
+        {
+            DataSourceArguments masterdb = new DataSourceArguments();
+            master.setName("master");
+            master.addHostSpecifier("master.lo");
+            master.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, masterdb);
+            masterdb.setServer("localhost:1063");
+            masterdb.setDatabase("postgres");
+            masterdb.setUserName("postgres");
+            masterdb.setPassword("cW3EADp8");
+            resolver1.add(master);
 
-        DataSourceArguments devdb = new DataSourceArguments();
-        devdb.setServer("localhost:1063");
-        devdb.setDatabase("devdb");
-        devdb.setUserName("postgres");
-        devdb.setPassword("cW3EADp8");
+            DataSourceEx masterDataSource = DataSourceExCache.getInstance().get(masterdb);
+            resolver2 = new VirtualHostTemplate(masterDataSource);
+        }
 
-        DataSourceArguments playdb = new DataSourceArguments();
-        playdb.setServer("localhost:1063");
-        playdb.setDatabase("playdb");
-        playdb.setUserName("play");
-        playdb.setPassword("yalp");
+        MutableVirtualHost play = new MutableVirtualHost();
+        {
+            DataSourceArguments playdb = new DataSourceArguments();
+            play.setName("play");
+            play.addHostSpecifier("play.lo");
+            play.addHostSpecifier("a.play.lo");
+            play.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, playdb);
+            playdb.setServer("localhost:1063");
+            playdb.setDatabase("playdb");
+            playdb.setUserName("play");
+            playdb.setPassword("yalp");
+            resolver1.add(play);
+        }
 
-        DataSourceArguments zjhfdb = new DataSourceArguments();
-        zjhfdb.setServer("localhost:1063");
-        zjhfdb.setDatabase("zjhf_db");
-        zjhfdb.setUserName("postgres");
-        zjhfdb.setPassword("cW3EADp8");
+        MutableVirtualHost demo = new MutableVirtualHost();
+        {
+            DataSourceArguments demodb = new DataSourceArguments();
+            demo.setName("demo");
+            demo.addHostSpecifier("demo.lo");
+            demo.addHostSpecifier("a.demo.lo");
+            demo.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, demodb);
+            demodb.setServer("localhost:1063");
+            demodb.setDatabase("demodb");
+            demodb.setUserName("semsadmin");
+            demodb.setPassword("MxDkUWl1");
+            resolver1.add(demo);
+            // resolver1.setDefault(demo);
+        }
 
-        VirtualHostManager vhosts = VirtualHostManager.getInstance();
-
-        MutableVirtualHost vhost0 = new MutableVirtualHost();
-        vhost0.setName("master");
-        vhost0.addHostSpecifier("master.lo");
-        vhost0.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, zjhfdb);
-
-        MutableVirtualHost vhost1 = new MutableVirtualHost();
-        vhost1.setName("foo");
-        vhost1.addHostSpecifier("foo.lo");
-        vhost1.addHostSpecifier("a.foo.lo");
-        vhost1.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, playdb);
-
-        vhosts.add(vhost0);
-        vhosts.add(vhost1);
-
+        manager.add(resolver1);
+        manager.add(resolver2);
     }
 
 }

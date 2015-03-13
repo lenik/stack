@@ -36,7 +36,7 @@ public class OaSite
     public String baiduId;
 
     public OaSite() {
-        setQueryContext(VhostDataService.getInstance());
+        setQueryContext(VhostDataService.forCurrentRequest());
 
         for (Class<? extends CoObjectIndex> indexClass : IndexedTypes.list(CoObjectIndex.class, false)) {
             Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
