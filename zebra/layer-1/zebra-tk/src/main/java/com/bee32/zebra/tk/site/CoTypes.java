@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
-import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.db.meta.TableUtils;
 import net.bodz.bas.repr.path.PathToken;
 
 public class CoTypes {
@@ -23,9 +23,9 @@ public class CoTypes {
 
         paths.add(Strings.hyphenatize(clazz.getSimpleName()));
 
-        TableName aTableName = clazz.getAnnotation(TableName.class);
-        if (aTableName != null)
-            paths.add(aTableName.value());
+        String tableName = TableUtils._name(clazz);
+        if (tableName != null)
+            paths.add(tableName);
 
         PathToken aPathToken = clazz.getAnnotation(PathToken.class);
         if (aPathToken != null)

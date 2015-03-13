@@ -2,7 +2,8 @@ package com.bee32.zebra.io.sales;
 
 import java.util.Date;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.meta.decl.Priority;
@@ -18,7 +19,7 @@ import com.tinylily.model.base.IdType;
  * 订单项
  */
 @IdType(Long.class)
-@TableName("sentry")
+@Table(name = "sentry")
 public class SalesOrderItem
         extends CoMomentInterval<Long> {
 

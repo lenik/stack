@@ -50,10 +50,6 @@ public abstract class Party
     private String bank;
     private String account;
 
-    public Party() {
-        setAccessMode(M_PUBLIC);
-    }
-
     /**
      * 生日
      */

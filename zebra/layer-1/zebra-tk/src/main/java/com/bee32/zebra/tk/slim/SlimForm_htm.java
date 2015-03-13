@@ -17,7 +17,7 @@ import net.bodz.bas.c.type.TypeChain;
 import net.bodz.bas.c.type.TypeKind;
 import net.bodz.bas.db.ibatis.IMapper;
 import net.bodz.bas.db.ibatis.IMapperProvider;
-import net.bodz.bas.db.meta.TableName;
+import net.bodz.bas.db.meta.TableUtils;
 import net.bodz.bas.err.Err;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.err.IllegalUsageException;
@@ -29,8 +29,8 @@ import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.meta.HtmlViewBuilder;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHttpViewBuilderFactory;
 import net.bodz.bas.html.viz.IHttpViewBuilder;
+import net.bodz.bas.html.viz.IHttpViewBuilderFactory;
 import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
 import net.bodz.bas.io.Stdio;
@@ -167,7 +167,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         T obj = ref.get();
         Number id = (Number) obj.getId();
 
-        String tablename = TableName.fn.tablename(type);
+        String tablename = TableUtils.tablename(type);
         FnMapper fnMapper = ctx.query(FnMapper.class);
 
         // FIXME consider access control and criteria.

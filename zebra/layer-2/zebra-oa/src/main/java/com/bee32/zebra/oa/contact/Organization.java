@@ -3,7 +3,8 @@ package com.bee32.zebra.oa.contact;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.meta.decl.Priority;
@@ -14,7 +15,7 @@ import net.bodz.bas.repr.form.meta.TextInput;
 /**
  * 企、事业组织
  */
-@TableName("org")
+@Table(name = "org")
 public class Organization
         extends Party {
 

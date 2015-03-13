@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -13,14 +14,17 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.TableDefaults;
 import com.tinylily.model.mx.base.CoMessage;
 
 /**
  * 凭证单
  */
 @IdType(Long.class)
-@TableName("acdoc")
+@Table(name = "acdoc")
+@TableDefaults(accessMode = CoObject.M_SHARED)
 public class AccountingEvent
         extends CoMessage<Long> {
 

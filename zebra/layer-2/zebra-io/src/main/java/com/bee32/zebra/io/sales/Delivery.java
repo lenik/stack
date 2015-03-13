@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -22,7 +23,7 @@ import com.tinylily.model.mx.base.CoMessage;
  * 送货单
  */
 @IdType(Integer.class)
-@TableName("dldoc")
+@Table(name = "dldoc")
 public class Delivery
         extends CoMessage<Integer> {
 

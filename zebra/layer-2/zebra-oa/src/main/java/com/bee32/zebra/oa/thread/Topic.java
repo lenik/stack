@@ -7,7 +7,9 @@ import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 
 import com.bee32.zebra.oa.OaGroups;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.TableDefaults;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.base.security.User;
@@ -17,6 +19,7 @@ import com.tinylily.model.mx.base.CoMessage;
  * 项目/机会
  */
 @IdType(Integer.class)
+@TableDefaults(accessMode = CoObject.M_COOP)
 public class Topic
         extends CoMessage<Integer> {
 

@@ -2,7 +2,8 @@ package com.bee32.zebra.oa.accnt;
 
 import java.math.BigDecimal;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -12,13 +13,16 @@ import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.tinylily.model.base.CoMomentInterval;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.TableDefaults;
 
 /**
  * 会计分录
  */
 @IdType(Long.class)
-@TableName("acentry")
+@Table(name = "acentry")
+@TableDefaults(accessMode = CoObject.M_PRIVATE)
 public class AccountingEntry
         extends CoMomentInterval<Long> {
 

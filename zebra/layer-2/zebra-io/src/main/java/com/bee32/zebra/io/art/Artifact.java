@@ -3,7 +3,8 @@ package com.bee32.zebra.io.art;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.NumericInput;
@@ -19,7 +20,7 @@ import com.tinylily.model.base.IdType;
  * 物料/商品
  */
 @IdType(Integer.class)
-@TableName("art")
+@Table(name = "art")
 public class Artifact
         extends CoEntity<Integer> {
 

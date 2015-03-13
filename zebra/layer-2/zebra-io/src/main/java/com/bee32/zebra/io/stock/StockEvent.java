@@ -3,7 +3,8 @@ package com.bee32.zebra.io.stock;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -13,7 +14,9 @@ import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.TableDefaults;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.mx.base.CoMessage;
 
@@ -21,7 +24,8 @@ import com.tinylily.model.mx.base.CoMessage;
  * 库存作业
  */
 @IdType(Integer.class)
-@TableName("stdoc")
+@Table(name = "stdoc")
+@TableDefaults(accessMode = CoObject.M_SHARED)
 public class StockEvent
         extends CoMessage<Integer> {
 

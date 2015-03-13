@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.bodz.bas.db.meta.TableName;
+import javax.persistence.Table;
+
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.meta.cache.Statistics;
@@ -14,7 +15,9 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
+import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.TableDefaults;
 import com.tinylily.model.mx.base.CoMessage;
 
 /**
@@ -25,7 +28,8 @@ import com.tinylily.model.mx.base.CoMessage;
  * owner: 制单
  */
 @IdType(Integer.class)
-@TableName("sdoc")
+@Table(name = "sdoc")
+@TableDefaults(accessMode = CoObject.M_COOP)
 public class SalesOrder
         extends CoMessage<Integer> {
 

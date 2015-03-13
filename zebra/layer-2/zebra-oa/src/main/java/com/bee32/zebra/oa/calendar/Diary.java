@@ -17,6 +17,10 @@ public class Diary
 
     private static final long serialVersionUID = 1L;
 
+    public Diary() {
+        setAccessMode(M_PRIVATE);
+    }
+
     /**
      * 作者
      */
