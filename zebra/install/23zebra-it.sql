@@ -32,7 +32,7 @@
         topic       int,
         sdoc        int,
         art         int,
-        sn          varchar
+        sn          varchar(80),
         
         qty         numeric(20,2) not null default 0,
         total       numeric(20,2) not null default 0,
@@ -45,10 +45,6 @@
             references "group"(id)      on update cascade on delete set null,
         constraint issue_fk_op       foreign key(op)
             references "user"(id)       on update cascade on delete set null,
-        constraint issue_fk_org      foreign key(org)
-            references org(id)          on update cascade,
-        constraint issue_fk_person   foreign key(person)
-            references person(id)       on update cascade,
         constraint issue_fk_phase    foreign key(phase)
             references phase(id)        on update cascade on delete set null,
         constraint issue_fk_prev     foreign key(prev)
@@ -66,35 +62,3 @@
     create index issue_uid_acl          on issue(uid, acl);
     create index issue_t0t1             on issue(t0, t1);
     create index issue_t1               on issue(t1);
-
--- drop table if exists sentry;
-    create sequence sentry_seq start with 1000;
-    create table sentry(
-        id          bigint primary key default nextval('sentry_seq'),
-        priority    int not null default 0,
-        flags       int not null default 0,
-        state       int not null default 0,
-        
-        t0          date,
-        t1          date,           -- deadline
-        
-        doc         int not null,
-        art         int not null,
-        --batch       varchar(30) not null default '',
-        --divs        varchar(100),
-        resale      boolean not null default false,
-        olabel      varchar(30),    -- label override
-        ospec       varchar(30),    -- spec override
-        
-        qty         numeric(20,2) not null,
-        price       numeric(20,2) not null default 0,
-        total       numeric(20,2) not null default 0,   -- cache
-        comment     varchar(200),
-        footnote    varchar(200),
-        
-        constraint sentry_fk_art    foreign key(art)
-            references art(id)          on update cascade on delete set null,
-        constraint sentry_fk_doc    foreign key(doc)
-            references issue(id)         on update cascade on delete cascade
-    );
-

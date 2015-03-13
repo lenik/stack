@@ -304,11 +304,11 @@
         (select count(distinct sdoc) from dldoc) "delivered";
 
     create or replace view v_log as
-              select 'TOPIC' stereo, id, subject,       text, t0, creation, uid, gid from topic
-        union select 'REPLY' stereo, id, null "subject",text, t0, creation, uid, gid from reply
-        union select 'DIARY' stereo, id, subject,       text, t0, creation, uid, gid from diary
-        union select 'ACDOC' stereo, id, subject,       text, t0, creation, uid, gid from acdoc
-        union select 'SDOC'  stereo, id, subject,       text, t0, creation, uid, gid from sdoc
-        union select 'STDOC' stereo, id, subject,       text, t0, creation, uid, gid from stdoc
-        union select 'DLDOC' stereo, id, subject,       text, t0, creation, uid, gid from dldoc;
+              select 'topic' c, id, form, op, subject "msg", t0, creation from topic
+        union select 'reply' c, id, null "form", op, text, t0, creation from reply
+        union select 'diary' c, id, form, op, subject, t0, creation from diary
+        union select 'acdoc' c, id, form, op, subject, t0, creation from acdoc
+        union select 'sdoc'  c, id, form, op, subject, t0, creation from sdoc
+        union select 'stdoc' c, id, form, op, subject, t0, creation from stdoc
+        union select 'dldoc' c, id, form, op, subject, t0, creation from dldoc;
 

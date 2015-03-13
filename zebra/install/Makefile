@@ -2,7 +2,8 @@ DATABASE = ${DB}
 PSQL_S = psql -h localhost -p 1063 -1 -U postgres
 PSQL_U = psql -h localhost -p 1063 -1 -U semsadmin
 
-all: check utils lily zebra conv
+all: check utils lily zebra view
+	@echo "NOTICE: Remember to 'make conv' if you have old data."
 
 check:
 	@if [ -z "${DATABASE}" ]; then \
@@ -25,6 +26,12 @@ lily: utils
 
 zebra: lily
 	for f in [12]*.sql; do \
+		echo "Execute $$f"; \
+		$(PSQL_U) -d ${DATABASE} -f "$$f"; \
+	done
+
+view: lily
+	for f in [3]*.sql; do \
 		echo "Execute $$f"; \
 		$(PSQL_U) -d ${DATABASE} -f "$$f"; \
 	done
