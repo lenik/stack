@@ -115,7 +115,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
             return out;
 
         HtmlDoc doc = ctx.getHtmlDoc();
-        
+
         SwitcherModelGroup switchers = new SwitcherModelGroup();
         CoObjectCriteria criteria = buildSwitchers(ctx, switchers);
         ctx.getRequest().setAttribute(criteria.getClass().getName(), criteria);
@@ -183,13 +183,15 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
             a.dataList = false;
         }
 
+        if (!layout.hideFramework)
+            titleInfo(ctx, ref, arrivedHere);
+
+        beforeData(ctx, out, ref, options);
+
         if (arrivedHere) {
             FilterSectionDiv filtersDiv = new FilterSectionDiv(a.frame, "s-filter");
             filtersDiv.build(switchers);
         }
-
-        if (!layout.hideFramework)
-            titleInfo(ctx, ref, arrivedHere);
 
         if (arrivedHere)
             dataIndex(ctx, a, ref, options);
@@ -276,6 +278,10 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
                 for (String see : seeList)
                     p.infomanUl.li().verbatim(see);
         }
+    }
+
+    protected void beforeData(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+            throws ViewBuilderException, IOException {
     }
 
     protected abstract void dataIndex(IHttpViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)

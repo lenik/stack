@@ -61,6 +61,7 @@ h3 {
 
 .container-row>div[class ^="col-"] {
     display: table-cell;
+    float: none;
     vertical-align: top;
 }
 
