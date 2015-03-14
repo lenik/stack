@@ -17,6 +17,7 @@ import net.bodz.bas.site.org.ICrawler;
 import net.bodz.bas.std.rfc.http.CacheControlMode;
 import net.bodz.bas.std.rfc.http.ICacheControl;
 
+import com.bee32.zebra.oa.calendar.CalendarForm;
 import com.bee32.zebra.oa.login.LoginForm;
 import com.bee32.zebra.tk.repr.QuickController;
 import com.bee32.zebra.tk.site.CoTypes;
@@ -76,13 +77,23 @@ public class OaSite
     @Override
     public synchronized IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)
             throws PathDispatchException {
+        Object target = null;
+
         String token = tokens.peek();
         switch (token) {
         case "login":
-            return PathArrival.shift(previous, new LoginForm(), tokens);
+            target = new LoginForm();
+            break;
+
+        case "cal":
+            target = new CalendarForm();
+            break;
         }
 
-        return super.dispatch(previous, tokens);
+        if (target != null)
+            return PathArrival.shift(previous, target, tokens);
+        else
+            return super.dispatch(previous, tokens);
     }
 
     /** ⇱ Implementation Of {@link ICrawlable}. */

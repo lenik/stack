@@ -147,8 +147,8 @@ public class OaSiteVbo
 
         HtmlDivTag welcomeDiv = out.div().id("zp-welcome");
         welcomeDiv.text("欢迎您，").br();
-//        welcomeDiv.text("海宁中鑫三元风机有限公司").br();
-//        welcomeDiv.text("的").br();
+// welcomeDiv.text("海宁中鑫三元风机有限公司").br();
+// welcomeDiv.text("的").br();
         HtmlSpanTag userSpan = welcomeDiv.span();
         userSpan.text(loginctx.user.getFullName());
         userSpan.title(loginctx.user.getGroupIds().toString());
@@ -172,6 +172,7 @@ public class OaSiteVbo
         HtmlLiTag item;
 
         sub = out.li().text("控制台").ul();
+        // sub.li().a().text("日历").href(_webApp_.join("cal/").toString());
         sub.li().a().text("日记").href(_webApp_.join("diary/").toString());
         // sub.li().a().text("设置").href(_webApp_.join("setting/").toString());
 
