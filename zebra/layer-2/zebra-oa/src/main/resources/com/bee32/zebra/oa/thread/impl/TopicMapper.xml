@@ -8,43 +8,76 @@
         <result property="value" column="val" />
     </resultMap>
 
+    <resultMap id="map2" type="com.bee32.zebra.oa.thread.Topic" extends="map1">
+        <collection property="parties" javaType="ArrayList" ofType="com.bee32.zebra.oa.thread.TopicParty"
+            columnPrefix="tp_">
+            <id property="id" column="id" />
+            <result property="label" column="label" />
+            <result property="description" column="description" />
+            <association property="person" javaType="com.bee32.zebra.oa.contact.Person">
+                <id property="id" column="person" />
+                <result property="label" column="person_label" />
+            </association>
+            <association property="org" javaType="com.bee32.zebra.oa.contact.Organization">
+                <id property="id" column="org" />
+                <result property="label" column="org_label" />
+            </association>
+        </collection>
+        <collection property="tags" javaType="ArrayList" ofType="com.tinylily.model.base.schema.TagDef">
+            <id property="id" column="tt_tag" />
+            <result property="label" column="tt_tag_label" />
+        </collection>
+    </resultMap>
+
     <sql id="select1"><![CDATA[
         select
             a.*,
-            op.label "op_label",
+            u.label "uid_label",
+            g.label "gid_label",
             c.label "cat_label",
             p.label "phase_label",
-            u.label "uid_label",
-            g.label "gid_label"
+            op.label "op_label"
         from topic a
-            left join "user" op on a.op=op.id
-            left join cat c on a.cat=c.id
-            left join phase p on a.phase=p.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
+            left join cat c on a.cat=c.id
+            left join phase p on a.phase=p.id
+            left join "user" op on a.op=op.id
         ]]>
     </sql>
 
     <sql id="select2"><![CDATA[
         select
             a.*,
-            op.label "op_label",
+            u.label "uid_label",
+            g.label "gid_label",
             c.label "cat_label",
             p.label "phase_label",
-            u.label "uid_label",
-            g.label "gid_label"
+            op.label "op_label",
+            tp.id "tp_id",
+            tp.person "tp_person",
+            tp.org "tp_org",
+            tp.description "tp_description",
+            person.label "tp_person_label",
+            org.label "tp_org_label",
+            tt.tag "tt_tag",
+            tag.label "tt_tag_label"
         from topic a
-            left join "user" op on a.op=op.id
-            left join cat c on a.cat=c.id
-            left join phase p on a.phase=p.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
+            left join cat c on a.cat=c.id
+            left join phase p on a.phase=p.id
+            left join "user" op on a.op=op.id
+            left join topicparty tp on a.id=tp.topic
+            left join person on tp.person=person.id
+            left join org on tp.org=org.id
+            left join topictag tt on a.id=tt.topic
+            left join tag on tt.tag=tag.id
         ]]>
     </sql>
 
     <sql id="filtconds">
         <if test="valueRange != null">and a.value between #{valueRange.min} and #{valueRange.max}</if>
-
         <!-- co -->
         <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         <!-- moment-interval -->
@@ -82,7 +115,7 @@
         </where>
     </select>
 
-    <select id="select" parameterType="int" resultMap="map1">
+    <select id="select" parameterType="int" resultMap="map2">
         <include refid="select2" />
         <where>
             <if test="_parameter != null">a.id=#{id}</if>
