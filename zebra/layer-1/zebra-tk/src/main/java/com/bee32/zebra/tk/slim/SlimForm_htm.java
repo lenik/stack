@@ -67,6 +67,7 @@ import com.bee32.zebra.tk.util.PrevNext;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IId;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.Instantiables;
 import com.tinylily.model.sea.ParameterMapVariantMap;
 
 public abstract class SlimForm_htm<T extends CoObject>
@@ -130,7 +131,7 @@ public abstract class SlimForm_htm<T extends CoObject>
             if (tryPersist(true, ctx, out, ref))
                 // success. create a new skel object.
                 try {
-                    T skel = ref.getValueType().newInstance();
+                    T skel = Instantiables._instantiate(ref.getValueType());
                     ref.set(skel);
                 } catch (ReflectiveOperationException e) {
                     throw new ViewBuilderException(e.getMessage(), e);

@@ -11,8 +11,8 @@ import net.bodz.bas.rtx.IQueryable;
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.sql.MapperUtil;
-import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.CoObjectIndex;
+import com.tinylily.model.base.Instantiables;
 
 public abstract class QuickIndex
         extends CoObjectIndex
@@ -33,13 +33,12 @@ public abstract class QuickIndex
 
         switch (token) {
         case "new":
-            CoObject obj;
+            Object obj;
             try {
-                obj = (CoObject) getObjectType().newInstance();
+                obj = Instantiables._instantiate(getObjectType());
             } catch (Exception e) {
                 throw new PathDispatchException(e.getMessage(), e);
             }
-            obj.create();
             return PathArrival.shift(previous, obj, tokens);
         }
 

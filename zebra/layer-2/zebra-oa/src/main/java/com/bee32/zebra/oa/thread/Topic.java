@@ -32,8 +32,8 @@ public class Topic
     private List<Reply> replies;
 
     @Override
-    public void create() {
-        super.create();
+    public void instantiate() {
+        super.instantiate();
         parties = new ArrayList<TopicParty>();
         replies = new ArrayList<>();
     }

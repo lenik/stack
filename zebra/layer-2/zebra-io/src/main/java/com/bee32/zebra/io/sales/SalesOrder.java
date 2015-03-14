@@ -49,8 +49,8 @@ public class SalesOrder
     // deliveries 送货单/分次
 
     @Override
-    public void create() {
-        super.create();
+    public void instantiate() {
+        super.instantiate();
         items = new ArrayList<>();
     }
 

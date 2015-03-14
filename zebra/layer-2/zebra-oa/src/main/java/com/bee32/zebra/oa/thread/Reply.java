@@ -40,8 +40,8 @@ public class Reply
     }
 
     @Override
-    public void create() {
-        super.create();
+    public void instantiate() {
+        super.instantiate();
         parties = new ArrayList<>();
         changes = new ArrayList<>();
     }
