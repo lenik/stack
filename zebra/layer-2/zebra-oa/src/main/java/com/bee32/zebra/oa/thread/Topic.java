@@ -28,8 +28,15 @@ public class Topic
     private double value;
     // private double minValue, maxValue; // for estimated values.
 
-    private List<TopicParty> parties = new ArrayList<TopicParty>();
-    private List<Reply> replies = new ArrayList<>();
+    private List<TopicParty> parties;
+    private List<Reply> replies;
+
+    @Override
+    public void create() {
+        super.create();
+        parties = new ArrayList<TopicParty>();
+        replies = new ArrayList<>();
+    }
 
     /**
      * 业务员

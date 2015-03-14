@@ -1,6 +1,7 @@
 package com.bee32.zebra.oa.thread;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.bodz.bas.meta.bean.DetailLevel;
@@ -36,6 +37,13 @@ public class Reply
     public Reply(Topic topic, Reply parent) {
         this.topic = topic;
         this.parent = parent;
+    }
+
+    @Override
+    public void create() {
+        super.create();
+        parties = new ArrayList<>();
+        changes = new ArrayList<>();
     }
 
     /**

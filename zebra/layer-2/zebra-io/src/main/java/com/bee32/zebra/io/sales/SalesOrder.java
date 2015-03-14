@@ -42,11 +42,17 @@ public class SalesOrder
     private double quantity;
     private double total;
 
-    private List<SalesOrderItem> items = new ArrayList<>();
+    private List<SalesOrderItem> items;
 
     // make-tasks
     // material-plans (locks)
     // deliveries 送货单/分次
+
+    @Override
+    public void create() {
+        super.create();
+        items = new ArrayList<>();
+    }
 
     /**
      * 項目

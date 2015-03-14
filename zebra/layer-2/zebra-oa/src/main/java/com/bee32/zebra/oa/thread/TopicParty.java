@@ -9,16 +9,26 @@ import com.bee32.zebra.oa.contact.Person;
  * 项目参与方
  */
 public class TopicParty
+        // extends CoObject
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     public static final int N_DESCRIPTION = 60;
 
-    Topic topic;
-    Person person;
-    Organization org;
-    String description;
+    private Long id;
+    private Topic topic;
+    private Person person;
+    private Organization org;
+    private String description;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Topic getTopic() {
         return topic;
