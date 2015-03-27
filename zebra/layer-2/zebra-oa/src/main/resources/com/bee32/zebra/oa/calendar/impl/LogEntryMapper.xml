@@ -5,16 +5,35 @@
 <mapper namespace="com.bee32.zebra.oa.calendar.impl.LogEntryMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.oa.calendar.LogEntry" extends="co.mapUS">
+        <result property="source" column="c" />
+        <result property="id" column="id" />
+        <result property="message" column="msg" />
+        <result property="date" column="t0" />
+        <result property="creation" column="creation" />
+        <association property="op" javaType="com.tinylily.model.base.security.User">
+            <result property="id" column="op" />
+            <result property="label" column="op_label" />
+        </association>
+        <association property="form" javaType="com.tinylily.model.base.schema.FormDef">
+            <result property="id" column="form" />
+            <result property="label" column="form_label" />
+        </association>
+        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
+            <result property="id" column="cat" />
+            <result property="label" column="cat_label" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*,
             op.label "op_label",
-            form.label "form_label"
+            form.label "form_label",
+            cat.label "cat_label"
         from v_log a
-            left join "user" op on a.op=op.id
-            left join form on a.form=form.id
+            left join "user" op on a.op = op.id
+            left join form on a.form = form.id
+            left join cat on a.cat = cat.id
         ]]>
     </sql>
 
@@ -23,15 +42,17 @@
         <include refid="co.modefilt" />
         <if test="timeRange != null">and a.creation between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         <!-- log-entry -->
+        <if test="source != null">and a.c = #{source}</if>
         <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
-        <if test="year != null">and extract(year from a.t0)=#{year}</if>
+        <if test="year != null">and extract(year from a.t0) = #{year}</if>
         <if test="noDate">and a.t0 is null</if>
         <if test="noYear">and a.t0 is null</if>
-        <if test="opId != null">and a.op=#{opId}</if>
+        <if test="opId != null">and a.op = #{opId}</if>
         <if test="noOp">and a.op is null</if>
-        <if test="formId">and a.form=${formId}</if>
+        <if test="formId">and a.form = ${formId}</if>
         <if test="noForm">and a.form is null</if>
-        <if test="category != null">and a.c=#{category}</if>
+        <if test="categoryId != null">and a.cat = #{categoryId}</if>
+        <if test="noCategory">and a.cat is null</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -52,17 +73,10 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
-    ]]></select>
-
-    <update id="update">
-    </update>
-
-    <delete id="delete">
-    </delete>
-
-    <select id="count" resultType="hashmap">
-        select count(*) "total" from v_log
+    <select id="years" resultType="list">
+        select distinct extract(year from coalesce(t0, creation)) "year"
+        from v_log a
+        order by year
         <where>
             <include refid="filtconds" />
         </where>

@@ -19,6 +19,7 @@ import com.tinylily.model.mx.base.CoMessage;
  * 项目/机会
  */
 @IdType(Integer.class)
+// @SchemaId(Schemas.OPPORTUNITY)
 @TableDefaults(accessMode = CoObject.M_COOP)
 public class Topic
         extends CoMessage<Integer> {
@@ -72,12 +73,14 @@ public class Topic
     }
 
     /**
-     * Value
+     * 估计的价值。
+     * 
+     * 对于项目来说，应是已确定的合同金额；对潜在的机会来说，则是估算潜在的价值。
      * 
      * @label Value
-     * @label.zh 价值
+     * @label.zh （估）价值
      */
-    @OfGroup(StdGroup.Ranking.class)
+    // @OfGroup(StdGroup.Ranking.class)
     public double getValue() {
         return value;
     }

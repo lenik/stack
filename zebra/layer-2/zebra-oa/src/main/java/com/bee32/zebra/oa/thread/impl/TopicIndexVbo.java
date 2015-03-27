@@ -89,6 +89,7 @@ public class TopicIndexVbo
                 itab.cocols("sa", tr, o);
             }
 
+        extensions = false;
         if (extensions) {
             SectionDiv section;
             section = new SectionDiv(a.frame, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);

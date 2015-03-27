@@ -35,8 +35,6 @@ public class VirtualHostTemplate
 
     @Override
     public IVirtualHost get(String id) {
-        if ("v3".equals(id))
-            id = "zjhf";
         return super.get(id);
     }
 
@@ -54,6 +52,8 @@ public class VirtualHostTemplate
 
         int dot = hostName.indexOf('.');
         String firstName = dot == -1 ? hostName : hostName.substring(0, dot);
+        if ("v3".equals(firstName))
+            firstName = "zjhf";
 
         String id = firstName.toLowerCase();
         IVirtualHost vhostById = get(id);
@@ -85,7 +85,8 @@ public class VirtualHostTemplate
         try {
             connection = master.getDataSource().getConnection();
 
-            ps = connection.prepareStatement("select * from pg_database where datname=?");
+            String sql = "select * from pg_database where datname=?";
+            ps = connection.prepareStatement(sql);
             ps.setString(1, name);
 
             rs = ps.executeQuery();

@@ -13,7 +13,7 @@ import com.tinylily.model.sea.QVariantMap;
 public class PartyCriteria
         extends MyCriteria {
 
-    public int type = PartyType.UNSET;
+    public int type = PartyType.CUSTOMER;
     IntRange ageRange;
     Boolean peer;
     Boolean customer;

@@ -31,8 +31,7 @@ public class PersonVbo
             throws ViewBuilderException, IOException {
         Person person = ref.get();
 
-        PathFieldMap subIndexFields;
-        {
+        if (person.getId() != null) {
             IType itemType = PotatoTypes.getInstance().forClass(Contact.class);
             FormDeclBuilder formDeclBuilder = new FormDeclBuilder();
             MutableFormDecl itemFormDecl;
@@ -41,17 +40,18 @@ public class PersonVbo
             } catch (ParseException e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
-            subIndexFields = new PathFieldMap(itemFormDecl);
+
+            PathFieldMap contactFields = new PathFieldMap(itemFormDecl);
             try {
-                subIndexFields.parse("i*", ContactIndexVbo.FIELDS);
+                contactFields.parse("i*", ContactIndexVbo.FIELDS);
             } catch (Exception e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
-        }
 
-        ItemsTable xtab = new ItemsTable(out);
-        xtab.ajaxUrl = "../../contact/data.json?person=" + person.getId();
-        xtab.buildHeader(subIndexFields.values());
+            ItemsTable xtab = new ItemsTable(out);
+            xtab.ajaxUrl = "../../contact/data.json?person=" + person.getId();
+            xtab.buildHeader(contactFields.values());
+        }
 
         return out;
     }

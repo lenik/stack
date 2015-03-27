@@ -46,8 +46,7 @@ public class TestEnvironment {
         {
             DataSourceArguments demodb = new DataSourceArguments();
             demo.setName("demo");
-            demo.addHostSpecifier("demo.lo");
-            demo.addHostSpecifier("a.demo.lo");
+            demo.addHostSpecifier("demo.*");
             demo.setAttribute(DataSourceArguments.ATTRIBUTE_KEY, demodb);
             demodb.setServer("localhost:1063");
             demodb.setDatabase("demodb");

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONWriter;
 
+import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.err.IllegalUsageException;
@@ -112,7 +113,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean arrivedHere = arrival.getPrevious(index).getRemainingPath() == null;
         if (arrivedHere && index.defaultPage && enter(ctx))
-            return out;
+            return null;
 
         HtmlDoc doc = ctx.getHtmlDoc();
 
@@ -214,13 +215,14 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         Class<?> objectType = manager.getObjectType();
         IMapperTemplate<?, C> mapper = MapperUtil.getMapperTemplate(objectType);
 
-        ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
         PageStruct p = new PageStruct(ctx.getHtmlDoc());
-        p.title.h1().text(classDoc.getTag("label"));
+        ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
+        Object label = classDoc.getTag("label");
+        p.title.h1().verbatim(Nullables.toString(label));
 
         iString docText = classDoc.getText();
         HtmlPTag subTitle = p.title.p().class_("sub");
-        subTitle.verbatim(docText.getHeadPar());
+        subTitle.verbatim(Nullables.toString(docText.getHeadPar()));
 
         Class<C> criteriaClass = (Class<C>) CoObjectCriteria.findCriteriaClass(objectType);
         if (criteriaClass == null)

@@ -6,7 +6,8 @@ com.bee32.zebra.oa.accnt.impl.AccountingEventVbo
 com.bee32.zebra.oa.accnt.impl.AccountVbo
 com.bee32.zebra.oa.calendar.impl.DiaryIndexVbo
 com.bee32.zebra.oa.calendar.impl.DiaryVbo
-com.bee32.zebra.oa.calendar.impl.LogEntry_htm
+com.bee32.zebra.oa.calendar.impl.LogRange_htm
+com.bee32.zebra.oa.calendar.impl.LogCalendar_htm
 com.bee32.zebra.oa.contact.impl.ContactIndexVbo
 com.bee32.zebra.oa.contact.impl.ContactVbo
 com.bee32.zebra.oa.contact.impl.OrganizationIndexVbo

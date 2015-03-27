@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.err.Err;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -15,11 +17,17 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.bas.ui.dom1.UiValue;
 
+import com.bee32.zebra.oa.accnt.AccountingEvent;
+import com.bee32.zebra.oa.accnt.impl.AccountingEventCriteria;
+import com.bee32.zebra.oa.accnt.impl.AccountingEventMapper;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.oa.thread.Topic;
+import com.bee32.zebra.tk.hbin.DataTable;
+import com.bee32.zebra.tk.hbin.SectionDiv;
 import com.bee32.zebra.tk.hbin.SplitForm;
 import com.bee32.zebra.tk.slim.SlimMesgForm_htm;
+import com.tinylily.model.base.schema.FormDef;
 import com.tinylily.model.base.security.LoginContext;
 import com.tinylily.model.base.security.User;
 
@@ -94,10 +102,49 @@ public class TopicVbo
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
         if (topic.getId() != null) {
-            buildReplyTree(ctx, out, ref, options);
-            buildReplyForm(ctx, out, ref, options);
+            SectionDiv section;
+
+            section = new SectionDiv(out, "s-acc", "收支情况", IFontAwesomeCharAliases.FA_USD);
+            buildAccList(ctx, section.contentDiv, ref, options);
+
+            section = new SectionDiv(out, "s-reply", "跟进", IFontAwesomeCharAliases.FA_COMMENTS_O);
+            buildReplyTree(ctx, section.contentDiv, ref, options);
+            buildReplyForm(ctx, section.contentDiv, ref, options);
         }
         return out;
+    }
+
+    protected void buildAccList(IHttpViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        Topic topic = ref.get();
+
+        AccountingEventCriteria criteria = new AccountingEventCriteria();
+        criteria.topicId = topic.getId();
+
+        AccountingEventMapper eventMapper = ctx.query(AccountingEventMapper.class);
+        List<AccountingEvent> events = eventMapper.filter(criteria);
+
+        DataTable tab = new DataTable(out).id("acdocs");
+        tab.head.th().text("凭证");
+        tab.head.th().text("类型");
+        tab.head.th().text("日期");
+        tab.head.th().text("金额");
+        tab.head.th().text("说明");
+        tab.head.th().text("记账");
+
+        for (AccountingEvent event : events) {
+            FormDef form = event.getForm();
+            HtmlTrTag tr = tab.body.tr();
+
+            tr.id("acdoc-" + event.getId());
+            tr.td().a().href("_blank", _webApp_ + "/acdoc/" + event.getId() + "/").text("[ac" + event.getId() + "] ");
+            tr.td().text(form == null ? "-" : form.getLabel());
+            tr.td().text(Dates.YYYY_MM_DD.format(event.getBeginDate()));
+            tr.td().text(event.getValue());
+            tr.td().text(event.getSubject());
+            // tr.td().iText(FA_SPINNER, "fa fa-spin");
+            tr.td().iText(FA_MINUS, "fa");
+        }
     }
 
     protected void buildReplyTree(IHttpViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)

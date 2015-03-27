@@ -52,7 +52,8 @@ public class IndexTable
 
     public IndexTable(IHtmlTag parent, String id) {
         super(parent, "div");
-        id(id);
+        if (id != null)
+            id(id);
         class_("itab");
 
         table = table();
