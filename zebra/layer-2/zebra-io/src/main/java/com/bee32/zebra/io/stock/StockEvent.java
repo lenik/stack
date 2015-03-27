@@ -24,6 +24,7 @@ import com.tinylily.model.mx.base.CoMessage;
  * 库存作业
  */
 @IdType(Integer.class)
+//@SchemaPref(Schemas.STOCK)
 @Table(name = "stdoc")
 @TableDefaults(accessMode = CoObject.M_SHARED)
 public class StockEvent

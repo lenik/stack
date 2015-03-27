@@ -13,13 +13,16 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
 import com.bee32.zebra.oa.OaGroups;
+import com.bee32.zebra.sys.Schemas;
 import com.tinylily.model.base.CoEntity;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.SchemaPref;
 
 /**
  * 物料/商品
  */
 @IdType(Integer.class)
+@SchemaPref(Schemas.ARTIFACT)
 @Table(name = "art")
 public class Artifact
         extends CoEntity<Integer> {

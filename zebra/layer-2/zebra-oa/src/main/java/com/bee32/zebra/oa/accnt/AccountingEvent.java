@@ -14,8 +14,10 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
+import com.bee32.zebra.sys.Schemas;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.IdType;
+import com.tinylily.model.base.SchemaPref;
 import com.tinylily.model.base.TableDefaults;
 import com.tinylily.model.mx.base.CoMessage;
 
@@ -23,6 +25,7 @@ import com.tinylily.model.mx.base.CoMessage;
  * 凭证单
  */
 @IdType(Long.class)
+@SchemaPref(value = Schemas.ACCOUNTING, form = 801)
 @Table(name = "acdoc")
 @TableDefaults(accessMode = CoObject.M_SHARED)
 public class AccountingEvent

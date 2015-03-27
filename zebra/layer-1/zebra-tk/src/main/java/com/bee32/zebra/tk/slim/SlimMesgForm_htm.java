@@ -6,6 +6,8 @@ import java.util.Set;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
 import net.bodz.bas.html.dom.tag.HtmlLabelTag;
+import net.bodz.bas.html.dom.tag.HtmlOptionTag;
+import net.bodz.bas.html.dom.tag.HtmlSelectTag;
 import net.bodz.bas.html.dom.tag.HtmlTextareaTag;
 import net.bodz.bas.html.util.FieldHtmlUtil;
 import net.bodz.bas.html.viz.IHttpViewContext;
@@ -18,6 +20,10 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.hbin.SplitForm;
+import com.tinylily.model.base.SchemaPref;
+import com.tinylily.model.base.schema.FormDef;
+import com.tinylily.model.base.schema.impl.FormDefCriteria;
+import com.tinylily.model.base.schema.impl.FormDefMapper;
 import com.tinylily.model.mx.base.CoMessage;
 
 public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
@@ -36,6 +42,27 @@ public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
 
         SplitForm form = (SplitForm) out.getParent();
         out = form.head.table().class_("zu-msg");
+
+        SchemaPref aSchemaPref = getValueType().getAnnotation(SchemaPref.class);
+        if (aSchemaPref != null) {
+            int schemaId = aSchemaPref.value();
+            int formId = instance.getForm() == null ? aSchemaPref.form() : instance.getForm().getId();
+
+            IHtmlTag formLine = out.tr().class_("msg-form");
+            IFieldDecl formfd = formDecl.getFieldDecl("form");
+            IHtmlTag formLabel = formLine.th().label();
+            formLabel.span().class_("fa icon").text(FA_BARS);
+            formLabel.text(formfd.getLabel() + "：");
+            HtmlSelectTag formInput = formLine.td().select().id("form");
+
+            FormDefCriteria criteria = FormDefCriteria.forSchema(schemaId);
+            for (FormDef formDef : ctx.query(FormDefMapper.class).filter(criteria)) {
+                HtmlOptionTag option = formInput.option().value(formDef.getId()).text(formDef.getLabel());
+                if (formId == formDef.getId())
+                    option.selected("selected");
+            }
+            FieldHtmlUtil.apply(formInput, formfd, options);
+        }
 
         IHtmlTag subjectLine = out.tr().class_("msg-subject");
         {
