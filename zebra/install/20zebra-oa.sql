@@ -400,6 +400,23 @@
     create index diary_t1             on diary(t1);
     create index diary_uid_acl        on diary(uid, acl);
 
+-- drop table if exists diaryparty;
+    create sequence diaryparty_seq;
+    create table diaryparty(
+        id          bigint primary key default nextval('diaryparty_seq'),
+        diary       int not null,
+        person      int,
+        org         int,
+        description varchar(60),
+        
+        constraint diaryparty_fk_diary  foreign key(diary)
+            references diary(id)            on update cascade on delete set null,
+        constraint diaryparty_fk_person foreign key(person)
+            references person(id)           on update cascade on delete set null,
+        constraint diaryparty_fk_org    foreign key(org)
+            references org(id)              on update cascade on delete set null
+    );
+
 -- drop table if exists fileinfo;
     create sequence fileinfo_seq start with 1000;
     create table fileinfo(          -- file info
@@ -429,8 +446,8 @@
         nlike       int not null default 0,
         ndl         int not null default 0, -- downloads
         
-        dir         varchar(200) not null,
-        base        varchar(80) not null,
+        dir         varchar(200),
+        base        varchar(80),
         image       varchar(100),
         size        bigint not null,
         sha1        varchar(40),    
@@ -795,6 +812,7 @@
         topic       int,
         org         int,
         person      int,
+        val         double precision not null,
         
         ndebit      double precision not null default 0,
         ncredit     double precision not null default 0,
