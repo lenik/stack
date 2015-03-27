@@ -1,0 +1,7 @@
+#zp-body1 {
+    border-image: linear-gradient(to bottom, #fca, transparent) 30% fill repeat;
+}
+
+#welcome {
+    margin-top: 20em;
+}

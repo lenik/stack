@@ -17,7 +17,11 @@ import net.bodz.bas.site.org.ICrawler;
 import net.bodz.bas.std.rfc.http.CacheControlMode;
 import net.bodz.bas.std.rfc.http.ICacheControl;
 
-import com.bee32.zebra.oa.calendar.CalendarForm;
+import com.bee32.zebra.oa.calendar.LogCalendar;
+import com.bee32.zebra.oa.console.Console;
+import com.bee32.zebra.oa.etc.HelpIndex;
+import com.bee32.zebra.oa.etc.ServiceIndex;
+import com.bee32.zebra.oa.etc.SiteUtilities;
 import com.bee32.zebra.oa.login.LoginForm;
 import com.bee32.zebra.tk.repr.QuickController;
 import com.bee32.zebra.tk.site.CoTypes;
@@ -85,8 +89,24 @@ public class OaSite
             target = new LoginForm();
             break;
 
-        case "cal":
-            target = new CalendarForm();
+        case "calendar":
+            target = new LogCalendar(getQueryContext());
+            break;
+
+        case "console":
+            target = new Console();
+            break;
+
+        case "help":
+            target = new HelpIndex();
+            break;
+
+        case "service":
+            target = new ServiceIndex();
+            break;
+
+        case "util":
+            target = new SiteUtilities();
             break;
         }
 

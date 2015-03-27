@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.i18n.dom1.IElement;
@@ -14,13 +15,15 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
+import com.bee32.zebra.tk.hbin.ShareBar;
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.htm.RespTemplate;
 import com.tinylily.model.base.security.LoginContext;
 
 public class OaSiteVbo
-        extends RespTemplate<OaSite> {
+        extends RespTemplate<OaSite>
+        implements IFontAwesomeCharAliases {
 
     public OaSiteVbo() {
         super(OaSite.class);
@@ -169,22 +172,26 @@ public class OaSiteVbo
 
     protected void mainMenu(IHtmlTag out, OaSite site) {
         HtmlUlTag sub;
-        HtmlLiTag item;
+        HtmlLiTag li;
+        HtmlLiTag lili;
 
-        sub = out.li().text("控制台").ul();
-        // sub.li().a().text("日历").href(_webApp_.join("cal/").toString());
-        sub.li().a().text("日记").href(_webApp_.join("diary/").toString());
-        // sub.li().a().text("设置").href(_webApp_.join("setting/").toString());
+        sub = out.li().text("开始").ul();
+        sub.li().a().text("控制台").href(_webApp_.join("console/").toString());
+        li = sub.li();
+        li.a().text("日记").href(_webApp_.join("diary/").toString());
+        li.text(" / ");
+        li.a().text("日历").href(_webApp_.join("calendar/").toString());
+        // sub.li().a().text("论坛").href(_webApp_.join("post/").toString());
 
         sub = out.li().text("知识库").ul();
         sub.li().a().text("企、事业").href(_webApp_.join("org/").toString());
         sub.li().a().text("联系人").href(_webApp_.join("person/").toString());
         sub.li().a().text("文件").href(_webApp_.join("file/").toString());
 
-        item = out.li().text("库存");
-        item.a().text("[初始化]").href(_webApp_.join("stinit/").toString()).class_("small").style("color: gray");
+        li = out.li().text("库存");
+        li.a().text("[初始化]").href(_webApp_.join("stinit/").toString()).class_("small").style("color: gray");
 
-        sub = item.ul();
+        sub = li.ul();
         sub.li().a().text("区域").href(_webApp_.join("place/").toString());
         sub.li().a().text("产品/物料").href(_webApp_.join("art/").toString());
         sub.li().a().text("作业").href(_webApp_.join("stdoc/").toString());
@@ -202,27 +209,100 @@ public class OaSiteVbo
         sub.li().a().text("作业").href(_webApp_.join("job/").toString());
         sub.li().a().text("质量控制").href(_webApp_.join("qc/").toString());
 
-        item = out.li().text("财务");
-        item.a().text("[初始化]").href(_webApp_.join("acinit/").toString()).class_("small").style("color: gray");
-        sub = item.ul();
-        sub.li().a().text("填表").href(_webApp_.join("acdoc/?phase=1").toString());
+        li = out.li().text("财务");
+        li.a().text("[初始化]").href(_webApp_.join("acinit/").toString()).class_("small").style("color: gray");
+        sub = li.ul();
+
+        lili = sub.li();
+        lili.a().text("单证").href(_webApp_.join("acdoc/?phase=1").toString());
+        lili.text(" / ");
+        lili.a().text("填表").href(_webApp_.join("acdoc/new?phase=1").toString());
+
         sub.li().a().text("流水帐").href(_webApp_.join("acdoc/?phase=2").toString());
         sub.li().a().text("工资").href(_webApp_.join("salary/").toString());
         sub.li().a().text("分析").href(_webApp_.join("acstat/").toString());
 
-        sub = out.li().text("系统").ul();
-        sub.li().a().text("帐户").href(_webApp_.join("user/").toString());
+        LoginContext login = LoginContext.fromSession();
+        if (login.user.isAdmin()) {
+            sub = out.li().text("系统").ul();
+            sub.li().a().text("帐户").href(_webApp_.join("user/").toString());
+            // sub.li().a().text("设置").href(_webApp_.join("setting/").toString());
+        }
     }
 
     protected void defaultBody(IHtmlTag out, OaSite site) {
-        HtmlH1Tag h1 = out.h1().text("List Of Projects");
-        h1.a().style("cursor: pointer").onclick("reloadSite()").text("[Reload]");
+        out.link().css("home.css");
+        out.script().javascriptSrc("home.js");
+
+        HtmlDivTag div = out.div().align("center");
+        div.img().id("welcome").src(_chunk_ + "pic/sym/welcome/colorful1.png").width("75%").style("display: none;");
+
     }
 
     protected void foot(IHtmlTag out, OaSite site) {
-        HtmlDivTag foot = out.div().id("zp-foot");
+        out = out.div().id("zp-foot");
         // ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
 
-    }
+        new ShareBar(out).class_("sharebar").style("padding: .5em;");
+        out.hr().style("clear: both; margin: .5em 0");
 
+        HtmlDivTag navfoot = out.div().class_("zu-footnav");
+        HtmlTableTag tab = navfoot.table().align("center");
+        HtmlTrTag row;
+        HtmlTdTag cell;
+
+        row = tab.tr();
+        row.td().img().title("Secca Zebra").src(_webApp_ + "seccazebra.png").width("80");
+
+        cell = row.td();
+        cell.b().text("常用");
+        HtmlUlTag ul = cell.ul();
+        ul.li().a().href("_blank", _webApp_ + "console").iText(FA_TACHOMETER, "fa").text("控制台");
+        ul.li().a().href("_blank", _webApp_ + "person/").iText(FA_MALE, "fa").text("联系人");
+        ul.li().a().href("_blank", _webApp_ + "file/").iText(FA_FILES_O, "fa").text("文件资料");
+        ul.li().a().href("_blank", _webApp_ + "art/").iText(FA_SITEMAP, "fa").text("产品结构");
+        ul.li().a().href("_blank", _webApp_ + "sales").iText(FA_TABLE, "fa").text("进销存");
+        ul.li().a().href("_blank", _webApp_ + "man").iText(FA_RANDOM, "fa").text("生产流程");
+        ul.li().a().href("_blank", _webApp_ + "acc").iText(FA_USD, "fa").text("财务流程");
+
+        cell = row.td();
+        cell.b().text("工具");
+        ul = cell.ul();
+        // http://www.online-calculator.com/simple-full-screen-calculator/
+        ul.li().a().href("_blank", "http://web2.0calc.com/").iText(FA_CALCULATOR, "fa").text("计算器");
+        ul.li().a().href("_blank", "http://www.laohuangli.net/").iText(FA_CALENDAR, "fa").text("老黄历");
+        ul.li().a().href("_blank", "http://www.boc.cn/sourcedb/whpj/").iText(FA_EXCHANGE, "fa").text("外汇牌价");
+        ul.li().a().href("_blank", "http://www.qg68.cn/news/").iText(FA_BOOK, "fa").text("管理文库");
+
+        cell = row.td();
+        cell.b().text("服务");
+        ul = cell.ul();
+        ul.li().a().href("_blank", _webApp_ + "service/qq").iText(FA_QQ, "fa").text("客服");
+        ul.li().a().href("_blank", _webApp_ + "service/purchase").iText(FA_SHOPPING_CART, "fa").text("购买产品");
+        ul.li().a().href("_blank", _webApp_ + "service/promote").iText(FA_VOLUME_UP, "fa").text("企业推介");
+        ul.li().a().href("_blank", _webApp_ + "service/solution").iText(FA_CAR, "fa").text("终端建设");
+        ul.li().a().href("_blank", _webApp_ + "service/pad").iText(FA_ANDROID, "fa").text("手机/平板");
+        ul.li().a().href("_blank", _webApp_ + "service/qrcode").iText(FA_QRCODE, "fa").text("二维码");
+        ul.li().a().href("_blank", _webApp_ + "service/rfid").iText(FA_WIFI, "fa").text("RFID");
+
+        cell = row.td();
+        cell.b().text("案例");
+        ul = cell.ul();
+        ul.li().a().href("_blank", _webApp_ + "case/zjhf").iText(FA_STAR_O, "fa").text("三元风机");
+        ul.li().a().href("_blank", _webApp_ + "case/blgd").iText(FA_STAR_O, "fa").text("宝龙光电");
+        ul.li().a().href("_blank", _webApp_ + "case/zjzx").iText(FA_STAR_O, "fa").text("智轩消防");
+
+        cell = row.td();
+        cell.b().text("维护");
+        ul = cell.ul();
+        ul.li().a().href("_blank", _webApp_ + "util/issue").iText(FA_BUG, "fa").text("问题报告");
+        ul.li().a().href("_blank", _webApp_ + "util/dashboard").iText(FA_BUILDING_O, "fa").text("机房状态");
+        ul.li().a().href("_blank", _webApp_ + "util/backup").iText(FA_DATABASE, "fa").text("数据备份");
+        ul.li().a().href("_blank", _webApp_ + "util/restore").iText(FA_AMBULANCE, "fa").text("灾难恢复");
+
+        out.hr().style("margin: .5em 0");
+        HtmlDivTag div = out.div().align("center").class_("zu-footcopy");
+        div.text("解决方案提供者 (C) 浙江省海宁市智恒软件有限公司 2010-2015 ");
+        div.a().href("_blank", "about").text("(关于/联系)");
+    }
 }
