@@ -18,7 +18,7 @@ create: check
 	    -h localhost -p 1063 \
 	    -U postgres \
 	    -T template0 \
-	    -E UTF8 \
+	    -E utf-8 \
 	    -l zh_CN.UTF8 \
 	    ${DATABASE}
 
