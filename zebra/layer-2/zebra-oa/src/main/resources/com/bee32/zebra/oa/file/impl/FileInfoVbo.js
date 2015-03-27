@@ -34,6 +34,7 @@ $(document).ready(function() {
                 message.html("");
                 message.append($("<p/>").text(file.name + " (" + file.size + " 字节)"));
                 $("#incoming").val(file.name);
+                $("[name=label]").val(file.name);
             });
         },
 

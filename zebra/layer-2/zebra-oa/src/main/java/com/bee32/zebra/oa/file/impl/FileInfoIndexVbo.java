@@ -108,7 +108,7 @@ public class FileInfoIndexVbo
         downloadLink.text("下载");
 
         HtmlTdTag right = tr.td().valign("top");
-        HtmlATag fileLink = right.div().a().href("$href");
+        HtmlATag fileLink = right.div().a().href("_blank", "$href");
         fileLink.i().class_("fa").text(FA_EXTERNAL_LINK);
         fileLink.b().text("$base");
 

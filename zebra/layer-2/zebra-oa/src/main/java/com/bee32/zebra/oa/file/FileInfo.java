@@ -27,6 +27,7 @@ import com.tinylily.model.mx.base.CoMessage;
  */
 @Volatile
 @PathToken("file")
+// @SchemaId(Schemas.FILE)
 @IdType(Integer.class)
 public class FileInfo
         extends CoMessage<Integer> {
