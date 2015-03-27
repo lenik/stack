@@ -16,25 +16,24 @@ import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.TextInput;
 
-import com.bee32.zebra.tk.site.IZebraSiteAnchors;
+import com.bee32.zebra.tk.htm.GenericForm;
 import com.bee32.zebra.tk.sql.VhostDataService;
 import com.tinylily.model.base.security.LoginContext;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.base.security.impl.UserCriteria;
 import com.tinylily.model.base.security.impl.UserMapper;
-import com.tinylily.model.sea.AbstractTextParametric;
 import com.tinylily.model.sea.QVariantMap;
 
 /**
  * 登录
  */
 public class LoginForm
-        extends AbstractTextParametric
-        implements IZebraSiteAnchors {
+        extends GenericForm {
 
     private int siteId;
     private String userName;
-    private String password;
+    private String password = "";
+    private String referer;
 
     public LoginForm() {
         HttpSession session = CurrentHttpService.getSession();
@@ -122,11 +121,16 @@ public class LoginForm
         ctx.getSession().setAttribute(LoginContext.ATTRIBUTE_KEY, lc);
         out.div().class_("success").text("登录成功。");
 
-        HtmlDivTag goDiv = out.div().text("如果浏览器没有跳转至主页面，请点击[");
-        goDiv.a().href(_webApp_ + "").text("此处");
-        goDiv.text("]。");
+        String target;
+        if (referer != null && !referer.contains("login"))
+            target = referer;
+        else
+            target = _webApp_.toString(); // + "console/";
 
-        out.script().text("location.href=\"" + _webApp_ + "\";");
+        HtmlDivTag goDiv = out.div().text("如果浏览器没有跳转至主页面，请点击[");
+        goDiv.a().href(target).text("此处");
+        goDiv.text("]。");
+        out.script().text("location.href=\"" + target + "\";");
     }
 
     @Override
@@ -134,7 +138,8 @@ public class LoginForm
             throws ParseException {
         siteId = map.getInt("siteId", siteId);
         userName = map.getString("userName", userName);
-        password = map.getString("password", password);
+        password = map.getString("password", "");
+        referer = map.getString("referer");
     }
 
 }

@@ -2,6 +2,8 @@ package com.bee32.zebra.oa.login;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlButtonTag;
@@ -60,14 +62,19 @@ public class LoginFormVbo
 
         new DefaultForm_htm<LoginForm>(true).buildHtmlView(ctx, form, ref, options);
 
-        if ("1".equals(ctx.getRequest().getParameter("logout"))) {
+        HttpServletRequest request = ctx.getRequest();
+        String referer = request.getHeader("Referer");
+        if (referer != null)
+            form.input().type("hidden").name("referer").value(referer);
+
+        if ("1".equals(request.getParameter("logout"))) {
             CurrentHttpService.getSession().removeAttribute(LoginContext.ATTRIBUTE_KEY);
         }
 
-        if (ctx.getRequest().getParameter("userName") != null) {
+        if (request.getParameter("userName") != null) {
             LoginForm loginForm = ref.get();
             try {
-                loginForm.populate(ctx.getRequest().getParameterMap());
+                loginForm.populate(request.getParameterMap());
             } catch (ParseException e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
