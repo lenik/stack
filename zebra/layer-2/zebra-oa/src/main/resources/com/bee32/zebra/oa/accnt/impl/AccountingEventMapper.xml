@@ -16,28 +16,34 @@
             <id property="id" column="person" />
             <result property="label" column="person_label" />
         </association>
+        <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">
+            <id property="id" column="topic" />
+            <result property="subject" column="topic_subject" />
+        </association>
     </resultMap>
 
     <sql id="select1"><![CDATA[
         select
             a.*, 
-            op.label "op_label",
+            u.label "uid_label",
+            g.label "gid_label",
             form.label "form_label",
             cat.label "cat_label",
             phase.label "phase_label",
-            u.label "uid_label",
-            g.label "gid_label",
+            op.label "op_label",
             org.label "org_label",
-            person.label "person_label"
+            person.label "person_label",
+            topic.subject "topic_subject"
         from acdoc a
-            left join "user" op on a.op=op.id
+            left join "user" u on a.uid=u.id
+            left join "group" g on a.gid=g.id
             left join form on a.form=form.id
             left join cat on a.cat=cat.id
             left join phase on a.phase=phase.id
-            left join "user" u on a.uid=u.id
-            left join "group" g on a.gid=g.id
+            left join "user" op on a.op=op.id
             left join org on a.org=org.id
             left join person on a.person=person.id
+            left join topic on a.topic=topic.id
         ]]>
     </sql>
 
@@ -62,6 +68,7 @@
         <if test="noPhase">and a.phase is null</if>
 
         <if test="formId != null">and a.form=${formId}</if>
+        <if test="topicId != null">and a.topic=${topicId}</if>
     </sql>
 
     <select id="all" resultMap="map1">

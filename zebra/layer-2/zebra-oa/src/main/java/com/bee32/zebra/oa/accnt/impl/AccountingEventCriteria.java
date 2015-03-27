@@ -12,10 +12,19 @@ import com.tinylily.model.sea.QVariantMap;
 public class AccountingEventCriteria
         extends CoMessageCriteria {
 
+    public Integer topicId;
     public Integer partyId;
     public Set<String> tags;
     public DoubleRange debitTotalRange;
     public DoubleRange creditTotalRange;
+
+    public Integer getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(Integer topicId) {
+        this.topicId = topicId;
+    }
 
     public Integer getPartyId() {
         return partyId;
@@ -53,6 +62,7 @@ public class AccountingEventCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
+        topicId = map.getInt("topic", topicId);
         partyId = map.getInt("party", partyId);
         debitTotalRange = map.getDoubleRange("debits", debitTotalRange);
         creditTotalRange = map.getDoubleRange("credits", creditTotalRange);
