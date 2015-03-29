@@ -3,7 +3,7 @@ package com.bee32.zebra.oa.calendar;
 import java.sql.Date;
 import java.util.Calendar;
 
-public class LogRange {
+public class LogSelector {
 
     public static final int MONTH = 1;
     public static final int WEEK = 2;

@@ -15,7 +15,7 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 /**
  * 日历
  */
-@ObjectType(LogRange.class)
+@ObjectType(LogSelector.class)
 public class LogCalendar
         extends QuickIndex {
 
@@ -51,7 +51,7 @@ public class LogCalendar
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.set(Calendar.YEAR, year);
 
-        LogRange range = new LogRange();
+        LogSelector range = new LogSelector();
         switch (type) {
         case 'm':
             if (!StringPred.isDecimal(token))
@@ -59,7 +59,7 @@ public class LogCalendar
             int month = Integer.parseInt(token);
             calendar.set(Calendar.MONTH, month - 1);
             calendar.set(Calendar.DAY_OF_MONTH, 1);
-            range.setView(LogRange.MONTH);
+            range.setView(LogSelector.MONTH);
             range.setStart(calendar.getTime());
             int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
             calendar.set(Calendar.DAY_OF_MONTH, maxDay);
@@ -72,7 +72,7 @@ public class LogCalendar
             int week = Integer.parseInt(token);
             calendar.set(Calendar.WEEK_OF_YEAR, week);
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            range.setView(LogRange.WEEK);
+            range.setView(LogSelector.WEEK);
             range.setStart(calendar.getTime());
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
             range.setEnd(calendar.getTime());

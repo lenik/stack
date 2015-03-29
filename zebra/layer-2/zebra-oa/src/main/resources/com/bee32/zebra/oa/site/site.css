@@ -108,6 +108,52 @@ a.helpdoc-switcher:hover {
     background: hsl(35, 100%, 80%) !important;
 }
 
+.zu-calendar {
+    border: solid 3px hsl(25, 90%, 80%);
+    background-color: hsl(18, 100%, 90%);
+    border-collapse: collapse;
+}
+
+.zu-calendar>tbody>tr:nth-child(odd) {
+    background-color: hsl(45, 100%, 93%);
+}
+
+.zu-calendar>tbody>tr:nth-child(even) {
+    background-color: hsl(60, 100%, 93%);
+}
+
+.zu-calendar td {
+    border: solid 1px hsl(25, 90%, 80%);
+    width: 3em;
+    height: 3em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.zu-calendar td.active {
+    background-color: hsl(14, 100%, 70%);
+    color: white;
+    font-size: large;
+    font-weight: bold;
+}
+
+.zu-calendar td.log {
+    font-style: normal;
+}
+
+.zu-calendar td.placeholder {
+    background-color: hsl(18, 100%, 90%);
+}
+
+.zu-calendar td.trivial {
+    font-style: italic;
+}
+
+.zu-calendar th {
+    padding: 3px;
+    text-align: center;
+}
+
 .zu-detail {
     width: 90%;
     border-left-style: solid;
