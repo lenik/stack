@@ -192,7 +192,7 @@ public class TopicVbo
         form.input().type("hidden").name("topic").value(topic.getId());
 
         IHtmlTag tab = form.table().class_("zu-msg");
-        IHtmlTag textLine = tab.tr().id("zp-reply");
+        IHtmlTag textLine = tab.tr().id("zp-reply").class_("noprint");
         {
             HtmlLabelTag textLabel = textLine.th().label();
             textLabel.span().class_("fa icon").text(FA_FILE_O);

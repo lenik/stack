@@ -28,8 +28,11 @@ public class Dim3dVbo
 
         Dim3d dim = ref.get();
 
-        HtmlInputTag input = out.input().type("text").value(dim.toString());
+        String str = dim.toString();
+        HtmlInputTag input = out.input().type("text").class_("noprint").value(str);
         FieldHtmlUtil.apply(input, fieldDecl, options);
+
+        out.span().class_("print").text(str);
 
         return out;
     }

@@ -193,7 +193,7 @@ public abstract class SlimForm0_htm<T>
                 // FieldHtmlUtil.apply(id_hidden, fieldDecl, options);
             }
 
-            HtmlInputTag label_text = out.input().type("text").name(inputName + ".label");
+            HtmlInputTag label_text = out.input().type("text").class_("noprint").name(inputName + ".label");
             label_text.placeholder(fieldDecl.getPlaceholder());
             label_text.readonly("readonly");
             label_text.attr("ec", typeName);
@@ -202,10 +202,12 @@ public abstract class SlimForm0_htm<T>
                 if (id_hidden != null)
                     id_hidden.value(current.getId());
                 label_text.value(current);
+
+                out.span().class_("print").text(current);
             }
 
             if (!fieldDecl.isReadOnly()) {
-                HtmlATag pickerLink = out.a().class_("zu-pickcmd");
+                HtmlATag pickerLink = out.a().class_("zu-pickcmd noprint");
                 String pathToken = CoTypes.getPathToken(clazz);
                 pickerLink.attr("data-url", _webApp_ + pathToken + "/picker.html");
                 pickerLink.attr("data-title", "选择" + fieldDecl.getLabel() + "...");

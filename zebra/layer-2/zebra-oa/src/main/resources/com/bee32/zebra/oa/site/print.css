@@ -1,5 +1,78 @@
-.zu-section {
+button {
     display: none;
+}
+
+input[type=button],input[type=submit],input[type=reset] {
+    display: none;
+}
+
+input[type=text],input[type=date],input[type=number] {
+    border: none;
+    width: 80%;
+}
+
+select {
+    border: none;
+}
+
+.chosen-container a{
+    background: none!important;
+    border: none!important;
+    box-shadow: none!important;
+}
+
+.chosen-container div{
+    display: none;
+}
+
+.fa.icon {
+    display: none;
+}
+
+.ColVis {
+    display: none;
+}
+
+.dataTables_info {
+    display: none;
+}
+
+.dataTables_length {
+    display: none;
+}
+
+.dataTables_filter {
+    display: none;
+}
+
+.dataTables_paginate {
+    display: none;
+}
+
+.field-groups {
+    column-width: 25em;
+    -moz-column-width: 25em;
+    -webkit-column-width: 25em;
+}
+
+.helpdoc-switcher {
+    display: none;
+}
+
+.noprint {
+    display: none!important;
+}
+
+.print {
+    display: inherit!important;
+}
+.zu-fcat {
+    page-break-inside: avoid;
+}
+
+.zu-field .zu-flabel {
+    border-left: none;
+    margin-left: 0;
 }
 
 #list_wrapper>:not(table) {
@@ -8,6 +81,10 @@
 
 #list_wrapper>.dataTables_info {
     display: inherit;
+}
+
+#zp-foot {
+    display: none;
 }
 
 #zp-menu-col {
@@ -23,5 +100,9 @@
 }
 
 #zp-right-col {
+    display: none;
+}
+
+#zp-title .sub {
     display: none;
 }
