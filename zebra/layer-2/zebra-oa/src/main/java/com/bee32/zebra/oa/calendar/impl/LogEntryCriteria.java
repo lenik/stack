@@ -1,13 +1,7 @@
 package com.bee32.zebra.oa.calendar.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.persistence.Table;
-
 import net.bodz.bas.err.ParseException;
 
-import com.bee32.zebra.oa.accnt.AccountingEvent;
 import com.tinylily.model.base.CoMomentIntervalCriteria;
 import com.tinylily.model.sea.QVariantMap;
 
@@ -35,16 +29,10 @@ public class LogEntryCriteria
         this.source = source;
     }
 
-    static Map<Class<?>, String> classCategory;
-    static {
-        classCategory = new HashMap<Class<?>, String>();
-        classCategory.put(AccountingEvent.class, "ACDOC");
-    }
-
     public void setSourceClass(Class<?> clazz) {
-        Table aTable = clazz.getAnnotation(Table.class);
-        String tableName = aTable.name();
-        this.source = tableName;
+        TableMetadataRegistry registry = TableMetadataRegistry.getInstance();
+        TableMetadata metadata = registry.get(clazz);
+        this.source = metadata.getName();
     }
 
     public Integer getOpId() {

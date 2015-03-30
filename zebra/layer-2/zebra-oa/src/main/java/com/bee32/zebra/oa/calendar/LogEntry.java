@@ -2,6 +2,10 @@ package com.bee32.zebra.oa.calendar;
 
 import java.util.Date;
 
+import net.bodz.bas.err.IllegalUsageException;
+
+import com.bee32.zebra.oa.calendar.impl.TableMetadata;
+import com.bee32.zebra.oa.calendar.impl.TableMetadataRegistry;
 import com.tinylily.model.base.CoObject;
 import com.tinylily.model.base.schema.CategoryDef;
 import com.tinylily.model.base.schema.FormDef;
@@ -12,7 +16,7 @@ public class LogEntry
 
     private static final long serialVersionUID = 1L;
 
-    Class<?> sourceClass;
+    TableMetadata metadata;
     Long id;
     User op;
     FormDef form;
@@ -21,20 +25,27 @@ public class LogEntry
     Date date;
     Date creation;
 
-    public Class<?> getSourceClass() {
-        return sourceClass;
+    public TableMetadata getMetadata() {
+        return metadata;
     }
 
-    public void setSourceClass(Class<?> sourceClass) {
-        this.sourceClass = sourceClass;
+    public void setMetadata(TableMetadata sourceMetadata) {
+        this.metadata = sourceMetadata;
     }
 
     public String getSource() {
-        return sourceClass.getName();
+        if (metadata == null)
+            return null;
+        else
+            return metadata.getName();
     }
 
     public void setSource(String src) {
-
+        TableMetadataRegistry registry = TableMetadataRegistry.getInstance();
+        TableMetadata metadata = registry.get(src);
+        if (metadata == null)
+            throw new IllegalUsageException("Bad source: " + src);
+        this.metadata = metadata;
     }
 
     public Object getId() {

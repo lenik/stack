@@ -13,7 +13,9 @@ import net.bodz.bas.rtx.IQueryable;
 import com.bee32.zebra.tk.repr.QuickIndex;
 
 /**
- * 日历
+ * 浏览近期发生的所有事件。
+ * 
+ * @label 日历
  */
 @ObjectType(LogSelector.class)
 public class LogCalendar

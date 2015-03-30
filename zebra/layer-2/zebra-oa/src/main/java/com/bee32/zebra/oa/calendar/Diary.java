@@ -11,6 +11,9 @@ import com.tinylily.model.base.schema.TagDef;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.mx.base.CoMessage;
 
+/**
+ * 日记
+ */
 @IdType(Integer.class)
 public class Diary
         extends CoMessage<Integer> {

@@ -290,7 +290,11 @@ public class OaSiteVbo
         ul = cell.ul();
         ul.li().a().href("_blank", _webApp_ + "case/zjhf").iText(FA_STAR_O, "fa").text("三元风机");
         ul.li().a().href("_blank", _webApp_ + "case/blgd").iText(FA_STAR_O, "fa").text("宝龙光电");
-        ul.li().a().href("_blank", _webApp_ + "case/zjzx").iText(FA_STAR_O, "fa").text("智轩消防");
+        ul.li().a().href("_blank", _webApp_ + "case/hxgg").iText(FA_STAR_O, "fa").text("鸿翔钢结构");
+        ul.li().a().href("_blank", _webApp_ + "case/sdty").iText(FA_STAR_O, "fa").text("时道太阳能");
+        ul.li().a().href("_blank", _webApp_ + "case/hmzy").iText(FA_STAR_O, "fa").text("恒茂制衣");
+        ul.li().a().href("_blank", _webApp_ + "case/dehg").iText(FA_STAR_O, "fa").text("德尔化工");
+        ul.li().a().href("_blank", _webApp_ + "case/yxwdz").iText(FA_STAR_O, "fa").text("亚芯微电子");
 
         cell = row.td();
         cell.b().text("维护");

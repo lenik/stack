@@ -108,6 +108,19 @@ a.helpdoc-switcher:hover {
     background: hsl(35, 100%, 80%) !important;
 }
 
+.toggle {
+    background;gray;
+    border: solid 1px black;
+    border-radius: 6px; 
+    color: black;
+    cursor: pointer;
+}
+
+.toggle.on {
+    background: black;
+    color: white;
+}
+
 .zu-calendar {
     border: solid 3px hsl(25, 90%, 80%);
     background-color: hsl(18, 100%, 90%);
@@ -133,19 +146,28 @@ a.helpdoc-switcher:hover {
 .zu-calendar td.active {
     background-color: hsl(14, 100%, 70%);
     color: white;
-    font-size: large;
     font-weight: bold;
 }
 
 .zu-calendar td.log {
+    color: black;
     font-style: normal;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .zu-calendar td.placeholder {
     background-color: hsl(18, 100%, 90%);
 }
 
+.zu-calendar td.selected {
+    background-color: hsl(216, 100%, 70%);
+    color: white;
+    font-weight: bold;
+}
+
 .zu-calendar td.trivial {
+    color: gray;
     font-style: italic;
 }
 
@@ -276,6 +298,46 @@ fieldset.zu-fcat legend {
     padding: 0;
     border-spacing: 0;
     border: none;
+}
+
+.zu-leg {
+    display: none;
+    font-size: large;
+    line-height: 2em;
+}
+
+.zu-leg>li:nth-child(odd) {
+    background-color: hsl(65, 100%, 98%);
+}
+
+.zu-leg>li:nth-child(even) {
+    background-color: hsl(205, 100%, 98%);
+}
+
+.zu-legs .breadcrumb {
+    display: inline;
+    padding: 0 8px;
+}
+
+.zu-legs .date {
+    color: hsl(0, 0%, 60%);
+    font-style: italic;
+}
+
+.zu-legs .msg {
+    color: black;
+}
+
+.zu-legs .op {
+    color: gray;
+    font-style: italic;
+}
+
+.zu-legs .refid {
+    background-color: hsl(18, 100%, 70%);
+    color: white;
+    font-weight: bold;
+    padding: 2px 5px;
 }
 
 .zu-links>div {
