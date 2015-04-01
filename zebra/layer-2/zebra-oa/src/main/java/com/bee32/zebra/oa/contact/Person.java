@@ -2,6 +2,7 @@ package com.bee32.zebra.oa.contact;
 
 import java.sql.Date;
 
+import net.bodz.bas.html.meta.ViewCriteria;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -53,7 +54,10 @@ public class Person
 
     /**
      * 性别
+     * 
+     * @TODO view builder criteria.
      */
+    @ViewCriteria("radio")
     @OfGroup(StdGroup.Classification.class)
     public Gender getGender() {
         return gender;

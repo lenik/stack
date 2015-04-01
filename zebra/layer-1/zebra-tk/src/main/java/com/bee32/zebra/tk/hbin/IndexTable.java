@@ -70,7 +70,9 @@ public class IndexTable
         detailFields.add("state");
 
         tools = div().class_("tools");
+
         editDialog = new EditDialog(tools, id + "ed");
+        editDialog.iframe.attr("parentItabId", id);
     }
 
     public void setAjaxUrlFromRequest(HttpServletRequest req) {

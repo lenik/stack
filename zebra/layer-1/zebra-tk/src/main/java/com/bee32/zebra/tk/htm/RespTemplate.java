@@ -19,8 +19,8 @@ public abstract class RespTemplate<T>
         extends AbstractHttpViewBuilder<T>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts {
 
-    public RespTemplate(Class<?> valueClass, String... supportedFeatures) {
-        super(valueClass, supportedFeatures);
+    public RespTemplate(Class<?> valueClass) {
+        super(valueClass);
     }
 
     @Override
@@ -54,6 +54,7 @@ public abstract class RespTemplate<T>
         head.link().css(_webApp_ + "print.css").media("print");
 
         // scripts
+        head.script().javascriptSrc(_webApp_ + "fixup.js");
         head.script().javascript("" + //
                 "var _webApp_ = " + StringQuote.qq(_webApp_) + ";\n" + //
                 "var _js_ = " + StringQuote.qq(_js_) + ";\n" + //

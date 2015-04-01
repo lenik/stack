@@ -97,6 +97,7 @@ public class OaSiteVbo
         body.div().id(ID.extradata);
 
         HtmlDivTag scripts = body.div().id(ID.scripts);
+        scripts.script().javascriptSrc(_webApp_ + "widget.js");
         scripts.script().javascriptSrc(_webApp_ + "makeup.js");
 
         return out;
@@ -252,7 +253,10 @@ public class OaSiteVbo
         HtmlTdTag cell;
 
         row = tab.tr();
-        row.td().img().title("Secca Zebra").src(_webApp_ + "seccazebra.png").width("80");
+        cell = row.td().align("right");
+        cell.img().title("Secca Zebra").src(_webApp_ + "seccazebra.png").width("80");
+        cell.br();
+        cell.div().id("zp-qrchere").title("扫一扫当前页");
 
         cell = row.td();
         cell.b().text("常用");
@@ -309,4 +313,5 @@ public class OaSiteVbo
         div.text("解决方案提供者 (C) 浙江省海宁市智恒软件有限公司 2010-2015 ");
         div.a().href("_blank", "about").text("(关于/联系)");
     }
+
 }

@@ -69,8 +69,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
     protected IFormDecl formDecl;
     protected PathFieldMap indexFields;
 
-    public SlimIndex_htm(Class<?> valueClass, String... supportedFeatures) {
-        super(valueClass, supportedFeatures);
+    public SlimIndex_htm(Class<?> valueClass) {
+        super(valueClass);
         Class<?> param1 = TypeParam.infer1(getClass(), SlimIndex_htm.class, 1);
         formDecl = IFormDecl.fn.forClass(param1);
         indexFields = new PathFieldMap(formDecl);

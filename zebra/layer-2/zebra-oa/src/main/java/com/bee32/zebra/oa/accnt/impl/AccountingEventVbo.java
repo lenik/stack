@@ -51,10 +51,11 @@ public class AccountingEventVbo
             }
         }
 
-        ItemsTable xtab = new ItemsTable(out);
-        xtab.ajaxUrl = "../../acentry/data.json?doc=" + acdoc.getId();
-        xtab.buildHeader(itemIndexFields.values());
+        Long id = acdoc.getId();
+        ItemsTable itab = new ItemsTable(out, "entries", //
+                _webApp_ + "acentry/ID/?view:=form&event.id=" + id);
+        itab.ajaxUrl = "../../acentry/data.json?doc=" + id;
+        itab.buildHeader(itemIndexFields.values());
         return out;
     }
-
 }

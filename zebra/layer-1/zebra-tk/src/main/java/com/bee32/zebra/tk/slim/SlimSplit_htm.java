@@ -28,8 +28,8 @@ public abstract class SlimSplit_htm<T>
         extends AbstractHttpViewBuilder<T>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
-    public SlimSplit_htm(Class<?> valueClass, String... supportedFeatures) {
-        super(valueClass, supportedFeatures);
+    public SlimSplit_htm(Class<?> valueClass) {
+        super(valueClass);
     }
 
     @Override

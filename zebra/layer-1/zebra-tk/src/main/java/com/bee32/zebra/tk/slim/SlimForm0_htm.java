@@ -1,16 +1,12 @@
 package com.bee32.zebra.tk.slim;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.c.object.Nullables;
+import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.StringPart;
 import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.c.type.TypeKind;
@@ -23,7 +19,8 @@ import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlATag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlInputTag;
-import net.bodz.bas.html.meta.HtmlViewBuilder;
+import net.bodz.bas.html.meta.BuildViewWith;
+import net.bodz.bas.html.meta.ViewCriteria;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHttpViewBuilder;
 import net.bodz.bas.html.viz.IHttpViewBuilderFactory;
@@ -218,19 +215,30 @@ public abstract class SlimForm0_htm<T>
 
             if (!description.isEmpty())
                 description = IXjdocElement.fn.labelName(type) + "：" + description;
-        }
+        } // CoObject
 
         else {
             IHttpViewBuilder<Object> viewBuilder;
 
-            HtmlViewBuilder aViewBuilder = property.getAnnotation(HtmlViewBuilder.class);
+            BuildViewWith aViewBuilder = property.getAnnotation(BuildViewWith.class);
             if (aViewBuilder != null && aViewBuilder.value().length > 0) {
                 viewBuilder = (IHttpViewBuilder<Object>) SingletonUtil.instantiateCached(aViewBuilder.value()[0]);
             } else {
                 IHttpViewBuilderFactory factory = ctx.query(IHttpViewBuilderFactory.class);
                 if (factory == null)
                     throw new IllegalConfigException(IHttpViewBuilderFactory.class + " isn't set.");
-                viewBuilder = factory.getViewBuilder(clazz);
+
+                ViewCriteria aViewCriteria = property.getAnnotation(ViewCriteria.class);
+                String[] features = {};
+                if (aViewCriteria != null)
+                    features = aViewCriteria.value();
+
+                viewBuilder = factory.getViewBuilder(clazz, features);
+                if (viewBuilder == null) {
+                    String msg = String
+                            .format("No view builder for %s (features: %s).", clazz, Arrays.asList(features));
+                    throw new NotImplementedException(msg);
+                }
             }
 
             // String htmName = viewBuilder.getClass().getSimpleName();
@@ -296,10 +304,10 @@ public abstract class SlimForm0_htm<T>
         String name = fieldDecl.getName();
         Class<?> type = fieldDecl.getValueType();
 
-        String str = parameterMap.getString(name);
-        if (str == null)
-            // if (parameterMap.containsKey(name))
+        String[] strv = parameterMap.getStringArray(name);
+        if (strv == null)
             return;
+        String str = StringArray.join("\n", strv);
 
         boolean isNull = false;
         switch (fieldDecl.getSpaceNormalization()) {

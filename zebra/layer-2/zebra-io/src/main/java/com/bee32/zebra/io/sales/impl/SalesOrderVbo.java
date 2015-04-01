@@ -30,7 +30,8 @@ public class SalesOrderVbo
     protected IHtmlTag afterForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrder sdoc = ref.get();
-        if (sdoc.getId() == null)
+        Integer id = sdoc.getId();
+        if (id == null)
             return out;
 
         PathFieldMap itemIndexFields;
@@ -51,9 +52,10 @@ public class SalesOrderVbo
             }
         }
 
-        ItemsTable xtab = new ItemsTable(out);
-        xtab.ajaxUrl = "../../sentry/data.json?doc=" + sdoc.getId();
-        xtab.buildHeader(itemIndexFields.values());
+        ItemsTable itab = new ItemsTable(out, "entries",//
+                _webApp_ + "sentry/ID/?view:=form&order.id=" + id);
+        itab.ajaxUrl = "../../sentry/data.json?doc=" + id;
+        itab.buildHeader(itemIndexFields.values());
 
         return out;
     }

@@ -30,6 +30,10 @@ public class FileManager {
         incomingDir.mkdirs();
     }
 
+    public File getFile(String path) {
+        return new File(startDir, path);
+    }
+
     public static FileManager forCurrentRequest() {
         IVirtualHost vhost = CurrentVirtualHost.getVirtualHostOpt();
         if (vhost == null)

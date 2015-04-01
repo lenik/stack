@@ -50,11 +50,11 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="orgId != null">and org=#{orgId}</if>
-        <if test="orgUnitId != null">and ou=#{orgUnitId}</if>
-        <if test="personId != null">and person=#{personId}</if>
-        <if test="usage != null">and usage=#{usage}</if>
-        <if test="country != null">and country=#{country}</if>
+        <if test="orgId != null">and a.org=#{orgId}</if>
+        <if test="orgUnitId != null">and a.ou=#{orgUnitId}</if>
+        <if test="personId != null">and a.person=#{personId}</if>
+        <if test="usage != null">and a.usage=#{usage}</if>
+        <if test="country != null">and a.country=#{country}</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -85,10 +85,10 @@
         ) values(
             #{org.id},#{orgUnit.id},#{person.id},
             #{rename}, #{usage},
-            0, -- #{region},
+            0, -- #{regionId},
             #{country},
             0, 0, 0, -- #{region.code}, #{region.code}, #{region,code},
-            #{address1}, #{address2}, #{postcode},
+            #{address1}, #{address2}, #{postalCode},
             #{tel}, #{mobile}, #{fax}, #{email}, #{web}, #{qq}
         ) returning id
     ]]></select>
@@ -101,12 +101,12 @@
             person=#{person.id},
             rename=#{rename},
             usage=#{usage},
-            -- region=#{region},
+            region=#{regionId},
             country=#{country},
-            -- r1=#{r1}, r2=#{r2}, r3=#{r3},
+            <!-- r1=#{r1}, r2=#{r2}, r3=#{r3}, -->
             address1=#{address1},
             address2=#{address2},
-            postcode=#{postcode},
+            postcode=#{postalCode},
             tel=#{tel},
             mobile=#{mobile},
             fax=#{fax},

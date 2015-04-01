@@ -13,6 +13,7 @@ public class PageStruct {
     public IHtmlTag cmds0;
     public IHtmlTag cmds1;
     public IHtmlTag infomanUl;
+    public IHtmlTag preview;
     public IHtmlTag extradata;
     public IHtmlTag scripts;
 
@@ -23,6 +24,7 @@ public class PageStruct {
         cmds0 = doc.getElementById(ID.cmds0);
         cmds1 = doc.getElementById(ID.cmds1);
         infomanUl = doc.getElementById(ID.infoman_ul);
+        preview = doc.getElementById(ID.preview);
         extradata = doc.getElementById(ID.extradata);
         scripts = doc.getElementById(ID.scripts);
     }

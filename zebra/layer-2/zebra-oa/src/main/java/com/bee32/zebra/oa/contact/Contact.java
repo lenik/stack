@@ -151,7 +151,7 @@ public class Contact
         return region == null ? null : region.joinId();
     }
 
-    public void setRegionCode(String id) {
+    public void setRegionId(String id) {
         this.region = Regions.getChinaRegion(id);
     }
 

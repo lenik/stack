@@ -71,7 +71,13 @@ public class LogSelector_htm
         DateTime date = new DateTime(selector.getStart());
 
         HtmlDivTag topbar = out.div();
-        topbar.a().class_("toggle").id("showall").text("显示所有");
+        // topbar.a().class_("toggle").id("showall").text("显示所有");
+        // topbar.input().type("checkbox").class_("toggle").idLabel("showall").text("显示所有");
+        // topbar.button().type("button").class_("btn").dataToggle("button").text("显示所有");
+        HtmlSpanTag showAllToggle = topbar.span().class_("btn-group btn-toggle").id("showall");
+        showAllToggle.button().class_("btn btn-sm btn-primary active").text("选中").value("off");
+        showAllToggle.button().class_("btn btn-sm btn-default").text("全部").value("on");
+
         topbar.text(date.toString("yyyy 年 M 月"));
 
         HtmlTableTag tab = out.table().align("center");
@@ -84,7 +90,6 @@ public class LogSelector_htm
             String nextYear = date.plusYears(1).toString("YYYY-M");
             HtmlTdTag prevTd = tr.td();
 
-            
             prevTd.iText(FA_ANGLE_DOUBLE_LEFT, "fa");
             prevTd.a().href("../" + prevYear + "/").text("上一年");
             prevTd.iText(FA_ANGLE_LEFT, "fa");

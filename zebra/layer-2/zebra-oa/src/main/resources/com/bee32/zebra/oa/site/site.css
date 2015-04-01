@@ -11,7 +11,7 @@ a:hover {
 
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: "Droid Sans", sans-serif;
 }
 
 h1 {
@@ -113,15 +113,18 @@ a.helpdoc-switcher:hover {
     background: hsl(35, 100%, 80%) !important;
 }
 
-.toggle {
-    background;gray;
+.toggle>.ui-button-text {
+    padding: .2em .5em;
+}
+
+.toggle1 {background;gray;
     border: solid 1px black;
-    border-radius: 6px; 
+    border-radius: 6px;
     color: black;
     cursor: pointer;
 }
 
-.toggle.on {
+.toggle1.on {
     background: black;
     color: white;
 }
@@ -384,6 +387,11 @@ fieldset.zu-fcat legend {
     cursor: pointer;
 }
 
+.dialog {
+    width: 32px;
+    height: 32px;
+}
+
 .dialog iframe {
     width: 100%;
     height: 70%;
@@ -504,6 +512,7 @@ fieldset.zu-fcat legend {
 
 #zp-foot {
     background: hsl(0, 0%, 95%);
+    font-family: 仿宋;
 }
 
 #zp-foot {
@@ -588,6 +597,10 @@ fieldset.zu-fcat legend {
 #zp-preview>img {
     width: 100px;
     height: 100px;
+}
+
+#zp-qrchere {
+    margin: 1em 0;
 }
 
 #zp-right-col {

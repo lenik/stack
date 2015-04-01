@@ -27,7 +27,7 @@ public class ContactIndexVbo
     public ContactIndexVbo()
             throws NoSuchPropertyException, ParseException {
         super(ContactIndex.class);
-        indexFields.parse("i*sa", FIELDS);
+        indexFields.parse("i*", FIELDS);
     }
 
     @Override
@@ -51,28 +51,29 @@ public class ContactIndexVbo
             for (Contact o : list) {
                 HtmlTrTag tr = itab.tbody.tr();
                 itab.cocols("i", tr, o);
-                ref(tr.td(), o.getOrg());
-                ref(tr.td(), o.getOrgUnit());
-                ref(tr.td(), o.getPerson());
+                tr.td().text(o.getPriority());
                 tr.td().text(o.getRename());
                 tr.td().text(o.getUsage());
+
                 // tr.td().text(o.getRegion());
-                tr.td().text(o.getCountry());
-                tr.td().text(o.getR1());
-                tr.td().text(o.getR2());
-                tr.td().text(o.getR3());
-                tr.td().text(o.getAddress1());
-                tr.td().text(o.getAddress2());
+                // tr.td().text(o.getCountry());
+                // tr.td().text(o.getR1());
+                // tr.td().text(o.getR2());
+                // tr.td().text(o.getR3());
+
                 tr.td().text(o.getTel());
                 tr.td().text(o.getMobile());
                 tr.td().text(o.getFax());
                 tr.td().text(o.getEmail());
                 tr.td().text(o.getWeb());
                 tr.td().text(o.getQq());
+
+                tr.td().text(o.getPostalCode());
+                tr.td().text(o.getAddress1());
+                tr.td().text(o.getAddress2());
             }
 
         if (a.extradata != null)
             dumpFullData(a.extradata, list);
     }
-
 }

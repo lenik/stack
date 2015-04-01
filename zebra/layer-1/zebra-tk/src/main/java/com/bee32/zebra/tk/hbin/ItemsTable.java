@@ -8,12 +8,10 @@ public class ItemsTable
 
     boolean colvis = false;
 
-    public ItemsTable(IHtmlTag parent) {
-        this(parent, "xtab");
-    }
-
-    public ItemsTable(IHtmlTag parent, String id) {
+    public ItemsTable(IHtmlTag parent, String id, String editorUrl) {
         super(parent, id);
+
+        attr("data-editurl", editorUrl);
 
         if (colvis) {
             attr("dom", "<C>rti");
@@ -27,8 +25,8 @@ public class ItemsTable
         footColumns = false;
 
         HtmlDivTag cmds = tools.div().id(id + "cmds");
-        cmds.button().class_("cmd-reload").iText(FA_REFRESH, "fa").text("刷新");
-        cmds.button().class_("cmd-add").iText(FA_FILE_O, "fa").text("添加");
+        cmds.button().class_("btn-reload").iText(FA_REFRESH, "fa").text("刷新");
+        cmds.button().class_("btn-add").iText(FA_FILE_O, "fa").text("添加");
     }
 
 }

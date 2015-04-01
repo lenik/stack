@@ -8,7 +8,7 @@ var Features = {
 $(document).ready(function() {
 
     if (Features.chosen) {
-        var selects = $("select").chosen({
+        var selects = $("select:not([multiple])").chosen({
             inherit_select_classes : true,
             // width : "30%",
             disable_search : true,
@@ -98,7 +98,7 @@ $(document).ready(function() {
         };
 
         config.autoWidth = false;
-        
+
         var dataUrl = $table.attr("data-url");
         config.ajax = dataUrl == null ? null : {
             url : dataUrl,
@@ -189,38 +189,38 @@ $(document).ready(function() {
                 }
             }
 
-            if (itab.rowClick != null) {
-                itab.rowClick(row);
-                return;
-            }
-
-            if (modexs) {
-                location.href = id + "/";
-                return;
-            }
-
-            // load the selection
-            var seldiv = $("#zp-infosel-data");
-            var seledit = $("#zp-infosel-edit");
-            var xdata = $("#data-" + id);
-            var lastid = seldiv.attr("selid");
-
-            if (id != lastid) {
-                seldiv.show();
-                seldiv.attr("selid", id);
-
-                if (xdata.length > 0) {
-                    seldiv.html(xdata.html());
-                } else {
-                    // load on demand, or create from the table...
-                    seldiv.html("Loading...");
+            if (!itab.canOpen()) {
+                if (modexs) {
+                    location.href = id + "/";
+                    return;
                 }
-                seledit.attr("href", id + "/");
-            } else {
-                // click again on the same row.
-                // location.href = id + "/";
+
+                // load the selection
+                var xdata = $("#data-" + id);
+                var seldiv = $("#zp-infosel-data");
+                var seledit = $("#zp-infosel-edit");
+                var lastid = seldiv.attr("selid");
+
+                if (id != lastid) {
+                    seldiv.show();
+                    seldiv.attr("selid", id);
+
+                    if (xdata.length > 0) {
+                        seldiv.html(xdata.html());
+                    } else {
+                        // load on demand, or create from the table...
+                        seldiv.html("Loading...");
+                    }
+                    seledit.attr("href", id + "/");
+                } else {
+                    // click again on the same row.
+                    // location.href = id + "/";
+                }
+                // e.cancel = true;
+                return;
             }
-            // e.cancel = true;
+
+            $(itab).trigger("rowClick", [ row ]);
         });
     } // dt != null
 
@@ -229,7 +229,12 @@ $(document).ready(function() {
         $doc.fadeToggle();
         $(this).toggleClass("active");
     });
-    
+
+    $("#zp-qrchere").qrcode({
+        size : 64,
+        text : location.href
+    });
+
 });
 
 var DataTables = {
@@ -289,8 +294,12 @@ var DataTables = {
 };
 
 function iframeDone() {
-    if (parent.itab != null)
-        parent.itab.reload();
+    if (frameElement != null) {
+        var parentItabId = $(frameElement).attr("parentItabId");
+        var parentItab = parent.itabs[parentItabId];
+        if (parentItab != null)
+            parentItab.reload();
+    }
 }
 
 function spin(n) {

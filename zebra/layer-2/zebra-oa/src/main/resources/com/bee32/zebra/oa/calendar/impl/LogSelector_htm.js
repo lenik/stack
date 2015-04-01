@@ -1,11 +1,10 @@
 $(document).ready(function() {
 
-    // $(".toolbar").buttonset();
-    // $("input[type=checkbox]").button();
-    // $("#showall").button();
     $("#showall").click(function() {
-        $("#showall").toggleClass("on");
-        if ($("#showall").hasClass("on")) {
+        // $("#showall").toggleClass("on");
+        // if ($("#showall").hasClass("on")) {
+        var value = $(this).find(".active").attr("value");
+        if (value == "on") {
             $(".zu-calendar tbody td.log").addClass("selected");
             $(".zu-leg").show();
         } else {

@@ -59,6 +59,11 @@ select {
     display: none;
 }
 
+.itab-rot {
+    page-break-before: always;
+    -webkit-transform: rotate(-90deg);
+}
+
 .noprint {
     display: none!important;
 }
@@ -66,6 +71,7 @@ select {
 .print {
     display: inherit!important;
 }
+
 .zu-fcat {
     page-break-inside: avoid;
 }
