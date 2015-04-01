@@ -85,12 +85,12 @@
         ) values(
             #{org.id},#{orgUnit.id},#{person.id},
             #{rename}, #{usage},
-            0, -- #{regionId},
+            0, 
             #{country},
-            0, 0, 0, -- #{region.code}, #{region.code}, #{region,code},
+            0, 0, 0,
             #{address1}, #{address2}, #{postalCode},
             #{tel}, #{mobile}, #{fax}, #{email}, #{web}, #{qq}
-        ) returning id
+        ) returning _id
     ]]></select>
 
     <update id="update">
