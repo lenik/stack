@@ -417,6 +417,7 @@ fieldset.zu-fcat legend {
 
 .zu-section-head {
     width: 8em;
+    min-width: 8em;
     font-size: large;
     text-align: center;
     vertical-align: top;
