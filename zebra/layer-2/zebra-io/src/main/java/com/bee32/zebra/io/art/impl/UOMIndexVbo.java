@@ -17,6 +17,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.bee32.zebra.tk.util.Listing;
 
 public class UOMIndexVbo
@@ -31,7 +32,7 @@ public class UOMIndexVbo
     @Override
     protected UOMCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        UOMCriteria criteria = fn.criteriaFromRequest(new UOMCriteria(), ctx.getRequest());
+        UOMCriteria criteria = CriteriaBuilder.fromRequest(new UOMCriteria(), ctx.getRequest());
 
         SwitcherModel<String> sw;
         sw = switchers.entryOf("属性", true, //

@@ -15,6 +15,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.schema.SchemaDef;
 import com.tinylily.model.base.schema.impl.SchemaDefCriteria;
 import com.tinylily.model.base.schema.impl.SchemaDefMapper;
@@ -31,7 +32,7 @@ public class SchemaDefIndexVbo
     @Override
     protected SchemaDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        SchemaDefCriteria criteria = fn.criteriaFromRequest(new SchemaDefCriteria(), ctx.getRequest());
+        SchemaDefCriteria criteria = CriteriaBuilder.fromRequest(new SchemaDefCriteria(), ctx.getRequest());
         return criteria;
     }
 

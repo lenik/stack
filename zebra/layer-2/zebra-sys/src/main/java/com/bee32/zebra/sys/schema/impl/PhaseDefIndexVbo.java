@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.schema.PhaseDef;
 import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
 import com.tinylily.model.base.schema.impl.PhaseDefMapper;
@@ -33,7 +34,7 @@ public class PhaseDefIndexVbo
     @Override
     protected PhaseDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PhaseDefCriteria criteria = fn.criteriaFromRequest(new PhaseDefCriteria(), ctx.getRequest());
+        PhaseDefCriteria criteria = CriteriaBuilder.fromRequest(new PhaseDefCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("模式", false, //

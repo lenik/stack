@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class SalesOrderIndexVbo
         extends SlimIndex_htm<SalesOrderIndex, SalesOrder, SalesOrderCriteria> {
@@ -29,7 +30,7 @@ public class SalesOrderIndexVbo
     @Override
     protected SalesOrderCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        SalesOrderCriteria criteria = fn.criteriaFromRequest(new SalesOrderCriteria(), ctx.getRequest());
+        SalesOrderCriteria criteria = CriteriaBuilder.fromRequest(new SalesOrderCriteria(), ctx.getRequest());
         return criteria;
     }
 

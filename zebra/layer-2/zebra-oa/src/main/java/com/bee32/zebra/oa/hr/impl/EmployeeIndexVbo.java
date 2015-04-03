@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class EmployeeIndexVbo
         extends SlimIndex_htm<EmployeeIndex, Employee, EmployeeCriteria> {
@@ -29,7 +30,7 @@ public class EmployeeIndexVbo
     @Override
     protected EmployeeCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        EmployeeCriteria criteria = fn.criteriaFromRequest(new EmployeeCriteria(), ctx.getRequest());
+        EmployeeCriteria criteria = CriteriaBuilder.fromRequest(new EmployeeCriteria(), ctx.getRequest());
         return criteria;
     }
 

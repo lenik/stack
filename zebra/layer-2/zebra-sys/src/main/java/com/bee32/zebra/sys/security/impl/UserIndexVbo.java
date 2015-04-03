@@ -15,6 +15,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.security.User;
 import com.tinylily.model.base.security.impl.UserCriteria;
 import com.tinylily.model.base.security.impl.UserMapper;
@@ -32,7 +33,7 @@ public class UserIndexVbo
     @Override
     protected UserCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        UserCriteria criteria = fn.criteriaFromRequest(new UserCriteria(), ctx.getRequest());
+        UserCriteria criteria = CriteriaBuilder.fromRequest(new UserCriteria(), ctx.getRequest());
         return criteria;
     }
 

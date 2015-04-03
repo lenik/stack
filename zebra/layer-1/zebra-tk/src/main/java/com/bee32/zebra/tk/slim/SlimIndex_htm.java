@@ -14,7 +14,6 @@ import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.err.IllegalUsageException;
-import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.dom.AbstractHtmlTag;
 import net.bodz.bas.html.dom.HtmlDoc;
@@ -35,7 +34,6 @@ import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.path.IPathArrival;
-import net.bodz.bas.repr.req.HttpSnap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.std.rfc.mime.ContentType;
@@ -364,20 +362,6 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
     protected final FormatFn fmt = new FormatFn();
 
     protected static class fn {
-
-        public static <C extends CoObjectCriteria> C criteriaFromRequest(C criteria, HttpServletRequest req)
-                throws ViewBuilderException {
-            try {
-                HttpSnap snap = (HttpSnap) req.getAttribute(HttpSnap.class.getName());
-                if (snap == null)
-                    criteria.populate(req.getParameterMap());
-                else
-                    criteria.populate(snap.getParameterMap());
-            } catch (ParseException e) {
-                throw new ViewBuilderException(e.getMessage(), e);
-            }
-            return criteria;
-        }
 
         public static String labels(Collection<? extends CoObject> entities) {
             if (entities == null)

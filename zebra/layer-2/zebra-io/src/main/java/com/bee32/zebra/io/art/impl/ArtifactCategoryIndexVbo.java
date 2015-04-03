@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class ArtifactCategoryIndexVbo
         extends SlimIndex_htm<ArtifactCategoryIndex, ArtifactCategory, ArtifactCategoryCriteria> {
@@ -29,7 +30,7 @@ public class ArtifactCategoryIndexVbo
     @Override
     protected ArtifactCategoryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ArtifactCategoryCriteria criteria = fn.criteriaFromRequest(new ArtifactCategoryCriteria(), ctx.getRequest());
+        ArtifactCategoryCriteria criteria = CriteriaBuilder.fromRequest(new ArtifactCategoryCriteria(), ctx.getRequest());
         return criteria;
     }
 

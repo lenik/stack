@@ -17,6 +17,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class DiaryIndexVbo
         extends SlimIndex_htm<DiaryIndex, Diary, DiaryCriteria> {
@@ -31,7 +32,7 @@ public class DiaryIndexVbo
     protected DiaryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
-        DiaryCriteria criteria = fn.criteriaFromRequest(new DiaryCriteria(), ctx.getRequest());
+        DiaryCriteria criteria = CriteriaBuilder.fromRequest(new DiaryCriteria(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entryOf("年份", true, //
                 mapper.histoByYear(), "year", criteria.year, criteria.noYear);

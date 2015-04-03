@@ -17,6 +17,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.security.User;
 
 public class ReplyIndexVbo
@@ -31,7 +32,7 @@ public class ReplyIndexVbo
     @Override
     protected ReplyCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ReplyCriteria criteria = fn.criteriaFromRequest(new ReplyCriteria(), ctx.getRequest());
+        ReplyCriteria criteria = CriteriaBuilder.fromRequest(new ReplyCriteria(), ctx.getRequest());
         return criteria;
     }
 

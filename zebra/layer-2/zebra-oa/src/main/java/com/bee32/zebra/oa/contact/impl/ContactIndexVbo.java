@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class ContactIndexVbo
         extends SlimIndex_htm<ContactIndex, Contact, ContactCriteria> {
@@ -33,7 +34,7 @@ public class ContactIndexVbo
     @Override
     protected ContactCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ContactCriteria criteria = fn.criteriaFromRequest(new ContactCriteria(), ctx.getRequest());
+        ContactCriteria criteria = CriteriaBuilder.fromRequest(new ContactCriteria(), ctx.getRequest());
         return criteria;
     }
 

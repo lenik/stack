@@ -17,6 +17,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class DeliveryIndexVbo
         extends SlimIndex_htm<DeliveryIndex, Delivery, DeliveryCriteria> {
@@ -30,7 +31,7 @@ public class DeliveryIndexVbo
     @Override
     protected DeliveryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        DeliveryCriteria criteria = fn.criteriaFromRequest(new DeliveryCriteria(), ctx.getRequest());
+        DeliveryCriteria criteria = CriteriaBuilder.fromRequest(new DeliveryCriteria(), ctx.getRequest());
         return criteria;
     }
 

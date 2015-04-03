@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class StockEntryIndexVbo
         extends SlimIndex_htm<StockEntryIndex, StockEntry, StockEntryCriteria> {
@@ -29,7 +30,7 @@ public class StockEntryIndexVbo
     @Override
     protected StockEntryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        StockEntryCriteria criteria = fn.criteriaFromRequest(new StockEntryCriteria(), ctx.getRequest());
+        StockEntryCriteria criteria = CriteriaBuilder.fromRequest(new StockEntryCriteria(), ctx.getRequest());
         return criteria;
     }
 

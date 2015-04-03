@@ -18,6 +18,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class PersonIndexVbo
         extends SlimIndex_htm<PersonIndex, Person, PersonCriteria> {
@@ -33,7 +34,7 @@ public class PersonIndexVbo
     protected PersonCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         PersonMapper mapper = ctx.query(PersonMapper.class);
-        PersonCriteria criteria = fn.criteriaFromRequest(new PersonCriteria(), ctx.getRequest());
+        PersonCriteria criteria = CriteriaBuilder.fromRequest(new PersonCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw1;
         sw1 = switchers.entryOf("类型", false, //

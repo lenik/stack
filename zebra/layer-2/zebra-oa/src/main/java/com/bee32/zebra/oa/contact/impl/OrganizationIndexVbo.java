@@ -18,6 +18,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class OrganizationIndexVbo
         extends SlimIndex_htm<OrganizationIndex, Organization, OrganizationCriteria> {
@@ -32,7 +33,7 @@ public class OrganizationIndexVbo
     @Override
     protected OrganizationCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        OrganizationCriteria criteria = fn.criteriaFromRequest(new OrganizationCriteria(), ctx.getRequest());
+        OrganizationCriteria criteria = CriteriaBuilder.fromRequest(new OrganizationCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entryOf("类型", false, //

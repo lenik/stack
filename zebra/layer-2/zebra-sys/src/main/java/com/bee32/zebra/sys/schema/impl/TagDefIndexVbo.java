@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.schema.TagDef;
 import com.tinylily.model.base.schema.impl.TagDefCriteria;
 import com.tinylily.model.base.schema.impl.TagDefMapper;
@@ -33,7 +34,7 @@ public class TagDefIndexVbo
     @Override
     protected TagDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        TagDefCriteria criteria = fn.criteriaFromRequest(new TagDefCriteria(), ctx.getRequest());
+        TagDefCriteria criteria = CriteriaBuilder.fromRequest(new TagDefCriteria(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("向量", false, //
                 ctx.query(TagSetDefMapper.class).all(), //

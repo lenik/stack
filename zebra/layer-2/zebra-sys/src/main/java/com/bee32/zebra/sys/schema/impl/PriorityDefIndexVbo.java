@@ -15,6 +15,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.schema.PriorityDef;
 import com.tinylily.model.base.schema.impl.PriorityDefCriteria;
 import com.tinylily.model.base.schema.impl.PriorityDefMapper;
@@ -31,7 +32,7 @@ public class PriorityDefIndexVbo
     @Override
     protected PriorityDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PriorityDefCriteria criteria = fn.criteriaFromRequest(new PriorityDefCriteria(), ctx.getRequest());
+        PriorityDefCriteria criteria = CriteriaBuilder.fromRequest(new PriorityDefCriteria(), ctx.getRequest());
         return criteria;
     }
 

@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class OrgUnitIndexVbo
         extends SlimIndex_htm<OrgUnitIndex, OrgUnit, OrgUnitCriteria> {
@@ -29,7 +30,7 @@ public class OrgUnitIndexVbo
     @Override
     protected OrgUnitCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        OrgUnitCriteria criteria = fn.criteriaFromRequest(new OrgUnitCriteria(), ctx.getRequest());
+        OrgUnitCriteria criteria = CriteriaBuilder.fromRequest(new OrgUnitCriteria(), ctx.getRequest());
         return criteria;
     }
 

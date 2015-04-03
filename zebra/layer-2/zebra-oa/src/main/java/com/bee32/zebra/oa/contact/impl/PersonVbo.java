@@ -67,7 +67,7 @@ public class PersonVbo
         String photoPath = "sys/person/" + id + ".jpg";
         File photoFile = fileManager.getFile(photoPath);
 
-        HtmlFormTag form = out.form().id("avatarForm");
+        HtmlFormTag form = out.form().id("avatarForm").enctype("multipart");
         HtmlImgTag img = form.img().id("avatar").height("128");
         // if (photoFile.exists())
         img.src(_webApp_ + "file/" + photoPath);

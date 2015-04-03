@@ -20,6 +20,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
 import com.tinylily.model.base.schema.impl.CategoryDefMapper;
 import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
@@ -40,7 +41,7 @@ public class TopicIndexVbo
     protected TopicCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
-        TopicCriteria criteria = fn.criteriaFromRequest(new TopicCriteria(), ctx.getRequest());
+        TopicCriteria criteria = CriteriaBuilder.fromRequest(new TopicCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("分类", true, //

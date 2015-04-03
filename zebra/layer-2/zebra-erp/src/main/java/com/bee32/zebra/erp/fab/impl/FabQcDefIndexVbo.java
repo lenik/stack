@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class FabQcDefIndexVbo
         extends SlimIndex_htm<FabQcDefIndex, FabQcDef, FabQcDefCriteria> {
@@ -29,7 +30,7 @@ public class FabQcDefIndexVbo
     @Override
     protected FabQcDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        FabQcDefCriteria criteria = fn.criteriaFromRequest(new FabQcDefCriteria(), ctx.getRequest());
+        FabQcDefCriteria criteria = CriteriaBuilder.fromRequest(new FabQcDefCriteria(), ctx.getRequest());
         return criteria;
     }
 

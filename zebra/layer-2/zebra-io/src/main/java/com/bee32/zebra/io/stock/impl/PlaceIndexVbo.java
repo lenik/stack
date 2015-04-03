@@ -18,6 +18,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class PlaceIndexVbo
         extends SlimIndex_htm<PlaceIndex, Place, PlaceCriteria> {
@@ -31,7 +32,7 @@ public class PlaceIndexVbo
     @Override
     protected PlaceCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PlaceCriteria criteria = fn.criteriaFromRequest(new PlaceCriteria(), ctx.getRequest());
+        PlaceCriteria criteria = CriteriaBuilder.fromRequest(new PlaceCriteria(), ctx.getRequest());
         return criteria;
     }
 

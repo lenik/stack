@@ -21,6 +21,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.bee32.zebra.tk.util.Listing;
 
 public class ArtifactIndexVbo
@@ -44,7 +45,7 @@ public class ArtifactIndexVbo
     @Override
     protected ArtifactCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ArtifactCriteria criteria = fn.criteriaFromRequest(new ArtifactCriteria(), ctx.getRequest());
+        ArtifactCriteria criteria = CriteriaBuilder.fromRequest(new ArtifactCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw1;
         sw1 = switchers.entityOf("分类", false, //

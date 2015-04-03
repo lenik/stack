@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class AccountIndexVbo
         extends SlimIndex_htm<AccountIndex, Account, AccountCriteria> {
@@ -29,7 +30,7 @@ public class AccountIndexVbo
     @Override
     protected AccountCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        AccountCriteria criteria = fn.criteriaFromRequest(new AccountCriteria(), ctx.getRequest());
+        AccountCriteria criteria = CriteriaBuilder.fromRequest(new AccountCriteria(), ctx.getRequest());
         return criteria;
     }
 

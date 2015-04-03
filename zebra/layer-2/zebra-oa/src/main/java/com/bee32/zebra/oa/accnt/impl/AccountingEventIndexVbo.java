@@ -20,6 +20,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.schema.impl.FormDefCriteria;
 import com.tinylily.model.base.schema.impl.FormDefMapper;
 
@@ -38,7 +39,7 @@ public class AccountingEventIndexVbo
             throws ViewBuilderException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
 
-        AccountingEventCriteria criteria = fn.criteriaFromRequest(new AccountingEventCriteria(), ctx.getRequest());
+        AccountingEventCriteria criteria = CriteriaBuilder.fromRequest(new AccountingEventCriteria(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("表单", true, //
                 ctx.query(FormDefMapper.class).filter(FormDefCriteria.forSchema(Schemas.ACCOUNTING)), //

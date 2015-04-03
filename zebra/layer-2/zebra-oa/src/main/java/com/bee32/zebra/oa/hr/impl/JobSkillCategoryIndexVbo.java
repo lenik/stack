@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 
 public class JobSkillCategoryIndexVbo
         extends SlimIndex_htm<JobSkillCategoryIndex, JobSkillCategory, JobSkillCategoryCriteria> {
@@ -29,7 +30,7 @@ public class JobSkillCategoryIndexVbo
     @Override
     protected JobSkillCategoryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        JobSkillCategoryCriteria criteria = fn.criteriaFromRequest(new JobSkillCategoryCriteria(), ctx.getRequest());
+        JobSkillCategoryCriteria criteria = CriteriaBuilder.fromRequest(new JobSkillCategoryCriteria(), ctx.getRequest());
         return criteria;
     }
 

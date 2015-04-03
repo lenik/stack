@@ -22,6 +22,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.bee32.zebra.tk.util.Listing;
 import com.tinylily.model.base.schema.impl.TagDefCriteria;
 import com.tinylily.model.base.schema.impl.TagDefMapper;
@@ -40,7 +41,7 @@ public class FileInfoIndexVbo
     protected FileInfoCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
-        FileInfoCriteria criteria = fn.criteriaFromRequest(new FileInfoCriteria(), ctx.getRequest());
+        FileInfoCriteria criteria = CriteriaBuilder.fromRequest(new FileInfoCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("标签", true, //

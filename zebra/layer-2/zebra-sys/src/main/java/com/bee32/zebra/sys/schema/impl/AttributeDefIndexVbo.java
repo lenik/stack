@@ -16,6 +16,7 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
+import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.tinylily.model.base.schema.AttributeDef;
 import com.tinylily.model.base.schema.impl.AttributeDefCriteria;
 import com.tinylily.model.base.schema.impl.AttributeDefMapper;
@@ -33,7 +34,7 @@ public class AttributeDefIndexVbo
     @Override
     protected AttributeDefCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        AttributeDefCriteria criteria = fn.criteriaFromRequest(new AttributeDefCriteria(), ctx.getRequest());
+        AttributeDefCriteria criteria = CriteriaBuilder.fromRequest(new AttributeDefCriteria(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("模式", false, //
