@@ -4,6 +4,14 @@ $(document).ready(function() {
     // $("input[type=checkbox]").button();
     // $(".button").button();
 
+    /**
+     * ⇱ WIDGET: Toggle Button.
+     * 
+     * @example <div class="btn-group" data-toggle="buttons"> <label class="btn
+     *          btn-default"> <input type="radio" value="f" name="gender">女</label>
+     *          <label class="btn btn-default active"> <input type="radio"
+     *          value="m" name="gender">男</label> </div>
+     */
     $(".btn-toggle").click(function() {
         $(this).find(".btn").toggleClass("active");
         $(this).find(".btn").toggleClass("btn-default");
@@ -18,7 +26,11 @@ $(document).ready(function() {
             $(this).find(".btn").toggleClass("btn-info");
     });
 
-    // Fixed: tagsinput doesn't convert <select> well.
+    /**
+     * ⇱ WIDGET: tagsinput workaround.
+     * 
+     * Fixed: tagsinput doesn't convert <select> well.
+     */
     $("select[data-role=tagsinput-obj]").each(function() {
         var $select = $(this);
         $select.tagsinput({
@@ -33,6 +45,84 @@ $(document).ready(function() {
                 label : label
             });
         });
+    });
+
+    /**
+     * ⇱ WIDGET: File Upload Dialog.
+     */
+    $(".fileupload-dialog").each(function() {
+
+        this.open = function() {
+            $(this).dialog({
+                autoOpen : true,
+                title : "上传…",
+                buttons : [ {
+                    text : "确定",
+                    click : function() {
+                        $(this).dialog("close");
+                    }
+                }, {
+                    text : "取消",
+                    click : function() {
+                        $(this).dialog("close");
+                    }
+                }, ],
+                modal : true,
+                width : "80%"
+            });
+        };
+
+        var sendbtn = $(".fileupload", this);
+        var progress = $('.progress', this);
+        var alert_success = $(".alert-success", this);
+        var message = $(".message", alert_success);
+        var binds = $(this).attr("data-bind");
+        var forform_q = $(this).attr("data-forform");
+        var forform = $(forform_q);
+
+        // Initialize the jQuery File Upload widget:
+        sendbtn.fileupload({
+            dataType : "json",
+
+            start : function(e, data) {
+                var onstart = sendbtn.attr("onstart");
+                if (onstart != null) {
+                    var handler = new Function("e", onstart);
+                    handler(e);
+                }
+                alert_success.fadeOut();
+                progress.fadeIn();
+            },
+
+            done : function(e, data) {
+                progress.fadeOut();
+                alert_success.fadeIn();
+
+                $.each(data.result.files, function(index, file) {
+                    $(binds).val(file.name);
+                    $("[role=uploaded-name]", forform).val(file.name);
+
+                    message.html("");
+                    message.append($("<p/>").text(file.name + " (" + file.size + " 字节)"));
+                });
+
+                var ondone = sendbtn.attr("ondone");
+                if (ondone != null) {
+                    var handler = new Function("e", "files", ondone);
+                    var files = data.result.files;
+                    handler(e, files[0]);
+                }
+            },
+
+            progressall : function(e, data) {
+                var percent = data.loaded / data.total * 100;
+                percent = Math.floor(percent);
+                var bar = $(".progress-bar", progress);
+                bar.css('width', percent + '%');
+                bar.text("已传输 " + data.loaded + " / " + data.total + " 字节 (" + percent + "%)");
+            }
+        });
+
     });
 
 });

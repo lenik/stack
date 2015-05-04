@@ -27,6 +27,14 @@ public class UploadHandler
         FileManager manager = FileManager.forCurrentRequest();
         ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 
+        UploadResult result = new UploadResult();
+        String scheme = request.getParameter("scheme");
+        File dir;
+        if (scheme == null)
+            dir = manager.getDir(UploadHandler.class);
+        else
+            dir = manager.getDir(scheme);
+
         try {
             List<FileItem> items = uploadHandler.parseRequest(request);
             for (FileItem item : items) {
@@ -35,12 +43,12 @@ public class UploadHandler
 
                 if (item.getName().isEmpty())
                     throw new IllegalArgumentException("empty filename.");
-                File file = new File(manager.incomingDir, item.getName());
+                File file = new File(dir, item.getName());
                 item.write(file);
-            }
 
-            UploadResult result = new UploadResult();
-            result.items = items;
+                UploadedFileInfo fileInfo = new UploadedFileInfo(item);
+                result.add(fileInfo);
+            }
             return result;
         } catch (IOException e) {
             throw e;
@@ -48,5 +56,4 @@ public class UploadHandler
             throw new IOException(e.getMessage(), e);
         }
     }
-
 }

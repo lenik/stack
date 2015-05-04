@@ -1,11 +1,10 @@
 package com.bee32.zebra.oa.file.impl;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import org.apache.commons.fileupload.FileItem;
+public class UploadResult
+        extends ArrayList<UploadedFileInfo> {
 
-public class UploadResult {
-
-    public List<FileItem> items;
+    private static final long serialVersionUID = 1L;
 
 }

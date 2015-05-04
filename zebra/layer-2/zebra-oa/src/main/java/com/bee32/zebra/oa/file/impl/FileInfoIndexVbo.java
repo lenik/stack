@@ -96,26 +96,13 @@ public class FileInfoIndexVbo
     protected void afterData(IHttpViewContext ctx, IHtmlTag out, IUiRef<FileInfoIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         HtmlDivTag tmpl = out.div().id("child-0").class_("zu-template");
-
-        HtmlTrTag tr = tmpl.table().class_("zu-detail").tr();
-        HtmlTdTag left = tr.td().valign("top").style("width: 4em");
-        left.div().align("center").i().class_("fa fa-2x").text(FA_FILE_O);
-        left.hr();
-
-        HtmlATag downloadLink = left.span().a().href("$href?mode=attachment");
-        downloadLink.i().class_("fa").text(FA_DOWNLOAD);
-        downloadLink.text("下载");
-
-        HtmlTdTag right = tr.td().valign("top");
-        HtmlATag fileLink = right.div().a().href("_blank", "$href");
-        fileLink.i().class_("fa").text(FA_EXTERNAL_LINK);
-        fileLink.b().text("$base");
-
-        right.div().ol().class_("breadcrumb").text("$segs");
-        right.div().text("$description");
-
-        // right.hr();
-        // right.div().text("下载次数：$downloads");
+        GetFilePanel filePanel = new GetFilePanel(tmpl).class_("zu-detail");
+        filePanel.setDirName("$segs");
+        filePanel.setBaseName("$base");
+        filePanel.setDescription("$description");
+        filePanel.setHref("$href");
+        filePanel.setBreadcrumb(false);
+        filePanel.build();
     }
 
 }

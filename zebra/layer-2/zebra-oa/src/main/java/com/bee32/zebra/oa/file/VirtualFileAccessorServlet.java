@@ -30,7 +30,7 @@ public class VirtualFileAccessorServlet
         FileManager fileManager = FileManager.forCurrentRequest();
 
         String pathInfo = req.getPathInfo();
-        String path = fileManager.startDir.getPath();
+        String path = fileManager.getStartDir().getPath();
         if (pathInfo != null)
             path += pathInfo;
 

@@ -5,13 +5,13 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItem;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.viz.AbstractHttpViewBuilder;
 import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.std.rfc.mime.ContentType;
@@ -41,14 +41,15 @@ public class UploadResult_json
         FileManager manager = FileManager.forCurrentRequest();
 
         JSONArray filesArray = new JSONArray();
-        for (FileItem item : result.items) {
+        for (UploadedFileInfo item : result) {
             JSONObject fileObj = new JSONObject();
-            fileObj.put("name", item.getName());
-            fileObj.put("size", item.getSize());
-            fileObj.put("url", _webApp_ + manager.incomingPrefix + item.getName());
-            fileObj.put("thumbnail_url", manager.incomingPrefix + item.getName() + "?resize=100");
-            fileObj.put("delete_url", manager.incomingPrefix + item.getName());
-            fileObj.put("delete_type", "DELETE");
+            IAnchor a = manager.getAnchor(UploadHandler.class);
+            fileObj.put("name", item.name);
+            fileObj.put("size", item.size);
+            fileObj.put("url", a + item.url);
+            fileObj.put("thumbnail", a + item.thumbnail);
+            fileObj.put("deleteUrl", a + item.deleteUrl);
+            fileObj.put("deleteType", item.deleteType);
             filesArray.put(fileObj);
         }
 

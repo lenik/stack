@@ -1,9 +1,13 @@
 package com.bee32.zebra.oa.site;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.c.type.IndexedTypes;
+import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.log.Logger;
 import net.bodz.bas.log.LoggerFactory;
 import net.bodz.bas.meta.decl.ObjectType;
@@ -108,6 +112,16 @@ public class OaSite
 
         case "util":
             target = new SiteUtilities();
+            break;
+
+        case "upload":
+            UploadHandler uploadHandler = new UploadHandler();
+            HttpServletRequest request = CurrentHttpService.getRequest();
+            try {
+                target = uploadHandler.handlePostRequest(request);
+            } catch (IOException e) {
+                throw new PathDispatchException(e.getMessage(), e);
+            }
             break;
         }
 

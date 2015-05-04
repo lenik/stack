@@ -6,7 +6,9 @@ import java.util.Set;
 
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.dom.tag.HtmlATag;
+import net.bodz.bas.html.dom.tag.HtmlDivTag;
+import net.bodz.bas.html.dom.tag.HtmlOlTag;
 import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -15,8 +17,8 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.oa.file.FileManager;
-import com.bee32.zebra.tk.hbin.PathBreadcrumb;
 import com.bee32.zebra.tk.hbin.SectionDiv;
+import com.bee32.zebra.tk.hbin.UploadFileDialog;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.bee32.zebra.tk.slim.SlimForm_htm;
@@ -48,25 +50,12 @@ public class FileInfoVbo
         IHtmlTag headCol1 = ctx.getHtmlDoc().getElementById(ID.headCol1);
         HtmlDivTag filecmds = headCol1.div().class_("zu-links");
 
-        // HtmlATag uploadLink = filecmds.a().href("javascript: showUploadDialog()");
-        // uploadLink.iText(FA_UPLOAD, "fa icon").text("上传");
-        HtmlInputTag fileupload = filecmds.span().class_("btn btn-link fileinput-button")//
-                .iText(FA_PLUS_CIRCLE, "fa").text(baseName == null ? "上传..." : "重新上传…")//
-                .input().id("fileupload").type("file").name("files[]");
-        fileupload.attr("data-url", _webApp_ + "file/upload");
-
-        HtmlDivTag progress = filecmds.div().class_("fileupload-progress fade");
-        HtmlDivTag prog = progress.div().class_("progress progress-success progress-triped active") //
-                .attr("role", "progressbar").attr("aria-valuemin", 0).attr("aria-valuemax", 100);
-        prog.div().class_("bar").style("width:0%");
-
-        HtmlDivTag alert = out.div().id("alert-done").class_("alert alert-success").style("display: none");
-        alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
-        alert.iText(FA_CHECK_CIRCLE, "fa");
-        alert.bText("[成功]").text("上传成功");
-        alert.hr();
-        alert.div().class_("small message").text("Succeeded.");
-        alert.div().class_("small alert-warning").iText(FA_EXCLAMATION_TRIANGLE, "fa").text("在您提交这个更改以前，上传的文件并不会自动保存。");
+        HtmlATag uploadLink = filecmds.a().href("javascript: uploadDialog.open()");
+        uploadLink.iText(FA_UPLOAD, "fa").text(baseName == null ? "上传..." : "重新上传…");
+        UploadFileDialog dialog = new UploadFileDialog(out, "uploadDialog");
+        dialog.attr("data-forform", "form1");
+        dialog.attr("data-bind", "#form1 .incoming, #form1 [name=label]");
+        dialog.build();
     }
 
     @Override
@@ -77,7 +66,7 @@ public class FileInfoVbo
         String incomingName = ctx.getRequest().getParameter("incoming");
         if (!Nullables.isEmpty(incomingName)) {
             FileManager manager = FileManager.forCurrentRequest();
-            File incomingFile = new File(manager.incomingDir, incomingName);
+            File incomingFile = new File(manager.getDir(UploadHandler.class), incomingName);
             if (!incomingFile.exists())
                 throw new IllegalStateException("incoming file isn't existed: " + incomingFile);
 
@@ -86,9 +75,9 @@ public class FileInfoVbo
             File oldFile = null;
             File oldFileBak = null;
             if (oldPath != null) {
-                oldFile = new File(manager.startDir, oldPath);
+                oldFile = manager.getFile("tree", oldPath);
                 if (oldFile.exists()) {
-                    oldFileBak = new File(manager.startDir, oldPath + ".bak");
+                    oldFileBak = manager.getFile("tree", oldPath + ".bak");
                     if (!oldFile.renameTo(oldFileBak))
                         throw new IOException(String.format("Can't rename file %s to %s.", oldFile, oldFileBak));
                 }
@@ -99,7 +88,7 @@ public class FileInfoVbo
             if (newDirName == null)
                 newDirName = "incoming";
 
-            File newFileDir = new File(manager.startDir, newDirName);
+            File newFileDir = manager.getFile("tree", newDirName);
             newFileDir.mkdirs();
             File newFile = new File(newFileDir, incomingName);
             if (!incomingFile.equals(newFile))
@@ -140,33 +129,11 @@ public class FileInfoVbo
         super.beforeForm(ctx, out, ref, options);
 
         FileInfo fileInfo = ref.get();
-        String dirName = fileInfo.getDirName();
         String baseName = fileInfo.getBaseName();
 
         if (baseName != null) {
             SectionDiv section = new SectionDiv(out, "uploaded-file", "云端文件", FA_CLOUD);
-
-            HtmlTableTag tab = section.contentDiv.table();
-            HtmlTrTag tr = tab.tr();
-
-            HtmlTdTag left = tr.td().valign("top").style("width: 4em");
-            left.div().align("center").i().class_("fa fa-2x").text(FA_FILE_O);
-            left.hr();
-
-            String href = _webApp_ + "files/" + dirName + "/" + baseName;
-
-            HtmlATag downloadLink = left.span().a().href(href + "?mode=attachment");
-            downloadLink.i().class_("fa").text(FA_DOWNLOAD);
-            downloadLink.text("下载");
-
-            HtmlTdTag right = tr.td().valign("top");
-            HtmlATag fileLink = right.div().a().href("_blank", href);
-            fileLink.i().class_("fa").text(FA_EXTERNAL_LINK);
-            fileLink.b().text(baseName);
-
-            if (dirName != null)
-                new PathBreadcrumb(right.div(), dirName);
-            right.div().text(fileInfo.getDescription());
+            new GetFilePanel(section.contentDiv, fileInfo).build();
         }
 
         return out;
