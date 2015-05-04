@@ -1,8 +1,7 @@
 package com.bee32.zebra.tk.htm;
 
 import net.bodz.bas.err.ParseException;
-
-import com.tinylily.model.sea.QVariantMap;
+import net.bodz.lily.model.sea.QVariantMap;
 
 public abstract class GenericIndex
         extends GenericPage {

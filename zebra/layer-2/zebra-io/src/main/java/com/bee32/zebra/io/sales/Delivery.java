@@ -10,14 +10,14 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.model.base.security.User;
+import net.bodz.lily.model.mx.base.CoMessage;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.security.User;
-import com.tinylily.model.mx.base.CoMessage;
 
 /**
  * 送货单

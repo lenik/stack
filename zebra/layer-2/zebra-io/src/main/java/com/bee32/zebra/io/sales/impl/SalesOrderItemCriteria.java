@@ -1,9 +1,8 @@
 package com.bee32.zebra.io.sales.impl;
 
 import net.bodz.bas.err.ParseException;
-
-import com.tinylily.model.base.CoMomentIntervalCriteria;
-import com.tinylily.model.sea.QVariantMap;
+import net.bodz.lily.model.base.CoMomentIntervalCriteria;
+import net.bodz.lily.model.sea.QVariantMap;
 
 /**
  * @see com.bee32.zebra.io.sales.SalesOrderItem

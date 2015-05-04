@@ -10,15 +10,15 @@ import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.security.Group;
+import net.bodz.lily.model.base.security.impl.GroupCriteria;
+import net.bodz.lily.model.base.security.impl.GroupMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.CriteriaBuilder;
-import com.tinylily.model.base.security.Group;
-import com.tinylily.model.base.security.impl.GroupCriteria;
-import com.tinylily.model.base.security.impl.GroupMapper;
 
 public class GroupIndexVbo
         extends SlimIndex_htm<GroupIndex, Group, GroupCriteria> {

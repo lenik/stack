@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import net.bodz.lily.model.base.CoEntity;
+import net.bodz.lily.model.base.IdType;
+
 import com.bee32.zebra.oa.hr.Employee;
-import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IdType;
 
 /**
  * 员工工资

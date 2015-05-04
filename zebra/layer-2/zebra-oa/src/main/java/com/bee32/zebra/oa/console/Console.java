@@ -1,9 +1,9 @@
 package com.bee32.zebra.oa.console;
 
 import net.bodz.bas.err.ParseException;
+import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.tk.htm.GenericForm;
-import com.tinylily.model.sea.QVariantMap;
 
 /**
  * 控制台

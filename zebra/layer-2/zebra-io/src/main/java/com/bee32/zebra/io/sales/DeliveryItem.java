@@ -5,11 +5,11 @@ import javax.persistence.Table;
 import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.model.base.CoMomentInterval;
+import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.oa.OaGroups;
-import com.tinylily.model.base.CoMomentInterval;
-import com.tinylily.model.base.IdType;
 
 /**
  * 送货单项目

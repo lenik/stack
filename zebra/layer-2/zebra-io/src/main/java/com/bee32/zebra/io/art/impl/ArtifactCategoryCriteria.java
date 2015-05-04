@@ -1,9 +1,8 @@
 package com.bee32.zebra.io.art.impl;
 
 import net.bodz.bas.err.ParseException;
-
-import com.tinylily.model.base.CoNodeCriteria;
-import com.tinylily.model.sea.QVariantMap;
+import net.bodz.lily.model.base.CoNodeCriteria;
+import net.bodz.lily.model.sea.QVariantMap;
 
 /**
  * @see com.bee32.zebra.io.art.ArtifactCategory

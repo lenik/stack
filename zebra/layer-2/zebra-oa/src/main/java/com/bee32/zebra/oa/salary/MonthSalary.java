@@ -2,9 +2,10 @@ package com.bee32.zebra.oa.salary;
 
 import java.beans.Transient;
 
+import net.bodz.lily.model.base.CoEntity;
+import net.bodz.lily.model.base.IdType;
+
 import com.bee32.zebra.oa.accnt.AccountingEvent;
-import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IdType;
 
 /**
  * 月度工资冗余

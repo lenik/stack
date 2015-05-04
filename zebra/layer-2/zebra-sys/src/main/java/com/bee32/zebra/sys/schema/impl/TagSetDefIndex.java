@@ -2,9 +2,9 @@ package com.bee32.zebra.sys.schema.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
+import net.bodz.lily.model.base.schema.TagSetDef;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
-import com.tinylily.model.base.schema.TagSetDef;
 
 /**
  * 用于区分不同系统中使用的标签集。

@@ -14,12 +14,12 @@ import net.bodz.bas.repr.path.PathArrivalEntry;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.security.LoginContext;
 
 import com.bee32.zebra.tk.hbin.ShareBar;
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.htm.RespTemplate;
-import com.tinylily.model.base.security.LoginContext;
 
 public class OaSiteVbo
         extends RespTemplate<OaSite>

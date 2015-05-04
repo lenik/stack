@@ -5,7 +5,8 @@ import java.io.IOException;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlFormTag;
+import net.bodz.bas.html.dom.tag.HtmlATag;
+import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlImgTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHttpViewContext;
@@ -23,6 +24,7 @@ import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.file.FileManager;
 import com.bee32.zebra.tk.hbin.ItemsTable;
 import com.bee32.zebra.tk.hbin.SectionDiv;
+import com.bee32.zebra.tk.hbin.UploadFileDialog;
 import com.bee32.zebra.tk.slim.SlimForm_htm;
 
 public class PersonVbo
@@ -62,17 +64,28 @@ public class PersonVbo
 
     void buildAvatar(IHttpViewContext ctx, IHtmlTag out, Person person)
             throws ViewBuilderException, IOException {
+        HtmlATag uploadLink = out.a().href("javascript: uploadDialog.open()");
+        uploadLink.iText(FA_CAMERA, "fa").text("上传...");
+
         int id = person.getId();
         FileManager fileManager = FileManager.forCurrentRequest();
-        String photoPath = "sys/person/" + id + ".jpg";
-        File photoFile = fileManager.getFile(photoPath);
+        String photoPath = id + ".jpg";
+        File photoFile = fileManager.getFile("avatar", photoPath);
 
-        HtmlFormTag form = out.form().id("avatarForm").enctype("multipart");
-        HtmlImgTag img = form.img().id("avatar").height("128");
-        // if (photoFile.exists())
-        img.src(_webApp_ + "file/" + photoPath);
-        form.input().name("avatar").type("file").acceptCamera();
-        form.input().type("submit").value("保存");
+        HtmlDivTag div = out.div().id("avatar-div");
+        HtmlImgTag img = div.img().id("avatar").height("128");
+        if (photoFile.exists())
+            img.src(_webApp_ + "files/avatar/" + photoPath);
+        else
+            div.style("display: none");
+
+        div.a().href("javascript: saveAvatar()").iText(FA_FLOPPY_O, "fa").text("保存形象");
+
+        UploadFileDialog dialog = new UploadFileDialog(out, "uploadDialog");
+        dialog.build();
+        dialog.attr("data-bind", "#uploaded-file");
+        dialog.fileInput.acceptCamera();
+        dialog.fileInput.attr("ondone", "previewAvatar(files)");
     }
 
     void buildContacts(IHttpViewContext ctx, IHtmlTag out, Person person)

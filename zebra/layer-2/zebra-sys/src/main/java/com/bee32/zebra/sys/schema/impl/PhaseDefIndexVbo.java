@@ -10,6 +10,10 @@ import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.schema.PhaseDef;
+import net.bodz.lily.model.base.schema.impl.PhaseDefCriteria;
+import net.bodz.lily.model.base.schema.impl.PhaseDefMapper;
+import net.bodz.lily.model.base.schema.impl.SchemaDefMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
@@ -17,10 +21,6 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.CriteriaBuilder;
-import com.tinylily.model.base.schema.PhaseDef;
-import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
-import com.tinylily.model.base.schema.impl.PhaseDefMapper;
-import com.tinylily.model.base.schema.impl.SchemaDefMapper;
 
 public class PhaseDefIndexVbo
         extends SlimIndex_htm<PhaseDefIndex, PhaseDef, PhaseDefCriteria> {

@@ -1,6 +1,6 @@
 package com.bee32.zebra.oa.accnt;
 
-import com.tinylily.model.base.CoCode;
+import net.bodz.lily.model.base.CoCode;
 
 /**
  * 会计科目

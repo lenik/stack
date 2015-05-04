@@ -11,14 +11,12 @@ import net.bodz.bas.meta.cache.Derived;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.model.mx.base.CoMessage;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.TableDefaults;
-import com.tinylily.model.mx.base.CoMessage;
 
 /**
  * 订单
@@ -29,7 +27,6 @@ import com.tinylily.model.mx.base.CoMessage;
  */
 @IdType(Integer.class)
 @Table(name = "sdoc")
-@TableDefaults(accessMode = CoObject.M_COOP)
 public class SalesOrder
         extends CoMessage<Integer> {
 
@@ -51,6 +48,7 @@ public class SalesOrder
     @Override
     public void instantiate() {
         super.instantiate();
+        setAccessMode(M_COOP);
         items = new ArrayList<>();
     }
 

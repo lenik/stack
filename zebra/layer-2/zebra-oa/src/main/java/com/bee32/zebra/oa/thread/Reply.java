@@ -6,20 +6,17 @@ import java.util.List;
 
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.lily.model.base.IMomentInterval;
+import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.model.mx.base.CoMessage;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Person;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.IMomentInterval;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.TableDefaults;
-import com.tinylily.model.mx.base.CoMessage;
 
 /**
  * 项目跟进
  */
 @IdType(Integer.class)
-@TableDefaults(accessMode = CoObject.M_SHARED)
 public class Reply
         extends CoMessage<Integer>
         implements IMomentInterval {
@@ -42,6 +39,7 @@ public class Reply
     @Override
     public void instantiate() {
         super.instantiate();
+        setAccessMode(M_SHARED);
         parties = new ArrayList<>();
         changes = new ArrayList<>();
     }

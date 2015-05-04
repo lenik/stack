@@ -6,8 +6,7 @@ import java.util.Map.Entry;
 
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.t.pojo.Pair;
-
-import com.tinylily.model.base.CoObject;
+import net.bodz.lily.model.base.CoObject;
 
 public class SwitcherModelGroup {
 

@@ -8,21 +8,18 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.model.base.CoMomentInterval;
+import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
-import com.tinylily.model.base.CoMomentInterval;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.TableDefaults;
 
 /**
  * 会计分录
  */
 @IdType(Long.class)
 @Table(name = "acentry")
-@TableDefaults(accessMode = CoObject.M_PRIVATE)
 public class AccountingEntry
         extends CoMomentInterval<Long> {
 
@@ -35,6 +32,12 @@ public class AccountingEntry
 
     private BigDecimal value = BigDecimal.ZERO;
     private DebitOrCredit side = DebitOrCredit.DEBIT;
+
+    @Override
+    public void instantiate() {
+        super.instantiate();
+        setAccessMode(M_PRIVATE);
+    }
 
     /**
      * 凭证单

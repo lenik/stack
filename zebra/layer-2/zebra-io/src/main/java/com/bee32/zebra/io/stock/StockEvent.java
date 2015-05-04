@@ -9,24 +9,21 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.model.base.schema.CategoryDef;
+import net.bodz.lily.model.mx.base.CoMessage;
 
 import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.TableDefaults;
-import com.tinylily.model.base.schema.CategoryDef;
-import com.tinylily.model.mx.base.CoMessage;
 
 /**
  * 库存作业
  */
 @IdType(Integer.class)
-//@SchemaPref(Schemas.STOCK)
+// @SchemaPref(Schemas.STOCK)
 @Table(name = "stdoc")
-@TableDefaults(accessMode = CoObject.M_SHARED)
 public class StockEvent
         extends CoMessage<Integer> {
 
@@ -48,6 +45,8 @@ public class StockEvent
     @Override
     public void instantiate() {
         super.instantiate();
+        setAccessMode(M_SHARED);
+
         CategoryDef TK_I = new CategoryDef();
         TK_I.setId(1202);
         TK_I.setLabel("采购入库");

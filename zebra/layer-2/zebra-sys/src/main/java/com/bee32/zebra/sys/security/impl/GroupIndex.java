@@ -2,9 +2,9 @@ package com.bee32.zebra.sys.security.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
+import net.bodz.lily.model.base.security.Group;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
-import com.tinylily.model.base.security.Group;
 
 /**
  * 用户组

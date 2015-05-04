@@ -1,9 +1,9 @@
 package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.err.ParseException;
+import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.tk.sea.MyCriteria;
-import com.tinylily.model.sea.QVariantMap;
 
 public class ContactCriteria
         extends MyCriteria {

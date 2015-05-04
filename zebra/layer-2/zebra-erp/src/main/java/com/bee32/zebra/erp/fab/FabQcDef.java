@@ -1,6 +1,6 @@
 package com.bee32.zebra.erp.fab;
 
-import com.tinylily.model.base.CoCode;
+import net.bodz.lily.model.base.CoCode;
 
 /**
  * 质检参数

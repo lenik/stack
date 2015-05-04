@@ -5,9 +5,8 @@ import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.rtx.IQueryable;
-
-import com.tinylily.model.base.CoObjectController;
-import com.tinylily.model.base.CoObjectIndex;
+import net.bodz.lily.model.base.CoObjectController;
+import net.bodz.lily.model.base.CoObjectIndex;
 
 public class QuickController
         extends CoObjectController {

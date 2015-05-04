@@ -3,13 +3,13 @@ package com.bee32.zebra.oa.calendar;
 import java.util.Date;
 
 import net.bodz.bas.err.IllegalUsageException;
+import net.bodz.lily.model.base.CoObject;
+import net.bodz.lily.model.base.schema.CategoryDef;
+import net.bodz.lily.model.base.schema.FormDef;
+import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.calendar.impl.TableMetadata;
 import com.bee32.zebra.oa.calendar.impl.TableMetadataRegistry;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.schema.CategoryDef;
-import com.tinylily.model.base.schema.FormDef;
-import com.tinylily.model.base.security.User;
 
 public class LogEntry
         extends CoObject {

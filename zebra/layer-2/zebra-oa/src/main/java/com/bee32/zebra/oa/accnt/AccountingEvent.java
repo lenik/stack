@@ -10,16 +10,14 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.model.base.SchemaPref;
+import net.bodz.lily.model.mx.base.CoMessage;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.sys.Schemas;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.SchemaPref;
-import com.tinylily.model.base.TableDefaults;
-import com.tinylily.model.mx.base.CoMessage;
 
 /**
  * 凭证单
@@ -27,7 +25,6 @@ import com.tinylily.model.mx.base.CoMessage;
 @IdType(Long.class)
 @SchemaPref(value = Schemas.ACCOUNTING, form = 801)
 @Table(name = "acdoc")
-@TableDefaults(accessMode = CoObject.M_SHARED)
 public class AccountingEvent
         extends CoMessage<Long> {
 
@@ -42,6 +39,12 @@ public class AccountingEvent
     private List<AccountingEntry> entries = new ArrayList<>();
     private double debitTotal;
     private double creditTotal;
+
+    @Override
+    public void instantiate() {
+        super.instantiate();
+        setAccessMode(M_SHARED);
+    }
 
     public synchronized void update() {
         BigDecimal debitTotal = BigDecimal.ZERO;

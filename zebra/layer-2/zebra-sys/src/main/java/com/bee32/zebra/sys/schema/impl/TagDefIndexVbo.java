@@ -10,6 +10,10 @@ import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.schema.TagDef;
+import net.bodz.lily.model.base.schema.impl.TagDefCriteria;
+import net.bodz.lily.model.base.schema.impl.TagDefMapper;
+import net.bodz.lily.model.base.schema.impl.TagSetDefMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
@@ -17,10 +21,6 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.CriteriaBuilder;
-import com.tinylily.model.base.schema.TagDef;
-import com.tinylily.model.base.schema.impl.TagDefCriteria;
-import com.tinylily.model.base.schema.impl.TagDefMapper;
-import com.tinylily.model.base.schema.impl.TagSetDefMapper;
 
 public class TagDefIndexVbo
         extends SlimIndex_htm<TagDefIndex, TagDef, TagDefCriteria> {

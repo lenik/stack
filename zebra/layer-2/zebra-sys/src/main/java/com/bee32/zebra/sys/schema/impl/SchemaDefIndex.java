@@ -2,9 +2,9 @@ package com.bee32.zebra.sys.schema.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
+import net.bodz.lily.model.base.schema.SchemaDef;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
-import com.tinylily.model.base.schema.SchemaDef;
 
 /**
  * 用于定义特定用途的语境。

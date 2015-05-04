@@ -10,6 +10,10 @@ import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.schema.impl.CategoryDefCriteria;
+import net.bodz.lily.model.base.schema.impl.CategoryDefMapper;
+import net.bodz.lily.model.base.schema.impl.PhaseDefCriteria;
+import net.bodz.lily.model.base.schema.impl.PhaseDefMapper;
 
 import com.bee32.zebra.io.stock.StockEvent;
 import com.bee32.zebra.sys.Schemas;
@@ -19,10 +23,6 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.CriteriaBuilder;
-import com.tinylily.model.base.schema.impl.CategoryDefCriteria;
-import com.tinylily.model.base.schema.impl.CategoryDefMapper;
-import com.tinylily.model.base.schema.impl.PhaseDefCriteria;
-import com.tinylily.model.base.schema.impl.PhaseDefMapper;
 
 public class StockEventIndexVbo
         extends SlimIndex_htm<StockEventIndex, StockEvent, StockEventCriteria> {

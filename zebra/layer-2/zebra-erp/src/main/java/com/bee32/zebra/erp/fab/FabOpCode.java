@@ -3,7 +3,7 @@ package com.bee32.zebra.erp.fab;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tinylily.model.base.CoCode;
+import net.bodz.lily.model.base.CoCode;
 
 /**
  * 操作代码

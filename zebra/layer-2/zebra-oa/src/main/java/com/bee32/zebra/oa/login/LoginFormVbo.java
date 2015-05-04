@@ -18,9 +18,9 @@ import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.security.LoginContext;
 
 import com.bee32.zebra.tk.htm.RespTemplate;
-import com.tinylily.model.base.security.LoginContext;
 
 public class LoginFormVbo
         extends RespTemplate<LoginForm>

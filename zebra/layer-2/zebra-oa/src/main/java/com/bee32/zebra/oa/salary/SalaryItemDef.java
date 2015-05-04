@@ -3,8 +3,7 @@ package com.bee32.zebra.oa.salary;
 import java.beans.Transient;
 
 import net.bodz.bas.c.object.Nullables;
-
-import com.tinylily.model.base.CoCode;
+import net.bodz.lily.model.base.CoCode;
 
 /**
  * 工资元素

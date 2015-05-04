@@ -2,9 +2,8 @@ package com.bee32.zebra.oa.thread.impl;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.IntRange;
-
-import com.tinylily.model.mx.base.CoMessageCriteria;
-import com.tinylily.model.sea.QVariantMap;
+import net.bodz.lily.model.mx.base.CoMessageCriteria;
+import net.bodz.lily.model.sea.QVariantMap;
 
 public class TopicCriteria
         extends CoMessageCriteria {

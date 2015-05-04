@@ -8,7 +8,7 @@
     <artifactId>zebra-tk</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.tinylily</groupId>
+            <groupId>net.bodz.lily</groupId>
             <artifactId>lily-site</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

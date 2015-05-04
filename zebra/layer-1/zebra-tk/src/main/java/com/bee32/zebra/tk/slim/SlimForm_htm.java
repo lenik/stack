@@ -19,6 +19,8 @@ import net.bodz.bas.repr.req.MethodNames;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
+import net.bodz.lily.model.base.Instantiables;
 
 import com.bee32.zebra.tk.hbin.SplitForm;
 import com.bee32.zebra.tk.htm.PageLayout;
@@ -26,8 +28,6 @@ import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
 import com.bee32.zebra.tk.sql.FnMapper;
 import com.bee32.zebra.tk.sql.FooMapper;
 import com.bee32.zebra.tk.util.PrevNext;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.Instantiables;
 
 public abstract class SlimForm_htm<T extends CoObject>
         extends SlimForm0_htm<T> {
@@ -79,6 +79,10 @@ public abstract class SlimForm_htm<T extends CoObject>
                 // reload from database.
                 try {
                     FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
+                    if (mapper == null)
+                        throw new NullPointerException("mapper");
+                    if (id == null)
+                        throw new NullPointerException("id");
                     T reload = mapper.select(id.longValue());
                     ref.set(reload);
                 } catch (ClassCastException e) {
@@ -138,7 +142,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     protected HtmlFormTag beginForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
         SplitForm form = new SplitForm(out);
-        form.name("form").method("post");
+        form.id("form1").method("post");
 
         CoObject entity = (CoObject) ref.get();
         Number id = (Number) entity.getId();
@@ -205,7 +209,7 @@ public abstract class SlimForm_htm<T extends CoObject>
 
         HtmlButtonTag resetButton = div.button();
         resetButton.type("button");
-        resetButton.onclick("javascript: form.reset()");
+        resetButton.onclick("javascript: form1.reset()");
         resetButton.span().class_("fa icon").text(FA_ERASER);
         resetButton.text("复原").title("清除刚才输入的所有变更，重新写。");
     }

@@ -11,10 +11,10 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.StdGroup.Schedule;
+import net.bodz.lily.model.base.CoMomentInterval;
+import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.oa.contact.Person;
-import com.tinylily.model.base.CoMomentInterval;
-import com.tinylily.model.base.IdType;
 
 /**
  * 雇员信息

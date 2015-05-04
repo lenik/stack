@@ -40,6 +40,8 @@ import net.bodz.bas.std.rfc.mime.ContentType;
 import net.bodz.bas.std.rfc.mime.ContentTypes;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.bas.xml.dom.XmlTags;
+import net.bodz.lily.model.base.CoObject;
+import net.bodz.lily.model.base.CoObjectCriteria;
 import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
@@ -57,8 +59,6 @@ import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.sql.MapperUtil;
 import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.CoObjectCriteria;
 
 public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         extends AbstractHttpViewBuilder<X>
@@ -249,7 +249,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
             upLink.text("回到上一层");
 
             p.cmds1.br();
-            HtmlATag submitLink = p.cmds1.a().href("javascript: form.submit()");
+            HtmlATag submitLink = p.cmds1.a().href("javascript: form1.submit()");
             submitLink.span().class_("fa icon").text(FA_FLOPPY_O);
             submitLink.text("提交").title("将输入的数据提交保存。");
 

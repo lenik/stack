@@ -10,10 +10,10 @@ import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.lily.model.base.CoMomentInterval;
+import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.io.art.Artifact;
-import com.tinylily.model.base.CoMomentInterval;
-import com.tinylily.model.base.IdType;
 
 /**
  * 订单项

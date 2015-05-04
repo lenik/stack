@@ -6,14 +6,14 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlATag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlTdTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.schema.impl.TagDefCriteria;
+import net.bodz.lily.model.base.schema.impl.TagDefMapper;
 
 import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.sys.TagSets;
@@ -24,8 +24,6 @@ import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.CriteriaBuilder;
 import com.bee32.zebra.tk.util.Listing;
-import com.tinylily.model.base.schema.impl.TagDefCriteria;
-import com.tinylily.model.base.schema.impl.TagDefMapper;
 
 public class FileInfoIndexVbo
         extends SlimIndex_htm<FileInfoIndex, FileInfo, FileInfoCriteria> {

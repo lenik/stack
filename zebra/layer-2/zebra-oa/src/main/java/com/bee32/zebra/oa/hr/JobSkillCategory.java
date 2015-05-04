@@ -1,8 +1,7 @@
 package com.bee32.zebra.oa.hr;
 
 import net.bodz.bas.err.DecodeException;
-
-import com.tinylily.model.base.CoCode;
+import net.bodz.lily.model.base.CoCode;
 
 /**
  * 工作技能字典类

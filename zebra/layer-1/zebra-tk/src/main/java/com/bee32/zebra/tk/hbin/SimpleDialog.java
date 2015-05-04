@@ -15,10 +15,8 @@ public abstract class SimpleDialog
             throw new NullPointerException("id");
         id(id);
         class_("dialog");
-
-        create();
     }
 
-    protected abstract void create();
+    protected abstract void build();
 
 }

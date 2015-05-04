@@ -2,8 +2,9 @@ package com.bee32.zebra.oa.salary;
 
 import java.math.BigDecimal;
 
+import net.bodz.lily.model.base.CoMomentInterval;
+
 import com.bee32.zebra.oa.hr.Employee;
-import com.tinylily.model.base.CoMomentInterval;
 
 /**
  * 事件补贴

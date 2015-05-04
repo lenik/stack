@@ -22,16 +22,16 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.t.range.DateRange;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.schema.CategoryDef;
+import net.bodz.lily.model.base.schema.FormDef;
+import net.bodz.lily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.calendar.LogEntry;
 import com.bee32.zebra.oa.calendar.LogSelector;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.slim.SlimForm0_htm;
 import com.bee32.zebra.tk.util.CriteriaBuilder;
-import com.tinylily.model.base.schema.CategoryDef;
-import com.tinylily.model.base.schema.FormDef;
-import com.tinylily.model.base.security.LoginContext;
-import com.tinylily.model.base.security.User;
 
 public class LogSelector_htm
         extends SlimForm0_htm<LogSelector>

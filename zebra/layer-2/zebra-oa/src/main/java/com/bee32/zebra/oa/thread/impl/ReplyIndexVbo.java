@@ -11,6 +11,7 @@ import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.tk.hbin.IndexTable;
@@ -18,7 +19,6 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.CriteriaBuilder;
-import com.tinylily.model.base.security.User;
 
 public class ReplyIndexVbo
         extends SlimIndex_htm<ReplyIndex, Reply, ReplyCriteria> {

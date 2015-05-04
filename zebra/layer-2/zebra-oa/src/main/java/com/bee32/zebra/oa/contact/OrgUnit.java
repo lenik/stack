@@ -3,8 +3,8 @@ package com.bee32.zebra.oa.contact;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tinylily.model.base.CoNode;
-import com.tinylily.model.base.IdType;
+import net.bodz.lily.model.base.CoNode;
+import net.bodz.lily.model.base.IdType;
 
 /**
  * 部门

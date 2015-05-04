@@ -2,18 +2,16 @@ package com.bee32.zebra.io.stock;
 
 import javax.persistence.Table;
 
+import net.bodz.lily.model.base.CoMomentInterval;
+import net.bodz.lily.model.base.IdType;
+
 import com.bee32.zebra.io.art.Artifact;
-import com.tinylily.model.base.CoMomentInterval;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.TableDefaults;
 
 /**
  * 库存操作项目
  */
 @IdType(Long.class)
 @Table(name = "stentry")
-@TableDefaults(accessMode = CoObject.M_SHARED)
 public class StockEntry
         extends CoMomentInterval<Long> {
 
@@ -31,6 +29,11 @@ public class StockEntry
 
     double quantity;
     double price;
+
+    @Override
+    public void instantiate() {
+        setAccessMode(M_SHARED);
+    }
 
     public double getQuantity() {
         return quantity;

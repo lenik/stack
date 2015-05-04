@@ -1,9 +1,8 @@
 package com.bee32.zebra.oa.thread.impl;
 
 import net.bodz.bas.err.ParseException;
-
-import com.tinylily.model.mx.base.CoMessageCriteria;
-import com.tinylily.model.sea.QVariantMap;
+import net.bodz.lily.model.mx.base.CoMessageCriteria;
+import net.bodz.lily.model.sea.QVariantMap;
 
 public class ReplyCriteria
         extends CoMessageCriteria {

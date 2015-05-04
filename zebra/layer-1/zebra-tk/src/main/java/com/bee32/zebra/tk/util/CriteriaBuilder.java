@@ -5,8 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.repr.req.HttpSnap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-
-import com.tinylily.model.base.CoObjectCriteria;
+import net.bodz.lily.model.base.CoObjectCriteria;
 
 public class CriteriaBuilder {
 

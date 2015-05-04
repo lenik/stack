@@ -1,6 +1,6 @@
 package com.bee32.zebra.sys.schema.impl2;
 
-import com.tinylily.model.base.schema.TagSetDef;
+import net.bodz.lily.model.base.schema.TagSetDef;
 
 public class TagSetDef_htm
         extends AbstractDefinition_htm<TagSetDef> {

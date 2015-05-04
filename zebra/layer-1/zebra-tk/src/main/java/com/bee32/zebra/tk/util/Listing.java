@@ -6,8 +6,7 @@ import java.util.List;
 
 import net.bodz.bas.t.pojo.Pair;
 import net.bodz.bas.t.predef.Predef;
-
-import com.tinylily.model.base.CoObject;
+import net.bodz.lily.model.base.CoObject;
 
 public class Listing {
 

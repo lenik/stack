@@ -23,11 +23,11 @@ import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.PathField;
 import net.bodz.bas.repr.form.SortOrder;
+import net.bodz.lily.model.base.CoObject;
+import net.bodz.lily.model.mx.base.CoMessage;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.site.FormatFn;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.mx.base.CoMessage;
 
 public class IndexTable
         extends HtmlDivTag

@@ -1,9 +1,8 @@
 package com.bee32.zebra.oa.contact;
 
 import net.bodz.bas.repr.form.validate.NotNull;
-
-import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IdType;
+import net.bodz.lily.model.base.CoEntity;
+import net.bodz.lily.model.base.IdType;
 
 /**
  * 人员部门职位

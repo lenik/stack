@@ -2,8 +2,7 @@ package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.IntRange;
-
-import com.tinylily.model.sea.QVariantMap;
+import net.bodz.lily.model.sea.QVariantMap;
 
 public class OrganizationCriteria
         extends PartyCriteria {

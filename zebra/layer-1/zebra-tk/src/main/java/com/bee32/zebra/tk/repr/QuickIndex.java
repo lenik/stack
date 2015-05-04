@@ -7,12 +7,12 @@ import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.rtx.IQueryable;
+import net.bodz.lily.model.base.CoObjectIndex;
+import net.bodz.lily.model.base.Instantiables;
 
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.sql.MapperUtil;
-import com.tinylily.model.base.CoObjectIndex;
-import com.tinylily.model.base.Instantiables;
 
 public abstract class QuickIndex
         extends CoObjectIndex

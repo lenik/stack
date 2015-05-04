@@ -3,10 +3,10 @@ package com.bee32.zebra.io.art.impl;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 import net.bodz.bas.t.range.IntRange;
+import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.io.art.SupplyMethod;
 import com.bee32.zebra.tk.sea.MyCriteria;
-import com.tinylily.model.sea.QVariantMap;
 
 public class ArtifactCriteria
         extends MyCriteria {

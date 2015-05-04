@@ -4,8 +4,8 @@ import java.beans.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.tinylily.model.base.CoEntity;
-import com.tinylily.model.base.IdType;
+import net.bodz.lily.model.base.CoEntity;
+import net.bodz.lily.model.base.IdType;
 
 /**
  * 雇员技能

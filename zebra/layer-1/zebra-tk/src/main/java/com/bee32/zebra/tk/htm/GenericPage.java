@@ -3,9 +3,9 @@ package com.bee32.zebra.tk.htm;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
+import net.bodz.lily.model.sea.AbstractTextParametric;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
-import com.tinylily.model.sea.AbstractTextParametric;
 
 public abstract class GenericPage
         extends AbstractTextParametric

@@ -6,9 +6,8 @@ import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
-
-import com.tinylily.model.base.CoNode;
-import com.tinylily.model.base.IdType;
+import net.bodz.lily.model.base.CoNode;
+import net.bodz.lily.model.base.IdType;
 
 /**
  * 物料分类

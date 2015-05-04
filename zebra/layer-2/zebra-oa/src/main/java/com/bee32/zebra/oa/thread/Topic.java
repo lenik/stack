@@ -5,22 +5,19 @@ import java.util.List;
 
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.model.base.schema.CategoryDef;
+import net.bodz.lily.model.base.schema.PhaseDef;
+import net.bodz.lily.model.base.security.User;
+import net.bodz.lily.model.mx.base.CoMessage;
 
 import com.bee32.zebra.oa.OaGroups;
-import com.tinylily.model.base.CoObject;
-import com.tinylily.model.base.IdType;
-import com.tinylily.model.base.TableDefaults;
-import com.tinylily.model.base.schema.CategoryDef;
-import com.tinylily.model.base.schema.PhaseDef;
-import com.tinylily.model.base.security.User;
-import com.tinylily.model.mx.base.CoMessage;
 
 /**
  * 项目/机会
  */
 @IdType(Integer.class)
 // @SchemaId(Schemas.OPPORTUNITY)
-@TableDefaults(accessMode = CoObject.M_COOP)
 public class Topic
         extends CoMessage<Integer> {
 
@@ -35,6 +32,7 @@ public class Topic
     @Override
     public void instantiate() {
         super.instantiate();
+        setAccessMode(M_COOP);
         parties = new ArrayList<TopicParty>();
         replies = new ArrayList<>();
     }

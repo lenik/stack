@@ -1,8 +1,7 @@
 package com.bee32.zebra.io.art;
 
 import net.bodz.bas.repr.form.meta.TextInput;
-
-import com.tinylily.model.base.CoCode;
+import net.bodz.lily.model.base.CoCode;
 
 /**
  * 度量单位

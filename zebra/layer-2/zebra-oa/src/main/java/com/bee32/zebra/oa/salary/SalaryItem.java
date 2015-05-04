@@ -2,7 +2,7 @@ package com.bee32.zebra.oa.salary;
 
 import java.math.BigDecimal;
 
-import com.tinylily.model.base.CoEntity;
+import net.bodz.lily.model.base.CoEntity;
 
 /**
  * 员工工资条目

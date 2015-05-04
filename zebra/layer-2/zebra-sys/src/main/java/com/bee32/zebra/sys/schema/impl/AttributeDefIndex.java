@@ -2,9 +2,9 @@ package com.bee32.zebra.sys.schema.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.rtx.IQueryable;
+import net.bodz.lily.model.base.schema.AttributeDef;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
-import com.tinylily.model.base.schema.AttributeDef;
 
 /**
  * 对象属性的形而上定义。

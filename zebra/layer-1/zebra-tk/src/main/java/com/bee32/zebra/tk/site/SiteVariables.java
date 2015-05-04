@@ -1,6 +1,6 @@
 package com.bee32.zebra.tk.site;
 
-import com.tinylily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.LoginContext;
 
 public class SiteVariables {
 

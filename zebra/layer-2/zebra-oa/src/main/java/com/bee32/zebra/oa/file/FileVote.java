@@ -1,6 +1,7 @@
 package com.bee32.zebra.oa.file;
 
-import com.tinylily.model.base.security.User;
+import net.bodz.lily.model.base.security.User;
+
 
 /**
  * 文件投票
