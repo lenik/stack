@@ -8,8 +8,8 @@ import net.bodz.lily.model.base.schema.CategoryDef;
 import net.bodz.lily.model.base.schema.FormDef;
 import net.bodz.lily.model.base.security.User;
 
-import com.bee32.zebra.oa.calendar.impl.TableMetadata;
-import com.bee32.zebra.oa.calendar.impl.TableMetadataRegistry;
+import com.bee32.zebra.tk.sea.TableMetadata;
+import com.bee32.zebra.tk.sea.TableMetadataRegistry;
 
 public class LogEntry
         extends CoObject {

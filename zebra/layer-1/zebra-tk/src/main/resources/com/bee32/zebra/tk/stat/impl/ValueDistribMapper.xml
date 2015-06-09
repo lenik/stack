@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.tk.stat.impl.ValueDistribMapper">
+
+    <resultMap id="coDistribMap" type="com.bee32.zebra.tk.stat.ValueDistrib">
+        <result property="value" column="_val" />
+        <result property="count" column="count" />
+        <result property="valueLabel" column="label" />
+        <result property="valueDescription" column="description" />
+    </resultMap>
+
+    <select id="userDistrib" resultMap="coDistribMap"><![CDATA[
+        select a.*, u.label
+        from valdist(#{param1}, 'uid') a
+            left join "user" u on a._val::int=u.id
+        order by "count" desc;
+    ]]></select>
+
+    <select id="groupDistrib" resultMap="coDistribMap"><![CDATA[
+        select a.*, g.label
+        from valdist(#{param1}, 'gid') a
+            left join "group" g on a._val::int=g.id
+        order by "count" desc;
+    ]]></select>
+
+    <select id="opDistrib" resultMap="coDistribMap"><![CDATA[
+        select a.*, op.label
+        from valdist(#{param1}, 'op') a
+            left join "user" op on a._val::int=op.id
+        order by "count" desc;
+    ]]></select>
+    
+</mapper>

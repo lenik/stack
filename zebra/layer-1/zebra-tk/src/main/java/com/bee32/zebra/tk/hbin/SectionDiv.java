@@ -12,6 +12,7 @@ public class SectionDiv
 
     public SectionDiv(IHtmlTag parent, String id, String label, char icon) {
         super(parent, "div");
+        this.id(id);
         this.class_("zu-section");
         headDiv = this.div().class_("zu-section-head");
         iconDiv = headDiv.div().class_("icon fa").text(icon);

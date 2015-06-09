@@ -142,7 +142,7 @@ public class FileInfoVbo
     @Override
     protected void endForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        out.input().type("hidden").id("incoming").name("incoming");
+        out.input().type("hidden").id("incoming").name("incoming").attr("data-role", "uploaded-name");
         super.endForm(ctx, out, ref, options);
     }
 

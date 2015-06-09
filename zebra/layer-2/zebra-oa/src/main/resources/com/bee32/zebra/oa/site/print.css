@@ -81,6 +81,10 @@ select {
     margin-left: 0;
 }
 
+.zu-section {
+    display: none;
+}
+
 #list_wrapper>:not(table) {
     display: none;
 }

@@ -1,4 +1,4 @@
-package com.bee32.zebra.oa.calendar.impl;
+package com.bee32.zebra.tk.sea;
 
 import javax.persistence.Table;
 

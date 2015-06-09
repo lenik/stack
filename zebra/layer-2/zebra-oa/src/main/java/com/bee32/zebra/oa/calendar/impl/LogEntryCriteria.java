@@ -4,6 +4,9 @@ import net.bodz.bas.err.ParseException;
 import net.bodz.lily.model.base.CoMomentIntervalCriteria;
 import net.bodz.lily.model.sea.QVariantMap;
 
+import com.bee32.zebra.tk.sea.TableMetadata;
+import com.bee32.zebra.tk.sea.TableMetadataRegistry;
+
 /**
  * @see com.bee32.zebra.oa.calendar.LogEntry
  */

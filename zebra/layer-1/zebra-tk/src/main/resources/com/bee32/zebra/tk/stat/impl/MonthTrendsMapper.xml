@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.tk.stat.impl.MonthTrendsMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.tk.stat.MonthTrends">
+        <result property="year" column="year" />
+        <result property="month" column="month" />
+        <result property="count" column="count" />
+        <result property="sum1" column="sum_1" />
+        <result property="sum2" column="sum_2" />
+    </resultMap>
+
+    <select id="all" resultMap="map1"><![CDATA[
+        select *
+        from monthtrends(#{param1}, #{param2})
+        order by "year", "month";
+    ]]></select>
+
+    <select id="filter" resultMap="map1"><![CDATA[
+        select *
+        from monthtrends(#{table}, #{field})
+        order by "year", "month";
+    ]]></select>
+
+    <select id="sum1" resultMap="map1"><![CDATA[
+        select *
+        from monthtrends(#{param1}, #{param2}, field_1 := #{param3})
+        order by "year", "month";
+    ]]></select>
+
+    <select id="sum2" resultMap="map1"><![CDATA[
+        select *
+        from monthtrends(#{param1}, #{param2}, field_1 := #{param3}, field_2 := #{param4})
+        order by "year", "month";
+    ]]></select>
+
+</mapper>

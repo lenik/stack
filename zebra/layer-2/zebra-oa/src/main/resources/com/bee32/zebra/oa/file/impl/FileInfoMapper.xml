@@ -21,7 +21,7 @@
             <id property="id" column="person" />
             <result property="label" column="person_label" />
         </association>
-        <collection property="tags" javaType="ArrayList" ofType="com.tinylily.model.base.schema.TagDef">
+        <collection property="tags" javaType="ArrayList" ofType="net.bodz.lily.model.base.schema.TagDef">
             <id property="id" column="tag_id" />
             <result property="label" column="tag_label" />
         </collection>

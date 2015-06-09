@@ -10,15 +10,15 @@
         <result property="message" column="msg" />
         <result property="date" column="t0" />
         <result property="creation" column="creation" />
-        <association property="op" javaType="com.tinylily.model.base.security.User">
+        <association property="op" javaType="net.bodz.lily.model.base.security.User">
             <result property="id" column="op" />
             <result property="label" column="op_label" />
         </association>
-        <association property="form" javaType="com.tinylily.model.base.schema.FormDef">
+        <association property="form" javaType="net.bodz.lily.model.base.schema.FormDef">
             <result property="id" column="form" />
             <result property="label" column="form_label" />
         </association>
-        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
+        <association property="category" javaType="net.bodz.lily.model.base.schema.CategoryDef">
             <result property="id" column="cat" />
             <result property="label" column="cat_label" />
         </association>

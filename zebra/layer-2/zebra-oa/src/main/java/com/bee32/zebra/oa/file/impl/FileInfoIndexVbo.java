@@ -93,7 +93,7 @@ public class FileInfoIndexVbo
     }
 
     @Override
-    protected void afterData(IHttpViewContext ctx, IHtmlTag out, IUiRef<FileInfoIndex> ref, IOptions options)
+    protected void userData(IHttpViewContext ctx, IHtmlTag out, IUiRef<FileInfoIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         HtmlDivTag tmpl = out.div().id("child-0").class_("zu-template");
         GetFilePanel filePanel = new GetFilePanel(tmpl).class_("zu-detail");

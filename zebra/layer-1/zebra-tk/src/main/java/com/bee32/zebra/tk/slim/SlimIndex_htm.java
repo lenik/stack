@@ -47,16 +47,23 @@ import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.FilterSectionDiv;
+import com.bee32.zebra.tk.hbin.SectionDiv;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.repr.QuickIndex;
 import com.bee32.zebra.tk.repr.QuickIndexFormat;
+import com.bee32.zebra.tk.sea.TableMetadata;
+import com.bee32.zebra.tk.sea.TableMetadataRegistry;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.FormatFn;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.sql.MapperUtil;
+import com.bee32.zebra.tk.stat.MonthTrends;
+import com.bee32.zebra.tk.stat.ValueDistrib;
+import com.bee32.zebra.tk.stat.impl.MonthTrendsMapper;
+import com.bee32.zebra.tk.stat.impl.ValueDistribMapper;
 import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
 
@@ -126,7 +133,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         }
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
-        if (!layout.hideFramework) {
+        if (layout.isShowFrame()) {
             IHtmlTag body1 = doc.getElementById(ID.body1);
             {
                 HtmlDivTag headDiv = body1.div().id(ID.head).class_("zu-info clearfix");
@@ -182,7 +189,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
             a.dataList = false;
         }
 
-        if (!layout.hideFramework)
+        if (layout.isShowFrame())
             titleInfo(ctx, ref, arrivedHere);
 
         beforeData(ctx, out, ref, options);
@@ -190,12 +197,15 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         if (arrivedHere) {
             FilterSectionDiv filtersDiv = new FilterSectionDiv(a.frame, "s-filter");
             filtersDiv.build(switchers);
+
+            dataIndex(ctx, a, ref, options);
+            afterData(ctx, out, ref, options);
+
+            if (layout.isShowFrame())
+                sections(ctx, out, ref, options);
         }
 
-        if (arrivedHere)
-            dataIndex(ctx, a, ref, options);
-
-        afterData(ctx, out, ref, options);
+        userData(ctx, out, ref, options);
 
         if (arrivedHere) {
             new PageStruct(doc);
@@ -288,6 +298,54 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
             throws ViewBuilderException, IOException;
 
     protected void afterData(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+    }
+
+    protected void sections(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        Class<?> entityType = ref.get().getObjectType();
+        TableMetadataRegistry registry = TableMetadataRegistry.getInstance();
+        TableMetadata metadata = registry.get(entityType);
+        String table = metadata.getName();
+
+        SectionDiv section;
+        section = new SectionDiv(out, "s-records", "记录/Records", IFontAwesomeCharAliases.FA_BAR_CHART);
+        {
+            IHtmlTag chart = section.contentDiv.div().id("monthcreation").class_("plot");
+            chart.p().text("最近一段时期的数据使用情况：");
+            chart.div().class_("view").style("height: 15em");
+            HtmlDivTag dataDiv = chart.div().class_("data");
+            MonthTrendsMapper monthTrendsMapper = ctx.query(MonthTrendsMapper.class);
+            StringBuffer sb = new StringBuffer(4096);
+            for (MonthTrends row : monthTrendsMapper.all(table, "creation")) {
+                sb.append(row.getYear());
+                sb.append("-");
+                sb.append(row.getMonth());
+                sb.append("\t");
+                sb.append(row.getCount());
+                sb.append(";");
+            }
+            dataDiv.text(sb);
+
+            section.contentDiv.hr();
+
+            chart = section.contentDiv.div().id("userdist").class_("plot");
+            chart.p().text("贡献最多的用户是他们：");
+            chart.div().class_("view").style("height: 300px");
+            dataDiv = chart.div().class_("data");
+            ValueDistribMapper valueDistribMapper = ctx.query(ValueDistribMapper.class);
+            sb.setLength(0);
+            for (ValueDistrib row : valueDistribMapper.userDistrib(table)) {
+                sb.append(row.getValueLabel());
+                sb.append("\t");
+                sb.append(row.getCount());
+                sb.append(";");
+            }
+            dataDiv.text(sb);
+        }
+    }
+
+    protected void userData(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
     }
 

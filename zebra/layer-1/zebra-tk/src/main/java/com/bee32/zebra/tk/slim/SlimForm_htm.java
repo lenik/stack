@@ -41,7 +41,7 @@ public abstract class SlimForm_htm<T extends CoObject>
             throws ViewBuilderException, IOException {
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
-        if (!pageLayout.hideFramework) {
+        if (pageLayout.isShowFrame()) {
             setUpFrame(ctx, out, ref, options);
         }
         process(ctx, out, ref, options);
@@ -230,20 +230,20 @@ public abstract class SlimForm_htm<T extends CoObject>
                 mesg.text("您可以：");
                 HtmlUlTag ul = mesg.ul();
                 ul.li().text("继续创建新的记录，或者");
-                if (layout.hideFramework) {
-                    ul.li().text("关闭本窗口。");
-                } else {
+                if (layout.isShowFrame()) {
                     ul.li().iText(FA_EXTERNAL_LINK_SQUARE, "fa")//
                             .aText("返回刚才保存的记录", "../" + id + "/").text("，或者");
                     ul.li().iText(FA_TIMES_CIRCLE, "fa")//
                             .aText("关闭本窗口", "javascript: window.close()").text("。");
+                } else {
+                    ul.li().text("关闭本窗口。");
                 }
             } else {
                 mesg.text("您可以选择核对刚刚更新的记录，" //
-                        + (layout.hideFramework ? "或者关闭本窗口。" : "或者翻页浏览临近的记录。"));
+                        + (layout.isShowFrame() ? "或者翻页浏览临近的记录。" : "或者关闭本窗口。"));
             }
 
-            if (layout.hideFramework) {
+            if (!layout.isShowFrame()) {
                 out.script().javascript("iframeDone()");
             }
             return true;

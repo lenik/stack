@@ -12,6 +12,9 @@ a:hover {
 body {
     margin: 0;
     font-family: "Droid Sans", sans-serif;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 h1 {
@@ -69,6 +72,16 @@ h3 {
     overflow: hidden;
 }
 
+.dialog {
+    width: 32px;
+    height: 32px;
+}
+
+.dialog iframe {
+    width: 100%;
+    height: 70%;
+}
+
 .field-groups {
     margin-left: 1em;
     overflow: auto;
@@ -100,9 +113,20 @@ a.helpdoc-switcher:hover {
     border: none;
 }
 
+.itab {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
 .node-chain {
     display: inline-block;
     list-style: none;
+}
+
+.plot {
+}
+.plot .data {
+    display: none;
 }
 
 .print {
@@ -127,6 +151,11 @@ a.helpdoc-switcher:hover {
 .toggle1.on {
     background: black;
     color: white;
+}
+
+.zu-author {
+    text-align: right;
+    font-style: italic;
 }
 
 .zu-calendar {
@@ -379,22 +408,24 @@ fieldset.zu-fcat legend {
     height: 14em;
 }
 
+.zu-nvote {
+    display: inline-block;
+    font-family: fantasy;
+    font-size: 32px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #eee;
+    margin-right: .25em;
+    text-align: center;
+    padding: 0 .5em;
+}
+
 .zu-null {
     font-size: small;
 }
 
 .zu-pickcmd {
     cursor: pointer;
-}
-
-.dialog {
-    width: 32px;
-    height: 32px;
-}
-
-.dialog iframe {
-    width: 100%;
-    height: 70%;
 }
 
 .zu-section {
@@ -472,23 +503,6 @@ fieldset.zu-fcat legend {
 
 .zu-w50 {
     width: 50%;
-}
-
-.zu-nvote {
-    display: inline-block;
-    font-family: fantasy;
-    font-size: 32px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #eee;
-    margin-right: .25em;
-    text-align: center;
-    padding: 0 .5em;
-}
-
-.zu-author {
-    text-align: right;
-    font-style: italic;
 }
 
 #zp-body1 {

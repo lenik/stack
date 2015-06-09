@@ -144,12 +144,12 @@
         <result property="subject" column="subject" />
         <result property="text" column="text" />
         <result property="beginDate" column="t0" />
-        <association property="owner" javaType="com.tinylily.model.base.security.User">
+        <association property="owner" javaType="net.bodz.lily.model.base.security.User">
             <id property="id" column="uid" />
             <result property="codeName" column="uid_code" />
             <result property="label" column="uid_label" />
         </association>
-        <association property="ownerGroup" javaType="com.tinylily.model.base.security.Group">
+        <association property="ownerGroup" javaType="net.bodz.lily.model.base.security.Group">
             <id property="id" column="gid" />
             <result property="codeName" column="gid_code" />
             <result property="label" column="gid_label" />

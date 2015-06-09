@@ -49,7 +49,7 @@ public abstract class SlimSplit_htm<T>
         HtmlDoc doc = ctx.getHtmlDoc();
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
-        if (!layout.hideFramework) {
+        if (layout.isShowFrame()) {
             IHtmlTag body1 = doc.getElementById(ID.body1);
             {
                 HtmlDivTag headDiv = body1.div().id(ID.head).class_("zu-info clearfix");
@@ -72,7 +72,7 @@ public abstract class SlimSplit_htm<T>
 
         PageStruct page = new PageStruct(doc);
 
-        if (!layout.hideFramework)
+        if (layout.isShowFrame())
             titleInfo(ctx, ref, arrivedHere);
 
         if (arrivedHere) {

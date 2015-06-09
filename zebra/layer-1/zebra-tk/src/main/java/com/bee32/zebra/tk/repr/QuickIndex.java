@@ -59,7 +59,7 @@ public abstract class QuickIndex
     public void configure(PageLayout pageLayoutGuide) {
         switch (format) {
         case PICKER:
-            pageLayoutGuide.hideFramework = true;
+            pageLayoutGuide.setShowFrame(false);
             break;
 
         default:

@@ -78,7 +78,7 @@ $(document).ready(function() {
         var message = $(".message", alert_success);
         var binds = $(this).attr("data-bind");
         var forform_q = $(this).attr("data-forform");
-        var forform = $(forform_q);
+        var forform = $("#" + forform_q);
 
         // Initialize the jQuery File Upload widget:
         sendbtn.fileupload({
@@ -100,7 +100,8 @@ $(document).ready(function() {
 
                 $.each(data.result.files, function(index, file) {
                     $(binds).val(file.name);
-                    $("[role=uploaded-name]", forform).val(file.name);
+                    var uploadedNameRef = $("[data-role=uploaded-name]", forform);
+                    uploadedNameRef.val(file.name);
 
                     message.html("");
                     message.append($("<p/>").text(file.name + " (" + file.size + " 字节)"));

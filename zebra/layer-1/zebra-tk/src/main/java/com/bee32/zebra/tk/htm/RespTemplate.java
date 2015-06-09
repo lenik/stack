@@ -54,7 +54,9 @@ public abstract class RespTemplate<T>
         head.link().css(_webApp_ + "print.css").media("print");
 
         // scripts
-        head.script().javascriptSrc(_webApp_ + "fixup.js");
+        head.script().javascriptSrc(_webApp_ + "bower_components/flot.curvedlines/curvedLines.js");
+
+        head.script().javascriptSrc(_webApp_ + "js1/fixup.js");
         head.script().javascript("" + //
                 "var _webApp_ = " + StringQuote.qq(_webApp_) + ";\n" + //
                 "var _js_ = " + StringQuote.qq(_js_) + ";\n" + //

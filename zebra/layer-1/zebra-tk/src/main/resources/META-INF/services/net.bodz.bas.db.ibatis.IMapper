@@ -1,1 +1,3 @@
 com.bee32.zebra.tk.sql.FnMapper
+com.bee32.zebra.tk.stat.impl.MonthTrendsMapper
+com.bee32.zebra.tk.stat.impl.ValueDistribMapper

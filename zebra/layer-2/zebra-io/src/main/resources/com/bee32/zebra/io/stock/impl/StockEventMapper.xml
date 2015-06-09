@@ -11,11 +11,11 @@
             <id property="id" column="topic" />
             <result property="subject" column="topic_subject" />
         </association>
-        <association property="category" javaType="com.tinylily.model.base.schema.CategoryDef">
+        <association property="category" javaType="net.bodz.lily.model.base.schema.CategoryDef">
             <id property="id" column="cat" />
             <result property="label" column="cat_label" />
         </association>
-        <association property="phase" javaType="com.tinylily.model.base.schema.PhaseDef">
+        <association property="phase" javaType="net.bodz.lily.model.base.schema.PhaseDef">
             <id property="id" column="phase" />
             <result property="label" column="phase_label" />
         </association>

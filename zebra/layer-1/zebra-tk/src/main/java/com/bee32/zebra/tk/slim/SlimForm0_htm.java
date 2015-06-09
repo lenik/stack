@@ -69,7 +69,7 @@ public abstract class SlimForm0_htm<T>
         HttpServletRequest request = ctx.getRequest();
         String view = request.getParameter("view:");
         if ("form".equals(view))
-            pageLayout.hideFramework = true;
+            pageLayout.setShowFrame(false);
     }
 
     @Override

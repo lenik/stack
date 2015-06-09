@@ -74,7 +74,7 @@ public class OaSiteVbo
         out = body;
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
-        if (!layout.hideFramework) {
+        if (layout.isShowFrame()) {
             HtmlDivTag container = body.div().class_("container").style("width: 100%; padding: 0");
             HtmlDivTag containerRow = container.div().class_("container-row");
             HtmlDivTag menuCol = containerRow.div().id("zp-menu-col")//
@@ -97,8 +97,14 @@ public class OaSiteVbo
         body.div().id(ID.extradata);
 
         HtmlDivTag scripts = body.div().id(ID.scripts);
-        scripts.script().javascriptSrc(_webApp_ + "widget.js");
-        scripts.script().javascriptSrc(_webApp_ + "makeup.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/util.0.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/util.datatables.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/util.flot.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/util.jquery.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/util.window.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/widget.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/makeup.js");
+        scripts.script().javascriptSrc(_webApp_ + "js1/index.charts.js");
 
         return out;
     }

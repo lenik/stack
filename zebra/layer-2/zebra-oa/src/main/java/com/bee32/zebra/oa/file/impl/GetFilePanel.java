@@ -87,7 +87,7 @@ public class GetFilePanel
     }
 
     public void build() {
-        HtmlTrTag tr = tr();
+        HtmlTrTag tr = table.tr();
         HtmlTdTag left = tr.td().valign("top").style("width: 4em");
         left.div().align("center").i().class_("fa fa-2x").text(FA_FILE_O);
         left.hr();

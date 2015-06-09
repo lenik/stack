@@ -24,6 +24,11 @@ a.helpdoc-switcher:hover {
     color: red;
 }
 
+.pie-label {
+    color: white;
+    text-align: center;
+}
+
 .zu-id {
     color: gray;
 }

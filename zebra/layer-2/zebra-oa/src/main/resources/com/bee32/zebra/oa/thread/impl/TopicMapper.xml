@@ -23,7 +23,7 @@
                 <result property="label" column="org_label" />
             </association>
         </collection>
-        <collection property="tags" javaType="ArrayList" ofType="com.tinylily.model.base.schema.TagDef">
+        <collection property="tags" javaType="ArrayList" ofType="net.bodz.lily.model.base.schema.TagDef">
             <id property="id" column="tt_tag" />
             <result property="label" column="tt_tag_label" />
         </collection>
@@ -171,5 +171,37 @@
     <select id="replyCount" resultType="int">
         select count(*) from reply where topic=#{id}
     </select>
+
+    <resultMap id="distribMap" type="com.bee32.zebra.tk.stat.ValueDistrib">
+        <result property="value" column="val" />
+        <result property="valueLabel" column="label" />
+        <result property="count" column="count" />
+        <result property="sum1" column="sum_1" />
+        <result property="sum2" column="sum_2" />
+    </resultMap>
+
+    <select id="catDistrib" resultMap="distribMap"><![CDATA[
+        select
+            a.cat "val",
+            cat.label,
+            "count",
+            valsum
+        from
+            (select cat, count(*) "count", sum(val) "valsum"
+                from topic group by cat) a
+            left join cat on a.cat=cat.id
+    ]]></select>
+
+    <select id="phaseDistrib" resultMap="distribMap"><![CDATA[
+        select
+            a.phase "val",
+            phase.label,
+            "count",
+            valsum
+        from
+            (select phase, count(*) "count", sum(val) "valsum"
+                from topic group by phase) a
+            left join phase on a.phase=phase.id
+    ]]></select>
 
 </mapper>
