@@ -24,6 +24,7 @@ public class Diary
 
     @Override
     public void instantiate() {
+        super.instantiate();
         setAccessMode(M_SHARED);
     }
 
