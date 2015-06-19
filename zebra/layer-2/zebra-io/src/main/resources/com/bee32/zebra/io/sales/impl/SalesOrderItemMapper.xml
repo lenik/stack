@@ -23,6 +23,7 @@
         <association property="artifact" javaType="com.bee32.zebra.io.art.Artifact">
             <id property="id" column="art" />
             <result property="label" column="art_label" />
+            <result property="spec" column="art_spec" />
             <association property="uom" javaType="com.bee32.zebra.io.art.UOM">
                 <id property="id" column="uom" />
                 <result property="label" column="uom_label" />
@@ -35,6 +36,7 @@
             a.*,
             doc.subject "doc_subject",
             art.label "art_label",
+            art.spec "art_spec",
             art.uom "uom",
             uom.label "uom_label",
             u.label "uid_label",

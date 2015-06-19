@@ -38,8 +38,8 @@
     </resultMap>
 
     <resultMap id="map2" type="com.bee32.zebra.io.sales.Delivery" extends="map1">
-        <collection property="items" javaType="ArrayList" ofType="com.bee32.zebra.io.sales.DeliveryItem">
-            <id property="id" column="y_id" />
+        <collection property="items" javaType="ArrayList" ofType="com.bee32.zebra.io.sales.DeliveryItem"
+            columnPrefix="y_" resultMap="com.bee32.zebra.io.sales.impl.DeliveryItemMapper.map1">
         </collection>
     </resultMap>
 
@@ -79,7 +79,23 @@
             cat.label "cat_label",
             phase.label "phase_label",
             u.label "uid_label",
-            g.label "gid_label"
+            g.label "gid_label",
+            
+            y.id "y_id",
+            y.qty "y_qty",
+            y.price "y_price",
+            y.total "y_total",
+            
+            b.id "y_b_id",
+            b.art "y_b_art",
+            b.olabel "y_b_olabel",
+            b.ospec "y_b_ospec",
+            b.qty "y_b_qty",
+            b.price "y_b_price",
+            b.total "y_b_total",
+            b.comment "y_b_comment",
+            art.label "y_b_art_label",
+            art.spec "y_b_art_spec"
         from dldoc a
             left join sdoc on a.sdoc=sdoc.id
             left join org on a.org=org.id
@@ -90,7 +106,9 @@
             left join phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
-            left join dlentry y on a.id=y.doc 
+            left join dlentry y on a.id=y.doc
+            left join sentry b on y.sentry=b.id
+            left join art on b.art=art.id
         ]]>
     </sql>
 
@@ -112,7 +130,7 @@
         </where>
     </select>
 
-    <select id="select" parameterType="int" resultMap="map1">
+    <select id="select" parameterType="int" resultMap="map2">
         <include refid="select2" />
         <where>
             <if test="_parameter != null">a.id=#{id}</if>

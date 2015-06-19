@@ -44,6 +44,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.IId;
 import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.model.sea.ITextParametric;
 import net.bodz.lily.model.sea.ParameterMapVariantMap;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
@@ -104,8 +105,8 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    protected List<IFieldDecl> overrideFieldSelection(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
-            FieldDeclGroup group, List<IFieldDecl> selection, IOptions options)
+    protected List<IFieldDecl> overrideFieldSelection(IUiRef<?> instanceRef, FieldDeclGroup group,
+            List<IFieldDecl> selection, IOptions options)
             throws ViewBuilderException, IOException {
 
         Set<String> includes = new HashSet<String>();
@@ -297,6 +298,11 @@ public abstract class SlimForm0_htm<T>
                 throw new ParseException("property " + name + ": " + e.getMessage(), e);
             }
         } // for property
+
+        if (obj instanceof ITextParametric) {
+            ITextParametric p = (ITextParametric) obj;
+            p.populate(parameterMap);
+        }
     }
 
     void injectValue(Object obj, IFieldDecl fieldDecl, IVariantMap<String> parameterMap)

@@ -20,9 +20,15 @@ public class DeliveryItem
         extends CoMomentInterval<Long> {
 
     private static final long serialVersionUID = 1L;
-    Delivery delivery;
 
+    public static final int N_ALT_LABEL = 30;
+    public static final int N_ALT_SPEC = 80;
+
+    Delivery delivery;
+    SalesOrder salesOrder;
+    SalesOrderItem salesOrderItem;
     Artifact artifact;
+
     double quantity;
     double price;
 
@@ -39,8 +45,33 @@ public class DeliveryItem
     }
 
     /**
+     * 销售订单
+     */
+    @OfGroup(StdGroup.Process.class)
+    public SalesOrder getSalesOrder() {
+        return salesOrder;
+    }
+
+    public void setSalesOrder(SalesOrder salesOrder) {
+        this.salesOrder = salesOrder;
+    }
+
+    /**
+     * 源订单项
+     */
+    @OfGroup(StdGroup.Process.class)
+    public SalesOrderItem getSalesOrderItem() {
+        return salesOrderItem;
+    }
+
+    public void setSalesOrderItem(SalesOrderItem salesOrderItem) {
+        this.salesOrderItem = salesOrderItem;
+    }
+
+    /**
      * 货物
      */
+    @Derived
     public Artifact getArtifact() {
         return artifact;
     }
@@ -50,7 +81,7 @@ public class DeliveryItem
     }
 
     /**
-     * 数量
+     * 出货数量
      */
     @OfGroup(OaGroups.Trade.class)
     public double getQuantity() {
@@ -62,7 +93,7 @@ public class DeliveryItem
     }
 
     /**
-     * 单价
+     * 出货价
      */
     @OfGroup(OaGroups.Trade.class)
     public double getPrice() {
@@ -74,7 +105,7 @@ public class DeliveryItem
     }
 
     /**
-     * 金额
+     * 出货金额
      */
     @OfGroup(OaGroups.Trade.class)
     @Derived

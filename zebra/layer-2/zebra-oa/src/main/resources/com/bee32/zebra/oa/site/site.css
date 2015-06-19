@@ -116,6 +116,24 @@ a.helpdoc-switcher:hover {
 .itab {
     -webkit-user-select: text;
     user-select: text;
+    padding: 0.5em 0;
+    border-top-style: solid;
+    border-top-width: 0.5em;
+    border-bottom-style: solid;
+    border-bottom-width: 0.5em;
+}
+
+.magic td {
+    vertical-align: top;
+}
+
+.magic img {
+    max-width: 64px;
+    margin: 0 16px;
+}
+
+.magic td, .magic th {
+    text-align: center;
 }
 
 .node-chain {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
+import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.viz.IHttpViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -49,7 +50,7 @@ public class SalesOrderItemIndexVbo
         List<SalesOrderItem> list = a.noList() ? null : postfilt(mapper.filter(criteria));
 
         IndexTable itab = new IndexTable(a.data);
-        itab.addDetailFields("SalesOrderItemtnote");
+        itab.addDetailFields("footnote");
         itab.buildHeader(ctx, indexFields.values());
         if (a.dataList())
             for (SalesOrderItem o : list) {
@@ -72,6 +73,12 @@ public class SalesOrderItemIndexVbo
 
         if (a.extradata != null)
             dumpFullData(a.extradata, list);
+    }
+
+    @Override
+    protected void sections(IHttpViewContext ctx, IHtmlTag out, IUiRef<SalesOrderItemIndex> ref, IOptions options)
+            throws ViewBuilderException, IOException {
+        // No section.
     }
 
 }

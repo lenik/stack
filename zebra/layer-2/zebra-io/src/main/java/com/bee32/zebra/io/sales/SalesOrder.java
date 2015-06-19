@@ -39,11 +39,14 @@ public class SalesOrder
     private double quantity;
     private double total;
 
+    private int itemCount = SIZE_UNKNOWN;
     private List<SalesOrderItem> items;
 
     // make-tasks
     // material-plans (locks)
-    // deliveries 送货单/分次
+
+    private int deliveryCount = SIZE_UNKNOWN;
+    private List<Delivery> deliveries;
 
     @Override
     public void instantiate() {
@@ -151,6 +154,18 @@ public class SalesOrder
     }
 
     /**
+     * 明细条数
+     */
+    @DetailLevel(DetailLevel.EXTEND)
+    public int getItemCount() {
+        return SizeFn.getSize(items, itemCount);
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
+    /**
      * 明细列表
      */
     @DetailLevel(DetailLevel.EXTEND)
@@ -160,6 +175,30 @@ public class SalesOrder
 
     public void setItems(List<SalesOrderItem> items) {
         this.items = items;
+    }
+
+    /**
+     * 送货单数（张）
+     */
+    @DetailLevel(DetailLevel.EXTEND)
+    public int getDeliveryCount() {
+        return SizeFn.getSize(deliveries, deliveryCount);
+    }
+
+    public void setDeliveryCount(int deliveryCount) {
+        this.deliveryCount = deliveryCount;
+    }
+
+    /**
+     * 送货跟踪
+     */
+    @DetailLevel(DetailLevel.EXTEND)
+    public List<Delivery> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<Delivery> deliveries) {
+        this.deliveries = deliveries;
     }
 
 }

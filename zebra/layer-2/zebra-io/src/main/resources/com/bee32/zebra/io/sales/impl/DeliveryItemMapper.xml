@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bee32.zebra.io.sales.impl.DeliveryItemMapper">
+
+    <resultMap id="map1" type="com.bee32.zebra.io.sales.DeliveryItem" extends="co.mapUS">
+        <id property="id" column="id" />
+        <result property="quantity" column="qty" />
+        <result property="price" column="price" />
+        <association property="delivery" javaType="com.bee32.zebra.io.sales.Delivery">
+            <id property="id" column="doc" />
+            <result property="subject" column="doc_subject" />
+        </association>
+        <association property="salesOrder" javaType="com.bee32.zebra.io.sales.SalesOrder">
+            <id property="id" column="sdoc" />
+            <result property="subject" column="sdoc_subject" />
+        </association>
+        <association property="salesOrderItem" javaType="com.bee32.zebra.io.sales.SalesOrderItem"
+            resultMap="com.bee32.zebra.io.sales.impl.SalesOrderItemMapper.map1" columnPrefix="b_">
+        </association>
+    </resultMap>
+
+    <sql id="select1"><![CDATA[
+        select
+            a.*,
+            doc.subject "doc_subject",
+            doc.sdoc "sdoc",
+            sdoc.subject "sdoc_subject",
+            b.id "b_id",
+            b.art "b_art",
+            b.olabel "b_olabel",
+            b.ospec "b_ospec",
+            b.qty "b_qty",
+            b.price "b_price",
+            b.total "b_total",
+            b.comment "b_comment",
+            art.label "b_art_label",
+            art.spec "b_art_spec"
+        from dlentry a
+            left join dldoc "doc" on a.doc=doc.id
+            left join sdoc on doc.sdoc=sdoc.id
+            left join sentry b on a.sentry=b.id
+            left join art on b.art=art.id
+        ]]>
+    </sql>
+
+    <sql id="filtconds">
+        <if test="deliveryId != null">and a.doc=#{deliveryId}</if>
+    </sql>
+
+    <select id="all" resultMap="map1">
+        <include refid="select1" />
+    </select>
+
+    <select id="filter" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <include refid="filtconds" />
+        </where>
+    </select>
+
+    <select id="select" parameterType="int" resultMap="map1">
+        <include refid="select1" />
+        <where>
+            <if test="_parameter != null">a.id = #{id}</if>
+        </where>
+    </select>
+
+    <select id="insert" resultType="long"><![CDATA[
+        insert into dlentry(
+            priority, flags, state,
+            doc, sentry, art,
+            qty, price, total
+        ) values(
+            #{priority}, #{flags}, #{state},
+            #{delivery.id}, #{salesOrderItem.id}, #{artifact.id},
+            #{quantity}, #{price}, #{total}
+        ) returning id
+    ]]></select>
+
+    <update id="update">
+        update dlentry
+        <set>
+            priority = #{priority},
+            flags = #{flags},
+            state = #{state},
+            <if test="delivery != null">doc = #{delivery.id},</if>
+            <if test="salesOrderItem != null">
+                sentry = #{salesOrderItem.id},
+                art = #{salesOrderItem.artifact.id},
+            </if>
+            qty = #{quantity},
+            price = #{price},
+            total = #{total}
+        </set>
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
+    </update>
+
+    <delete id="delete">
+        delete from dlentry where id = #{id}
+    </delete>
+
+    <select id="count" resultType="hashmap">
+        select count(*) "total" from dlentry a
+        <where>
+            <include refid="filtconds" />
+        </where>
+    </select>
+
+</mapper>

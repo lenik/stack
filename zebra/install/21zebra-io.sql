@@ -540,7 +540,7 @@
         doc         int not null,
         sentry      int,            -- XXX deprecated
         
-        art         int not null,
+        art         int,
         qty         numeric(20,2) not null,
         price       numeric(20,2) not null default 0,
         total       numeric(20,2) not null default 0,   -- cache
@@ -548,6 +548,6 @@
         constraint dlentry_fk_art   foreign key(art)
             references art(id)          on update cascade on delete set null,
         constraint dlentry_fk_doc   foreign key(doc)
-            references dldoc(id)         on update cascade on delete cascade
+            references dldoc(id)        on update cascade on delete cascade
     );
 

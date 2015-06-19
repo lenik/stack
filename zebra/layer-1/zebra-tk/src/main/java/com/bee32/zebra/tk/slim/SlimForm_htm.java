@@ -2,8 +2,9 @@ package com.bee32.zebra.tk.slim;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.c.type.TypeChain;
-import net.bodz.bas.db.ibatis.IMapper;
 import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.db.meta.TableUtils;
 import net.bodz.bas.err.Err;
@@ -20,6 +21,7 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
+import net.bodz.lily.model.base.IId;
 import net.bodz.lily.model.base.Instantiables;
 
 import com.bee32.zebra.tk.hbin.SplitForm;
@@ -31,6 +33,8 @@ import com.bee32.zebra.tk.util.PrevNext;
 
 public abstract class SlimForm_htm<T extends CoObject>
         extends SlimForm0_htm<T> {
+
+    static String DEFAULT_NAV = "reload";
 
     public SlimForm_htm(Class<?> valueClass, String... supportedFeatures) {
         super(valueClass, supportedFeatures);
@@ -50,44 +54,54 @@ public abstract class SlimForm_htm<T extends CoObject>
 
     protected void process(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
+        HttpServletRequest req = ctx.getRequest();
+        IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
+        String methodName = methodOfRequest.getMethodName();
+        FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
+        T obj = ref.get();
+        Number id = (Number) obj.getId();
+
         try {
-            // data.populate(ctx.getRequest().getParameterMap());
-            inject(ref, ctx.getRequest().getParameterMap());
+            // data.populate(req.getParameterMap());
+            inject(ref, req.getParameterMap());
         } catch (Exception e) {
             throw new ViewBuilderException(e.getMessage(), e);
         }
 
-        T obj = ref.get();
-        Number id = (Number) obj.getId();
-
-        IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
-        String methodName = methodOfRequest.getMethodName();
         switch (methodName) {
         case MethodNames.CREATE:
-            if (tryPersist(true, ctx, out, ref))
-                // success. create a new skel object.
-                try {
-                    T skel = Instantiables._instantiate(ref.getValueType());
-                    ref.set(skel);
-                } catch (ReflectiveOperationException e) {
-                    throw new ViewBuilderException(e.getMessage(), e);
+            if (tryPersist(true, ctx, out, ref)) {
+                id = (Number) obj.getId();
+                String navHint = req.getParameter("-nav");
+                if (navHint == null)
+                    navHint = DEFAULT_NAV;
+                switch (navHint) {
+                case "create-more":
+                    try {
+                        T skel = Instantiables._instantiate(ref.getValueType());
+                        ref.set(skel);
+                    } catch (ReflectiveOperationException e) {
+                        throw new ViewBuilderException(e.getMessage(), e);
+                    }
+                    break;
+                case "reload":
+                    obj = mapper.select(id.longValue());
+                    ref.set(obj);
+                    break;
                 }
+            }
             break;
 
         case MethodNames.UPDATE:
             if (tryPersist(false, ctx, out, ref)) {
                 // reload from database.
                 try {
-                    FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
-                    if (mapper == null)
-                        throw new NullPointerException("mapper");
                     if (id == null)
                         throw new NullPointerException("id");
                     T reload = mapper.select(id.longValue());
                     ref.set(reload);
                 } catch (ClassCastException e) {
-                    IMapper m = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
-                    TypeChain.dumpTypeTree(m.getClass(), TreeOutImpl.from(Stdio.cerr));
+                    TypeChain.dumpTypeTree(mapper.getClass(), TreeOutImpl.from(Stdio.cerr));
                     throw new ViewBuilderException(e);
                 }
             }
@@ -216,23 +230,50 @@ public abstract class SlimForm_htm<T extends CoObject>
 
     protected boolean tryPersist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+        HttpServletRequest req = ctx.getRequest();
+        String navHint = req.getParameter("-nav");
+        if (navHint == null)
+            navHint = DEFAULT_NAV;
+        String promptSuccess = req.getParameter("prompt.success");
+        if (promptSuccess == null)
+            promptSuccess = "保存成功";
 
         try {
             Object id = persist(create, ctx, out, ref);
+            IId<Object> obj = (IId<Object>) ref.get();
+            obj.setId(id);
 
             HtmlDivTag alert = out.div().class_("alert alert-success");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
             alert.iText(FA_CHECK_CIRCLE, "fa");
-            alert.bText("[成功]").text("保存成功");
+            alert.bText("[成功]").text(promptSuccess);
             alert.hr();
             HtmlDivTag mesg = alert.div().class_("small");
             if (create) {
                 mesg.text("您可以：");
                 HtmlUlTag ul = mesg.ul();
-                ul.li().text("继续创建新的记录，或者");
+
+                switch (navHint) {
+                case "create-more":
+                    ul.li().text("继续创建新的记录，或者");
+                    break;
+                case "reload":
+                    ul.li().text("检查刚刚保存的，或者");
+                    break;
+                }
+
                 if (layout.isShowFrame()) {
-                    ul.li().iText(FA_EXTERNAL_LINK_SQUARE, "fa")//
-                            .aText("返回刚才保存的记录", "../" + id + "/").text("，或者");
+                    switch (navHint) {
+                    case "create-more":
+                        ul.li().iText(FA_EXTERNAL_LINK_SQUARE, "fa")//
+                                .aText("返回刚才保存的记录", "../" + id + "/").text("，或者");
+                        break;
+                    case "reload":
+                        ul.li().iText(FA_EXTERNAL_LINK_SQUARE, "fa")//
+                                .aText("继续创建新的记录", "../new/").text("，或者");
+                        break;
+                    }
+
                     ul.li().iText(FA_TIMES_CIRCLE, "fa")//
                             .aText("关闭本窗口", "javascript: window.close()").text("。");
                 } else {

@@ -1,17 +1,25 @@
 package com.bee32.zebra.io.sales.impl;
 
 import net.bodz.bas.err.ParseException;
+import net.bodz.lily.model.base.CoObjectCriteria;
 import net.bodz.lily.model.sea.QVariantMap;
 
-import com.bee32.zebra.tk.sea.MyCriteria;
-
 /**
- * @see com.bee32.zebra.io.sales.Delivery
+ * @see com.bee32.zebra.io.sales.DeliveryItem
  */
-public class DeliveryCriteria
-        extends MyCriteria {
+public class DeliveryItemCriteria
+        extends CoObjectCriteria {
 
+    public Integer deliveryId;
     public Integer salesOrderId;
+
+    public Integer getDeliveryId() {
+        return deliveryId;
+    }
+
+    public void setDeliveryId(Integer deliveryId) {
+        this.deliveryId = deliveryId;
+    }
 
     public Integer getSalesOrderId() {
         return salesOrderId;
@@ -25,6 +33,7 @@ public class DeliveryCriteria
     protected void populate(QVariantMap<String> map)
             throws ParseException {
         super.populate(map);
+        deliveryId = map.getInt("doc", deliveryId);
         salesOrderId = map.getInt("sdoc", salesOrderId);
     }
 

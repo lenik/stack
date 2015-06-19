@@ -24,6 +24,10 @@ a.helpdoc-switcher:hover {
     color: red;
 }
 
+.itab {
+    border-color: hsl(50, 20%, 85%);
+}
+
 .pie-label {
     color: white;
     text-align: center;
@@ -51,7 +55,7 @@ a.helpdoc-switcher:hover {
 }
 
 .zu-section-head {
-    border-right: solid 3px #e4e2d7;
+    border-right: solid 3px hsl(50, 20%, 85%);
 }
 
 .zu-section-head>.icon {
@@ -76,6 +80,11 @@ a.helpdoc-switcher:hover {
 
 #zp-menu a {
     color: black;
+}
+
+#zp-menu-ul>li:hover {
+    background: hsla(0, 100%, 80%, 0.5);
+    border-radius: 5px;
 }
 
 #zp-menu-col {

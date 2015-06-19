@@ -30,29 +30,31 @@ public abstract class QuickIndex
     public IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)
             throws PathDispatchException {
         String token = tokens.peek();
+        IPathArrival ans = null;
+        Object obj = null;
 
         switch (token) {
         case "new":
-            Object obj;
             try {
                 obj = Instantiables._instantiate(getObjectType());
             } catch (Exception e) {
                 throw new PathDispatchException(e.getMessage(), e);
             }
-            return PathArrival.shift(previous, obj, tokens);
-        }
+            ans = PathArrival.shift(previous, obj, tokens);
+            break;
 
-        if (StringPred.isDecimal(token)) {
-            Long id = Long.parseLong(token);
-            IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(getObjectType());
-            if (mapper == null)
-                throw new NullPointerException("mapperTemplate");
-            Object obj = mapper.select(id);
-            if (obj != null)
-                return PathArrival.shift(previous, obj, tokens);
+        default:
+            if (StringPred.isDecimal(token)) {
+                Long id = Long.parseLong(token);
+                IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(getObjectType());
+                if (mapper == null)
+                    throw new NullPointerException("mapperTemplate");
+                obj = mapper.select(id);
+                if (obj != null)
+                    ans = PathArrival.shift(previous, obj, tokens);
+            }
         }
-
-        return null;
+        return ans;
     }
 
     @Override

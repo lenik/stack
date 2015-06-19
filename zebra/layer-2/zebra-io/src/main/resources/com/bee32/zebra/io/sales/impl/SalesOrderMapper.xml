@@ -25,6 +25,9 @@
         <collection property="items" javaType="ArrayList" columnPrefix="y_"
             resultMap="com.bee32.zebra.io.sales.impl.SalesOrderItemMapper.map1">
         </collection>
+        <collection property="deliveries" javaType="ArrayList" columnPrefix="d_"
+            resultMap="com.bee32.zebra.io.sales.impl.DeliveryMapper.map1">
+        </collection>
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -72,8 +75,25 @@
             y.price "y_price",
             y.comment "y_comment",
             y.footnote "y_footnote",
+            art.label "y_art_label",
             
-            art.label "y_art_label"
+            d.id "d_id",
+            d.state "d_state",
+            d.t0 "d_t0",
+            d.t1 "d_t1",
+            d.op "d_op",
+            d.subject "d_subject",
+            d.text "d_text",
+            d.form "d_form",
+            d.args "d_args",
+            d.cat "d_cat",
+            d.phase "d_phase",
+            d.shipdest "d_shipdest",
+            d.shipper "d_shipper",
+            d.shipment "d_shipment",
+            d.shipcost "d_shipcost",
+            d.qty "d_qty",
+            d.total "d_total"
         from sdoc a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
@@ -84,6 +104,7 @@
             left join person on a.person=person.id
             left join sentry y on a.id=y.doc
             left join art on y.art=art.id
+            left join dldoc d on a.id=d.sdoc
         ]]>
     </sql>
 
@@ -149,9 +170,9 @@
 
     <select id="count" resultType="hashmap">
         select
-        (select count(*) from sdoc) "total",
-        (select count(distinct sdoc) from dldoc) "delivered",
-        (select count(*)
+            (select count(*) from sdoc) "total",
+            (select count(distinct sdoc) from dldoc) "delivered",
+            (select count(*)
         from sdoc a
         <where>
             <if test="_parameter != null">

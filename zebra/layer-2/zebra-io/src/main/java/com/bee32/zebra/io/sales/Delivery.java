@@ -6,13 +6,17 @@ import java.util.List;
 
 import javax.persistence.Table;
 
+import net.bodz.bas.err.ParseException;
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Statistics;
+import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.lily.model.base.IdType;
 import net.bodz.lily.model.base.security.User;
 import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.sea.ITextParametric;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Contact;
@@ -25,7 +29,8 @@ import com.bee32.zebra.oa.contact.Person;
 @IdType(Integer.class)
 @Table(name = "dldoc")
 public class Delivery
-        extends CoMessage<Integer> {
+        extends CoMessage<Integer>
+        implements ITextParametric {
 
     private static final long serialVersionUID = 1L;
 
@@ -105,6 +110,7 @@ public class Delivery
      * 
      * @placeholder 选择目的地…
      */
+    @Priority(1)
     @OfGroup(OaGroups.Transportation.class)
     public Contact getShipDest() {
         return shipDest;
@@ -119,6 +125,7 @@ public class Delivery
      * 
      * @placeholder 选择承运人…
      */
+    @Priority(2)
     @OfGroup(OaGroups.Transportation.class)
     public Organization getShipper() {
         return shipper;
@@ -133,6 +140,7 @@ public class Delivery
      * 
      * @placeholder 输入运单号…
      */
+    @Priority(3)
     @OfGroup(OaGroups.Transportation.class)
     public String getShipmentId() {
         return shipmentId;
@@ -145,6 +153,7 @@ public class Delivery
     /**
      * 运费
      */
+    @Priority(4)
     @OfGroup({ OaGroups.Transportation.class })
     public double getShippingCost() {
         return shippingCost;
@@ -157,6 +166,7 @@ public class Delivery
     /**
      * 发货时间
      */
+    @Priority(5)
     @OfGroup({ OaGroups.Transportation.class })
     public Date getShipDate() {
         return super.getBeginDate();
@@ -169,6 +179,7 @@ public class Delivery
     /**
      * 收货时间
      */
+    @Priority(6)
     @OfGroup({ OaGroups.Transportation.class })
     public Date getArrivedDate() {
         return super.getEndDate();
@@ -223,6 +234,32 @@ public class Delivery
     // @OfGroup(OaGroups.UserInteraction.class)
     public User getOp() {
         return super.getOp();
+    }
+
+    @Override
+    public void populate(IVariantMap<String> map)
+            throws ParseException {
+        List<DeliveryItem> items = getItems();
+
+        for (String key : map.keySet()) {
+            if (key.startsWith("qty-")) {
+                String sidStr = key.substring(4);
+                long sid = Long.parseLong(sidStr);
+                double qty = map.getDouble(key);
+                String priceKey = "price-" + sid;
+                double price = map.getDouble(priceKey);
+
+                DeliveryItem item = new DeliveryItem();
+                item.setDelivery(this);
+                item.setSalesOrder(getSalesOrder());
+                SalesOrderItem siRef = new SalesOrderItem();
+                siRef.setId(sid);
+                item.setSalesOrderItem(siRef);
+                item.setQuantity(qty);
+                item.setPrice(price);
+                items.add(item);
+            }
+        }
     }
 
 }
