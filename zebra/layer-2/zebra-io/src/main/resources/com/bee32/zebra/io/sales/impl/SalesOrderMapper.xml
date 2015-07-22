@@ -5,6 +5,7 @@
 <mapper namespace="com.bee32.zebra.io.sales.impl.SalesOrderMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.io.sales.SalesOrder" extends="message.map2">
+        <result property="itemCount" column="size" />
         <result property="quantity" column="qty" />
         <result property="total" column="total" />
         <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">

@@ -227,7 +227,7 @@ public class SalesOrder_htm
             } // for item
 
             form.input().type("submit").value("生成送货单");
-        }
+        } // if (remainingTotal < epsn)
+    } // buildDeliveryList
 
-    }
 }

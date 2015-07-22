@@ -171,6 +171,10 @@ a.helpdoc-switcher:hover {
     color: white;
 }
 
+.ui-dialog {
+    z-index: 3;
+}
+
 .zu-author {
     text-align: right;
     font-style: italic;

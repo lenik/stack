@@ -5,6 +5,7 @@
 <mapper namespace="com.bee32.zebra.io.stock.impl.StockEventMapper">
 
     <resultMap id="map1" type="com.bee32.zebra.io.stock.StockEvent" extends="message.map2">
+        <result property="itemCount" column="size" />
         <result property="quantity" column="qty" />
         <result property="total" column="total" />
         <association property="topic" javaType="com.bee32.zebra.oa.thread.Topic">

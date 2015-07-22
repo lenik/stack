@@ -48,10 +48,10 @@ public class Delivery
     // Take-Out stock job
     // Account-Ticket
 
+    private List<DeliveryItem> items = new ArrayList<>();
+    private int itemCount = SIZE_UNKNOWN;
     private double quantity;
     private double total;
-
-    private List<DeliveryItem> items = new ArrayList<>();
 
     /**
      * 前级
@@ -187,6 +187,18 @@ public class Delivery
 
     public void setArrivedDate(Date arrivedDate) {
         super.setEndDate(arrivedDate);
+    }
+
+    /**
+     * 明细条数
+     */
+    @DetailLevel(DetailLevel.EXTEND)
+    public int getItemCount() {
+        return SizeFn.getSize(items, itemCount);
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
     }
 
     /**

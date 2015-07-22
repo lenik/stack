@@ -30,8 +30,8 @@ public class StockEventIndex_htm
     public StockEventIndex_htm()
             throws NoSuchPropertyException, ParseException {
         super(StockEventIndex.class);
-        indexFields.parse("i*sa", "form", "category", "subject", "text", "org", "orgUnit", "person", "quantity",
-                "total", "phase");
+        indexFields.parse("i*sa", "form", "category", "subject", "text", "org", "orgUnit", "person", "entryCount",
+                "quantity", "total", "phase");
     }
 
     @Override
@@ -84,6 +84,7 @@ public class StockEventIndex_htm
                 ref(tr.td(), o.getOrg());
                 ref(tr.td(), o.getOrgUnit());
                 ref(tr.td(), o.getPerson());
+                tr.td().text(o.getEntryCount());
                 tr.td().text(o.getQuantity());
                 tr.td().text(o.getTotal());
                 ref(tr.td(), o.getPhase());

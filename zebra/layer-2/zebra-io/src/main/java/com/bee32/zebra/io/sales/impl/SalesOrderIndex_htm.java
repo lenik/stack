@@ -24,7 +24,7 @@ public class SalesOrderIndex_htm
     public SalesOrderIndex_htm()
             throws NoSuchPropertyException, ParseException {
         super(SalesOrderIndex.class);
-        indexFields.parse("i*sa", "subject", "text", "topic", "org", "person", "phase", "total");
+        indexFields.parse("i*sa", "subject", "text", "topic", "org", "person", "phase", "itemCount", "total");
     }
 
     @Override
@@ -53,6 +53,7 @@ public class SalesOrderIndex_htm
                 ref(tr.td(), o.getOrg());
                 ref(tr.td(), o.getPerson());
                 ref(tr.td(), o.getPhase());
+                tr.td().text(o.getItemCount());
                 tr.td().text(o.getTotal());
                 itab.cocols("sa", tr, o);
             }

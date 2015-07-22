@@ -36,17 +36,16 @@ public class SalesOrder
     private Organization org;
     private Person person;
 
+    private List<SalesOrderItem> items;
+    private int itemCount = SIZE_UNKNOWN;
     private double quantity;
     private double total;
-
-    private int itemCount = SIZE_UNKNOWN;
-    private List<SalesOrderItem> items;
 
     // make-tasks
     // material-plans (locks)
 
-    private int deliveryCount = SIZE_UNKNOWN;
     private List<Delivery> deliveries;
+    private int deliveryCount = SIZE_UNKNOWN;
 
     @Override
     public void instantiate() {
@@ -154,18 +153,6 @@ public class SalesOrder
     }
 
     /**
-     * 明细条数
-     */
-    @DetailLevel(DetailLevel.EXTEND)
-    public int getItemCount() {
-        return SizeFn.getSize(items, itemCount);
-    }
-
-    public void setItemCount(int itemCount) {
-        this.itemCount = itemCount;
-    }
-
-    /**
      * 明细列表
      */
     @DetailLevel(DetailLevel.EXTEND)
@@ -178,15 +165,15 @@ public class SalesOrder
     }
 
     /**
-     * 送货单数（张）
+     * 明细条数
      */
     @DetailLevel(DetailLevel.EXTEND)
-    public int getDeliveryCount() {
-        return SizeFn.getSize(deliveries, deliveryCount);
+    public int getItemCount() {
+        return SizeFn.getSize(items, itemCount);
     }
 
-    public void setDeliveryCount(int deliveryCount) {
-        this.deliveryCount = deliveryCount;
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
     }
 
     /**
@@ -199,6 +186,18 @@ public class SalesOrder
 
     public void setDeliveries(List<Delivery> deliveries) {
         this.deliveries = deliveries;
+    }
+
+    /**
+     * 送货单数（张）
+     */
+    @DetailLevel(DetailLevel.EXTEND)
+    public int getDeliveryCount() {
+        return SizeFn.getSize(deliveries, deliveryCount);
+    }
+
+    public void setDeliveryCount(int deliveryCount) {
+        this.deliveryCount = deliveryCount;
     }
 
 }

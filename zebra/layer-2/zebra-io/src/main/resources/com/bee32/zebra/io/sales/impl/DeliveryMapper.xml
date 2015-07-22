@@ -7,6 +7,7 @@
     <resultMap id="map1" type="com.bee32.zebra.io.sales.Delivery" extends="message.map2">
         <result property="shipmentId" column="shipment" />
         <result property="shippingCost" column="shipcost" />
+        <result property="itemCount" column="size" />
         <result property="quantity" column="qty" />
         <result property="total" column="total" />
         <association property="salesOrder" javaType="com.bee32.zebra.io.sales.SalesOrder">

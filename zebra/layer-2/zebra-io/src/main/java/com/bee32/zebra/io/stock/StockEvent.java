@@ -36,6 +36,7 @@ public class StockEvent
     private Person person;
 
     private List<StockEntry> entries = new ArrayList<>();
+    private int entryCount = SIZE_UNKNOWN;
     private double quantity;
     private double total;
 
@@ -119,6 +120,18 @@ public class StockEvent
 
     public void setEntries(List<StockEntry> entries) {
         this.entries = entries;
+    }
+
+    /**
+     * 明细条数
+     */
+    @DetailLevel(DetailLevel.EXTEND)
+    public int getEntryCount() {
+        return SizeFn.getSize(entries, entryCount);
+    }
+
+    public void setEntryCount(int entryCount) {
+        this.entryCount = entryCount;
     }
 
     /**

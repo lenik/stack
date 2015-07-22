@@ -25,7 +25,8 @@ public class DeliveryIndex_htm
     public DeliveryIndex_htm()
             throws NoSuchPropertyException, ParseException {
         super(DeliveryIndex.class);
-        indexFields.parse("i*sa", "salesOrder", "op", "org", "person", "shipDest", "shipper", "shipmentId");
+        indexFields.parse("i*sa", "salesOrder", "op", "org", "person", //
+                "itemCount", "shipDest", "shipper", "shipmentId");
     }
 
     @Override
@@ -56,6 +57,7 @@ public class DeliveryIndex_htm
                 ref(tr.td(), o.getOp());
                 ref(tr.td(), o.getOrg());
                 ref(tr.td(), o.getPerson());
+                tr.td().text(o.getItemCount());
                 tr.td().text(shipDest == null ? null : shipDest.getFullAddress());
                 ref(tr.td(), o.getShipper());
                 tr.td().text(o.getShipmentId());
