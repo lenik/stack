@@ -9,8 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.viz.AbstractHttpViewBuilder;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -22,7 +22,7 @@ import com.bee32.zebra.oa.file.FileManager;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 
 public class UploadResult_json
-        extends AbstractHttpViewBuilder<UploadResult>
+        extends AbstractHtmlViewBuilder<UploadResult>
         implements IZebraSiteAnchors {
 
     public UploadResult_json() {
@@ -35,7 +35,7 @@ public class UploadResult_json
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag parent, IUiRef<UploadResult> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag parent, IUiRef<UploadResult> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UploadResult result = ref.get();
         FileManager manager = FileManager.forCurrentRequest();

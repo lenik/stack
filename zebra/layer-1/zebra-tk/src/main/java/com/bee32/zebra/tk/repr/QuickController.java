@@ -8,6 +8,11 @@ import net.bodz.bas.rtx.IQueryable;
 import net.bodz.lily.model.base.CoObjectController;
 import net.bodz.lily.model.base.CoObjectIndex;
 
+/**
+ * To activate this controller, configure path map in the site object:
+ * 
+ * "table/" -> co-controller.
+ */
 public class QuickController
         extends CoObjectController {
 

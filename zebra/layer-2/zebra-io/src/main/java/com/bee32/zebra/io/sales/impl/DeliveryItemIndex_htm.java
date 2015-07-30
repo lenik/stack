@@ -7,7 +7,7 @@ import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -38,14 +38,14 @@ public class DeliveryItemIndex_htm
     }
 
     @Override
-    protected DeliveryItemCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
+    protected DeliveryItemCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         DeliveryItemCriteria criteria = CriteriaBuilder.fromRequest(new DeliveryItemCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    public void dataIndex(IHttpViewContext ctx, DataViewAnchors<DeliveryItem> a, IUiRef<DeliveryItemIndex> ref,
+    public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<DeliveryItem> a, IUiRef<DeliveryItemIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         DeliveryItemMapper mapper = ctx.query(DeliveryItemMapper.class);
@@ -79,7 +79,7 @@ public class DeliveryItemIndex_htm
     }
 
     @Override
-    protected void sections(IHttpViewContext ctx, IHtmlTag out, IUiRef<DeliveryItemIndex> ref, IOptions options)
+    protected void sections(IHtmlViewContext ctx, IHtmlTag out, IUiRef<DeliveryItemIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         // No section.
     }

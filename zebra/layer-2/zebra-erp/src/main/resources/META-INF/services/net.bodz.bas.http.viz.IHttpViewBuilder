@@ -1,0 +1,10 @@
+com.bee32.zebra.erp.fab.impl.FabDeviceIndex_htm
+com.bee32.zebra.erp.fab.impl.FabDevice_htm
+com.bee32.zebra.erp.fab.impl.FabOpCodeIndex_htm
+com.bee32.zebra.erp.fab.impl.FabOpCode_htm
+com.bee32.zebra.erp.fab.impl.FabQcDefIndex_htm
+com.bee32.zebra.erp.fab.impl.FabQcDef_htm
+com.bee32.zebra.erp.fab.impl.FabStepDefIndex_htm
+com.bee32.zebra.erp.fab.impl.FabStepDef_htm
+com.bee32.zebra.erp.fab.impl.FabStepIndex_htm
+com.bee32.zebra.erp.fab.impl.FabStep_htm

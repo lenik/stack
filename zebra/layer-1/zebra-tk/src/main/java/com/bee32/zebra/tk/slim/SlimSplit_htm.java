@@ -9,8 +9,8 @@ import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
 import net.bodz.bas.html.dom.tag.HtmlPTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.AbstractHttpViewBuilder;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -25,7 +25,7 @@ import com.bee32.zebra.tk.site.IZebraSiteLayout;
 import com.bee32.zebra.tk.site.PageStruct;
 
 public abstract class SlimSplit_htm<T>
-        extends AbstractHttpViewBuilder<T>
+        extends AbstractHtmlViewBuilder<T>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     public SlimSplit_htm(Class<?> valueClass) {
@@ -38,7 +38,7 @@ public abstract class SlimSplit_htm<T>
     }
 
     @Override
-    public final IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    public final IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         T value = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
@@ -84,7 +84,7 @@ public abstract class SlimSplit_htm<T>
         return out;
     }
 
-    protected void titleInfo(IHttpViewContext ctx, IUiRef<T> ref, boolean indexPage) {
+    protected void titleInfo(IHtmlViewContext ctx, IUiRef<T> ref, boolean indexPage) {
         PageStruct p = new PageStruct(ctx.getHtmlDoc());
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
         Object label = classDoc.getTag("label");
@@ -95,7 +95,7 @@ public abstract class SlimSplit_htm<T>
         subTitle.verbatim(Nullables.toString(docText.getHeadPar()));
     }
 
-    protected abstract IHtmlTag buildBody(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected abstract IHtmlTag buildBody(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException;
 
 }

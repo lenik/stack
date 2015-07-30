@@ -19,7 +19,7 @@ import net.bodz.bas.html.dom.tag.HtmlTbodyTag;
 import net.bodz.bas.html.dom.tag.HtmlThTag;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.PathField;
 import net.bodz.bas.repr.form.SortOrder;
@@ -84,7 +84,7 @@ public class IndexTable
         ajaxUrl = url.toString();
     }
 
-    public void buildHeader(IHttpViewContext ctx, Iterable<PathField> indexFields) {
+    public void buildHeader(IHtmlViewContext ctx, Iterable<PathField> indexFields) {
         setAjaxUrlFromRequest(ctx.getRequest());
         buildHeader(indexFields);
     }

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.repr.form.FormDeclBuilder;
@@ -32,7 +32,7 @@ public class Delivery_htm
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref, IOptions options)
+    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref, IOptions options)
             throws ViewBuilderException, IOException {
         super.beforeForm(ctx, out, ref, options);
 
@@ -48,7 +48,7 @@ public class Delivery_htm
     }
 
     @Override
-    protected IHtmlTag afterForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref, IOptions options)
+    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref, IOptions options)
             throws ViewBuilderException, IOException {
         Delivery delivery = ref.get();
         Integer id = delivery.getId();
@@ -82,7 +82,7 @@ public class Delivery_htm
     }
 
     @Override
-    protected Object persist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref)
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref)
             throws Exception {
         Integer id = (Integer) super.persist(create, ctx, out, ref);
 

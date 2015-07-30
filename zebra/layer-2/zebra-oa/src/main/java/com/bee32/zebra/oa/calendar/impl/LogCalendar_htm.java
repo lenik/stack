@@ -5,7 +5,7 @@ import java.io.IOException;
 import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -24,7 +24,7 @@ public class LogCalendar_htm
     }
 
     @Override
-    protected IHtmlTag buildBody(IHttpViewContext ctx, IHtmlTag out, IUiRef<LogCalendar> ref, IOptions options)
+    protected IHtmlTag buildBody(IHtmlViewContext ctx, IHtmlTag out, IUiRef<LogCalendar> ref, IOptions options)
             throws ViewBuilderException, IOException {
         LogCalendar obj = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);

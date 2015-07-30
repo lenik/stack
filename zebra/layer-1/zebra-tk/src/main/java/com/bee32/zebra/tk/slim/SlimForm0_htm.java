@@ -22,10 +22,10 @@ import net.bodz.bas.html.dom.tag.HtmlInputTag;
 import net.bodz.bas.html.meta.BuildViewWith;
 import net.bodz.bas.html.meta.ViewCriteria;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHttpViewBuilder;
-import net.bodz.bas.html.viz.IHttpViewBuilderFactory;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
+import net.bodz.bas.http.viz.IHttpViewBuilder;
+import net.bodz.bas.http.viz.IHttpViewBuilderFactory;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.element.IType;
@@ -63,7 +63,7 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    public void preview(IHttpViewContext ctx, IUiRef<T> ref, IOptions options) {
+    public void preview(IHtmlViewContext ctx, IUiRef<T> ref, IOptions options) {
         super.preview(ctx, ref, options);
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
@@ -74,7 +74,7 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         if (enter(ctx, ref))
             return null;
@@ -87,7 +87,7 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    protected IHtmlTag beginCategory(IHttpViewContext ctx, IHtmlTag out, FieldCategory category)
+    protected IHtmlTag beginCategory(IHtmlViewContext ctx, IHtmlTag out, FieldCategory category)
             throws ViewBuilderException, IOException {
         String catName = category == FieldCategory.NULL ? "null" : category.getName();
         out = out.fieldset().class_("zu-fcat").id("zp-fcat-" + catName);
@@ -138,7 +138,7 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    protected IHtmlTag beginField(IHttpViewContext ctx, IHtmlTag out, IFieldDecl fieldDecl)
+    protected IHtmlTag beginField(IHtmlViewContext ctx, IHtmlTag out, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
         HtmlDivTag div = out.div().class_("zu-field");
         div.attr("f", fieldDecl.getName());
@@ -153,7 +153,7 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    protected void fieldBody(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, IFieldDecl fieldDecl,
+    protected void fieldBody(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, IFieldDecl fieldDecl,
             IOptions options)
             throws ViewBuilderException, IOException {
         IProperty property = fieldDecl.getProperty();
@@ -254,16 +254,16 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    protected void endField(IHttpViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
+    protected void endField(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
     }
 
     @Override
-    protected void endCategory(IHttpViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
+    protected void endCategory(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
     }
 
     @Override
-    protected IHtmlTag extras(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected IHtmlTag extras(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         new PickDialog(out, "picker1");
 

@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -35,7 +35,7 @@ public class StockEventIndex_htm
     }
 
     @Override
-    protected StockEventCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
+    protected StockEventCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         StockEventMapper mapper = ctx.query(StockEventMapper.class);
         StockEventCriteria criteria = CriteriaBuilder.fromRequest(new StockEventCriteria(), ctx.getRequest());
@@ -65,7 +65,7 @@ public class StockEventIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<StockEvent> a, IUiRef<StockEventIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<StockEvent> a, IUiRef<StockEventIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         StockEventMapper mapper = ctx.query(StockEventMapper.class);

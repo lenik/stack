@@ -9,7 +9,7 @@ import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.repr.form.FieldDeclGroup;
@@ -44,7 +44,7 @@ public class SalesOrder_htm
     }
 
     @Override
-    protected boolean buildBasicGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
             IOptions options)
             throws ViewBuilderException {
         super.buildBasicGroup(ctx, out, instanceRef, group, options);
@@ -65,7 +65,7 @@ public class SalesOrder_htm
     }
 
     @Override
-    protected IHtmlTag afterForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
+    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrder sdoc = ref.get();
         Integer id = sdoc.getId();
@@ -103,7 +103,7 @@ public class SalesOrder_htm
         return out;
     }
 
-    protected void buildDeliveryList(IHttpViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
+    protected void buildDeliveryList(IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DeliveryMapper deliveryMapper = ctx.query(DeliveryMapper.class);
 

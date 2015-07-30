@@ -11,7 +11,7 @@ import net.bodz.bas.err.Err;
 import net.bodz.bas.html.dom.HtmlDoc;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.io.Stdio;
 import net.bodz.bas.io.impl.TreeOutImpl;
 import net.bodz.bas.repr.form.FieldDeclGroup;
@@ -41,7 +41,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
@@ -52,7 +52,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         return out;
     }
 
-    protected void process(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         HttpServletRequest req = ctx.getRequest();
         IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
@@ -114,7 +114,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
-    protected void setUpFrame(IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected void setUpFrame(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
         HtmlDoc doc = ctx.getHtmlDoc();
 
@@ -153,7 +153,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected HtmlFormTag beginForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
         SplitForm form = new SplitForm(out);
         form.id("form1").method("post");
@@ -171,7 +171,7 @@ public abstract class SlimForm_htm<T extends CoObject>
     }
 
     @Override
-    protected boolean overrideFieldGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
+    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, IOptions options)
             throws ViewBuilderException, IOException {
         String typeName = instanceRef.getValueType().getSimpleName();
@@ -206,14 +206,14 @@ public abstract class SlimForm_htm<T extends CoObject>
         return false;
     }
 
-    protected boolean buildBasicGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
             IOptions options)
             throws ViewBuilderException, IOException {
         return false;
     }
 
     @Override
-    protected void endForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
             throws ViewBuilderException, IOException {
         // out.hr();
         HtmlDivTag div = out.div();
@@ -228,7 +228,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         resetButton.text("复原").title("清除刚才输入的所有变更，重新写。");
     }
 
-    protected boolean tryPersist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
+    protected boolean tryPersist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         HttpServletRequest req = ctx.getRequest();
         String navHint = req.getParameter("-nav");
@@ -302,7 +302,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
-    protected Object persist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<T> ref)
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref)
             throws Exception {
         T data = ref.get();
         Object id = data.persist(ctx, out);

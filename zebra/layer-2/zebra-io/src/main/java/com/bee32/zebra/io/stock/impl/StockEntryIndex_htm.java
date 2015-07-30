@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -28,14 +28,14 @@ public class StockEntryIndex_htm
     }
 
     @Override
-    protected StockEntryCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
+    protected StockEntryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         StockEntryCriteria criteria = CriteriaBuilder.fromRequest(new StockEntryCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<StockEntry> a, IUiRef<StockEntryIndex> ref,
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<StockEntry> a, IUiRef<StockEntryIndex> ref,
             IOptions options)
             throws ViewBuilderException, IOException {
         StockEntryMapper mapper = ctx.query(StockEntryMapper.class);

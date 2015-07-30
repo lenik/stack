@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -29,7 +29,7 @@ public class SalesOrderItem_htm
     }
 
     @Override
-    protected Object persist(boolean create, IHttpViewContext ctx, IHtmlTag out, IUiRef<SalesOrderItem> ref)
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrderItem> ref)
             throws Exception {
         SalesOrderItem item = ref.get();
         Artifact artifact = item.getArtifact();

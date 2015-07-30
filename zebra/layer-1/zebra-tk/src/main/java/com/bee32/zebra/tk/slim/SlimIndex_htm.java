@@ -20,9 +20,9 @@ import net.bodz.bas.html.dom.HtmlDoc;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.AbstractHttpViewBuilder;
+import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlHeadData;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.meta.bean.DetailLevel;
@@ -68,7 +68,7 @@ import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
 
 public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
-        extends AbstractHttpViewBuilder<X>
+        extends AbstractHtmlViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
@@ -102,7 +102,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
     }
 
     @Override
-    public void preview(IHttpViewContext ctx, IUiRef<X> ref, IOptions options) {
+    public void preview(IHtmlViewContext ctx, IUiRef<X> ref, IOptions options) {
         super.preview(ctx, ref, options);
         IHtmlHeadData metaData = ctx.getHeadData();
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
@@ -112,7 +112,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
     }
 
     @Override
-    public final IHtmlTag buildHtmlView(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+    public final IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
         X index = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
@@ -215,10 +215,10 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         return out;
     }
 
-    protected abstract CoObjectCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
+    protected abstract CoObjectCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException;
 
-    protected void titleInfo(IHttpViewContext ctx, IUiRef<X> ref, boolean indexPage) {
+    protected void titleInfo(IHtmlViewContext ctx, IUiRef<X> ref, boolean indexPage) {
         X manager = ref.get();
         Class<?> objectType = manager.getObjectType();
         IMapperTemplate<?, C> mapper = MapperUtil.getMapperTemplate(objectType);
@@ -290,18 +290,18 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         }
     }
 
-    protected void beforeData(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+    protected void beforeData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
     }
 
-    protected abstract void dataIndex(IHttpViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)
+    protected abstract void dataIndex(IHtmlViewContext ctx, DataViewAnchors<T> a, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException;
 
-    protected void afterData(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+    protected void afterData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
     }
 
-    protected void sections(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+    protected void sections(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
         Class<?> entityType = ref.get().getObjectType();
         TableMetadataRegistry registry = TableMetadataRegistry.getInstance();
@@ -345,11 +345,11 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         }
     }
 
-    protected void userData(IHttpViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
+    protected void userData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
     }
 
-    protected void buildJson(IHttpViewContext ctx, PrintWriter out, IUiRef<X> ref, IOptions options)
+    protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<X> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DataViewAnchors<T> a = new DataViewAnchors<T>();
         a.frame = new HtmlDoc();

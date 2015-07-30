@@ -6,7 +6,7 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.dom.tag.HtmlTrTag;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -30,14 +30,14 @@ public class PlaceIndex_htm
     }
 
     @Override
-    protected PlaceCriteria buildSwitchers(IHttpViewContext ctx, SwitcherModelGroup switchers)
+    protected PlaceCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         PlaceCriteria criteria = CriteriaBuilder.fromRequest(new PlaceCriteria(), ctx.getRequest());
         return criteria;
     }
 
     @Override
-    protected void dataIndex(IHttpViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref, IOptions options)
+    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         PlaceMapper mapper = ctx.query(PlaceMapper.class);
         PlaceCriteria criteria = ctx.query(PlaceCriteria.class);

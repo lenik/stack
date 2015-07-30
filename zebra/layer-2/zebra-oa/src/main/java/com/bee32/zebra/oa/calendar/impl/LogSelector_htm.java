@@ -16,7 +16,7 @@ import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.html.dom.IHtmlTag;
 import net.bodz.bas.html.dom.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHttpViewContext;
+import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
@@ -42,7 +42,7 @@ public class LogSelector_htm
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<LogSelector> ref, IOptions options)
+    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<LogSelector> ref, IOptions options)
             throws ViewBuilderException, IOException {
         LogEntryMapper mapper = ctx.query(LogEntryMapper.class);
         LoginContext login = LoginContext.fromSession();
@@ -235,13 +235,13 @@ public class LogSelector_htm
     }
 
     @Override
-    protected IHtmlTag afterForm(IHttpViewContext ctx, IHtmlTag out, IUiRef<LogSelector> ref, IOptions options)
+    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<LogSelector> ref, IOptions options)
             throws ViewBuilderException, IOException {
         return out;
     }
 
     @Override
-    protected boolean overrideFieldGroup(IHttpViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
+    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
             FieldDeclGroup group, IOptions options)
             throws ViewBuilderException, IOException {
         return true;
