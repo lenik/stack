@@ -783,7 +783,7 @@
 -- drop table if exists acdoc;
     create sequence acdoc_seq start with 1000;
     create table acdoc(
-        id          int primary key default nextval('acdoc_seq'),
+        id          bigint primary key default nextval('acdoc_seq'),
         priority    int not null default 0,
         creation    timestamp not null default now(),
         lastmod     timestamp not null default now(),
@@ -857,7 +857,7 @@
         flags       int not null default 0,
         state       int not null default 0,
         
-        doc         int not null,
+        doc         bigint not null,
         account     int not null,
         org         int,
         person      int,
