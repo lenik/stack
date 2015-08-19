@@ -51,7 +51,7 @@ public class Delivery_pdf
         final String texTemplate = data.to(StreamReading.class).readString();
 
         final HttpServletRequest req = ctx.getRequest();
-        final String thisUrl = req.getRequestURL().toString();
+        final String surl = RequestUtils.getServerURL(req);
         final FileManager fileManager = FileManager.forCurrentRequest();
 
         final Delivery doc = ref.get();
@@ -113,10 +113,9 @@ public class Delivery_pdf
                     return logoFile.getPath();
 
                 case "QRThis":
-                    return thisUrl;
+                    return surl + "dldoc/" + doc.getId() + "/";
 
                 case "QRCustomer":
-                    String surl = RequestUtils.getServerURL(req);
                     if (person != null)
                         return surl + "person/" + person.getId() + "/";
                     if (org != null)

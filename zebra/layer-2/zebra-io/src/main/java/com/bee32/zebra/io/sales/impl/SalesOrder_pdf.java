@@ -1,5 +1,6 @@
 package com.bee32.zebra.io.sales.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -31,6 +32,7 @@ import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Party;
 import com.bee32.zebra.oa.contact.Person;
+import com.bee32.zebra.oa.file.FileManager;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 
 public class SalesOrder_pdf
@@ -53,7 +55,8 @@ public class SalesOrder_pdf
         final Party party = person != null ? person : org;
 
         final HttpServletRequest req = ctx.getRequest();
-        final String thisUrl = req.getRequestURL().toString();
+        final String surl = RequestUtils.getServerURL(req);
+        final FileManager fileManager = FileManager.forCurrentRequest();
 
         UnixStyleVarExpander expander = new UnixStyleVarExpander(new ITransformer<String, Object>() {
 
@@ -95,13 +98,13 @@ public class SalesOrder_pdf
                     break;
 
                 case "Logo":
-                    return "/mnt/istore/projects/stack/zebra/layer-2/zebra-oa/t/zjhf-logo.png";
+                    File logoFile = new File(fileManager.getStartDir(), "logo.png");
+                    return logoFile.getPath();
 
                 case "QRThis":
-                    return thisUrl;
+                    return surl + "sdoc" + doc.getId() + "/";
 
                 case "QRCustomer":
-                    String surl = RequestUtils.getServerURL(req);
                     if (person != null)
                         return surl + "person/" + person.getId() + "/";
                     if (org != null)
