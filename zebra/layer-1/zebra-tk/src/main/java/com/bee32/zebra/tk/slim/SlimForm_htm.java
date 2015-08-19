@@ -43,11 +43,13 @@ public abstract class SlimForm_htm<T extends CoObject>
     @Override
     protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
             throws ViewBuilderException, IOException {
+        out = super.beforeForm(ctx, out, ref, options);
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         if (pageLayout.isShowFrame()) {
             setUpFrame(ctx, out, ref, options);
         }
+
         process(ctx, out, ref, options);
         return out;
     }
@@ -122,34 +124,40 @@ public abstract class SlimForm_htm<T extends CoObject>
         T obj = ref.get();
         Number id = (Number) obj.getId();
 
-        String tablename = TableUtils.tablename(type);
-        FnMapper fnMapper = ctx.query(FnMapper.class);
-
-        // FIXME consider access control and criteria.
-        PrevNext prevNext = fnMapper.prevNext("public", tablename, //
-                id == null ? Integer.MAX_VALUE : id.longValue());
-        if (prevNext == null)
-            prevNext = new PrevNext();
+        IHtmlTag cmds1 = doc.getElementById(ID.cmds1);
+        HtmlATag printLink = cmds1.a().id("printcmd").href("../" + id + ".pdf").target("_blank");
+        printLink.span().class_("fa icon").text(FA_PRINT);
+        printLink.text("打印").title("输出适合打印的格式。");
 
         IHtmlTag headCol2 = doc.getElementById(ID.headCol2);
         HtmlDivTag adjs = headCol2.div().class_("zu-links");
-        adjs.div().text("操作附近的数据:");
-        HtmlUlTag ul = adjs.ul();
-        HtmlATag newLink = ul.li().a().href("../new/");
-        newLink.iText(FA_FILE_O, "fa").text("新建");
+        {
+            adjs.div().text("操作附近的数据:");
+            HtmlUlTag ul = adjs.ul();
+            HtmlATag newLink = ul.li().a().href("../new/");
+            newLink.iText(FA_FILE_O, "fa").text("新建");
 
-        HtmlLiTag navs = ul.li();
-        IHtmlTag prevLink = navs;
-        if (prevNext.getPrev() != null)
-            prevLink = prevLink.a().href("../" + prevNext.getPrev() + "/");
-        prevLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_LEFT);
-        prevLink.text("前滚翻");
+            String tablename = TableUtils.tablename(type);
+            FnMapper fnMapper = ctx.query(FnMapper.class);
+            // FIXME consider access control and criteria.
+            PrevNext prevNext = fnMapper.prevNext("public", tablename, //
+                    id == null ? Integer.MAX_VALUE : id.longValue());
+            if (prevNext == null)
+                prevNext = new PrevNext();
 
-        IHtmlTag nextLink = navs;
-        if (prevNext.getNext() != null)
-            nextLink = nextLink.a().href("../" + prevNext.getNext() + "/");
-        nextLink.text("后滚翻 ");
-        nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
+            HtmlLiTag navs = ul.li();
+            IHtmlTag prevLink = navs;
+            if (prevNext.getPrev() != null)
+                prevLink = prevLink.a().href("../" + prevNext.getPrev() + "/");
+            prevLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_LEFT);
+            prevLink.text("前滚翻");
+
+            IHtmlTag nextLink = navs;
+            if (prevNext.getNext() != null)
+                nextLink = nextLink.a().href("../" + prevNext.getNext() + "/");
+            nextLink.text("后滚翻 ");
+            nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
+        }
     }
 
     @Override

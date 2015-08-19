@@ -9,10 +9,12 @@ com.bee32.zebra.io.sales.impl.DeliveryIndex_htm
 com.bee32.zebra.io.sales.impl.DeliveryItem_htm
 com.bee32.zebra.io.sales.impl.DeliveryItemIndex_htm
 com.bee32.zebra.io.sales.impl.Delivery_htm
+com.bee32.zebra.io.sales.impl.Delivery_pdf
 com.bee32.zebra.io.sales.impl.SalesOrderIndex_htm
 com.bee32.zebra.io.sales.impl.SalesOrderItemIndex_htm
 com.bee32.zebra.io.sales.impl.SalesOrderItem_htm
 com.bee32.zebra.io.sales.impl.SalesOrder_htm
+com.bee32.zebra.io.sales.impl.SalesOrder_pdf
 com.bee32.zebra.io.stock.impl.PlaceIndex_htm
 com.bee32.zebra.io.stock.impl.Place_htm
 com.bee32.zebra.io.stock.impl.StockEntryIndex_htm

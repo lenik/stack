@@ -1,5 +1,6 @@
 package com.bee32.zebra.tk.repr;
 
+import net.bodz.bas.c.java.io.FilePath;
 import net.bodz.bas.c.string.StringPred;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.repr.path.IPathArrival;
@@ -44,8 +45,9 @@ public abstract class QuickIndex
             break;
 
         default:
-            if (StringPred.isDecimal(token)) {
-                Long id = Long.parseLong(token);
+            String name = FilePath.stripExtension(token);
+            if (StringPred.isDecimal(name)) {
+                Long id = Long.parseLong(name);
                 IMapperTemplate<?, ?> mapper = MapperUtil.getMapperTemplate(getObjectType());
                 if (mapper == null)
                     throw new NullPointerException("mapperTemplate");

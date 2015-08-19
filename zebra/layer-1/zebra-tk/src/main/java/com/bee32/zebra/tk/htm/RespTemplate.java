@@ -15,6 +15,11 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout;
 
+/**
+ * 1. RespTemplate <|--- OaSite_htm <|--- ErpSite_htm.
+ * 2. ErpSite -> QuickIndex*, SlimIndex_htm
+ * 3. CoObject*, SlimForm_htm
+ */
 public abstract class RespTemplate<T>
         extends AbstractHtmlViewBuilder<T>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts {

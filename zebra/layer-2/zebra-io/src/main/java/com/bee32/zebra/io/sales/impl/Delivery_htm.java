@@ -34,7 +34,7 @@ public class Delivery_htm
     @Override
     protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref, IOptions options)
             throws ViewBuilderException, IOException {
-        super.beforeForm(ctx, out, ref, options);
+        out = super.beforeForm(ctx, out, ref, options);
 
         HttpServletRequest req = ctx.getRequest();
         String prompt = req.getParameter("prompt");
