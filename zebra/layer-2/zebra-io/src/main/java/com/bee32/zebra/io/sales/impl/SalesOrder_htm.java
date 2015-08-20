@@ -193,7 +193,7 @@ public class SalesOrder_htm
             htr.th().text("货物");
             htr.th().text("单位");
             htr.th().text("注释");
-            htr.th().text("剩余数量");
+            htr.th().text("未发货数量");
 
             for (SalesOrderItem item : sdoc.getItems()) {
                 Double remaining = dMap.get(item.getId());
@@ -226,8 +226,13 @@ public class SalesOrder_htm
                 td.input().type("hidden").name("price-" + item.getId()).value(item.getPrice());
             } // for item
 
-            form.input().type("submit").value("生成送货单");
-        } // if (remainingTotal < epsn)
-    } // buildDeliveryList
+            form.input().type("button").id("mkdelivery").value("生成送货单");
+            HtmlDivTag hint = form.div().id("reloadhint").style("display: none");
+            hint.text("送货单已经生成好了，请在新窗口中添加额外的信息，比如物流公司、运费等。");
+            hint.text("然后，您可以 ");
+            hint.a().id("javascript: reloadDelivery()").text("刷新本页面");
+            hint.text(" 以更新剩余的未发货的数量。");
+        }
 
+    }
 }
