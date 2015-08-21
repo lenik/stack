@@ -102,7 +102,7 @@ public class SalesOrder_pdf
                     return logoFile.getPath();
 
                 case "QRThis":
-                    return surl + "sdoc" + doc.getId() + "/";
+                    return surl + "sdoc/" + doc.getId() + "/";
 
                 case "QRCustomer":
                     if (person != null)
