@@ -1,0 +1,17 @@
+--\import zebra.oa.contact
+--\import zebra.oa.diary
+--\import zebra.oa.fileinfo
+--\import zebra.oa.org
+--\import zebra.oa.orgunit
+--\import zebra.oa.person
+--\import zebra.oa.reply
+--\import zebra.oa.sysq
+--\import zebra.oa.topic
+--\import zebra.oa.userq
+--\import zebra.oa.v_contact
+--\import zebra.oa.v_diary
+--\import zebra.oa.v_fileinfo
+--\import zebra.oa.v_personrole
+--\import zebra.oa.v_reply
+--\import zebra.oa.v_topic
+--\import zebra.oa.v_topic_n
