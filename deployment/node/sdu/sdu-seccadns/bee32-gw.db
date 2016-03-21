@@ -6,6 +6,9 @@ $TTL 24H
 
 $TTL 1H
 
+ns1                     A       60.190.203.72           ; GFW 主IP
+ns2                     A       60.190.203.72           ; GFW 主IP
+
 bee32.com.              A       60.190.203.72           ; GFW 主IP
 
 shaoxing-1.gateway      A       60.190.203.72           ; 绍兴IDC机房 服务器-1

@@ -12,7 +12,8 @@ $TTL            1H
                                     12H     ; sync expire
                                     1H      ; minimum TTL
                                 )
-                        NS      ns3.bodz.net.
+                        NS      ns1
+                        NS      ns2
 
 @                       MX 10   ASPMX.L.GOOGLE.COM.
                         MX 20   ALT1.ASPMX.L.GOOGLE.COM.
@@ -63,6 +64,8 @@ track                   CNAME   s-dev           ; Trac 项目管理支持
 q                       CNAME   s-dev           ; 一般问题跟踪系统
 bugs                    CNAME   q               ; 缺陷跟踪系统
 www                     CNAME   cdn             ; SECCA 工程开发网
+
+*                       CNAME   1
 
 $INCLUDE @seccadbdir@/bee32-lan.db
 $INCLUDE @seccadbdir@/bee32-gw.db

@@ -1,3 +1,6 @@
+[0.14.0] Lenik (2014-01-03)
+	* sdu-seccadns: Upgraded site config files to apache-2.4.
+
 [0.13.3] Lenik (2012-11-15)
 	* Updated bee32.db: www -> cdn.
 
