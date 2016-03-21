@@ -32,6 +32,7 @@ for region in us-east-1 ap-southeast-1; do
     while read type obj_type id tag_name tag_data; do
         if [ -z "$id" ]; then continue; fi
         namevar=${tag_name}_${id//-/_}
+        _log2 "$namevar=\"$tag_data\""
         eval "$namevar=\"$tag_data\""
     done < <(NO_SUBST=1 ec2-describe-tags --region $region)
 
