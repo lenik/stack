@@ -1,6 +1,6 @@
 package com.bee32.zebra.oa.file;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
@@ -49,8 +49,8 @@ public class FileInfo
 
     private Organization org;
     private Person person;
-    private Date activeDate;
-    private Date expireDate;
+    private DateTime activeDate;
+    private DateTime expireDate;
 
     private int downloads;
     private Double value;
@@ -256,11 +256,11 @@ public class FileInfo
      */
     @Priority(1)
     @OfGroup(StdGroup.Schedule.class)
-    public Date getActiveDate() {
+    public DateTime getActiveDate() {
         return activeDate;
     }
 
-    public void setActiveDate(Date activeDate) {
+    public void setActiveDate(DateTime activeDate) {
         this.activeDate = activeDate;
     }
 
@@ -269,11 +269,11 @@ public class FileInfo
      */
     @Priority(2)
     @OfGroup(StdGroup.Schedule.class)
-    public Date getExpireDate() {
+    public DateTime getExpireDate() {
         return expireDate;
     }
 
-    public void setExpireDate(Date expireDate) {
+    public void setExpireDate(DateTime expireDate) {
         this.expireDate = expireDate;
     }
 
@@ -283,24 +283,24 @@ public class FileInfo
     @DetailLevel(DetailLevel.HIDDEN)
     @Derived
     @Override
-    public final Date getBeginDate() {
+    public final DateTime getBeginDate() {
         return getActiveDate();
     }
 
     @Override
-    public final void setBeginDate(Date beginDate) {
+    public final void setBeginDate(DateTime beginDate) {
         setActiveDate(beginDate);
     }
 
     @DetailLevel(DetailLevel.HIDDEN)
     @Derived
     @Override
-    public final Date getEndDate() {
+    public final DateTime getEndDate() {
         return getExpireDate();
     }
 
     @Override
-    public final void setEndDate(Date endDate) {
+    public final void setEndDate(DateTime endDate) {
         setExpireDate(endDate);
     }
 

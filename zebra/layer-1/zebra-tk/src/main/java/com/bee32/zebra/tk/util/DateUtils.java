@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import net.bodz.lily.model.base.IMomentInterval;
 
 public class DateUtils {
@@ -12,6 +14,10 @@ public class DateUtils {
 
     public static String formatRange(IMomentInterval o, String nullStart, String nullEnd) {
         return formatRange(o.getBeginDate(), o.getEndDate(), nullStart, nullEnd);
+    }
+
+    public static String formatRange(DateTime start, DateTime end, String nullStart, String nullEnd) {
+        return formatRange(start.toDate(), end.toDate(), nullStart, nullEnd);
     }
 
     public static String formatRange(Date start, Date end, String nullStart, String nullEnd) {

@@ -1,10 +1,11 @@
 package com.bee32.zebra.io.sales;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Table;
+
+import org.joda.time.DateTime;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.meta.bean.DetailLevel;
@@ -168,11 +169,11 @@ public class Delivery
      */
     @Priority(5)
     @OfGroup({ OaGroups.Transportation.class })
-    public Date getShipDate() {
+    public DateTime getShipDate() {
         return super.getBeginDate();
     }
 
-    public void setShipDate(Date shipDate) {
+    public void setShipDate(DateTime shipDate) {
         super.setBeginDate(shipDate);
     }
 
@@ -181,11 +182,11 @@ public class Delivery
      */
     @Priority(6)
     @OfGroup({ OaGroups.Transportation.class })
-    public Date getArrivedDate() {
+    public DateTime getArrivedDate() {
         return super.getEndDate();
     }
 
-    public void setArrivedDate(Date arrivedDate) {
+    public void setArrivedDate(DateTime arrivedDate) {
         super.setEndDate(arrivedDate);
     }
 

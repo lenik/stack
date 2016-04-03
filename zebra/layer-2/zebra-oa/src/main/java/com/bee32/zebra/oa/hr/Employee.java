@@ -4,8 +4,9 @@ import java.beans.Transient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.OfGroup;
@@ -140,11 +141,11 @@ public class Employee
      * 雇员进入公司的日期。
      */
     @OfGroup(StdGroup.Schedule.class)
-    public Date getEmployedDate() {
+    public DateTime getEmployedDate() {
         return getBeginDate();
     }
 
-    public void setEmployedDate(Date employedDate) {
+    public void setEmployedDate(DateTime employedDate) {
         setBeginDate(employedDate);
     }
 
@@ -154,25 +155,25 @@ public class Employee
      * 雇员离开公司的日期。
      */
     @OfGroup(StdGroup.Schedule.class)
-    public Date getResignedDate() {
+    public DateTime getResignedDate() {
         return getEndDate();
     }
 
-    public void setResignedDate(Date resignedDate) {
+    public void setResignedDate(DateTime resignedDate) {
         setEndDate(resignedDate);
     }
 
     @DetailLevel(DetailLevel.HIDDEN)
     @OfGroup(Schedule.class)
     @Override
-    public Date getBeginDate() {
+    public DateTime getBeginDate() {
         return super.getBeginDate();
     }
 
     @DetailLevel(DetailLevel.HIDDEN)
     @Override
     @OfGroup(Schedule.class)
-    public Date getEndDate() {
+    public DateTime getEndDate() {
         return super.getEndDate();
     }
 
@@ -198,22 +199,22 @@ public class Employee
     public int getWorkYears() {
         // if (currentDate > resignedDate) reutrn resignedDate - employedDate
         // else return currentDate - employedDate
-        Date currentDate = new Date();
+        DateTime currentDate = new DateTime();
         Calendar current = Calendar.getInstance();
-        current.setTime(currentDate);
+        current.setTime(currentDate.toDate());
         Calendar resigned = Calendar.getInstance();
-        resigned.setTime(getResignedDate());
+        resigned.setTime(getResignedDate().toDate());
         Calendar employed = Calendar.getInstance();
-        employed.setTime(getEmployedDate());
+        employed.setTime(getEmployedDate().toDate());
 
         // 计算方法:
         // 月数之差=年份相减*12+月份之差
         // 工龄(年)=月数之差/12
 
-        Date resignedDate = getResignedDate();
+        DateTime resignedDate = getResignedDate();
         int months = 0;
 
-        if (resignedDate != null && currentDate.after(resignedDate)) {
+        if (resignedDate != null && currentDate.isAfter(resignedDate)) {
             months = (resigned.get(Calendar.YEAR) - employed.get(Calendar.YEAR)) * 12 //
                     + (resigned.get(Calendar.MONTH) - employed.get(Calendar.MONTH));
 

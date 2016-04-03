@@ -1,10 +1,11 @@
 package com.bee32.zebra.io.sales;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Table;
+
+import org.joda.time.DateTime;
 
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.meta.cache.Derived;
@@ -117,14 +118,14 @@ public class SalesOrder
     @DetailLevel(DetailLevel.HIDDEN)
     @Derived
     @Override
-    public Date getBeginDate() {
+    public DateTime getBeginDate() {
         return super.getBeginDate();
     }
 
     @DetailLevel(DetailLevel.HIDDEN)
     @Derived
     @Override
-    public Date getEndDate() {
+    public DateTime getEndDate() {
         return super.getEndDate();
     }
 
@@ -132,11 +133,11 @@ public class SalesOrder
      * 下单时间
      */
     @OfGroup(StdGroup.Schedule.class)
-    public Date getOrderTime() {
+    public DateTime getOrderTime() {
         return super.getBeginDate();
     }
 
-    public void setOrderTime(Date orderTime) {
+    public void setOrderTime(DateTime orderTime) {
         super.setBeginDate(orderTime);
     }
 
@@ -144,11 +145,11 @@ public class SalesOrder
      * 交货期限
      */
     @OfGroup(StdGroup.Schedule.class)
-    public Date getDeadline() {
+    public DateTime getDeadline() {
         return super.getEndDate();
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(DateTime deadline) {
         super.setEndDate(deadline);
     }
 

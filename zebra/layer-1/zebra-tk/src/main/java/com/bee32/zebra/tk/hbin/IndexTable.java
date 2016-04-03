@@ -163,7 +163,7 @@ public class IndexTable
             case 'a':
                 int mode = o.getAccessMode();
                 tr.td().text(mode).class_("small");
-                ref(tr.td(), o.getOwner()).class_("small");
+                ref(tr.td(), o.getOwnerUser()).class_("small");
                 ref(tr.td(), o.getOwnerGroup()).class_("small");
                 break;
 
