@@ -18,10 +18,10 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class PersonIndex_htm
-        extends SlimIndex_htm<PersonIndex, Person, PersonCriteria> {
+        extends SlimIndex_htm<PersonIndex, Person, PersonMask> {
 
     public PersonIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -31,30 +31,30 @@ public class PersonIndex_htm
     }
 
     @Override
-    protected PersonCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected PersonMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         PersonMapper mapper = ctx.query(PersonMapper.class);
-        PersonCriteria criteria = CriteriaBuilder.fromRequest(new PersonCriteria(), ctx.getRequest());
+        PersonMask mask = MaskBuilder.fromRequest(new PersonMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw1;
         sw1 = switchers.entryOf("类型", false, //
-                PartyType.list, "type", criteria.type, false);
-        criteria.type = sw1.getSelection1();
+                PartyType.list, "type", mask.type, false);
+        mask.type = sw1.getSelection1();
 
         SwitcherModel<String> sw2;
         sw2 = switchers.entryOf("姓氏", true, //
-                mapper.histoBySurname(), "surname", criteria.surname, false);
-        criteria.surname = sw2.getSelection1();
+                mapper.histoBySurname(), "surname", mask.surname, false);
+        mask.surname = sw2.getSelection1();
 
-        return criteria;
+        return mask;
     }
 
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Person> a, IUiRef<PersonIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         PersonMapper mapper = ctx.query(PersonMapper.class);
-        PersonCriteria criteria = ctx.query(PersonCriteria.class);
-        List<Person> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        PersonMask mask = ctx.query(PersonMask.class);
+        List<Person> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

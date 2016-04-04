@@ -21,9 +21,9 @@ public class PersonMapperTest {
     }
 
     @Test
-    public void testCountCriteria() {
-        PersonCriteria criteria = new PersonCriteria();
-        criteria.type = PartyType.SUPPLIER;
+    public void testCountMask() {
+        PersonMask mask = new PersonMask();
+        mask.type = PartyType.SUPPLIER;
         Map<String, Number> map = mapper.count(null);
         new MapDumper().dump(map);
     }

@@ -18,10 +18,10 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class OrganizationIndex_htm
-        extends SlimIndex_htm<OrganizationIndex, Organization, OrganizationCriteria> {
+        extends SlimIndex_htm<OrganizationIndex, Organization, OrganizationMask> {
 
     public OrganizationIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -31,16 +31,16 @@ public class OrganizationIndex_htm
     }
 
     @Override
-    protected OrganizationCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected OrganizationMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        OrganizationCriteria criteria = CriteriaBuilder.fromRequest(new OrganizationCriteria(), ctx.getRequest());
+        OrganizationMask mask = MaskBuilder.fromRequest(new OrganizationMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entryOf("类型", false, //
-                PartyType.list, "type", criteria.type, false);
-        criteria.type = sw.getSelection1();
+                PartyType.list, "type", mask.type, false);
+        mask.type = sw.getSelection1();
 
-        return criteria;
+        return mask;
     }
 
     @Override
@@ -48,8 +48,8 @@ public class OrganizationIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         OrganizationMapper mapper = ctx.query(OrganizationMapper.class);
-        OrganizationCriteria criteria = ctx.query(OrganizationCriteria.class);
-        List<Organization> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        OrganizationMask mask = ctx.query(OrganizationMask.class);
+        List<Organization> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -4,6 +4,6 @@ import com.bee32.zebra.oa.accnt.AccountingEntry;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface AccountingEntryMapper
-        extends FooMapper<AccountingEntry, AccountingEntryCriteria> {
+        extends FooMapper<AccountingEntry, AccountingEntryMask> {
 
 }

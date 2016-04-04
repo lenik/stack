@@ -4,6 +4,6 @@ import com.bee32.zebra.io.sales.SalesOrder;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface SalesOrderMapper
-        extends FooMapper<SalesOrder, SalesOrderCriteria> {
+        extends FooMapper<SalesOrder, SalesOrderMask> {
 
 }

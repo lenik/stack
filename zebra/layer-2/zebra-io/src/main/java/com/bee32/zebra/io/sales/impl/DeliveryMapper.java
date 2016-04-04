@@ -4,6 +4,6 @@ import com.bee32.zebra.io.sales.Delivery;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface DeliveryMapper
-        extends FooMapper<Delivery, DeliveryCriteria> {
+        extends FooMapper<Delivery, DeliveryMask> {
 
 }

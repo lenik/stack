@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class StockEntryIndex_htm
-        extends SlimIndex_htm<StockEntryIndex, StockEntry, StockEntryCriteria> {
+        extends SlimIndex_htm<StockEntryIndex, StockEntry, StockEntryMask> {
 
     public StockEntryIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +28,10 @@ public class StockEntryIndex_htm
     }
 
     @Override
-    protected StockEntryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected StockEntryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        StockEntryCriteria criteria = CriteriaBuilder.fromRequest(new StockEntryCriteria(), ctx.getRequest());
-        return criteria;
+        StockEntryMask mask = MaskBuilder.fromRequest(new StockEntryMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class StockEntryIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         StockEntryMapper mapper = ctx.query(StockEntryMapper.class);
-        StockEntryCriteria criteria = ctx.query(StockEntryCriteria.class);
-        List<StockEntry> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        StockEntryMask mask = ctx.query(StockEntryMask.class);
+        List<StockEntry> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

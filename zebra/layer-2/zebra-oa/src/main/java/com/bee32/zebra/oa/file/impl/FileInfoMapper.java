@@ -7,7 +7,7 @@ import com.bee32.zebra.tk.sql.FooMapper;
 import com.bee32.zebra.tk.util.F_YearCount;
 
 public interface FileInfoMapper
-        extends FooMapper<FileInfo, FileInfoCriteria> {
+        extends FooMapper<FileInfo, FileInfoMask> {
 
     List<F_YearCount> histoByYear();
 

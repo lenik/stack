@@ -1,13 +1,11 @@
 package com.bee32.zebra.oa.calendar;
 
-import java.util.List;
-
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.lily.model.base.IdType;
 import net.bodz.lily.model.base.schema.CategoryDef;
 import net.bodz.lily.model.base.schema.PhaseDef;
-import net.bodz.lily.model.base.schema.TagDef;
 import net.bodz.lily.model.base.security.User;
+import net.bodz.lily.model.mixin.TagSet;
 import net.bodz.lily.model.mx.base.CoMessage;
 
 /**
@@ -50,7 +48,7 @@ public class Diary
 
     @DetailLevel(DetailLevel.HIDDEN)
     @Override
-    public List<TagDef> getTags() {
+    public TagSet getTags() {
         return super.getTags();
     }
 

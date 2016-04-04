@@ -21,11 +21,11 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.site.PageStruct;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 import com.bee32.zebra.tk.util.Listing;
 
 public class ArtifactIndex_htm
-        extends SlimIndex_htm<ArtifactIndex, Artifact, ArtifactCriteria> {
+        extends SlimIndex_htm<ArtifactIndex, Artifact, ArtifactMask> {
 
     public ArtifactIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -43,25 +43,25 @@ public class ArtifactIndex_htm
     }
 
     @Override
-    protected ArtifactCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected ArtifactMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ArtifactCriteria criteria = CriteriaBuilder.fromRequest(new ArtifactCriteria(), ctx.getRequest());
+        ArtifactMask mask = MaskBuilder.fromRequest(new ArtifactMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw1;
         sw1 = switchers.entityOf("分类", false, //
-                ctx.query(ArtifactCategoryMapper.class).filter(ArtifactCategoryCriteria.below(1)), //
-                "cat", criteria.categoryId, criteria.noCategory);
-        criteria.categoryId = sw1.getSelection1();
-        criteria.noCategory = sw1.isSelectNull();
+                ctx.query(ArtifactCategoryMapper.class).filter(ArtifactCategoryMask.below(1)), //
+                "cat", mask.categoryId, mask.noCategory);
+        mask.categoryId = sw1.getSelection1();
+        mask.noCategory = sw1.isSelectNull();
 
         SwitcherModel<SupplyMethod> sw2;
         sw2 = switchers.entryOf("供应方式", true, //
                 Listing.pairsValLabel(SupplyMethod.METADATA.geLocalValues()), //
-                "supply", criteria.supplyMethod, criteria.noSupplyMethod);
-        criteria.supplyMethod = sw2.getSelection1();
-        criteria.noSupplyMethod = sw2.isSelectNull();
+                "supply", mask.supplyMethod, mask.noSupplyMethod);
+        mask.supplyMethod = sw2.getSelection1();
+        mask.noSupplyMethod = sw2.isSelectNull();
 
-        return criteria;
+        return mask;
     }
 
     @Override
@@ -69,8 +69,8 @@ public class ArtifactIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);
-        ArtifactCriteria criteria = ctx.query(ArtifactCriteria.class);
-        List<Artifact> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        ArtifactMask mask = ctx.query(ArtifactMask.class);
+        List<Artifact> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

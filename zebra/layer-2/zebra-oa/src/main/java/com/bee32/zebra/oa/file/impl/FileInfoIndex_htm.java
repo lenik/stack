@@ -12,21 +12,21 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.lily.model.base.schema.impl.TagDefCriteria;
+import net.bodz.lily.model.base.schema.impl.TagDefMask;
 import net.bodz.lily.model.base.schema.impl.TagDefMapper;
 
 import com.bee32.zebra.oa.file.FileInfo;
-import com.bee32.zebra.sys.TagSets;
+import com.bee32.zebra.sys.TagGroups;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 import com.bee32.zebra.tk.util.Listing;
 
 public class FileInfoIndex_htm
-        extends SlimIndex_htm<FileInfoIndex, FileInfo, FileInfoCriteria> {
+        extends SlimIndex_htm<FileInfoIndex, FileInfo, FileInfoMask> {
 
     public FileInfoIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -36,24 +36,24 @@ public class FileInfoIndex_htm
     }
 
     @Override
-    protected FileInfoCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected FileInfoMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
-        FileInfoCriteria criteria = CriteriaBuilder.fromRequest(new FileInfoCriteria(), ctx.getRequest());
+        FileInfoMask mask = MaskBuilder.fromRequest(new FileInfoMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("标签", true, //
-                ctx.query(TagDefMapper.class).filter(TagDefCriteria.forTagSet(TagSets.WJXX)), //
-                "tag", criteria.tagId, criteria.noTag);
-        criteria.tagId = sw.getSelection1();
-        criteria.noTag = sw.isSelectNull();
+                ctx.query(TagDefMapper.class).filter(TagDefMask.forTagGroup(TagGroups.WJXX)), //
+                "tag", mask.tagId, mask.noTag);
+        mask.tagId = sw.getSelection1();
+        mask.noTag = sw.isSelectNull();
 
         sw = switchers.entryOf("年份", true, //
-                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-        criteria.year = sw.getSelection1();
-        criteria.noYear = sw.isSelectNull();
+                mapper.histoByYear(), "year", mask.year, mask.noYear);
+        mask.year = sw.getSelection1();
+        mask.noYear = sw.isSelectNull();
 
-        return criteria;
+        return mask;
     }
 
     @Override
@@ -61,8 +61,8 @@ public class FileInfoIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
-        FileInfoCriteria criteria = ctx.query(FileInfoCriteria.class);
-        List<FileInfo> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        FileInfoMask mask = ctx.query(FileInfoMask.class);
+        List<FileInfo> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.addDetailFields("description", "dirName", "baseName", "tags", "downloads");

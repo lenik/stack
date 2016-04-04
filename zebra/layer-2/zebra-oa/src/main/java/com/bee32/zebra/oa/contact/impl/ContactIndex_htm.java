@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class ContactIndex_htm
-        extends SlimIndex_htm<ContactIndex, Contact, ContactCriteria> {
+        extends SlimIndex_htm<ContactIndex, Contact, ContactMask> {
 
     public static final String[] FIELDS = { "priority", "rename", "usage",
             // "region",
@@ -32,10 +32,10 @@ public class ContactIndex_htm
     }
 
     @Override
-    protected ContactCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected ContactMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ContactCriteria criteria = CriteriaBuilder.fromRequest(new ContactCriteria(), ctx.getRequest());
-        return criteria;
+        ContactMask mask = MaskBuilder.fromRequest(new ContactMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -43,8 +43,8 @@ public class ContactIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         ContactMapper mapper = ctx.query(ContactMapper.class);
-        ContactCriteria criteria = ctx.query(ContactCriteria.class);
-        List<Contact> list = postfilt(mapper.filter(criteria));
+        ContactMask mask = ctx.query(ContactMask.class);
+        List<Contact> list = postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

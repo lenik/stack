@@ -4,6 +4,6 @@ import com.bee32.zebra.erp.fab.FabOpCode;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface FabOpCodeMapper
-        extends FooMapper<FabOpCode, FabOpCodeCriteria> {
+        extends FooMapper<FabOpCode, FabOpCodeMask> {
 
 }

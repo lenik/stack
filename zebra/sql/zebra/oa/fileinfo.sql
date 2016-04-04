@@ -49,19 +49,19 @@
     create index fileinfo_t1            on fileinfo(t1);
     create index fileinfo_uid_acl       on fileinfo(uid, acl);
 
-    create sequence fileatt_seq;
-    create table fileatt(
-        id          int primary key default nextval('fileatt_seq'),
+    create sequence file_parm_seq;
+    create table file_parm(
+        id          int primary key default nextval('file_parm_seq'),
 
         file        int not null
             references fileinfo(id) on update cascade on delete cascade,
 
-        att         int not null
-            references att(id) on update cascade on delete cascade,
+        parm         int not null
+            references parm(id) on update cascade on delete cascade,
 
         val         varchar(200),
 
-        constraint fileatt_uk unique(file, att)
+        constraint file_parm_uk unique(file, parm)
     );
 
 -- drop table if exists filetag;

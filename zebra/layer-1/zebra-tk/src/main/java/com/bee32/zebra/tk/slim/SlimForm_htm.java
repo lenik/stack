@@ -139,7 +139,7 @@ public abstract class SlimForm_htm<T extends CoObject>
 
             String tablename = TableUtils.tablename(type);
             FnMapper fnMapper = ctx.query(FnMapper.class);
-            // FIXME consider access control and criteria.
+            // FIXME consider access control and mask.
             PrevNext prevNext = fnMapper.prevNext("public", tablename, //
                     id == null ? Integer.MAX_VALUE : id.longValue());
             if (prevNext == null)

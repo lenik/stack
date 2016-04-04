@@ -48,19 +48,19 @@
         description varchar(60)
     );
 
-    create sequence topicatt_seq;
-    create table topicatt(
-        id          int primary key default nextval('topicatt_seq'),
+    create sequence topic_parm_seq;
+    create table topic_parm(
+        id          int primary key default nextval('topic_parm_seq'),
 
         topic       int not null
             references topic(id) on update cascade on delete cascade,
 
-        att         int not null
-            references att(id) on update cascade on delete cascade,
+        parm        int not null
+            references parm(id) on update cascade on delete cascade,
 
         val         varchar(200),
 
-        constraint topicatt_uk unique(topic, att)
+        constraint topic_parm_uk unique(topic, parm)
     );
 
     create sequence topictag_seq;

@@ -9,12 +9,12 @@ import com.bee32.zebra.tk.util.F_Log;
 import com.bee32.zebra.tk.util.F_YearCount;
 
 public interface DiaryMapper
-        extends FooMapper<Diary, DiaryCriteria> {
+        extends FooMapper<Diary, DiaryMask> {
 
     List<F_YearCount> histoByYear();
 
-    List<F_DateCount> logHisto(DiaryCriteria criteria);
+    List<F_DateCount> logHisto(DiaryMask mask);
 
-    List<F_Log> log(DiaryCriteria criteria);
+    List<F_Log> log(DiaryMask mask);
 
 }

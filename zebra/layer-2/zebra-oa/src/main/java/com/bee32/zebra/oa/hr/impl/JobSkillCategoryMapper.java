@@ -4,6 +4,6 @@ import com.bee32.zebra.oa.hr.JobSkillCategory;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface JobSkillCategoryMapper
-        extends FooMapper<JobSkillCategory, JobSkillCategoryCriteria> {
+        extends FooMapper<JobSkillCategory, JobSkillCategoryMask> {
 
 }

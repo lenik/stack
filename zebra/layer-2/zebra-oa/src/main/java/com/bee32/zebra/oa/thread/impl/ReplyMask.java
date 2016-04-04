@@ -1,0 +1,47 @@
+package com.bee32.zebra.oa.thread.impl;
+
+import net.bodz.bas.err.ParseException;
+import net.bodz.lily.model.mx.base.CoMessageMask;
+import net.bodz.lily.model.sea.QVariantMap;
+
+public class ReplyMask
+        extends CoMessageMask {
+
+    public Integer topicId;
+    public Integer parentId;
+    public Integer partyId;
+
+    public Integer getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(Integer topicId) {
+        this.topicId = topicId;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getPartyId() {
+        return partyId;
+    }
+
+    public void setPartyId(Integer partyId) {
+        this.partyId = partyId;
+    }
+
+    @Override
+    protected void populate(QVariantMap<String> map)
+            throws ParseException {
+        super.populate(map);
+        topicId = map.getInt("topic", topicId);
+        parentId = map.getInt("parent", parentId);
+        partyId = map.getInt("party", partyId);
+    }
+
+}

@@ -21,7 +21,7 @@ import net.bodz.lily.model.base.security.LoginContext;
 import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
-import com.bee32.zebra.oa.accnt.impl.AccountingEventCriteria;
+import com.bee32.zebra.oa.accnt.impl.AccountingEventMask;
 import com.bee32.zebra.oa.accnt.impl.AccountingEventMapper;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Reply;
@@ -118,11 +118,11 @@ public class Topic_htm
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 
-        AccountingEventCriteria criteria = new AccountingEventCriteria();
-        criteria.topicId = topic.getId();
+        AccountingEventMask mask = new AccountingEventMask();
+        mask.topicId = topic.getId();
 
         AccountingEventMapper eventMapper = ctx.query(AccountingEventMapper.class);
-        List<AccountingEvent> events = eventMapper.filter(criteria);
+        List<AccountingEvent> events = eventMapper.filter(mask);
 
         DataTable tab = new DataTable(out).id("acdocs");
         tab.head.th().text("凭证");
@@ -133,7 +133,7 @@ public class Topic_htm
         tab.head.th().text("记账");
 
         for (AccountingEvent event : events) {
-            FormDef form = event.getForm();
+            FormDef form = event.getForm().getDef();
             HtmlTrTag tr = tab.body.tr();
 
             tr.id("acdoc-" + event.getId());
@@ -151,18 +151,18 @@ public class Topic_htm
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 
-        ReplyCriteria criteria = new ReplyCriteria();
-        criteria.topicId = topic.getId();
+        ReplyMask mask = new ReplyMask();
+        mask.topicId = topic.getId();
 
         ReplyMapper replyMapper = ctx.query(ReplyMapper.class);
-        List<Reply> replies = replyMapper.filter(criteria);
+        List<Reply> replies = replyMapper.filter(mask);
 
         out.div().id("reply-tree");
         for (Reply reply : replies) {
             HtmlDivTag div = out.div().id("reply-" + reply.getId()).class_("zu-reply");
 
             HtmlDivTag mesg = div.div().class_("zu-message");
-            mesg.span().class_("zu-nvote").text(reply.getVoteCount());
+            mesg.span().class_("zu-nvote").text(reply.getClickInfo().getVoteCount());
             mesg.text(reply.getText());
 
             List<Person> parties = reply.getParties();

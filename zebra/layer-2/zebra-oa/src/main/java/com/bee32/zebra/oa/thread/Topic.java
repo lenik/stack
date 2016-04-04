@@ -34,7 +34,7 @@ public class Topic
         super.instantiate();
         setAccessMode(M_COOP);
         parties = new ArrayList<TopicParty>();
-        replies = new ArrayList<>();
+        replies = new ArrayList<Reply>();
     }
 
     /**

@@ -41,7 +41,7 @@ import net.bodz.bas.std.rfc.mime.ContentTypes;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.bas.xml.dom.XmlTags;
 import net.bodz.lily.model.base.CoObject;
-import net.bodz.lily.model.base.CoObjectCriteria;
+import net.bodz.lily.model.base.CoObjectMask;
 import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
@@ -67,7 +67,7 @@ import com.bee32.zebra.tk.stat.impl.ValueDistribMapper;
 import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.Table2JsonFormatter;
 
-public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
+public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
         extends AbstractHtmlViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
@@ -123,8 +123,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         HtmlDoc doc = ctx.getHtmlDoc();
 
         SwitcherModelGroup switchers = new SwitcherModelGroup();
-        CoObjectCriteria criteria = buildSwitchers(ctx, switchers);
-        ctx.getRequest().setAttribute(criteria.getClass().getName(), criteria);
+        CoObjectMask mask = buildSwitchers(ctx, switchers);
+        ctx.getRequest().setAttribute(mask.getClass().getName(), mask);
 
         if (index.format == QuickIndexFormat.JSON) {
             PrintWriter writer = ctx.getResponse().getWriter();
@@ -215,13 +215,13 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         return out;
     }
 
-    protected abstract CoObjectCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected abstract CoObjectMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException;
 
     protected void titleInfo(IHtmlViewContext ctx, IUiRef<X> ref, boolean indexPage) {
         X manager = ref.get();
         Class<?> objectType = manager.getObjectType();
-        IMapperTemplate<?, C> mapper = MapperUtil.getMapperTemplate(objectType);
+        IMapperTemplate<?, M> mapper = MapperUtil.getMapperTemplate(objectType);
 
         PageStruct p = new PageStruct(ctx.getHtmlDoc());
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
@@ -232,12 +232,12 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, C>
         HtmlPTag subTitle = p.title.p().class_("sub");
         subTitle.verbatim(Nullables.toString(docText.getHeadPar()));
 
-        Class<C> criteriaClass = (Class<C>) CoObjectCriteria.findCriteriaClass(objectType);
-        if (criteriaClass == null)
-            throw new IllegalUsageException("No criteria for " + objectType);
-        C criteria = ctx.query(criteriaClass);
+        Class<M> maskClass = (Class<M>) CoObjectMask.findMaskClass(objectType);
+        if (maskClass == null)
+            throw new IllegalUsageException("No mask for " + objectType);
+        M mask = ctx.query(maskClass);
 
-        Map<String, Number> countMap = mapper.count(criteria);
+        Map<String, Number> countMap = mapper.count(mask);
         HtmlUlTag statUl = p.stat.ul();
         for (String key : countMap.keySet()) {
             String name = Counters.displayName(key);

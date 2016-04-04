@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class JobSkillCategoryIndex_htm
-        extends SlimIndex_htm<JobSkillCategoryIndex, JobSkillCategory, JobSkillCategoryCriteria> {
+        extends SlimIndex_htm<JobSkillCategoryIndex, JobSkillCategory, JobSkillCategoryMask> {
 
     public JobSkillCategoryIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +28,10 @@ public class JobSkillCategoryIndex_htm
     }
 
     @Override
-    protected JobSkillCategoryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected JobSkillCategoryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        JobSkillCategoryCriteria criteria = CriteriaBuilder.fromRequest(new JobSkillCategoryCriteria(), ctx.getRequest());
-        return criteria;
+        JobSkillCategoryMask mask = MaskBuilder.fromRequest(new JobSkillCategoryMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class JobSkillCategoryIndex_htm
             IUiRef<JobSkillCategoryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         JobSkillCategoryMapper mapper = ctx.query(JobSkillCategoryMapper.class);
-        JobSkillCategoryCriteria criteria = ctx.query(JobSkillCategoryCriteria.class);
-        List<JobSkillCategory> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        JobSkillCategoryMask mask = ctx.query(JobSkillCategoryMask.class);
+        List<JobSkillCategory> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

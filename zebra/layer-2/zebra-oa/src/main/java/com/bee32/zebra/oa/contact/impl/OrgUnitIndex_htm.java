@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class OrgUnitIndex_htm
-        extends SlimIndex_htm<OrgUnitIndex, OrgUnit, OrgUnitCriteria> {
+        extends SlimIndex_htm<OrgUnitIndex, OrgUnit, OrgUnitMask> {
 
     public OrgUnitIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +28,10 @@ public class OrgUnitIndex_htm
     }
 
     @Override
-    protected OrgUnitCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected OrgUnitMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        OrgUnitCriteria criteria = CriteriaBuilder.fromRequest(new OrgUnitCriteria(), ctx.getRequest());
-        return criteria;
+        OrgUnitMask mask = MaskBuilder.fromRequest(new OrgUnitMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class OrgUnitIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         OrgUnitMapper mapper = ctx.query(OrgUnitMapper.class);
-        OrgUnitCriteria criteria = ctx.query(OrgUnitCriteria.class);
-        List<OrgUnit> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        OrgUnitMask mask = ctx.query(OrgUnitMask.class);
+        List<OrgUnit> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

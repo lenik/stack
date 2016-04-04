@@ -13,9 +13,9 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.lily.model.base.schema.impl.CategoryDefCriteria;
+import net.bodz.lily.model.base.schema.impl.CategoryDefMask;
 import net.bodz.lily.model.base.schema.impl.CategoryDefMapper;
-import net.bodz.lily.model.base.schema.impl.PhaseDefCriteria;
+import net.bodz.lily.model.base.schema.impl.PhaseDefMask;
 import net.bodz.lily.model.base.schema.impl.PhaseDefMapper;
 
 import com.bee32.zebra.oa.thread.Topic;
@@ -29,10 +29,10 @@ import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.stat.MonthTrends;
 import com.bee32.zebra.tk.stat.ValueDistrib;
 import com.bee32.zebra.tk.stat.impl.MonthTrendsMapper;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class TopicIndex_htm
-        extends SlimIndex_htm<TopicIndex, Topic, TopicCriteria> {
+        extends SlimIndex_htm<TopicIndex, Topic, TopicMask> {
 
     public TopicIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -41,41 +41,41 @@ public class TopicIndex_htm
     }
 
     @Override
-    protected TopicCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected TopicMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
-        TopicCriteria criteria = CriteriaBuilder.fromRequest(new TopicCriteria(), ctx.getRequest());
+        TopicMask mask = MaskBuilder.fromRequest(new TopicMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("分类", true, //
-                ctx.query(CategoryDefMapper.class).filter(CategoryDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
-                "cat", criteria.categoryId, criteria.noCategory);
-        criteria.categoryId = sw.getSelection1();
-        criteria.noCategory = sw.isSelectNull();
+                ctx.query(CategoryDefMapper.class).filter(CategoryDefMask.forSchema(Schemas.OPPORTUNITY)), //
+                "cat", mask.categoryId, mask.noCategory);
+        mask.categoryId = sw.getSelection1();
+        mask.noCategory = sw.isSelectNull();
 
         sw = switchers.entityOf("阶段", true, //
-                ctx.query(PhaseDefMapper.class).filter(PhaseDefCriteria.forSchema(Schemas.OPPORTUNITY)), //
-                "phase", criteria.phaseId, criteria.noPhase);
-        criteria.phaseId = sw.getSelection1();
-        criteria.noPhase = sw.isSelectNull();
+                ctx.query(PhaseDefMapper.class).filter(PhaseDefMask.forSchema(Schemas.OPPORTUNITY)), //
+                "phase", mask.phaseId, mask.noPhase);
+        mask.phaseId = sw.getSelection1();
+        mask.noPhase = sw.isSelectNull();
 
         // HtmlDivTag valDiv = out.div().text("金额：");
         // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
 
         sw = switchers.entryOf("年份", true, //
-                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-        criteria.year = sw.getSelection1();
-        criteria.noYear = sw.isSelectNull();
+                mapper.histoByYear(), "year", mask.year, mask.noYear);
+        mask.year = sw.getSelection1();
+        mask.noYear = sw.isSelectNull();
 
-        return criteria;
+        return mask;
     }
 
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
-        TopicCriteria criteria = ctx.query(TopicCriteria.class);
-        List<Topic> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        TopicMask mask = ctx.query(TopicMask.class);
+        List<Topic> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -47,20 +47,20 @@
         description varchar(60)
     );
 
--- drop table if exists replyatt;
-    create sequence replyatt_seq;
-    create table replyatt(
-        id          int primary key default nextval('replyatt_seq'),
+-- drop table if exists reply_parm;
+    create sequence reply_parm_seq;
+    create table reply_parm(
+        id          int primary key default nextval('reply_parm_seq'),
 
         reply       int not null
             references reply(id) on update cascade on delete cascade,
 
-        att         int not null
-            references att(id) on update cascade on delete cascade,
+        parm        int not null
+            references parm(id) on update cascade on delete cascade,
 
         val         varchar(200),
 
-        constraint replyatt_uk unique(reply, att)
+        constraint reply_parm_uk unique(reply, parm)
     );
 
 -- drop table if exists replytag;

@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class ArtifactCategoryIndex_htm
-        extends SlimIndex_htm<ArtifactCategoryIndex, ArtifactCategory, ArtifactCategoryCriteria> {
+        extends SlimIndex_htm<ArtifactCategoryIndex, ArtifactCategory, ArtifactCategoryMask> {
 
     public ArtifactCategoryIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +28,10 @@ public class ArtifactCategoryIndex_htm
     }
 
     @Override
-    protected ArtifactCategoryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected ArtifactCategoryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ArtifactCategoryCriteria criteria = CriteriaBuilder.fromRequest(new ArtifactCategoryCriteria(), ctx.getRequest());
-        return criteria;
+        ArtifactCategoryMask mask = MaskBuilder.fromRequest(new ArtifactCategoryMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class ArtifactCategoryIndex_htm
             IUiRef<ArtifactCategoryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         ArtifactCategoryMapper mapper = ctx.query(ArtifactCategoryMapper.class);
-        ArtifactCategoryCriteria criteria = ctx.query(ArtifactCategoryCriteria.class);
-        List<ArtifactCategory> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        ArtifactCategoryMask mask = ctx.query(ArtifactCategoryMask.class);
+        List<ArtifactCategory> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

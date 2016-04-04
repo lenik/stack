@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class FabOpCodeIndex_htm
-        extends SlimIndex_htm<FabOpCodeIndex, FabOpCode, FabOpCodeCriteria> {
+        extends SlimIndex_htm<FabOpCodeIndex, FabOpCode, FabOpCodeMask> {
 
     public FabOpCodeIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +28,10 @@ public class FabOpCodeIndex_htm
     }
 
     @Override
-    protected FabOpCodeCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected FabOpCodeMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        FabOpCodeCriteria criteria = CriteriaBuilder.fromRequest(new FabOpCodeCriteria(), ctx.getRequest());
-        return criteria;
+        FabOpCodeMask mask = MaskBuilder.fromRequest(new FabOpCodeMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class FabOpCodeIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         FabOpCodeMapper mapper = ctx.query(FabOpCodeMapper.class);
-        FabOpCodeCriteria criteria = ctx.query(FabOpCodeCriteria.class);
-        List<FabOpCode> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        FabOpCodeMask mask = ctx.query(FabOpCodeMask.class);
+        List<FabOpCode> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

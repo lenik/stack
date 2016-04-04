@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class SalesOrderIndex_htm
-        extends SlimIndex_htm<SalesOrderIndex, SalesOrder, SalesOrderCriteria> {
+        extends SlimIndex_htm<SalesOrderIndex, SalesOrder, SalesOrderMask> {
 
     public SalesOrderIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +28,10 @@ public class SalesOrderIndex_htm
     }
 
     @Override
-    protected SalesOrderCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected SalesOrderMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        SalesOrderCriteria criteria = CriteriaBuilder.fromRequest(new SalesOrderCriteria(), ctx.getRequest());
-        return criteria;
+        SalesOrderMask mask = MaskBuilder.fromRequest(new SalesOrderMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class SalesOrderIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         SalesOrderMapper mapper = ctx.query(SalesOrderMapper.class);
-        SalesOrderCriteria criteria = ctx.query(SalesOrderCriteria.class);
-        List<SalesOrder> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        SalesOrderMask mask = ctx.query(SalesOrderMask.class);
+        List<SalesOrder> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -145,8 +145,8 @@ set constraints all deferred;
             c.role "description"
         from old.chance_party c left join old.party p on c.party = p.id;
 
-    insert into topicatt(topic, att, val)               -- att 1: addr
-        select id "topic", 1 "att", address "val"
+    insert into topic_parm(topic, parm, val)               -- parm 1: addr
+        select id "topic", 1 "parm", address "val"
             from old.chance where address is not null and address <> '';
 
     insert into topictag(topic, tag)
@@ -193,7 +193,7 @@ set constraints all deferred;
             where chance is not null
                 and case a.style when 'FACE' then 'f2f' else null end = tag.code;
 
-    insert into replyatt(reply, att, val)               -- att 2: cost
+    insert into reply_parm(reply, parm, val)               -- parm 2: cost
         select id, 2, spending from old.chance_action
             where chance is not null
                 and trim(spending) <> '';

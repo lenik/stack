@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class AccountingEntryIndex_htm
-        extends SlimIndex_htm<AccountingEntryIndex, AccountingEntry, AccountingEntryCriteria> {
+        extends SlimIndex_htm<AccountingEntryIndex, AccountingEntry, AccountingEntryMask> {
 
     public static final String[] FIELDS = { "event", "account", "side", "absValue" };
 
@@ -30,10 +30,10 @@ public class AccountingEntryIndex_htm
     }
 
     @Override
-    protected AccountingEntryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected AccountingEntryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        AccountingEntryCriteria criteria = CriteriaBuilder.fromRequest(new AccountingEntryCriteria(), ctx.getRequest());
-        return criteria;
+        AccountingEntryMask mask = MaskBuilder.fromRequest(new AccountingEntryMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -41,8 +41,8 @@ public class AccountingEntryIndex_htm
             IUiRef<AccountingEntryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEntryMapper mapper = ctx.query(AccountingEntryMapper.class);
-        AccountingEntryCriteria criteria = ctx.query(AccountingEntryCriteria.class);
-        List<AccountingEntry> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        AccountingEntryMask mask = ctx.query(AccountingEntryMask.class);
+        List<AccountingEntry> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

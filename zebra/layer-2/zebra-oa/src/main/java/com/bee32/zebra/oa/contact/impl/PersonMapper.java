@@ -7,7 +7,7 @@ import com.bee32.zebra.tk.sql.FooMapper;
 import com.bee32.zebra.tk.util.F_WordCount;
 
 public interface PersonMapper
-        extends FooMapper<Person, PersonCriteria> {
+        extends FooMapper<Person, PersonMask> {
 
     List<F_WordCount> histoBySurname();
 

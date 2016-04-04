@@ -11,8 +11,8 @@ public interface LogEntryMapper
 
     List<LogEntry> all();
 
-    List<LogEntry> filter(LogEntryCriteria criteria);
+    List<LogEntry> filter(LogEntryMask mask);
 
-    List<Integer> years(LogEntryCriteria criteria);
+    List<Integer> years(LogEntryMask mask);
 
 }

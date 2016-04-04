@@ -4,6 +4,6 @@ import com.bee32.zebra.erp.fab.FabDevice;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface FabDeviceMapper
-        extends FooMapper<FabDevice, FabDeviceCriteria> {
+        extends FooMapper<FabDevice, FabDeviceMask> {
 
 }

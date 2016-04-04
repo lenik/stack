@@ -19,10 +19,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class DeliveryItemIndex_htm
-        extends SlimIndex_htm<DeliveryItemIndex, DeliveryItem, DeliveryItemCriteria> {
+        extends SlimIndex_htm<DeliveryItemIndex, DeliveryItem, DeliveryItemMask> {
 
     public static final String[] FIELDS = { //
     // "delivery", //
@@ -38,10 +38,10 @@ public class DeliveryItemIndex_htm
     }
 
     @Override
-    protected DeliveryItemCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected DeliveryItemMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        DeliveryItemCriteria criteria = CriteriaBuilder.fromRequest(new DeliveryItemCriteria(), ctx.getRequest());
-        return criteria;
+        DeliveryItemMask mask = MaskBuilder.fromRequest(new DeliveryItemMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class DeliveryItemIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         DeliveryItemMapper mapper = ctx.query(DeliveryItemMapper.class);
-        DeliveryItemCriteria criteria = ctx.query(DeliveryItemCriteria.class);
-        List<DeliveryItem> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        DeliveryItemMask mask = ctx.query(DeliveryItemMask.class);
+        List<DeliveryItem> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

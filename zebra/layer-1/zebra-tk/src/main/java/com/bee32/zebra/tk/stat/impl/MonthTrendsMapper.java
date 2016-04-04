@@ -13,7 +13,7 @@ public interface MonthTrendsMapper
 
     List<MonthTrends> all(@Param("table") String table, @Param("field") String groupField);
 
-    List<MonthTrends> filter(MonthTrendsCriteria criteria);
+    List<MonthTrends> filter(MonthTrendsMask mask);
 
     List<MonthTrends> sum1(@Param("table") String table, @Param("field") String groupField,
             @Param("field_1") String field1);

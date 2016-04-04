@@ -11,7 +11,7 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.lily.model.base.schema.impl.FormDefCriteria;
+import net.bodz.lily.model.base.schema.impl.FormDefMask;
 import net.bodz.lily.model.base.schema.impl.FormDefMapper;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
@@ -22,10 +22,10 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class AccountingEventIndex_htm
-        extends SlimIndex_htm<AccountingEventIndex, AccountingEvent, AccountingEventCriteria> {
+        extends SlimIndex_htm<AccountingEventIndex, AccountingEvent, AccountingEventMask> {
 
     public AccountingEventIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -35,27 +35,27 @@ public class AccountingEventIndex_htm
     }
 
     @Override
-    protected AccountingEventCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected AccountingEventMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
 
-        AccountingEventCriteria criteria = CriteriaBuilder.fromRequest(new AccountingEventCriteria(), ctx.getRequest());
+        AccountingEventMask mask = MaskBuilder.fromRequest(new AccountingEventMask(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("表单", true, //
-                ctx.query(FormDefMapper.class).filter(FormDefCriteria.forSchema(Schemas.ACCOUNTING)), //
-                "form", criteria.formId, criteria.noForm);
-        criteria.formId = sw.getSelection1();
-        criteria.noForm = sw.isSelectNull();
+                ctx.query(FormDefMapper.class).filter(FormDefMask.forSchema(Schemas.ACCOUNTING)), //
+                "form", mask.formId, mask.noForm);
+        mask.formId = sw.getSelection1();
+        mask.noForm = sw.isSelectNull();
 
         // HtmlDivTag valDiv = out.div().text("金额：");
         // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
 
         sw = switchers.entryOf("年份", false, //
-                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-        criteria.year = sw.getSelection1();
-        criteria.noYear = sw.isSelectNull();
+                mapper.histoByYear(), "year", mask.year, mask.noYear);
+        mask.year = sw.getSelection1();
+        mask.noYear = sw.isSelectNull();
 
-        return criteria;
+        return mask;
     }
 
     @Override
@@ -63,8 +63,8 @@ public class AccountingEventIndex_htm
             IUiRef<AccountingEventIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
-        AccountingEventCriteria criteria = ctx.query(AccountingEventCriteria.class);
-        List<AccountingEvent> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        AccountingEventMask mask = ctx.query(AccountingEventMask.class);
+        List<AccountingEvent> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -4,8 +4,8 @@
         select *,
             array(select tag || ':' || tag.label
                 from replytag a left join tag on a.tag=tag.id where a.reply=reply.id) tags,
-            array(select att || ':' || att.label || '=' || a.val
-                from replyatt a left join att on a.att=att.id where a.reply=reply.id) atts
+            array(select parm || ':' || parm.label || '=' || a.val
+                from reply_parm a left join parm on a.parm=parm.id where a.reply=reply.id) parms
         from reply;
 
     create or replace view v_replytags as

@@ -31,7 +31,7 @@ import com.bee32.zebra.oa.calendar.LogEntry;
 import com.bee32.zebra.oa.calendar.LogSelector;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.slim.SlimForm0_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class LogSelector_htm
         extends SlimForm0_htm<LogSelector>
@@ -49,11 +49,11 @@ public class LogSelector_htm
         int uid = login == null ? -1 : login.user.getId();
 
         LogSelector selector = ref.get();
-        LogEntryCriteria criteria = CriteriaBuilder.fromRequest(new LogEntryCriteria(), ctx.getRequest());
-        criteria.setDateRange(DateRange.minMax(selector.getStart(), selector.getEnd()));
+        LogEntryMask mask = MaskBuilder.fromRequest(new LogEntryMask(), ctx.getRequest());
+        mask.setDateRange(DateRange.minMax(selector.getStart(), selector.getEnd()));
 
         Map<Integer, LogEntryGroup> dayLegs = new TreeMap<>();
-        List<LogEntry> logs = mapper.filter(criteria);
+        List<LogEntry> logs = mapper.filter(mask);
         for (LogEntry log : logs) {
             int day = new DateTime(log.getDate()).getDayOfMonth();
 

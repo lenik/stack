@@ -17,11 +17,11 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 import com.bee32.zebra.tk.util.Listing;
 
 public class UOMIndex_htm
-        extends SlimIndex_htm<UOMIndex, UOM, UOMCriteria> {
+        extends SlimIndex_htm<UOMIndex, UOM, UOMMask> {
 
     public UOMIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -30,26 +30,26 @@ public class UOMIndex_htm
     }
 
     @Override
-    protected UOMCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected UOMMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        UOMCriteria criteria = CriteriaBuilder.fromRequest(new UOMCriteria(), ctx.getRequest());
+        UOMMask mask = MaskBuilder.fromRequest(new UOMMask(), ctx.getRequest());
 
         SwitcherModel<String> sw;
         sw = switchers.entryOf("属性", true, //
                 Listing.pairsValString("数量", "长度", "质量"), //
-                "property", criteria.property, criteria.noProperty);
-        criteria.property = sw.getSelection1();
-        criteria.noProperty = sw.isSelectNull();
+                "property", mask.property, mask.noProperty);
+        mask.property = sw.getSelection1();
+        mask.noProperty = sw.isSelectNull();
 
-        return criteria;
+        return mask;
     }
 
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<UOM> a, IUiRef<UOMIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UOMMapper mapper = ctx.query(UOMMapper.class);
-        UOMCriteria criteria = ctx.query(UOMCriteria.class);
-        List<UOM> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        UOMMask mask = ctx.query(UOMMask.class);
+        List<UOM> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

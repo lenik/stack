@@ -11,7 +11,7 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.CategoryDef;
-import net.bodz.lily.model.base.schema.impl.CategoryDefCriteria;
+import net.bodz.lily.model.base.schema.impl.CategoryDefMask;
 import net.bodz.lily.model.base.schema.impl.CategoryDefMapper;
 import net.bodz.lily.model.base.schema.impl.SchemaDefMapper;
 
@@ -20,10 +20,10 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class CategoryDefIndex_htm
-        extends SlimIndex_htm<CategoryDefIndex, CategoryDef, CategoryDefCriteria> {
+        extends SlimIndex_htm<CategoryDefIndex, CategoryDef, CategoryDefMask> {
 
     public CategoryDefIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -32,17 +32,17 @@ public class CategoryDefIndex_htm
     }
 
     @Override
-    protected CategoryDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected CategoryDefMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        CategoryDefCriteria criteria = CriteriaBuilder.fromRequest(new CategoryDefCriteria(), ctx.getRequest());
+        CategoryDefMask mask = MaskBuilder.fromRequest(new CategoryDefMask(), ctx.getRequest());
 
         SwitcherModel<Integer> so;
         so = switchers.entityOf("模式", false, //
                 ctx.query(SchemaDefMapper.class).all(), //
-                "schema", criteria.schemaId, false);
-        criteria.schemaId = so.getSelection1();
+                "schema", mask.schemaId, false);
+        mask.schemaId = so.getSelection1();
 
-        return criteria;
+        return mask;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class CategoryDefIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         CategoryDefMapper mapper = ctx.query(CategoryDefMapper.class);
-        CategoryDefCriteria criteria = ctx.query(CategoryDefCriteria.class);
-        List<CategoryDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        CategoryDefMask mask = ctx.query(CategoryDefMask.class);
+        List<CategoryDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

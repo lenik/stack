@@ -8,7 +8,7 @@ import com.bee32.zebra.tk.stat.ValueDistrib;
 import com.bee32.zebra.tk.util.F_YearCount;
 
 public interface TopicMapper
-        extends FooMapper<Topic, TopicCriteria> {
+        extends FooMapper<Topic, TopicMask> {
 
     List<F_YearCount> histoByYear();
 

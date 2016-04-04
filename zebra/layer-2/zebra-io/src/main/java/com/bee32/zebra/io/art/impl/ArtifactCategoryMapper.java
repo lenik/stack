@@ -4,6 +4,6 @@ import com.bee32.zebra.io.art.ArtifactCategory;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface ArtifactCategoryMapper
-        extends FooMapper<ArtifactCategory, ArtifactCategoryCriteria> {
+        extends FooMapper<ArtifactCategory, ArtifactCategoryMask> {
 
 }

@@ -55,7 +55,7 @@ public class Person
     /**
      * 性别
      * 
-     * @TODO view builder criteria.
+     * @TODO view builder mask.
      */
     @ViewCriteria("radio")
     @OfGroup(StdGroup.Classification.class)

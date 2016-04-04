@@ -11,17 +11,17 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.base.security.impl.UserCriteria;
+import net.bodz.lily.model.base.security.impl.UserMask;
 import net.bodz.lily.model.base.security.impl.UserMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class UserIndex_htm
-        extends SlimIndex_htm<UserIndex, User, UserCriteria> {
+        extends SlimIndex_htm<UserIndex, User, UserMask> {
 
     public UserIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -31,18 +31,18 @@ public class UserIndex_htm
     }
 
     @Override
-    protected UserCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected UserMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        UserCriteria criteria = CriteriaBuilder.fromRequest(new UserCriteria(), ctx.getRequest());
-        return criteria;
+        UserMask mask = MaskBuilder.fromRequest(new UserMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         UserMapper mapper = ctx.query(UserMapper.class);
-        UserCriteria criteria = ctx.query(UserCriteria.class);
-        List<User> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        UserMask mask = ctx.query(UserMask.class);
+        List<User> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

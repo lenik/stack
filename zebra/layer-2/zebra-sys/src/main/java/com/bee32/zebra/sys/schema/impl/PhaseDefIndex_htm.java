@@ -11,7 +11,7 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.PhaseDef;
-import net.bodz.lily.model.base.schema.impl.PhaseDefCriteria;
+import net.bodz.lily.model.base.schema.impl.PhaseDefMask;
 import net.bodz.lily.model.base.schema.impl.PhaseDefMapper;
 import net.bodz.lily.model.base.schema.impl.SchemaDefMapper;
 
@@ -20,10 +20,10 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class PhaseDefIndex_htm
-        extends SlimIndex_htm<PhaseDefIndex, PhaseDef, PhaseDefCriteria> {
+        extends SlimIndex_htm<PhaseDefIndex, PhaseDef, PhaseDefMask> {
 
     public PhaseDefIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -32,17 +32,17 @@ public class PhaseDefIndex_htm
     }
 
     @Override
-    protected PhaseDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected PhaseDefMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PhaseDefCriteria criteria = CriteriaBuilder.fromRequest(new PhaseDefCriteria(), ctx.getRequest());
+        PhaseDefMask mask = MaskBuilder.fromRequest(new PhaseDefMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("模式", false, //
                 ctx.query(SchemaDefMapper.class).all(), //
-                "schema", criteria.schemaId, false);
-        criteria.schemaId = sw.getSelection1();
+                "schema", mask.schemaId, false);
+        mask.schemaId = sw.getSelection1();
 
-        return criteria;
+        return mask;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class PhaseDefIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         PhaseDefMapper mapper = ctx.query(PhaseDefMapper.class);
-        PhaseDefCriteria criteria = ctx.query(PhaseDefCriteria.class);
-        List<PhaseDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        PhaseDefMask mask = ctx.query(PhaseDefMask.class);
+        List<PhaseDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

@@ -11,17 +11,17 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.SchemaDef;
-import net.bodz.lily.model.base.schema.impl.SchemaDefCriteria;
+import net.bodz.lily.model.base.schema.impl.SchemaDefMask;
 import net.bodz.lily.model.base.schema.impl.SchemaDefMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class SchemaDefIndex_htm
-        extends SlimIndex_htm<SchemaDefIndex, SchemaDef, SchemaDefCriteria> {
+        extends SlimIndex_htm<SchemaDefIndex, SchemaDef, SchemaDefMask> {
 
     public SchemaDefIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -30,10 +30,10 @@ public class SchemaDefIndex_htm
     }
 
     @Override
-    protected SchemaDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected SchemaDefMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        SchemaDefCriteria criteria = CriteriaBuilder.fromRequest(new SchemaDefCriteria(), ctx.getRequest());
-        return criteria;
+        SchemaDefMask mask = MaskBuilder.fromRequest(new SchemaDefMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -41,8 +41,8 @@ public class SchemaDefIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         SchemaDefMapper mapper = ctx.query(SchemaDefMapper.class);
-        SchemaDefCriteria criteria = ctx.query(SchemaDefCriteria.class);
-        List<SchemaDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        SchemaDefMask mask = ctx.query(SchemaDefMask.class);
+        List<SchemaDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

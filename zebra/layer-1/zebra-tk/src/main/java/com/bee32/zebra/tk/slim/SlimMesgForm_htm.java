@@ -20,7 +20,7 @@ import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.SchemaPref;
 import net.bodz.lily.model.base.schema.FormDef;
-import net.bodz.lily.model.base.schema.impl.FormDefCriteria;
+import net.bodz.lily.model.base.schema.impl.FormDefMask;
 import net.bodz.lily.model.base.schema.impl.FormDefMapper;
 import net.bodz.lily.model.mx.base.CoMessage;
 
@@ -46,7 +46,7 @@ public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
         SchemaPref aSchemaPref = getValueType().getAnnotation(SchemaPref.class);
         if (aSchemaPref != null) {
             int schemaId = aSchemaPref.value();
-            int formId = instance.getForm() == null ? aSchemaPref.form() : instance.getForm().getId();
+            int formId = instance.getForm() == null ? aSchemaPref.form() : instance.getForm().getDefId(0);
 
             IHtmlTag formLine = out.tr().class_("msg-form");
             IFieldDecl formfd = formDecl.getFieldDecl("form");
@@ -55,8 +55,8 @@ public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
             formLabel.text(formfd.getLabel() + "：");
             HtmlSelectTag formInput = formLine.td().select().id("form");
 
-            FormDefCriteria criteria = FormDefCriteria.forSchema(schemaId);
-            for (FormDef formDef : ctx.query(FormDefMapper.class).filter(criteria)) {
+            FormDefMask mask = FormDefMask.forSchema(schemaId);
+            for (FormDef formDef : ctx.query(FormDefMapper.class).filter(mask)) {
                 HtmlOptionTag option = formInput.option().value(formDef.getId()).text(formDef.getLabel());
                 if (formId == formDef.getId())
                     option.selected("selected");

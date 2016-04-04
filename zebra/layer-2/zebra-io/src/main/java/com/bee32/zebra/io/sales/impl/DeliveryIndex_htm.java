@@ -17,10 +17,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class DeliveryIndex_htm
-        extends SlimIndex_htm<DeliveryIndex, Delivery, DeliveryCriteria> {
+        extends SlimIndex_htm<DeliveryIndex, Delivery, DeliveryMask> {
 
     public DeliveryIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -30,10 +30,10 @@ public class DeliveryIndex_htm
     }
 
     @Override
-    protected DeliveryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected DeliveryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        DeliveryCriteria criteria = CriteriaBuilder.fromRequest(new DeliveryCriteria(), ctx.getRequest());
-        return criteria;
+        DeliveryMask mask = MaskBuilder.fromRequest(new DeliveryMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -41,8 +41,8 @@ public class DeliveryIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         DeliveryMapper mapper = ctx.query(DeliveryMapper.class);
-        DeliveryCriteria criteria = ctx.query(DeliveryCriteria.class);
-        List<Delivery> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        DeliveryMask mask = ctx.query(DeliveryMask.class);
+        List<Delivery> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

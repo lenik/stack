@@ -1,7 +1,7 @@
 --\import lily.base.schema
 --\import lily.base.cat
 --\import lily.base.phase
---\import lily.base.att
+--\import lily.base.parm
 --\import lily.base.tagv
 --\import lily.base.tag
 --\import lily.base.form
@@ -52,8 +52,8 @@
     insert into phase(id, schema, code, label, priority) values(1204, 12, 'txfr', '调拨中', 40);
     insert into phase(id, schema, code, label, priority) values(1205, 12, 'chck', '校验中', 50);
 
-    insert into att(id, schema, code, label) values(1, 3, 'addr', '地址');
-    insert into att(id, schema, code, label) values(2, 4, 'cost', '开支');
+    insert into parm(id, schema, code, label) values(1, 3, 'addr', '地址');
+    insert into parm(id, schema, code, label) values(2, 4, 'cost', '开支');
 
     insert into tagv(id, schema, code, label) values(1, 3, 'JHLY', '机会来源');
     insert into tag(id, tagv, label) values(100, 1, '朋友介绍');
@@ -96,6 +96,6 @@
     insert into rlock(schema)   select id from schema   where id<100;
     insert into rlock(cat)      select id from cat      where id<10000;
     insert into rlock(phase)    select id from phase    where id<10000;
-    insert into rlock(att)      select id from att      where id<10000;
+    insert into rlock(parm)     select id from parm      where id<10000;
     insert into rlock(tagv)     select id from tagv     where id<10000;
     insert into rlock(form)     select id from form     where id<10000;

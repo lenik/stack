@@ -4,6 +4,6 @@ import com.bee32.zebra.io.art.UOM;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface UOMMapper
-        extends FooMapper<UOM, UOMCriteria> {
+        extends FooMapper<UOM, UOMMask> {
 
 }

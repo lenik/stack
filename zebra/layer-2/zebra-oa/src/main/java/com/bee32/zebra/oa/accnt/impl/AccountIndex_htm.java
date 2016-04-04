@@ -16,10 +16,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class AccountIndex_htm
-        extends SlimIndex_htm<AccountIndex, Account, AccountCriteria> {
+        extends SlimIndex_htm<AccountIndex, Account, AccountMask> {
 
     public AccountIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -28,10 +28,10 @@ public class AccountIndex_htm
     }
 
     @Override
-    protected AccountCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected AccountMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        AccountCriteria criteria = CriteriaBuilder.fromRequest(new AccountCriteria(), ctx.getRequest());
-        return criteria;
+        AccountMask mask = MaskBuilder.fromRequest(new AccountMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class AccountIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         AccountMapper mapper = ctx.query(AccountMapper.class);
-        AccountCriteria criteria = ctx.query(AccountCriteria.class);
-        List<Account> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        AccountMask mask = ctx.query(AccountMask.class);
+        List<Account> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

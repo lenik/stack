@@ -11,17 +11,17 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.PriorityDef;
-import net.bodz.lily.model.base.schema.impl.PriorityDefCriteria;
+import net.bodz.lily.model.base.schema.impl.PriorityDefMask;
 import net.bodz.lily.model.base.schema.impl.PriorityDefMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class PriorityDefIndex_htm
-        extends SlimIndex_htm<PriorityDefIndex, PriorityDef, PriorityDefCriteria> {
+        extends SlimIndex_htm<PriorityDefIndex, PriorityDef, PriorityDefMask> {
 
     public PriorityDefIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -30,10 +30,10 @@ public class PriorityDefIndex_htm
     }
 
     @Override
-    protected PriorityDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected PriorityDefMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PriorityDefCriteria criteria = CriteriaBuilder.fromRequest(new PriorityDefCriteria(), ctx.getRequest());
-        return criteria;
+        PriorityDefMask mask = MaskBuilder.fromRequest(new PriorityDefMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
@@ -41,8 +41,8 @@ public class PriorityDefIndex_htm
             IOptions options)
             throws ViewBuilderException, IOException {
         PriorityDefMapper mapper = ctx.query(PriorityDefMapper.class);
-        PriorityDefCriteria criteria = ctx.query(PriorityDefCriteria.class);
-        List<PriorityDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        PriorityDefMask mask = ctx.query(PriorityDefMask.class);
+        List<PriorityDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

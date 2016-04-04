@@ -11,19 +11,19 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.TagDef;
-import net.bodz.lily.model.base.schema.impl.TagDefCriteria;
+import net.bodz.lily.model.base.schema.impl.TagDefMask;
 import net.bodz.lily.model.base.schema.impl.TagDefMapper;
-import net.bodz.lily.model.base.schema.impl.TagSetDefMapper;
+import net.bodz.lily.model.base.schema.impl.TagGroupDefMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class TagDefIndex_htm
-        extends SlimIndex_htm<TagDefIndex, TagDef, TagDefCriteria> {
+        extends SlimIndex_htm<TagDefIndex, TagDef, TagDefMask> {
 
     public TagDefIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -32,23 +32,23 @@ public class TagDefIndex_htm
     }
 
     @Override
-    protected TagDefCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected TagDefMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        TagDefCriteria criteria = CriteriaBuilder.fromRequest(new TagDefCriteria(), ctx.getRequest());
+        TagDefMask mask = MaskBuilder.fromRequest(new TagDefMask(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("向量", false, //
-                ctx.query(TagSetDefMapper.class).all(), //
-                "tagv", criteria.tagSetId, false);
-        criteria.tagSetId = sw.getSelection1();
-        return criteria;
+                ctx.query(TagGroupDefMapper.class).all(), //
+                "tagv", mask.tagGroupId, false);
+        mask.tagGroupId = sw.getSelection1();
+        return mask;
     }
 
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         TagDefMapper mapper = ctx.query(TagDefMapper.class);
-        TagDefCriteria criteria = ctx.query(TagDefCriteria.class);
-        List<TagDef> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        TagDefMask mask = ctx.query(TagDefMask.class);
+        List<TagDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());
@@ -56,7 +56,7 @@ public class TagDefIndex_htm
             for (TagDef o : list) {
                 HtmlTrTag tr = itab.tbody.tr();
                 itab.cocols("i", tr, o);
-                tr.td().text(o.getTagSet().getLabel());
+                tr.td().text(o.getTagGroup().getLabel());
                 itab.cocols("cu", tr, o);
                 tr.td().text(o.getRefCount());
                 itab.cocols("sa", tr, o);

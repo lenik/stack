@@ -4,6 +4,6 @@ import com.bee32.zebra.io.stock.StockEntry;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface StockEntryMapper
-        extends FooMapper<StockEntry, StockEntryCriteria> {
+        extends FooMapper<StockEntry, StockEntryMask> {
 
 }

@@ -7,7 +7,7 @@ import com.bee32.zebra.tk.sql.FooMapper;
 import com.bee32.zebra.tk.util.F_YearCount;
 
 public interface AccountingEventMapper
-        extends FooMapper<AccountingEvent, AccountingEventCriteria> {
+        extends FooMapper<AccountingEvent, AccountingEventMask> {
 
     List<F_YearCount> histoByYear();
 

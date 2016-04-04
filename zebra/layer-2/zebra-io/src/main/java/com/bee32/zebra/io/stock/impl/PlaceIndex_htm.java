@@ -18,10 +18,10 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class PlaceIndex_htm
-        extends SlimIndex_htm<PlaceIndex, Place, PlaceCriteria> {
+        extends SlimIndex_htm<PlaceIndex, Place, PlaceMask> {
 
     public PlaceIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -30,18 +30,18 @@ public class PlaceIndex_htm
     }
 
     @Override
-    protected PlaceCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected PlaceMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        PlaceCriteria criteria = CriteriaBuilder.fromRequest(new PlaceCriteria(), ctx.getRequest());
-        return criteria;
+        PlaceMask mask = MaskBuilder.fromRequest(new PlaceMask(), ctx.getRequest());
+        return mask;
     }
 
     @Override
     protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Place> a, IUiRef<PlaceIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         PlaceMapper mapper = ctx.query(PlaceMapper.class);
-        PlaceCriteria criteria = ctx.query(PlaceCriteria.class);
-        List<Place> list = a.noList() ? null : postfilt(mapper.filter(criteria));
+        PlaceMask mask = ctx.query(PlaceMask.class);
+        List<Place> list = a.noList() ? null : postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

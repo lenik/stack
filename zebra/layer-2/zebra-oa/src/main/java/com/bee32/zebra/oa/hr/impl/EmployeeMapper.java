@@ -4,6 +4,6 @@ import com.bee32.zebra.oa.hr.Employee;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface EmployeeMapper
-        extends FooMapper<Employee, EmployeeCriteria> {
+        extends FooMapper<Employee, EmployeeMask> {
 
 }

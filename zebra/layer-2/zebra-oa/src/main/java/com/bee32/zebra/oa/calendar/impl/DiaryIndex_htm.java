@@ -17,10 +17,10 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.CriteriaBuilder;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class DiaryIndex_htm
-        extends SlimIndex_htm<DiaryIndex, Diary, DiaryCriteria> {
+        extends SlimIndex_htm<DiaryIndex, Diary, DiaryMask> {
 
     public DiaryIndex_htm()
             throws NoSuchPropertyException, ParseException {
@@ -29,24 +29,24 @@ public class DiaryIndex_htm
     }
 
     @Override
-    protected DiaryCriteria buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
+    protected DiaryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
-        DiaryCriteria criteria = CriteriaBuilder.fromRequest(new DiaryCriteria(), ctx.getRequest());
+        DiaryMask mask = MaskBuilder.fromRequest(new DiaryMask(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entryOf("年份", true, //
-                mapper.histoByYear(), "year", criteria.year, criteria.noYear);
-        criteria.year = sw.getSelection1();
-        criteria.noYear = sw.isSelectNull();
-        return criteria;
+                mapper.histoByYear(), "year", mask.year, mask.noYear);
+        mask.year = sw.getSelection1();
+        mask.noYear = sw.isSelectNull();
+        return mask;
     }
 
     @Override
     public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Diary> a, IUiRef<DiaryIndex> ref, IOptions options)
             throws ViewBuilderException, IOException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
-        DiaryCriteria criteria = ctx.query(DiaryCriteria.class);
-        List<Diary> list = postfilt(mapper.filter(criteria));
+        DiaryMask mask = ctx.query(DiaryMask.class);
+        List<Diary> list = postfilt(mapper.filter(mask));
 
         IndexTable itab = new IndexTable(a.data);
         itab.buildHeader(ctx, indexFields.values());

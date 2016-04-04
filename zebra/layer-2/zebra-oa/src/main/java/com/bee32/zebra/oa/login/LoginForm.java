@@ -17,7 +17,7 @@ import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.TextInput;
 import net.bodz.lily.model.base.security.LoginContext;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.base.security.impl.UserCriteria;
+import net.bodz.lily.model.base.security.impl.UserMask;
 import net.bodz.lily.model.base.security.impl.UserMapper;
 import net.bodz.lily.model.sea.QVariantMap;
 
@@ -92,11 +92,11 @@ public class LoginForm
         IMapperProvider mapperProvider = VhostDataService.forCurrentRequest().getMapperProvider();
         UserMapper mapper = mapperProvider.getMapper(UserMapper.class);
 
-        UserCriteria criteria = new UserCriteria();
-        criteria.setCodeName(userName);
-        criteria.password = password;
+        UserMask mask = new UserMask();
+        mask.setCodeName(userName);
+        mask.password = password;
 
-        List<User> selection = mapper.filter(criteria);
+        List<User> selection = mapper.filter(mask);
         if (selection.isEmpty()) {
             out.div().class_("error").text("用户或密码错误。");
             return;

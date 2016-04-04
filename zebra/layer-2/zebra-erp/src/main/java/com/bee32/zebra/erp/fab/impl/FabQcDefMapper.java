@@ -4,6 +4,6 @@ import com.bee32.zebra.erp.fab.FabQcDef;
 import com.bee32.zebra.tk.sql.FooMapper;
 
 public interface FabQcDefMapper
-        extends FooMapper<FabQcDef, FabQcDefCriteria> {
+        extends FooMapper<FabQcDef, FabQcDefMask> {
 
 }
