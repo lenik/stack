@@ -1,9 +1,9 @@
 package com.bee32.zebra.tk.hbin;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlInputTag;
-import net.bodz.bas.html.dom.tag.HtmlTableTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlInput;
+import net.bodz.bas.html.io.tag.HtmlTable;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
@@ -38,16 +38,14 @@ public class UploadFilesDialog
         extends SimpleDialog
         implements IZebraSiteAnchors, IFontAwesomeCharAliases {
 
-    public UploadFilesDialog(IHtmlTag parent, String id) {
-        super(parent, id);
-
-    }
     @Override
-    protected void build() {
-        HtmlDivTag out = div().class_("zu-upload");
-        HtmlDivTag btns = out.div().class_("fileupload-buttonbar");
+    public IHtmlOut build(IHtmlOut out, String id, String... styleClasses) {
+        out = super.build(out, id, styleClasses);
 
-        HtmlInputTag fileupload = btns.span().class_("btn btn-success fileinput-button")//
+        out = out.div().class_("zu-upload");
+        HtmlDiv btns = out.div().class_("fileupload-buttonbar");
+
+        HtmlInput fileupload = btns.span().class_("btn btn-success fileinput-button")//
                 .iText(FA_PLUS_CIRCLE, "fa").text("上传...")//
                 .input().id("fileupload").type("file").name("files[]");
         fileupload.attr("data-url", _webApp_ + "file/upload");
@@ -61,10 +59,12 @@ public class UploadFilesDialog
         btns.button().type("button").class_("btn btn-danger delete")//
                 .iText(FA_TRASH, "fa").text("删除");
 
-        HtmlTableTag presentation = out.table().attr("role", "presentation");
+        HtmlTable presentation = out.table().attr("role", "presentation");
         presentation.tbody().class_("files");
 
         out.div().class_("log");
+
+        return out;
     }
 
 }

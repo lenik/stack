@@ -22,7 +22,6 @@ import net.bodz.bas.io.res.tools.StreamReading;
 import net.bodz.bas.pdf.viz.TexPdfViewBuilder;
 import net.bodz.bas.repr.req.RequestUtils;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.art.Artifact;
@@ -44,7 +43,7 @@ public class SalesOrder_pdf
     }
 
     @Override
-    public void buildTex(IHttpViewContext ctx, IPrintOut out, IUiRef<SalesOrder> ref, IOptions options)
+    public void buildTex(IHttpViewContext ctx, IPrintOut out, IUiRef<SalesOrder> ref)
             throws ViewBuilderException, IOException {
         URLResource data = ClassResource.getData(getClass(), "tex");
         final String texTemplate = data.to(StreamReading.class).readString();

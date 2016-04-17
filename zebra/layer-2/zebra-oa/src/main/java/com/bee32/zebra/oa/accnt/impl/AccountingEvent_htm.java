@@ -3,7 +3,8 @@ package com.bee32.zebra.oa.accnt.impl;
 import java.io.IOException;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
@@ -11,7 +12,6 @@ import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
 import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.accnt.AccountingEntry;
@@ -27,7 +27,7 @@ public class AccountingEvent_htm
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<AccountingEvent> ref, IOptions options)
+    protected IHtmlOut afterForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<AccountingEvent> ref)
             throws ViewBuilderException, IOException {
         AccountingEvent acdoc = ref.get();
         if (acdoc.getId() == null)
@@ -52,10 +52,13 @@ public class AccountingEvent_htm
         }
 
         Long id = acdoc.getId();
-        ItemsTable itab = new ItemsTable(out, "entries", //
-                _webApp_ + "acentry/ID/?view:=form&event.id=" + id);
+
+        ItemsTable itab = new ItemsTable(ctx, itemIndexFields.values());
+        itab.editorUrl = _webApp_ + "acentry/ID/?view:=form&event.id=" + id;
         itab.ajaxUrl = "../../acentry/data.json?doc=" + id;
-        itab.buildHeader(itemIndexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out, "entries");
+        itab.buildViewEnd(tbody);
         return out;
     }
+
 }

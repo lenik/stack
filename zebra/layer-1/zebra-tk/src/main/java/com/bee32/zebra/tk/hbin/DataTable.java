@@ -1,43 +1,48 @@
 package com.bee32.zebra.tk.hbin;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlTbodyTag;
-import net.bodz.bas.html.dom.tag.HtmlTheadTag;
-import net.bodz.bas.html.dom.tag._HtmlTableTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTable;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlThead;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 
 public class DataTable
-        extends _HtmlTableTag<DataTable>
         implements IFontAwesomeCharAliases {
 
     boolean colvis = false;
+    String[] columns;
 
-    public HtmlTheadTag head;
-    public HtmlTbodyTag body;
-
-    public DataTable(IHtmlTag parent) {
-        this(parent, null);
+    public DataTable(String... columns) {
+        this.columns = columns;
     }
 
-    public DataTable(IHtmlTag parent, String id) {
-        super(parent, "table");
+    public void build(IHtmlOut out) {
+        build(out, null);
+    }
+
+    public HtmlTbody build(IHtmlOut out, String id) {
+        HtmlTable table = out.table();
+
         if (id != null)
-            id(id);
+            table.id(id);
 
         // table.style("width: 100%");
-        class_("table table-striped table-hover table-condensed dataTable table-responsive");
+        table.class_("table table-striped table-hover table-condensed dataTable table-responsive");
 
         if (colvis) {
-            attr("dom", "<C>rti");
+            table.attr("dom", "<C>rti");
         } else {
-            attr("dom", "rti");
-            attr("no-colvis", "1");
+            table.attr("dom", "rti");
+            table.attr("no-colvis", "1");
         }
 
-        attr("no-paginate", "1");
+        table.attr("no-paginate", "1");
 
-        head = thead();
-        body = tbody();
+        HtmlThead head = table.thead();
+        for (String column : columns)
+            head.th().text(column);
+
+        return table.tbody();
     }
 
 }

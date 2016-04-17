@@ -5,22 +5,21 @@ import java.io.IOException;
 import java.util.Set;
 
 import net.bodz.bas.c.object.Nullables;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlATag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlOlTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlOl;
+import net.bodz.bas.html.util.FontAwesomeImage;
 import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.http.ui.cmd.UiServletCommand;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.oa.file.FileManager;
-import com.bee32.zebra.tk.hbin.SectionDiv;
-import com.bee32.zebra.tk.hbin.UploadFileDialog;
+import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
+import com.bee32.zebra.tk.hbin.UploadFileDialog_htm;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
-import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
+import com.bee32.zebra.tk.site.ZpLinksToolbar;
 import com.bee32.zebra.tk.slim.SlimForm_htm;
 
 public class FileInfo_htm
@@ -39,27 +38,39 @@ public class FileInfo_htm
         excludes.add("baseName");
     }
 
-    @Override
-    protected void setUpFrame(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref, IOptions options)
-            throws ViewBuilderException, IOException {
-        super.setUpFrame(ctx, out, ref, options);
+    /**
+     * 上传
+     * 
+     * @cmd.href javascript: uploadDialog.open()
+     */
+    @FontAwesomeImage(FA_UPLOAD)
+    public static class UploadCommand
+            extends UiServletCommand {
 
-        FileInfo fileInfo = ref.get();
-        String baseName = fileInfo.getBaseName();
+        {
+            addLocation(ZpLinksToolbar.class);
+        }
 
-        IHtmlTag headCol1 = ctx.getHtmlDoc().getElementById(ID.headCol1);
-        HtmlDivTag filecmds = headCol1.div().class_("zu-links");
+        @Override
+        public Class<?> getTargetClass() {
+            return FileInfo.class;
+        }
 
-        HtmlATag uploadLink = filecmds.a().href("javascript: uploadDialog.open()");
-        uploadLink.iText(FA_UPLOAD, "fa").text(baseName == null ? "上传..." : "重新上传…");
-        UploadFileDialog dialog = new UploadFileDialog(out, "uploadDialog");
-        dialog.attr("data-forform", "form1");
-        dialog.attr("data-bind", "#form1 .incoming, #form1 [name=label]");
-        dialog.build();
     }
 
     @Override
-    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref)
+    protected void setUpFrame(IHtmlViewContext ctx, IHtmlOut out, IUiRef<FileInfo> ref)
+            throws ViewBuilderException, IOException {
+        super.setUpFrame(ctx, out, ref);
+
+        UploadFileDialog_htm dialog = new UploadFileDialog_htm();
+        dialog.dataForform = "form1";
+        dialog.dataBind = "#form1 .incoming, #form1 [name=label]";
+        dialog.build(out, "uploadDialog");
+    }
+
+    @Override
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlOut out, IUiRef<FileInfo> ref)
             throws Exception {
         FileInfo fileInfo = ref.get();
 
@@ -115,41 +126,41 @@ public class FileInfo_htm
     }
 
     @Override
-    protected void errorDiag(IHtmlTag out, Throwable e) {
+    protected void errorDiag(IHtmlOut out, Throwable e) {
         super.errorDiag(out, e);
         out.text("下面的信息有助于您找到出错的原因：");
-        HtmlOlTag ol = out.ol();
+        HtmlOl ol = out.ol();
         ol.li().text("相同的文件是否已经存在?");
         ol.li().text("文件名是否含有特殊的符号?");
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref, IOptions options)
+    protected IHtmlOut beforeForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<FileInfo> ref)
             throws ViewBuilderException, IOException {
-        super.beforeForm(ctx, out, ref, options);
+        super.beforeForm(ctx, out, ref);
 
         FileInfo fileInfo = ref.get();
         String baseName = fileInfo.getBaseName();
 
         if (baseName != null) {
-            SectionDiv section = new SectionDiv(out, "uploaded-file", "云端文件", FA_CLOUD);
-            new GetFilePanel(section.contentDiv, fileInfo).build();
+            IHtmlOut sect = new SectionDiv_htm1("云端文件", FA_CLOUD).build(out, "uploaded-file");
+            new GetFilePanel(fileInfo).build(sect);
         }
 
         return out;
     }
 
     @Override
-    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected void endForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> ref)
             throws ViewBuilderException, IOException {
         out.input().type("hidden").id("incoming").name("incoming").attr("data-role", "uploaded-name");
-        super.endForm(ctx, out, ref, options);
+        super.endForm(ctx, out, ref);
     }
 
     @Override
-    protected IHtmlTag extras(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfo> ref, IOptions options)
+    protected IHtmlOut extras(IHtmlViewContext ctx, IHtmlOut out, IUiRef<FileInfo> ref)
             throws ViewBuilderException, IOException {
-        super.extras(ctx, out, ref, options);
+        super.extras(ctx, out, ref);
 
         // out.script().javascriptSrc("tmpl.min.js");
         // out.script().javascriptSrc("/js/jquery-file-upload/js/jquery.fileupload-ui.js");

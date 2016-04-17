@@ -6,19 +6,17 @@ import java.util.TreeMap;
 
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
-import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
 import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.req.MethodNames;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.io.art.Artifact;
@@ -30,8 +28,7 @@ import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.tk.hbin.ItemsTable;
-import com.bee32.zebra.tk.hbin.SectionDiv;
-import com.bee32.zebra.tk.hbin.SplitForm;
+import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
 import com.bee32.zebra.tk.slim.SlimMesgForm_htm;
 import com.bee32.zebra.tk.util.DateUtils;
 import com.bee32.zebra.tk.util.DoubleUtils;
@@ -44,15 +41,12 @@ public class SalesOrder_htm
     }
 
     @Override
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
-            IOptions options)
-            throws ViewBuilderException {
-        super.buildBasicGroup(ctx, out, instanceRef, group, options);
+    protected void buildFormHead(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> ref) {
+        super.buildFormHead(ctx, out, ref);
 
-        SalesOrder sdoc = (SalesOrder) instanceRef.get();
+        SalesOrder sdoc = (SalesOrder) ref.get();
         if (sdoc.getId() != null) {
-            SplitForm form = (SplitForm) out.getParent();
-            HtmlATag link = form.head.a().class_("fa").href("#s-delivery").text(FA_ANGLE_DOUBLE_RIGHT);
+            HtmlA link = out.a().class_("fa").href("#s-delivery").text(FA_ANGLE_DOUBLE_RIGHT);
             int n = sdoc.getDeliveries().size();
             if (n == 0) {
                 link.text(" 本订单尚未发货。");
@@ -60,12 +54,10 @@ public class SalesOrder_htm
                 link.text(" 已有 " + n + " 张发货单。");
             }
         }
-
-        return false;
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
+    protected IHtmlOut afterForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<SalesOrder> ref)
             throws ViewBuilderException, IOException {
         SalesOrder sdoc = ref.get();
         Integer id = sdoc.getId();
@@ -90,20 +82,20 @@ public class SalesOrder_htm
             }
         }
 
-        ItemsTable itab = new ItemsTable(out, "entries",//
-                _webApp_ + "sentry/ID/?view:=form&order.id=" + id);
+        ItemsTable itab = new ItemsTable(ctx, itemIndexFields.values());
+        itab.editorUrl = _webApp_ + "sentry/ID/?view:=form&order.id=" + id;
         itab.ajaxUrl = "../../sentry/data.json?doc=" + id;
-        itab.buildHeader(itemIndexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out, "entries");
+        itab.buildViewEnd(tbody);
 
-        SectionDiv section;
-        {
-            section = new SectionDiv(out, "s-delivery", "发货情况", IFontAwesomeCharAliases.FA_TRUCK);
-            buildDeliveryList(ctx, section.contentDiv, ref, options);
-        }
+        IHtmlOut sect;
+        sect = new SectionDiv_htm1("发货情况", IFontAwesomeCharAliases.FA_TRUCK).build(out, "s-delivery");
+        buildDeliveryList(ctx, sect, ref);
+
         return out;
     }
 
-    protected void buildDeliveryList(IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrder> ref, IOptions options)
+    protected void buildDeliveryList(IHtmlViewContext ctx, IHtmlOut out, IUiRef<SalesOrder> ref)
             throws ViewBuilderException, IOException {
         DeliveryMapper deliveryMapper = ctx.query(DeliveryMapper.class);
 
@@ -113,7 +105,7 @@ public class SalesOrder_htm
         for (SalesOrderItem item : sdoc.getItems())
             dMap.put(item.getId(), item.getQuantity());
 
-        HtmlUlTag ol = out.ul().id("deliveries");
+        HtmlUl ol = out.ul().id("deliveries");
         for (Delivery delivery : sdoc.getDeliveries()) {
             delivery = deliveryMapper.select(delivery.getId()); // Full reload.
             for (DeliveryItem di : delivery.getItems()) {
@@ -125,7 +117,7 @@ public class SalesOrder_htm
                 dMap.put(sid, remaining - di.getQuantity());
             }
 
-            HtmlLiTag li = ol.li();
+            HtmlLi li = ol.li();
 
             String href = _webApp_ + "dldoc/" + delivery.getId() + "/";
             li.a().class_("refid").href("_blank", href).iText(FA_INFO, "fa").text("送货单 - " + delivery.getId());
@@ -134,7 +126,7 @@ public class SalesOrder_htm
             li.span().class_("date").verbatim(DateUtils.formatRange(delivery, "未发货", "未签收"));
 
             li.div().class_("small").verbatim(delivery.getText());
-            HtmlDlTag dl = li.dl();
+            HtmlDl dl = li.dl();
             dl.dt().text("客户:");
             {
                 Organization org = delivery.getOrg();
@@ -158,7 +150,7 @@ public class SalesOrder_htm
 
         out.hr();
 
-        IHtmlTag h = out.table().class_("magic").tr();
+        IHtmlOut h = out.table().class_("magic").tr();
         h.td().img().src(_webApp_ + "img1/girl2r.png").title("我是自动生成数据机器人Giri");
         h = h.td();
 
@@ -169,7 +161,7 @@ public class SalesOrder_htm
             h.h4().text("这些项目还没有发货，赶紧根据剩余的数量安排发货单吧！") //
                     .small().text("（如果您修改了订单项目，需要保存后才能看到更新的剩余数量。）");
 
-            HtmlFormTag form = h.form().id("dldoc-creator").method("post").target("_blank")//
+            HtmlForm form = h.form().id("dldoc-creator").method("post").target("_blank")//
                     .action(_webApp_ + "dldoc/new/");
             form.input().type("hidden").name("m:").value(MethodNames.CREATE);
             form.input().type("hidden").name("-nav").value("reload");
@@ -186,9 +178,8 @@ public class SalesOrder_htm
                 form.input().type("hidden").name("person.label").value(sdoc.getPerson().getLabel());
             }
 
-            HtmlTableTag table = form.table()
-                    .class_("table table-striped table-hover table-condensed table-responsive");
-            HtmlTrTag htr = table.thead().tr();
+            HtmlTable table = form.table().class_("table table-striped table-hover table-condensed table-responsive");
+            HtmlTr htr = table.thead().tr();
             htr.th().text("订单项");
             htr.th().text("货物");
             htr.th().text("单位");
@@ -201,7 +192,7 @@ public class SalesOrder_htm
                     remaining = item.getQuantity();
                 if (remaining <= DoubleUtils.epsilon)
                     continue;
-                HtmlTrTag tr = table.tr();
+                HtmlTr tr = table.tr();
                 tr.td().text(item.getId());
 
                 String label;
@@ -221,13 +212,13 @@ public class SalesOrder_htm
                 String str = String.format("%.4f", remaining);
                 if (str.endsWith(".0000"))
                     str = str.substring(0, str.length() - 5);
-                HtmlTdTag td = tr.td();
+                HtmlTd td = tr.td();
                 td.input().type("number").name("qty-" + item.getId()).value(str).style("width: 4em");
                 td.input().type("hidden").name("price-" + item.getId()).value(item.getPrice());
             } // for item
 
             form.input().type("button").id("mkdelivery").value("生成送货单");
-            HtmlDivTag hint = form.div().id("reloadhint").style("display: none");
+            HtmlDiv hint = form.div().id("reloadhint").style("display: none");
             hint.text("送货单已经生成好了，请在新窗口中添加额外的信息，比如物流公司、运费等。");
             hint.text("然后，您可以 ");
             hint.a().id("javascript: reloadDelivery()").text("刷新本页面");

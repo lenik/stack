@@ -6,11 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.c.type.TypeChain;
 import net.bodz.bas.db.ibatis.IMapperProvider;
-import net.bodz.bas.db.meta.TableUtils;
 import net.bodz.bas.err.Err;
-import net.bodz.bas.html.dom.HtmlDoc;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlButton;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlForm;
+import net.bodz.bas.html.io.tag.HtmlInput;
+import net.bodz.bas.html.io.tag.HtmlUl;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.io.Stdio;
 import net.bodz.bas.io.impl.TreeOutImpl;
@@ -18,43 +20,38 @@ import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.req.IMethodOfRequest;
 import net.bodz.bas.repr.req.MethodNames;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.IId;
 import net.bodz.lily.model.base.Instantiables;
 
-import com.bee32.zebra.tk.hbin.SplitForm;
 import com.bee32.zebra.tk.htm.PageLayout;
-import com.bee32.zebra.tk.site.IZebraSiteLayout.ID;
-import com.bee32.zebra.tk.sql.FnMapper;
 import com.bee32.zebra.tk.sql.FooMapper;
-import com.bee32.zebra.tk.util.PrevNext;
 
 public abstract class SlimForm_htm<T extends CoObject>
         extends SlimForm0_htm<T> {
 
     static String DEFAULT_NAV = "reload";
 
-    public SlimForm_htm(Class<?> valueClass, String... supportedFeatures) {
-        super(valueClass, supportedFeatures);
+    public SlimForm_htm(Class<?> valueClass) {
+        super(valueClass);
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected IHtmlOut beforeForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref)
             throws ViewBuilderException, IOException {
-        out = super.beforeForm(ctx, out, ref, options);
+        out = super.beforeForm(ctx, out, ref);
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         if (pageLayout.isShowFrame()) {
-            setUpFrame(ctx, out, ref, options);
+            setUpFrame(ctx, out, ref);
         }
 
-        process(ctx, out, ref, options);
+        process(ctx, out, ref);
         return out;
     }
 
-    protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected void process(IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref)
             throws ViewBuilderException, IOException {
         HttpServletRequest req = ctx.getRequest();
         IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
@@ -116,60 +113,22 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
-    protected void setUpFrame(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected void setUpFrame(IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref)
             throws ViewBuilderException, IOException {
-        HtmlDoc doc = ctx.getHtmlDoc();
-
-        Class<?> type = ref.getValueType();
-        T obj = ref.get();
-        Number id = (Number) obj.getId();
-
-        IHtmlTag cmds1 = doc.getElementById(ID.cmds1);
-        HtmlATag printLink = cmds1.a().id("printcmd").href("../" + id + ".pdf").target("_blank");
-        printLink.span().class_("fa icon").text(FA_PRINT);
-        printLink.text("打印").title("输出适合打印的格式。");
-
-        IHtmlTag headCol2 = doc.getElementById(ID.headCol2);
-        HtmlDivTag adjs = headCol2.div().class_("zu-links");
-        {
-            adjs.div().text("操作附近的数据:");
-            HtmlUlTag ul = adjs.ul();
-            HtmlATag newLink = ul.li().a().href("../new/");
-            newLink.iText(FA_FILE_O, "fa").text("新建");
-
-            String tablename = TableUtils.tablename(type);
-            FnMapper fnMapper = ctx.query(FnMapper.class);
-            // FIXME consider access control and mask.
-            PrevNext prevNext = fnMapper.prevNext("public", tablename, //
-                    id == null ? Integer.MAX_VALUE : id.longValue());
-            if (prevNext == null)
-                prevNext = new PrevNext();
-
-            HtmlLiTag navs = ul.li();
-            IHtmlTag prevLink = navs;
-            if (prevNext.getPrev() != null)
-                prevLink = prevLink.a().href("../" + prevNext.getPrev() + "/");
-            prevLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_LEFT);
-            prevLink.text("前滚翻");
-
-            IHtmlTag nextLink = navs;
-            if (prevNext.getNext() != null)
-                nextLink = nextLink.a().href("../" + prevNext.getNext() + "/");
-            nextLink.text("后滚翻 ");
-            nextLink.span().class_("fa icon").text(FA_CHEVRON_CIRCLE_RIGHT);
-        }
     }
 
     @Override
-    protected HtmlFormTag beginForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected HtmlForm beginForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> ref)
             throws ViewBuilderException, IOException {
-        SplitForm form = new SplitForm(out);
+        HtmlForm form = out.form();
         form.id("form1").method("post");
+        buildFormHead(ctx, form.div().class_("form-head"), ref);
+        form.div();
 
         CoObject entity = (CoObject) ref.get();
         Number id = (Number) entity.getId();
         boolean creation = id == null || id.intValue() == 0;
-        HtmlInputTag methodParam = form.input().type("hidden").name("m:");
+        HtmlInput methodParam = form.input().type("hidden").name("m:");
         if (creation)
             methodParam.value(MethodNames.CREATE);
         else
@@ -178,16 +137,18 @@ public abstract class SlimForm_htm<T extends CoObject>
         return form;
     }
 
+    protected void buildFormHead(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> ref) {
+    }
+
     @Override
-    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
-            FieldDeclGroup group, IOptions options)
+    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> instanceRef, FieldDeclGroup group)
             throws ViewBuilderException, IOException {
         String typeName = instanceRef.getValueType().getSimpleName();
 
         String simpleName = group.getCategory().getTagClass().getSimpleName();
         switch (simpleName) {
         case "Object":
-            return buildBasicGroup(ctx, out, instanceRef, group, options);
+            return buildBasicGroup(ctx, out, instanceRef, group);
             // case "Content":
         case "Ranking":
         case "Metadata":
@@ -214,29 +175,28 @@ public abstract class SlimForm_htm<T extends CoObject>
         return false;
     }
 
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
-            IOptions options)
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> instanceRef, FieldDeclGroup group)
             throws ViewBuilderException, IOException {
         return false;
     }
 
     @Override
-    protected void endForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> ref, IOptions options)
+    protected void endForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> ref)
             throws ViewBuilderException, IOException {
         // out.hr();
-        HtmlDivTag div = out.div();
-        HtmlButtonTag submitButton = div.button().type("submit");
+        HtmlDiv div = out.div();
+        HtmlButton submitButton = div.button().type("submit");
         submitButton.span().class_("fa icon").text(FA_ANGLE_DOUBLE_UP);
         submitButton.text("保存以上信息");
 
-        HtmlButtonTag resetButton = div.button();
+        HtmlButton resetButton = div.button();
         resetButton.type("button");
         resetButton.onclick("javascript: form1.reset()");
         resetButton.span().class_("fa icon").text(FA_ERASER);
         resetButton.text("复原").title("清除刚才输入的所有变更，重新写。");
     }
 
-    protected boolean tryPersist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref) {
+    protected boolean tryPersist(boolean create, IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref) {
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         HttpServletRequest req = ctx.getRequest();
         String navHint = req.getParameter("-nav");
@@ -251,15 +211,15 @@ public abstract class SlimForm_htm<T extends CoObject>
             IId<Object> obj = (IId<Object>) ref.get();
             obj.setId(id);
 
-            HtmlDivTag alert = out.div().class_("alert alert-success");
+            HtmlDiv alert = out.div().class_("alert alert-success");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
             alert.iText(FA_CHECK_CIRCLE, "fa");
             alert.bText("[成功]").text(promptSuccess);
             alert.hr();
-            HtmlDivTag mesg = alert.div().class_("small");
+            HtmlDiv mesg = alert.div().class_("small");
             if (create) {
                 mesg.text("您可以：");
-                HtmlUlTag ul = mesg.ul();
+                HtmlUl ul = mesg.ul();
 
                 switch (navHint) {
                 case "create-more":
@@ -299,7 +259,7 @@ public abstract class SlimForm_htm<T extends CoObject>
         } catch (Throwable e) {
             e.printStackTrace();
             e = Err.unwrap(e);
-            HtmlDivTag alert = out.div().class_("alert alert-danger");
+            HtmlDiv alert = out.div().class_("alert alert-danger");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
             alert.span().class_("fa icon").text(FA_TIMES_CIRCLE);
             alert.strong().text("[错误]");
@@ -310,14 +270,14 @@ public abstract class SlimForm_htm<T extends CoObject>
         }
     }
 
-    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref)
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref)
             throws Exception {
         T data = ref.get();
         Object id = data.persist(ctx, out);
         return id;
     }
 
-    protected void errorDiag(IHtmlTag out, Throwable e) {
+    protected void errorDiag(IHtmlOut out, Throwable e) {
         out.text("请检查您输入的数据，再重新保存一次。");
     }
 

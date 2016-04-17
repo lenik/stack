@@ -5,20 +5,21 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.CategoryDef;
-import net.bodz.lily.model.base.schema.impl.CategoryDefMask;
 import net.bodz.lily.model.base.schema.impl.CategoryDefMapper;
+import net.bodz.lily.model.base.schema.impl.CategoryDefMask;
 import net.bodz.lily.model.base.schema.impl.SchemaDefMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.MaskBuilder;
 
@@ -46,27 +47,25 @@ public class CategoryDefIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<CategoryDef> a, IUiRef<CategoryDefIndex> ref,
-            IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<CategoryDefIndex> ref)
             throws ViewBuilderException, IOException {
         CategoryDefMapper mapper = ctx.query(CategoryDefMapper.class);
         CategoryDefMask mask = ctx.query(CategoryDefMask.class);
-        List<CategoryDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<CategoryDef> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (CategoryDef o : list) {
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
-                tr.td().text(o.getSchema().getLabel());
-                itab.cocols("cu", tr, o);
-                tr.td().text(o.getRefCount());
-                itab.cocols("sa", tr, o);
-            }
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+        for (CategoryDef o : list) {
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
+            tr.td().text(o.getSchema().getLabel());
+            itab.cocols("cu", tr, o);
+            tr.td().text(o.getRefCount());
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
 }

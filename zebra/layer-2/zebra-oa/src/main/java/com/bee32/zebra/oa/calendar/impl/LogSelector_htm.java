@@ -13,13 +13,12 @@ import org.joda.time.DateTime.Property;
 
 import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.c.string.StringArray;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.t.range.DateRange;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.CategoryDef;
@@ -42,7 +41,7 @@ public class LogSelector_htm
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<LogSelector> ref, IOptions options)
+    protected IHtmlOut beforeForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<LogSelector> ref)
             throws ViewBuilderException, IOException {
         LogEntryMapper mapper = ctx.query(LogEntryMapper.class);
         LoginContext login = LoginContext.fromSession();
@@ -71,25 +70,25 @@ public class LogSelector_htm
 
         DateTime date = new DateTime(selector.getStart());
 
-        HtmlDivTag topbar = out.div();
+        HtmlDiv topbar = out.div();
         // topbar.a().class_("toggle").id("showall").text("显示所有");
         // topbar.input().type("checkbox").class_("toggle").idLabel("showall").text("显示所有");
         // topbar.button().type("button").class_("btn").dataToggle("button").text("显示所有");
-        HtmlSpanTag showAllToggle = topbar.span().class_("btn-group btn-toggle").id("showall");
+        HtmlSpan showAllToggle = topbar.span().class_("btn-group btn-toggle").id("showall");
         showAllToggle.button().class_("btn btn-sm btn-primary active").text("选中").value("off");
         showAllToggle.button().class_("btn btn-sm btn-default").text("全部").value("on");
 
         topbar.text(date.toString("yyyy 年 M 月"));
 
-        HtmlTableTag tab = out.table().align("center");
+        HtmlTable tab = out.table().align("center");
         {
-            HtmlTrTag tr = tab.tr();
+            HtmlTr tr = tab.tr();
 
             String prevYear = date.minusYears(1).toString("YYYY-M");
             String prevMonth = date.minusMonths(1).toString("YYYY-M");
             String nextMonth = date.plusMonths(1).toString("YYYY-M");
             String nextYear = date.plusYears(1).toString("YYYY-M");
-            HtmlTdTag prevTd = tr.td();
+            HtmlTd prevTd = tr.td();
 
             prevTd.iText(FA_ANGLE_DOUBLE_LEFT, "fa");
             prevTd.a().href("../" + prevYear + "/").text("上一年");
@@ -99,7 +98,7 @@ public class LogSelector_htm
 
             buildMonthNav(tr.td(), date, dayLegs);
 
-            HtmlTdTag nextTd = tr.td();
+            HtmlTd nextTd = tr.td();
             nextTd.iText(FA_ANGLE_RIGHT, "fa");
             nextTd.a().href("../" + nextMonth + "/").text("下一月");
             nextTd.iText(FA_ANGLE_RIGHT, "fa");
@@ -109,7 +108,7 @@ public class LogSelector_htm
 
         out.hr();
 
-        HtmlDivTag legsDiv = out.div().class_("zu-legs");
+        HtmlDiv legsDiv = out.div().class_("zu-legs");
         for (Entry<Integer, LogEntryGroup> entry : dayLegs.entrySet()) {
             int day = entry.getKey();
             LogEntryGroup leg = entry.getValue();
@@ -120,17 +119,17 @@ public class LogSelector_htm
             // dt.head.th().text("信息");
             // dt.head.th().text("日期");
 
-            HtmlOlTag ol = legsDiv.ol().class_("zu-leg").id("log-" + day);
+            HtmlOl ol = legsDiv.ol().class_("zu-leg").id("log-" + day);
 
             for (LogEntry log : leg) {
-                HtmlLiTag li = ol.li();
+                HtmlLi li = ol.li();
 
-                HtmlSpanTag dateSpan = li.span().class_("date");
+                HtmlSpan dateSpan = li.span().class_("date");
                 DateFormat dateFormat = Dates.YYYY_MM_DD;
                 dateSpan.text("[" + dateFormat.format(log.getDate()) + "]");
                 li.text(" ");
 
-                HtmlOlTag cats = li.ol().class_("breadcrumb cat");
+                HtmlOl cats = li.ol().class_("breadcrumb cat");
                 cats.li().text(log.getMetadata().getLabel());
 
                 FormDef form = log.getForm();
@@ -149,7 +148,7 @@ public class LogSelector_htm
                 User op = log.getOp();
                 if (op != null) {
                     li.text(" ");
-                    HtmlSpanTag opSpan = li.span().class_("op");
+                    HtmlSpan opSpan = li.span().class_("op");
                     // int id = op.getId();
                     String label = op.getLabel();
                     opSpan.text("@");
@@ -164,8 +163,8 @@ public class LogSelector_htm
     // String[] weekDayNames = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", };
     String[] weekDayNames = { "日", "一", "二", "三", "四", "五", "六", };
 
-    void buildMonthNav(IHtmlTag out, DateTime date, Map<Integer, LogEntryGroup> dayLegs) {
-        HtmlTableTag tab = out.table().class_("zu-calendar");
+    void buildMonthNav(IHtmlOut out, DateTime date, Map<Integer, LogEntryGroup> dayLegs) {
+        HtmlTable tab = out.table().class_("zu-calendar");
         tab.attr("data-year", date.getYear());
         tab.attr("data-month", date.getMonthOfYear());
 
@@ -180,13 +179,13 @@ public class LogSelector_htm
         int minOffset = dayOfMonth.withMinimumValue().dayOfWeek().get();
         int maxOffset = dayOfMonth.withMaximumValue().dayOfWeek().get();
 
-        HtmlTheadTag thead = tab.thead();
+        HtmlThead thead = tab.thead();
         for (int wday = 1; wday <= 7; wday++) {
             thead.th().text(weekDayNames[wday % 7]);
         }
 
-        HtmlTbodyTag tbody = tab.tbody();
-        HtmlTrTag tr = tbody.tr();
+        HtmlTbody tbody = tab.tbody();
+        HtmlTr tr = tbody.tr();
         for (int wday = 1; wday < minOffset; wday++)
             tr.td().class_("placeholder");
 
@@ -203,11 +202,11 @@ public class LogSelector_htm
             else
                 classes.add("log");
 
-            HtmlTdTag td = tr.td().class_(StringArray.join(" ", classes));
+            HtmlTd td = tr.td().class_(StringArray.join(" ", classes));
             td.attr("data-day", day);
 
             if (leg != null) {
-                IHtmlTag dayOut = td.div();
+                IHtmlOut dayOut = td.div();
                 if (leg.isBold())
                     dayOut = dayOut.b();
                 if (leg.isItalics())
@@ -235,14 +234,13 @@ public class LogSelector_htm
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<LogSelector> ref, IOptions options)
+    protected IHtmlOut afterForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<LogSelector> ref)
             throws ViewBuilderException, IOException {
         return out;
     }
 
     @Override
-    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef,
-            FieldDeclGroup group, IOptions options)
+    protected boolean overrideFieldGroup(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> instanceRef, FieldDeclGroup group)
             throws ViewBuilderException, IOException {
         return true;
     }

@@ -1,22 +1,17 @@
 package com.bee32.zebra.tk.hbin;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
+import net.bodz.bas.c.string.StringArray;
+import net.bodz.bas.html.io.IHtmlOut;
 
-public abstract class SimpleDialog
-        extends HtmlDivTag {
+public class SimpleDialog {
 
-    public HtmlDivTag body;
-    public HtmlDivTag buttons;
-
-    public SimpleDialog(IHtmlTag parent, String id) {
-        super(parent, "div");
+    public IHtmlOut build(IHtmlOut out, String id, String... styleClasses) {
         if (id == null)
             throw new NullPointerException("id");
-        id(id);
-        class_("dialog");
+        out = out.div();
+        out.id(id);
+        out.class_("dialog " + StringArray.join(" ", styleClasses));
+        return out;
     }
-
-    protected abstract void build();
 
 }

@@ -30,12 +30,12 @@ public class Dim3dTypers
     }
 
     @Override
-    public String format(Dim3d object, IOptions options) {
+    public String format(Dim3d object) {
         return object.toString();
     }
 
     @Override
-    public Dim3d parse(String text, IOptions options)
+    public Dim3d parse(String text)
             throws ParseException {
         Dim3d result = new Dim3d();
         StringTokenizer tokens = new StringTokenizer(text, "x");

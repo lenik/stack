@@ -5,18 +5,18 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
 
 import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.io.sales.SalesOrderItem;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.MaskBuilder;
 
@@ -42,41 +42,39 @@ public class SalesOrderItemIndex_htm
     }
 
     @Override
-    public void dataIndex(IHtmlViewContext ctx, DataViewAnchors<SalesOrderItem> a, IUiRef<SalesOrderItemIndex> ref,
-            IOptions options)
+    public List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<SalesOrderItemIndex> ref)
             throws ViewBuilderException, IOException {
         SalesOrderItemMapper mapper = ctx.query(SalesOrderItemMapper.class);
         SalesOrderItemMask mask = ctx.query(SalesOrderItemMask.class);
-        List<SalesOrderItem> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<SalesOrderItem> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
         itab.addDetailFields("footnote");
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (SalesOrderItem o : list) {
-                Artifact art = o.getArtifact();
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-                ref(tr.td(), art).class_("small");
-                tr.td().text(o.getAltLabel()).class_("small");
-                tr.td().text(o.getAltSpec()).class_("small");
-                tr.td().text(o.getQuantity());
-                ref(tr.td(), art == null ? null : art.getUom());
-                tr.td().text(o.getPrice());
-                tr.td().text(o.getTotal());
-                tr.td().text(o.getComment()).class_("small");
-                tr.td().text(o.getFootnote()).class_("small");
+        for (SalesOrderItem o : list) {
+            Artifact art = o.getArtifact();
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
 
-                itab.cocols("s", tr, o);
-            }
+            ref(tr.td(), art).class_("small");
+            tr.td().text(o.getAltLabel()).class_("small");
+            tr.td().text(o.getAltSpec()).class_("small");
+            tr.td().text(o.getQuantity());
+            ref(tr.td(), art == null ? null : art.getUom());
+            tr.td().text(o.getPrice());
+            tr.td().text(o.getTotal());
+            tr.td().text(o.getComment()).class_("small");
+            tr.td().text(o.getFootnote()).class_("small");
 
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+            itab.cocols("s", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
     @Override
-    protected void sections(IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrderItemIndex> ref, IOptions options)
+    protected void sections(IHtmlViewContext ctx, IHtmlOut out, IUiRef<SalesOrderItemIndex> ref)
             throws ViewBuilderException, IOException {
         // No section.
     }

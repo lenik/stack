@@ -6,17 +6,18 @@ import java.util.List;
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.c.string.Strings;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.MaskBuilder;
 
@@ -37,26 +38,28 @@ public class ReplyIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Reply> a, IUiRef<ReplyIndex> ref, IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<ReplyIndex> ref)
             throws ViewBuilderException, IOException {
         ReplyMapper mapper = ctx.query(ReplyMapper.class);
         ReplyMask mask = ctx.query(ReplyMask.class);
-        List<Reply> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<Reply> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (Reply o : list) {
-                User op = o.getOp();
-                // Topic topic = o.getTopic();
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
-                tr.td().text(op == null ? "" : op.getFullName());
-                tr.td().b().text(o.getSubject()).class_("small").style("max-width: 20em");
-                tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
-                itab.cocols("sa", tr, o);
-            }
+        for (Reply o : list) {
+            User op = o.getOp();
+            // Topic topic = o.getTopic();
+
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
+            tr.td().text(op == null ? "" : op.getFullName());
+            tr.td().b().text(o.getSubject()).class_("small").style("max-width: 20em");
+            tr.td().text(Strings.ellipsis(o.getText(), 50)).class_("small").style("max-width: 30em");
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
 }

@@ -9,8 +9,8 @@ public abstract class AbstractDefinition_htm<T extends AbstractDefinition<T>>
         extends SlimCodeForm_htm<T>
         implements IBasicSiteAnchors {
 
-    public AbstractDefinition_htm(Class<?> valueClass, String... supportedFeatures) {
-        super(valueClass, supportedFeatures);
+    public AbstractDefinition_htm(Class<?> valueClass) {
+        super(valueClass);
     }
 
 }

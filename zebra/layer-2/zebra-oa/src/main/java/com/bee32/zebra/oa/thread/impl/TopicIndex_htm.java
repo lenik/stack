@@ -5,26 +5,26 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.lily.model.base.schema.impl.CategoryDefMask;
+import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.impl.CategoryDefMapper;
-import net.bodz.lily.model.base.schema.impl.PhaseDefMask;
+import net.bodz.lily.model.base.schema.impl.CategoryDefMask;
 import net.bodz.lily.model.base.schema.impl.PhaseDefMapper;
+import net.bodz.lily.model.base.schema.impl.PhaseDefMask;
 
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.sys.Schemas;
 import com.bee32.zebra.tk.hbin.IndexTable;
-import com.bee32.zebra.tk.hbin.SectionDiv;
+import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.stat.MonthTrends;
 import com.bee32.zebra.tk.stat.ValueDistrib;
@@ -59,7 +59,7 @@ public class TopicIndex_htm
         mask.phaseId = sw.getSelection1();
         mask.noPhase = sw.isSelectNull();
 
-        // HtmlDivTag valDiv = out.div().text("金额：");
+        // HtmlDiv valDiv = out.div().text("金额：");
         // 全部 1万以下 1-10万 10-100万 100-1000万 1000万以上");
 
         sw = switchers.entryOf("年份", true, //
@@ -71,44 +71,42 @@ public class TopicIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Topic> a, IUiRef<TopicIndex> ref, IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<TopicIndex> ref)
             throws ViewBuilderException, IOException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
         TopicMask mask = ctx.query(TopicMask.class);
-        List<Topic> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<Topic> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (Topic o : list) {
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
-                ref(tr.td(), o.getOp()).align("center");
-                tr.td().text(fmt.formatDate(o.getBeginDate()));
-                tr.td().text(fmt.formatDate(o.getEndDate()));
-                itab.cocols("m", tr, o);
-                ref(tr.td(), o.getCategory());
-                ref(tr.td(), o.getPhase()).class_("small");
-                tr.td().text(o.getValue());
-                itab.cocols("sa", tr, o);
-            }
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+        for (Topic o : list) {
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
+            ref(tr.td(), o.getOp()).align("center");
+            tr.td().text(fmt.formatDate(o.getBeginDate()));
+            tr.td().text(fmt.formatDate(o.getEndDate()));
+            itab.cocols("m", tr, o);
+            ref(tr.td(), o.getCategory());
+            ref(tr.td(), o.getPhase()).class_("small");
+            tr.td().text(o.getValue());
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
     @Override
-    protected void sections(IHtmlViewContext ctx, IHtmlTag out, IUiRef<TopicIndex> ref, IOptions options)
+    protected void sections(IHtmlViewContext ctx, IHtmlOut out, IUiRef<TopicIndex> ref)
             throws ViewBuilderException, IOException {
-        super.sections(ctx, out, ref, options);
+        super.sections(ctx, out, ref);
 
-        SectionDiv section;
-        section = new SectionDiv(out, "s-stat", "统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR);
+        out = new SectionDiv_htm1("统计/Statistics", IFontAwesomeCharAliases.FA_CALCULATOR).build(out, "s-stat");
         {
-            IHtmlTag chart = section.contentDiv.div().id("monthvalsum").class_("plot");
+            IHtmlOut chart = out.div().id("monthvalsum").class_("plot");
             chart.p().text("近期累计的项目价值：");
             chart.div().class_("view").style("height: 15em");
-            HtmlDivTag dataDiv = chart.div().class_("data");
+            HtmlDiv dataDiv = chart.div().class_("data");
             MonthTrendsMapper monthTrendsMapper = ctx.query(MonthTrendsMapper.class);
             StringBuffer sb = new StringBuffer(4096);
             for (MonthTrends row : monthTrendsMapper.sum1("topic", "creation", "val")) {
@@ -121,9 +119,9 @@ public class TopicIndex_htm
             }
             dataDiv.text(sb);
 
-            section.contentDiv.hr();
+            out.hr();
 
-            chart = section.contentDiv.div().id("catdist").class_("plot");
+            chart = out.div().id("catdist").class_("plot");
             chart.p().text("项目类型分布：");
             chart.div().class_("view").style("height: 300px");
             dataDiv = chart.div().class_("data");
@@ -139,9 +137,9 @@ public class TopicIndex_htm
             }
             dataDiv.text(sb);
 
-            section.contentDiv.hr();
+            out.hr();
 
-            chart = section.contentDiv.div().id("phasedist").class_("plot");
+            chart = out.div().id("phasedist").class_("plot");
             chart.p().text("项目阶段分布：");
             chart.div().class_("view").style("height: 300px");
             dataDiv = chart.div().class_("data");

@@ -8,19 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.StringPart;
-import net.bodz.bas.c.type.SingletonUtil;
 import net.bodz.bas.c.type.TypeKind;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.err.IllegalUsageException;
 import net.bodz.bas.err.NotImplementedException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.AbstractHtmlTag;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlATag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlInputTag;
-import net.bodz.bas.html.meta.BuildViewWith;
-import net.bodz.bas.html.meta.ViewCriteria;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlA;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlInput;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
@@ -35,8 +31,8 @@ import net.bodz.bas.repr.form.FieldDeclComparator;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
+import net.bodz.bas.repr.meta.Face;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.bas.typer.Typers;
 import net.bodz.bas.typer.std.IParser;
@@ -52,19 +48,19 @@ import com.bee32.zebra.tk.hbin.PickDialog;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.site.CoTypes;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.IZebraSiteLayout.VAR;
 
 public abstract class SlimForm0_htm<T>
         extends AbstractForm_htm<T>
         implements IZebraSiteAnchors, IFontAwesomeCharAliases {
 
-    public SlimForm0_htm(Class<?> valueClass, String... supportedFeatures) {
-        super(valueClass, supportedFeatures);
+    public SlimForm0_htm(Class<?> valueClass) {
+        super(valueClass);
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<T> ref, IOptions options) {
-        super.preview(ctx, ref, options);
+    public void preview(IHtmlViewContext ctx, IUiRef<T> ref) {
+        super.preview(ctx, ref);
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         HttpServletRequest request = ctx.getRequest();
@@ -74,26 +70,26 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    public IHtmlOut buildHtmlViewStart(IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref)
             throws ViewBuilderException, IOException {
-        if (enter(ctx, ref))
+        if (addSlash(ctx, ref))
             return null;
-        return super.buildHtmlView(ctx, out, ref, options);
+        return super.buildHtmlViewStart(ctx, out, ref);
     }
 
     @Override
-    protected void nullInstance(IHtmlTag out, IUiRef<T> ref) {
+    protected void nullInstance(IHtmlOut out, IUiRef<T> ref) {
         out.text("null@" + ref.getValueType());
     }
 
     @Override
-    protected IHtmlTag beginCategory(IHtmlViewContext ctx, IHtmlTag out, FieldCategory category)
+    protected IHtmlOut beginCategory(IHtmlViewContext ctx, IHtmlOut out, FieldCategory category)
             throws ViewBuilderException, IOException {
         String catName = category == FieldCategory.NULL ? "null" : category.getName();
         out = out.fieldset().class_("zu-fcat").id("zp-fcat-" + catName);
 
         // IHtmlTag head = out.h2().id("zp-fcat-" + catName);
-        IHtmlTag head = out.legend();
+        IHtmlOut head = out.legend();
 
         head.span().class_("icon fa").text(FA_CUBE);
         if (category == FieldCategory.NULL) {
@@ -106,7 +102,7 @@ public abstract class SlimForm0_htm<T>
 
     @Override
     protected List<IFieldDecl> overrideFieldSelection(IUiRef<?> instanceRef, FieldDeclGroup group,
-            List<IFieldDecl> selection, IOptions options)
+            List<IFieldDecl> selection)
             throws ViewBuilderException, IOException {
 
         Set<String> includes = new HashSet<String>();
@@ -138,23 +134,22 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    protected IHtmlTag beginField(IHtmlViewContext ctx, IHtmlTag out, IFieldDecl fieldDecl)
+    protected IHtmlOut beginField(IHtmlViewContext ctx, IHtmlOut out, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
-        HtmlDivTag div = out.div().class_("zu-field");
+        HtmlDiv div = out.div().class_("zu-field");
         div.attr("f", fieldDecl.getName());
 
-        IHtmlTag labelDiv = div.label().class_("zu-flabel");
+        IHtmlOut labelDiv = div.label().class_("zu-flabel");
         String labelName = IXjdocElement.fn.labelName(fieldDecl);
         labelDiv.text(labelName + ":");
 
         // IHtmlTag valueDiv = labelDiv.div().class_("zu-fvalue");
-        IHtmlTag valueDiv = div.span().class_("zu-fvalue");
+        IHtmlOut valueDiv = div.span().class_("zu-fvalue");
         return valueDiv;
     }
 
     @Override
-    protected void fieldBody(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, IFieldDecl fieldDecl,
-            IOptions options)
+    protected void fieldBody(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> instanceRef, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
         IProperty property = fieldDecl.getProperty();
         UiPropertyRef<Object> propertyRef = new UiPropertyRef<Object>(instanceRef, property);
@@ -185,13 +180,13 @@ public abstract class SlimForm0_htm<T>
             if (inputName == null)
                 inputName = fieldDecl.getName();
 
-            HtmlInputTag id_hidden = null;
+            HtmlInput id_hidden = null;
             if (!fieldDecl.isReadOnly()) {
                 id_hidden = out.input().type("hidden").name(inputName + ".id");
-                // FieldHtmlUtil.apply(id_hidden, fieldDecl, options);
+                // FieldHtmlUtil.apply(id_hidden, fieldDecl);
             }
 
-            HtmlInputTag label_text = out.input().type("text").class_("noprint").name(inputName + ".label");
+            HtmlInput label_text = out.input().type("text").class_("noprint").name(inputName + ".label");
             label_text.placeholder(fieldDecl.getPlaceholder());
             label_text.readonly("readonly");
             label_text.attr("ec", typeName);
@@ -205,7 +200,7 @@ public abstract class SlimForm0_htm<T>
             }
 
             if (!fieldDecl.isReadOnly()) {
-                HtmlATag pickerLink = out.a().class_("zu-pickcmd noprint");
+                HtmlA pickerLink = out.a().class_("zu-pickcmd noprint");
                 String pathToken = CoTypes.getPathToken(clazz);
                 pickerLink.attr("data-url", _webApp_ + pathToken + "/picker.html");
                 pickerLink.attr("data-title", "选择" + fieldDecl.getLabel() + "...");
@@ -219,32 +214,25 @@ public abstract class SlimForm0_htm<T>
         } // CoObject
 
         else {
+            IHttpViewBuilderFactory factory = ctx.query(IHttpViewBuilderFactory.class);
+            if (factory == null)
+                throw new IllegalConfigException(IHttpViewBuilderFactory.class + " isn't set.");
+
             IHttpViewBuilder<Object> viewBuilder;
+            Face aFace = property.getAnnotation(Face.class);
+            String[] features = {};
+            if (aFace != null)
+                features = aFace.value();
 
-            BuildViewWith aViewBuilder = property.getAnnotation(BuildViewWith.class);
-            if (aViewBuilder != null && aViewBuilder.value().length > 0) {
-                viewBuilder = (IHttpViewBuilder<Object>) SingletonUtil.instantiateCached(aViewBuilder.value()[0]);
-            } else {
-                IHttpViewBuilderFactory factory = ctx.query(IHttpViewBuilderFactory.class);
-                if (factory == null)
-                    throw new IllegalConfigException(IHttpViewBuilderFactory.class + " isn't set.");
-
-                ViewCriteria aViewCriteria = property.getAnnotation(ViewCriteria.class);
-                String[] features = {};
-                if (aViewCriteria != null)
-                    features = aViewCriteria.value();
-
-                viewBuilder = factory.getViewBuilder(clazz, features);
-                if (viewBuilder == null) {
-                    String msg = String
-                            .format("No view builder for %s (features: %s).", clazz, Arrays.asList(features));
-                    throw new NotImplementedException(msg);
-                }
+            viewBuilder = factory.getViewBuilder(clazz, features);
+            if (viewBuilder == null) {
+                String msg = String.format("No view builder for %s (features: %s).", clazz, Arrays.asList(features));
+                throw new NotImplementedException(msg);
             }
 
             // String htmName = viewBuilder.getClass().getSimpleName();
             // out.comment("Foo-Field: " + typeName + " -- " + htmName);
-            viewBuilder.buildView(ctx, out, propertyRef, options);
+            viewBuilder.buildViewStart(ctx, out, propertyRef);
         }
 
         if (!description.isEmpty()) {
@@ -254,21 +242,21 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    protected void endField(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag fieldOut, IFieldDecl fieldDecl)
+    protected void endField(IHtmlViewContext ctx, IHtmlOut out, IHtmlOut fieldOut, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
     }
 
     @Override
-    protected void endCategory(IHtmlViewContext ctx, IHtmlTag out, IHtmlTag catOut, FieldCategory category) {
+    protected void endCategory(IHtmlViewContext ctx, IHtmlOut out, IHtmlOut catOut, FieldCategory category) {
     }
 
     @Override
-    protected IHtmlTag extras(IHtmlViewContext ctx, IHtmlTag out, IUiRef<T> ref, IOptions options)
+    protected IHtmlOut extras(IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref)
             throws ViewBuilderException, IOException {
-        new PickDialog(out, "picker1");
+        PickDialog.build(out, "picker1");
 
-        PageStruct page = new PageStruct(ctx.getHtmlDoc());
-        page.scripts.script().javascriptSrc("impl/" + getClass().getSimpleName() + ".js");
+        List<String> extraScripts = ctx.getVariable(VAR.extraScripts);
+        extraScripts.add("impl/" + getClass().getSimpleName() + ".js");
 
         return out;
     }
@@ -406,7 +394,7 @@ public abstract class SlimForm0_htm<T>
         property.setValue(obj, skel);
     }
 
-    protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoObject e) {
+    protected <tag_t extends IHtmlOut> tag_t ref(tag_t tag, CoObject e) {
         if (e != null)
             tag.text(e.getLabel());
         return tag;

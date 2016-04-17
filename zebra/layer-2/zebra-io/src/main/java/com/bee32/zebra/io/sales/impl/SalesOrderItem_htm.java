@@ -3,7 +3,7 @@ package com.bee32.zebra.io.sales.impl;
 import java.io.IOException;
 import java.util.Set;
 
-import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.io.IHtmlOut;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
@@ -29,7 +29,7 @@ public class SalesOrderItem_htm
     }
 
     @Override
-    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<SalesOrderItem> ref)
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlOut out, IUiRef<SalesOrderItem> ref)
             throws Exception {
         SalesOrderItem item = ref.get();
         Artifact artifact = item.getArtifact();

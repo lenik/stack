@@ -3,93 +3,89 @@ package com.bee32.zebra.tk.slim;
 import java.io.IOException;
 import java.util.Set;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlInputTag;
-import net.bodz.bas.html.dom.tag.HtmlLabelTag;
-import net.bodz.bas.html.dom.tag.HtmlOptionTag;
-import net.bodz.bas.html.dom.tag.HtmlSelectTag;
-import net.bodz.bas.html.dom.tag.HtmlTextareaTag;
-import net.bodz.bas.html.util.FieldHtmlUtil;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlInput;
+import net.bodz.bas.html.io.tag.HtmlLabel;
+import net.bodz.bas.html.io.tag.HtmlOption;
+import net.bodz.bas.html.io.tag.HtmlSelect;
+import net.bodz.bas.html.io.tag.HtmlTextarea;
+import net.bodz.bas.html.util.FieldDeclToHtml;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.FieldCategory;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.SchemaPref;
 import net.bodz.lily.model.base.schema.FormDef;
-import net.bodz.lily.model.base.schema.impl.FormDefMask;
 import net.bodz.lily.model.base.schema.impl.FormDefMapper;
+import net.bodz.lily.model.base.schema.impl.FormDefMask;
 import net.bodz.lily.model.mx.base.CoMessage;
-
-import com.bee32.zebra.tk.hbin.SplitForm;
 
 public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
         extends SlimForm_htm<T> {
 
-    public SlimMesgForm_htm(Class<?> valueClass, String... supportedFeatures) {
-        super(valueClass, supportedFeatures);
+    public SlimMesgForm_htm(Class<?> valueClass) {
+        super(valueClass);
     }
 
     @Override
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
-            IOptions options)
+    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> instanceRef, FieldDeclGroup group)
             throws ViewBuilderException {
         IFormDecl formDecl = group.getFormDecl();
         CoMessage<?> instance = (CoMessage<?>) instanceRef.get();
 
-        SplitForm form = (SplitForm) out.getParent();
-        out = form.head.table().class_("zu-msg");
+        // -> buildFormHead()...?
+        out = out.table().class_("zu-msg");
 
         SchemaPref aSchemaPref = getValueType().getAnnotation(SchemaPref.class);
         if (aSchemaPref != null) {
             int schemaId = aSchemaPref.value();
             int formId = instance.getForm() == null ? aSchemaPref.form() : instance.getForm().getDefId(0);
 
-            IHtmlTag formLine = out.tr().class_("msg-form");
+            IHtmlOut formLine = out.tr().class_("msg-form");
             IFieldDecl formfd = formDecl.getFieldDecl("form");
-            IHtmlTag formLabel = formLine.th().label();
+            IHtmlOut formLabel = formLine.th().label();
             formLabel.span().class_("fa icon").text(FA_BARS);
             formLabel.text(formfd.getLabel() + "：");
-            HtmlSelectTag formInput = formLine.td().select().id("form");
+            HtmlSelect formInput = formLine.td().select().id("form");
 
             FormDefMask mask = FormDefMask.forSchema(schemaId);
             for (FormDef formDef : ctx.query(FormDefMapper.class).filter(mask)) {
-                HtmlOptionTag option = formInput.option().value(formDef.getId()).text(formDef.getLabel());
+                HtmlOption option = formInput.option().value(formDef.getId()).text(formDef.getLabel());
                 if (formId == formDef.getId())
                     option.selected("selected");
             }
-            FieldHtmlUtil.apply(formInput, formfd, options);
+            FieldDeclToHtml.apply(formInput, formfd);
         }
 
-        IHtmlTag subjectLine = out.tr().class_("msg-subject");
+        IHtmlOut subjectLine = out.tr().class_("msg-subject");
         {
             IFieldDecl subjectDecl = formDecl.getFieldDecl("subject");
-            IHtmlTag subjectLabel = subjectLine.th().label();
+            IHtmlOut subjectLabel = subjectLine.th().label();
             subjectLabel.span().class_("fa icon").text(FA_CHEVRON_DOWN);
             subjectLabel.text(subjectDecl.getLabel() + "：");
 
-            HtmlInputTag subjectInput = subjectLine.td().input().name("subject").type("text");
+            HtmlInput subjectInput = subjectLine.td().input().name("subject").type("text");
             subjectInput.value(instance.getSubject());
-            FieldHtmlUtil.apply(subjectInput, subjectDecl, options);
+            FieldDeclToHtml.apply(subjectInput, subjectDecl);
         }
 
-        IHtmlTag textLine = out.tr().class_("msg-text");
+        IHtmlOut textLine = out.tr().class_("msg-text");
         {
             IFieldDecl textDecl = formDecl.getFieldDecl("text");
-            HtmlLabelTag textLabel = textLine.th().label();
+            HtmlLabel textLabel = textLine.th().label();
             textLabel.span().class_("fa icon").text(FA_FILE_O);
             textLabel.text(textDecl.getLabel() + "：");
 
-            HtmlTextareaTag textarea = textLine.td().textarea().name("text");
+            HtmlTextarea textarea = textLine.td().textarea().name("text");
             String text = instance.getText();
             textarea.text(text == null ? "" : text);
-            FieldHtmlUtil.apply(textarea, textDecl, options);
+            FieldDeclToHtml.apply(textarea, textDecl);
         }
 
-        form.sep.hr();
+        out.hr();
         return false;
     }
 

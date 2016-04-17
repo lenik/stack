@@ -5,18 +5,19 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.base.security.impl.UserMask;
 import net.bodz.lily.model.base.security.impl.UserMapper;
+import net.bodz.lily.model.base.security.impl.UserMask;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.MaskBuilder;
 
@@ -38,32 +39,31 @@ public class UserIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<User> a, IUiRef<UserIndex> ref, IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<UserIndex> ref)
             throws ViewBuilderException, IOException {
         UserMapper mapper = ctx.query(UserMapper.class);
         UserMask mask = ctx.query(UserMask.class);
-        List<User> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<User> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (User o : list) {
-                long lastLoginTime = o.getLastLoginTime();
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
-                tr.td().text(o.getLoginName());
-                itab.cocols("u", tr, o);
-                ref(tr.td(), o.getPrimaryGroup());
-                tr.td().text(fn.labels(o.getGroups()));
-                tr.td().text(o.getEmail()).style(o.isEmailValidated() ? "" : "color: gray");
-                tr.td().text(lastLoginTime == 0 ? null : fmt.formatDate(o.getLastLoginTime()));
-                tr.td().text(o.getLastLoginIP());
-                itab.cocols("sa", tr, o);
-            }
+        for (User o : list) {
+            long lastLoginTime = o.getLastLoginTime();
 
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
+            tr.td().text(o.getLoginName());
+            itab.cocols("u", tr, o);
+            ref(tr.td(), o.getPrimaryGroup());
+            tr.td().text(fn.labels(o.getGroups()));
+            tr.td().text(o.getEmail()).style(o.isEmailValidated() ? "" : "color: gray");
+            tr.td().text(lastLoginTime == 0 ? null : fmt.formatDate(o.getLastLoginTime()));
+            tr.td().text(o.getLastLoginIP());
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
 }

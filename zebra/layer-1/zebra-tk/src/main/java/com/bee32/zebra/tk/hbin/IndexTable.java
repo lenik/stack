@@ -1,23 +1,22 @@
 package com.bee32.zebra.tk.hbin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.c.string.StringArray;
 import net.bodz.bas.c.string.Strings;
-import net.bodz.bas.html.dom.AbstractHtmlTag;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlTableTag;
-import net.bodz.bas.html.dom.tag.HtmlTbodyTag;
-import net.bodz.bas.html.dom.tag.HtmlThTag;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlTable;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTh;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.IFieldDecl;
@@ -30,36 +29,21 @@ import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 import com.bee32.zebra.tk.site.FormatFn;
 
 public class IndexTable
-        extends HtmlDivTag
+        // extends AbstractHtmlViewBuilder<Object>
         implements IFontAwesomeCharAliases {
 
-    public HtmlTableTag table;
-    public List<IHtmlTag> headFoot = new ArrayList<IHtmlTag>();
-    public HtmlTbodyTag tbody;
-    public IHtmlTag tools;
-    public EditDialog editDialog;
+    Map<String, Object> attrs;
 
     public String ajaxUrl;
+    Iterable<PathField> indexFields;
     boolean headColumns = true;
     boolean footColumns = true;
 
     Set<String> detailFields = new HashSet<>();
     FormatFn fmt = new FormatFn();
 
-    public IndexTable(IHtmlTag parent) {
-        this(parent, "itab");
-    }
-
-    public IndexTable(IHtmlTag parent, String id) {
-        super(parent, "div");
-        if (id != null)
-            id(id);
-        class_("itab");
-
-        table = table();
-        // table.style("width: 100%");
-        table.class_("table table-striped table-hover table-condensed dataTable table-responsive");
-        tbody = table.tbody();
+    public IndexTable(IHtmlViewContext ctx, Iterable<PathField> indexFields) {
+        attrs = new LinkedHashMap<>();
 
         detailFields.add("accessMode");
         detailFields.add("creationDate");
@@ -69,10 +53,57 @@ public class IndexTable
         detailFields.add("ownerGroup");
         detailFields.add("state");
 
-        tools = div().class_("tools");
+        setAjaxUrlFromRequest(ctx.getRequest());
+        this.indexFields = indexFields;
+    }
 
-        editDialog = new EditDialog(tools, id + "ed");
-        editDialog.iframe.attr("parentItabId", id);
+    public HtmlTbody buildViewStart(IHtmlOut out) {
+        return buildViewStart(out, "itab");
+    }
+
+    public void buildViewEnd(IHtmlOut tbody) {
+        buildViewEnd(tbody, "itab");
+    }
+
+    public HtmlTbody buildViewStart(IHtmlOut out, String id) {
+        out = out.div();
+
+        if (id != null)
+            out.id(id);
+
+        out.class_("itab");
+        for (String k : attrs.keySet())
+            out.attr(k, attrs.get(k));
+
+        HtmlTable table = out.table();
+        // table.style("width: 100%");
+        table.class_("table table-striped table-hover table-condensed dataTable table-responsive");
+
+        if (ajaxUrl != null)
+            table.dataUrl(ajaxUrl);
+
+        if (headColumns)
+            buildFieldCols(table.thead());
+
+        return table.tbody();
+    }
+
+    public void buildViewEnd(IHtmlOut tbody, String id) {
+        IHtmlOut table = tbody.end();
+
+        if (footColumns)
+            buildFieldCols(table.tfoot());
+
+        IHtmlOut out = table.end();
+        HtmlDiv tools = out.div().class_("tools");
+        buildTools(tools, id);
+
+        EditDialog_htm1 editdlg1 = new EditDialog_htm1();
+        editdlg1.parentItabId = id;
+        editdlg1.build(tools, id + "ed");
+    }
+
+    protected void buildTools(HtmlDiv tools, String tabId) {
     }
 
     public void setAjaxUrlFromRequest(HttpServletRequest req) {
@@ -84,41 +115,27 @@ public class IndexTable
         ajaxUrl = url.toString();
     }
 
-    public void buildHeader(IHtmlViewContext ctx, Iterable<PathField> indexFields) {
-        setAjaxUrlFromRequest(ctx.getRequest());
-        buildHeader(indexFields);
-    }
+    void buildFieldCols(IHtmlOut tr) {
+        for (PathField pathField : indexFields) {
+            IFieldDecl fieldDecl = pathField.getFieldDecl();
+            HtmlTh th = tr.th().text(IXjdocElement.fn.labelName(fieldDecl));
+            th.dataField(fieldDecl.getName());
 
-    public void buildHeader(Iterable<PathField> indexFields) {
-        if (ajaxUrl != null)
-            table.dataUrl(ajaxUrl);
+            Set<String> classes = new LinkedHashSet<String>();
+            String styleClass = fieldDecl.getStyleClass();
+            if (styleClass != null)
+                classes.add(styleClass);
 
-        if (headColumns)
-            headFoot.add(table.thead());
-        if (footColumns)
-            headFoot.add(table.tfoot());
+            boolean sortable = fieldDecl.getPreferredSortOrder() != SortOrder.NO_SORT;
+            th.dataSortable(sortable);
+            if (!sortable)
+                classes.add("no-sort");
 
-        for (IHtmlTag tr : headFoot)
-            for (PathField pathField : indexFields) {
-                IFieldDecl fieldDecl = pathField.getFieldDecl();
-                HtmlThTag th = tr.th().text(IXjdocElement.fn.labelName(fieldDecl));
-                th.dataField(fieldDecl.getName());
+            fieldOverride(fieldDecl, classes);
 
-                Set<String> classes = new LinkedHashSet<String>();
-                String styleClass = fieldDecl.getStyleClass();
-                if (styleClass != null)
-                    classes.add(styleClass);
-
-                boolean sortable = fieldDecl.getPreferredSortOrder() != SortOrder.NO_SORT;
-                th.dataSortable(sortable);
-                if (!sortable)
-                    classes.add("no-sort");
-
-                fieldOverride(fieldDecl, classes);
-
-                if (!classes.isEmpty())
-                    th.class_(StringArray.join(" ", classes));
-            }
+            if (!classes.isEmpty())
+                th.class_(StringArray.join(" ", classes));
+        }
     }
 
     protected void fieldOverride(IFieldDecl fieldDecl, Set<String> classes) {
@@ -130,7 +147,7 @@ public class IndexTable
         detailFields.addAll(Arrays.asList(fieldNames));
     }
 
-    public void cocols(String spec, HtmlTrTag tr, CoObject o) {
+    public void cocols(String spec, HtmlTr tr, CoObject o) {
         for (char c : spec.toCharArray()) {
             switch (c) {
             case 'i':
@@ -173,7 +190,7 @@ public class IndexTable
         }
     }
 
-    protected <tag_t extends AbstractHtmlTag<?>> tag_t ref(tag_t tag, CoObject e) {
+    protected <tag_t extends IHtmlOut> tag_t ref(tag_t tag, CoObject e) {
         if (e != null)
             tag.text(e.getLabel());
         return tag;

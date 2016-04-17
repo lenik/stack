@@ -5,8 +5,9 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
@@ -14,7 +15,6 @@ import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
 import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.site.IBasicSiteAnchors;
 import net.bodz.bas.ui.dom1.IUiRef;
 
@@ -32,14 +32,14 @@ public class Delivery_htm
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref, IOptions options)
+    protected IHtmlOut beforeForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Delivery> ref)
             throws ViewBuilderException, IOException {
-        out = super.beforeForm(ctx, out, ref, options);
+        out = super.beforeForm(ctx, out, ref);
 
         HttpServletRequest req = ctx.getRequest();
         String prompt = req.getParameter("prompt");
         if (prompt != null) {
-            HtmlDivTag alert = out.div().class_("alert alert-success");
+            HtmlDiv alert = out.div().class_("alert alert-success");
             alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
             alert.iText(FA_INFO_CIRCLE, "fa");
             alert.bText("[提示]").text("这张送货单是刚刚生成的，但还没有保存，请在保存之前补充必要的信息。");
@@ -48,7 +48,7 @@ public class Delivery_htm
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref, IOptions options)
+    protected IHtmlOut afterForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Delivery> ref)
             throws ViewBuilderException, IOException {
         Delivery delivery = ref.get();
         Integer id = delivery.getId();
@@ -73,16 +73,17 @@ public class Delivery_htm
             }
         }
 
-        ItemsTable itab = new ItemsTable(out, "entries",//
-                _webApp_ + "dlentry/ID/?view:=form&order.id=" + id);
+        ItemsTable itab = new ItemsTable(ctx, itemIndexFields.values());
+        itab.editorUrl = _webApp_ + "dlentry/ID/?view:=form&order.id=" + id;
         itab.ajaxUrl = "../../dlentry/data.json?doc=" + id;
-        itab.buildHeader(itemIndexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out, "entries");
+        itab.buildViewEnd(tbody);
 
         return out;
     }
 
     @Override
-    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlTag out, IUiRef<Delivery> ref)
+    protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlOut out, IUiRef<Delivery> ref)
             throws Exception {
         Integer id = (Integer) super.persist(create, ctx, out, ref);
 

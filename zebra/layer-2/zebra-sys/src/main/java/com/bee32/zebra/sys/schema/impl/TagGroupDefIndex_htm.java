@@ -5,18 +5,19 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.TagGroupDef;
-import net.bodz.lily.model.base.schema.impl.TagGroupDefMask;
 import net.bodz.lily.model.base.schema.impl.TagGroupDefMapper;
+import net.bodz.lily.model.base.schema.impl.TagGroupDefMask;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.MaskBuilder;
 
@@ -37,28 +38,26 @@ public class TagGroupDefIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<TagGroupDef> a, IUiRef<TagGroupDefIndex> ref,
-            IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<TagGroupDefIndex> ref)
             throws ViewBuilderException, IOException {
         TagGroupDefMapper mapper = ctx.query(TagGroupDefMapper.class);
         TagGroupDefMask mask = ctx.query(TagGroupDefMask.class);
-        List<TagGroupDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<TagGroupDef> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (TagGroupDef o : list) {
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
-                tr.td().text(o.getSchema().getLabel());
-                itab.cocols("cu", tr, o);
-                tr.td().text(o.getTags()).class_("small");
-                tr.td().text(o.isOrtho());
-                itab.cocols("sa", tr, o);
-            }
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+        for (TagGroupDef o : list) {
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
+            tr.td().text(o.getSchema().getLabel());
+            itab.cocols("cu", tr, o);
+            tr.td().text(o.getTags()).class_("small");
+            tr.td().text(o.isOrtho());
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
 }

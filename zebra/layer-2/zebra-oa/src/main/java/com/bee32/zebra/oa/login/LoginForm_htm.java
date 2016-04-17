@@ -5,18 +5,17 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlButtonTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlFormTag;
-import net.bodz.bas.html.dom.tag.HtmlHeadTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlButton;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlForm;
+import net.bodz.bas.html.io.tag.HtmlHead;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.DefaultForm_htm;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.security.LoginContext;
 
@@ -36,31 +35,31 @@ public class LoginForm_htm
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<LoginForm> ref, IOptions options) {
-        super.preview(ctx, ref, options);
+    public void preview(IHtmlViewContext ctx, IUiRef<LoginForm> ref) {
+        super.preview(ctx, ref);
         IHtmlHeadData metaData = ctx.getHeadData();
         metaData.addDependency("all-effects", PSEUDO);
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<LoginForm> ref, IOptions options)
+    public IHtmlOut buildHtmlViewStart(IHtmlViewContext ctx, IHtmlOut out, IUiRef<LoginForm> ref)
             throws ViewBuilderException, IOException {
-        if (enter(ctx))
+        if (addSlash(ctx))
             return null;
 
-        HtmlHeadTag head = out.head().id("_head");
+        HtmlHead head = out.head().id("_head");
         respHead(ctx, head);
         head.link().css(_jQueryUIThemes_ + "black-tie/jquery.ui.all.css");
         head.link().css("login.css");
 
         out = out.body();
 
-        HtmlDivTag dialog = out.div().id("dialog1").class_("dialog").style("width: 400px");
+        HtmlDiv dialog = out.div().id("dialog1").class_("dialog").style("width: 400px");
         dialog.title("登录");
 
-        HtmlFormTag form = dialog.form().method("post").action("?");
+        HtmlForm form = dialog.form().method("post").action("?");
 
-        new DefaultForm_htm<LoginForm>(true).buildHtmlView(ctx, form, ref, options);
+        new DefaultForm_htm<LoginForm>(true).buildHtmlViewStart(ctx, form, ref);
 
         HttpServletRequest request = ctx.getRequest();
         String referer = request.getHeader("Referer");
@@ -82,12 +81,12 @@ public class LoginForm_htm
         }
 
         form.hr();
-        HtmlDivTag buttons = form.id("loginForm").div().align("right");
-        HtmlButtonTag submit = buttons.button().type("submit");
+        HtmlDiv buttons = form.id("loginForm").div().align("right");
+        HtmlButton submit = buttons.button().type("submit");
         submit.span().class_("fa icon").text(FA_UNLOCK);
         submit.text("登录");
 
-        HtmlButtonTag reset = buttons.button().type("reset");
+        HtmlButton reset = buttons.button().type("reset");
         reset.span().class_("fa icon").text(FA_ERASER);
         reset.text("清除");
 

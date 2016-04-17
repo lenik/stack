@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlATag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlImgTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlA;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlImg;
+import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.potato.PotatoTypes;
@@ -16,15 +17,14 @@ import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
 import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.file.FileManager;
 import com.bee32.zebra.tk.hbin.ItemsTable;
-import com.bee32.zebra.tk.hbin.SectionDiv;
-import com.bee32.zebra.tk.hbin.UploadFileDialog;
+import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
+import com.bee32.zebra.tk.hbin.UploadFileDialog_htm;
 import com.bee32.zebra.tk.slim.SlimForm_htm;
 
 public class Person_htm
@@ -35,9 +35,9 @@ public class Person_htm
     }
 
     @Override
-    protected IHtmlTag beforeForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Person> ref, IOptions options)
+    protected IHtmlOut beforeForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Person> ref)
             throws ViewBuilderException, IOException {
-        out = super.beforeForm(ctx, out, ref, options);
+        out = super.beforeForm(ctx, out, ref);
 
         Integer id = ref.get().getId();
         if (id == null)
@@ -47,24 +47,24 @@ public class Person_htm
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Person> ref, IOptions options)
+    protected IHtmlOut afterForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Person> ref)
             throws ViewBuilderException, IOException {
         Person person = ref.get();
         Integer id = person.getId();
-        SectionDiv section;
+        IHtmlOut sect;
         if (id != null) {
-            section = new SectionDiv(out, "s-avatar", "形象", IFontAwesomeCharAliases.FA_PICTURE_O);
-            buildAvatar(ctx, section.contentDiv, person);
+            sect = new SectionDiv_htm1("形象", IFontAwesomeCharAliases.FA_PICTURE_O).build(out, "s-avatar");
+            buildAvatar(ctx, sect, person);
 
-            section = new SectionDiv(out, "s-contact", "联系方式", IFontAwesomeCharAliases.FA_PHONE_SQUARE);
-            buildContacts(ctx, section.contentDiv, person);
+            sect = new SectionDiv_htm1("联系方式", IFontAwesomeCharAliases.FA_PHONE_SQUARE).build(out, "s-contact");
+            buildContacts(ctx, sect, person);
         }
         return out;
     }
 
-    void buildAvatar(IHtmlViewContext ctx, IHtmlTag out, Person person)
+    void buildAvatar(IHtmlViewContext ctx, IHtmlOut out, Person person)
             throws ViewBuilderException, IOException {
-        HtmlATag uploadLink = out.a().href("javascript: uploadDialog.open()");
+        HtmlA uploadLink = out.a().href("javascript: uploadDialog.open()");
         uploadLink.iText(FA_CAMERA, "fa").text("上传...");
 
         int id = person.getId();
@@ -72,8 +72,8 @@ public class Person_htm
         String photoPath = id + ".jpg";
         File photoFile = fileManager.getFile("avatar", photoPath);
 
-        HtmlDivTag div = out.div().id("avatar-div");
-        HtmlImgTag img = div.img().id("avatar").height("128");
+        HtmlDiv div = out.div().id("avatar-div");
+        HtmlImg img = div.img().id("avatar").height("128");
         if (photoFile.exists())
             img.src(_webApp_ + "files/avatar/" + photoPath);
         else
@@ -81,14 +81,14 @@ public class Person_htm
 
         div.a().href("javascript: saveAvatar()").iText(FA_FLOPPY_O, "fa").text("保存形象");
 
-        UploadFileDialog dialog = new UploadFileDialog(out, "uploadDialog");
-        dialog.build();
-        dialog.attr("data-bind", "#uploaded-file");
-        dialog.fileInput.acceptCamera();
-        dialog.fileInput.attr("ondone", "previewAvatar(files)");
+        UploadFileDialog_htm dialog = new UploadFileDialog_htm();
+        dialog.acceptCamera = true;
+        dialog.dataBind = "#uploaded-file";
+        dialog.ondone = "previewAvatar(files)";
+        dialog.build(out, "uploadDialog");
     }
 
-    void buildContacts(IHtmlViewContext ctx, IHtmlTag out, Person person)
+    void buildContacts(IHtmlViewContext ctx, IHtmlOut out, Person person)
             throws ViewBuilderException, IOException {
         IType itemType = PotatoTypes.getInstance().forClass(Contact.class);
         FormDeclBuilder formDeclBuilder = new FormDeclBuilder();
@@ -107,10 +107,12 @@ public class Person_htm
         }
 
         Integer id = person.getId();
-        ItemsTable itab = new ItemsTable(out, "contacts", //
-                _webApp_ + "contact/ID/?view:=form&person.id=" + id);
+
+        ItemsTable itab = new ItemsTable(ctx, fields.values());
+        itab.editorUrl = _webApp_ + "contact/ID/?view:=form&person.id=" + id;
         itab.ajaxUrl = "../../contact/data.json?person=" + id;
-        itab.buildHeader(fields.values());
+        HtmlTbody tbody = itab.buildViewStart(out, "contacts");
+        itab.buildViewEnd(tbody);
     }
 
 }

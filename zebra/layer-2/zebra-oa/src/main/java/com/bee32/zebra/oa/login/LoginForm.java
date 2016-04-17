@@ -9,16 +9,16 @@ import javax.servlet.http.HttpSession;
 
 import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlDiv;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.TextInput;
 import net.bodz.lily.model.base.security.LoginContext;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.base.security.impl.UserMask;
 import net.bodz.lily.model.base.security.impl.UserMapper;
+import net.bodz.lily.model.base.security.impl.UserMask;
 import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.tk.htm.GenericForm;
@@ -88,7 +88,7 @@ public class LoginForm
         this.password = password;
     }
 
-    public void login(IHtmlViewContext ctx, IHtmlTag out) {
+    public void login(IHtmlViewContext ctx, IHtmlOut out) {
         IMapperProvider mapperProvider = VhostDataService.forCurrentRequest().getMapperProvider();
         UserMapper mapper = mapperProvider.getMapper(UserMapper.class);
 
@@ -127,7 +127,7 @@ public class LoginForm
         else
             target = _webApp_.toString(); // + "console/";
 
-        HtmlDivTag goDiv = out.div().text("如果浏览器没有跳转至主页面，请点击[");
+        HtmlDiv goDiv = out.div().text("如果浏览器没有跳转至主页面，请点击[");
         goDiv.a().href(target).text("此处");
         goDiv.text("]。");
         out.script().text("location.href=\"" + target + "\";");

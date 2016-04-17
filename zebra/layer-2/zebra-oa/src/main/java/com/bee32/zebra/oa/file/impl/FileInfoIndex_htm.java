@@ -5,25 +5,25 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlDiv;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.lily.model.base.schema.impl.TagDefMask;
+import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.impl.TagDefMapper;
+import net.bodz.lily.model.base.schema.impl.TagDefMask;
 
 import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.sys.TagGroups;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 import com.bee32.zebra.tk.util.Listing;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class FileInfoIndex_htm
         extends SlimIndex_htm<FileInfoIndex, FileInfo, FileInfoMask> {
@@ -57,52 +57,50 @@ public class FileInfoIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<FileInfo> a, IUiRef<FileInfoIndex> ref,
-            IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<FileInfoIndex> ref)
             throws ViewBuilderException, IOException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
         FileInfoMask mask = ctx.query(FileInfoMask.class);
-        List<FileInfo> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<FileInfo> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
         itab.addDetailFields("description", "dirName", "baseName", "tags", "downloads");
-        itab.buildHeader(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-        if (a.dataList())
-            for (FileInfo o : list) {
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
+        for (FileInfo o : list) {
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
 
-                ref(tr.td(), o.getOp()).align("center");
-                itab.cocols("u", tr, o);
-                tr.td().text(o.getDirName()).class_("small");
-                tr.td().text(o.getBaseName()).class_("small");
-                tr.td().text(o.getSize()).class_("small");
-                ref(tr.td(), o.getOrg()).class_("small");
-                ref(tr.td(), o.getPerson()).class_("small");
-                tr.td().text(o.getValue()).style("font-weight: bold");
-                tr.td().text(Listing.joinLabels(", ", o.getTags())).class_("small");
-                tr.td().text(o.getDownloads());
-                tr.td().text(fmt.formatDate(o.getExpireDate()));
+            ref(tr.td(), o.getOp()).align("center");
+            itab.cocols("u", tr, o);
+            tr.td().text(o.getDirName()).class_("small");
+            tr.td().text(o.getBaseName()).class_("small");
+            tr.td().text(o.getSize()).class_("small");
+            ref(tr.td(), o.getOrg()).class_("small");
+            ref(tr.td(), o.getPerson()).class_("small");
+            tr.td().text(o.getValue()).style("font-weight: bold");
+            tr.td().text(Listing.joinLabels(", ", o.getTags())).class_("small");
+            tr.td().text(o.getDownloads());
+            tr.td().text(fmt.formatDate(o.getExpireDate()));
 
-                itab.cocols("sa", tr, o);
-            }
-
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
     @Override
-    protected void userData(IHtmlViewContext ctx, IHtmlTag out, IUiRef<FileInfoIndex> ref, IOptions options)
+    protected void userData(IHtmlViewContext ctx, IHtmlOut out, IUiRef<FileInfoIndex> ref)
             throws ViewBuilderException, IOException {
-        HtmlDivTag tmpl = out.div().id("child-0").class_("zu-template");
-        GetFilePanel filePanel = new GetFilePanel(tmpl).class_("zu-detail");
-        filePanel.setDirName("$segs");
-        filePanel.setBaseName("$base");
-        filePanel.setDescription("$description");
-        filePanel.setHref("$href");
-        filePanel.setBreadcrumb(false);
-        filePanel.build();
+        HtmlDiv tmpl = out.div().id("child-0").class_("zu-template");
+        GetFilePanel filePanel = new GetFilePanel();
+        filePanel.class_ = "zu-detail";
+        filePanel.dirName = "$segs";
+        filePanel.baseName = "$base";
+        filePanel.description = "$description";
+        filePanel.href = "$href";
+        filePanel.breadcrumb = false;
+        filePanel.build(tmpl);
     }
 
 }

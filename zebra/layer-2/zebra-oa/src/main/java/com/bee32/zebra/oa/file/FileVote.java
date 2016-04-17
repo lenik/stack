@@ -2,7 +2,6 @@ package com.bee32.zebra.oa.file;
 
 import net.bodz.lily.model.base.security.User;
 
-
 /**
  * 文件投票
  */

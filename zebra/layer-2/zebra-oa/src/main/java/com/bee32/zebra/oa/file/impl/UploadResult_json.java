@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.io.IHtmlOut;
 import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.IAnchor;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.std.rfc.mime.ContentType;
 import net.bodz.bas.std.rfc.mime.ContentTypes;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -35,7 +34,7 @@ public class UploadResult_json
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag parent, IUiRef<UploadResult> ref, IOptions options)
+    public IHtmlOut buildHtmlViewStart(IHtmlViewContext ctx, IHtmlOut parent, IUiRef<UploadResult> ref)
             throws ViewBuilderException, IOException {
         UploadResult result = ref.get();
         FileManager manager = FileManager.forCurrentRequest();
@@ -59,7 +58,8 @@ public class UploadResult_json
         PrintWriter out = ctx.getResponse().getWriter();
         String json = obj.toString();
         out.println(json);
-        out.close();
+        ctx.stop();
+
         return null;
     }
 

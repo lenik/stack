@@ -5,7 +5,7 @@ import com.bee32.zebra.tk.stat.MonthTrends;
 
 public class MonthTrends_htm
         extends SlimForm_htm<MonthTrends> {
-    
+
     public MonthTrends_htm() {
         super(MonthTrends.class);
     }

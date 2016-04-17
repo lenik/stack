@@ -2,13 +2,13 @@ package com.bee32.zebra.tk.site;
 
 import java.util.List;
 
-import net.bodz.bas.html.dom.IHtmlTag;
+import net.bodz.bas.html.io.IHtmlOut;
 
 public class DataViewAnchors<T> {
 
-    public IHtmlTag frame;
-    public IHtmlTag data;
-    public IHtmlTag extradata;
+    public IHtmlOut frame;
+    public IHtmlOut data;
+    public IHtmlOut extradata;
 
     public boolean dataList;
     List<T> list;

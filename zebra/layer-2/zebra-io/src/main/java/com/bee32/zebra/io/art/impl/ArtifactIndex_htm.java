@@ -5,11 +5,14 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.http.ui.cmd.UiServletCommand;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
 
 import com.bee32.zebra.io.art.Artifact;
 import com.bee32.zebra.io.art.ArtifactCategory;
@@ -18,11 +21,10 @@ import com.bee32.zebra.io.art.UOM;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
-import com.bee32.zebra.tk.site.PageStruct;
+import com.bee32.zebra.tk.site.ZpCmds1Toolbar;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 import com.bee32.zebra.tk.util.Listing;
+import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class ArtifactIndex_htm
         extends SlimIndex_htm<ArtifactIndex, Artifact, ArtifactMask> {
@@ -33,12 +35,15 @@ public class ArtifactIndex_htm
         indexFields.parse("i*sa", "skuCode", "category", "label", "description", "uom", "supplyMethod", "barCode");
     }
 
-    @Override
-    protected void titleInfo(IHtmlViewContext ctx, IUiRef<ArtifactIndex> ref, boolean indexPage) {
-        super.titleInfo(ctx, ref, indexPage);
-        PageStruct page = new PageStruct(ctx.getHtmlDoc());
-        if (indexPage) {
-            page.cmds1.a().href("?view:=barcode").text("打印条码");
+    /**
+     * 打印条码
+     * 
+     * @cmd.href ?view:=barcode
+     */
+    public static class PrintBarcodeCommand
+            extends UiServletCommand {
+        {
+            addLocation(ZpCmds1Toolbar.class);
         }
     }
 
@@ -65,32 +70,30 @@ public class ArtifactIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<Artifact> a, IUiRef<ArtifactIndex> ref,
-            IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<ArtifactIndex> ref)
             throws ViewBuilderException, IOException {
         ArtifactMapper mapper = ctx.query(ArtifactMapper.class);
         ArtifactMask mask = ctx.query(ArtifactMask.class);
-        List<Artifact> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<Artifact> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (Artifact o : list) {
-                ArtifactCategory category = o.getCategory();
-                UOM uom = o.getUom();
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
-                tr.td().text(o.getSkuCode());
-                tr.td().text(category == null ? null : category.getLabel());
-                itab.cocols("u", tr, o);
-                tr.td().text(uom == null ? null : uom.getLabel() + "/" + o.getUomProperty());
-                tr.td().text(o.getSupplyMethod().getLabel());
-                tr.td().text(o.getBarCode());
-                itab.cocols("sa", tr, o);
-            }
+        for (Artifact o : list) {
+            ArtifactCategory category = o.getCategory();
+            UOM uom = o.getUom();
 
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
+            tr.td().text(o.getSkuCode());
+            tr.td().text(category == null ? null : category.getLabel());
+            itab.cocols("u", tr, o);
+            tr.td().text(uom == null ? null : uom.getLabel() + "/" + o.getUomProperty());
+            tr.td().text(o.getSupplyMethod().getLabel());
+            tr.td().text(o.getBarCode());
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 }

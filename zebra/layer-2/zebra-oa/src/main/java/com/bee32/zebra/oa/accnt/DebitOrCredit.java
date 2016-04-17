@@ -1,11 +1,11 @@
 package com.bee32.zebra.oa.accnt;
 
-import net.bodz.bas.html.meta.ViewCriteria;
+import net.bodz.bas.html.meta.Radio;
 import net.bodz.bas.t.predef.Predef;
 import net.bodz.bas.t.predef.PredefMetadata;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocAware;
 
-@ViewCriteria("radio")
+@Radio
 public class DebitOrCredit
         extends Predef<DebitOrCredit, Character> {
 

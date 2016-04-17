@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import net.bodz.bas.http.HttpServlet;
 import net.bodz.bas.http.ResourceTransferer;
 import net.bodz.bas.http.servlet.FileAccessorServlet;
-import net.bodz.bas.meta.codegen.GeneratedByCopyPaste;
+import net.bodz.bas.meta.codegen.CopyAndPaste;
 
-@GeneratedByCopyPaste(FileAccessorServlet.class)
+@CopyAndPaste(FileAccessorServlet.class)
 public class VirtualFileAccessorServlet
         extends HttpServlet {
 

@@ -7,13 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.c.java.util.Dates;
 import net.bodz.bas.err.Err;
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
-import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.bas.ui.dom1.UiValue;
 import net.bodz.lily.model.base.schema.FormDef;
@@ -21,14 +19,13 @@ import net.bodz.lily.model.base.security.LoginContext;
 import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
-import com.bee32.zebra.oa.accnt.impl.AccountingEventMask;
 import com.bee32.zebra.oa.accnt.impl.AccountingEventMapper;
+import com.bee32.zebra.oa.accnt.impl.AccountingEventMask;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.oa.thread.Reply;
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.tk.hbin.DataTable;
-import com.bee32.zebra.tk.hbin.SectionDiv;
-import com.bee32.zebra.tk.hbin.SplitForm;
+import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
 import com.bee32.zebra.tk.slim.SlimMesgForm_htm;
 
 public class Topic_htm
@@ -39,7 +36,7 @@ public class Topic_htm
     }
 
     @Override
-    protected void process(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected void process(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Topic> ref)
             throws ViewBuilderException, IOException {
         HttpServletRequest req = ctx.getRequest();
 
@@ -55,7 +52,7 @@ public class Topic_htm
                 inject(UiValue.wrap(reply), ctx.getRequest().getParameterMap());
                 reply.persist(ctx, out);
 
-                HtmlDivTag alert = out.div().class_("alert alert-success");
+                HtmlDiv alert = out.div().class_("alert alert-success");
                 alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
                 alert.span().class_("fa icon").text(FA_CHECK_CIRCLE);
                 alert.strong().text("[成功]");
@@ -63,7 +60,7 @@ public class Topic_htm
             } catch (Throwable e) {
                 e.printStackTrace();
                 e = Err.unwrap(e);
-                HtmlDivTag alert = out.div().class_("alert alert-danger");
+                HtmlDiv alert = out.div().class_("alert alert-danger");
                 alert.a().class_("close").attr("data-dismiss", "alert").verbatim("&times;");
                 alert.span().class_("fa icon").text(FA_TIMES_CIRCLE);
                 alert.strong().text("[错误]");
@@ -72,49 +69,43 @@ public class Topic_htm
             return;
         }
 
-        super.process(ctx, out, ref, options);
+        super.process(ctx, out, ref);
     }
 
     @Override
-    protected boolean buildBasicGroup(IHtmlViewContext ctx, IHtmlTag out, IUiRef<?> instanceRef, FieldDeclGroup group,
-            IOptions options)
-            throws ViewBuilderException {
-        super.buildBasicGroup(ctx, out, instanceRef, group, options);
-
-        Topic topic = (Topic) instanceRef.get();
+    protected void buildFormHead(IHtmlViewContext ctx, IHtmlOut out, IUiRef<?> ref) {
+        super.buildFormHead(ctx, out, ref);
+        Topic topic = (Topic) ref.get();
         if (topic.getId() != null) {
             TopicMapper topicMapper = ctx.query(TopicMapper.class);
             int n = topicMapper.replyCount(topic.getId());
-            SplitForm form = (SplitForm) out.getParent();
-            HtmlATag link = form.head.a().class_("fa").href("#reply-tree").text(FA_ANGLE_DOUBLE_RIGHT);
+            HtmlA link = out.a().class_("fa").href("#reply-tree").text(FA_ANGLE_DOUBLE_RIGHT);
             if (n == 0) {
                 link.text(" 本项目尚无跟进。");
             } else {
                 link.text(" 本项目已有 " + n + " 条跟进信息。");
             }
         }
-
-        return false;
     }
 
     @Override
-    protected IHtmlTag afterForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected IHtmlOut afterForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Topic> ref)
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
         if (topic.getId() != null) {
-            SectionDiv section;
+            IHtmlOut sect;
 
-            section = new SectionDiv(out, "s-acc", "收支情况", IFontAwesomeCharAliases.FA_USD);
-            buildAccList(ctx, section.contentDiv, ref, options);
+            sect = new SectionDiv_htm1("收支情况", IFontAwesomeCharAliases.FA_USD).build(out, "s-acc");
+            buildAccList(ctx, sect, ref);
 
-            section = new SectionDiv(out, "s-reply", "跟进", IFontAwesomeCharAliases.FA_COMMENTS_O);
-            buildReplyTree(ctx, section.contentDiv, ref, options);
-            buildReplyForm(ctx, section.contentDiv, ref, options);
+            sect = new SectionDiv_htm1("跟进", IFontAwesomeCharAliases.FA_COMMENTS_O).build(out, "s-reply");
+            buildReplyTree(ctx, sect, ref);
+            buildReplyForm(ctx, sect, ref);
         }
         return out;
     }
 
-    protected void buildAccList(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected void buildAccList(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Topic> ref)
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 
@@ -124,17 +115,11 @@ public class Topic_htm
         AccountingEventMapper eventMapper = ctx.query(AccountingEventMapper.class);
         List<AccountingEvent> events = eventMapper.filter(mask);
 
-        DataTable tab = new DataTable(out).id("acdocs");
-        tab.head.th().text("凭证");
-        tab.head.th().text("类型");
-        tab.head.th().text("日期");
-        tab.head.th().text("金额");
-        tab.head.th().text("说明");
-        tab.head.th().text("记账");
+        HtmlTbody tbody = new DataTable("凭证", "类型", "日期", "金额", "说明", "记账").build(out, "acdocs");
 
         for (AccountingEvent event : events) {
             FormDef form = event.getForm().getDef();
-            HtmlTrTag tr = tab.body.tr();
+            HtmlTr tr = tbody.tr();
 
             tr.id("acdoc-" + event.getId());
             tr.td().a().href("_blank", _webApp_ + "/acdoc/" + event.getId() + "/").text("[ac" + event.getId() + "] ");
@@ -147,7 +132,7 @@ public class Topic_htm
         }
     }
 
-    protected void buildReplyTree(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected void buildReplyTree(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Topic> ref)
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 
@@ -159,20 +144,20 @@ public class Topic_htm
 
         out.div().id("reply-tree");
         for (Reply reply : replies) {
-            HtmlDivTag div = out.div().id("reply-" + reply.getId()).class_("zu-reply");
+            HtmlDiv div = out.div().id("reply-" + reply.getId()).class_("zu-reply");
 
-            HtmlDivTag mesg = div.div().class_("zu-message");
+            HtmlDiv mesg = div.div().class_("zu-message");
             mesg.span().class_("zu-nvote").text(reply.getClickInfo().getVoteCount());
             mesg.text(reply.getText());
 
             List<Person> parties = reply.getParties();
             if (parties != null && !parties.isEmpty()) {
-                HtmlUlTag ul = mesg.ul();
+                HtmlUl ul = mesg.ul();
                 for (Person party : parties)
                     ul.li().text(party.getFullName());
             }
 
-            HtmlDivTag author = div.div().class_("zu-author");
+            HtmlDiv author = div.div().class_("zu-author");
             author.span().class_("fa icon").text(FA_COMMENT_O);
             author.text(reply.getOp().getFullName() + " @" + reply.getLastModifiedDate());
 
@@ -180,39 +165,39 @@ public class Topic_htm
         }
     }
 
-    protected void buildReplyForm(IHtmlViewContext ctx, IHtmlTag out, IUiRef<Topic> ref, IOptions options)
+    protected void buildReplyForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<Topic> ref)
             throws ViewBuilderException, IOException {
         Topic topic = ref.get();
 
         // Reply reply = new Reply(topic, null);
         // UiVar<Reply> replyRef = UiVar.wrap(reply);
-        // super.buildForm(ctx, out, replyRef, options);
+        // super.buildForm(ctx, out, replyRef);
 
-        HtmlFormTag form = out.form().id("reply-form").method("post").action("#reply-form");
+        HtmlForm form = out.form().id("reply-form").method("post").action("#reply-form");
         form.input().type("hidden").name("topic").value(topic.getId());
 
-        IHtmlTag tab = form.table().class_("zu-msg");
-        IHtmlTag textLine = tab.tr().id("zp-reply").class_("noprint");
+        IHtmlOut tab = form.table().class_("zu-msg");
+        IHtmlOut textLine = tab.tr().id("zp-reply").class_("noprint");
         {
-            HtmlLabelTag textLabel = textLine.th().label();
+            HtmlLabel textLabel = textLine.th().label();
             textLabel.span().class_("fa icon").text(FA_FILE_O);
             textLabel.text("跟进: ");
 
-            HtmlTextareaTag textarea = textLine.td().textarea().name("text");
+            HtmlTextarea textarea = textLine.td().textarea().name("text");
             textarea.placeholder("输入跟踪信息…");
         }
 
-        HtmlDivTag author = form.div().class_("zu-author");
+        HtmlDiv author = form.div().class_("zu-author");
         author.span().class_("fa icon").text(FA_COMMENT_O);
         User user = LoginContext.fromSession().user;
         author.text(user.getFullName());
 
-        HtmlDivTag div = form.div();
-        HtmlButtonTag submitButton = div.button().type("submit");
+        HtmlDiv div = form.div();
+        HtmlButton submitButton = div.button().type("submit");
         submitButton.span().class_("fa icon").text(FA_CHECK);
         submitButton.text("提交");
 
-        HtmlInputTag resetButton = div.input().type("reset");
+        HtmlInput resetButton = div.input().type("reset");
         resetButton.value("清空");
     }
 

@@ -5,20 +5,18 @@ import java.io.IOException;
 import net.bodz.bas.c.string.StringQuote;
 import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.artifact.IArtifactDependency;
-import net.bodz.bas.html.dom.tag.HtmlHeadTag;
+import net.bodz.bas.html.io.tag.HtmlHead;
 import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout;
 
 /**
- * 1. RespTemplate <|--- OaSite_htm <|--- ErpSite_htm.
- * 2. ErpSite -> QuickIndex*, SlimIndex_htm
- * 3. CoObject*, SlimForm_htm
+ * 1. RespTemplate <|--- OaSite_htm <|--- ErpSite_htm. 2. ErpSite -> QuickIndex*, SlimIndex_htm 3.
+ * CoObject*, SlimForm_htm
  */
 public abstract class RespTemplate<T>
         extends AbstractHtmlViewBuilder<T>
@@ -29,8 +27,8 @@ public abstract class RespTemplate<T>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<T> ref, IOptions options) {
-        super.preview(ctx, ref, options);
+    public void preview(IHtmlViewContext ctx, IUiRef<T> ref) {
+        super.preview(ctx, ref);
 
         IHtmlHeadData metaData = ctx.getHeadData();
         metaData.setMeta(IHtmlHeadData.META_AUTHOR, "谢继雷 (Xiè Jìléi)");
@@ -45,7 +43,7 @@ public abstract class RespTemplate<T>
         metaData.addDependency("all-effects", PSEUDO);
     }
 
-    protected void respHead(IHtmlViewContext ctx, HtmlHeadTag head)
+    protected void respHead(IHtmlViewContext ctx, HtmlHead head)
             throws IOException {
         writeHeadMetas(ctx, head);
         writeHeadImports(ctx, head);

@@ -1,23 +1,12 @@
 package com.bee32.zebra.tk.hbin;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
-import net.bodz.bas.html.dom.tag.HtmlIframeTag;
+import net.bodz.bas.html.io.IHtmlOut;
 
 public class PickDialog
-        extends IframeDialog {
+        extends IframeDialog_htm1 {
 
-    public HtmlDivTag body;
-    public HtmlIframeTag iframe;
-    public HtmlDivTag buttons;
-
-    public PickDialog(IHtmlTag parent, String id) {
-        super(parent, id);
-    }
-
-    @Override
-    protected void create() {
-        addClass("zu-pick-dialog");
+    public static void build(IHtmlOut out, String id) {
+        new IframeDialog_htm1().build(out, id, "zu-pick-dialog");
     }
 
 }

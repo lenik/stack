@@ -2,15 +2,14 @@ package com.bee32.zebra.io.art.impl;
 
 import java.io.IOException;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlInputTag;
-import net.bodz.bas.html.util.FieldHtmlUtil;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlInput;
+import net.bodz.bas.html.util.FieldDeclToHtml;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.builtin.AbstractFormInput_htm;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 
 import com.bee32.zebra.io.art.Dim3d;
 
@@ -22,19 +21,16 @@ public class Dim3d_htm
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, UiPropertyRef<Dim3d> ref, IFieldDecl fieldDecl,
-            IOptions options)
+    public void buildHtmlView(IHtmlViewContext ctx, IHtmlOut out, UiPropertyRef<Dim3d> ref, IFieldDecl fieldDecl)
             throws ViewBuilderException, IOException {
 
         Dim3d dim = ref.get();
 
         String str = dim.toString();
-        HtmlInputTag input = out.input().type("text").class_("noprint").value(str);
-        FieldHtmlUtil.apply(input, fieldDecl, options);
+        HtmlInput input = out.input().type("text").class_("noprint").value(str);
+        FieldDeclToHtml.apply(input, fieldDecl);
 
         out.span().class_("print").text(str);
-
-        return out;
     }
 
 }

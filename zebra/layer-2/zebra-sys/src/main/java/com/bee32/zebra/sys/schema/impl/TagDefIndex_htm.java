@@ -5,20 +5,21 @@ import java.util.List;
 
 import net.bodz.bas.c.reflect.NoSuchPropertyException;
 import net.bodz.bas.err.ParseException;
-import net.bodz.bas.html.dom.tag.HtmlTrTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlTbody;
+import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.TagDef;
-import net.bodz.lily.model.base.schema.impl.TagDefMask;
 import net.bodz.lily.model.base.schema.impl.TagDefMapper;
+import net.bodz.lily.model.base.schema.impl.TagDefMask;
 import net.bodz.lily.model.base.schema.impl.TagGroupDefMapper;
 
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
-import com.bee32.zebra.tk.site.DataViewAnchors;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.MaskBuilder;
 
@@ -44,26 +45,25 @@ public class TagDefIndex_htm
     }
 
     @Override
-    protected void dataIndex(IHtmlViewContext ctx, DataViewAnchors<TagDef> a, IUiRef<TagDefIndex> ref, IOptions options)
+    protected List<? extends CoObject> dataIndex(IHtmlViewContext ctx, IHtmlOut out, IUiRef<TagDefIndex> ref)
             throws ViewBuilderException, IOException {
         TagDefMapper mapper = ctx.query(TagDefMapper.class);
         TagDefMask mask = ctx.query(TagDefMask.class);
-        List<TagDef> list = a.noList() ? null : postfilt(mapper.filter(mask));
+        List<TagDef> list = postfilt(mapper.filter(mask));
 
-        IndexTable itab = new IndexTable(a.data);
-        itab.buildHeader(ctx, indexFields.values());
-        if (a.dataList())
-            for (TagDef o : list) {
-                HtmlTrTag tr = itab.tbody.tr();
-                itab.cocols("i", tr, o);
-                tr.td().text(o.getTagGroup().getLabel());
-                itab.cocols("cu", tr, o);
-                tr.td().text(o.getRefCount());
-                itab.cocols("sa", tr, o);
-            }
+        IndexTable itab = new IndexTable(ctx, indexFields.values());
+        HtmlTbody tbody = itab.buildViewStart(out);
 
-        if (a.extradata != null)
-            dumpFullData(a.extradata, list);
+        for (TagDef o : list) {
+            HtmlTr tr = tbody.tr();
+            itab.cocols("i", tr, o);
+            tr.td().text(o.getTagGroup().getLabel());
+            itab.cocols("cu", tr, o);
+            tr.td().text(o.getRefCount());
+            itab.cocols("sa", tr, o);
+        }
+        itab.buildViewEnd(tbody);
+        return list;
     }
 
 }

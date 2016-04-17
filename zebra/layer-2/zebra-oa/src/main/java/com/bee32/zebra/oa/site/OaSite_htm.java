@@ -1,10 +1,11 @@
 package com.bee32.zebra.oa.site;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.*;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.*;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.i18n.dom.iString;
@@ -12,11 +13,10 @@ import net.bodz.bas.i18n.dom1.IElement;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.PathArrivalEntry;
 import net.bodz.bas.repr.viz.ViewBuilderException;
-import net.bodz.bas.rtx.IOptions;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.security.LoginContext;
 
-import com.bee32.zebra.tk.hbin.ShareBar;
+import com.bee32.zebra.tk.hbin.ShareBar_htm1;
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.htm.RespTemplate;
@@ -40,8 +40,8 @@ public class OaSite_htm
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<OaSite> ref, IOptions options) {
-        super.preview(ctx, ref, options);
+    public void preview(IHtmlViewContext ctx, IUiRef<OaSite> ref) {
+        super.preview(ctx, ref);
 
         IPathArrival arrival = ctx.query(IPathArrival.class);
         PageLayout layout = solicitLayout(arrival);
@@ -49,54 +49,64 @@ public class OaSite_htm
     }
 
     @Override
-    public IHtmlTag buildHtmlView(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IOptions options)
+    public IHtmlOut buildHtmlViewStart(IHtmlViewContext ctx, IHtmlOut out, IUiRef<OaSite> ref)
             throws ViewBuilderException, IOException {
         OaSite site = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean arrivedHere = arrival.getPrevious(site).getRemainingPath() == null;
 
-        if (arrivedHere && enter(ctx))
+        if (arrivedHere && addSlash(ctx))
             return null;
 
         LoginContext loginctx = LoginContext.fromSession(ctx.getSession());
         if (loginctx == null) {
             ctx.getResponse().sendRedirect(_webApp_ + "login/");
+            ctx.stop();
             return null;
         }
 
-        HtmlHeadTag head = out.head().id("_head");
+        HtmlHead head = out.head().id("_head");
         respHead(ctx, head);
 
-        HtmlBodyTag body = out.body();
-        // HtmlImgTag bg = body.img().class_("background");
+        HtmlBody body = out.body();
+        // HtmlImg bg = body.img().class_("background");
         // bg.src(_webApp_ + "chunk/pic/bg/poppy-orange-flower-bud.jpg");
 
         out = body;
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         if (layout.isShowFrame()) {
-            HtmlDivTag container = body.div().class_("container").style("width: 100%; padding: 0");
-            HtmlDivTag containerRow = container.div().class_("container-row");
-            HtmlDivTag menuCol = containerRow.div().id("zp-menu-col")//
+            HtmlDiv container = body.div().class_("container").style("width: 100%; padding: 0");
+            HtmlDiv containerRow = container.div().class_("container-row");
+            HtmlDiv menuCol = containerRow.div().id("zp-menu-col")//
                     .class_("col-xs-3 col-sm-2 col-lg-1");
             menuCol(ctx, menuCol, ref, arrival);
 
-            HtmlDivTag body1 = containerRow.div().id(ID.body1)//
-                    .class_("col-xs-9 col-sm-8 col-lg-10");
-            containerRow.div().id(ID.right_col)//
-                    .class_("col-xs-0 hidden-xs col-sm-2 col-lg-1 zu-info");
+            HtmlDiv body1 = containerRow.div().id(ID.body0)//
+                    .class_("col-xs-9 col-sm-10 col-lg-11");
 
             out = body1;
 
             if (arrivedHere)
                 defaultBody(body1, site);
-
-            foot(body, site);
         }
 
-        body.div().id(ID.extradata);
+        ctx.setVariable(VAR.extraScripts, new ArrayList<String>());
+        return out;
+    }
 
-        HtmlDivTag scripts = body.div().id(ID.scripts);
+    @Override
+    public void buildHtmlViewEnd(IHtmlViewContext ctx, IHtmlOut out, IHtmlOut body, IUiRef<OaSite> ref)
+            throws ViewBuilderException, IOException {
+        OaSite site = ref.get();
+
+        PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+        if (layout.isShowFrame())
+            foot(body, site);
+
+        // body.div().id(ID.extradata);
+
+        HtmlDiv scripts = body.div().id(ID.scripts);
         scripts.script().javascriptSrc(_webApp_ + "js1/util.0.js");
         scripts.script().javascriptSrc(_webApp_ + "js1/util.datatables.js");
         scripts.script().javascriptSrc(_webApp_ + "js1/util.flot.js");
@@ -106,12 +116,14 @@ public class OaSite_htm
         scripts.script().javascriptSrc(_webApp_ + "js1/makeup.js");
         scripts.script().javascriptSrc(_webApp_ + "js1/index.charts.js");
 
-        return out;
+        List<String> extraScripts = ctx.getVariable(VAR.extraScripts);
+        for (String s : extraScripts)
+            scripts.script().javascriptSrc(s);
     }
 
     PageLayout solicitLayout(IPathArrival arrival) {
         PageLayout layout = new PageLayout();
-        for (IPathArrival a : arrival.toList(false)) { // should be in reversed order.
+        for (IPathArrival a : arrival.toList()) { // should be in reversed order.
             Object target = a.getTarget();
             if (target instanceof IPageLayoutGuider)
                 ((IPageLayoutGuider) target).configure(layout);
@@ -119,13 +131,13 @@ public class OaSite_htm
         return layout;
     }
 
-    protected void menuCol(IHtmlViewContext ctx, IHtmlTag out, IUiRef<OaSite> ref, IPathArrival arrival) {
+    protected void menuCol(IHtmlViewContext ctx, IHtmlOut out, IUiRef<OaSite> ref, IPathArrival arrival) {
         OaSite site = ref.get();
         LoginContext loginctx = LoginContext.fromSession(ctx.getSession());
 
         if (ref instanceof PathArrivalEntry) {
-            IHtmlTag nav = out.nav().ol().class_("breadcrumb");
-            List<IPathArrival> list = arrival.toList(true);
+            IHtmlOut nav = out.nav().ol().class_("breadcrumb");
+            List<IPathArrival> list = arrival.toList().mergeTransients();
             for (int i = 0; i < list.size(); i++) {
                 IPathArrival a = list.get(i);
                 Object target = a.getTarget();
@@ -143,7 +155,7 @@ public class OaSite_htm
                 String href = _webApp_.join(a.getConsumedFullPath() + "/").toString();
 
                 boolean last = i == list.size() - 1;
-                HtmlLiTag li = nav.li();
+                HtmlLi li = nav.li();
                 if (last)
                     li.class_("active").text(label);
                 else
@@ -151,36 +163,36 @@ public class OaSite_htm
             }
         }
 
-        HtmlDivTag logoDiv = out.div().id("zp-logo").text("SECCA");
+        HtmlDiv logoDiv = out.div().id("zp-logo").text("SECCA");
         logoDiv.br();
         logoDiv.text("ERP 3.0alpha");
 
-        HtmlDivTag welcomeDiv = out.div().id("zp-welcome");
+        HtmlDiv welcomeDiv = out.div().id("zp-welcome");
         welcomeDiv.text("欢迎您，").br();
-// welcomeDiv.text("海宁中鑫三元风机有限公司").br();
-// welcomeDiv.text("的").br();
-        HtmlSpanTag userSpan = welcomeDiv.span();
+        // welcomeDiv.text("海宁中鑫三元风机有限公司").br();
+        // welcomeDiv.text("的").br();
+        HtmlSpan userSpan = welcomeDiv.span();
         userSpan.text(loginctx.user.getFullName());
         userSpan.title(loginctx.user.getGroupIds().toString());
         welcomeDiv.text("！");
-        HtmlATag logout = welcomeDiv.a().id("zp-logout");
+        HtmlA logout = welcomeDiv.a().id("zp-logout");
         logout.href(_webApp_ + "login/?logout=1");
         logout.text("[注销]");
 
-        HtmlFormTag searchForm = out.form().id("zp-search");
+        HtmlForm searchForm = out.form().id("zp-search");
         searchForm.text("搜索：");
         searchForm.input().id("q");
 
         out.hr();
-        HtmlDivTag menuDiv = out.div().id("zp-menu");
-        HtmlUlTag menuUl = menuDiv.ul().id(ID.menu_ul);
+        HtmlDiv menuDiv = out.div().id("zp-menu");
+        HtmlUl menuUl = menuDiv.ul().id(ID.menu_ul);
         mainMenu(menuUl, site);
     }
 
-    protected void mainMenu(IHtmlTag out, OaSite site) {
-        HtmlUlTag sub;
-        HtmlLiTag li;
-        HtmlLiTag lili;
+    protected void mainMenu(IHtmlOut out, OaSite site) {
+        HtmlUl sub;
+        HtmlLi li;
+        HtmlLi lili;
 
         sub = out.li().text("开始").ul();
         sub.li().a().text("控制台").href(_webApp_.join("console/").toString());
@@ -237,26 +249,26 @@ public class OaSite_htm
         }
     }
 
-    protected void defaultBody(IHtmlTag out, OaSite site) {
+    protected void defaultBody(IHtmlOut out, OaSite site) {
         out.link().css("home.css");
         out.script().javascriptSrc("home.js");
 
-        HtmlDivTag div = out.div().align("center");
+        HtmlDiv div = out.div().align("center");
         div.img().id("welcome").src(_chunk_ + "pic/sym/welcome/colorful1.png").width("75%").style("display: none;");
 
     }
 
-    protected void foot(IHtmlTag out, OaSite site) {
+    protected void foot(IHtmlOut out, OaSite site) {
         out = out.div().id("zp-foot");
         // ClassDoc doc = Xjdocs.getDefaultProvider().getClassDoc(site.getClass());
 
-        new ShareBar(out).class_("sharebar").style("padding: .5em;");
+        new ShareBar_htm1().build(out);
         out.hr().style("clear: both; margin: .5em 0");
 
-        HtmlDivTag navfoot = out.div().class_("zu-footnav");
-        HtmlTableTag tab = navfoot.table().align("center");
-        HtmlTrTag row;
-        HtmlTdTag cell;
+        HtmlDiv navfoot = out.div().class_("zu-footnav");
+        HtmlTable tab = navfoot.table().align("center");
+        HtmlTr row;
+        HtmlTd cell;
 
         row = tab.tr();
         cell = row.td().align("right");
@@ -266,7 +278,7 @@ public class OaSite_htm
 
         cell = row.td();
         cell.b().text("常用");
-        HtmlUlTag ul = cell.ul();
+        HtmlUl ul = cell.ul();
         ul.li().a().href("_blank", _webApp_ + "console").iText(FA_TACHOMETER, "fa").text("控制台");
         ul.li().a().href("_blank", _webApp_ + "person/").iText(FA_MALE, "fa").text("联系人");
         ul.li().a().href("_blank", _webApp_ + "file/").iText(FA_FILES_O, "fa").text("文件资料");
@@ -315,7 +327,7 @@ public class OaSite_htm
         ul.li().a().href("_blank", _webApp_ + "util/restore").iText(FA_AMBULANCE, "fa").text("灾难恢复");
 
         out.hr().style("margin: .5em 0");
-        HtmlDivTag div = out.div().align("center").class_("zu-footcopy");
+        HtmlDiv div = out.div().align("center").class_("zu-footcopy");
         div.text("解决方案提供者 (C) 浙江省海宁市智恒软件有限公司 2010-2015 ");
         div.a().href("_blank", "about").text("(关于/联系)");
     }

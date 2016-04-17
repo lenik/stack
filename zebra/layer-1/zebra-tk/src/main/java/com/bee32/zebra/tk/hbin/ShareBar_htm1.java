@@ -1,17 +1,20 @@
 package com.bee32.zebra.tk.hbin;
 
-import net.bodz.bas.html.dom.IHtmlTag;
-import net.bodz.bas.html.dom.tag.HtmlDivTag;
+import net.bodz.bas.html.io.IHtmlOut;
+import net.bodz.bas.html.io.tag.HtmlDiv;
 
-public class ShareBar
-        extends HtmlDivTag {
+public class ShareBar_htm1 {
 
-    public ShareBar(IHtmlTag parent) {
-        super(parent, "div");
-        align("center");
+    public void build(IHtmlOut _out) {
+        HtmlDiv out = _out.div();
+        // custom...
+        {
+            out.class_("sharebar");
+            out.style("padding: .5em;");
+            out.align("center");
+        }
 
-        HtmlDivTag div = this.div().class_("jiathis_style_32x32")
-                .style("width: 500px; height: 32px");
+        HtmlDiv div = out.div().class_("jiathis_style_32x32").style("width: 500px; height: 32px");
         div.a().class_("jiathis_button_weixin");
         div.a().class_("jiathis_button_miliao");
         div.a().class_("jiathis_button_twitter");
@@ -34,14 +37,14 @@ public class ShareBar
         config.append("    shortUrl: false,");
         config.append("    hideMore: false");
         config.append("};");
-        this.script().type("text/javascript").text(config.toString());
+        out.script().type("text/javascript").text(config.toString());
 
-        this.script().type("text/javascript").src("http://v3.jiathis.com/code/jia.js?uid=2016576").charset("utf-8");
+        out.script().type("text/javascript").src("http://v3.jiathis.com/code/jia.js?uid=2016576").charset("utf-8");
 
         StringBuilder css = new StringBuilder();
         css.append(".jiathis_style_32x32 .jtico { margin: 0 4px; }\n");
         css.append(".jiathis_style_32x32 a { border: none; padding: 0; }\n");
-        this.style().type("text/css").verbatim(css.toString());
+        out.style().type("text/css").verbatim(css.toString());
     }
 
 }
