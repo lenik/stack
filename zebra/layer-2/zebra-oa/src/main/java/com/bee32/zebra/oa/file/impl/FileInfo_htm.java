@@ -7,9 +7,7 @@ import java.util.Set;
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.html.io.IHtmlOut;
 import net.bodz.bas.html.io.tag.HtmlOl;
-import net.bodz.bas.html.util.FontAwesomeImage;
 import net.bodz.bas.html.viz.IHtmlViewContext;
-import net.bodz.bas.http.ui.cmd.UiServletCommand;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -19,7 +17,6 @@ import com.bee32.zebra.oa.file.FileManager;
 import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
 import com.bee32.zebra.tk.hbin.UploadFileDialog_htm;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
-import com.bee32.zebra.tk.site.ZpLinksToolbar;
 import com.bee32.zebra.tk.slim.SlimForm_htm;
 
 public class FileInfo_htm
@@ -36,26 +33,6 @@ public class FileInfo_htm
         excludes.add("codeName");
         excludes.add("dirName");
         excludes.add("baseName");
-    }
-
-    /**
-     * 上传
-     * 
-     * @cmd.href javascript: uploadDialog.open()
-     */
-    @FontAwesomeImage(FA_UPLOAD)
-    public static class UploadCommand
-            extends UiServletCommand {
-
-        {
-            addLocation(ZpLinksToolbar.class);
-        }
-
-        @Override
-        public Class<?> getTargetClass() {
-            return FileInfo.class;
-        }
-
     }
 
     @Override

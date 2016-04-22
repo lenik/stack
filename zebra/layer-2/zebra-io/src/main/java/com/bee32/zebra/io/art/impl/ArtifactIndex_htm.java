@@ -9,9 +9,10 @@ import net.bodz.bas.html.io.IHtmlOut;
 import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
-import net.bodz.bas.http.ui.cmd.UiServletCommand;
+import net.bodz.bas.http.ui.cmd.UiScriptAction;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.bas.ui.model.action.Location;
 import net.bodz.lily.model.base.CoObject;
 
 import com.bee32.zebra.io.art.Artifact;
@@ -40,11 +41,9 @@ public class ArtifactIndex_htm
      * 
      * @cmd.href ?view:=barcode
      */
-    public static class PrintBarcodeCommand
-            extends UiServletCommand {
-        {
-            addLocation(ZpCmds1Toolbar.class);
-        }
+    @Location(ZpCmds1Toolbar.class)
+    public static class PrintBarcodeAction
+            extends UiScriptAction {
     }
 
     @Override

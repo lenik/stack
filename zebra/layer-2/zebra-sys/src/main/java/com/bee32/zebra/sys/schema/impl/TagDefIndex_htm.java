@@ -29,7 +29,7 @@ public class TagDefIndex_htm
     public TagDefIndex_htm()
             throws NoSuchPropertyException, ParseException {
         super(TagDefIndex.class);
-        indexFields.parse("i*sa", "tagSet", "code", "label", "description", "refCount");
+        indexFields.parse("i*sa", "tagGroup", "code", "label", "description", "refCount");
     }
 
     @Override

@@ -1,23 +1,23 @@
-package com.bee32.zebra.tk.slim.cmd;
+package com.bee32.zebra.tk.slim.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.bodz.bas.http.ctx.IAnchor;
-import net.bodz.bas.ui.model.cmd.AbstractCommandProvider;
-import net.bodz.bas.ui.model.cmd.ICommand;
+import net.bodz.bas.ui.model.action.AbstractActionProvider;
+import net.bodz.bas.ui.model.action.IAction;
 import net.bodz.mda.xjdoc.Xjdocs;
 import net.bodz.mda.xjdoc.model.ClassDoc;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 
-public class RelatedCommandsProvider
-        extends AbstractCommandProvider
+public class RelatedActions
+        extends AbstractActionProvider
         implements IZebraSiteAnchors {
 
     @Override
-    public List<ICommand> getCommands(Object o) {
-        List<ICommand> list = new ArrayList<ICommand>();
+    public List<IAction> getActions(Object o) {
+        List<IAction> list = new ArrayList<IAction>();
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getClassDoc(o.getClass());
         List<String> rels = classDoc.getTag("rel", List.class);

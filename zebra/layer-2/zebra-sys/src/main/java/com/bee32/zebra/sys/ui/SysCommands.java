@@ -1,12 +1,12 @@
 package com.bee32.zebra.sys.ui;
 
-import net.bodz.bas.ui.model.cmd.CommandList;
+import net.bodz.bas.ui.model.action.MutableActionProvider;
 
 public class SysCommands
-        extends CommandList {
+        extends MutableActionProvider {
 
     {
-        addCommand(new HelpAboutCommand());
+        addAction(new HelpAboutAction());
     }
 
 }

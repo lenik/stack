@@ -22,12 +22,12 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.AbstractForm_htm;
 import net.bodz.bas.http.viz.IHttpViewBuilder;
 import net.bodz.bas.http.viz.IHttpViewBuilderFactory;
+import net.bodz.bas.i18n.dom1.ElementComparator;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IProperty;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.potato.ref.UiPropertyRef;
 import net.bodz.bas.repr.form.FieldCategory;
-import net.bodz.bas.repr.form.FieldDeclComparator;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
@@ -125,7 +125,7 @@ public abstract class SlimForm0_htm<T>
             }
         }
 
-        Collections.sort(selection, FieldDeclComparator.INSTANCE);
+        Collections.sort(selection, ElementComparator.LOCALE);
         return selection;
     }
 

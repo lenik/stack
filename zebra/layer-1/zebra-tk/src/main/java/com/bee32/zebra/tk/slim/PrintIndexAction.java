@@ -1,6 +1,7 @@
 package com.bee32.zebra.tk.slim;
 
-import net.bodz.bas.http.ui.cmd.UiServletCommand;
+import net.bodz.bas.http.ui.cmd.UiScriptAction;
+import net.bodz.bas.ui.model.action.Location;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
 import com.bee32.zebra.tk.site.ZpCmds0Toolbar;
@@ -9,13 +10,11 @@ import com.bee32.zebra.tk.site.ZpCmds0Toolbar;
  * 打印
  * 
  * @cmd.id printcmd
- * @cmd.href javascript: window.print()
+ * @cmd.onclick window.print()
  */
-public class PrintIndexCommand
-        extends UiServletCommand {
-    {
-        addLocation(ZpCmds0Toolbar.class);
-    }
+@Location(ZpCmds0Toolbar.class)
+public class PrintIndexAction
+        extends UiScriptAction {
 
     @Override
     public Class<?> getTargetClass() {
