@@ -1,9 +1,9 @@
-com.bee32.zebra.sys.schema.impl.AttributeDefIndex
 com.bee32.zebra.sys.schema.impl.CategoryDefIndex
+com.bee32.zebra.sys.schema.impl.ParameterDefIndex
 com.bee32.zebra.sys.schema.impl.PhaseDefIndex
 com.bee32.zebra.sys.schema.impl.PriorityDefIndex
 com.bee32.zebra.sys.schema.impl.SchemaDefIndex
 com.bee32.zebra.sys.schema.impl.TagDefIndex
-com.bee32.zebra.sys.schema.impl.TagSetDefIndex
+com.bee32.zebra.sys.schema.impl.TagGroupDefIndex
 com.bee32.zebra.sys.security.impl.GroupIndex
 com.bee32.zebra.sys.security.impl.UserIndex

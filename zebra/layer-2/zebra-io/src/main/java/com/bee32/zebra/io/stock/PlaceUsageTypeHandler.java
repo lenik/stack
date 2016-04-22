@@ -8,10 +8,10 @@ import java.sql.Types;
 
 import org.apache.ibatis.type.JdbcType;
 
-import net.bodz.bas.db.ibatis.TypeHandlerImpl;
+import net.bodz.bas.db.ibatis.TypeHandler;
 
 public class PlaceUsageTypeHandler
-        extends TypeHandlerImpl<PlaceUsage> {
+        extends TypeHandler<PlaceUsage> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, PlaceUsage parameter, JdbcType jdbcType)

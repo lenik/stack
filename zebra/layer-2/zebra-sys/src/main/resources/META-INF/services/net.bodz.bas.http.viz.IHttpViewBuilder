@@ -1,18 +1,18 @@
-com.bee32.zebra.sys.schema.impl.AttributeDefIndex_htm
 com.bee32.zebra.sys.schema.impl.CategoryDefIndex_htm
+com.bee32.zebra.sys.schema.impl.ParameterDefIndex_htm
 com.bee32.zebra.sys.schema.impl.PhaseDefIndex_htm
 com.bee32.zebra.sys.schema.impl.PriorityDefIndex_htm
 com.bee32.zebra.sys.schema.impl.SchemaDefIndex_htm
 com.bee32.zebra.sys.schema.impl.TagDefIndex_htm
-com.bee32.zebra.sys.schema.impl.TagSetDefIndex_htm
+com.bee32.zebra.sys.schema.impl.TagGroupDefIndex_htm
 
-com.bee32.zebra.sys.schema.impl2.AttributeDef_htm
 com.bee32.zebra.sys.schema.impl2.CategoryDef_htm
+com.bee32.zebra.sys.schema.impl2.ParameterDef_htm
 com.bee32.zebra.sys.schema.impl2.PhaseDef_htm
 com.bee32.zebra.sys.schema.impl2.PriorityDef_htm
 com.bee32.zebra.sys.schema.impl2.SchemaDef_htm
 com.bee32.zebra.sys.schema.impl2.TagDef_htm
-com.bee32.zebra.sys.schema.impl2.TagSetDef_htm
+com.bee32.zebra.sys.schema.impl2.TagGroupDef_htm
 
 com.bee32.zebra.sys.security.impl.GroupIndex_htm
 com.bee32.zebra.sys.security.impl.UserIndex_htm

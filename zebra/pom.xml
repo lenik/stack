@@ -20,6 +20,7 @@
 	<modules>
 		<module>layer-1</module>
 		<module>layer-2</module>
+		<module>uber</module>
 	</modules>
 	<name>Zebra</name>
 	<url>http://www.bee32.com</url>
