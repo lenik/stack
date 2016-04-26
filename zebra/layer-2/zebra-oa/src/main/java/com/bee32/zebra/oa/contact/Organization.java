@@ -13,7 +13,7 @@ import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
 
 /**
- * 企、事业组织
+ * @label 企、事业组织
  */
 @Table(name = "org")
 public class Organization
@@ -32,7 +32,7 @@ public class Organization
     private List<OrgUnit> topLevels = new ArrayList<OrgUnit>();
 
     /**
-     * 全名
+     * @label 全名
      */
     @TextInput(maxLength = N_LABEL)
     @OfGroup(StdGroup.Identity.class)
@@ -46,7 +46,7 @@ public class Organization
     }
 
     /**
-     * 主营业务
+     * @label 主营业务
      * 
      * @placeholder 输入主营业务…
      */
@@ -73,7 +73,7 @@ public class Organization
     }
 
     /**
-     * 标记 - 承运人
+     * @label 标记 - 承运人
      */
     @OfGroup(StdGroup.Classification.class)
     public boolean isShipper() {
@@ -85,8 +85,7 @@ public class Organization
     }
 
     /**
-     * 税号
-     * 
+     * @label 税号
      * @placeholder 输入税号…
      * @format ######-###-###-###
      */
@@ -101,7 +100,7 @@ public class Organization
     }
 
     /**
-     * 人员表
+     * @label 人员表
      */
     @Priority(400)
     @DetailLevel(DetailLevel.EXTEND)
@@ -111,7 +110,7 @@ public class Organization
     }
 
     /**
-     * 顶级机构
+     * @label 顶级机构
      */
     @Priority(400)
     public List<OrgUnit> getTopLevels() {

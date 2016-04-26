@@ -5,10 +5,11 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.bodz.bas.db.ctx.DataContext;
+import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.bas.t.map.MapDumper;
 
 import com.bee32.zebra.tk.sql.TestEnvironment;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 public class PersonMapperTest {
 
@@ -17,7 +18,8 @@ public class PersonMapperTest {
     @Before
     public void setUp() {
         TestEnvironment.setUpVhosts();
-        mapper = VhostDataService.forCurrentRequest().query(PersonMapper.class);
+        DataContext dataContext = VhostDataContexts.getInstance().forCurrentRequest();
+        mapper = dataContext.query(PersonMapper.class);
     }
 
     @Test

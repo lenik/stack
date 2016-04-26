@@ -24,25 +24,23 @@ public class QuickController
     public IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)
             throws PathDispatchException {
         String token = tokens.peek();
+        if (token == null)
+            return null;
 
-        QuickIndex index = null;
+        QuickIndex index = (QuickIndex) getTarget();
         switch (token) {
         case "index.html":
-            index = createIndex();
             break;
 
         case "plain.html":
-            index = createIndex();
             index.format = QuickIndexFormat.PLAIN;
             break;
 
         case "data.json":
-            index = createIndex();
             index.format = QuickIndexFormat.JSON;
             break;
 
         case "picker.html":
-            index = createIndex();
             index.format = QuickIndexFormat.PICKER;
             break;
         }
@@ -52,11 +50,6 @@ public class QuickController
             return PathArrival.shift(previous, index, tokens);
         }
         return super.dispatch(previous, tokens);
-    }
-
-    @Override
-    protected QuickIndex createIndex() {
-        return (QuickIndex) super.createIndex();
     }
 
 }

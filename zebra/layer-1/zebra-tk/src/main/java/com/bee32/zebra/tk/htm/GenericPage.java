@@ -16,10 +16,12 @@ public abstract class GenericPage
         IType type = PotatoTypes.getInstance().forClass(getClass());
         if (type == null)
             throw new NullPointerException("type");
+
         iString label = type.getLabel();
         if (label == null)
-            throw new NullPointerException("label");
-        return label.toString();
+            return "(No label)";
+        else
+            return label.toString();
     }
 
 }

@@ -5,7 +5,7 @@ import net.bodz.lily.model.base.CoEntity;
 import net.bodz.lily.model.base.IdType;
 
 /**
- * 人员部门职位
+ * @label 人员部门职位
  */
 @IdType(Integer.class)
 public class PersonRole

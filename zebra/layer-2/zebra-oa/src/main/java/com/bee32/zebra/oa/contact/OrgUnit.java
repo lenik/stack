@@ -7,7 +7,7 @@ import net.bodz.lily.model.base.CoNode;
 import net.bodz.lily.model.base.IdType;
 
 /**
- * 部门
+ * @label 部门
  */
 @IdType(Integer.class)
 public class OrgUnit

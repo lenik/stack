@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bee32.zebra.tk.sql.VhostDataService;
+import net.bodz.bas.db.ctx.DataContext;
+import net.bodz.bas.site.vhost.VhostDataContexts;
+
 
 public class TopicMapperTest
         extends Assert {
@@ -13,7 +15,8 @@ public class TopicMapperTest
 
     @Before
     public void setUp() {
-        mapper = VhostDataService.forCurrentRequest().query(TopicMapper.class);
+        DataContext dataContext = VhostDataContexts.getInstance().forCurrentRequest();
+        mapper = dataContext.query(TopicMapper.class);
     }
 
     @Test

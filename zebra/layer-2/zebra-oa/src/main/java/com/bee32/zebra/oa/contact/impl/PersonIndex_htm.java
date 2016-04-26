@@ -66,14 +66,14 @@ public class PersonIndex_htm
             tr.td().text(o.getAgeSexLoc());
             tr.td().text(o.getTypeChars());
             tr.td().b().text(o.getFullName());
-            tr.td().text(o.getDescription()).class_("small");
+            tr.td().class_("small").text(o.getDescription());
 
             Contact contact = o.getContact0();
             if (contact == null) {
                 for (int i = 0; i < 3; i++)
                     tr.td();
             } else {
-                tr.td().text(contact.getFullAddress()).class_("small");
+                tr.td().class_("small").text(contact.getFullAddress());
                 tr.td().text(contact.getTels());
                 tr.td().text(contact.getQq());
             }

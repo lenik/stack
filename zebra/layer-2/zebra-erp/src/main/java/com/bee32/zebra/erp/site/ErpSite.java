@@ -1,5 +1,7 @@
 package com.bee32.zebra.erp.site;
 
+import net.bodz.bas.site.vhost.IVirtualHost;
+
 import com.bee32.zebra.oa.site.OaSite;
 
 /**
@@ -8,7 +10,8 @@ import com.bee32.zebra.oa.site.OaSite;
 public class ErpSite
         extends OaSite {
 
-    public ErpSite() {
+    public ErpSite(IVirtualHost vhost) {
+        super(vhost);
     }
 
     @Override

@@ -62,8 +62,8 @@
             left join person on a.person=person.id
             left join avct_contact dest on a.shipdest=dest.ct__id
             left join org shipper on a.shipper=shipper.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id
+            left join _cat on a.cat=cat.id
+            left join _phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -103,8 +103,8 @@
             left join person on a.person=person.id
             left join avct_contact dest on a.shipdest=dest.ct__id
             left join org shipper on a.shipper=shipper.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id
+            left join _cat on a.cat=cat.id
+            left join _phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
             left join dlentry y on a.id=y.doc

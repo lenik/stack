@@ -15,7 +15,7 @@ import net.bodz.lily.model.base.IdType;
 import com.bee32.zebra.oa.OaGroups;
 
 /**
- * 联系方式
+ * @label 联系方式
  */
 @IdType(Integer.class)
 public class Contact
@@ -65,7 +65,7 @@ public class Contact
     private String qq;
 
     /**
-     * 公司/单位
+     * @label 公司/单位
      */
     public Organization getOrg() {
         return org;
@@ -76,7 +76,7 @@ public class Contact
     }
 
     /**
-     * 部门/科室
+     * @label 部门/科室
      */
     public OrgUnit getOrgUnit() {
         return orgUnit;
@@ -87,7 +87,7 @@ public class Contact
     }
 
     /**
-     * 联系人
+     * @label 联系人
      */
     public Person getPerson() {
         return person;
@@ -132,7 +132,7 @@ public class Contact
     }
 
     /**
-     * 区域
+     * @label 区域
      */
     @DetailLevel(DetailLevel.HIDDEN)
     @OfGroup(OaGroups.Position.class)
@@ -156,7 +156,7 @@ public class Contact
     }
 
     /**
-     * 国家
+     * @label 国家
      */
     @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_COUNTRY)
@@ -169,7 +169,7 @@ public class Contact
     }
 
     /**
-     * 省/直辖市
+     * @label 省/直辖市
      */
     @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_R1)
@@ -182,7 +182,7 @@ public class Contact
     }
 
     /**
-     * 市/地区
+     * @label 市/地区
      */
     @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_R2)
@@ -195,7 +195,7 @@ public class Contact
     }
 
     /**
-     * 县/府
+     * @label 县/府
      */
     @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_R3)
@@ -208,7 +208,7 @@ public class Contact
     }
 
     /**
-     * 城镇/乡/街道
+     * @label 城镇/乡/街道
      */
     @OfGroup(OaGroups.Position.class)
     @TextInput(maxLength = N_R4)

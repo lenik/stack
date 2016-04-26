@@ -83,12 +83,12 @@ public class TopicIndex_htm
         for (Topic o : list) {
             HtmlTr tr = tbody.tr();
             itab.cocols("i", tr, o);
-            ref(tr.td(), o.getOp()).align("center");
+            ref(tr.td().align("center"), o.getOp());
             tr.td().text(fmt.formatDate(o.getBeginDate()));
             tr.td().text(fmt.formatDate(o.getEndDate()));
             itab.cocols("m", tr, o);
             ref(tr.td(), o.getCategory());
-            ref(tr.td(), o.getPhase()).class_("small");
+            ref(tr.td().class_("small"), o.getPhase());
             tr.td().text(o.getValue());
             itab.cocols("sa", tr, o);
         }

@@ -20,7 +20,7 @@ import net.bodz.lily.model.base.CoEntity;
 import net.bodz.lily.model.base.IdType;
 
 /**
- * 参与方
+ * @label 参与方
  */
 @IdType(Integer.class)
 public abstract class Party
@@ -50,7 +50,7 @@ public abstract class Party
     private String account;
 
     /**
-     * 生日
+     * @label 生日
      */
     @Priority(100)
     public Date getBirthday() {
@@ -62,7 +62,7 @@ public abstract class Party
     }
 
     /**
-     * 语言/区域
+     * @label 语言/区域
      */
     @OfGroup(StdGroup.Settings.class)
     public Locale getLocale() {
@@ -76,7 +76,7 @@ public abstract class Party
     }
 
     /**
-     * 语言代码
+     * @label 语言代码
      */
     @OfGroup(StdGroup.Settings.class)
     @TextInput(maxLength = N_LANGTAG)
@@ -92,7 +92,7 @@ public abstract class Party
     }
 
     /**
-     * 时区
+     * @label 时区
      */
     @OfGroup(StdGroup.Settings.class)
     @TextInput(maxLength = N_TIMEZONEID)
@@ -107,7 +107,7 @@ public abstract class Party
     }
 
     /**
-     * 时区ID
+     * @label 时区ID
      */
     @OfGroup(StdGroup.Settings.class)
     @Derived
@@ -122,7 +122,7 @@ public abstract class Party
     }
 
     /**
-     * 标记 - 同行
+     * @label 标记 - 同行
      */
     @OfGroup(StdGroup.Classification.class)
     public boolean isPeer() {
@@ -134,7 +134,7 @@ public abstract class Party
     }
 
     /**
-     * 标记 - 客户
+     * @label 标记 - 客户
      */
     @OfGroup(StdGroup.Classification.class)
     public boolean isCustomer() {
@@ -146,7 +146,7 @@ public abstract class Party
     }
 
     /**
-     * 标记 - 供应商
+     * @label 标记 - 供应商
      */
     @OfGroup(StdGroup.Classification.class)
     public boolean isSupplier() {
@@ -158,7 +158,7 @@ public abstract class Party
     }
 
     /**
-     * 标签集
+     * @label 标签集
      */
     @OfGroup(StdGroup.Classification.class)
     public Set<String> getTags() {
@@ -166,9 +166,9 @@ public abstract class Party
     }
 
     /**
-     * 兴趣方向
-     * 
      * 个人的兴趣爱好或公司的主营业务。
+     * 
+     * @label 兴趣方向
      */
     @Priority(300)
     @TextInput(maxLength = N_SUBJECT)
@@ -181,7 +181,7 @@ public abstract class Party
     }
 
     /**
-     * 联系方式
+     * @label 联系方式
      */
     @Priority(501)
     @DetailLevel(DetailLevel.EXTEND)
@@ -194,9 +194,9 @@ public abstract class Party
     }
 
     /**
-     * 默认联系方式
-     * 
      * 当不特别指定时，默认使用的联系方式。 （通常是较常用的联系方式。）
+     * 
+     * @label 默认联系方式
      */
     @Priority(500)
     @Derived
@@ -208,8 +208,7 @@ public abstract class Party
     }
 
     /**
-     * 银行
-     * 
+     * @label 银行
      * @placeholder 输入银行名称...
      */
     @Priority(400)
@@ -223,8 +222,7 @@ public abstract class Party
     }
 
     /**
-     * 银行帐号
-     * 
+     * @label 银行帐号
      * @placeholder 输入银行帐号...
      */
     @Priority(401)

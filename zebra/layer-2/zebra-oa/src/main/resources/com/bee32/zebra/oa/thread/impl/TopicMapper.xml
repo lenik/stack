@@ -40,8 +40,8 @@
         from topic a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
-            left join cat c on a.cat=c.id
-            left join phase p on a.phase=p.id
+            left join _cat c on a.cat=c.id
+            left join _phase p on a.phase=p.id
             left join "user" op on a.op=op.id
         ]]>
     </sql>
@@ -61,18 +61,18 @@
             person.label "tp_person_label",
             org.label "tp_org_label",
             tt.tag "tt_tag",
-            tag.label "tt_tag_label"
+            _tag.label "tt_tag_label"
         from topic a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
-            left join cat c on a.cat=c.id
-            left join phase p on a.phase=p.id
+            left join _cat c on a.cat=c.id
+            left join _phase p on a.phase=p.id
             left join "user" op on a.op=op.id
             left join topicparty tp on a.id=tp.topic
             left join person on tp.person=person.id
             left join org on tp.org=org.id
             left join topictag tt on a.id=tt.topic
-            left join tag on tt.tag=tag.id
+            left join _tag on tt.tag=_tag.id
         ]]>
     </sql>
 
@@ -183,25 +183,25 @@
     <select id="catDistrib" resultMap="distribMap"><![CDATA[
         select
             a.cat "val",
-            cat.label,
+            _cat.label,
             "count",
             valsum
         from
             (select cat, count(*) "count", sum(val) "valsum"
                 from topic group by cat) a
-            left join cat on a.cat=cat.id
+            left join _cat on a.cat=_cat.id
     ]]></select>
 
     <select id="phaseDistrib" resultMap="distribMap"><![CDATA[
         select
             a.phase "val",
-            phase.label,
+            _phase.label,
             "count",
             valsum
         from
             (select phase, count(*) "count", sum(val) "valsum"
                 from topic group by phase) a
-            left join phase on a.phase=phase.id
+            left join _phase on a.phase=_phase.id
     ]]></select>
 
 </mapper>

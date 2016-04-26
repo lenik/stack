@@ -29,8 +29,8 @@
         from reply a
             left join topic on a.topic=topic.id
             left join "user" op on a.op=op.id
-            left join cat c on a.cat=c.id
-            left join phase p on a.phase=p.id
+            left join _cat c on a.cat=c.id
+            left join _phase p on a.phase=p.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
             left join replyparty x on a.id=x.reply

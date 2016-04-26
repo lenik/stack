@@ -29,6 +29,8 @@ public class LogCalendar
     public IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)
             throws PathDispatchException {
         String token = tokens.peek();
+        if (token == null)
+            return null;
 
         int dash1 = token.indexOf('-');
         if (dash1 == -1)

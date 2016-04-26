@@ -8,9 +8,10 @@ import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.lily.model.res.people.Gender;
 
 /**
- * 联系人
+ * @label 联系人
  */
 public class Person
         extends Party {
@@ -30,7 +31,7 @@ public class Person
     private String driverLicenseNum;
 
     /**
-     * 姓名
+     * @label 姓名
      */
     @OfGroup(StdGroup.Identity.class)
     @Derived
@@ -43,7 +44,7 @@ public class Person
     }
 
     /**
-     * 兴趣爱好
+     * @label 兴趣爱好
      */
     @Priority(300)
     @TextInput(maxLength = N_SUBJECT)
@@ -53,9 +54,8 @@ public class Person
     }
 
     /**
-     * 性别
-     * 
      * @TODO view builder mask.
+     * @label 性别
      */
     @Radio
     @OfGroup(StdGroup.Classification.class)
@@ -70,7 +70,7 @@ public class Person
     }
 
     /**
-     * 标记 - 雇员
+     * @label 标记 - 雇员
      */
     @OfGroup(StdGroup.Classification.class)
     public boolean isEmployee() {
@@ -82,7 +82,7 @@ public class Person
     }
 
     /**
-     * 籍贯
+     * @label 籍贯
      */
     @OfGroup(StdGroup.Classification.class)
     @TextInput(maxLength = N_HOMELAND)
@@ -95,7 +95,7 @@ public class Person
     }
 
     /**
-     * 护照
+     * @label 护照
      */
     @OfGroup(StdGroup.Identity.class)
     @TextInput(maxLength = N_PASSPORT)
@@ -108,7 +108,7 @@ public class Person
     }
 
     /**
-     * 身份证
+     * @label 身份证
      */
     @OfGroup(StdGroup.Identity.class)
     @TextInput(maxLength = N_SOCIAL_SECURITY_NUM)
@@ -121,7 +121,7 @@ public class Person
     }
 
     /**
-     * 驾照
+     * @label 驾照
      */
     @OfGroup(StdGroup.Identity.class)
     @TextInput(maxLength = N_DRIVER_LICENSE_NUM)

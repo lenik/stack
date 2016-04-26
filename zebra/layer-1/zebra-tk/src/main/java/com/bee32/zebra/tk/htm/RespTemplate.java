@@ -5,9 +5,9 @@ import java.io.IOException;
 import net.bodz.bas.c.string.StringQuote;
 import net.bodz.bas.html.artifact.IArtifactConsts;
 import net.bodz.bas.html.artifact.IArtifactDependency;
+import net.bodz.bas.html.dom.IHtmlHeadData;
 import net.bodz.bas.html.io.tag.HtmlHead;
 import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
-import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.ui.dom1.IUiRef;
 
@@ -27,8 +27,8 @@ public abstract class RespTemplate<T>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<T> ref) {
-        super.preview(ctx, ref);
+    public void precompile(IHtmlViewContext ctx, IUiRef<T> ref) {
+        super.precompile(ctx, ref);
 
         IHtmlHeadData metaData = ctx.getHeadData();
         metaData.setMeta(IHtmlHeadData.META_AUTHOR, "谢继雷 (Xiè Jìléi)");
@@ -45,8 +45,7 @@ public abstract class RespTemplate<T>
 
     protected void respHead(IHtmlViewContext ctx, HtmlHead head)
             throws IOException {
-        writeHeadMetas(ctx, head);
-        writeHeadImports(ctx, head);
+        fn.head.writeHeadData(ctx, head);
 
         // stylesheets
         // String theme = "cupertino";

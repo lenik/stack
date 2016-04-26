@@ -36,16 +36,16 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label",
-            cat.label "cat_label",
-            phase.label "phase_label",
+            _cat.label "cat_label",
+            _phase.label "phase_label",
             topic.subject "topic_subject",
             org.label "org_label",
             person.label "person_label"
         from sdoc a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id
+            left join _cat on a.cat=_cat.id
+            left join _phase on a.phase=_phase.id
             left join topic on a.topic=topic.id
             left join org on a.org=org.id
             left join person on a.person=person.id
@@ -57,8 +57,8 @@
             a.*,
             u.label "uid_label",
             g.label "gid_label",
-            cat.label "cat_label",
-            phase.label "phase_label",
+            _cat.label "cat_label",
+            _phase.label "phase_label",
             topic.subject "topic_subject",
             org.label "org_label",
             person.label "person_label",
@@ -98,8 +98,8 @@
         from sdoc a
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id
+            left join _cat on a.cat=_cat.id
+            left join _phase on a.phase=_phase.id
             left join topic on a.topic=topic.id
             left join org on a.org=org.id
             left join person on a.person=person.id

@@ -44,6 +44,8 @@ public class LogSelector_htm
     protected IHtmlOut beforeForm(IHtmlViewContext ctx, IHtmlOut out, IUiRef<LogSelector> ref)
             throws ViewBuilderException, IOException {
         LogEntryMapper mapper = ctx.query(LogEntryMapper.class);
+        if (mapper == null)
+            throw new NullPointerException("mapper");
         LoginContext login = LoginContext.fromSession();
         int uid = login == null ? -1 : login.user.getId();
 

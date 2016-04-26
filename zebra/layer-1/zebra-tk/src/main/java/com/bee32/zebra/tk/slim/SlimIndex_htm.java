@@ -13,13 +13,15 @@ import org.json.JSONWriter;
 
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.c.type.TypeParam;
+import net.bodz.bas.db.ctx.DataContext;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.err.IllegalUsageException;
 import net.bodz.bas.html.artifact.IArtifactConsts;
+import net.bodz.bas.html.dom.IHtmlHeadData;
+import net.bodz.bas.html.io.HtmlDoc;
 import net.bodz.bas.html.io.HtmlOutputFormat;
 import net.bodz.bas.html.io.IHtmlOut;
-import net.bodz.bas.html.io.mod.table.DataRow;
-import net.bodz.bas.html.io.mod.table.HtmlDocForModTable;
+import net.bodz.bas.html.io.mod.table.HtmlForModTable;
 import net.bodz.bas.html.io.mod.table.ModTable;
 import net.bodz.bas.html.io.tag.HtmlDiv;
 import net.bodz.bas.html.io.tag.HtmlP;
@@ -29,7 +31,6 @@ import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.io.tag.HtmlUl;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
-import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.io.ITreeOut;
@@ -43,6 +44,7 @@ import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.bas.std.rfc.mime.ContentType;
 import net.bodz.bas.std.rfc.mime.ContentTypes;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -66,12 +68,12 @@ import com.bee32.zebra.tk.site.IZebraSiteLayout;
 import com.bee32.zebra.tk.site.ZpCmds0Toolbar;
 import com.bee32.zebra.tk.site.ZpCmds1Toolbar;
 import com.bee32.zebra.tk.site.ZpCmdsToolbar;
-import com.bee32.zebra.tk.sql.MapperUtil;
 import com.bee32.zebra.tk.stat.MonthTrends;
 import com.bee32.zebra.tk.stat.ValueDistrib;
 import com.bee32.zebra.tk.stat.impl.MonthTrendsMapper;
 import com.bee32.zebra.tk.stat.impl.ValueDistribMapper;
 import com.bee32.zebra.tk.util.Counters;
+import com.bee32.zebra.tk.util.ModTables;
 
 public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
         extends AbstractHtmlViewBuilder<X>
@@ -108,8 +110,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<X> ref) {
-        super.preview(ctx, ref);
+    public void precompile(IHtmlViewContext ctx, IUiRef<X> ref) {
+        super.precompile(ctx, ref);
         IHtmlHeadData metaData = ctx.getHeadData();
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
         // metaData.addDependency("datatables.responsive.js", SCRIPT);
@@ -123,7 +125,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
         X index = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean arrivedHere = arrival.getPrevious(index).getRemainingPath() == null;
-        if (arrivedHere && index.defaultPage && addSlash(ctx))
+        if (arrivedHere && index.defaultPage && fn.redirect.addSlash(ctx))
             return null;
 
         SwitcherModelGroup switchers = new SwitcherModelGroup();
@@ -134,8 +136,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
             HttpServletResponse response = ctx.getResponse();
             PrintWriter writer = response.getWriter();
             buildJson(ctx, writer, ref);
-            ctx.stop();
-            return null;
+            return ctx.stop();
         }
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
@@ -189,6 +190,9 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean arrivedHere = arrival.getPrevious(index).getRemainingPath() == null;
 
+        if (out == null)
+            throw new NullPointerException("out");
+
         HtmlDiv rightCol = out.div().id(ID.right_col).class_("col-xs-3 col-sm-3 col-lg-2");
         if (arrivedHere) {
             HtmlDiv previewDiv = rightCol.div().id(ID.preview).align("center");
@@ -227,7 +231,9 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
     protected void buildHead(IHtmlViewContext ctx, IHtmlOut out, IUiRef<X> ref, boolean indexPage) {
         X manager = ref.get();
         Class<?> objectType = manager.getObjectType();
-        IMapperTemplate<?, M> mapper = MapperUtil.getMapperTemplate(objectType);
+
+        DataContext dataContext = VhostDataContexts.getInstance().forCurrentRequest();
+        IMapperTemplate<?, M> mapper = dataContext.getMapperFor(objectType);
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
 
@@ -328,16 +334,13 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
 
     protected void buildJson(IHtmlViewContext ctx, PrintWriter out, IUiRef<X> ref)
             throws ViewBuilderException, IOException {
-        HtmlDocForModTable doc = new HtmlDocForModTable(ITreeOut.NULL, HtmlOutputFormat.DEFAULT);
-        dataIndex(ctx, doc, ref);
+        HtmlDoc doc = new HtmlDoc(ITreeOut.NULL, HtmlOutputFormat.DEFAULT);
+        HtmlForModTable html = new HtmlForModTable(doc);
+        dataIndex(ctx, html, ref);
 
         JSONWriter jw = new JSONWriter(out);
-        for (ModTable table : doc.getTables()) {
-            for (DataRow row : table.getRows()) {
-                //
-            }
-            break;
-        }
+        for (ModTable table : html.getTables())
+            ModTables.toJson(table, jw);
     }
 
     protected void dumpFullData(IHtmlOut parent, List<? extends CoObject> dataset) {
@@ -394,13 +397,13 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
 
     protected final FormatFn fmt = new FormatFn();
 
-    protected static class fn {
+    protected static class fn2 {
 
-        public static String labels(Collection<? extends CoObject> entities) {
-            if (entities == null)
+        public static String labels(Collection<? extends CoObject> elements) {
+            if (elements == null)
                 return null;
-            StringBuilder sb = new StringBuilder(entities.size() * 80);
-            for (CoObject o : entities) {
+            StringBuilder sb = new StringBuilder(elements.size() * 80);
+            for (CoObject o : elements) {
                 if (sb.length() != 0)
                     sb.append(", ");
                 sb.append(o.getLabel());

@@ -29,7 +29,7 @@ public class LogCalendar_htm
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean arrivedHere = arrival.getPrevious(obj).getRemainingPath() == null;
         if (arrivedHere) {
-            if (!addSlash(ctx)) {
+            if (!fn.redirect.addSlash(ctx)) {
                 String thisMonth = Dates.YYYY_M.format(System.currentTimeMillis());
                 ctx.getResponse().sendRedirect(thisMonth + "/");
             }

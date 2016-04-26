@@ -11,20 +11,11 @@ import net.bodz.bas.xml.dom.XmlNodeType;
 public class Table2JsonFormatter {
 
     private JSONWriter out;
-    private String nullVerbatim = XmlFormatter.NULL_VERBATIM;
 
     public Table2JsonFormatter(JSONWriter out) {
         if (out == null)
             throw new NullPointerException("out");
         this.out = out;
-    }
-
-    public String getNullVerbatim() {
-        return nullVerbatim;
-    }
-
-    public void setNullVerbatim(String nullVerbatim) {
-        this.nullVerbatim = nullVerbatim;
     }
 
     public void format(IXmlTag tag) {

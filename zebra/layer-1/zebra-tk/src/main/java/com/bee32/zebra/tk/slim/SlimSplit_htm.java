@@ -44,7 +44,7 @@ public abstract class SlimSplit_htm<T>
         T value = ref.get();
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean arrivedHere = arrival.getPrevious(value).getRemainingPath() == null;
-        if (arrivedHere && addSlash(ctx))
+        if (arrivedHere && fn.redirect.addSlash(ctx))
             return null;
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.bodz.bas.db.ctx.DataContext;
 import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.io.IHtmlOut;
@@ -15,6 +16,7 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.lily.model.base.security.LoginContext;
 import net.bodz.lily.model.base.security.User;
 import net.bodz.lily.model.base.security.impl.UserMapper;
@@ -22,7 +24,6 @@ import net.bodz.lily.model.base.security.impl.UserMask;
 import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.tk.htm.GenericForm;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * 登录
@@ -46,7 +47,7 @@ public class LoginForm
     }
 
     /**
-     * 站点
+     * @label 站点
      */
     // @Proposals(list = )
     @Priority(1)
@@ -59,8 +60,7 @@ public class LoginForm
     }
 
     /**
-     * 用户名
-     * 
+     * @label 用户名
      * @placeholder 输入用户名…
      */
     @Priority(2)
@@ -74,8 +74,7 @@ public class LoginForm
     }
 
     /**
-     * 密码
-     * 
+     * @label 密码
      * @placeholder 输入密码…
      */
     @Priority(3)
@@ -89,7 +88,8 @@ public class LoginForm
     }
 
     public void login(IHtmlViewContext ctx, IHtmlOut out) {
-        IMapperProvider mapperProvider = VhostDataService.forCurrentRequest().getMapperProvider();
+        DataContext dataContext = VhostDataContexts.getInstance().forCurrentRequest();
+        IMapperProvider mapperProvider = dataContext.getMapperProvider();
         UserMapper mapper = mapperProvider.getMapper(UserMapper.class);
 
         UserMask mask = new UserMask();

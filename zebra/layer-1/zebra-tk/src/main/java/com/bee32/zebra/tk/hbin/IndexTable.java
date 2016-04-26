@@ -90,6 +90,8 @@ public class IndexTable
 
     public void buildViewEnd(IHtmlOut tbody, String id) {
         IHtmlOut table = tbody.end();
+        if (table == null)
+            throw new NullPointerException("table");
 
         if (footColumns)
             buildFieldCols(table.tfoot());
@@ -118,7 +120,7 @@ public class IndexTable
     void buildFieldCols(IHtmlOut tr) {
         for (PathField pathField : indexFields) {
             IFieldDecl fieldDecl = pathField.getFieldDecl();
-            HtmlTh th = tr.th().text(IXjdocElement.fn.labelName(fieldDecl));
+            HtmlTh th = tr.th();
             th.dataField(fieldDecl.getName());
 
             Set<String> classes = new LinkedHashSet<String>();
@@ -135,6 +137,8 @@ public class IndexTable
 
             if (!classes.isEmpty())
                 th.class_(StringArray.join(" ", classes));
+
+            th.text(IXjdocElement.fn.labelName(fieldDecl));
         }
     }
 
@@ -151,7 +155,7 @@ public class IndexTable
         for (char c : spec.toCharArray()) {
             switch (c) {
             case 'i':
-                tr.td().text(o.getId()).class_("zu-id");
+                tr.td().class_("zu-id").text(o.getId());
                 break;
 
             case 'c':
@@ -159,29 +163,29 @@ public class IndexTable
                 break;
 
             case 'u':
-                tr.td().b().text(o.getLabel()).class_("small").style("max-width: 20em");
-                tr.td().text(Strings.ellipsis(o.getDescription(), 50)).class_("small").style("max-width: 30em");
+                tr.td().b().class_("small").style("max-width: 20em").text(o.getLabel());
+                tr.td().class_("small").style("max-width: 30em").text(Strings.ellipsis(o.getDescription(), 50));
                 break;
 
             case 'm':
                 CoMessage<?> message = (CoMessage<?>) o;
-                tr.td().b().text(message.getSubject()).class_("small").style("max-width: 20em");
-                tr.td().text(Strings.ellipsis(message.getText(), 50)).class_("small").style("max-width: 30em");
+                tr.td().b().class_("small").style("max-width: 20em").text(message.getSubject());
+                tr.td().class_("small").style("max-width: 30em").text(Strings.ellipsis(message.getText(), 50));
                 break;
 
             case 's':
                 tr.td().text(o.getPriority());
-                tr.td().text(fmt.formatDate(o.getCreationTime())).class_("small");
-                tr.td().text(fmt.formatDate(o.getLastModified())).class_("small");
+                tr.td().class_("small").text(fmt.formatDate(o.getCreationTime()));
+                tr.td().class_("small").text(fmt.formatDate(o.getLastModified()));
                 tr.td().text(o.getFlags());
                 tr.td().text(o.getState().getName());
                 break;
 
             case 'a':
                 int mode = o.getAccessMode();
-                tr.td().text(mode).class_("small");
-                ref(tr.td(), o.getOwnerUser()).class_("small");
-                ref(tr.td(), o.getOwnerGroup()).class_("small");
+                tr.td().class_("small").text(mode);
+                ref(tr.td().class_("small"), o.getOwnerUser());
+                ref(tr.td().class_("small"), o.getOwnerGroup());
                 break;
 
             default:

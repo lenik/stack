@@ -1,15 +1,17 @@
 package com.bee32.zebra.erp.site;
 
-import net.bodz.bas.fn.EvalException;
-import net.bodz.bas.fn.IEvaluable;
+import net.bodz.bas.repr.path.INoPathRef;
+import net.bodz.bas.site.vhost.CurrentVirtualHost;
+import net.bodz.bas.site.vhost.IVirtualHost;
 
 public class ErpSiteResolver
-        implements IEvaluable<ErpSite> {
+        implements INoPathRef {
 
     @Override
-    public ErpSite eval()
-            throws EvalException {
-        return new ErpSite();
+    public ErpSite getTarget() {
+        IVirtualHost vhost = CurrentVirtualHost.getVirtualHost();
+        // vhost.getAttribute(ErpSite.class);
+        return new ErpSite(vhost);
     }
 
 }

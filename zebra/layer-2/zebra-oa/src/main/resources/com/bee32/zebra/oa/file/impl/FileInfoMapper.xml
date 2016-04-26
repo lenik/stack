@@ -42,7 +42,7 @@
             left join org on a.org=org.id
             left join person on a.person=person.id
             left join filetag x on a.id=x.file
-            left join tag y on x.tag=y.id
+            left join _tag y on x.tag=y.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>

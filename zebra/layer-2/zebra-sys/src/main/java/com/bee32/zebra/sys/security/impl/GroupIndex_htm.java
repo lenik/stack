@@ -52,7 +52,7 @@ public class GroupIndex_htm
             itab.cocols("i", tr, o);
             tr.td().text(o.getCodeName());
             itab.cocols("u", tr, o);
-            tr.td().text(fn.labels(o.getUsers()));
+            tr.td().text(fn2.labels(o.getUsers()));
             itab.cocols("sa", tr, o);
         }
         itab.buildViewEnd(tbody);

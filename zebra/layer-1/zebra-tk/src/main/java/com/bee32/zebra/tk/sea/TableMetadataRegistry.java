@@ -27,7 +27,9 @@ public class TableMetadataRegistry {
 
     void findFromMappers()
             throws ClassNotFoundException, IOException {
-        for (Class<?> mapperClass : TypeIndex.forClass(IMapper.class)) {
+        TypeIndex typeIndex = TypeIndex.getSclTypeIndex();
+
+        for (Class<?> mapperClass : typeIndex.listIndexed(IMapper.class)) {
             if (!IMapperTemplate.class.isAssignableFrom(mapperClass))
                 continue;
             Class<?> entityClass = TypeParam.infer1(mapperClass, IMapperTemplate.class, 0);

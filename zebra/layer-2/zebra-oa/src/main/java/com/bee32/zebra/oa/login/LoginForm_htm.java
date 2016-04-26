@@ -5,13 +5,13 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.err.ParseException;
+import net.bodz.bas.html.dom.IHtmlHeadData;
 import net.bodz.bas.html.io.IHtmlOut;
 import net.bodz.bas.html.io.tag.HtmlButton;
 import net.bodz.bas.html.io.tag.HtmlDiv;
 import net.bodz.bas.html.io.tag.HtmlForm;
 import net.bodz.bas.html.io.tag.HtmlHead;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
-import net.bodz.bas.html.viz.IHtmlHeadData;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.DefaultForm_htm;
 import net.bodz.bas.http.ctx.CurrentHttpService;
@@ -35,8 +35,8 @@ public class LoginForm_htm
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<LoginForm> ref) {
-        super.preview(ctx, ref);
+    public void precompile(IHtmlViewContext ctx, IUiRef<LoginForm> ref) {
+        super.precompile(ctx, ref);
         IHtmlHeadData metaData = ctx.getHeadData();
         metaData.addDependency("all-effects", PSEUDO);
     }
@@ -44,7 +44,7 @@ public class LoginForm_htm
     @Override
     public IHtmlOut buildHtmlViewStart(IHtmlViewContext ctx, IHtmlOut out, IUiRef<LoginForm> ref)
             throws ViewBuilderException, IOException {
-        if (addSlash(ctx))
+        if (fn.redirect.addSlash(ctx))
             return null;
 
         HtmlHead head = out.head().id("_head");
@@ -57,7 +57,7 @@ public class LoginForm_htm
         HtmlDiv dialog = out.div().id("dialog1").class_("dialog").style("width: 400px");
         dialog.title("登录");
 
-        HtmlForm form = dialog.form().method("post").action("?");
+        HtmlForm form = dialog.form().id("loginForm").method("post").action("?");
 
         new DefaultForm_htm<LoginForm>(true).buildHtmlViewStart(ctx, form, ref);
 
@@ -81,7 +81,7 @@ public class LoginForm_htm
         }
 
         form.hr();
-        HtmlDiv buttons = form.id("loginForm").div().align("right");
+        HtmlDiv buttons = form.div().align("right");
         HtmlButton submit = buttons.button().type("submit");
         submit.span().class_("fa icon").text(FA_UNLOCK);
         submit.text("登录");

@@ -59,8 +59,8 @@ public abstract class SlimForm0_htm<T>
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<T> ref) {
-        super.preview(ctx, ref);
+    public void precompile(IHtmlViewContext ctx, IUiRef<T> ref) {
+        super.precompile(ctx, ref);
 
         PageLayout pageLayout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
         HttpServletRequest request = ctx.getRequest();
@@ -72,7 +72,7 @@ public abstract class SlimForm0_htm<T>
     @Override
     public IHtmlOut buildHtmlViewStart(IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref)
             throws ViewBuilderException, IOException {
-        if (addSlash(ctx, ref))
+        if (fn.redirect.addSlash(ctx, ref))
             return null;
         return super.buildHtmlViewStart(ctx, out, ref);
     }

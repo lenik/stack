@@ -1,12 +1,13 @@
 package com.bee32.zebra.tk.repr;
 
+import net.bodz.bas.db.ctx.DataContext;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.rtx.IQueryable;
+import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.lily.model.base.CoObjectIndex;
 
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
 import com.bee32.zebra.tk.htm.PageLayout;
-import com.bee32.zebra.tk.sql.MapperUtil;
 
 public abstract class QuickIndex
         extends CoObjectIndex
@@ -22,7 +23,8 @@ public abstract class QuickIndex
 
     @Override
     protected IMapperTemplate<?, ?> findMapper(Class<?> clazz) {
-        return MapperUtil.getMapperTemplate(getObjectType());
+        DataContext dataContext = VhostDataContexts.getInstance().forCurrentRequest();
+        return dataContext.getMapperFor(getObjectType());
     }
 
     @Override

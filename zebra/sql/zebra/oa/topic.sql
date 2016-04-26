@@ -56,7 +56,7 @@
             references topic(id) on update cascade on delete cascade,
 
         parm        int not null
-            references parm(id) on update cascade on delete cascade,
+            references _parm(id) on update cascade on delete cascade,
 
         val         varchar(200),
 

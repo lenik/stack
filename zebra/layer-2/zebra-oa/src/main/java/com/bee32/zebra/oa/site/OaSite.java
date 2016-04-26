@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.c.type.IndexedTypes;
+import net.bodz.bas.db.ctx.DataContext;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.log.Logger;
 import net.bodz.bas.log.LoggerFactory;
@@ -18,6 +19,8 @@ import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
 import net.bodz.bas.site.org.ICrawlable;
 import net.bodz.bas.site.org.ICrawler;
+import net.bodz.bas.site.vhost.IVirtualHost;
+import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.bas.std.rfc.http.CacheControlMode;
 import net.bodz.bas.std.rfc.http.ICacheControl;
 import net.bodz.lily.model.base.CoObjectIndex;
@@ -32,7 +35,6 @@ import com.bee32.zebra.oa.file.impl.UploadHandler;
 import com.bee32.zebra.oa.login.LoginForm;
 import com.bee32.zebra.tk.repr.QuickController;
 import com.bee32.zebra.tk.site.CoTypes;
-import com.bee32.zebra.tk.sql.VhostDataService;
 
 /**
  * @label OA Site Frame
@@ -42,15 +44,20 @@ public class OaSite
 
     static final Logger logger = LoggerFactory.getLogger(OaSite.class);
 
-    public String googleId;
-    public String baiduId;
+    IVirtualHost vhost;
+    DataContext dataContext;
 
-    public OaSite() {
-        setQueryContext(VhostDataService.forCurrentRequest());
+    String googleId;
+    String baiduId;
+
+    public OaSite(IVirtualHost vhost) {
+        this.vhost = vhost;
+        this.dataContext = VhostDataContexts.getInstance().get(vhost);
+        setQueryContext(dataContext);
 
         for (Class<? extends CoObjectIndex> indexClass : IndexedTypes.list(CoObjectIndex.class, false)) {
             Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
-            QuickController controller = new QuickController(getQueryContext(), objectType, indexClass);
+            QuickController controller = new QuickController(dataContext, objectType, indexClass);
 
             List<String> paths = new ArrayList<>();
             CoTypes.getPathToken(objectType, paths);
@@ -89,13 +96,16 @@ public class OaSite
         Object target = null;
 
         String token = tokens.peek();
+        if (token == null)
+            return null;
+
         switch (token) {
         case "login":
             target = new LoginForm();
             break;
 
         case "calendar":
-            target = new LogCalendar(getQueryContext());
+            target = new LogCalendar(dataContext);
             break;
 
         case "console":

@@ -58,9 +58,8 @@ public class UploadResult_json
         PrintWriter out = ctx.getResponse().getWriter();
         String json = obj.toString();
         out.println(json);
-        ctx.stop();
 
-        return null;
+        return ctx.stop();
     }
 
 }

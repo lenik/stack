@@ -40,8 +40,8 @@ public class OaSite_htm
     }
 
     @Override
-    public void preview(IHtmlViewContext ctx, IUiRef<OaSite> ref) {
-        super.preview(ctx, ref);
+    public void precompile(IHtmlViewContext ctx, IUiRef<OaSite> ref) {
+        super.precompile(ctx, ref);
 
         IPathArrival arrival = ctx.query(IPathArrival.class);
         PageLayout layout = solicitLayout(arrival);
@@ -55,14 +55,13 @@ public class OaSite_htm
         IPathArrival arrival = ctx.query(IPathArrival.class);
         boolean arrivedHere = arrival.getPrevious(site).getRemainingPath() == null;
 
-        if (arrivedHere && addSlash(ctx))
+        if (arrivedHere && fn.redirect.addSlash(ctx))
             return null;
 
         LoginContext loginctx = LoginContext.fromSession(ctx.getSession());
         if (loginctx == null) {
             ctx.getResponse().sendRedirect(_webApp_ + "login/");
-            ctx.stop();
-            return null;
+            return ctx.stop();
         }
 
         HtmlHead head = out.head().id("_head");
@@ -172,8 +171,8 @@ public class OaSite_htm
         // welcomeDiv.text("海宁中鑫三元风机有限公司").br();
         // welcomeDiv.text("的").br();
         HtmlSpan userSpan = welcomeDiv.span();
-        userSpan.text(loginctx.user.getFullName());
         userSpan.title(loginctx.user.getGroupIds().toString());
+        userSpan.text(loginctx.user.getFullName());
         welcomeDiv.text("！");
         HtmlA logout = welcomeDiv.a().id("zp-logout");
         logout.href(_webApp_ + "login/?logout=1");
@@ -195,57 +194,57 @@ public class OaSite_htm
         HtmlLi lili;
 
         sub = out.li().text("开始").ul();
-        sub.li().a().text("控制台").href(_webApp_.join("console/").toString());
+        sub.li().a().href(_webApp_.join("console/")).text("控制台");
         li = sub.li();
-        li.a().text("日记").href(_webApp_.join("diary/").toString());
+        li.a().href(_webApp_.join("diary/")).text("日记");
         li.text(" / ");
-        li.a().text("日历").href(_webApp_.join("calendar/").toString());
-        // sub.li().a().text("论坛").href(_webApp_.join("post/").toString());
+        li.a().href(_webApp_.join("calendar/")).text("日历");
+        // sub.li().a().href(_webApp_.join("post/")).text("论坛");
 
         sub = out.li().text("知识库").ul();
-        sub.li().a().text("企、事业").href(_webApp_.join("org/").toString());
-        sub.li().a().text("联系人").href(_webApp_.join("person/").toString());
-        sub.li().a().text("文件").href(_webApp_.join("file/").toString());
+        sub.li().a().href(_webApp_.join("org/")).text("企、事业");
+        sub.li().a().href(_webApp_.join("person/")).text("联系人");
+        sub.li().a().href(_webApp_.join("file/")).text("文件");
 
         li = out.li().text("库存");
-        li.a().text("[初始化]").href(_webApp_.join("stinit/").toString()).class_("small").style("color: gray");
+        li.a().href(_webApp_.join("stinit/")).class_("small").style("color: gray").text("[初始化]");
 
         sub = li.ul();
-        sub.li().a().text("区域").href(_webApp_.join("place/").toString());
-        sub.li().a().text("产品/物料").href(_webApp_.join("art/").toString());
-        sub.li().a().text("作业").href(_webApp_.join("stdoc/").toString());
-        sub.li().a().text("盘点/报损").href(_webApp_.join("stdoc/new").toString());
+        sub.li().a().href(_webApp_.join("place/")).text("区域");
+        sub.li().a().href(_webApp_.join("art/")).text("产品/物料");
+        sub.li().a().href(_webApp_.join("stdoc/")).text("作业");
+        sub.li().a().href(_webApp_.join("stdoc/new")).text("盘点/报损");
 
         sub = out.li().text("销售").ul();
-        sub.li().a().text("项目/机会").href(_webApp_.join("topic/").toString());
-        sub.li().a().text("订单").href(_webApp_.join("sdoc/").toString());
-        sub.li().a().text("送货").href(_webApp_.join("dldoc/").toString());
+        sub.li().a().href(_webApp_.join("topic/")).text("项目/机会");
+        sub.li().a().href(_webApp_.join("sdoc/")).text("订单");
+        sub.li().a().href(_webApp_.join("dldoc/")).text("送货");
 
         sub = out.li().text("生产过程").ul();
-        sub.li().a().text("装配图").href(_webApp_.join("bom/").toString());
-        sub.li().a().text("工艺路线").href(_webApp_.join("fabproc/").toString());
-        sub.li().a().text("排程").href(_webApp_.join("sch/").toString());
-        sub.li().a().text("作业").href(_webApp_.join("job/").toString());
-        sub.li().a().text("质量控制").href(_webApp_.join("qc/").toString());
+        sub.li().a().href(_webApp_.join("bom/")).text("装配图");
+        sub.li().a().href(_webApp_.join("fabproc/")).text("工艺路线");
+        sub.li().a().href(_webApp_.join("sch/")).text("排程");
+        sub.li().a().href(_webApp_.join("job/")).text("作业");
+        sub.li().a().href(_webApp_.join("qc/")).text("质量控制");
 
         li = out.li().text("财务");
-        li.a().text("[初始化]").href(_webApp_.join("acinit/").toString()).class_("small").style("color: gray");
+        li.a().href(_webApp_.join("acinit/")).class_("small").style("color: gray").text("[初始化]");
         sub = li.ul();
 
         lili = sub.li();
-        lili.a().text("单证").href(_webApp_.join("acdoc/?phase=1").toString());
+        lili.a().href(_webApp_.join("acdoc/?phase=1")).text("单证");
         lili.text(" / ");
-        lili.a().text("填表").href(_webApp_.join("acdoc/new?phase=1").toString());
+        lili.a().href(_webApp_.join("acdoc/new?phase=1")).text("填表");
 
-        sub.li().a().text("流水帐").href(_webApp_.join("acdoc/?phase=2").toString());
-        sub.li().a().text("工资").href(_webApp_.join("salary/").toString());
-        sub.li().a().text("分析").href(_webApp_.join("acstat/").toString());
+        sub.li().a().href(_webApp_.join("acdoc/?phase=2")).text("流水帐");
+        sub.li().a().href(_webApp_.join("salary/")).text("工资");
+        sub.li().a().href(_webApp_.join("acstat/")).text("分析");
 
         LoginContext login = LoginContext.fromSession();
         if (login.user.isAdmin()) {
             sub = out.li().text("系统").ul();
-            sub.li().a().text("帐户").href(_webApp_.join("user/").toString());
-            // sub.li().a().text("设置").href(_webApp_.join("setting/").toString());
+            sub.li().a().href(_webApp_.join("user/")).text("帐户");
+            // sub.li().a().href(_webApp_.join("setting/")).text("设置");
         }
     }
 
