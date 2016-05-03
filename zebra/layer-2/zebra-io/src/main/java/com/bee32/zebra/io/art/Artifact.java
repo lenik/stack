@@ -11,8 +11,8 @@ import net.bodz.bas.repr.form.meta.NumericInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoEntity;
-import net.bodz.lily.model.base.IdType;
 import net.bodz.lily.model.base.SchemaPref;
 
 import com.bee32.zebra.oa.OaGroups;

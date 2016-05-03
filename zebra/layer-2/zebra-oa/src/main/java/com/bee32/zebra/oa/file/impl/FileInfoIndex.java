@@ -1,7 +1,6 @@
 package com.bee32.zebra.oa.file.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.file.FileInfo;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -19,9 +18,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(FileInfo.class)
 public class FileInfoIndex
         extends QuickIndex {
-
-    public FileInfoIndex(IQueryable context) {
-        super(context);
-    }
 
 }

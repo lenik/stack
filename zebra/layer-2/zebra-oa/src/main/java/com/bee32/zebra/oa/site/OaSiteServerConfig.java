@@ -6,7 +6,7 @@ import net.bodz.bas.c.m2.MavenPomDir;
 import net.bodz.bas.err.IllegalConfigException;
 import net.bodz.bas.html.servlet.PathDispatchServlet;
 import net.bodz.bas.http.config.ServletDescriptor;
-import net.bodz.bas.http.ctx.CurrentRequestScope;
+import net.bodz.bas.http.ctx.RequestScopeTeller;
 import net.bodz.bas.i18n.LocaleVars;
 import net.bodz.uni.echo._default.DefaultServerConfig;
 
@@ -22,7 +22,7 @@ public class OaSiteServerConfig
 
     protected void configEnv() {
         LocaleVars localeCtl = LocaleVars.LOCALE;
-        localeCtl.setTeller(new CurrentRequestScope());
+        localeCtl.setTeller(new RequestScopeTeller());
     }
 
     protected void configServlets() {

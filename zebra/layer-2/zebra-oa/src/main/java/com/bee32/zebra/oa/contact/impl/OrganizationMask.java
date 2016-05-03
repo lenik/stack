@@ -2,7 +2,8 @@ package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.IntRange;
-import net.bodz.lily.model.sea.QVariantMap;
+import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.t.variant.QVariantMap;
 
 public class OrganizationMask
         extends PartyMask {
@@ -36,9 +37,10 @@ public class OrganizationMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> _map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(_map);
+        QVariantMap<String> map = QVariantMap.from(_map);
         sizeRange = map.getIntRange("sizes", sizeRange);
         staffRange = map.getIntRange("staff", sizeRange);
         shipper = map.getBoolean("shipper", shipper);

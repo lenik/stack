@@ -1,7 +1,7 @@
 package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.lily.model.sea.QVariantMap;
+import net.bodz.bas.t.variant.IVariantMap;
 
 import com.bee32.zebra.tk.sea.MyMask;
 
@@ -12,9 +12,9 @@ public class AccountMask
     public Integer maxDepth;
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(map);
         codePrefix = map.getString("code", codePrefix);
         maxDepth = map.getInt("depth", maxDepth);
     }

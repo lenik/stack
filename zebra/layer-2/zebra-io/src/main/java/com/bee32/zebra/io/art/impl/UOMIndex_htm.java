@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 
@@ -19,7 +20,6 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class UOMIndex_htm
         extends SlimIndex_htm<UOMIndex, UOM, UOMMask> {
@@ -33,7 +33,7 @@ public class UOMIndex_htm
     @Override
     protected UOMMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        UOMMask mask = MaskBuilder.fromRequest(new UOMMask(), ctx.getRequest());
+        UOMMask mask = VarMapState.restoreFrom(new UOMMask(), ctx.getRequest());
 
         SwitcherModel<String> sw;
         sw = switchers.entryOf("属性", true, //

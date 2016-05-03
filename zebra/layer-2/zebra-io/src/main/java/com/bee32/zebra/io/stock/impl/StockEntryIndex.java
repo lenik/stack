@@ -1,7 +1,6 @@
 package com.bee32.zebra.io.stock.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.stock.StockEntry;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -18,9 +17,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(StockEntry.class)
 public class StockEntryIndex
         extends QuickIndex {
-
-    public StockEntryIndex(IQueryable context) {
-        super(context);
-    }
 
 }

@@ -11,6 +11,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.impl.TagDefMapper;
@@ -23,7 +24,6 @@ import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class FileInfoIndex_htm
         extends SlimIndex_htm<FileInfoIndex, FileInfo, FileInfoMask> {
@@ -39,7 +39,7 @@ public class FileInfoIndex_htm
     protected FileInfoMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         FileInfoMapper mapper = ctx.query(FileInfoMapper.class);
-        FileInfoMask mask = MaskBuilder.fromRequest(new FileInfoMask(), ctx.getRequest());
+        FileInfoMask mask = VarMapState.restoreFrom(new FileInfoMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("标签", true, //

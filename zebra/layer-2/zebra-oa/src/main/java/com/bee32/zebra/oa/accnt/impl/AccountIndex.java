@@ -1,7 +1,6 @@
 package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.accnt.Account;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -23,9 +22,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(Account.class)
 public class AccountIndex
         extends QuickIndex {
-
-    public AccountIndex(IQueryable context) {
-        super(context);
-    }
 
 }

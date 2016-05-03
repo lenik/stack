@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 
@@ -18,7 +19,6 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class DiaryIndex_htm
         extends SlimIndex_htm<DiaryIndex, Diary, DiaryMask> {
@@ -33,7 +33,7 @@ public class DiaryIndex_htm
     protected DiaryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         DiaryMapper mapper = ctx.query(DiaryMapper.class);
-        DiaryMask mask = MaskBuilder.fromRequest(new DiaryMask(), ctx.getRequest());
+        DiaryMask mask = VarMapState.restoreFrom(new DiaryMask(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entryOf("年份", true, //
                 mapper.histoByYear(), "year", mask.year, mask.noYear);

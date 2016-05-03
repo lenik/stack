@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 
@@ -17,7 +18,6 @@ import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class ContactIndex_htm
         extends SlimIndex_htm<ContactIndex, Contact, ContactMask> {
@@ -35,7 +35,7 @@ public class ContactIndex_htm
     @Override
     protected ContactMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ContactMask mask = MaskBuilder.fromRequest(new ContactMask(), ctx.getRequest());
+        ContactMask mask = VarMapState.restoreFrom(new ContactMask(), ctx.getRequest());
         return mask;
     }
 

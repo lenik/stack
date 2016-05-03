@@ -1,7 +1,6 @@
 package com.bee32.zebra.io.sales.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.sales.SalesOrderItem;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -19,9 +18,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(SalesOrderItem.class)
 public class SalesOrderItemIndex
         extends QuickIndex {
-
-    public SalesOrderItemIndex(IQueryable context) {
-        super(context);
-    }
 
 }

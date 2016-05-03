@@ -32,7 +32,7 @@ import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Party;
 import com.bee32.zebra.oa.contact.Person;
-import com.bee32.zebra.oa.file.FileManager;
+import com.bee32.zebra.oa.file.ZebraFilePathMapping;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 
 public class Delivery_pdf
@@ -51,7 +51,7 @@ public class Delivery_pdf
 
         final HttpServletRequest req = ctx.getRequest();
         final String surl = RequestUtils.getServerURL(req);
-        final FileManager fileManager = FileManager.forCurrentRequest();
+        final ZebraFilePathMapping fileManager = ZebraFilePathMapping.getInstance();
 
         final Delivery doc = ref.get();
         final Person person = doc.getPerson();
@@ -108,7 +108,7 @@ public class Delivery_pdf
                     break;
 
                 case "Logo":
-                    File logoFile = new File(fileManager.getStartDir(), "logo.png");
+                    File logoFile = new File(fileManager.getLocalRoot(req), "logo.png");
                     return logoFile.getPath();
 
                 case "QRThis":

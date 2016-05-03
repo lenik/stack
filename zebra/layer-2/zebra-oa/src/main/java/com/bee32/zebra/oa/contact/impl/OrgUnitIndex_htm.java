@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 
@@ -17,7 +18,6 @@ import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class OrgUnitIndex_htm
         extends SlimIndex_htm<OrgUnitIndex, OrgUnit, OrgUnitMask> {
@@ -31,7 +31,7 @@ public class OrgUnitIndex_htm
     @Override
     protected OrgUnitMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        OrgUnitMask mask = MaskBuilder.fromRequest(new OrgUnitMask(), ctx.getRequest());
+        OrgUnitMask mask = VarMapState.restoreFrom(new OrgUnitMask(), ctx.getRequest());
         return mask;
     }
 

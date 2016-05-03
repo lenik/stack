@@ -1,7 +1,6 @@
 package com.bee32.zebra.oa.hr.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.hr.Employee;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -18,9 +17,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(Employee.class)
 public class EmployeeIndex
         extends QuickIndex {
-
-    public EmployeeIndex(IQueryable context) {
-        super(context);
-    }
 
 }

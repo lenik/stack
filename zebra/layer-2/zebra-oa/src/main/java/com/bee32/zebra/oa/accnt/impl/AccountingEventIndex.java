@@ -1,7 +1,6 @@
 package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -19,9 +18,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(AccountingEvent.class)
 public class AccountingEventIndex
         extends QuickIndex {
-
-    public AccountingEventIndex(IQueryable context) {
-        super(context);
-    }
 
 }

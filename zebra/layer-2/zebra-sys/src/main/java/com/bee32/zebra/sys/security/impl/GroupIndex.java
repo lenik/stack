@@ -1,7 +1,6 @@
 package com.bee32.zebra.sys.security.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 import net.bodz.lily.model.base.security.Group;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -21,9 +20,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(Group.class)
 public class GroupIndex
         extends QuickIndex {
-
-    public GroupIndex(IQueryable context) {
-        super(context);
-    }
 
 }

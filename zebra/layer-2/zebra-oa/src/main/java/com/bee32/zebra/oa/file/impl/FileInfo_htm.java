@@ -4,16 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.html.io.IHtmlOut;
 import net.bodz.bas.html.io.tag.HtmlOl;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.site.file.UploadHandler;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.file.FileInfo;
-import com.bee32.zebra.oa.file.FileManager;
+import com.bee32.zebra.oa.file.ZebraFilePathMapping;
 import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
 import com.bee32.zebra.tk.hbin.UploadFileDialog_htm;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
@@ -49,12 +52,13 @@ public class FileInfo_htm
     @Override
     protected Object persist(boolean create, IHtmlViewContext ctx, IHtmlOut out, IUiRef<FileInfo> ref)
             throws Exception {
+        HttpServletRequest req = ctx.getRequest();
         FileInfo fileInfo = ref.get();
 
         String incomingName = ctx.getRequest().getParameter("incoming");
         if (!Nullables.isEmpty(incomingName)) {
-            FileManager manager = FileManager.forCurrentRequest();
-            File incomingFile = new File(manager.getDir(UploadHandler.class), incomingName);
+            ZebraFilePathMapping mapping = ZebraFilePathMapping.getInstance();
+            File incomingFile = new File(mapping.getLocalDir(req, UploadHandler.class), incomingName);
             if (!incomingFile.exists())
                 throw new IllegalStateException("incoming file isn't existed: " + incomingFile);
 
@@ -63,9 +67,9 @@ public class FileInfo_htm
             File oldFile = null;
             File oldFileBak = null;
             if (oldPath != null) {
-                oldFile = manager.getFile("tree", oldPath);
+                oldFile = mapping.getLocalFile(req, "tree", oldPath);
                 if (oldFile.exists()) {
-                    oldFileBak = manager.getFile("tree", oldPath + ".bak");
+                    oldFileBak = mapping.getLocalFile(req, "tree", oldPath + ".bak");
                     if (!oldFile.renameTo(oldFileBak))
                         throw new IOException(String.format("Can't rename file %s to %s.", oldFile, oldFileBak));
                 }
@@ -76,7 +80,7 @@ public class FileInfo_htm
             if (newDirName == null)
                 newDirName = "incoming";
 
-            File newFileDir = manager.getFile("tree", newDirName);
+            File newFileDir = mapping.getLocalFile(req, "tree", newDirName);
             newFileDir.mkdirs();
             File newFile = new File(newFileDir, incomingName);
             if (!incomingFile.equals(newFile))

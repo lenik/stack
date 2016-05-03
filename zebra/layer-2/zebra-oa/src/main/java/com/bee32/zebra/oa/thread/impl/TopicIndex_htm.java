@@ -12,6 +12,7 @@ import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.util.IFontAwesomeCharAliases;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.impl.CategoryDefMapper;
@@ -29,7 +30,6 @@ import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.stat.MonthTrends;
 import com.bee32.zebra.tk.stat.ValueDistrib;
 import com.bee32.zebra.tk.stat.impl.MonthTrendsMapper;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class TopicIndex_htm
         extends SlimIndex_htm<TopicIndex, Topic, TopicMask> {
@@ -44,7 +44,7 @@ public class TopicIndex_htm
     protected TopicMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         TopicMapper mapper = ctx.query(TopicMapper.class);
-        TopicMask mask = MaskBuilder.fromRequest(new TopicMask(), ctx.getRequest());
+        TopicMask mask = VarMapState.restoreFrom(new TopicMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("分类", true, //

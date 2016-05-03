@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 
@@ -17,7 +18,6 @@ import com.bee32.zebra.oa.hr.JobSkillCategory;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class JobSkillCategoryIndex_htm
         extends SlimIndex_htm<JobSkillCategoryIndex, JobSkillCategory, JobSkillCategoryMask> {
@@ -31,7 +31,7 @@ public class JobSkillCategoryIndex_htm
     @Override
     protected JobSkillCategoryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        JobSkillCategoryMask mask = MaskBuilder.fromRequest(new JobSkillCategoryMask(), ctx.getRequest());
+        JobSkillCategoryMask mask = VarMapState.restoreFrom(new JobSkillCategoryMask(), ctx.getRequest());
         return mask;
     }
 

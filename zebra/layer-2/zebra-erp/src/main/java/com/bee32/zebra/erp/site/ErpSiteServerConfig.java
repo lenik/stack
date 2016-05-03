@@ -11,7 +11,7 @@ public class ErpSiteServerConfig
     protected void configServlets() {
         super.configServlets();
         dispatching.setInitParam(PathDispatchServlet.ROOT_CLASS, //
-                ErpSiteResolver.class.getName());
+                ErpSiteClustor.class.getName());
     }
 
 }

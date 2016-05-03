@@ -2,8 +2,9 @@ package com.bee32.zebra.oa.accnt.impl;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
+import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.t.variant.QVariantMap;
 import net.bodz.lily.model.base.CoMomentIntervalMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.oa.accnt.DebitOrCredit;
 
@@ -48,9 +49,10 @@ public class AccountingEntryMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> _map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(_map);
+        QVariantMap<String> map = QVariantMap.from(_map);
         eventId = map.getLong("doc", eventId);
         accountId = map.getInt("account", accountId);
         side = map.getPredef(DebitOrCredit.class, "side", side);

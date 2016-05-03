@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.ParameterDef;
@@ -21,7 +22,6 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class ParameterDefIndex_htm
         extends SlimIndex_htm<ParameterDefIndex, ParameterDef, ParameterDefMask> {
@@ -35,7 +35,7 @@ public class ParameterDefIndex_htm
     @Override
     protected ParameterDefMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ParameterDefMask mask = MaskBuilder.fromRequest(new ParameterDefMask(), ctx.getRequest());
+        ParameterDefMask mask = VarMapState.restoreFrom(new ParameterDefMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("模式", false, //

@@ -1,7 +1,7 @@
 package com.bee32.zebra.oa.calendar;
 
 import net.bodz.bas.meta.bean.DetailLevel;
-import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.schema.CategoryDef;
 import net.bodz.lily.model.base.schema.PhaseDef;
 import net.bodz.lily.model.base.security.User;

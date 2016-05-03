@@ -3,13 +3,17 @@ package com.bee32.zebra.tk.htm;
 import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
-import net.bodz.lily.model.sea.AbstractTextParametric;
+import net.bodz.bas.t.variant.IVarMapSerializable;
+import net.bodz.bas.t.variant.IVariantMap;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 
 public abstract class GenericPage
-        extends AbstractTextParametric
-        implements IZebraSiteAnchors {
+        implements IZebraSiteAnchors, IVarMapSerializable {
+
+    @Override
+    public void writeObject(IVariantMap<String> map) {
+    }
 
     @Override
     public String toString() {

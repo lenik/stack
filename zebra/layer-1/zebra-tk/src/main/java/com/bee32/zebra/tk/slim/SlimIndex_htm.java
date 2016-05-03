@@ -14,6 +14,7 @@ import org.json.JSONWriter;
 import net.bodz.bas.c.object.Nullables;
 import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.ctx.DataContext;
+import net.bodz.bas.db.ibatis.IMapper;
 import net.bodz.bas.db.ibatis.IMapperTemplate;
 import net.bodz.bas.err.IllegalUsageException;
 import net.bodz.bas.html.artifact.IArtifactConsts;
@@ -233,7 +234,9 @@ public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
         Class<?> objectType = manager.getObjectType();
 
         DataContext dataContext = VhostDataContexts.getInstance().forCurrentRequest();
-        IMapperTemplate<?, M> mapper = dataContext.getMapperFor(objectType);
+
+        Class<IMapperTemplate<?, M>> mapperClass = IMapper.fn.requireMapperClass(objectType);
+        IMapperTemplate<?, M> mapper = dataContext.getMapper(mapperClass);
 
         ClassDoc classDoc = Xjdocs.getDefaultProvider().getOrCreateClassDoc(getValueType());
 

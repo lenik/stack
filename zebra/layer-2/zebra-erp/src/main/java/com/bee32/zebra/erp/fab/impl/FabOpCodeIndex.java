@@ -1,7 +1,6 @@
 package com.bee32.zebra.erp.fab.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.erp.fab.FabOpCode;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -18,9 +17,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(FabOpCode.class)
 public class FabOpCodeIndex
         extends QuickIndex {
-
-    public FabOpCodeIndex(IQueryable context) {
-        super(context);
-    }
 
 }

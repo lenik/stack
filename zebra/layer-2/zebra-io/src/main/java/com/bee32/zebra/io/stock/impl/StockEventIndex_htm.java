@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.impl.CategoryDefMapper;
@@ -23,7 +24,6 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class StockEventIndex_htm
         extends SlimIndex_htm<StockEventIndex, StockEvent, StockEventMask> {
@@ -39,7 +39,7 @@ public class StockEventIndex_htm
     protected StockEventMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
         StockEventMapper mapper = ctx.query(StockEventMapper.class);
-        StockEventMask mask = MaskBuilder.fromRequest(new StockEventMask(), ctx.getRequest());
+        StockEventMask mask = VarMapState.restoreFrom(new StockEventMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("分类", true, //

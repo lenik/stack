@@ -2,8 +2,9 @@ package com.bee32.zebra.oa.thread.impl;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.IntRange;
+import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.t.variant.QVariantMap;
 import net.bodz.lily.model.mx.base.CoMessageMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 public class TopicMask
         extends CoMessageMask {
@@ -22,9 +23,10 @@ public class TopicMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> _map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(_map);
+        QVariantMap<String> map = QVariantMap.from(_map);
         valueRange = map.getIntRange("values", valueRange);
     }
 

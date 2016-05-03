@@ -1,7 +1,6 @@
 package com.bee32.zebra.oa.thread.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.thread.Topic;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -23,9 +22,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(Topic.class)
 public class TopicIndex
         extends QuickIndex {
-
-    public TopicIndex(IQueryable context) {
-        super(context);
-    }
 
 }

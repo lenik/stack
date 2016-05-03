@@ -1,8 +1,8 @@
 package com.bee32.zebra.oa.contact;
 
 import net.bodz.bas.repr.form.validate.NotNull;
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoEntity;
-import net.bodz.lily.model.base.IdType;
 
 /**
  * @label 人员部门职位

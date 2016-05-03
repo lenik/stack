@@ -1,7 +1,6 @@
 package com.bee32.zebra.sys.schema.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 import net.bodz.lily.model.base.schema.SchemaDef;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -14,9 +13,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(SchemaDef.class)
 public class SchemaDefIndex
         extends QuickIndex {
-
-    public SchemaDefIndex(IQueryable context) {
-        super(context);
-    }
 
 }

@@ -1,7 +1,7 @@
 package com.bee32.zebra.io.stock;
 
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoNode;
-import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.io.art.Dim3d;
 import com.bee32.zebra.oa.contact.Organization;

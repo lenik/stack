@@ -8,8 +8,8 @@ import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoMomentInterval;
-import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Organization;

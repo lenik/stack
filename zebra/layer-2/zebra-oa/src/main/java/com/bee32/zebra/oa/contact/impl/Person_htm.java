@@ -3,6 +3,8 @@ package com.bee32.zebra.oa.contact.impl;
 import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.html.io.IHtmlOut;
 import net.bodz.bas.html.io.tag.HtmlA;
@@ -21,7 +23,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Person;
-import com.bee32.zebra.oa.file.FileManager;
+import com.bee32.zebra.oa.file.ZebraFilePathMapping;
 import com.bee32.zebra.tk.hbin.ItemsTable;
 import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
 import com.bee32.zebra.tk.hbin.UploadFileDialog_htm;
@@ -64,13 +66,15 @@ public class Person_htm
 
     void buildAvatar(IHtmlViewContext ctx, IHtmlOut out, Person person)
             throws ViewBuilderException, IOException {
+        HttpServletRequest req = ctx.getRequest();
+
         HtmlA uploadLink = out.a().href("javascript: uploadDialog.open()");
         uploadLink.iText(FA_CAMERA, "fa").text("上传...");
 
         int id = person.getId();
-        FileManager fileManager = FileManager.forCurrentRequest();
+        ZebraFilePathMapping filePathMapping = ZebraFilePathMapping.getInstance();
         String photoPath = id + ".jpg";
-        File photoFile = fileManager.getFile("avatar", photoPath);
+        File photoFile = filePathMapping.getLocalFile(req, "avatar", photoPath);
 
         HtmlDiv div = out.div().id("avatar-div");
         HtmlImg img = div.img().id("avatar").height("128");

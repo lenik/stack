@@ -8,7 +8,6 @@ import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.tk.repr.QuickIndex;
 
@@ -20,10 +19,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(LogSelector.class)
 public class LogCalendar
         extends QuickIndex {
-
-    public LogCalendar(IQueryable context) {
-        super(context);
-    }
 
     @Override
     public IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)

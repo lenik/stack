@@ -16,6 +16,7 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.DefaultForm_htm;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VariantMaps;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.security.LoginContext;
 
@@ -73,7 +74,7 @@ public class LoginForm_htm
         if (request.getParameter("userName") != null) {
             LoginForm loginForm = ref.get();
             try {
-                loginForm.populate(request.getParameterMap());
+                loginForm.readObject(VariantMaps.fromRequest(request));
             } catch (ParseException e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }

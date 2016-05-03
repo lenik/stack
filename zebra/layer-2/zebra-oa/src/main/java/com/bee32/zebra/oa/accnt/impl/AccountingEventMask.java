@@ -5,8 +5,9 @@ import java.util.TreeSet;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
+import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.t.variant.QVariantMap;
 import net.bodz.lily.model.mx.base.CoMessageMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 public class AccountingEventMask
         extends CoMessageMask {
@@ -58,9 +59,10 @@ public class AccountingEventMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> _map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(_map);
+        QVariantMap<String> map = QVariantMap.from(_map);
         topicId = map.getInt("topic", topicId);
         partyId = map.getInt("party", partyId);
         debitTotalRange = map.getDoubleRange("debits", debitTotalRange);

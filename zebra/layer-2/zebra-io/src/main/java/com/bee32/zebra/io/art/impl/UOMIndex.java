@@ -1,7 +1,6 @@
 package com.bee32.zebra.io.art.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.art.UOM;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -16,9 +15,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(UOM.class)
 public class UOMIndex
         extends QuickIndex {
-
-    public UOMIndex(IQueryable context) {
-        super(context);
-    }
 
 }

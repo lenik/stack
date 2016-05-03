@@ -2,8 +2,8 @@ package com.bee32.zebra.io.stock;
 
 import javax.persistence.Table;
 
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoMomentInterval;
-import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.io.art.Artifact;
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import net.bodz.bas.c.type.TypeChain;
+import net.bodz.bas.db.ibatis.IMapper;
 import net.bodz.bas.db.ibatis.IMapperProvider;
 import net.bodz.bas.err.Err;
 import net.bodz.bas.html.io.IHtmlOut;
@@ -21,9 +22,9 @@ import net.bodz.bas.repr.req.IMethodOfRequest;
 import net.bodz.bas.repr.req.MethodNames;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.entity.IId;
+import net.bodz.lily.entity.Instantiables;
 import net.bodz.lily.model.base.CoObject;
-import net.bodz.lily.model.base.IId;
-import net.bodz.lily.model.base.Instantiables;
 
 import com.bee32.zebra.tk.htm.PageLayout;
 import com.bee32.zebra.tk.sql.FooMapper;
@@ -56,7 +57,11 @@ public abstract class SlimForm_htm<T extends CoObject>
         HttpServletRequest req = ctx.getRequest();
         IMethodOfRequest methodOfRequest = ctx.query(IMethodOfRequest.class);
         String methodName = methodOfRequest.getMethodName();
-        FooMapper<T, ?> mapper = ctx.query(IMapperProvider.class).getMapperForObject(ref.getValueType());
+
+        IMapperProvider provider = ctx.query(IMapperProvider.class);
+        Class<FooMapper<T, ?>> mapperClass = IMapper.fn.getMapperClass(ref.getValueType());
+        FooMapper<T, ?> mapper = provider.getMapper(mapperClass);
+
         T obj = ref.get();
         Number id = (Number) obj.getId();
 

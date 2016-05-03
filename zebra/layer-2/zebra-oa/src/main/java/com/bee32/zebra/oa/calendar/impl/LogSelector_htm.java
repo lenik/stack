@@ -20,6 +20,7 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.t.range.DateRange;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.CategoryDef;
 import net.bodz.lily.model.base.schema.FormDef;
@@ -30,7 +31,6 @@ import com.bee32.zebra.oa.calendar.LogEntry;
 import com.bee32.zebra.oa.calendar.LogSelector;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.slim.SlimForm0_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class LogSelector_htm
         extends SlimForm0_htm<LogSelector>
@@ -50,7 +50,7 @@ public class LogSelector_htm
         int uid = login == null ? -1 : login.user.getId();
 
         LogSelector selector = ref.get();
-        LogEntryMask mask = MaskBuilder.fromRequest(new LogEntryMask(), ctx.getRequest());
+        LogEntryMask mask = VarMapState.restoreFrom(new LogEntryMask(), ctx.getRequest());
         mask.setDateRange(DateRange.minMax(selector.getStart(), selector.getEnd()));
 
         Map<Integer, LogEntryGroup> dayLegs = new TreeMap<>();

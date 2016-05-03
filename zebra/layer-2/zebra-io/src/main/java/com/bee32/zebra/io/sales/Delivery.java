@@ -13,11 +13,11 @@ import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
+import net.bodz.bas.t.variant.IVarMapSerializable;
 import net.bodz.bas.t.variant.IVariantMap;
-import net.bodz.lily.model.base.IdType;
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.security.User;
 import net.bodz.lily.model.mx.base.CoMessage;
-import net.bodz.lily.model.sea.ITextParametric;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Contact;
@@ -31,7 +31,7 @@ import com.bee32.zebra.oa.contact.Person;
 @Table(name = "dldoc")
 public class Delivery
         extends CoMessage<Integer>
-        implements ITextParametric {
+        implements IVarMapSerializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -250,7 +250,7 @@ public class Delivery
     }
 
     @Override
-    public void populate(IVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
         List<DeliveryItem> items = getItems();
 
@@ -273,6 +273,10 @@ public class Delivery
                 items.add(item);
             }
         }
+    }
+
+    @Override
+    public void writeObject(IVariantMap<String> map) {
     }
 
 }

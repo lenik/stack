@@ -8,7 +8,7 @@ import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.bas.repr.form.meta.TextInput;
-import net.bodz.lily.model.res.people.Gender;
+import net.bodz.lily.model.contact.Gender;
 
 /**
  * @label 联系人

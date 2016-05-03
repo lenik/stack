@@ -1,7 +1,6 @@
 package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -18,9 +17,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(OrgUnit.class)
 public class OrgUnitIndex
         extends QuickIndex {
-
-    public OrgUnitIndex(IQueryable context) {
-        super(context);
-    }
 
 }

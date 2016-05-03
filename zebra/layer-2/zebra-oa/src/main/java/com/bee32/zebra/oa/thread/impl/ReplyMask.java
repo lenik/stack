@@ -1,8 +1,8 @@
 package com.bee32.zebra.oa.thread.impl;
 
 import net.bodz.bas.err.ParseException;
+import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.lily.model.mx.base.CoMessageMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 public class ReplyMask
         extends CoMessageMask {
@@ -36,9 +36,9 @@ public class ReplyMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(map);
         topicId = map.getInt("topic", topicId);
         parentId = map.getInt("parent", parentId);
         partyId = map.getInt("party", partyId);

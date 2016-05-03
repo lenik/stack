@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 
-import net.bodz.lily.model.base.IMomentInterval;
+import net.bodz.lily.entity.IMomentInterval;
 
 public class DateUtils {
 

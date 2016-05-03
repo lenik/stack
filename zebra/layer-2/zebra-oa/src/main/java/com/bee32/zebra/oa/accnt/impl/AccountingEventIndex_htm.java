@@ -11,6 +11,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 import net.bodz.lily.model.base.schema.impl.FormDefMapper;
@@ -23,7 +24,6 @@ import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModel;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class AccountingEventIndex_htm
         extends SlimIndex_htm<AccountingEventIndex, AccountingEvent, AccountingEventMask> {
@@ -40,7 +40,7 @@ public class AccountingEventIndex_htm
             throws ViewBuilderException {
         AccountingEventMapper mapper = ctx.query(AccountingEventMapper.class);
 
-        AccountingEventMask mask = MaskBuilder.fromRequest(new AccountingEventMask(), ctx.getRequest());
+        AccountingEventMask mask = VarMapState.restoreFrom(new AccountingEventMask(), ctx.getRequest());
         SwitcherModel<Integer> sw;
         sw = switchers.entityOf("表单", true, //
                 ctx.query(FormDefMapper.class).filter(FormDefMask.forSchema(Schemas.ACCOUNTING)), //

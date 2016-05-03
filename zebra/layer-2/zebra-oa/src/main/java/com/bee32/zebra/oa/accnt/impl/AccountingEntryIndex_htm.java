@@ -10,6 +10,7 @@ import net.bodz.bas.html.io.tag.HtmlTbody;
 import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.CoObject;
 
@@ -17,7 +18,6 @@ import com.bee32.zebra.oa.accnt.AccountingEntry;
 import com.bee32.zebra.tk.hbin.IndexTable;
 import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class AccountingEntryIndex_htm
         extends SlimIndex_htm<AccountingEntryIndex, AccountingEntry, AccountingEntryMask> {
@@ -33,7 +33,7 @@ public class AccountingEntryIndex_htm
     @Override
     protected AccountingEntryMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        AccountingEntryMask mask = MaskBuilder.fromRequest(new AccountingEntryMask(), ctx.getRequest());
+        AccountingEntryMask mask = VarMapState.restoreFrom(new AccountingEntryMask(), ctx.getRequest());
         return mask;
     }
 

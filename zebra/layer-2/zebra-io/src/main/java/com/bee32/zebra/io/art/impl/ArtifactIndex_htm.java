@@ -11,6 +11,7 @@ import net.bodz.bas.html.io.tag.HtmlTr;
 import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.http.ui.cmd.UiScriptAction;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.bas.ui.model.action.Location;
 import net.bodz.lily.model.base.CoObject;
@@ -25,7 +26,6 @@ import com.bee32.zebra.tk.hbin.SwitcherModelGroup;
 import com.bee32.zebra.tk.site.ZpCmds1Toolbar;
 import com.bee32.zebra.tk.slim.SlimIndex_htm;
 import com.bee32.zebra.tk.util.Listing;
-import com.bee32.zebra.tk.util.MaskBuilder;
 
 public class ArtifactIndex_htm
         extends SlimIndex_htm<ArtifactIndex, Artifact, ArtifactMask> {
@@ -49,7 +49,7 @@ public class ArtifactIndex_htm
     @Override
     protected ArtifactMask buildSwitchers(IHtmlViewContext ctx, SwitcherModelGroup switchers)
             throws ViewBuilderException {
-        ArtifactMask mask = MaskBuilder.fromRequest(new ArtifactMask(), ctx.getRequest());
+        ArtifactMask mask = VarMapState.restoreFrom(new ArtifactMask(), ctx.getRequest());
 
         SwitcherModel<Integer> sw1;
         sw1 = switchers.entityOf("分类", false, //

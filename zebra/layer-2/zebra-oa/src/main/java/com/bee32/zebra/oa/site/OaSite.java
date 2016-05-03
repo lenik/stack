@@ -1,8 +1,6 @@
 package com.bee32.zebra.oa.site;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,10 +15,13 @@ import net.bodz.bas.repr.path.IPathDispatchable;
 import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
+import net.bodz.bas.site.config.PathConventions;
+import net.bodz.bas.site.file.UploadHandler;
 import net.bodz.bas.site.org.ICrawlable;
 import net.bodz.bas.site.org.ICrawler;
 import net.bodz.bas.site.vhost.IVirtualHost;
 import net.bodz.bas.site.vhost.VhostDataContexts;
+import net.bodz.bas.site.vhost.VirtualHostScope;
 import net.bodz.bas.std.rfc.http.CacheControlMode;
 import net.bodz.bas.std.rfc.http.ICacheControl;
 import net.bodz.lily.model.base.CoObjectIndex;
@@ -31,14 +32,13 @@ import com.bee32.zebra.oa.console.Console;
 import com.bee32.zebra.oa.etc.HelpIndex;
 import com.bee32.zebra.oa.etc.ServiceIndex;
 import com.bee32.zebra.oa.etc.SiteUtilities;
-import com.bee32.zebra.oa.file.impl.UploadHandler;
 import com.bee32.zebra.oa.login.LoginForm;
 import com.bee32.zebra.tk.repr.QuickController;
-import com.bee32.zebra.tk.site.CoTypes;
 
 /**
  * @label OA Site Frame
  */
+@VirtualHostScope
 public class OaSite
         extends LilyStartSite {
 
@@ -59,10 +59,8 @@ public class OaSite
             Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
             QuickController controller = new QuickController(dataContext, objectType, indexClass);
 
-            List<String> paths = new ArrayList<>();
-            CoTypes.getPathToken(objectType, paths);
-            for (String path : paths)
-                pathMap.put(path, controller);
+            for (String token : PathConventions.getPathTokens(objectType))
+                pathMap.put(token, controller);
         }
     }
 
@@ -105,7 +103,9 @@ public class OaSite
             break;
 
         case "calendar":
-            target = new LogCalendar(dataContext);
+            LogCalendar logCalendar = new LogCalendar();
+            logCalendar.setDataContext(dataContext);
+            target = logCalendar;
             break;
 
         case "console":

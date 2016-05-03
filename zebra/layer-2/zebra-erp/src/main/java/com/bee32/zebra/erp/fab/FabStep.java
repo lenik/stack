@@ -3,8 +3,8 @@ package com.bee32.zebra.erp.fab;
 import java.util.Date;
 import java.util.List;
 
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoMomentInterval;
-import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.oa.contact.Person;
 

@@ -4,8 +4,9 @@ import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 import net.bodz.bas.t.range.IntRange;
 import net.bodz.bas.t.range.LongRange;
+import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.t.variant.QVariantMap;
 import net.bodz.lily.model.mx.base.CoMessageMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 /**
  * @see com.bee32.zebra.oa.file.FileInfo
@@ -25,9 +26,10 @@ public class FileInfoMask
     public boolean noTag;
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> _map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(_map);
+        QVariantMap<String> map = QVariantMap.from(_map);
         sizeRange = map.getLongRange("sizes", sizeRange);
         orgId = map.getInt("org", orgId);
         personId = map.getInt("person", personId);

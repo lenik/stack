@@ -17,11 +17,11 @@ import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.TextInput;
 import net.bodz.bas.site.vhost.VhostDataContexts;
+import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.lily.model.base.security.LoginContext;
 import net.bodz.lily.model.base.security.User;
 import net.bodz.lily.model.base.security.impl.UserMapper;
 import net.bodz.lily.model.base.security.impl.UserMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.tk.htm.GenericForm;
 
@@ -134,7 +134,7 @@ public class LoginForm
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
         siteId = map.getInt("siteId", siteId);
         userName = map.getString("userName", userName);

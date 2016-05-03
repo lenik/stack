@@ -1,7 +1,7 @@
 package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.lily.model.sea.QVariantMap;
+import net.bodz.bas.t.variant.IVariantMap;
 
 import com.bee32.zebra.tk.sea.MyMask;
 
@@ -15,9 +15,9 @@ public class ContactMask
     public String country;
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(map);
         orgId = map.getInt("org", orgId);
         orgUnitId = map.getInt("ou", orgUnitId);
         personId = map.getInt("person", personId);

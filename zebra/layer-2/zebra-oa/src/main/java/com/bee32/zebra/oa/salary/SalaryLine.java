@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoEntity;
-import net.bodz.lily.model.base.IdType;
 
 import com.bee32.zebra.oa.hr.Employee;
 

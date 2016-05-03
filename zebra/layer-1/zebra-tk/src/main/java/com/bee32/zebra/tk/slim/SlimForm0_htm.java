@@ -33,20 +33,20 @@ import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.meta.Face;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.site.config.PathConventions;
+import net.bodz.bas.t.variant.IVarMapSerializable;
 import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.t.variant.ParameterMapVariantMap;
 import net.bodz.bas.typer.Typers;
 import net.bodz.bas.typer.std.IParser;
 import net.bodz.bas.ui.dom1.IUiRef;
+import net.bodz.lily.entity.IId;
+import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.CoObject;
-import net.bodz.lily.model.base.IId;
-import net.bodz.lily.model.base.IdType;
-import net.bodz.lily.model.sea.ITextParametric;
-import net.bodz.lily.model.sea.ParameterMapVariantMap;
 import net.bodz.mda.xjdoc.model.javadoc.IXjdocElement;
 
 import com.bee32.zebra.tk.hbin.PickDialog;
 import com.bee32.zebra.tk.htm.PageLayout;
-import com.bee32.zebra.tk.site.CoTypes;
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
 import com.bee32.zebra.tk.site.IZebraSiteLayout.VAR;
 
@@ -201,8 +201,8 @@ public abstract class SlimForm0_htm<T>
 
             if (!fieldDecl.isReadOnly()) {
                 HtmlA pickerLink = out.a().class_("zu-pickcmd noprint");
-                String pathToken = CoTypes.getPathToken(clazz);
-                pickerLink.attr("data-url", _webApp_ + pathToken + "/picker.html");
+                String pathName = PathConventions.getPathToken(clazz);
+                pickerLink.attr("data-url", _webApp_ + pathName + "/picker.html");
                 pickerLink.attr("data-title", "选择" + fieldDecl.getLabel() + "...");
                 pickerLink.text("选择");
             } else {
@@ -287,9 +287,9 @@ public abstract class SlimForm0_htm<T>
             }
         } // for property
 
-        if (obj instanceof ITextParametric) {
-            ITextParametric p = (ITextParametric) obj;
-            p.populate(parameterMap);
+        if (obj instanceof IVarMapSerializable) {
+            IVarMapSerializable p = (IVarMapSerializable) obj;
+            p.readObject(parameterMap);
         }
     }
 

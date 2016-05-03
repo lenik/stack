@@ -1,8 +1,8 @@
 package com.bee32.zebra.oa.calendar.impl;
 
 import net.bodz.bas.err.ParseException;
+import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.lily.model.base.CoMomentIntervalMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 import com.bee32.zebra.tk.sea.TableMetadata;
 import com.bee32.zebra.tk.sea.TableMetadataRegistry;
@@ -86,9 +86,9 @@ public class LogEntryMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(map);
         source = map.getString("source", source);
         opId = map.getInt("op", opId);
         formId = map.getInt("form", formId);

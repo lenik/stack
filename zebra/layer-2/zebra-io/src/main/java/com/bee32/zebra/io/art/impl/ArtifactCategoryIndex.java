@@ -1,7 +1,6 @@
 package com.bee32.zebra.io.art.impl;
 
 import net.bodz.bas.meta.decl.ObjectType;
-import net.bodz.bas.rtx.IQueryable;
 
 import com.bee32.zebra.io.art.ArtifactCategory;
 import com.bee32.zebra.tk.repr.QuickIndex;
@@ -16,9 +15,5 @@ import com.bee32.zebra.tk.repr.QuickIndex;
 @ObjectType(ArtifactCategory.class)
 public class ArtifactCategoryIndex
         extends QuickIndex {
-
-    public ArtifactCategoryIndex(IQueryable context) {
-        super(context);
-    }
 
 }

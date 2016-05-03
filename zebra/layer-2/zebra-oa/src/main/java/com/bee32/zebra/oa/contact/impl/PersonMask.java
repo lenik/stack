@@ -1,7 +1,7 @@
 package com.bee32.zebra.oa.contact.impl;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.lily.model.sea.QVariantMap;
+import net.bodz.bas.t.variant.IVariantMap;
 
 public class PersonMask
         extends PartyMask {
@@ -44,9 +44,9 @@ public class PersonMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(map);
         surname = map.getString("surname", surname);
         employee = map.getBoolean("employee", employee);
     }

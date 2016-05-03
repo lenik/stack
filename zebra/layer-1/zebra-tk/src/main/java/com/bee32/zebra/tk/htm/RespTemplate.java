@@ -4,11 +4,12 @@ import java.io.IOException;
 
 import net.bodz.bas.c.string.StringQuote;
 import net.bodz.bas.html.artifact.IArtifactConsts;
-import net.bodz.bas.html.artifact.IArtifactDependency;
 import net.bodz.bas.html.dom.IHtmlHeadData;
 import net.bodz.bas.html.io.tag.HtmlHead;
 import net.bodz.bas.html.viz.AbstractHtmlViewBuilder;
 import net.bodz.bas.html.viz.IHtmlViewContext;
+import net.bodz.bas.site.artifact.LibFontsArtifacts;
+import net.bodz.bas.site.artifact.LibJsArtifacts;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.tk.site.IZebraSiteAnchors;
@@ -35,12 +36,12 @@ public abstract class RespTemplate<T>
         metaData.setMeta(IHtmlHeadData.META_VIEWPORT, //
                 "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0");
 
-        metaData.addDependency("jquery-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
-        metaData.addDependency("jquery-ui-min", SCRIPT).setPriority(IArtifactDependency.HIGH);
-        metaData.addDependency("bootstrap3", SCRIPT).setPriority(IArtifactDependency.HIGH);
-        metaData.addDependency("font-awesome", STYLESHEET).setPriority(IArtifactDependency.LOW);
-        metaData.addDependency("all-inputs", PSEUDO);
-        metaData.addDependency("all-effects", PSEUDO);
+        metaData.addDependency(LibJsArtifacts.jQuery);
+        metaData.addDependency(LibJsArtifacts.jQueryUi);
+        metaData.addDependency(LibJsArtifacts.bootstrap3_js);
+        metaData.addDependency(LibFontsArtifacts.fontAwesome);
+        metaData.addDependency(LibJsArtifacts.allInputs);
+        metaData.addDependency(LibJsArtifacts.allEffects);
     }
 
     protected void respHead(IHtmlViewContext ctx, HtmlHead head)

@@ -1,8 +1,8 @@
 package com.bee32.zebra.io.sales.impl;
 
 import net.bodz.bas.err.ParseException;
+import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.lily.model.mx.base.CoMessageMask;
-import net.bodz.lily.model.sea.QVariantMap;
 
 /**
  * @see com.bee32.zebra.io.sales.SalesOrder
@@ -13,9 +13,9 @@ public class SalesOrderMask
     public Integer topicId;
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(map);
         topicId = map.getInt("topic", topicId);
     }
 

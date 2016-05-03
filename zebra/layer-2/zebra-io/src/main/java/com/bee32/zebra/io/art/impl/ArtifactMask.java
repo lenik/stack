@@ -3,7 +3,8 @@ package com.bee32.zebra.io.art.impl;
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 import net.bodz.bas.t.range.IntRange;
-import net.bodz.lily.model.sea.QVariantMap;
+import net.bodz.bas.t.variant.IVariantMap;
+import net.bodz.bas.t.variant.QVariantMap;
 
 import com.bee32.zebra.io.art.SupplyMethod;
 import com.bee32.zebra.tk.sea.MyMask;
@@ -127,9 +128,11 @@ public class ArtifactMask
     }
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> _map)
             throws ParseException {
-        super.populate(map);
+        super.readObject(_map);
+
+        QVariantMap<String> map = QVariantMap.from(_map);
         categoryId = map.getInt("cat", categoryId);
         skuCode_ = map.getString("sku", skuCode_);
         barCode_ = map.getString("bar", barCode_);

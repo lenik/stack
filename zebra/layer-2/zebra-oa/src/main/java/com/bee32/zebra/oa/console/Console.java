@@ -1,7 +1,7 @@
 package com.bee32.zebra.oa.console;
 
 import net.bodz.bas.err.ParseException;
-import net.bodz.lily.model.sea.QVariantMap;
+import net.bodz.bas.t.variant.IVariantMap;
 
 import com.bee32.zebra.tk.htm.GenericForm;
 
@@ -12,7 +12,7 @@ public class Console
         extends GenericForm {
 
     @Override
-    protected void populate(QVariantMap<String> map)
+    public void readObject(IVariantMap<String> map)
             throws ParseException {
     }
 
