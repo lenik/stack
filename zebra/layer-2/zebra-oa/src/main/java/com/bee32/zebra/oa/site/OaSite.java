@@ -55,7 +55,10 @@ public class OaSite
         this.dataContext = VhostDataContexts.getInstance().get(vhost);
         setQueryContext(dataContext);
 
-        for (Class<? extends CoObjectIndex> indexClass : IndexedTypes.list(CoObjectIndex.class, false)) {
+        for (Class<?> _indexClass : IndexedTypes.list(CoObjectIndex.class, false)) {
+            @SuppressWarnings("unchecked")
+            Class<? extends CoObjectIndex<?>> indexClass = (Class<? extends CoObjectIndex<?>>) _indexClass;
+
             Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
             QuickController controller = new QuickController(dataContext, objectType, indexClass);
 

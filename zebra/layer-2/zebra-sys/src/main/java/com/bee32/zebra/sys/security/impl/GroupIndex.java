@@ -19,6 +19,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Group.class)
 public class GroupIndex
-        extends QuickIndex {
+        extends QuickIndex<Group> {
 
 }

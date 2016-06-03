@@ -14,6 +14,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(CategoryDef.class)
 public class CategoryDefIndex
-        extends QuickIndex {
+        extends QuickIndex<CategoryDef> {
 
 }

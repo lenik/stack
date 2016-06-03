@@ -87,7 +87,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
         insert into reply(
             priority, flags, state, uid, gid, mode, acl,
@@ -100,7 +100,7 @@
             #{op.id}, #{text}, #{category.id}, #{phase.id},
             #{topic.id}, #{parent.id}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update reply

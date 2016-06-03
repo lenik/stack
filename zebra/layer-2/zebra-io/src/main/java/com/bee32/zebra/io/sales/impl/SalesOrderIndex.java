@@ -18,6 +18,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(SalesOrder.class)
 public class SalesOrderIndex
-        extends QuickIndex {
+        extends QuickIndex<SalesOrder> {
 
 }

@@ -18,6 +18,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(User.class)
 public class UserIndex
-        extends QuickIndex {
+        extends QuickIndex<User> {
 
 }

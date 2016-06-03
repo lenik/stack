@@ -12,6 +12,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(TagDef.class)
 public class TagDefIndex
-        extends QuickIndex {
+        extends QuickIndex<TagDef> {
 
 }

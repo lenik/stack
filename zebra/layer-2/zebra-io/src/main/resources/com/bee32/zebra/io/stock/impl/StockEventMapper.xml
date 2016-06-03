@@ -133,7 +133,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into stdoc(
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,
@@ -147,7 +147,7 @@
             #{previous.id}, #{topic.id}, #{org.id}, #{orgUnit.id}, #{person.id},
             #{quantity}, #{total}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update stdoc

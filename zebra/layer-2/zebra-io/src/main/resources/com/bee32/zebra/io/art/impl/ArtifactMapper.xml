@@ -85,7 +85,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into art(
             code, label, description,
             priority, flags, state, uid, gid, mode, acl,
@@ -101,7 +101,7 @@
             #{bbox.dx}, #{bbox.dy}, #{bbox.dz}, #{weight}, #{netWeight},
             #{supplyMethod}, #{supplyDelay}  
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update art

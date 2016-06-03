@@ -24,7 +24,7 @@ import net.bodz.bas.t.variant.VarMapState;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.schema.CategoryDef;
 import net.bodz.lily.model.base.schema.FormDef;
-import net.bodz.lily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.LoginData;
 import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.calendar.LogEntry;
@@ -46,7 +46,7 @@ public class LogSelector_htm
         LogEntryMapper mapper = ctx.query(LogEntryMapper.class);
         if (mapper == null)
             throw new NullPointerException("mapper");
-        LoginContext login = LoginContext.fromSession();
+        LoginData login = LoginData.fromSession();
         int uid = login == null ? -1 : login.user.getId();
 
         LogSelector selector = ref.get();

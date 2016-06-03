@@ -16,6 +16,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(JobSkillCategory.class)
 public class JobSkillCategoryIndex
-        extends QuickIndex {
+        extends QuickIndex<JobSkillCategory> {
 
 }

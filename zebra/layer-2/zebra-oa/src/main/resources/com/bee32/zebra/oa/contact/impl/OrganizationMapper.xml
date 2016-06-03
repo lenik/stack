@@ -71,7 +71,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into org(
             code, label, description,
             priority, flags, state, uid, gid, mode, acl,
@@ -85,7 +85,7 @@
             #{subject}, #{bank}, #{account},
             #{size}, #{taxId}, #{shipper}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update org

@@ -15,6 +15,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Reply.class)
 public class ReplyIndex
-        extends QuickIndex {
+        extends QuickIndex<Reply> {
 
 }

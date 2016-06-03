@@ -21,6 +21,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Account.class)
 public class AccountIndex
-        extends QuickIndex {
+        extends QuickIndex<Account> {
 
 }

@@ -24,10 +24,10 @@ public class QuickController
     private DataContext dataContext;
     private Class<?> objectType;
 
-    private Constructor<? extends CoObjectIndex> indexCtor;
-    private CoObjectIndex index;
+    private Constructor<? extends CoObjectIndex<?>> indexCtor;
+    private CoObjectIndex<?> index;
 
-    public QuickController(DataContext dataContext, Class<?> objectType, Class<? extends CoObjectIndex> indexClass) {
+    public QuickController(DataContext dataContext, Class<?> objectType, Class<? extends CoObjectIndex<?>> indexClass) {
         if (dataContext == null)
             throw new NullPointerException("dataContext");
         if (objectType == null)
@@ -52,7 +52,7 @@ public class QuickController
         if (token == null)
             return null;
 
-        QuickIndex index = (QuickIndex) getTarget();
+        QuickIndex<?> index = (QuickIndex<?>) getTarget();
         switch (token) {
         case "index.html":
             break;
@@ -78,7 +78,7 @@ public class QuickController
     }
 
     @Override
-    public synchronized CoObjectIndex getTarget() {
+    public synchronized CoObjectIndex<?> getTarget() {
         if (index == null)
             try {
                 index = indexCtor.newInstance(dataContext);

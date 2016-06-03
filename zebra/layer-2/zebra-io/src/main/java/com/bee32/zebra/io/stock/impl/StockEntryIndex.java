@@ -16,6 +16,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(StockEntry.class)
 public class StockEntryIndex
-        extends QuickIndex {
+        extends QuickIndex<StockEntry> {
 
 }

@@ -97,7 +97,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into fileinfo(
             label, description,
             priority, flags, state, uid, gid, mode, acl,
@@ -111,7 +111,7 @@
             #{dirName}, #{baseName}, #{image}, #{size}, #{sha1}, #{type}, #{encoding},
             #{org.id}, #{person.id}, #{value}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update fileinfo

@@ -14,6 +14,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(ParameterDef.class)
 public class ParameterDefIndex
-        extends QuickIndex {
+        extends QuickIndex<ParameterDef> {
 
 }

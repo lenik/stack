@@ -1,11 +1,11 @@
 package com.bee32.zebra.tk.site;
 
-import net.bodz.lily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.LoginData;
 
 public class SiteVariables {
 
-    public LoginContext getLogin() {
-        LoginContext loginContext = LoginContext.fromSession();
+    public LoginData getLogin() {
+        LoginData loginContext = LoginData.fromSession();
         return loginContext;
     }
 

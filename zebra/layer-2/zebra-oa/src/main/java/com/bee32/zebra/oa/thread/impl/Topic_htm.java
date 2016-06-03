@@ -15,7 +15,7 @@ import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.bas.ui.dom1.UiValue;
 import net.bodz.lily.model.base.schema.FormDef;
-import net.bodz.lily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.LoginData;
 import net.bodz.lily.model.base.security.User;
 
 import com.bee32.zebra.oa.accnt.AccountingEvent;
@@ -189,7 +189,7 @@ public class Topic_htm
 
         HtmlDiv author = form.div().class_("zu-author");
         author.span().class_("fa icon").text(FA_COMMENT_O);
-        User user = LoginContext.fromSession().user;
+        User user = LoginData.fromSession().user;
         author.text(user.getFullName());
 
         HtmlDiv div = form.div();

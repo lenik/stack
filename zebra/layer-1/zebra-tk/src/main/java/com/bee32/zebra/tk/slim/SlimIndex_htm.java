@@ -76,7 +76,7 @@ import com.bee32.zebra.tk.stat.impl.ValueDistribMapper;
 import com.bee32.zebra.tk.util.Counters;
 import com.bee32.zebra.tk.util.ModTables;
 
-public abstract class SlimIndex_htm<X extends QuickIndex, T, M>
+public abstract class SlimIndex_htm<X extends QuickIndex<T>, T extends CoObject, M>
         extends AbstractHtmlViewBuilder<X>
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 

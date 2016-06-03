@@ -12,6 +12,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(PriorityDef.class)
 public class PriorityDefIndex
-        extends QuickIndex {
+        extends QuickIndex<PriorityDef> {
 
 }

@@ -95,7 +95,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into acdoc(
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,
@@ -109,7 +109,7 @@
             #{previous.id}, #{topic.id}, #{org.id}, #{person.id}, #{value},
             #{debitTotal}, #{creditTotal}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update acdoc

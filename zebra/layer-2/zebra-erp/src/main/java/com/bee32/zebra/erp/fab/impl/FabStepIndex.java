@@ -15,6 +15,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(FabStep.class)
 public class FabStepIndex
-        extends QuickIndex {
+        extends QuickIndex<FabStep> {
 
 }

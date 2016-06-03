@@ -66,7 +66,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
         insert into acentry(
             priority, flags, state,
@@ -84,7 +84,7 @@
                     sum(case when val<0 then val else 0 end) valn
                 from acentry group by doc) y
             where acdoc.id=#{event.id};
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update acentry

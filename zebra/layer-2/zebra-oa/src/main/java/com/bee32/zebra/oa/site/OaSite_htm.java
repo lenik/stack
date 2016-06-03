@@ -14,7 +14,7 @@ import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.PathArrivalEntry;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.lily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.LoginData;
 
 import com.bee32.zebra.tk.hbin.ShareBar_htm1;
 import com.bee32.zebra.tk.htm.IPageLayoutGuider;
@@ -58,8 +58,8 @@ public class OaSite_htm
         if (arrivedHere && fn.redirect.addSlash(ctx))
             return null;
 
-        LoginContext loginctx = LoginContext.fromSession(ctx.getSession());
-        if (loginctx == null) {
+        LoginData loginData = LoginData.fromSession(ctx.getSession());
+        if (loginData == null) {
             ctx.getResponse().sendRedirect(_webApp_ + "login/");
             return ctx.stop();
         }
@@ -132,7 +132,7 @@ public class OaSite_htm
 
     protected void menuCol(IHtmlViewContext ctx, IHtmlOut out, IUiRef<OaSite> ref, IPathArrival arrival) {
         OaSite site = ref.get();
-        LoginContext loginctx = LoginContext.fromSession(ctx.getSession());
+        LoginData loginctx = LoginData.fromSession(ctx.getSession());
 
         if (ref instanceof PathArrivalEntry) {
             IHtmlOut nav = out.nav().ol().class_("breadcrumb");
@@ -240,7 +240,7 @@ public class OaSite_htm
         sub.li().a().href(_webApp_.join("salary/")).text("工资");
         sub.li().a().href(_webApp_.join("acstat/")).text("分析");
 
-        LoginContext login = LoginContext.fromSession();
+        LoginData login = LoginData.fromSession();
         if (login.user.isAdmin()) {
             sub = out.li().text("系统").ul();
             sub.li().a().href(_webApp_.join("user/")).text("帐户");

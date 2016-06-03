@@ -72,7 +72,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
         insert into sentry(
             priority, flags, state,
@@ -85,7 +85,7 @@
             #{order.id}, #{artifact.id}, #{resale}, #{altLabel}, #{altSpec},
             #{quantity}, #{price}, #{total}, #{comment}, #{footnote}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update sentry

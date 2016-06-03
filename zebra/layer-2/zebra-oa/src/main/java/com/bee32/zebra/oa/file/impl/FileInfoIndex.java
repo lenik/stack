@@ -17,6 +17,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(FileInfo.class)
 public class FileInfoIndex
-        extends QuickIndex {
+        extends QuickIndex<FileInfo> {
 
 }

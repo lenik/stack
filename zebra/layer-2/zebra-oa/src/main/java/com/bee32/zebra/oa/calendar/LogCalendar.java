@@ -18,7 +18,7 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(LogSelector.class)
 public class LogCalendar
-        extends QuickIndex {
+        extends QuickIndex<LogSelector> {
 
     @Override
     public IPathArrival dispatch(IPathArrival previous, ITokenQueue tokens)

@@ -3,7 +3,11 @@ package com.bee32.zebra.oa.calendar;
 import java.sql.Date;
 import java.util.Calendar;
 
-public class LogSelector {
+import net.bodz.lily.model.base.CoObject;
+
+public class LogSelector
+        extends CoObject // QUICK FIX.
+{
 
     public static final int MONTH = 1;
     public static final int WEEK = 2;
@@ -11,6 +15,11 @@ public class LogSelector {
     private int view = MONTH;
     private Date start;
     private Date end;
+
+    @Override
+    public Object getId() {
+        return null;
+    }
 
     public int getView() {
         return view;

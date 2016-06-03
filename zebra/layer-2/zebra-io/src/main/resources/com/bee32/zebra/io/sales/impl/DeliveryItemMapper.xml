@@ -67,7 +67,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into dlentry(
             priority, flags, state,
             doc, sentry, art,
@@ -77,7 +77,7 @@
             #{delivery.id}, #{salesOrderItem.id}, #{artifact.id},
             #{quantity}, #{price}, #{total}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update dlentry

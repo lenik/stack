@@ -16,6 +16,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(OrgUnit.class)
 public class OrgUnitIndex
-        extends QuickIndex {
+        extends QuickIndex<OrgUnit> {
 
 }

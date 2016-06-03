@@ -12,6 +12,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(SchemaDef.class)
 public class SchemaDefIndex
-        extends QuickIndex {
+        extends QuickIndex<SchemaDef> {
 
 }

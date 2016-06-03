@@ -20,6 +20,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Person.class)
 public class PersonIndex
-        extends QuickIndex {
+        extends QuickIndex<Person> {
 
 }

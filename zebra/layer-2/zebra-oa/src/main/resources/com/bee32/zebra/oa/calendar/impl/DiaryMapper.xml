@@ -86,7 +86,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into diary(
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,
@@ -96,7 +96,7 @@
             #{beginDate}, #{endDate},
             #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update diary

@@ -12,6 +12,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(PhaseDef.class)
 public class PhaseDefIndex
-        extends QuickIndex {
+        extends QuickIndex<PhaseDef> {
 
 }

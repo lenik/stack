@@ -14,6 +14,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(UOM.class)
 public class UOMIndex
-        extends QuickIndex {
+        extends QuickIndex<UOM> {
 
 }

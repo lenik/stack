@@ -15,6 +15,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Delivery.class)
 public class DeliveryIndex
-        extends QuickIndex {
+        extends QuickIndex<Delivery> {
 
 }

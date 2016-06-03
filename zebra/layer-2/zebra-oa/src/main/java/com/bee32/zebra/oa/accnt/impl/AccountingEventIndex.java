@@ -17,6 +17,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(AccountingEvent.class)
 public class AccountingEventIndex
-        extends QuickIndex {
+        extends QuickIndex<AccountingEvent> {
 
 }

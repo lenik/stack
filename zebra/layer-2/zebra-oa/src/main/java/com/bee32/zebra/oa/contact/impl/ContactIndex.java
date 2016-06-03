@@ -10,6 +10,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Contact.class)
 public class ContactIndex
-        extends QuickIndex {
+        extends QuickIndex<Contact> {
 
 }

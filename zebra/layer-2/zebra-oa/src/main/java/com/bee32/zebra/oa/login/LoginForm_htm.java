@@ -18,7 +18,7 @@ import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.t.variant.VariantMaps;
 import net.bodz.bas.ui.dom1.IUiRef;
-import net.bodz.lily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.LoginData;
 
 import com.bee32.zebra.tk.htm.RespTemplate;
 
@@ -45,7 +45,7 @@ public class LoginForm_htm
     @Override
     public IHtmlOut buildHtmlViewStart(IHtmlViewContext ctx, IHtmlOut out, IUiRef<LoginForm> ref)
             throws ViewBuilderException, IOException {
-        if (fn.redirect.addSlash(ctx))
+        if (fn.redirect.addSlash(ctx, ref))
             return null;
 
         HtmlHead head = out.head().id("_head");
@@ -68,7 +68,7 @@ public class LoginForm_htm
             form.input().type("hidden").name("referer").value(referer);
 
         if ("1".equals(request.getParameter("logout"))) {
-            CurrentHttpService.getSession().removeAttribute(LoginContext.ATTRIBUTE_KEY);
+            CurrentHttpService.getSession().removeAttribute(LoginData.ATTRIBUTE_KEY);
         }
 
         if (request.getParameter("userName") != null) {

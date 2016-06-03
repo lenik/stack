@@ -14,6 +14,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(TagGroupDef.class)
 public class TagGroupDefIndex
-        extends QuickIndex {
+        extends QuickIndex<TagGroupDef> {
 
 }

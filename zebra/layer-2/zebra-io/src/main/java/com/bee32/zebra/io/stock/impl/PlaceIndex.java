@@ -16,6 +16,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Place.class)
 public class PlaceIndex
-        extends QuickIndex {
+        extends QuickIndex<Place> {
 
 }

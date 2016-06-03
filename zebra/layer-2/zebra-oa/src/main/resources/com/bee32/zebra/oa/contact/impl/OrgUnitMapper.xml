@@ -51,12 +51,12 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
         insert into orgunit(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update orgUnit

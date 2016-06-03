@@ -23,6 +23,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Artifact.class)
 public class ArtifactIndex
-        extends QuickIndex {
+        extends QuickIndex<Artifact> {
 
 }

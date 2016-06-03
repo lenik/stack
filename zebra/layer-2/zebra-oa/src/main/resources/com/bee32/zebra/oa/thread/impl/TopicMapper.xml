@@ -122,7 +122,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into topic(
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,
@@ -134,7 +134,7 @@
             #{op.id}, #{subject}, #{text}, #{form.id}, #{formArgs}, #{category.id}, #{phase.id},
             #{value}
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update topic

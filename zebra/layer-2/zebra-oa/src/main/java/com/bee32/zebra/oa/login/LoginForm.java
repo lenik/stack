@@ -18,7 +18,7 @@ import net.bodz.bas.meta.decl.Priority;
 import net.bodz.bas.repr.form.meta.TextInput;
 import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.bas.t.variant.IVariantMap;
-import net.bodz.lily.model.base.security.LoginContext;
+import net.bodz.lily.model.base.security.LoginData;
 import net.bodz.lily.model.base.security.User;
 import net.bodz.lily.model.base.security.impl.UserMapper;
 import net.bodz.lily.model.base.security.impl.UserMask;
@@ -38,7 +38,7 @@ public class LoginForm
 
     public LoginForm() {
         HttpSession session = CurrentHttpService.getSession();
-        LoginContext lc = (LoginContext) session.getAttribute(LoginContext.ATTRIBUTE_KEY);
+        LoginData lc = (LoginData) session.getAttribute(LoginData.ATTRIBUTE_KEY);
         if (lc != null) {
             // siteId = lc.virtualHost.getId();
             userName = lc.user.getLoginName();
@@ -102,7 +102,7 @@ public class LoginForm
             return;
         }
 
-        LoginContext lc = new LoginContext();
+        LoginData lc = new LoginData();
         lc.user = selection.get(0);
 
         HttpServletRequest request = CurrentHttpService.getRequestOpt();
@@ -118,7 +118,7 @@ public class LoginForm
             lc.user.setLastLoginTime(System.currentTimeMillis());
         }
 
-        ctx.getSession().setAttribute(LoginContext.ATTRIBUTE_KEY, lc);
+        ctx.getSession().setAttribute(LoginData.ATTRIBUTE_KEY, lc);
         out.div().class_("success").text("登录成功。");
 
         String target;

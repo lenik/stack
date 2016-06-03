@@ -64,7 +64,7 @@
         </where>
     </select>
 
-    <select id="insert" resultType="long"><![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into artcat(
             code, label, description,
             priority, flags, state, uid, gid, mode, acl,
@@ -74,7 +74,7 @@
             #{priority}, #{flags}, #{state}, #{owner.id}, #{ownerGroup.id}, #{accessMode}, #{acl},
             #{parent.id}, #{depth}, #{skuCodeFormat}, #{barCodeFormat} 
         ) returning id
-    ]]></select>
+    ]]></insert>
 
     <update id="update">
         update artcat

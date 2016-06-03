@@ -14,6 +14,6 @@ import com.bee32.zebra.tk.repr.QuickIndex;
  */
 @ObjectType(Diary.class)
 public class DiaryIndex
-        extends QuickIndex {
+        extends QuickIndex<Diary> {
 
 }
