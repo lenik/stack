@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.thread.impl.TopicMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Topic" extends="message.map2">
+    <resultMap id="map1" type="com.bee32.zebra.oa.thread.Topic" extends="message.MAP_ALL">
         <result property="value" column="val" />
     </resultMap>
 
@@ -23,7 +23,7 @@
                 <result property="label" column="org_label" />
             </association>
         </collection>
-        <collection property="tags" javaType="ArrayList" ofType="net.bodz.lily.model.base.schema.TagDef">
+        <collection property="tagList" javaType="ArrayList" ofType="net.bodz.lily.model.base.schema.TagDef">
             <id property="id" column="tt_tag" />
             <result property="label" column="tt_tag_label" />
         </collection>
@@ -77,25 +77,28 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="valueRange != null">and a.value between #{valueRange.min} and #{valueRange.max}</if>
         <!-- co -->
-        <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
-        <!-- moment-interval -->
-        <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
-        <if test="year != null">and extract(year from a.t0)=#{year}</if>
-        <if test="noDate">and a.t0 is null</if>
-        <if test="noYear">and a.t0 is null</if>
-        <!-- message -->
-        <if test="opId != null">and a.op=#{opId}</if>
-        <if test="categoryId != null">and a.cat=#{categoryId}</if>
-        <if test="phaseId != null">and a.phase=#{phaseId}</if>
-        <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
-        <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
-        <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
-        <if test="noOp">and a.op is null</if>
-        <if test="noCategory">and a.cat is null</if>
-        <if test="noPhase">and a.phase is null</if>
         <include refid="co.modefilt" />
+        <if test="m.timeRange != null">and a.lastmod between #{m.timeRange.min, jdbcType=DATE} and #{m.timeRange.max, jdbcType=DATE}</if>
+        <!-- moment-interval -->
+        <if test="m.dateRange != null">and a.t0 between #{m.dateRange.min, jdbcType=DATE} and #{m.dateRange.max, jdbcType=DATE}</if>
+        <if test="m.year != null">and extract(year from a.t0)=#{m.year}</if>
+        <if test="m.noDate">and a.t0 is null</if>
+        <if test="m.noYear">and a.t0 is null</if>
+        <!-- message -->
+        <if test="m.opId != null">and a.op=#{m.opId}</if>
+        <if test="m.categoryId != null">and a.cat=#{m.categoryId}</if>
+        <if test="m.phaseId != null">and a.phase=#{m.phaseId}</if>
+        <if test="m.voteCountRange != null">and a.nvote between #{m.voteCountRange.min} and #{m.voteCountRange.max}</if>
+        <if test="m.likerCountRange != null">and a.nlike between #{m.likerCountRange.min} and #{m.likerCountRange.max}</if>
+        <if test="m.readCountRange != null">and a.nread between #{m.readCountRange.min} and #{m.readCountRange.max}</if>
+        <if test="m.noOp">and a.op is null</if>
+        <if test="m.noCategory">and a.cat is null</if>
+        <if test="m.noPhase">and a.phase is null</if>
+
+        <if test="m.valueRange != null">and a.value between #{m.valueRange.min} and #{m.valueRange.max}</if>
+        <if test="m.tagId != null">and x.tag=#{m.tagId}</if>
+        <if test="m.noTag">and x.tag is null</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -110,8 +113,6 @@
         <!-- left join tags -->
         <where>
             <include refid="filtconds" />
-            <if test="tagId != null">and x.tag=#{tagId}</if>
-            <if test="noTag">and x.tag is null</if>
         </where>
     </select>
 
@@ -122,7 +123,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into topic(
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,

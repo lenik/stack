@@ -1,7 +1,5 @@
 package com.bee32.zebra.tk.repr;
 
-import java.lang.reflect.Constructor;
-
 import net.bodz.bas.db.ctx.DataContext;
 import net.bodz.bas.repr.path.INoPathRef;
 import net.bodz.bas.repr.path.IPathArrival;
@@ -24,7 +22,7 @@ public class QuickController
     private DataContext dataContext;
     private Class<?> objectType;
 
-    private Constructor<? extends CoObjectIndex<?>> indexCtor;
+    private Class<? extends CoObjectIndex<?>> indexClass;
     private CoObjectIndex<?> index;
 
     public QuickController(DataContext dataContext, Class<?> objectType, Class<? extends CoObjectIndex<?>> indexClass) {
@@ -34,11 +32,7 @@ public class QuickController
             throw new NullPointerException("entityType");
         this.dataContext = dataContext;
         this.objectType = objectType;
-        try {
-            this.indexCtor = indexClass.getConstructor(DataContext.class);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalArgumentException("Can't get constructor from " + indexClass, e);
-        }
+        this.indexClass = indexClass;
     }
 
     public Class<?> getObjectType() {
@@ -53,8 +47,12 @@ public class QuickController
             return null;
 
         QuickIndex<?> index = (QuickIndex<?>) getTarget();
+        if (index == null)
+            return null;
+
         switch (token) {
         case "index.html":
+            index.format = QuickIndexFormat.HTML;
             break;
 
         case "plain.html":
@@ -68,20 +66,21 @@ public class QuickController
         case "picker.html":
             index.format = QuickIndexFormat.PICKER;
             break;
+
+        default:
+            return null;
         }
 
-        if (index != null) {
-            index.defaultPage = false;
-            return PathArrival.shift(previous, index, tokens);
-        }
-        return null;
+        index.defaultPage = false;
+        return PathArrival.shift(previous, index, tokens);
     }
 
     @Override
     public synchronized CoObjectIndex<?> getTarget() {
-        if (index == null)
+        //if (index == null)
             try {
-                index = indexCtor.newInstance(dataContext);
+                index = indexClass.newInstance();
+                index.setDataContext(dataContext);
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException("Failed to create index instance: " + e.getMessage(), e);
             }

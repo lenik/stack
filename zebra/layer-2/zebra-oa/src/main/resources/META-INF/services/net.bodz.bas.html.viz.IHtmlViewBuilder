@@ -18,7 +18,6 @@ com.bee32.zebra.oa.contact.impl.PersonIndex_htm
 com.bee32.zebra.oa.contact.impl.Person_htm
 com.bee32.zebra.oa.file.impl.FileInfoIndex_htm
 com.bee32.zebra.oa.file.impl.FileInfo_htm
-com.bee32.zebra.oa.file.impl.UploadResult_json
 com.bee32.zebra.oa.hr.impl.EmployeeIndex_htm
 com.bee32.zebra.oa.hr.impl.EmployeeSkillIndex_htm
 com.bee32.zebra.oa.hr.impl.EmployeeSkill_htm

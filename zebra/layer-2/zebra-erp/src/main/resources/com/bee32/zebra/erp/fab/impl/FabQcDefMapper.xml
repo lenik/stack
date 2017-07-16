@@ -51,8 +51,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        <![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into fabqcdef(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id

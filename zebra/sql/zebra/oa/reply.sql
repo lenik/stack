@@ -1,4 +1,3 @@
---\import lily.type.CoMessage
 --\import zebra.oa.org
 --\import zebra.oa.person
 --\import zebra.oa.topic
@@ -12,6 +11,11 @@
 --\mixin lily.mixin.Mi
 --\mixin lily.mixin.Msg
 --\mixin lily.mixin.Ver
+
+        cat         int
+            references _cat(id) on update cascade,
+        phase       int
+            references _phase(id) on update cascade,
 
         nvote       int not null default 0,
 
@@ -71,7 +75,7 @@
             references reply(id) on update cascade on delete cascade,
 
         tag         int not null
-            references tag(id) on update cascade on delete cascade
+            references _tag(id) on update cascade on delete cascade
     );
 
 -- drop table if exists replyvote;

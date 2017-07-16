@@ -62,8 +62,19 @@ public class OaSite
             Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
             QuickController controller = new QuickController(dataContext, objectType, indexClass);
 
-            for (String token : PathConventions.getPathTokens(objectType))
+            for (String token : PathConventions.getPathTokens(objectType)) {
+                Object prev = pathMap.get(token);
+                if (prev instanceof QuickController) {
+                    QuickController prevCon = (QuickController) prev;
+                    Class<?> prevObjectType = prevCon.getObjectType();
+                    // only override if (objectType extends prevObjectType).
+                    boolean isExtension = prevObjectType.isAssignableFrom(objectType);
+                    if (!isExtension)
+                        continue;
+                }
+                logger.logf("Install index path %s: %s for %s", token, indexClass.getName(), objectType.getName());
                 pathMap.put(token, controller);
+            }
         }
     }
 

@@ -174,7 +174,7 @@ public abstract class SlimForm0_htm<T>
         // if (CoCode.class.isAssignableFrom(type)) {
 
         if (CoObject.class.isAssignableFrom(clazz)) {
-            CoObject current = (CoObject) value;
+            CoObject coValue = (CoObject) value;
 
             String inputName = fieldDecl.getInputName();
             if (inputName == null)
@@ -184,6 +184,9 @@ public abstract class SlimForm0_htm<T>
             if (!fieldDecl.isReadOnly()) {
                 id_hidden = out.input().type("hidden").name(inputName + ".id");
                 // FieldHtmlUtil.apply(id_hidden, fieldDecl);
+                // the property can be null, if it's null the hidden input will be no value.
+                if (coValue != null)
+                    id_hidden.value(coValue.getId());
             }
 
             HtmlInput label_text = out.input().type("text").class_("noprint").name(inputName + ".label");
@@ -191,12 +194,9 @@ public abstract class SlimForm0_htm<T>
             label_text.readonly("readonly");
             label_text.attr("ec", typeName);
 
-            if (current != null) {
-                if (id_hidden != null)
-                    id_hidden.value(current.getId());
-                label_text.value(current);
-
-                out.span().class_("print").text(current);
+            if (coValue != null) {
+                label_text.value(coValue);
+                out.span().class_("print").text(coValue);
             }
 
             if (!fieldDecl.isReadOnly()) {
@@ -227,7 +227,9 @@ public abstract class SlimForm0_htm<T>
             viewBuilder = factory.getViewBuilder(clazz, features);
             if (viewBuilder == null) {
                 String msg = String.format("No view builder for %s (features: %s).", clazz, Arrays.asList(features));
-                throw new NotImplementedException(msg);
+                // throw new NotImplementedException(msg);
+                out.div().b().class_("error").text(msg);
+                return;
             }
 
             // String htmName = viewBuilder.getClass().getSimpleName();

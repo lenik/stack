@@ -20,15 +20,15 @@
     create or replace view v_fileinfo as
         select *,
             array(select tag || ':' || tag.label
-                from filetag a left join tag on a.tag=tag.id where a.file=fileinfo.id) tags,
+                from filetag a left join _tag tag on a.tag=tag.id where a.file=fileinfo.id) tags,
             array(select parm || ':' || parm.label || '=' || a.val
-                from file_parm a left join parm on a.parm=parm.id where a.file=fileinfo.id) parms
+                from file_parm a left join _parm parm on a.parm=parm.id where a.file=fileinfo.id) parms
         from fileinfo;
 
     create or replace view v_filetags as
         select a.n, tag.*
         from (select tag, count(*) n from filetag group by tag) a
-            left join tag on a.tag=tag.id
+            left join _tag tag on a.tag=tag.id
         order by priority, n desc;
 
     create or replace view v_filevotes as

@@ -45,6 +45,7 @@ import net.bodz.bas.repr.form.IFormDecl;
 import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.site.artifact.LibJsArtifacts;
 import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.bas.std.rfc.mime.ContentType;
 import net.bodz.bas.std.rfc.mime.ContentTypes;
@@ -116,7 +117,7 @@ public abstract class SlimIndex_htm<X extends QuickIndex<T>, T extends CoObject,
         IHtmlHeadData metaData = ctx.getHeadData();
         // metaData.addDependency("datatables.bootstrap.js", SCRIPT);
         // metaData.addDependency("datatables.responsive.js", SCRIPT);
-        metaData.addDependency("all-data", PSEUDO);
+        metaData.addDependency(LibJsArtifacts.allData);
         // metaData.addDependency("datatables.tableTools.js", SCRIPT);
     }
 
@@ -141,6 +142,8 @@ public abstract class SlimIndex_htm<X extends QuickIndex<T>, T extends CoObject,
         }
 
         PageLayout layout = ctx.getAttribute(PageLayout.ATTRIBUTE_KEY);
+        if (layout == null)
+            throw new NullPointerException("layout wasn't set.");
 
         IHtmlOut dataOut = out;
 

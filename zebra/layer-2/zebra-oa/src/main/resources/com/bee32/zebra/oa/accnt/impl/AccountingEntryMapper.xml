@@ -42,10 +42,10 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="eventId != null">and a.doc=#{eventId}</if>
-        <if test="accountId != null">and a.account=#{accountId}</if>
-        <if test="debitSide">and a.val &gt; 0</if>
-        <if test="creditSide">and a.val &lt; 0</if>
+        <if test="m.eventId != null">and a.doc=#{m.eventId}</if>
+        <if test="m.accountId != null">and a.account=#{m.accountId}</if>
+        <if test="m.debitSide">and a.val &gt; 0</if>
+        <if test="m.creditSide">and a.val &lt; 0</if>
         </sql>
 
     <select id="all" resultMap="map1">
@@ -66,8 +66,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        <![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into acentry(
             priority, flags, state,
             doc, account, org, person,

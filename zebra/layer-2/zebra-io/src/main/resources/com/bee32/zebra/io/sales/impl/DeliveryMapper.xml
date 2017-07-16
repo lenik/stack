@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.sales.impl.DeliveryMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.sales.Delivery" extends="message.map2">
+    <resultMap id="map1" type="com.bee32.zebra.io.sales.Delivery" extends="message.MAP_ALL">
         <result property="shipmentId" column="shipment" />
         <result property="shippingCost" column="shipcost" />
         <result property="itemCount" column="size" />
@@ -62,8 +62,8 @@
             left join person on a.person=person.id
             left join avct_contact dest on a.shipdest=dest.ct__id
             left join org shipper on a.shipper=shipper.id
-            left join _cat on a.cat=cat.id
-            left join _phase on a.phase=phase.id
+            left join _cat cat on a.cat=cat.id
+            left join _phase phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
         ]]>
@@ -103,8 +103,8 @@
             left join person on a.person=person.id
             left join avct_contact dest on a.shipdest=dest.ct__id
             left join org shipper on a.shipper=shipper.id
-            left join _cat on a.cat=cat.id
-            left join _phase on a.phase=phase.id
+            left join _cat cat on a.cat=cat.id
+            left join _phase phase on a.phase=phase.id
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
             left join dlentry y on a.id=y.doc
@@ -138,7 +138,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into dldoc(
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,

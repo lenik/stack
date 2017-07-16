@@ -1,4 +1,3 @@
---\import lily.type.CoMessage
 
     create sequence issue_seq start with 1000;
 

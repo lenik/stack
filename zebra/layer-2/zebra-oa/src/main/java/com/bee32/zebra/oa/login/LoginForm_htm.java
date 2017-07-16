@@ -16,6 +16,7 @@ import net.bodz.bas.html.viz.IHtmlViewContext;
 import net.bodz.bas.html.viz.util.DefaultForm_htm;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.repr.viz.ViewBuilderException;
+import net.bodz.bas.site.artifact.LibJsArtifacts;
 import net.bodz.bas.t.variant.VariantMaps;
 import net.bodz.bas.ui.dom1.IUiRef;
 import net.bodz.lily.model.base.security.LoginData;
@@ -39,7 +40,7 @@ public class LoginForm_htm
     public void precompile(IHtmlViewContext ctx, IUiRef<LoginForm> ref) {
         super.precompile(ctx, ref);
         IHtmlHeadData metaData = ctx.getHeadData();
-        metaData.addDependency("all-effects", PSEUDO);
+        metaData.addDependency(LibJsArtifacts.allEffects);
     }
 
     @Override

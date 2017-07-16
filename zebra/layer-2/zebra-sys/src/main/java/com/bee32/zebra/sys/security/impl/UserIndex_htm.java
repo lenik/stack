@@ -57,7 +57,7 @@ public class UserIndex_htm
             itab.cocols("u", tr, o);
             ref(tr.td(), o.getPrimaryGroup());
             tr.td().text(fn2.labels(o.getGroups()));
-            tr.td().text(o.getEmail()).style(o.isEmailValidated() ? "" : "color: gray");
+            tr.td().style(o.isEmailValidated() ? "" : "color: gray").text(o.getEmail());
             tr.td().text(lastLoginTime == 0 ? null : fmt.formatDate(o.getLastLoginTime()));
             tr.td().text(o.getLastLoginIP());
             itab.cocols("sa", tr, o);

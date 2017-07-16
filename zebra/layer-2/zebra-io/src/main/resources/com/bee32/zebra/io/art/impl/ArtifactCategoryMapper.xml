@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.art.impl.ArtifactCategoryMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.art.ArtifactCategory" extends="co.mapUS">
+    <resultMap id="map1" type="com.bee32.zebra.io.art.ArtifactCategory" extends="co.MAP_UVX">
         <id column="id" />
         <result property="depth" column="depth" />
         <result property="skuCodeFormat" column="skufmt" />
@@ -43,7 +43,7 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="maxDepth != null">and a.depth&lt;=#{maxDepth}</if>
+        <if test="m.maxDepth != null">and a.depth&lt;=#{m.maxDepth}</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -64,7 +64,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into artcat(
             code, label, description,
             priority, flags, state, uid, gid, mode, acl,

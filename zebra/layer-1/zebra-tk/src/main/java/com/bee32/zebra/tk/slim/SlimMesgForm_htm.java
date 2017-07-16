@@ -80,9 +80,10 @@ public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
             textLabel.text(textDecl.getLabel() + "：");
 
             HtmlTextarea textarea = textLine.td().textarea().name("text");
+            FieldDeclToHtml.apply(textarea, textDecl);
+
             String text = instance.getText();
             textarea.text(text == null ? "" : text);
-            FieldDeclToHtml.apply(textarea, textDecl);
         }
 
         out.hr();

@@ -1,4 +1,3 @@
---\import lily.type.CoMessage
 --\import zebra.oa.org
 --\import zebra.oa.person
 
@@ -12,7 +11,10 @@
 --\mixin lily.mixin.Msg
 --\mixin lily.mixin.Ver
 
-        dummy       int
+	cat int
+	    references _cat(id) on update cascade,
+	phase int
+	    references _phase(id) on update cascade
     );
 
     create index diary_lastmod        on diary(lastmod desc);

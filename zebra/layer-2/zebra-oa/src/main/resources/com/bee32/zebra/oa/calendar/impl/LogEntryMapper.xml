@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.calendar.impl.LogEntryMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.calendar.LogEntry" extends="co.mapUS">
+    <resultMap id="map1" type="com.bee32.zebra.oa.calendar.LogEntry" extends="co.MAP_UVX">
         <result property="source" column="c" />
         <result property="id" column="id" />
         <result property="message" column="msg" />
@@ -32,27 +32,27 @@
             cat.label "cat_label"
         from v_log a
             left join "user" op on a.op = op.id
-            left join form on a.form = form.id
-            left join cat on a.cat = cat.id
+            left join _form form on a.form = form.id
+            left join _cat cat on a.cat = cat.id
         ]]>
     </sql>
 
     <sql id="filtconds">
         <!-- co -->
         <include refid="co.modefilt" />
-        <if test="timeRange != null">and a.creation between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
+        <if test="m.timeRange != null">and a.creation between #{m.timeRange.min, jdbcType=DATE} and #{m.timeRange.max, jdbcType=DATE}</if>
         <!-- log-entry -->
-        <if test="source != null">and a.c = #{source}</if>
-        <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
-        <if test="year != null">and extract(year from a.t0) = #{year}</if>
-        <if test="noDate">and a.t0 is null</if>
-        <if test="noYear">and a.t0 is null</if>
-        <if test="opId != null">and a.op = #{opId}</if>
-        <if test="noOp">and a.op is null</if>
-        <if test="formId">and a.form = ${formId}</if>
-        <if test="noForm">and a.form is null</if>
-        <if test="categoryId != null">and a.cat = #{categoryId}</if>
-        <if test="noCategory">and a.cat is null</if>
+        <if test="m.source != null">and a.c = #{m.source}</if>
+        <if test="m.dateRange != null">and a.t0 between #{m.dateRange.min, jdbcType=DATE} and #{m.dateRange.max, jdbcType=DATE}</if>
+        <if test="m.year != null">and extract(year from a.t0) = #{m.year}</if>
+        <if test="m.noDate">and a.t0 is null</if>
+        <if test="m.noYear">and a.t0 is null</if>
+        <if test="m.opId != null">and a.op = #{m.opId}</if>
+        <if test="m.noOp">and a.op is null</if>
+        <if test="m.formId">and a.form = ${m.formId}</if>
+        <if test="m.noForm">and a.form is null</if>
+        <if test="m.categoryId != null">and a.cat = #{m.categoryId}</if>
+        <if test="m.noCategory">and a.cat is null</if>
     </sql>
 
     <select id="all" resultMap="map1">

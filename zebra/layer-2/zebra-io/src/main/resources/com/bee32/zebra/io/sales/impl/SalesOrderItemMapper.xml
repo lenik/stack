@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.sales.impl.SalesOrderItemMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.sales.SalesOrderItem" extends="co.mapUS">
+    <resultMap id="map1" type="com.bee32.zebra.io.sales.SalesOrderItem" extends="co.MAP_UVX">
         <id property="id" column="id" />
         <result property="beginDate" column="t0" />
         <result property="endDate" column="t1" />
@@ -51,7 +51,7 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="salesOrderId != null">and a.doc=#{salesOrderId}</if>
+        <if test="m.salesOrderId != null">and a.doc=#{m.salesOrderId}</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -72,8 +72,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        <![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into sentry(
             priority, flags, state,
             t0, t1,

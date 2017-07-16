@@ -1,4 +1,3 @@
---\import lily.type.CoMessage
 --\import zebra.oa.org
 --\import zebra.oa.person
 
@@ -13,10 +12,10 @@
             references "user"(id) on update cascade on delete set null,
 
         cat         int
-            references cat(id) on update cascade on delete set null,
+            references _cat(id) on update cascade on delete set null,
 
         phase       int
-            references phase(id) on update cascade on delete set null,
+            references _phase(id) on update cascade on delete set null,
 
         nvote       int not null default 0,
         nlike       int not null default 0,
@@ -57,7 +56,7 @@
             references fileinfo(id) on update cascade on delete cascade,
 
         parm         int not null
-            references parm(id) on update cascade on delete cascade,
+            references _parm(id) on update cascade on delete cascade,
 
         val         varchar(200),
 
@@ -73,7 +72,7 @@
             references fileinfo(id) on update cascade on delete cascade,
 
         tag         int not null
-            references tag(id) on update cascade on delete cascade
+            references _tag(id) on update cascade on delete cascade
     );
 
 -- drop table if exists filevote;

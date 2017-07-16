@@ -1,4 +1,5 @@
 --\import lily.account
+--\import violet.store.uom
 --\import zebra.io.artcat
 
     create type SupplyMethod as enum(
@@ -16,7 +17,8 @@
 
         sku         varchar(30),
         barcode     varchar(30),
-        uom         varchar(30),
+        uom         int
+            references uom(id) on update cascade,
         uomprop     varchar(20),
         digits      int not null default 2,
 

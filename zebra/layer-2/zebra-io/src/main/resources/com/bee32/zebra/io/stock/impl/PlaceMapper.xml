@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.stock.impl.PlaceMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.stock.Place" extends="co.mapUSA">
+    <resultMap id="map1" type="com.bee32.zebra.io.stock.Place" extends="co.MAP_ALL">
         <id column="id" />
         <result property="usage" column="usage" />
         <result property="bbox.dx" column="dx" />
@@ -51,7 +51,7 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="usage != null">and a.usage=#{usage}</if>
+        <if test="m.usage != null">and a.usage=#{m.usage}</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -72,7 +72,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into place(
             code, label, description,
             priority, flags, state, version,

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.bodz.bas.i18n.dom.iString;
 import net.bodz.bas.t.pojo.Pair;
 import net.bodz.bas.t.predef.Predef;
 import net.bodz.lily.model.base.CoObject;
@@ -19,14 +20,16 @@ public class Listing {
     }
 
     @SafeVarargs
-    public static <T extends Predef<?, ?>> List<Pair<T, String>> pairsValLabel(T... array) {
+    public static <E extends Predef<?, ?>> List<Pair<E, String>> pairsValLabel(E... array) {
         return pairsValLabel(Arrays.asList(array));
     }
 
-    public static <T extends Predef<?, ?>> List<Pair<T, String>> pairsValLabel(Iterable<T> items) {
-        List<Pair<T, String>> pairs = new ArrayList<>();
-        for (T o : items)
-            pairs.add(Pair.of(o, o.getLabel().toString()));
+    public static <E extends Predef<?, ?>> List<Pair<E, String>> pairsValLabel(Iterable<E> items) {
+        List<Pair<E, String>> pairs = new ArrayList<>();
+        for (E o : items) {
+            iString label = o.getLabel();
+            pairs.add(Pair.of(o, label == null ? null : label.toString()));
+        }
         return pairs;
     }
 

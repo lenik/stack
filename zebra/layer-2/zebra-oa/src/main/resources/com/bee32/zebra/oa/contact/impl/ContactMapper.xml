@@ -50,11 +50,11 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="orgId != null">and a.org=#{orgId}</if>
-        <if test="orgUnitId != null">and a.ou=#{orgUnitId}</if>
-        <if test="personId != null">and a.person=#{personId}</if>
-        <if test="usage != null">and a.usage=#{usage}</if>
-        <if test="country != null">and a.country=#{country}</if>
+        <if test="m.orgId != null">and a.org=#{m.orgId}</if>
+        <if test="m.orgUnitId != null">and a.ou=#{m.orgUnitId}</if>
+        <if test="m.personId != null">and a.person=#{m.personId}</if>
+        <if test="m.usage != null">and a.usage=#{m.usage}</if>
+        <if test="m.country != null">and a.country=#{m.country}</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -75,8 +75,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        <![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into contact(
             org, ou, person,
             rename, usage,

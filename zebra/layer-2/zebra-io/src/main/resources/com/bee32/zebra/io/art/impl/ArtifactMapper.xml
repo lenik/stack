@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.art.impl.ArtifactMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.art.Artifact" extends="co.mapUS">
+    <resultMap id="map1" type="com.bee32.zebra.io.art.Artifact" extends="co.MAP_UVX">
         <result property="skuCode" column="sku" />
         <result property="barCode" column="barcode" />
         <result property="uomProperty" column="uomprop" />
@@ -60,11 +60,11 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="categoryId != null">and a.cat=#{categoryId}</if>
-        <if test="uomId != null">and a.uom=#{uomId}</if>
-        <if test="supplyMethod != null">and a.supply=#{supplyMethod}</if>
-        <if test="noCategory">and a.cat is null</if>
-        <if test="noSupplyMethod">and a.supply is null</if>
+        <if test="m.categoryId != null">and a.cat=#{m.categoryId}</if>
+        <if test="m.uomId != null">and a.uom=#{m.uomId}</if>
+        <if test="m.supplyMethod != null">and a.supply=#{m.supplyMethod}</if>
+        <if test="m.noCategory">and a.cat is null</if>
+        <if test="m.noSupplyMethod">and a.supply is null</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -85,7 +85,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into art(
             code, label, description,
             priority, flags, state, uid, gid, mode, acl,

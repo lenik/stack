@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.stock.impl.StockEventMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.stock.StockEvent" extends="message.map2">
+    <resultMap id="map1" type="com.bee32.zebra.io.stock.StockEvent" extends="message.MAP_ALL">
         <result property="itemCount" column="size" />
         <result property="quantity" column="qty" />
         <result property="total" column="total" />
@@ -50,8 +50,8 @@
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
             left join "user" op on a.op=op.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id
+            left join _cat cat on a.cat=cat.id
+            left join _phase phase on a.phase=phase.id
             left join topic on a.topic=topic.id
             left join org on a.org=org.id
             left join orgunit ou on a.ou=ou.id
@@ -75,8 +75,8 @@
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
             left join "user" op on a.op=op.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id
+            left join _cat cat on a.cat=cat.id
+            left join _phase phase on a.phase=phase.id
             left join topic on a.topic=topic.id
             left join org on a.org=org.id
             left join orgunit ou on a.ou=ou.id
@@ -86,28 +86,30 @@
 
     <sql id="filtconds">
         <!-- co -->
-        <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         <include refid="co.modefilt" />
+        <if test="m.timeRange != null">and a.lastmod between #{m.timeRange.min, jdbcType=DATE} and #{m.timeRange.max, jdbcType=DATE}</if>
         <!-- moment-interval -->
-        <if test="dateRange != null">and a.t0 between #{dateRange.min, jdbcType=DATE} and #{dateRange.max, jdbcType=DATE}</if>
-        <if test="year != null">and extract(year from a.t0)=#{year}</if>
-        <if test="noDate">and a.t0 is null</if>
-        <if test="noYear">and a.t0 is null</if>
+        <if test="m.dateRange != null">and a.t0 between #{m.dateRange.min, jdbcType=DATE} and #{m.dateRange.max, jdbcType=DATE}</if>
+        <if test="m.year != null">and extract(year from a.t0)=#{m.year}</if>
+        <if test="m.noDate">and a.t0 is null</if>
+        <if test="m.noYear">and a.t0 is null</if>
         <!-- message -->
-        <if test="opId != null">and a.op=#{opId}</if>
-        <if test="categoryId != null">and a.cat=#{categoryId}</if>
-        <if test="phaseId != null">and a.phase=#{phaseId}</if>
-        <if test="voteCountRange != null">and a.nvote between #{voteCountRange.min} and #{voteCountRange.max}</if>
-        <if test="likerCountRange != null">and a.nlike between #{likerCountRange.min} and #{likerCountRange.max}</if>
-        <if test="readCountRange != null">and a.nread between #{readCountRange.min} and #{readCountRange.max}</if>
-        <if test="noOp">and a.op is null</if>
-        <if test="noCategory">and a.cat is null</if>
-        <if test="noPhase">and a.phase is null</if>
+        <if test="m.opId != null">and a.op=#{m.opId}</if>
+        <if test="m.categoryId != null">and a.cat=#{m.categoryId}</if>
+        <if test="m.phaseId != null">and a.phase=#{m.phaseId}</if>
+        <if test="m.voteCountRange != null">and a.nvote between #{m.voteCountRange.min} and #{m.voteCountRange.max}</if>
+        <if test="m.likerCountRange != null">and a.nlike between #{m.likerCountRange.min} and #{m.likerCountRange.max}</if>
+        <if test="m.readCountRange != null">and a.nread between #{m.readCountRange.min} and #{m.readCountRange.max}</if>
+        <if test="m.noOp">and a.op is null</if>
+        <if test="m.noCategory">and a.cat is null</if>
+        <if test="m.noPhase">and a.phase is null</if>
 
-        <if test="topicId != null">and a.topic=#{topicId}</if>
-        <if test="orgId != null">and a.org=#{orgId}</if>
-        <if test="orgUnitId != null">and a.ou=#{orgUnitId}</if>
-        <if test="personId != null">and a.person=#{personId}</if>
+        <if test="m.topicId != null">and a.topic=#{m.topicId}</if>
+        <if test="m.orgId != null">and a.org=#{m.orgId}</if>
+        <if test="m.orgUnitId != null">and a.ou=#{m.orgUnitId}</if>
+        <if test="m.personId != null">and a.person=#{m.personId}</if>
+        <if test="m.tagId != null">and x.tag=#{m.tagId}</if>
+        <if test="m.noTag">and x.tag is null</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -121,8 +123,6 @@
         <include refid="select1" />
         <where>
             <include refid="filtconds" />
-            <if test="tagId != null">and x.tag=#{tagId}</if>
-            <if test="noTag">and x.tag is null</if>
         </where>
     </select>
 
@@ -133,7 +133,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into stdoc(
             priority, flags, state, uid, gid, mode, acl,
             t0, t1,

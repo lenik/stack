@@ -1,4 +1,3 @@
---\import lily.type.CoMessage
 --\import zebra.oa.org
 --\import zebra.oa.person
 --\import zebra.oa.topic
@@ -14,6 +13,11 @@
         -- phase. stock stage
 --\mixin lily.mixin.Msg
 --\mixin lily.mixin.Ver
+
+        cat         int
+            references _cat(id) on update cascade,
+        phase   int
+            references _phase(id) on update cascade,
 
         prev        int             -- previous doc
             references stdoc(id) on update cascade on delete set null,

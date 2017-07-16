@@ -16,6 +16,8 @@ public class FilesDirMapping
         ZebraFilePathMapping mapping = ZebraFilePathMapping.getInstance();
         ServletDescriptor servlet = new ServletDescriptor(MappedFileAccessServlet.class);
         servlet.addMapping(mapping.getServletPath() + "/*");
+        servlet.setInitParam(MappedFileAccessServlet.ATTRIBUTE_MAPPING_CLASS, //
+                ZebraFilePathMapping.class.getName());
         servlet.install(config);
     }
 

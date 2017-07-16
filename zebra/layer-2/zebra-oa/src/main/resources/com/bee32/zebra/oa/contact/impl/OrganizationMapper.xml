@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.contact.impl.OrganizationMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.contact.Organization" extends="co.mapUSA">
+    <resultMap id="map1" type="com.bee32.zebra.oa.contact.Organization" extends="co.MAP_ALL">
         <result property="birthday" column="birthday" />
         <result property="langTag" column="locale" />
         <result property="timeZoneId" column="timezone" />
@@ -35,19 +35,19 @@
     </sql>
 
     <sql id="filtconds">
-        <!-- co -->
-        <if test="timeRange != null">and a.lastmod between #{timeRange.min, jdbcType=DATE} and #{timeRange.max, jdbcType=DATE}</if>
         <include refid="co.modefilt" />
+        <!-- co -->
+        <if test="m.timeRange != null">and a.lastmod between #{m.timeRange.min, jdbcType=DATE} and #{m.timeRange.max, jdbcType=DATE}</if>
         <!-- party -->
-        <if test="ageRange != null">and (now() - birthday) between interval '#{ageRange.min} years' and interval '#{ageRange.max} years'
+        <if test="m.ageRange != null">and (now() - birthday) between interval '#{m.ageRange.min} years' and interval '#{m.ageRange.max} years'
         </if>
-        <if test="peer || type == 1">and peer</if>
-        <if test="customer || type == 2">and customer</if>
-        <if test="supplier || type == 3">and supplier</if>
+        <if test="m.peer || m.type == 1">and peer</if>
+        <if test="m.customer || m.type == 2">and customer</if>
+        <if test="m.supplier || m.type == 3">and supplier</if>
         <!-- org -->
-        <if test="type == 0">and not (peer or customer or supplier or shipper)</if>
-        <if test="shipper || type == 4">and shipper</if>
-        <if test="type == 5">and false</if>
+        <if test="m.type == 0">and not (peer or customer or supplier or shipper)</if>
+        <if test="m.shipper || m.type == 4">and shipper</if>
+        <if test="m.type == 5">and false</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -71,7 +71,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into org(
             code, label, description,
             priority, flags, state, uid, gid, mode, acl,

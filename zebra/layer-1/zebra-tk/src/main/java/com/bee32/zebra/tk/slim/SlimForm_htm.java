@@ -197,8 +197,9 @@ public abstract class SlimForm_htm<T extends CoObject>
         HtmlButton resetButton = div.button();
         resetButton.type("button");
         resetButton.onclick("javascript: form1.reset()");
-        resetButton.span().class_("fa icon").text(FA_ERASER);
-        resetButton.text("复原").title("清除刚才输入的所有变更，重新写。");
+        resetButton.title("清除刚才输入的所有变更，重新写。");
+        resetButton.i().class_("fa icon").text(FA_ERASER);
+        resetButton.text("复原");
     }
 
     protected boolean tryPersist(boolean create, IHtmlViewContext ctx, IHtmlOut out, IUiRef<T> ref) {

@@ -12,8 +12,8 @@ public class ZebraVhostResolver
         connectOptionsTemplate = new ConnectOptions();
         connectOptionsTemplate.setServer("localhost:1063");
         connectOptionsTemplate.setDatabase("<not-set>");
-        connectOptionsTemplate.setUserName("semsadmin");
-        connectOptionsTemplate.setPassword("MxDkUWl1");
+        connectOptionsTemplate.setUserName("postgres");
+        connectOptionsTemplate.setPassword("cW3EADp8");
     }
 
     public ZebraVhostResolver(DataContext master) {

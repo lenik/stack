@@ -15,3 +15,4 @@
 --\import zebra.oa.v_reply
 --\import zebra.oa.v_topic
 --\import zebra.oa.v_topic_n
+--\import zebra.oa.avct_contact

@@ -15,8 +15,8 @@
             left join "user" op on a.op=op.id
             left join org on a.org=org.id
             left join person on a.person=person.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id;
+            left join _cat cat on a.cat=cat.id
+            left join _phase phase on a.phase=phase.id;
 
     create or replace view v_dldoc_n as select
         (select count(*) from dldoc) "total",

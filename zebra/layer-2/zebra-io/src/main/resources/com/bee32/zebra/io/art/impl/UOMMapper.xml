@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.io.art.impl.UOMMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.io.art.UOM" extends="co.mapU">
+    <resultMap id="map1" type="com.bee32.zebra.io.art.UOM" extends="co.MAP_U">
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -13,7 +13,7 @@
     </sql>
 
     <sql id="filtconds">
-        <if test="property != null">and a.property=#{property}</if>
+        <if test="m.property != null">and a.prop=#{m.property}</if>
     </sql>
 
     <select id="all" resultMap="map1">
@@ -34,8 +34,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        <![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into uom(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id

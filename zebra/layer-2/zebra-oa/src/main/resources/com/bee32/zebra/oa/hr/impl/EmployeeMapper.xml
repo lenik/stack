@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.hr.impl.EmployeeMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.hr.Employee" extends="co.mapUS">
+    <resultMap id="map1" type="com.bee32.zebra.oa.hr.Employee" extends="co.MAP_UVX">
         <result property="baseSalary" column="duty" />
         <!-- 
         <result property="role" column="role" />
@@ -66,8 +66,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        <![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into employee(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id

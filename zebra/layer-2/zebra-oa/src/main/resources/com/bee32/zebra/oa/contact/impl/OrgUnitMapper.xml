@@ -4,7 +4,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bee32.zebra.oa.contact.impl.OrgUnitMapper">
 
-    <resultMap id="map1" type="com.bee32.zebra.oa.contact.OrgUnit" extends="co.mapUS">
+    <resultMap id="map1" type="com.bee32.zebra.oa.contact.OrgUnit" extends="co.MAP_UVX">
     </resultMap>
 
     <sql id="select1"><![CDATA[
@@ -51,8 +51,7 @@
         </where>
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        <![CDATA[
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"><![CDATA[
         insert into orgunit(code, label, description)
             values(#{codeName},#{label},#{description})
             returning id

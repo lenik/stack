@@ -11,6 +11,6 @@
             left join "user" u on a.uid=u.id
             left join "group" g on a.gid=g.id
             left join "user" op on a.op=op.id
-            left join form on a.form=form.id
-            left join cat on a.cat=cat.id
-            left join phase on a.phase=phase.id;
+            left join _form form on a.form=form.id
+            left join _cat cat on a.cat=cat.id
+            left join _phase phase on a.phase=phase.id;
