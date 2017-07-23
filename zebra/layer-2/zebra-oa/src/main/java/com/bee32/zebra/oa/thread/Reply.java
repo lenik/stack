@@ -6,9 +6,10 @@ import java.util.List;
 
 import net.bodz.bas.meta.bean.DetailLevel;
 import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.lily.entity.IMomentInterval;
 import net.bodz.lily.entity.IdType;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Person;
@@ -25,6 +26,10 @@ public class Reply
 
     private Topic topic;
     private Reply parent;
+
+    private ReplyCategory category;
+    private ReplyPhase phase;
+
     private List<Person> parties;
     private List<PropertyChangeEvent> changes;
 
@@ -66,6 +71,31 @@ public class Reply
 
     public void setParent(Reply parent) {
         this.parent = parent;
+    }
+
+    /**
+     * @label Category
+     * @label.zh 分类
+     */
+    @OfGroup(StdGroup.Classification.class)
+    public ReplyCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ReplyCategory category) {
+        this.category = category;
+    }
+
+    /**
+     * 阶段
+     */
+    @OfGroup(StdGroup.Status.class)
+    public ReplyPhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(ReplyPhase phase) {
+        this.phase = phase;
     }
 
     @OfGroup(OaGroups.UserInteraction.class)

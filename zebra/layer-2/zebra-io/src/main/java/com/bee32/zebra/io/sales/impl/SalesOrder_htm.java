@@ -14,7 +14,6 @@ import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
-import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.req.MethodNames;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -29,6 +28,7 @@ import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
 import com.bee32.zebra.tk.hbin.ItemsTable;
 import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
+import com.bee32.zebra.tk.slim.SlimPathFieldMap;
 import com.bee32.zebra.tk.slim.SlimMesgForm_htm;
 import com.bee32.zebra.tk.util.DateUtils;
 import com.bee32.zebra.tk.util.DoubleUtils;
@@ -64,7 +64,7 @@ public class SalesOrder_htm
         if (id == null)
             return out;
 
-        PathFieldMap itemIndexFields;
+        SlimPathFieldMap itemIndexFields;
         {
             IType itemType = PotatoTypes.getInstance().forClass(SalesOrderItem.class);
             FormDeclBuilder formDeclBuilder = new FormDeclBuilder();
@@ -74,7 +74,7 @@ public class SalesOrder_htm
             } catch (ParseException e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
-            itemIndexFields = new PathFieldMap(itemFormDecl);
+            itemIndexFields = new SlimPathFieldMap(itemFormDecl);
             try {
                 itemIndexFields.parse("i*s", SalesOrderItemIndex_htm.FIELDS);
             } catch (Exception e) {

@@ -7,7 +7,7 @@ import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.range.DoubleRange;
 import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.bas.t.variant.QVariantMap;
-import net.bodz.lily.model.mx.base.CoMessageMask;
+import net.bodz.lily.model.mx.CoMessageMask;
 
 public class AccountingEventMask
         extends CoMessageMask {

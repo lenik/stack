@@ -10,13 +10,13 @@ import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
-import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
 
 import com.bee32.zebra.oa.accnt.AccountingEntry;
 import com.bee32.zebra.oa.accnt.AccountingEvent;
 import com.bee32.zebra.tk.hbin.ItemsTable;
+import com.bee32.zebra.tk.slim.SlimPathFieldMap;
 import com.bee32.zebra.tk.slim.SlimMesgForm_htm;
 
 public class AccountingEvent_htm
@@ -33,7 +33,7 @@ public class AccountingEvent_htm
         if (acdoc.getId() == null)
             return out;
 
-        PathFieldMap itemIndexFields;
+        SlimPathFieldMap itemIndexFields;
         {
             IType itemType = PotatoTypes.getInstance().forClass(AccountingEntry.class);
             FormDeclBuilder formDeclBuilder = new FormDeclBuilder();
@@ -43,7 +43,7 @@ public class AccountingEvent_htm
             } catch (ParseException e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
-            itemIndexFields = new PathFieldMap(itemFormDecl);
+            itemIndexFields = new SlimPathFieldMap(itemFormDecl);
             try {
                 itemIndexFields.parse("i*", AccountingEntryIndex_htm.FIELDS);
             } catch (Exception e) {

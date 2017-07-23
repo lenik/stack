@@ -42,7 +42,6 @@ import net.bodz.bas.repr.form.FieldDeclFilters;
 import net.bodz.bas.repr.form.FieldDeclGroup;
 import net.bodz.bas.repr.form.IFieldDecl;
 import net.bodz.bas.repr.form.IFormDecl;
-import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.site.artifact.LibJsArtifacts;
@@ -82,13 +81,13 @@ public abstract class SlimIndex_htm<X extends QuickIndex<T>, T extends CoObject,
         implements IZebraSiteAnchors, IZebraSiteLayout, IArtifactConsts, IFontAwesomeCharAliases {
 
     protected IFormDecl formDecl;
-    protected PathFieldMap indexFields;
+    protected SlimPathFieldMap indexFields;
 
     public SlimIndex_htm(Class<?> valueClass) {
         super(valueClass);
         Class<?> param1 = TypeParam.infer1(getClass(), SlimIndex_htm.class, 1);
         formDecl = IFormDecl.fn.forClass(param1);
-        indexFields = new PathFieldMap(formDecl);
+        indexFields = new SlimPathFieldMap(formDecl);
     }
 
     @Override

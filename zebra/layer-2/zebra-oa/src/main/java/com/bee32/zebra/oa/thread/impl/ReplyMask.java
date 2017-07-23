@@ -2,7 +2,7 @@ package com.bee32.zebra.oa.thread.impl;
 
 import net.bodz.bas.err.ParseException;
 import net.bodz.bas.t.variant.IVariantMap;
-import net.bodz.lily.model.mx.base.CoMessageMask;
+import net.bodz.lily.model.mx.CoMessageMask;
 
 public class ReplyMask
         extends CoMessageMask {

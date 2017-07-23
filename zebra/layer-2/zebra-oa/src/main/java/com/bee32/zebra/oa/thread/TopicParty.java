@@ -1,34 +1,21 @@
 package com.bee32.zebra.oa.thread;
 
-import java.io.Serializable;
-
-import com.bee32.zebra.oa.contact.Organization;
-import com.bee32.zebra.oa.contact.Person;
+import net.bodz.lily.model.base.CoRelation;
+import net.bodz.lily.model.contact.Organization;
+import net.bodz.lily.model.contact.Person;
 
 /**
  * 项目参与方
  */
 public class TopicParty
-        // extends CoObject
-        implements Serializable {
+        extends CoRelation<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int N_DESCRIPTION = 60;
-
-    private Long id;
     private Topic topic;
     private Person person;
     private Organization org;
     private String description;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public Topic getTopic() {
         return topic;

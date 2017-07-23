@@ -12,7 +12,7 @@ import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.SchemaPref;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;

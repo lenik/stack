@@ -6,7 +6,7 @@ import net.bodz.bas.t.range.IntRange;
 import net.bodz.bas.t.range.LongRange;
 import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.bas.t.variant.QVariantMap;
-import net.bodz.lily.model.mx.base.CoMessageMask;
+import net.bodz.lily.model.mx.CoMessageMask;
 
 /**
  * @see com.bee32.zebra.oa.file.FileInfo

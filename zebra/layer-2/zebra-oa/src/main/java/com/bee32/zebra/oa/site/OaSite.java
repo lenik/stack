@@ -4,27 +4,21 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.bodz.bas.c.type.IndexedTypes;
-import net.bodz.bas.db.ctx.DataContext;
 import net.bodz.bas.http.ctx.CurrentHttpService;
 import net.bodz.bas.log.Logger;
 import net.bodz.bas.log.LoggerFactory;
-import net.bodz.bas.meta.decl.ObjectType;
 import net.bodz.bas.repr.path.IPathArrival;
 import net.bodz.bas.repr.path.IPathDispatchable;
 import net.bodz.bas.repr.path.ITokenQueue;
 import net.bodz.bas.repr.path.PathArrival;
 import net.bodz.bas.repr.path.PathDispatchException;
-import net.bodz.bas.site.config.PathConventions;
 import net.bodz.bas.site.file.UploadHandler;
 import net.bodz.bas.site.org.ICrawlable;
 import net.bodz.bas.site.org.ICrawler;
 import net.bodz.bas.site.vhost.IVirtualHost;
-import net.bodz.bas.site.vhost.VhostDataContexts;
 import net.bodz.bas.site.vhost.VirtualHostScope;
 import net.bodz.bas.std.rfc.http.CacheControlMode;
 import net.bodz.bas.std.rfc.http.ICacheControl;
-import net.bodz.lily.model.base.CoObjectIndex;
 import net.bodz.lily.site.LilyStartSite;
 
 import com.bee32.zebra.oa.calendar.LogCalendar;
@@ -33,7 +27,6 @@ import com.bee32.zebra.oa.etc.HelpIndex;
 import com.bee32.zebra.oa.etc.ServiceIndex;
 import com.bee32.zebra.oa.etc.SiteUtilities;
 import com.bee32.zebra.oa.login.LoginForm;
-import com.bee32.zebra.tk.repr.QuickController;
 
 /**
  * @label OA Site Frame
@@ -44,38 +37,11 @@ public class OaSite
 
     static final Logger logger = LoggerFactory.getLogger(OaSite.class);
 
-    IVirtualHost vhost;
-    DataContext dataContext;
-
     String googleId;
     String baiduId;
 
     public OaSite(IVirtualHost vhost) {
-        this.vhost = vhost;
-        this.dataContext = VhostDataContexts.getInstance().get(vhost);
-        setQueryContext(dataContext);
-
-        for (Class<?> _indexClass : IndexedTypes.list(CoObjectIndex.class, false)) {
-            @SuppressWarnings("unchecked")
-            Class<? extends CoObjectIndex<?>> indexClass = (Class<? extends CoObjectIndex<?>>) _indexClass;
-
-            Class<?> objectType = indexClass.getAnnotation(ObjectType.class).value();
-            QuickController controller = new QuickController(dataContext, objectType, indexClass);
-
-            for (String token : PathConventions.getPathTokens(objectType)) {
-                Object prev = pathMap.get(token);
-                if (prev instanceof QuickController) {
-                    QuickController prevCon = (QuickController) prev;
-                    Class<?> prevObjectType = prevCon.getObjectType();
-                    // only override if (objectType extends prevObjectType).
-                    boolean isExtension = prevObjectType.isAssignableFrom(objectType);
-                    if (!isExtension)
-                        continue;
-                }
-                logger.logf("Install index path %s: %s for %s", token, indexClass.getName(), objectType.getName());
-                pathMap.put(token, controller);
-            }
-        }
+        super(vhost);
     }
 
     /** ⇱ Implementation Of {@link ICacheControl}. */
@@ -118,7 +84,7 @@ public class OaSite
 
         case "calendar":
             LogCalendar logCalendar = new LogCalendar();
-            logCalendar.setDataContext(dataContext);
+            //logCalendar.setDataContext(dataContext);
             target = logCalendar;
             break;
 

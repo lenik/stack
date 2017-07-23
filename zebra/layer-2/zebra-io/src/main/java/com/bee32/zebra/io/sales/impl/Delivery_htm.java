@@ -13,7 +13,6 @@ import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
-import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.site.IBasicSiteAnchors;
 import net.bodz.bas.ui.dom1.IUiRef;
@@ -21,6 +20,7 @@ import net.bodz.bas.ui.dom1.IUiRef;
 import com.bee32.zebra.io.sales.Delivery;
 import com.bee32.zebra.io.sales.DeliveryItem;
 import com.bee32.zebra.tk.hbin.ItemsTable;
+import com.bee32.zebra.tk.slim.SlimPathFieldMap;
 import com.bee32.zebra.tk.slim.SlimMesgForm_htm;
 
 public class Delivery_htm
@@ -55,7 +55,7 @@ public class Delivery_htm
         if (id == null)
             return out;
 
-        PathFieldMap itemIndexFields;
+        SlimPathFieldMap itemIndexFields;
         {
             IType itemType = PotatoTypes.getInstance().forClass(DeliveryItem.class);
             FormDeclBuilder formDeclBuilder = new FormDeclBuilder();
@@ -65,7 +65,7 @@ public class Delivery_htm
             } catch (ParseException e) {
                 throw new ViewBuilderException(e.getMessage(), e);
             }
-            itemIndexFields = new PathFieldMap(itemFormDecl);
+            itemIndexFields = new SlimPathFieldMap(itemFormDecl);
             try {
                 itemIndexFields.parse("i*", DeliveryItemIndex_htm.FIELDS);
             } catch (Exception e) {

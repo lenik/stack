@@ -17,7 +17,7 @@ import net.bodz.bas.t.variant.IVarMapSerializable;
 import net.bodz.bas.t.variant.IVariantMap;
 import net.bodz.lily.entity.IdType;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
 
 import com.bee32.zebra.oa.OaGroups;
 import com.bee32.zebra.oa.contact.Contact;

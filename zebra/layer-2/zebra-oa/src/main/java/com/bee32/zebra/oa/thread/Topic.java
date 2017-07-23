@@ -6,10 +6,8 @@ import java.util.List;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.lily.entity.IdType;
-import net.bodz.lily.model.base.schema.CategoryDef;
-import net.bodz.lily.model.base.schema.PhaseDef;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
 
 import com.bee32.zebra.oa.OaGroups;
 
@@ -22,6 +20,9 @@ public class Topic
         extends CoMessage<Integer> {
 
     private static final long serialVersionUID = 1L;
+
+    private TopicCategory category;
+    private TopicPhase phase;
 
     private double value;
     // private double minValue, maxValue; // for estimated values.
@@ -47,27 +48,28 @@ public class Topic
     }
 
     /**
-     * 分类
+     * @label Category
+     * @label.zh 分类
      */
     @OfGroup(StdGroup.Classification.class)
-    public CategoryDef getCategory() {
-        return super.getCategory();
+    public TopicCategory getCategory() {
+        return category;
     }
 
-    public void setCategory(CategoryDef category) {
-        super.setCategory(category);
+    public void setCategory(TopicCategory category) {
+        this.category = category;
     }
 
     /**
      * 阶段
      */
     @OfGroup(StdGroup.Status.class)
-    public PhaseDef getPhase() {
-        return super.getPhase();
+    public TopicPhase getPhase() {
+        return phase;
     }
 
-    public void setPhase(PhaseDef phase) {
-        super.setPhase(phase);
+    public void setPhase(TopicPhase phase) {
+        this.phase = phase;
     }
 
     /**

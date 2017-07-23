@@ -76,7 +76,7 @@ public class AccountingEventIndex_htm
             itab.cocols("i", tr, o);
             tr.td().text(fmt.formatDate(o.getBeginDate()));
             ref(tr.td(), o.getOp());
-            ref(tr.td(), o.getCategory());
+            //ref(tr.td(), o.getCategory());
 
             itab.cocols("m", tr, o);
 

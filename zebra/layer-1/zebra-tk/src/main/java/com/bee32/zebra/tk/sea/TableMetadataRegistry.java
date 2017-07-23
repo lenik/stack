@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.bodz.bas.c.loader.ClassLoaders;
 import net.bodz.bas.c.type.TypeIndex;
 import net.bodz.bas.c.type.TypeParam;
 import net.bodz.bas.db.ibatis.IMapper;
@@ -12,6 +13,7 @@ import net.bodz.bas.err.IllegalConfigException;
 
 public class TableMetadataRegistry {
 
+    ClassLoader classLoader = ClassLoaders.getRuntimeClassLoader();
     Map<Class<?>, TableMetadata> classMap;
     Map<String, TableMetadata> tableNameMap;
 
@@ -27,7 +29,7 @@ public class TableMetadataRegistry {
 
     void findFromMappers()
             throws ClassNotFoundException, IOException {
-        TypeIndex typeIndex = TypeIndex.getSclTypeIndex();
+        TypeIndex typeIndex = TypeIndex.getInstance(classLoader);
 
         for (Class<?> mapperClass : typeIndex.listIndexed(IMapper.class)) {
             if (!IMapperTemplate.class.isAssignableFrom(mapperClass))

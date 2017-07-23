@@ -1,12 +1,14 @@
 package com.bee32.zebra.oa.calendar;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.bodz.bas.meta.bean.DetailLevel;
+import net.bodz.bas.repr.form.meta.OfGroup;
+import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.lily.entity.IdType;
-import net.bodz.lily.model.base.schema.CategoryDef;
-import net.bodz.lily.model.base.schema.PhaseDef;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.mixin.TagSet;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
 
 /**
  * 日记
@@ -17,6 +19,10 @@ public class Diary
 
     private static final long serialVersionUID = 1L;
 
+    DiaryCategory category;
+    DiaryPhase phase;
+    Set<DiaryTag> tags;
+
     public Diary() {
     }
 
@@ -24,6 +30,7 @@ public class Diary
     public void instantiate() {
         super.instantiate();
         setAccessMode(M_SHARED);
+        this.tags = new HashSet<>();
     }
 
     /**
@@ -34,22 +41,34 @@ public class Diary
         return super.getOp();
     }
 
-    @DetailLevel(DetailLevel.HIDDEN)
-    @Override
-    public CategoryDef getCategory() {
-        return super.getCategory();
+    /**
+     * @label Category
+     * @label.zh 分类
+     */
+    @OfGroup(StdGroup.Classification.class)
+    public DiaryCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(DiaryCategory category) {
+        this.category = category;
+    }
+
+    public DiaryPhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(DiaryPhase phase) {
+        this.phase = phase;
     }
 
     @DetailLevel(DetailLevel.HIDDEN)
-    @Override
-    public PhaseDef getPhase() {
-        return super.getPhase();
+    public Set<DiaryTag> getTags() {
+        return tags;
     }
 
-    @DetailLevel(DetailLevel.HIDDEN)
-    @Override
-    public TagSet getTags() {
-        return super.getTags();
+    public void setTags(Set<DiaryTag> tags) {
+        this.tags = tags;
     }
 
 }

@@ -10,8 +10,9 @@ import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.lily.entity.IdType;
-import net.bodz.lily.model.base.schema.CategoryDef;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
+import net.bodz.violet.store.StoreCategory;
+import net.bodz.violet.store.StorePhase;
 
 import com.bee32.zebra.oa.contact.OrgUnit;
 import com.bee32.zebra.oa.contact.Organization;
@@ -30,6 +31,8 @@ public class StockEvent
     private static final long serialVersionUID = 1L;
 
     private StockEvent previous;
+    private StoreCategory category;
+    private StorePhase phase;
     private Topic topic;
     private Organization org;
     private OrgUnit orgUnit;
@@ -48,7 +51,7 @@ public class StockEvent
         super.instantiate();
         setAccessMode(M_SHARED);
 
-        CategoryDef TK_I = new CategoryDef();
+        StoreCategory TK_I = new StoreCategory();
         TK_I.setId(1202);
         TK_I.setLabel("采购入库");
         setCategory(TK_I);
@@ -64,6 +67,22 @@ public class StockEvent
 
     public void setPrevious(StockEvent previous) {
         this.previous = previous;
+    }
+
+    public StoreCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(StoreCategory category) {
+        this.category = category;
+    }
+
+    public StorePhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(StorePhase phase) {
+        this.phase = phase;
     }
 
     /**

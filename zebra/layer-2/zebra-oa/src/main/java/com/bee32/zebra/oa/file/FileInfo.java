@@ -1,5 +1,8 @@
 package com.bee32.zebra.oa.file;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.joda.time.DateTime;
 
 import net.bodz.bas.meta.bean.DetailLevel;
@@ -10,14 +13,12 @@ import net.bodz.bas.repr.form.NullConvertion;
 import net.bodz.bas.repr.form.meta.FormInput;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
-import net.bodz.bas.repr.form.meta.StdGroup.Status;
 import net.bodz.bas.repr.form.meta.TextInput;
 import net.bodz.bas.repr.path.PathToken;
 import net.bodz.lily.entity.IMomentInterval;
 import net.bodz.lily.entity.IdType;
-import net.bodz.lily.model.base.schema.PhaseDef;
 import net.bodz.lily.model.base.security.User;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
@@ -47,6 +48,10 @@ public class FileInfo
     private String type;
     private String encoding;
 
+    private FileCategory category;
+    private FilePhase phase;
+    private Set<FileTag> tags;
+
     private Organization org;
     private Person person;
     private DateTime activeDate;
@@ -54,6 +59,12 @@ public class FileInfo
 
     private int downloads;
     private Double value;
+
+    @Override
+    public void instantiate() {
+        super.instantiate();
+        this.tags = new HashSet<>();
+    }
 
     @DetailLevel(DetailLevel.HIDDEN)
     @FormInput(nullconv = NullConvertion.NONE)
@@ -189,6 +200,41 @@ public class FileInfo
     }
 
     /**
+     * @label Category
+     * @label.zh 分类
+     */
+    @OfGroup(StdGroup.Classification.class)
+    public FileCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(FileCategory category) {
+        this.category = category;
+    }
+
+    /**
+     * @label Phase
+     * @label.zh 阶段
+     */
+    @DetailLevel(DetailLevel.HIDDEN)
+    @OfGroup(StdGroup.Status.class)
+    public FilePhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(FilePhase phase) {
+        this.phase = phase;
+    }
+
+    public Set<FileTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<FileTag> tags) {
+        this.tags = tags;
+    }
+
+    /**
      * 公司
      * 
      * 文件（合同、票据、扫描件等）相关的公司。
@@ -317,17 +363,6 @@ public class FileInfo
     @Override
     public User getOp() {
         return super.getOp();
-    }
-
-    /**
-     * @label Phase
-     * @label.zh 阶段
-     */
-    @DetailLevel(DetailLevel.HIDDEN)
-    @OfGroup(Status.class)
-    @Override
-    public PhaseDef getPhase() {
-        return super.getPhase();
     }
 
 }

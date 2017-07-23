@@ -21,7 +21,7 @@ import net.bodz.lily.model.base.SchemaPref;
 import net.bodz.lily.model.base.schema.FormDef;
 import net.bodz.lily.model.base.schema.impl.FormDefMapper;
 import net.bodz.lily.model.base.schema.impl.FormDefMask;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
 
 public abstract class SlimMesgForm_htm<T extends CoMessage<?>>
         extends SlimForm_htm<T> {

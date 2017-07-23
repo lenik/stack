@@ -13,7 +13,9 @@ import net.bodz.bas.meta.cache.Statistics;
 import net.bodz.bas.repr.form.meta.OfGroup;
 import net.bodz.bas.repr.form.meta.StdGroup;
 import net.bodz.lily.entity.IdType;
-import net.bodz.lily.model.mx.base.CoMessage;
+import net.bodz.lily.model.mx.CoMessage;
+import net.bodz.violet.sale.SalesCategory;
+import net.bodz.violet.sale.SalesPhase;
 
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.oa.contact.Person;
@@ -32,6 +34,9 @@ public class SalesOrder
         extends CoMessage<Integer> {
 
     private static final long serialVersionUID = 1L;
+
+    private SalesCategory category;
+    private SalesPhase phase;
 
     private Topic topic;
     private Organization org;
@@ -53,6 +58,22 @@ public class SalesOrder
         super.instantiate();
         setAccessMode(M_COOP);
         items = new ArrayList<>();
+    }
+
+    public SalesCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(SalesCategory category) {
+        this.category = category;
+    }
+
+    public SalesPhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(SalesPhase phase) {
+        this.phase = phase;
     }
 
     /**

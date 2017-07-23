@@ -1,7 +1,9 @@
 package com.bee32.zebra.oa;
 
 import net.bodz.bas.meta.decl.Priority;
+import net.bodz.bas.repr.form.meta.GroupDef;
 
+@GroupDef
 public @interface OaGroups {
 
     /** 会计 */

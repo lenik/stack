@@ -11,7 +11,6 @@ import net.bodz.bas.potato.PotatoTypes;
 import net.bodz.bas.potato.element.IType;
 import net.bodz.bas.repr.form.FormDeclBuilder;
 import net.bodz.bas.repr.form.MutableFormDecl;
-import net.bodz.bas.repr.form.PathFieldMap;
 import net.bodz.bas.repr.viz.ViewBuilderException;
 import net.bodz.bas.ui.dom1.IUiRef;
 
@@ -19,6 +18,7 @@ import com.bee32.zebra.oa.contact.Contact;
 import com.bee32.zebra.oa.contact.Organization;
 import com.bee32.zebra.tk.hbin.ItemsTable;
 import com.bee32.zebra.tk.hbin.SectionDiv_htm1;
+import com.bee32.zebra.tk.slim.SlimPathFieldMap;
 import com.bee32.zebra.tk.slim.SlimForm_htm;
 
 public class Organization_htm
@@ -52,7 +52,7 @@ public class Organization_htm
             throw new ViewBuilderException(e.getMessage(), e);
         }
 
-        PathFieldMap fields = new PathFieldMap(itemFormDecl);
+        SlimPathFieldMap fields = new SlimPathFieldMap(itemFormDecl);
         try {
             fields.parse("i*", ContactIndex_htm.FIELDS);
         } catch (Exception e) {
